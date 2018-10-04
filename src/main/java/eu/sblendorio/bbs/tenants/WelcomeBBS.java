@@ -22,6 +22,7 @@ public class WelcomeBBS extends PetsciiThread {
         resetInput();
 
         String name = readLine();
+        println();
         println("Welcome, " + name + "!");
         println("Press a key to exit");
         flush();

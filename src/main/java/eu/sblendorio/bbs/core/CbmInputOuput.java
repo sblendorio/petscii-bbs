@@ -285,7 +285,6 @@ public class CbmInputOuput extends Reader {
                     if (c == '\r') {
                         skipLF = true;
                     }
-                    out.write(13);
                     out.flush();
 
                     return decode(str);

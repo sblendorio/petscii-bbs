@@ -41,6 +41,7 @@ Let's suppose to build a very simple BBS that asks your name welcomes you. The b
             resetInput();
             
             String name = readLine();
+            println();
             println("Welcome, " + name + "!");
             println("Press a key to exit");
             flush();
