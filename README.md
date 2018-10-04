@@ -99,9 +99,13 @@ It's a plain process, so use plain **ps** and **kill** commands. If this *jar* i
 
     killall java
     
-## Sample BBS in the package
+## Sample BBSes in the package
 You can study the sample BBSes (all classes that extend **PetsciiThread**) in the package as example of complete task. The package includes some proxies for accessing *WordPress* sites through Commodore 64 and a two classic strategy games (**tic-tac-toe** and **connect-4**) 
- 
+
+
+## Sample online BBSes
+- **bbs.sblendorio.eu** - port **6510**
+- **bbs.retrocampus.com** - port **8086**
  
 ## Credits
 Thanks to:
