@@ -16,6 +16,8 @@ public class BBServer {
     private static int timeout;
     private static Class<? extends PetsciiThread> bbs;
     private static List<Class<? extends PetsciiThread>> tenants = filterPetsciiThread();
+    private static final long DEFAULT_TIMEOUT_IN_MILLIS = 3600000;
+    private static final long DEFAULT_PORT = 6510;
 
     public static void main(String[] args) throws Exception {
         // args = new String[] {"-b", "MenuRetroAcademy", "-p", "6510"};
@@ -23,7 +25,7 @@ public class BBServer {
         ServerSocket listener = new ServerSocket(port);
         listener.setSoTimeout(INTEGER_ZERO);
         System.out.print(new Timestamp(System.currentTimeMillis())+" ");
-        System.out.println("The BBS "+bbs.getSimpleName()+" is running: port = " + port + ", timeout = " + timeout+" millis");
+        System.out.println("The BBS "+bbs.getSimpleName()+" is running: port = " + port + ", timeout = " + timeout + " millis");
         try {
             while (true) {
                 Socket socket = listener.accept();
@@ -42,8 +44,8 @@ public class BBServer {
 
     private static void readParameters(String[] args) {
         Options options = new Options();
-        options.addOption("p", "port", true, "TCP port used by server process (default 6510)");
-        options.addOption("t", "timeout", true, "Socket timeout in millis (default 3 hours)");
+        options.addOption("p", "port", true, "TCP port used by server process (default "+DEFAULT_PORT+")");
+        options.addOption("t", "timeout", true, "Socket timeout in millis (default " + (DEFAULT_TIMEOUT_IN_MILLIS /60000) + " minutes)");
         options.addOption("h", "help", false, "Displays help");
         options.addOption("b", "bbs", true, "Run specific BBS (mandatory - see list below)");
         CommandLineParser parser = new DefaultParser();
@@ -60,8 +62,8 @@ public class BBServer {
             displayHelp(options);
             System.exit(1);
         }
-        port = toInt(cmd.getOptionValue("port", "6510"));
-        timeout = toInt(cmd.getOptionValue("timeout", "10800000")); // 3 hours
+        port = toInt(cmd.getOptionValue("port", String.valueOf(DEFAULT_PORT)));
+        timeout = toInt(cmd.getOptionValue("timeout", String.valueOf(DEFAULT_TIMEOUT_IN_MILLIS)));
         final String bbsName = cmd.getOptionValue("bbs");
         bbs = findTenant(bbsName);
         if (bbs == null) {
