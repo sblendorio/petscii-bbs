@@ -49,9 +49,9 @@ Let's suppose to build a very simple BBS that asks your name welcomes you. The b
         }
     }
 
-this piece of code is enough to create a fully-functional but pretty simple BBS. The result will be like this:
+this piece of code is enough to create a fully-functional but pretty simple BBS. The result will look like this:
 
-![MPS 803 PETSCII Charset](./bbs-sample-screenshot.jpg)
+![BBS sample screenshot](./bbs-sample-screenshot.jpg)
 
 All you have to do now is to build and run the BBS on your server, ready to be called by a **PETSCII**-enabled terminal client. Let's see how to do it in the following sections.
 
