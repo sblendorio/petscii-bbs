@@ -6,7 +6,7 @@ This framework provides base classes for build your own **BBS** in PETSCII mode,
 - a Commodore 64 with a [RR-NET](http://wiki.icomp.de/wiki/RR-Net) compatible card, running [KipperTerm](http://netboot65.sourceforge.net/)
 - a Commodore 64 with a [WiFi modem card](http://www.codingkoala.com/kc64wifi/), running [CCGMS](https://csdb.dk/release/?id=156523)
 - a Commodore 64 with an [Easy Flash 3](http://store.go4retro.com/easyflash-3/) (with [CCGMS](https://csdb.dk/release/?id=156523)) + a PC running [EF3USB](https://csdb.dk/release/?id=144900&show=notes)
-- a common PC/Mac running [SyncTerm](https://sourceforge.net/projects/syncterm/)
+- a common PC/Mac running [SyncTerm](https://sourceforge.net/projects/syncterm/) (*ConnectionType*=_Telnet_, *ScreenMode*=_C64_)
 
 ## System requirements
 - Java Development Kit (JDK) and JRE version 1.7+
