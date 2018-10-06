@@ -25,6 +25,7 @@ Let's suppose to build a very simple BBS that asks your name welcomes you. The b
         // NEVER forget default (empty) constructor
         public WelcomeBBS() {}
         
+        @Override
         public void doLoop() throws Exception {
         
             // clear screen
@@ -100,7 +101,7 @@ It's a plain process, so use plain **ps** and **kill** commands. If this *jar* i
     killall java
     
 ## Sample BBSes in the package
-You can study the sample BBSes (all classes that extend **PetsciiThread**) in the package as example of complete task. The package includes some proxies for accessing *WordPress* sites through Commodore 64 and a two classic strategy games (**tic-tac-toe** and **connect-4**) 
+You can study the sample BBSes (all classes that extend **PetsciiThread**) in the package **eu.sblendorio.bbs.tenants** as example of complete task. The package includes some proxies for accessing *WordPress* sites through Commodore 64 and a two classic strategy games (**tic-tac-toe** and **connect-4**) 
 
 
 ## Sample online BBSes

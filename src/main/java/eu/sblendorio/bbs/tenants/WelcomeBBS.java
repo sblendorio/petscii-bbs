@@ -6,6 +6,7 @@ public class WelcomeBBS extends PetsciiThread {
 
     public WelcomeBBS() {}
 
+    @Override
     public void doLoop() throws Exception {
 
         // clear screen
