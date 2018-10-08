@@ -88,5 +88,10 @@
             <artifactId>reflections</artifactId>
             <version>0.9.11</version>
         </dependency>
+        <dependency>
+            <groupId>com.rometools</groupId>
+            <artifactId>rome</artifactId>
+            <version>1.11.0</version>
+        </dependency>
     </dependencies>
 </project>
