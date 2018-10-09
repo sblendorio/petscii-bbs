@@ -13,7 +13,7 @@ public class MenuRetroAcademy extends PetsciiThread {
             log("Starting MenuRetroAcademy BBS / main menu");
             logo();
             write(GREY3);
-            gotoXY(4,23); print("Copyright (C) 2018 MenuRetroAcademy");
+            gotoXY(4,23); print("Copyright (C) 2018 Retroacademy");
             gotoXY(9,5); write(WHITE); print("Make your choice:"); write(GREY3);
             gotoXY(9, 9); write(REVON); print(" 1 "); write(REVOFF); print("  Explore retroacademy.it");
             gotoXY(9, 11); write(REVON); print(" 2 "); write(REVOFF); print("  Explore vcfed.org");
