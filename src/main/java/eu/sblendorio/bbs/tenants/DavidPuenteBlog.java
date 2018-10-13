@@ -4,13 +4,13 @@ public class DavidPuenteBlog extends WordpressProxy {
 
     public DavidPuenteBlog() {
         super();
-        this.logo = LOGO_DAVIDPUENTE;
+        this.logo = LOGO;
         this.domain = "https://www.davidpuente.it";
         this.pageSize = 7;
         this.screenRows = 18;
     }
 
-    public final static byte[] LOGO_DAVIDPUENTE = new byte[] {
+    public final static byte[] LOGO = new byte[] {
         32, 32, 32, 32, 32, 32, 32, 32, 32, 18, 5, -95, -94, -110, -69, 32,
         32, 32, 32, 32, 18, -97, -65, -110, -69, 32, 32, 5, -95, 32, 18, -84,
         -110, -65, 32, 32, 32, 32, 32, 32, 32, -84, 18, -68, -110, 13, 32, -97,

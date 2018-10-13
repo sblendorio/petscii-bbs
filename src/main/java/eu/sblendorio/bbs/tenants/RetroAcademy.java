@@ -7,11 +7,11 @@ public class RetroAcademy extends WordpressProxy {
 
     public RetroAcademy() {
         super();
-        this.logo = LOGO_RETROACADEMY;
+        this.logo = LOGO;
         this.domain = "https://www.retroacademy.it";
     }
 
-    public final static byte[] LOGO_RETROACADEMY = new byte[] {
+    public final static byte[] LOGO = new byte[] {
         32,  32,  32,  32,  32,  28, -84,  32,  32,  32,  32,  32,  32,  32,  32,  32,
         32,  32,  32,  32,  32,-104, -69,  13,  18,  28, -95, -65,-110, -84,  18, -69,
         -110, -69,  18, -69,-110, -66,  18, -68,-110, -66,  18, -65,-110, -65,-104, -84,
