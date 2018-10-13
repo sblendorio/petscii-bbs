@@ -88,5 +88,10 @@
             <artifactId>reflections</artifactId>
             <version>0.9.11</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-blogger</artifactId>
+            <version>v3-rev61-1.25.0</version>
+        </dependency>
     </dependencies>
 </project>
