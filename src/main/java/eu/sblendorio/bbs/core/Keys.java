@@ -20,7 +20,7 @@ public class Keys {
     public static final int CLR = 147;
     public static final int DEL = 20;
     public static final int INS = 148;
-    public static final int SPACE = 32;
+    public static final int SPACE_CHAR = 32;
 
     public static final int LOWERCASE = 14;
     public static final int UPPERCASE = 142;

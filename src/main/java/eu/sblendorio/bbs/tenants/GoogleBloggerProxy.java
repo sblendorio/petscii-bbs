@@ -1,65 +1,113 @@
 package eu.sblendorio.bbs.tenants;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.blogger.Blogger;
+import com.google.api.services.blogger.BloggerScopes;
+import com.google.api.services.blogger.model.Post;
+import com.google.api.services.blogger.model.PostList;
+import eu.sblendorio.bbs.core.CbmIOException;
 import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import org.apache.commons.text.WordUtils;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
+import static eu.sblendorio.bbs.core.Colors.GREY3;
+import static eu.sblendorio.bbs.core.Colors.LIGHT_RED;
+import static eu.sblendorio.bbs.core.Colors.WHITE;
 import static eu.sblendorio.bbs.core.Keys.*;
-import static eu.sblendorio.bbs.core.Colors.*;
 import static eu.sblendorio.bbs.core.Utils.filterPrintable;
 import static eu.sblendorio.bbs.core.Utils.filterPrintableWithNewline;
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyMap;
-import static org.apache.commons.collections4.MapUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.*;
 
 @Hidden
-public class WordpressProxy extends PetsciiThread {
+public class GoogleBloggerProxy extends PetsciiThread {
 
-    static class Post {
-        long id;
-        String title;
-        String date;
-        String content;
-        String excerpt;
-    }
-
-    protected String domain = "https://wordpress.org/news";
-    protected byte[] logo = LOGO_WORDPRESS;
+    protected String blogUrl = "https://blogger.googleblog.com";
+    protected byte[] logo = LOGO_BLOGGER;
     protected int pageSize = 10;
     protected int screenRows = 19;
 
-    protected Map<Integer, Post> posts = emptyMap();
-    protected int currentPage = 1;
+    protected final String CRED_FILE_PATH = System.getProperty("user.home") + "/credentials.json";
 
-    public WordpressProxy() {
-        // Mandatory
+    protected GoogleCredential credential;
+    protected Blogger blogger;
+    protected String blogId;
+
+    protected Map<Integer, Post> posts = null;
+
+    protected static class PageTokens {
+        Stack<String> tokens = new Stack<>();
+
+        String prev = null;
+        String curr = null;
+        String next = null;
+        int page = 1;
+
+        public void reset() {
+            prev=null; curr=null; next=null; page=1; tokens.clear();
+        }
     }
 
-    public WordpressProxy(String domain) {
-        this.domain = domain;
+    protected PageTokens pageTokens = new PageTokens();
+
+    public GoogleBloggerProxy() {}
+
+    public GoogleBloggerProxy(String blogUrl) {
+        this.blogUrl = blogUrl;
     }
 
-    public WordpressProxy(String domain, byte[] logo) {
-        this.domain = domain;
+    public GoogleBloggerProxy(String blogUrl, byte[] logo) {
+        this.blogUrl = blogUrl;
         this.logo = logo;
     }
 
+    public void init() throws IOException {
+        try {
+            cls();
+            write(GREY3);
+            waitOn();
+            final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
+            final JsonFactory JSON_FACTORY = new JacksonFactory();
 
-    protected final String getApi() { return domain + "/wp-json/wp/v2/"; };
+            this.credential = GoogleCredential
+                    .fromStream(new FileInputStream(CRED_FILE_PATH))
+                    .createScoped(Arrays.asList(BloggerScopes.BLOGGER));
+
+            this.blogger = new Blogger.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+                    .setApplicationName("PETSCII BBS Builder - Blogger Proxy - " + this.getClass().getSimpleName())
+                    .build();
+
+            changeBlogIdByUrl(this.blogUrl);
+            pageTokens.reset();
+            waitOff();
+        } catch (IOException e) {
+            exitWithError();
+        }
+    }
+
+    protected void changeBlogIdByUrl(String url) throws IOException {
+        this.blogUrl = url;
+        blogId = blogger.blogs().getByUrl(blogUrl).execute().getId();
+    }
+
+
     public void doLoop() throws Exception {
+        init();
         write(LOWERCASE, CASE_LOCK);
-        log("Wordpress entering (" + domain + ")");
+        log("Blogger entering (" + blogUrl + ")");
         listPosts();
         while (true) {
-            log("Wordpress waiting for input");
+            log("Blogger waiting for input");
             write(WHITE);print("#"); write(GREY3);
             print(", [");
             write(WHITE); print("+-"); write(GREY3);
@@ -82,17 +130,24 @@ public class WordpressProxy extends PetsciiThread {
                 listPosts();
                 continue;
             } else if ("+".equals(input)) {
-                ++currentPage;
+                pageTokens.tokens.push(pageTokens.prev);
+                pageTokens.prev = pageTokens.curr;
+                pageTokens.curr = pageTokens.next;
+                pageTokens.next = null;
+                ++pageTokens.page;
                 posts = null;
                 listPosts();
                 continue;
-            } else if ("-".equals(input) && currentPage > 1) {
-                --currentPage;
+            } else if ("-".equals(input) && pageTokens.page > 1) {
+                pageTokens.next = pageTokens.curr;
+                pageTokens.curr = pageTokens.prev;
+                pageTokens.prev = pageTokens.tokens.pop();
+                --pageTokens.page;
                 posts = null;
                 listPosts();
                 continue;
-            } else if ("--".equals(input) && currentPage > 1) {
-                currentPage = 1;
+            } else if ("--".equals(input) && pageTokens.page > 1) {
+                pageTokens.reset();
                 posts = null;
                 listPosts();
                 continue;
@@ -119,19 +174,21 @@ public class WordpressProxy extends PetsciiThread {
             } else if (substring(input,0,5).equalsIgnoreCase("name ")) {
                 String newName = defaultString(input.replaceAll("^name ([^\\s]+).*$", "$1"));
                 changeClientName(newName);
-            } else if (substring (input, 0, 8).equalsIgnoreCase("connect ")) {
-                final String oldDomain = domain;
-                domain = defaultString(input.replaceAll("^connect ([^\\s]+).*$", "$1"));
-                if (!domain.matches("(?is)^http.*"))
-                    domain = "https://" + domain;
-                log("new API: "+getApi());
-                posts = null;
-                currentPage = 1;
+            } else if (substring(input, 0, 8).equalsIgnoreCase("connect ")) {
+                final String oldBlogUrl = blogUrl;
+                String newUrl = trim(input.replaceAll("^connect ([^\\s]+).*$", "$1"));
+                if (newUrl.indexOf('.') == -1) newUrl += ".blogspot.com";
+                if (!newUrl.matches("(?is)^http.*")) newUrl = "https://" + newUrl;
+                log("new blogUrl: "+newUrl);
                 try {
+                    changeBlogIdByUrl(newUrl);
+                    pageTokens.reset();
+                    posts = null;
                     listPosts();
                 } catch (Exception e) {
-                    log("WORDPRESS FAILED: " + e.getClass().getName() + ": " + e.getMessage());
-                    domain = oldDomain;
+                    log("BLOGGER FAILED: " + e.getClass().getName() + ": " + e.getMessage());
+                    changeBlogIdByUrl(oldBlogUrl);
+                    pageTokens.reset();
                     posts = null;
                     listPosts();
                 }
@@ -140,29 +197,29 @@ public class WordpressProxy extends PetsciiThread {
         flush();
     }
 
-    protected Map<Integer, Post> getPosts(int page, int perPage) throws Exception {
-        if (page < 1 || perPage < 1) return null;
+    protected Map<Integer, Post> getPosts() throws Exception {
         Map<Integer, Post> result = new LinkedHashMap<>();
-        JSONArray posts = (JSONArray) httpGetJson(getApi() + "posts?context=view&page="+page+"&per_page="+perPage);
-        for (int i=0; i<posts.size(); ++i) {
-            Post post = new Post();
-            JSONObject postJ = (JSONObject) posts.get(i);
-            post.id = (Long) postJ.get("id");
-            post.content = (String) ((JSONObject) postJ.get("content")).get("rendered");
-            post.title = (String) ((JSONObject) postJ.get("title")).get("rendered");
-            post.date = ((String) postJ.get("date")).replace("T", " ");
-            post.excerpt = (String) ((JSONObject) postJ.get("excerpt")).get("rendered");
-            result.put(i+1+(perPage*(page-1)), post);
+
+        Blogger.Posts.List action = blogger.posts().list(blogId).setPageToken(pageTokens.curr);
+        action.setFields("items(author/displayName,id,content,published,title,url),nextPageToken");
+        action.setMaxResults(Long.valueOf(pageSize));
+        PostList list = action.execute();
+
+        for (int i=0; i<list.getItems().size(); ++i) {
+            Post post = list.getItems().get(i);
+            result.put(i+1+(pageSize*(pageTokens.page-1)), post);
         }
+
+        pageTokens.next = list.getNextPageToken();
         return result;
     }
 
     protected void listPosts() throws Exception {
         cls();
         logo();
-        if (isEmpty(posts)) {
+        if (posts == null) {
             waitOn();
-            posts = getPosts(currentPage, pageSize);
+            posts = getPosts();
             waitOff();
         }
         for (Map.Entry<Integer, Post> entry: posts.entrySet()) {
@@ -170,7 +227,7 @@ public class WordpressProxy extends PetsciiThread {
             Post post = entry.getValue();
             write(WHITE); print(i + "."); write(GREY3);
             final int iLen = 37-String.valueOf(i).length();
-            String line = WordUtils.wrap(filterPrintable(HtmlUtils.htmlClean(post.title)), iLen, "\r", true);
+            String line = WordUtils.wrap(filterPrintable(HtmlUtils.htmlClean(post.getTitle())), iLen, "\r", true);
             println(line.replaceAll("\r", "\r " + repeat(" ", 37-iLen)));
         }
         newline();
@@ -201,7 +258,8 @@ public class WordpressProxy extends PetsciiThread {
         cls();
         logo();
         final Post p = posts.get(n);
-        final String article = p.title + "<br>Date: " + p.date + "<br>---------------------------------------<br>" + p.content;
+        final String date = p.getPublished().toString().replace("T", " ").replaceAll("\\..*$", "");
+        final String article = p.getTitle() + "<br>Date: " + date + "<br>---------------------------------------<br>" + p.getContent();
 
         String[] rows = wordWrap(article);
         int page = 1;
@@ -249,18 +307,15 @@ public class WordpressProxy extends PetsciiThread {
         flush();
     }
 
-    public final static byte[] LOGO_WORDPRESS = new byte[] {
-        -104, -84, 32, 32, -84, 32, 32, 32, 32, 32, 32, 32, 32, -84, -94, 13,
-        -68, -69, 32, 18, -65, -110, -84, 18, -94, -110, -65, 18, -95, -94, -110, -69,
-        18, -84, -110, -65, 18, -95, -110, 32, -95, 18, -84, -110, -65, 18, -95, -94,
-        -110, -84, 18, -94, -110, -66, 18, -65, -94, -110, 32, -84, 18, -94, -110, -65,
-        18, -95, -94, -110, -69, 18, -65, -94, -110, 13, 32, -65, -65, -66, 18, -95,
-        -110, 32, 18, -95, -95, -94, -110, -69, -95, 18, -95, -95, -94, -110, 32, 18,
-        -84, -110, -65, 18, -95, -110, -66, 32, 18, -94, -110, -69, -68, -65, 32, 18,
-        -95, -110, 32, 18, -95, -95, -94, -110, -69, -95, 18, -69, -110, 13, 32, -68,
-        -68, 32, 32, 18, -94, -110, -66, -68, 32, -66, 18, -94, -110, -66, -68, 32,
-        32, -66, -68, -68, 18, -94, -110, -68, 18, -94, -110, 32, 18, -94, -110, -66,
-        -68, 32, 18, -94, -110, -66, -68, 32, -66, -68, 18, -94, -110, 13
+    public final static byte[] LOGO_BLOGGER = new byte[] {
+        18, -127, 32, -94, -94, 32, 32, -110, 32, 5, -84, -94, 32, -69, 13, 18,
+        -127, 32, -110, 32, 18, -94, -110, -68, 18, 32, -110, 32, 18, 5, -95, -110,
+        -94, -66, -95, 18, -65, -110, -65, -84, 18, -94, -110, -69, 18, -65, -110, -65,
+        -84, 18, -69, -110, -69, 18, -68, -110, -66, 13, 18, -127, 32, -110, 32, 18,
+        -94, -110, -65, 18, 32, -110, 32, 18, 5, -95, -110, -94, -66, -95, -65, 18,
+        -65, -110, -68, -94, -95, -65, 18, -66, -110, -68, 18, -68, -110, 32, -95, 13,
+        18, -127, -94, -94, -94, -94, -94, -110, 32, 32, 32, 32, 32, 32, 32, 32,
+        5, -94, -66, -84, 18, -65, -110, 13
     };
 
     protected void logo() throws IOException {
@@ -277,4 +332,21 @@ public class WordpressProxy extends PetsciiThread {
                 println("#" + entry.getKey() +": "+entry.getValue().getClientName());
         println();
     }
+
+    protected void exitWithError() throws IOException {
+        log("Missing file " + CRED_FILE_PATH + " on the server's filesystem");
+        cls();
+        logo();
+        newline();
+        write(LIGHT_RED, REVON); println("       ");
+        write(REVON); println(" ERROR ");
+        write(REVON); println("       ");
+        newline();
+        write(WHITE, REVOFF); println("Missing Google credentials on server's");
+        println("filesystem. Contact the system");
+        println("administrator.");
+        newline();
+        throw new CbmIOException("Missing file " + CRED_FILE_PATH + " on the server's filesystem");
+    }
+
 }
