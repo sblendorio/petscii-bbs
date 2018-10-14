@@ -5,19 +5,26 @@ import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
+import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
+import org.apache.commons.text.WordUtils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static eu.sblendorio.bbs.core.Colors.*;
 import static eu.sblendorio.bbs.core.Keys.*;
+import static eu.sblendorio.bbs.core.Utils.filterPrintableWithNewline;
+import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.*;
 
 public class TelevideoRai extends PetsciiThread {
 
     static String PREFIX = "http://www.servizitelevideo.rai.it/televideo/pub/";
+    protected int screenRows = 19;
 
     static class NewsSection {
         final int color;
@@ -46,7 +53,7 @@ public class TelevideoRai extends PetsciiThread {
     }
 
     static Map<String, NewsSection> sections = new ImmutableMap.Builder<String, NewsSection>()
-        .put("101", new NewsSection(WHITE, "Ultim'Ora", PREFIX + "rss101.xml", null))
+        .put("101", new NewsSection(WHITE, "Ultim'Ora", PREFIX + "rss101.xml", Logos.LOGO_ULTIMORA))
         .put("102", new NewsSection(CYAN, "24h No Stop", PREFIX + "rss102.xml", null))
         .put("110", new NewsSection(RED, "Primo Piano", PREFIX + "rss110.xml", null))
         .put("120", new NewsSection(GREEN, "Politica", PREFIX + "rss120.xml", null))
@@ -142,20 +149,73 @@ public class TelevideoRai extends PetsciiThread {
 
     private void view(NewsSection section) throws Exception {
         cls();
-        println(section.title);
-        println("----");
         waitOn();
         List<NewsFeed> feeds = getFeeds(section.url);
-        waitOff();
+        String text = EMPTY;
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         for (NewsFeed feed: feeds) {
-            println("*"+feed.title);
-//            println("----");
-//            println(feed.description);
-//            println("---------------------------");
+            text += "---------------------------------------" + "<br>";
+            text += feed.title + "<br>" + "---------------------------------------" + "<br>";
+            text += dateFormat.format(feed.publishedDate) + " " + feed.description + "<br>" + "<br>";
         }
-        flush();
-        resetInput(); readKey();
+        waitOff();
+
+        displayText(text, screenRows, section.logo);
     }
+    protected void displayText(String text, int screenRows, byte[] logo) throws Exception {
+        cls();
+        write(logo == null ? LOGO_TELEVIDEO : logo);
+        write(GREY3);
+
+        String[] rows = wordWrap(text);
+        int page = 1;
+        int j = 0;
+        boolean forward = true;
+        while (j < rows.length) {
+            if (j>0 && j % screenRows == 0 && forward) {
+                println();
+                write(WHITE);
+                print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT");
+                write(GREY3);
+
+                resetInput(); int ch = readKey();
+                if (ch == '.') {
+                    return;
+                } else if (ch == '-' && page > 1) {
+                    j -= (screenRows * 2);
+                    --page;
+                    forward = false;
+                    cls();
+                    write(logo == null ? LOGO_TELEVIDEO : logo);
+                    write(GREY3);
+                    continue;
+                } else {
+                    ++page;
+                }
+                cls();
+                write(logo == null ? LOGO_TELEVIDEO : logo);
+                write(GREY3);
+            }
+            String row = rows[j];
+            println(row);
+            forward = true;
+            ++j;
+        }
+        println();
+    }
+
+    protected String[] wordWrap(String s) {
+        String[] cleaned = filterPrintableWithNewline(HtmlUtils.htmlClean(s)).replaceAll(" +", " ").split("\n");
+        List<String> result = new LinkedList<>();
+        for (String item: cleaned) {
+            String[] wrappedLine = WordUtils
+                    .wrap(item, 39, "\n", true)
+                    .split("\n");
+            result.addAll(asList(wrappedLine));
+        }
+        return Arrays.copyOf(result.toArray(), result.size(), String[].class);
+    }
+
 
     private void logo() throws IOException {
         write(LOGO_TELEVIDEO);
@@ -189,4 +249,23 @@ public class TelevideoRai extends PetsciiThread {
         flush();
     }
 
+    static class Logos {
+
+        public final static byte[] LOGO_ULTIMORA = new byte[] {
+                32, 32, 32, 18, -98, 32, -110, -95, 32, 18, 32, -95, 32, -110, 32, 18,
+                32, 32, 32, 32, -110, -95, 18, 32, -110, -95, 18, 32, -68, -110, -84, 18,
+                32, -95, -110, -84, 18, 32, 32, 32, -110, -69, 18, 32, 32, 32, 32, -110,
+                -69, 18, -66, 32, 32, -68, -110, 13, 32, 32, 32, 18, 32, -110, -95, 32,
+                18, 32, -95, 32, -110, 32, 18, -94, -69, 32, -94, -110, -66, 18, 32, -110,
+                -95, 18, 32, 32, 32, 32, -110, 32, 18, -95, 32, -94, -69, -110, -95, 18,
+                32, -68, -110, -94, 18, -66, -110, -66, 18, 32, -84, -94, 32, -110, 13, 32,
+                32, 32, 18, 32, 32, 32, 32, -95, 32, 32, 32, -95, 32, -110, 32, 32,
+                18, 32, -110, -95, 18, 32, -110, -95, -95, 18, 32, -110, 32, 18, -95, 32,
+                32, 32, -110, -95, 18, 32, -110, -95, 18, -95, -110, -94, -69, 18, 32, -84,
+                -94, 32, -110, 13, 32, 32, 32, -68, 18, -94, -94, -110, -66, -68, 18, -94,
+                -94, -94, -110, -68, 18, -94, -110, 32, 32, 18, -94, -110, -66, 18, -94, -110,
+                -66, 32, 18, -94, -110, 32, 32, 18, -94, -94, -94, -110, 32, 18, -94, -110,
+                -66, -68, 18, -94, -110, -66, 18, -94, -110, -66, 32, 18, -94, -110, 13
+        };
+    }
 }
