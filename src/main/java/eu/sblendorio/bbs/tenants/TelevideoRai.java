@@ -75,7 +75,7 @@ public class TelevideoRai extends PetsciiThread {
         gotoXY(0, 5);
         List<String> keys = new LinkedList<String>(sections.keySet());
         Collections.sort(keys);
-        for (int i=0; i<=7; ++i) {
+        for (int i=0; i<8; ++i) {
             int even = i;
             if (even >= keys.size()) break;
             String key = keys.get(even);
