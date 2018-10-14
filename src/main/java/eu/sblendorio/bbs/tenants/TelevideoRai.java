@@ -72,7 +72,6 @@ public class TelevideoRai extends PetsciiThread {
         .put("810", new NewsSection(GREY2, "Motori", PREFIX + "rss810.xml", Logos.LOGO_MOTORI))
         .build();
 
-
     private void printChannelList() {
         gotoXY(0, 5);
         List<String> keys = new LinkedList<String>(sections.keySet());
