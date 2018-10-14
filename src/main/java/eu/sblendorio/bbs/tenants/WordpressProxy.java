@@ -52,8 +52,9 @@ public class WordpressProxy extends PetsciiThread {
         this.logo = logo;
     }
 
-
     protected final String getApi() { return domain + "/wp-json/wp/v2/"; };
+
+    @Override
     public void doLoop() throws Exception {
         write(LOWERCASE, CASE_LOCK);
         log("Wordpress entering (" + domain + ")");

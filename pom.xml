@@ -93,5 +93,10 @@
             <artifactId>google-api-services-blogger</artifactId>
             <version>v3-rev61-1.25.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.rometools</groupId>
+            <artifactId>rome</artifactId>
+            <version>1.11.0</version>
+        </dependency>
     </dependencies>
 </project>

@@ -7,6 +7,7 @@ import static eu.sblendorio.bbs.core.Colors.*;
 
 public class MenuRetroAcademy extends PetsciiThread {
 
+    @Override
     public void doLoop() throws Exception {
         while (true) {
             write(CLR, LOWERCASE, CASE_LOCK);
