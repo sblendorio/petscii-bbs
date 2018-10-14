@@ -63,8 +63,7 @@ public class TelevideoRai extends PetsciiThread {
         .put("160", new NewsSection(LIGHT_RED, "Culture", PREFIX + "rss160.xml", Logos.LOGO_CULTURE))
         .put("170", new NewsSection(PURPLE, "Cittadini", PREFIX + "rss170.xml", Logos.LOGO_CITTADINI))
         .put("180", new NewsSection(GREY3, "Speciale", PREFIX + "rss180.xml", Logos.LOGO_SPECIALE))
-        .put("190", new NewsSection(BROWN, "Atlante Crisi", PREFIX + "rss190.xml", Logos.LOGO_ATLANTECRISI))
-        .put("201", new NewsSection(ORANGE, "Calcio", PREFIX + "rss201.xml", Logos.LOGO_CALCIO))
+        .put("190", new NewsSection(LIGHT_RED, "Atlante Crisi", PREFIX + "rss190.xml", Logos.LOGO_ATLANTECRISI))
         .put("229", new NewsSection(LIGHT_GREEN, "Brevi Calcio", PREFIX + "rss229.xml", Logos.LOGO_BREVICALCIO))
         .put("230", new NewsSection(YELLOW, "CalcioSquadre", PREFIX + "rss230.xml", Logos.LOGO_CALCIOSQUADRE))
         .put("260", new NewsSection(GREEN, "Altri Sport", PREFIX + "rss260.xml", Logos.LOGO_ALTRISPORT))
@@ -76,7 +75,7 @@ public class TelevideoRai extends PetsciiThread {
         gotoXY(0, 5);
         List<String> keys = new LinkedList<String>(sections.keySet());
         Collections.sort(keys);
-        for (int i=0; i<=8; ++i) {
+        for (int i=0; i<=7; ++i) {
             int even = i;
             if (even >= keys.size()) break;
             String key = keys.get(even);
@@ -87,7 +86,7 @@ public class TelevideoRai extends PetsciiThread {
             print(title);
             print(" ");
 
-            int odd = even+9;
+            int odd = even+8;
             if (odd < keys.size()) {
                 key = keys.get(odd);
                 value = sections.get(key);
@@ -103,8 +102,13 @@ public class TelevideoRai extends PetsciiThread {
             }
             newline();
             newline();
+
         }
-        write(GREY3);
+        write(RIGHT, WHITE, REVON, SPACE_CHAR);
+        print(" . ");
+        write(SPACE_CHAR, REVOFF, SPACE_CHAR);
+        print("Fine");
+        write(GREY3, RETURN, RETURN);
         flush();
     }
 
@@ -353,20 +357,6 @@ public class TelevideoRai extends PetsciiThread {
             -94, -94, -110, -66, -68, 18, -94, -94, -94, -110, -68, 18, -94, -110, 32, 32,
             -68, 18, -94, -94, -110, -66, -68, 18, -94, -110, -68, 18, -94, -110, -66, 18,
             -94, -94, -94, -110, -66, 13
-        };
-
-        public final static byte[] LOGO_CALCIO = new byte[] {
-            32, 32, 32, 32, 32, 32, 32, 32, 32, 18, -98, -66, 32, 32, -110, -95,
-            18, -66, 32, 32, -68, -95, 32, -110, 32, 32, -84, 18, 32, 32, 32, -95,
-            -110, -95, 18, -66, 32, 32, -68, -110, 13, 32, 32, 32, 32, 32, 32, 32,
-            32, 32, 18, 32, -84, -94, -110, -66, 18, 32, -84, -94, 32, -95, 32, -110,
-            32, 32, 18, -95, 32, -94, -94, -95, -110, -95, 18, 32, -84, -94, 32, -110,
-            13, 32, 32, 32, 32, 32, 32, 32, 32, 32, 18, 32, 32, 32, -110, -95,
-            18, 32, -84, -94, 32, -95, 32, 32, 32, -95, 32, 32, 32, -95, -110, -95,
-            18, 32, 32, 32, 32, -110, 13, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-            -68, 18, -94, -94, -110, -66, 18, -94, -110, -66, 32, 18, -94, -110, -68, 18,
-            -94, -94, -94, -110, 32, 18, -94, -94, -94, -110, -68, -66, -68, 18, -94, -94,
-            -110, -66, 13
         };
 
         public final static byte[] LOGO_BREVICALCIO = new byte[] {
