@@ -15,6 +15,7 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 public class TicTacToe extends PetsciiThread {
     TicTacToeAI model;
 
+    @Override
     public void doLoop() throws Exception {
         model = new TicTacToeAI();
         model.setComputerIsOpponent(true);

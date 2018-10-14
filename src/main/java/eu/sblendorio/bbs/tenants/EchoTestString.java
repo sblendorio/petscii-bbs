@@ -6,6 +6,7 @@ import static org.apache.commons.lang3.StringUtils.lowerCase;
 
 public class EchoTestString extends PetsciiThread {
 
+    @Override
     public void doLoop() throws Exception {
         cls();
         newline();

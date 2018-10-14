@@ -100,7 +100,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
         blogId = blogger.blogs().getByUrl(blogUrl).execute().getId();
     }
 
-
+    @Override
     public void doLoop() throws Exception {
         init();
         write(LOWERCASE, CASE_LOCK);
