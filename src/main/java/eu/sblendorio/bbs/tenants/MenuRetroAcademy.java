@@ -10,17 +10,30 @@ public class MenuRetroAcademy extends PetsciiThread {
     @Override
     public void doLoop() throws Exception {
         while (true) {
+            int delta = 1;
             write(CLR, LOWERCASE, CASE_LOCK);
             log("Starting MenuRetroAcademy BBS / main menu");
             logo();
-            write(GREY3);
-            gotoXY(4,23); print("Copyright (C) 2018 Retroacademy");
-            gotoXY(9,5); write(WHITE); print("Make your choice:"); write(GREY3);
-            gotoXY(9, 9); write(REVON); print(" 1 "); write(REVOFF); print("  Explore retroacademy.it");
-            gotoXY(9, 11); write(REVON); print(" 2 "); write(REVOFF); print("  Explore vcfed.org");
-            gotoXY(9,13); write(REVON); print(" 3 "); write(REVOFF); print("  Game: TIC-TAC-TOE");
-            gotoXY(9,15); write(REVON); print(" 4 "); write(REVOFF); print("  Game: CONNECT-4");
-            gotoXY(9,17); write(REVON); print(" 5 "); write(REVOFF); print("  Logoff ");
+
+            gotoXY(5, delta + 4); write(WHITE); print("Blogs"); write(GREY3);
+            gotoXY(5, delta + 6); write(REVON); print(" 1 "); write(REVOFF); print(" Retroacademy");
+            gotoXY(5, delta + 7); write(REVON); print(" 2 "); write(REVOFF); print(" Disinformatico");
+            gotoXY(5, delta + 8); write(REVON); print(" 3 "); write(REVOFF); print(" MedBunker");
+            gotoXY(5, delta + 9); write(REVON); print(" 4 "); write(REVOFF); print(" David Puente");
+            gotoXY(5, delta + 10); write(REVON); print(" 5 "); write(REVOFF); print(" The Fool");
+            gotoXY(5, delta + 11); write(REVON); print(" 6 "); write(REVOFF); print(" VC Federation");
+
+            gotoXY(24, delta + 11); write(WHITE); print("Games"); write(GREY3);
+            gotoXY(24, delta + 13); write(REVON); print(" 7 "); write(REVOFF); print(" TIC-TAC-TOE");
+            gotoXY(24, delta + 14); write(REVON); print(" 8 "); write(REVOFF); print(" CONNECT-4");
+
+
+            gotoXY(6, delta + 14); write(WHITE); print("Misc"); write(GREY3);
+            gotoXY(6, delta + 16); write(REVON); print(" 9 "); write(REVOFF); print(" Televideo RAI");
+            gotoXY(6, delta + 17); write(REVON); print(" 0 "); write(REVOFF); print(" Logoff");
+
+            gotoXY(4, 23); write(GREY3); print("Copyright (C) 2018 Retroacademy");
+
             flush();
             boolean validKey;
             do {
@@ -28,16 +41,26 @@ public class MenuRetroAcademy extends PetsciiThread {
                 log("Menu. Waiting for key pressed.");
                 resetInput(); int key = readKey();
                 log("Menu. Pressed: "+key);
-                if (key == '5' || key == '.') {
+                if (key == '0' || key == '.') {
                     return;
                 } else if (key == '1') {
                     launch(new RetroAcademy());
                 } else if (key == '2') {
-                    launch(new Vcfed());
+                    launch(new Disinformatico());
                 } else if (key == '3') {
-                    launch(new TicTacToe());
+                    launch(new Medbunker());
                 } else if (key == '4') {
+                    launch(new DavidPuenteBlog());
+                } else if (key == '5') {
+                    launch(new TheFoolBlog());
+                } else if (key == '6') {
+                    launch(new Vcfed());
+                } else if (key == '7') {
+                    launch(new TicTacToe());
+                } else if (key == '8') {
                     launch(new ConnectFour());
+                } else if (key == '9') {
+                    launch(new TelevideoRai());
                 } else {
                     validKey = false;
                 }
