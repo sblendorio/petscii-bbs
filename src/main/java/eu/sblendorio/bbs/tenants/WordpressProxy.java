@@ -149,9 +149,9 @@ public class WordpressProxy extends PetsciiThread {
             Post post = new Post();
             JSONObject postJ = (JSONObject) posts.get(i);
             post.id = (Long) postJ.get("id");
-            post.content = (String) ((JSONObject) postJ.get("content")).get("rendered");
+            post.content = ((String) ((JSONObject) postJ.get("content")).get("rendered")).replaceAll("(?is)^(\\[vc_[^]]*\\])*", EMPTY);
             post.title = (String) ((JSONObject) postJ.get("title")).get("rendered");
-            post.date = ((String) postJ.get("date")).replace("T", " ");
+            post.date = ((String) postJ.get("date")).replace("T", SPACE);
             post.excerpt = (String) ((JSONObject) postJ.get("excerpt")).get("rendered");
             result.put(i+1+(perPage*(page-1)), post);
         }
