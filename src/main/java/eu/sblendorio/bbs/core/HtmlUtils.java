@@ -51,7 +51,7 @@ public class HtmlUtils {
                 .replaceAll("(&nbsp;?)", " ")
                 .replace("&#39;", "'")
                 .replace("&#039;", "'")
-                .replaceAll("(’|‘|°)", "'")
+                .replaceAll("(’|‘|°|&rsquo;|&rsquor;|&lsquo;|&lsquor;|&sbquo;)", "'")
                 .replaceAll("(“|”|&quot;|«|»)", "\"")
                 .replaceAll("&amp;?", "&")
                 .replaceAll("&gt;", ">")
