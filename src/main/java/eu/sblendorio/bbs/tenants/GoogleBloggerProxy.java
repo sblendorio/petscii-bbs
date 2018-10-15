@@ -233,16 +233,16 @@ public class GoogleBloggerProxy extends PetsciiThread {
         newline();
     }
 
-    protected String[] wordWrap(String s) {
+    protected List<String> wordWrap(String s) {
         String[] cleaned = filterPrintableWithNewline(HtmlUtils.htmlClean(s)).split("\n");
-        List<String> result = new LinkedList<>();
+        List<String> result = new ArrayList<>();
         for (String item: cleaned) {
             String[] wrappedLine = WordUtils
                     .wrap(item, 39, "\n", true)
                     .split("\n");
             result.addAll(asList(wrappedLine));
         }
-        return Arrays.copyOf(result.toArray(), result.size(), String[].class);
+        return result;
     }
 
     protected void help() throws Exception {
@@ -258,14 +258,15 @@ public class GoogleBloggerProxy extends PetsciiThread {
         cls();
         logo();
         final Post p = posts.get(n);
-        final String date = p.getPublished().toString().replace("T", " ").replaceAll("\\..*$", "");
-        final String article = p.getTitle() + "<br>Date: " + date + "<br>---------------------------------------<br>" + p.getContent();
+        final String head = p.getTitle() + "<br>Date: " + p.getPublished() + "<br>---------------------------------------<br>";
+        List<String> rows = wordWrap(head);
+        List<String> article = wordWrap(p.getContent());
+        rows.addAll(article);
 
-        String[] rows = wordWrap(article);
         int page = 1;
         int j = 0;
         boolean forward = true;
-        while (j < rows.length) {
+        while (j < rows.size()) {
             if (j>0 && j % screenRows == 0 && forward) {
                 println();
                 write(WHITE);
@@ -289,7 +290,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
                 cls();
                 logo();
             }
-            String row = rows[j];
+            String row = rows.get(j);
             println(row);
             forward = true;
             ++j;

@@ -85,7 +85,14 @@ public class WordpressProxy extends PetsciiThread {
             } else if ("+".equals(input)) {
                 ++currentPage;
                 posts = null;
-                listPosts();
+                try {
+                    listPosts();
+                } catch (NullPointerException e) {
+                    --currentPage;
+                    posts = null;
+                    listPosts();
+                    continue;
+                }
                 continue;
             } else if ("-".equals(input) && currentPage > 1) {
                 --currentPage;
@@ -177,16 +184,16 @@ public class WordpressProxy extends PetsciiThread {
         newline();
     }
 
-    protected String[] wordWrap(String s) {
+    protected List<String> wordWrap(String s) {
         String[] cleaned = filterPrintableWithNewline(HtmlUtils.htmlClean(s)).split("\n");
-        List<String> result = new LinkedList<>();
+        List<String> result = new ArrayList<>();
         for (String item: cleaned) {
             String[] wrappedLine = WordUtils
                     .wrap(item, 39, "\n", true)
                     .split("\n");
             result.addAll(asList(wrappedLine));
         }
-        return Arrays.copyOf(result.toArray(), result.size(), String[].class);
+        return result;
     }
 
     protected void help() throws Exception {
@@ -202,13 +209,15 @@ public class WordpressProxy extends PetsciiThread {
         cls();
         logo();
         final Post p = posts.get(n);
-        final String article = p.title + "<br>Date: " + p.date + "<br>---------------------------------------<br>" + p.content;
+        final String head = p.title + "<br>Date: " + p.date + "<br>---------------------------------------<br>";
+        List<String> rows = wordWrap(head);
+        List<String> article = wordWrap(p.content);
+        rows.addAll(article);
 
-        String[] rows = wordWrap(article);
         int page = 1;
         int j = 0;
         boolean forward = true;
-        while (j < rows.length) {
+        while (j < rows.size()) {
             if (j>0 && j % screenRows == 0 && forward) {
                 println();
                 write(WHITE);
@@ -232,7 +241,7 @@ public class WordpressProxy extends PetsciiThread {
                 cls();
                 logo();
             }
-            String row = rows[j];
+            String row = rows.get(j);
             println(row);
             forward = true;
             ++j;

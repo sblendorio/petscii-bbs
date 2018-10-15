@@ -59,6 +59,7 @@ public class HtmlUtils {
                 .replace("&#038;", "&")
                 .replace("&#38;", "&")
                 .replaceAll("\n(\\s*\n)+", "\n\n")
+                .replaceAll("^(\n|\\s)*", "")
                 ;
         return result;
     }
