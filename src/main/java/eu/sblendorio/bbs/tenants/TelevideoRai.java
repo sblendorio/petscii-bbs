@@ -224,7 +224,6 @@ public class TelevideoRai extends PetsciiThread {
         return Arrays.copyOf(result.toArray(), result.size(), String[].class);
     }
 
-
     private void logo() throws IOException {
         write(LOGO_TELEVIDEO);
         write(GREY3);
