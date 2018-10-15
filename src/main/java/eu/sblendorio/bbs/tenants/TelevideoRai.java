@@ -125,6 +125,7 @@ public class TelevideoRai extends PetsciiThread {
 
     @Override
     public void doLoop() throws Exception {
+        log("Entered TelevideoRai");
         while (true) {
             cls();
             logo();
@@ -145,8 +146,10 @@ public class TelevideoRai extends PetsciiThread {
                 }
             } while (inputFail);
             if (trim(command).equals(".")) break;
+            log("Televideo choice = "+command);
             view(choice);
         }
+        log("Televideo-EXIT");
     }
 
     private void view(NewsSection section) throws Exception {
