@@ -350,4 +350,15 @@ public class GoogleBloggerProxy extends PetsciiThread {
         throw new CbmIOException("Missing file " + CRED_FILE_PATH + " on the server's filesystem");
     }
 
+    @Override
+    public void receive(long sender, Object message) {
+        log("--------------------------------");
+        log("From "+getClients().get(sender).getClientName()+": " +message);
+        log("--------------------------------");
+        println();
+        println("--------------------------------");
+        println("From "+getClients().get(sender).getClientName()+": " +message);
+        println("--------------------------------");
+    }
+
 }

@@ -19,13 +19,18 @@ public abstract class PetsciiThread extends Thread {
     protected String clientName;
     protected Socket socket = null;
     protected CbmInputOuput cbm;
+    protected PetsciiThread child = null;
+
     protected static Map<Long, PetsciiThread> clients = new ConcurrentHashMap<>();
     protected static AtomicLong clientCount = new AtomicLong(0);
 
     public abstract void doLoop() throws Exception;
 
     public void receive(long senderId, Object message) {
-        log("WARNING: default receive method from sender #" + senderId + ", message=\"" + message + "\".");
+        if (child == null)
+            log("WARNING: default receive method from [" + getClass().getSimpleName() + "] sender #" + senderId + ", message=\"" + message + "\".");
+        else
+            child.receive(senderId, message);
     }
 
     public int send(long receiverId, Object message) {
@@ -112,9 +117,12 @@ public abstract class PetsciiThread extends Thread {
     public boolean launch(PetsciiThread bbs) {
         try {
             bbs.contextFrom(this);
+            child = bbs;
             bbs.doLoop();
+            child = null;
             return true;
         } catch (Exception e) {
+            child = null;
             log("Exception during launching of " + bbs.getClass().getSimpleName()+" within " + this.getClass().getSimpleName()+". Launch interrupted. Stack trace:");
             e.printStackTrace();
             return false;

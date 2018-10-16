@@ -287,4 +287,16 @@ public class WordpressProxy extends PetsciiThread {
                 println("#" + entry.getKey() +": "+entry.getValue().getClientName());
         println();
     }
+
+    @Override
+    public void receive(long sender, Object message) {
+        log("--------------------------------");
+        log("From "+getClients().get(sender).getClientName()+": " +message);
+        log("--------------------------------");
+        println();
+        println("--------------------------------");
+        println("From "+getClients().get(sender).getClientName()+": " +message);
+        println("--------------------------------");
+    }
+
 }
