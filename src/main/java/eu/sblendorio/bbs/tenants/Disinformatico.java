@@ -7,7 +7,7 @@ public class Disinformatico extends GoogleBloggerProxy {
         this.logo = LOGO;
         this.blogUrl = "https://attivissimo.blogspot.com";
         this.pageSize = 7;
-        this.screenRows = 18;
+        this.screenRows = 19;
     }
 
     public final static byte[] LOGO = new byte[] {

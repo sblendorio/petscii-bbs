@@ -7,7 +7,7 @@ public class Medbunker extends GoogleBloggerProxy {
         this.logo = LOGO;
         this.blogUrl = "https://medbunker.blogspot.com";
         this.pageSize = 10;
-        this.screenRows = 18;
+        this.screenRows = 19;
     }
 
     public final static byte[] LOGO = new byte[] {
