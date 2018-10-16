@@ -58,7 +58,12 @@ public class WordpressProxy extends PetsciiThread {
     public void doLoop() throws Exception {
         write(LOWERCASE, CASE_LOCK);
         log("Wordpress entering (" + domain + ")");
-        listPosts();
+        try {
+            listPosts();
+        } catch (NullPointerException e) {
+            log("Error during retrieving WordPress posts: " + domain+". Exiting.");
+            return;
+        }
         while (true) {
             log("Wordpress waiting for input");
             write(WHITE);print("#"); write(GREY3);
