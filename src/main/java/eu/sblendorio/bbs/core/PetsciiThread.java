@@ -17,8 +17,10 @@ import static org.apache.commons.lang3.StringUtils.*;
 public abstract class PetsciiThread extends Thread {
     protected long clientId;
     protected String clientName;
+    protected Class clientClass;
     protected Socket socket = null;
     protected CbmInputOuput cbm;
+
     protected PetsciiThread child = null;
 
     protected static Map<Long, PetsciiThread> clients = new ConcurrentHashMap<>();
@@ -84,10 +86,12 @@ public abstract class PetsciiThread extends Thread {
 
     public void setClientId(long id) { this.clientId = id; }
     public long getClientId() { return clientId; }
+    public Class getClientClass() { return clientClass; }
 
     public void run() {
         try {
             setClientId(clientCount.incrementAndGet());
+            clientClass = getClass();
             log("New connection at " + socket);
             Thread.sleep(200);
             cbm.resetInput(true);
@@ -118,11 +122,14 @@ public abstract class PetsciiThread extends Thread {
         try {
             bbs.contextFrom(this);
             child = bbs;
+            clientClass = bbs.clientClass = bbs.getClass();
             bbs.doLoop();
             child = null;
+            clientClass = getClass();
             return true;
         } catch (Exception e) {
             child = null;
+            clientClass = getClass();
             log("Exception during launching of " + bbs.getClass().getSimpleName()+" within " + this.getClass().getSimpleName()+". Launch interrupted. Stack trace:");
             e.printStackTrace();
             return false;

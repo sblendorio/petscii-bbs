@@ -326,11 +326,11 @@ public class GoogleBloggerProxy extends PetsciiThread {
 
     protected void listClients() throws Exception {
         cls();
-        println("You are #" + getClientId() + ": "+getClientName());
+        println("You are #" + getClientId() + ": "+getClientName() + " [" + getClientClass().getSimpleName() + "]");
         newline();
         for (Map.Entry<Long, PetsciiThread> entry: clients.entrySet())
             if (entry.getKey() != getClientId())
-                println("#" + entry.getKey() +": "+entry.getValue().getClientName());
+                println("#" + entry.getKey() +": "+entry.getValue().getClientName() + " [" + entry.getValue().getClientClass().getSimpleName() + "]");
         println();
     }
 
