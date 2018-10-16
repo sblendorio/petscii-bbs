@@ -146,7 +146,7 @@ public class TelevideoRai extends PetsciiThread {
                 }
             } while (inputFail);
             if (trim(command).equals(".")) break;
-            log("Televideo choice = "+command);
+            log("Televideo choice = " + command + " " + choice.title);
             view(choice);
         }
         log("Televideo-EXIT");

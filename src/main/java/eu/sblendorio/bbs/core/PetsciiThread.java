@@ -109,13 +109,15 @@ public abstract class PetsciiThread extends Thread {
         }
     }
 
-    public void launch(PetsciiThread bbs) {
+    public boolean launch(PetsciiThread bbs) {
         try {
             bbs.contextFrom(this);
             bbs.doLoop();
+            return true;
         } catch (Exception e) {
             log("Exception during launching of " + bbs.getClass().getSimpleName()+" within " + this.getClass().getSimpleName()+". Launch interrupted. Stack trace:");
             e.printStackTrace();
+            return false;
         }
     }
 
