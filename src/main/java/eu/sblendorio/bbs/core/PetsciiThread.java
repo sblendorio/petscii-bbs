@@ -109,9 +109,14 @@ public abstract class PetsciiThread extends Thread {
         }
     }
 
-    public void launch(PetsciiThread bbs) throws Exception {
-        bbs.contextFrom(this);
-        bbs.doLoop();
+    public void launch(PetsciiThread bbs) {
+        try {
+            bbs.contextFrom(this);
+            bbs.doLoop();
+        } catch (Exception e) {
+            log("Exception during launching of " + bbs.getClass().getSimpleName()+" within " + this.getClass().getSimpleName()+". Launch interrupted. Stack trace:");
+            e.printStackTrace();
+        }
     }
 
     public void log(String message) {
