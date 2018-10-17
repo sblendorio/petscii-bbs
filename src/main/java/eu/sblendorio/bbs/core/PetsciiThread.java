@@ -118,7 +118,7 @@ public abstract class PetsciiThread extends Thread {
         }
     }
 
-    public boolean launch(PetsciiThread bbs) {
+    public boolean launch(PetsciiThread bbs) throws Exception {
         try {
             bbs.contextFrom(this);
             child = bbs;
@@ -127,6 +127,8 @@ public abstract class PetsciiThread extends Thread {
             child = null;
             clientClass = getClass();
             return true;
+        } catch (SocketException | SocketTimeoutException | CbmIOException e) {
+            throw e;
         } catch (Exception e) {
             child = null;
             clientClass = getClass();

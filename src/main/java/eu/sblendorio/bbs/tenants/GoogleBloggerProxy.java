@@ -338,15 +338,12 @@ public class GoogleBloggerProxy extends PetsciiThread {
         log("Missing file " + CRED_FILE_PATH + " on the server's filesystem");
         cls();
         logo();
+        newline(); write(REVOFF);
+        print(" "); write(LIGHT_RED, REVON); print("       "); write(WHITE, REVOFF); println(" Missing Google credentials on");
+        print(" "); write(LIGHT_RED, REVON); print(" ERROR "); write(WHITE, REVOFF); println(" server's filesystem. Contact");
+        print(" "); write(LIGHT_RED, REVON); print("       "); write(WHITE, REVOFF); println(" the system administrator.");
         newline();
-        write(LIGHT_RED, REVON); println("       ");
-        write(REVON); println(" ERROR ");
-        write(REVON); println("       ");
-        newline();
-        write(WHITE, REVOFF); println("Missing Google credentials on server's");
-        println("filesystem. Contact the system");
-        println("administrator.");
-        newline();
+        flush();
         throw new CbmIOException("Missing file " + CRED_FILE_PATH + " on the server's filesystem");
     }
 
