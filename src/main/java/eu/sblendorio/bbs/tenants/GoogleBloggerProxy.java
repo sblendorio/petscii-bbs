@@ -258,7 +258,11 @@ public class GoogleBloggerProxy extends PetsciiThread {
         cls();
         logo();
         final Post p = posts.get(n);
-        final String head = p.getTitle() + "<br>Date: " + p.getPublished() + "<br>---------------------------------------<br>";
+        final String head = p.getTitle() + "<br>Date: "
+                + p.getPublished().toStringRfc3339()
+                    .replace("T", SPACE)
+                    .replaceAll(":\\d\\d\\.\\d\\d\\d[+\\-]\\d\\d:\\d\\d\\s*$", EMPTY)
+                + "<br>---------------------------------------<br>";
         List<String> rows = wordWrap(head);
         List<String> article = wordWrap(p.getContent());
         rows.addAll(article);
