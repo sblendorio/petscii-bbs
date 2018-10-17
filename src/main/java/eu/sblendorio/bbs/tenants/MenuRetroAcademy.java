@@ -33,7 +33,7 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(6, delta + 18); write(REVON); print(" S "); write(REVOFF); print(" Sportal.IT");
             gotoXY(6, delta + 19); write(REVON); print(" . "); write(REVOFF); print(" Logoff");
 
-            gotoXY(4, 23); write(GREY3); print("Copyright (C) 2018 Retroacademy");
+            gotoXY(4, 23); write(GREY3); print("Copyright (C) 2018 Retroacademy ");
 
             flush();
             boolean validKey;
@@ -41,6 +41,7 @@ public class MenuRetroAcademy extends PetsciiThread {
                 validKey = true;
                 log("Menu. Waiting for key pressed.");
                 resetInput(); int key = readKey();
+                key = Character.toLowerCase(key);
                 log("Menu. Pressed: "+key);
                 if (key == '.') return;
                     else if (key == '1') launch(new RetroAcademy());
@@ -53,7 +54,7 @@ public class MenuRetroAcademy extends PetsciiThread {
                     else if (key == '8') launch(new ConnectFour());
                     else if (key == '9') launch(new TelevideoRai());
                     else if (key == '0') launch(new DottoreMaEVeroChe());
-                    else if (key == 'S' || key == 's') launch(new Sportal());
+                    else if (key == 's') launch(new Sportal());
                     else validKey = false;
             } while (!validKey);
         }
