@@ -42,7 +42,7 @@ public class HtmlUtils {
                 .replaceAll("[ùú]|&ugrave;?|&uacute;?", "u'")
                 .replaceAll("[ÙÚ]|&Ugrave;?|&Uacute;?", "U'")
                 .replaceAll("&nbsp;?", " ")
-                .replaceAll("’|‘|°|&rsquo;|&rsquor;|&lsquo;|&lsquor;|&sbquo;|&#8216;|&#8217;|&#039;|&#39;|\u0300", "'")
+                .replaceAll("’|‘|°|&rsquo;|&rsquor;|&lsquo;|&lsquor;|&sbquo;|&#8216;|&#8217;|&#039;|&#39;|\u0300|\u0301", "'")
                 .replaceAll("“|”|&quot;|«|»|&#8220;|&#8221;", "\"")
                 .replaceAll("&amp;?", "&")
                 .replaceAll("&gt;", ">")
