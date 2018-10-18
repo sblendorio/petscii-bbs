@@ -183,12 +183,9 @@ public abstract class PetsciiThread extends Thread {
         conn.setRequestMethod("GET");
         StringBuilder sb = new StringBuilder();
         if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            BufferedReader br = new BufferedReader(
-                new InputStreamReader(conn.getInputStream(), UTF_8));
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), UTF_8));
             String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line + "\n");
-            }
+            while ((line = br.readLine()) != null) sb.append(line + "\n");
             br.close();
             conn.disconnect();
             return sb.toString();
