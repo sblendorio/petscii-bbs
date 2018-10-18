@@ -20,8 +20,7 @@ import static eu.sblendorio.bbs.core.Colors.GREY3;
 import static eu.sblendorio.bbs.core.Colors.LIGHT_RED;
 import static eu.sblendorio.bbs.core.Colors.WHITE;
 import static eu.sblendorio.bbs.core.Keys.*;
-import static eu.sblendorio.bbs.core.Utils.filterPrintable;
-import static eu.sblendorio.bbs.core.Utils.filterPrintableWithNewline;
+import static eu.sblendorio.bbs.core.Utils.*;
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.*;
@@ -58,7 +57,6 @@ public class GoogleBloggerProxy extends PetsciiThread {
     protected PageTokens pageTokens = new PageTokens();
 
     private String originalBlogUrl;
-    private byte[] originalLogo;
 
     public GoogleBloggerProxy() {}
 
@@ -74,7 +72,6 @@ public class GoogleBloggerProxy extends PetsciiThread {
     public void init() throws IOException {
         try {
             originalBlogUrl = blogUrl;
-            originalLogo = logo;
             cls();
             write(GREY3);
             waitOn();
@@ -183,11 +180,6 @@ public class GoogleBloggerProxy extends PetsciiThread {
                 if (newUrl.indexOf('.') == -1) newUrl += ".blogspot.com";
                 if (!newUrl.matches("(?is)^http.*")) newUrl = "https://" + newUrl;
                 log("new blogUrl: "+newUrl);
-                if (Utils.equalsDomain(newUrl, originalBlogUrl)) {
-                    logo = originalLogo;
-                } else {
-                    logo = GoogleBloggerProxy.LOGO_BLOGGER;
-                }
                 try {
                     changeBlogIdByUrl(newUrl);
                     pageTokens.reset();
@@ -333,7 +325,17 @@ public class GoogleBloggerProxy extends PetsciiThread {
     };
 
     protected void logo() throws IOException {
-        write(logo);
+        if (!equalsDomain(blogUrl, originalBlogUrl)) {
+            final String normDomain = normalizeDomain(blogUrl);
+            gotoXY(23,1); write(WHITE); print(substring(normDomain, 0, 16));
+            if (normDomain.length() > 14) {
+                gotoXY(23, 2); print(substring(normDomain, 16, 32));
+            }
+            gotoXY(0,0);
+            write(LOGO_BLOGGER);
+        } else {
+            write(logo);
+        }
         write(GREY3);
     }
 

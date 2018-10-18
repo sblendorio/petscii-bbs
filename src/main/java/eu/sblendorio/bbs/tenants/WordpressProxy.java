@@ -3,7 +3,6 @@ package eu.sblendorio.bbs.tenants;
 import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
-import eu.sblendorio.bbs.core.Utils;
 import org.apache.commons.text.WordUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -13,8 +12,7 @@ import java.util.*;
 
 import static eu.sblendorio.bbs.core.Keys.*;
 import static eu.sblendorio.bbs.core.Colors.*;
-import static eu.sblendorio.bbs.core.Utils.filterPrintable;
-import static eu.sblendorio.bbs.core.Utils.filterPrintableWithNewline;
+import static eu.sblendorio.bbs.core.Utils.*;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyMap;
 import static org.apache.commons.collections4.MapUtils.isEmpty;
@@ -41,7 +39,6 @@ public class WordpressProxy extends PetsciiThread {
     protected int currentPage = 1;
 
     private String originalDomain;
-    private byte[] originalLogo;
 
     public WordpressProxy() {
         // Mandatory
@@ -61,7 +58,6 @@ public class WordpressProxy extends PetsciiThread {
     @Override
     public void doLoop() throws Exception {
         originalDomain = domain;
-        originalLogo = logo;
         write(LOWERCASE, CASE_LOCK);
         log("Wordpress entering (" + domain + ")");
         listPosts();
@@ -140,11 +136,6 @@ public class WordpressProxy extends PetsciiThread {
                 if (!domain.matches("(?is)^http.*"))
                     domain = "https://" + domain;
                 log("new API: "+getApi());
-                if (Utils.equalsDomain(domain, originalDomain)) {
-                    logo = originalLogo;
-                } else {
-                    logo = WordpressProxy.LOGO_WORDPRESS;
-                }
                 posts = null;
                 currentPage = 1;
                 try {
@@ -276,18 +267,26 @@ public class WordpressProxy extends PetsciiThread {
         -104, -84, 32, 32, -84, 32, 32, 32, 32, 32, 32, 32, 32, -84, -94, 13,
         -68, -69, 32, 18, -65, -110, -84, 18, -94, -110, -65, 18, -95, -94, -110, -69,
         18, -84, -110, -65, 18, -95, -110, 32, -95, 18, -84, -110, -65, 18, -95, -94,
-        -110, -84, 18, -94, -110, -66, 18, -65, -94, -110, 32, -84, 18, -94, -110, -65,
-        18, -95, -94, -110, -69, 18, -65, -94, -110, 13, 32, -65, -65, -66, 18, -95,
-        -110, 32, 18, -95, -95, -94, -110, -69, -95, 18, -95, -95, -94, -110, 32, 18,
-        -84, -110, -65, 18, -95, -110, -66, 32, 18, -94, -110, -69, -68, -65, 32, 18,
-        -95, -110, 32, 18, -95, -95, -94, -110, -69, -95, 18, -69, -110, 13, 32, -68,
-        -68, 32, 32, 18, -94, -110, -66, -68, 32, -66, 18, -94, -110, -66, -68, 32,
-        32, -66, -68, -68, 18, -94, -110, -68, 18, -94, -110, 32, 18, -94, -110, -66,
-        -68, 32, 18, -94, -110, -66, -68, 32, -66, -68, 18, -94, -110, 13
+        -110, -84, 18, -94, -110, -66, 18, -65, -94, -110, 13, 32, -65, -65, -66, 18,
+        -95, -110, 32, 18, -95, -95, -94, -110, -69, -95, 18, -95, -95, -94, -110, 32,
+        18, -84, -110, -65, 18, -95, -110, -66, 32, 18, -94, -110, -69, -68, -65, 13,
+        32, -68, -68, 32, 32, 18, -94, -110, -66, -68, 32, -66, 18, -94, -110, -66,
+        -68, 32, 32, -66, -68, -68, 18, -94, -110, -68, 18, -94, -110, 32, 18, -94,
+        -110, -66, 13
     };
 
     protected void logo() throws IOException {
-        write(logo);
+        if (!equalsDomain(domain, originalDomain)) {
+            final String normDomain = normalizeDomain(domain);
+            gotoXY(25,1); write(WHITE); print(substring(normDomain, 0, 14));
+            if (normDomain.length() > 14) {
+                gotoXY(25, 2); print(substring(normDomain, 14, 28));
+            }
+            gotoXY(0,0);
+            write(LOGO_WORDPRESS);
+        } else {
+            write(logo);
+        }
         write(GREY3);
     }
 

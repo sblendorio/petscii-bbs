@@ -43,10 +43,11 @@ public class Utils {
     }
 
     public static boolean equalsDomain(String a, String b) {
-        a = lowerCase(trim(a)).replaceAll("https?:(//)?", EMPTY).replace("www.", EMPTY).replaceAll("/+?$", EMPTY);
-        b = lowerCase(trim(b)).replaceAll("https?:(//)?", EMPTY).replace("www.", EMPTY).replaceAll("/+?$", EMPTY);
-        return a.equals(b);
+        return normalizeDomain(a).equals(normalizeDomain(b));
     }
 
+    public static String normalizeDomain(String s) {
+        return lowerCase(trim(s)).replaceAll("https?:(//)?", EMPTY).replace("www.", EMPTY).replaceAll("/+?$", EMPTY);
+    }
 
 }
