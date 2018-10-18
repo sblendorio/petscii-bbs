@@ -3,6 +3,7 @@ package eu.sblendorio.bbs.tenants;
 import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.core.Utils;
 import org.apache.commons.text.WordUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -39,6 +40,9 @@ public class WordpressProxy extends PetsciiThread {
     protected Map<Integer, Post> posts = emptyMap();
     protected int currentPage = 1;
 
+    private String originalDomain;
+    private byte[] originalLogo;
+
     public WordpressProxy() {
         // Mandatory
     }
@@ -56,6 +60,8 @@ public class WordpressProxy extends PetsciiThread {
 
     @Override
     public void doLoop() throws Exception {
+        originalDomain = domain;
+        originalLogo = logo;
         write(LOWERCASE, CASE_LOCK);
         log("Wordpress entering (" + domain + ")");
         listPosts();
@@ -129,16 +135,23 @@ public class WordpressProxy extends PetsciiThread {
                 changeClientName(newName);
             } else if (substring (input, 0, 8).equalsIgnoreCase("connect ")) {
                 final String oldDomain = domain;
+                final byte[] oldLogo = logo;
                 domain = defaultString(input.replaceAll("^connect ([^\\s]+).*$", "$1"));
                 if (!domain.matches("(?is)^http.*"))
                     domain = "https://" + domain;
                 log("new API: "+getApi());
+                if (Utils.equalsDomain(domain, originalDomain)) {
+                    logo = originalLogo;
+                } else {
+                    logo = WordpressProxy.LOGO_WORDPRESS;
+                }
                 posts = null;
                 currentPage = 1;
                 try {
                     listPosts();
                 } catch (Exception e) {
                     log("WORDPRESS FAILED: " + e.getClass().getName() + ": " + e.getMessage());
+                    logo = oldLogo;
                     domain = oldDomain;
                     posts = null;
                     listPosts();

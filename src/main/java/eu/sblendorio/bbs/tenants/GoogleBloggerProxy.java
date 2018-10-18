@@ -9,10 +9,7 @@ import com.google.api.services.blogger.Blogger;
 import com.google.api.services.blogger.BloggerScopes;
 import com.google.api.services.blogger.model.Post;
 import com.google.api.services.blogger.model.PostList;
-import eu.sblendorio.bbs.core.CbmIOException;
-import eu.sblendorio.bbs.core.Hidden;
-import eu.sblendorio.bbs.core.HtmlUtils;
-import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.core.*;
 import org.apache.commons.text.WordUtils;
 
 import java.io.FileInputStream;
@@ -60,6 +57,9 @@ public class GoogleBloggerProxy extends PetsciiThread {
 
     protected PageTokens pageTokens = new PageTokens();
 
+    private String originalBlogUrl;
+    private byte[] originalLogo;
+
     public GoogleBloggerProxy() {}
 
     public GoogleBloggerProxy(String blogUrl) {
@@ -73,6 +73,8 @@ public class GoogleBloggerProxy extends PetsciiThread {
 
     public void init() throws IOException {
         try {
+            originalBlogUrl = blogUrl;
+            originalLogo = logo;
             cls();
             write(GREY3);
             waitOn();
@@ -176,10 +178,16 @@ public class GoogleBloggerProxy extends PetsciiThread {
                 changeClientName(newName);
             } else if (substring(input, 0, 8).equalsIgnoreCase("connect ")) {
                 final String oldBlogUrl = blogUrl;
+                final byte[] oldLogo = logo;
                 String newUrl = trim(input.replaceAll("^connect ([^\\s]+).*$", "$1"));
                 if (newUrl.indexOf('.') == -1) newUrl += ".blogspot.com";
                 if (!newUrl.matches("(?is)^http.*")) newUrl = "https://" + newUrl;
                 log("new blogUrl: "+newUrl);
+                if (Utils.equalsDomain(newUrl, originalBlogUrl)) {
+                    logo = originalLogo;
+                } else {
+                    logo = GoogleBloggerProxy.LOGO_BLOGGER;
+                }
                 try {
                     changeBlogIdByUrl(newUrl);
                     pageTokens.reset();
@@ -187,6 +195,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
                     listPosts();
                 } catch (Exception e) {
                     log("BLOGGER FAILED: " + e.getClass().getName() + ": " + e.getMessage());
+                    logo = oldLogo;
                     changeBlogIdByUrl(oldBlogUrl);
                     pageTokens.reset();
                     posts = null;

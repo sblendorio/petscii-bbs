@@ -2,7 +2,7 @@ package eu.sblendorio.bbs.core;
 
 import java.util.*;
 
-import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.*;
 
 public class Utils {
 
@@ -41,4 +41,12 @@ public class Utils {
             if (isPrintableChar(c) || c == '\n' || c == '\r') result.append(c);
         return result.toString();
     }
+
+    public static boolean equalsDomain(String a, String b) {
+        a = lowerCase(trim(a)).replaceAll("https?:(//)?", EMPTY).replace("www.", EMPTY).replaceAll("/+?$", EMPTY);
+        b = lowerCase(trim(b)).replaceAll("https?:(//)?", EMPTY).replace("www.", EMPTY).replaceAll("/+?$", EMPTY);
+        return a.equals(b);
+    }
+
+
 }
