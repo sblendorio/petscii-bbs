@@ -11,7 +11,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.substring;
 
 /* This class is a modified version of original BufferedReader from original java IO library */
-public class CbmInputOuput extends Reader {
+public class CbmInputOutput extends Reader {
 
     private Reader in;
     private PrintStream out;
@@ -33,7 +33,7 @@ public class CbmInputOuput extends Reader {
     private static int defaultCharBufferSize = 8192;
     private static int defaultExpectedLineLength = 80;
 
-    private CbmInputOuput(Reader in, int sz) {
+    private CbmInputOutput(Reader in, int sz) {
         super(in);
         if (sz <= 0)
             throw new IllegalArgumentException("Buffer size <= 0");
@@ -42,7 +42,7 @@ public class CbmInputOuput extends Reader {
         nextChar = nChars = 0;
     }
 
-    public CbmInputOuput(Socket socket) throws IOException {
+    public CbmInputOutput(Socket socket) throws IOException {
         this(new InputStreamReader(socket.getInputStream(), "ISO-8859-1"), defaultCharBufferSize);
         this.out = new PrintStream(socket.getOutputStream(), true, "ISO-8859-1");
     }

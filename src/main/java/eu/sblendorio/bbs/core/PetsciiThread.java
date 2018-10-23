@@ -19,7 +19,7 @@ public abstract class PetsciiThread extends Thread {
     protected String clientName;
     protected Class clientClass;
     protected Socket socket = null;
-    protected CbmInputOuput cbm;
+    protected CbmInputOutput cbm;
 
     protected PetsciiThread child = null;
 
@@ -76,7 +76,7 @@ public abstract class PetsciiThread extends Thread {
         setClientName(source.getClientName());
     }
 
-    public void setCbmInputOutput(CbmInputOuput cbm) {
+    public void setCbmInputOutput(CbmInputOutput cbm) {
         this.cbm = cbm;
     }
 
