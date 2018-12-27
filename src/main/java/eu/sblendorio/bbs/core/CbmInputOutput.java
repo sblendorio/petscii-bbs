@@ -519,6 +519,17 @@ public class CbmInputOutput extends Reader {
         }
     }
 
+    public void writeRawFile(String filename) throws Exception {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(filename)) {
+            int b = is.read();
+            while (b > 0) {
+                write(b);
+                b = is.read();
+            }
+        }
+        flush();
+    }
+
     public static final String httpMessage = "<html><head><title>Warning</title></head>" +
             "<body style='font-family: tahoma,verdana,arial,helvetica'><blockquote><br/>" +
             "<center><h1>WARNING: This is <b><u>NOT</u></b> a website</h1></center>" +
