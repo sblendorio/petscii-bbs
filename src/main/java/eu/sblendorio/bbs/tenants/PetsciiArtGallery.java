@@ -9,9 +9,9 @@ public class PetsciiArtGallery extends PetsciiThread {
     public void doLoop() throws Exception {
         cls();
         write(UPPERCASE);
-        writeRawFile("walkingdead"); resetInput(); readKey();
-        writeRawFile("nightdriver"); resetInput(); readKey();
-        writeRawFile("magicportal"); resetInput(); readKey();
-        writeRawFile("babycrying");  resetInput(); readKey();
+        writeRawFile("walkingdead"); resetInput(); readKey(); cls();
+        writeRawFile("nightdriver"); resetInput(); readKey(); cls();
+        writeRawFile("magicportal"); resetInput(); readKey(); cls();
+        writeRawFile("babycrying");  resetInput(); readKey(); cls();
     }
 }
