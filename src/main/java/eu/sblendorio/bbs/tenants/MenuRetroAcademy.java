@@ -31,7 +31,7 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(6, delta + 16); write(REVON); print(" 9 "); write(REVOFF); print(" Televideo RAI");
             gotoXY(6, delta + 17); write(REVON); print(" 0 "); write(REVOFF); print(" Dottore, e' vero che...");
             gotoXY(6, delta + 18); write(REVON); print(" S "); write(REVOFF); print(" Sportal.IT");
-            gotoXY(6, delta + 19); write(REVON); print(" P "); write(REVOFF); print(" PETSCII Art - Davide Fichera");
+            gotoXY(6, delta + 19); write(REVON); print(" P "); write(REVOFF); print(" PETSCII Art Gallery");
             gotoXY(6, delta + 20); write(REVON); print(" . "); write(REVOFF); print(" Logoff");
 
             gotoXY(4, 23); write(GREY3); print("Copyright (C) 2018 Retroacademy ");
