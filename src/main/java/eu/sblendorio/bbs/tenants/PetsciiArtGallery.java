@@ -2,8 +2,10 @@ package eu.sblendorio.bbs.tenants;
 
 import eu.sblendorio.bbs.core.PetsciiThread;
 
+import static eu.sblendorio.bbs.core.Keys.LOWERCASE;
 import static eu.sblendorio.bbs.core.Keys.UPPERCASE;
 import static eu.sblendorio.bbs.core.Keys.CASE_LOCK;
+import static eu.sblendorio.bbs.core.Keys.CLR;
 
 public class PetsciiArtGallery extends PetsciiThread {
 
@@ -16,12 +18,13 @@ public class PetsciiArtGallery extends PetsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        write(UPPERCASE, CASE_LOCK);
+        write(CLR, UPPERCASE, CASE_LOCK);
         for (String picture: pictures) {
             cls();
             writeRawFile(picture);
             resetInput();
             readKey();
         }
+        write(CLR, LOWERCASE);
     }
 }
