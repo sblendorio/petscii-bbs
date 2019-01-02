@@ -6,14 +6,15 @@ import static eu.sblendorio.bbs.core.Keys.LOWERCASE;
 import static eu.sblendorio.bbs.core.Keys.UPPERCASE;
 import static eu.sblendorio.bbs.core.Keys.CASE_LOCK;
 import static eu.sblendorio.bbs.core.Keys.CLR;
+import static eu.sblendorio.bbs.core.Keys.HOME;
 
 public class PetsciiArtGallery extends PetsciiThread {
 
     public static String[] pictures = {
-            "walkingdead",
-            "nightdriver",
-            "magicportal",
-            "baby-crying"
+            "petscii-art-gallery/walkingdead",
+            "petscii-art-gallery/nightdriver",
+            "petscii-art-gallery/magicportal",
+            "petscii-art-gallery/baby-crying"
     };
 
     @Override
