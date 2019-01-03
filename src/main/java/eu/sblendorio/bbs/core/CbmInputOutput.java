@@ -520,18 +520,10 @@ public class CbmInputOutput extends Reader {
     }
 
     public void writeRawFile(String filename) throws Exception {
-        writeRawFile(filename, 0);
-    }
-
-    public void writeRawFile(String filename, long delayInMillis) throws Exception {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(filename)) {
             int b = is.read();
             while (b > 0) {
                 write(b);
-                if (delayInMillis != 0) {
-                    Thread.sleep(delayInMillis);
-                    flush();
-                }
                 b = is.read();
             }
         }

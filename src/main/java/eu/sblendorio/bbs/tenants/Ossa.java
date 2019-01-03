@@ -2,6 +2,8 @@ package eu.sblendorio.bbs.tenants;
 
 import eu.sblendorio.bbs.core.PetsciiThread;
 
+import java.io.InputStream;
+
 import static eu.sblendorio.bbs.core.Keys.*;
 import static eu.sblendorio.bbs.core.Colors.*;
 
@@ -86,12 +88,30 @@ public class Ossa extends PetsciiThread {
         int key;
         cls();
         writeRawFile("ossa/" + name + "_draw");
+        sleep(2500);
+        write(HOME);
+        writeFileWithDelay("ossa/" +name + "_info", 90);
         gotoXY(24,23); write(REVON); print("   premi  c   "); write(REVOFF);
         gotoXY(24,24); write(REVON); print("per continuare"); write(REVOFF);
         flush();
-        resetInput(); do key=readKey(); while ("cC.".indexOf(key)==-1);
-        write(HOME);
-        writeRawFile("ossa/" +name + "_info", 50);
-        resetInput(); do key=readKey(); while ("cC.".indexOf(key)==-1);
+        do {
+            resetInput();
+            key=readKey();
+        } while ("cC.".indexOf(key)==-1);
+    }
+
+    public void writeFileWithDelay(String filename, long delayInMillis) throws Exception {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(filename)) {
+            int b = is.read();
+            while (b > 0) {
+                write(b);
+                if (delayInMillis != 0 && b != 17 && b != 13 && b != 29 && b != 19) {
+                    flush();
+                    sleep(delayInMillis);
+                }
+                b = is.read();
+            }
+        }
+        flush();
     }
 }
