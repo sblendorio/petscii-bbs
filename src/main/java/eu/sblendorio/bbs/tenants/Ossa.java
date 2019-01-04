@@ -105,7 +105,7 @@ public class Ossa extends PetsciiThread {
             int b = is.read();
             while (b > 0) {
                 write(b);
-                if (delayInMillis != 0 && b != 17 && b != 13 && b != 29 && b != 19) {
+                if (delayInMillis != 0 && b != 13 && b != 29 && b != 19) {
                     flush();
                     sleep(delayInMillis);
                 }
