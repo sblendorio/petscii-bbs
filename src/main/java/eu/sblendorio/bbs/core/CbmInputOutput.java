@@ -474,6 +474,11 @@ public class CbmInputOutput extends Reader {
             out.close();
             this.close();
             throw new CbmIOException("MICROSOFT REMOTE DESKTOP Connection detected, closing socket");
+        } else if (missingInput.matches("(?is)^.*P?uTTYPuTTYPuTTY.*")) {
+            out.flush();
+            out.close();
+            this.close();
+            throw new CbmIOException("Weird PuTTY Connection detected, closing socket");
         } else if (
                 missingInput.matches("(?is)^SSH-[0-9\\.]+-.*") ||
                 missingInput.matches("(?is)^.*Handshake failed.*") ||
