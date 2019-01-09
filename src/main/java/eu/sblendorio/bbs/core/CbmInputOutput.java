@@ -43,8 +43,8 @@ public class CbmInputOutput extends Reader {
     }
 
     public CbmInputOutput(Socket socket) throws IOException {
-        this(new InputStreamReader(socket.getInputStream(), "ISO-8859-1"), defaultCharBufferSize);
-        this.out = new PrintStream(socket.getOutputStream(), true, "ISO-8859-1");
+        this(new InputStreamReader(socket.getInputStream(), ISO_8859_1), defaultCharBufferSize);
+        this.out = new PrintStream(socket.getOutputStream(), true, ISO_8859_1.name());
     }
 
     public PrintStream out() {return out;}
@@ -298,7 +298,7 @@ public class CbmInputOutput extends Reader {
     }
 
     private String decode(String s) throws IOException {
-        byte[] bytes = s.getBytes("ISO-8859-1");
+        byte[] bytes = s.getBytes(ISO_8859_1);
         byte[] output = new byte[s.length()];
         int i=-1;
         for (byte b: bytes) {
@@ -316,7 +316,7 @@ public class CbmInputOutput extends Reader {
             }
             output[++i] = b;
         }
-        final String result = new String(output, 0, i+1, "ISO-8859-1");
+        final String result = new String(output, 0, i+1, ISO_8859_1);
         return result;
     }
 
