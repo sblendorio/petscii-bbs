@@ -164,6 +164,7 @@ public abstract class PetsciiThread extends Thread {
     public int readKey() throws IOException { return cbm.readKey(); }
     public void resetInput() throws IOException { cbm.resetInput(); }
     public void writeRawFile(String filename) throws Exception { cbm.writeRawFile(filename); }
+    public byte[] readBinaryFile(String filename) throws Exception { return cbm.readBinaryFile(filename); }
     public void gotoXY(int x, int y) {
         write(HOME);
         for (int i=0; i<x; ++i) write(RIGHT);

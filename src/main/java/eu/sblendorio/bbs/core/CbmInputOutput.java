@@ -525,14 +525,17 @@ public class CbmInputOutput extends Reader {
     }
 
     public void writeRawFile(String filename) throws Exception {
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream(filename)) {
-            int b = is.read();
-            while (b > 0) {
-                write(b);
-                b = is.read();
-            }
-        }
+        write(readBinaryFile(filename));
         flush();
+    }
+
+    public byte[] readBinaryFile(String filename) throws Exception {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
+             ByteArrayOutputStream os = new ByteArrayOutputStream();) {
+            byte[] buffer = new byte[2048];
+            for (int len = is.read(buffer); len != -1; len = is.read(buffer)) os.write(buffer, 0, len);
+            return os.toByteArray();
+        }
     }
 
     public static final String httpMessage = "<html><head><title>Warning</title></head>" +

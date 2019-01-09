@@ -101,15 +101,12 @@ public class Ossa extends PetsciiThread {
     }
 
     public void writeFileWithDelay(String filename, long delayInMillis) throws Exception {
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream(filename)) {
-            int b = is.read();
-            while (b > 0) {
-                write(b);
-                if (delayInMillis != 0 && b != 13 && b != 29 && b != 19) {
-                    flush();
-                    sleep(delayInMillis);
-                }
-                b = is.read();
+        byte[] bytes = readBinaryFile(filename);
+        for (byte b: bytes) {
+            write(b);
+            if (delayInMillis != 0 && b != 13 && b != 29 && b != 19) {
+                flush();
+                sleep(delayInMillis);
             }
         }
         flush();
