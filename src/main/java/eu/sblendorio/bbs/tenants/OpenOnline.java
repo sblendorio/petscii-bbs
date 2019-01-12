@@ -1,6 +1,5 @@
 package eu.sblendorio.bbs.tenants;
 
-import com.google.common.collect.ImmutableMap;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
@@ -19,15 +18,25 @@ import java.util.regex.Pattern;
 
 import static eu.sblendorio.bbs.core.Colors.*;
 import static eu.sblendorio.bbs.core.Keys.*;
+import static eu.sblendorio.bbs.core.Utils.filterPrintable;
 import static eu.sblendorio.bbs.core.Utils.filterPrintableWithNewline;
+import static java.lang.Math.min;
+import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class OpenOnline extends PetsciiThread {
 
+    protected int screenRows = 18;
+    protected int pageSize = 6;
 
-    static String PREFIX = "https://www.open.online/";
-    protected int screenRows = 19;
+    protected List<NewsFeed> posts = emptyList();
+    protected int currentPage = 1;
+
+    protected boolean alwaysRefreshFeed = false;
 
     static class NewsSection {
         final String title;
@@ -53,47 +62,35 @@ public class OpenOnline extends PetsciiThread {
         }
     }
 
+    private static Pattern feedsPattern = Pattern.compile("<li class=\"tag ?([a-z\\-]+)?\"><a href=\"(https://www.open.online/[a-z\\-]+/)\">([A-Z\\s\\-\\']+)</a></li>");
+    private Map<String, NewsSection> sections;
 
-    private Map<String, NewsSection> sections = new LinkedHashMap<>();
+    private void readSections() throws Exception {
+        sections = new LinkedHashMap<>();
+        sections.put("0", new NewsSection("IN EVIDENZA", "https://www.open.online/rss.xml"));
+        String indexHtml = httpGet("https://www.open.online/");
+        Matcher m = feedsPattern.matcher(indexHtml);
+        int i = 1;
+        while (m.find()) {
+            String line = m.group(0);
+            Matcher matcher = feedsPattern.matcher(line);
+            matcher.matches();
+            String url = matcher.group(2) + "rss.xml";
+            String title = matcher.group(3);
+            sections.put(valueOf(i), new NewsSection(title, url));
+            ++i;
+        }
+    }
 
     private void printChannelList() {
-        gotoXY(0, 5);
-        List<String> keys = new LinkedList<>(sections.keySet());
-        Collections.sort(keys);
-        for (int i=0; i<8; ++i) {
-            int even = i;
-            if (even >= keys.size()) break;
-            String key = keys.get(even);
-            NewsSection value = sections.get(key);
-            write(RIGHT, REVON, SPACE_CHAR);
-            print(key); write(SPACE_CHAR, REVOFF, SPACE_CHAR);
-            String title = substring(value.title + "                    ", 0, 12);
-            print(title);
-            print(" ");
-
-            int odd = even+8;
-            if (odd < keys.size()) {
-                key = keys.get(odd);
-                value = sections.get(key);
-                write(REVON, SPACE_CHAR);
-                print(key);
-                write(SPACE_CHAR, REVOFF, SPACE_CHAR);
-                print(value.title);
-            } else {
-                write(WHITE, REVON, SPACE_CHAR);
-                print(" . ");
-                write(SPACE_CHAR, REVOFF, SPACE_CHAR);
-                print("Fine");
-            }
+        gotoXY(0, 6);
+        final String SPACES = "          ";
+        for (Map.Entry<String, NewsSection> entry: sections.entrySet()) {
+            print(SPACES); write(REVON); print(" " + entry.getKey()+ " ");
+            write(REVOFF); println(" " + entry.getValue().title);
             newline();
-            newline();
-
         }
-        write(RIGHT, WHITE, REVON, SPACE_CHAR);
-        print(" . ");
-        write(SPACE_CHAR, REVOFF, SPACE_CHAR);
-        print("Fine");
-        write(GREY3, RETURN, RETURN);
+        print(SPACES); write(REVON); print(" . "); write(REVOFF); print(" ESCI ");
         flush();
     }
 
@@ -101,7 +98,7 @@ public class OpenOnline extends PetsciiThread {
         URL url = new URL(urlString);
         SyndFeedInput input = new SyndFeedInput();
         SyndFeed feed = input.build(new XmlReader(url));
-        List<NewsFeed> result = new LinkedList<>();
+        List<NewsFeed> result = new ArrayList<>();
         List<SyndEntry> entries = feed.getEntries();
         for (SyndEntry e : entries)
             result.add(new NewsFeed(e.getPublishedDate(), e.getTitle(), e.getDescription().getValue(), e.getUri()));
@@ -110,121 +107,155 @@ public class OpenOnline extends PetsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        String regex = "<li class=\"tag ?([a-z\\-]+)?\"><a href=\"(https://www.open.online/[a-z\\-]+/)\">([A-Z\\s\\-\\']+)</a></li>";
-        String indexHtml = httpGet("https://www.open.online/");
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(indexHtml);
-        while (m.find()) {
-            String line = m.group(0);
-            Matcher matcher = p.matcher(line);
-            matcher.matches();
-            String url = matcher.group(2) + "rss.xml";
-            String name = matcher.group(3);
-            System.out.println(name + " = " + url);
-        }
-
-
-        if (1==1) return;
-        log("Entered OpenOnline");
-        while (true) {
-            cls();
-            logo();
-            printChannelList();
-            String command = null;
-            NewsSection choice;
-            boolean inputFail;
-            do {
-                choice = null;
-                print(" > ");
-                flush();
-                resetInput();
-                command = readLine(3);
-                choice = sections.get(command);
-                inputFail = (choice == null && !trim(command).equals("."));
-                if (inputFail) {
-                    write(UP); println("        "); write(UP);
-                }
-            } while (inputFail);
-            if (trim(command).equals(".")) break;
-            log("Televideo choice = " + command + " " + choice.title);
-            view(choice);
-        }
-        log("Televideo-EXIT");
-    }
-
-    private void view(NewsSection section) throws Exception {
         cls();
-        waitOn();
-        List<NewsFeed> feeds = getFeeds(section.url);
-        String text = EMPTY;
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        for (NewsFeed feed: feeds) {
-            text += "---------------------------------------" + "<br>";
-            text += feed.title + "<br>" + "---------------------------------------" + "<br>";
-            text += dateFormat.format(feed.publishedDate) + " " + feed.description + "<br>" + "<br>";
-        }
-        waitOff();
-
-        boolean interruptByUser = displayText(text, screenRows);
-        if (!interruptByUser) {
-            gotoXY(0, 24); write(WHITE); print(" ENTER = MAIN MENU                    ");
-            flush(); resetInput(); readKey();
-        }
-    }
-
-    protected boolean displayText(String text, int screenRows) throws Exception {
-        cls();
-        write(LOGO_OPEN);
         write(GREY3);
+        waitOn();
+        readSections();
+        waitOff();
+        while (true) {
+            write(WHITE, CLR, LOWERCASE, CASE_LOCK);
+            write(LOGO_OPEN);
+            posts = null;
+            currentPage = 1;
+            printChannelList();
+            boolean isValidKey;
+            int key;
+            int input;
+            do {
+                resetInput();
+                key = readKey();
+                input = Character.getNumericValue(key);
+                isValidKey = (input >= 0 && input < sections.keySet().size()) || key == '.';
+            } while (!isValidKey);
+            if (key == '.') break;
+            NewsSection section = sections.get(valueOf(input));
+            enterSection(section);
+        }
+    }
 
-        String[] rows = wordWrap(text);
+    private void enterSection(NewsSection section) throws Exception {
+        listPosts(section);
+
+        while (true) {
+            log("Wordpress waiting for input");
+            write(WHITE); print("#"); write(GREY3); print(", ["); write(WHITE); print("+-"); write(GREY3); print("]Page [");
+            write(WHITE); print("R"); write(GREY3); print("]eload [");
+            write(WHITE); print("."); write(GREY3); print("]"); write(WHITE); print("Q"); write(GREY3); print("uit> ");
+            resetInput();
+            flush();
+            String inputRaw = readLine();
+            String input = lowerCase(trim(inputRaw));
+            if (".".equals(input) || "exit".equals(input) || "quit".equals(input) || "q".equals(input)) {
+                break;
+            } else if ("+".equals(input) && currentPage*pageSize<posts.size()) {
+                ++currentPage;
+                if (alwaysRefreshFeed) posts = null;
+                try {
+                    listPosts(section);
+                } catch (NullPointerException e) {
+                    --currentPage;
+                    if (alwaysRefreshFeed) posts = null;
+                    listPosts(section);
+                }
+            } else if ("-".equals(input) && currentPage > 1) {
+                --currentPage;
+                if (alwaysRefreshFeed) posts = null;
+                listPosts(section);
+            } else if ("--".equals(input)) {
+                currentPage = 1;
+                if (alwaysRefreshFeed) posts = null;
+                listPosts(section);
+            } else if ("r".equals(input) || "reload".equals(input) || "refresh".equals(input)) {
+                posts = null;
+                listPosts(section);
+            } else if (toInt(input) >= 1 && toInt(input) <= posts.size()) {
+                displayPost(posts.get(toInt(input) - 1), section);
+                listPosts(section);
+            } else if ("".equals(input)) {
+                listPosts(section);
+            }
+        }
+    }
+
+    protected void listPosts(NewsSection section) throws Exception {
+        cls();
+        gotoXY(23,2); write(WHITE); print(section.title);
+        write(HOME); write(LOGO_SECTION);
+        write(GREY3);
+        if (isEmpty(posts)) {
+            waitOn();
+            posts = getFeeds(section.url);
+            waitOff();
+        }
+
+        final int start = pageSize * (currentPage-1);
+        final int end = min(pageSize + start, posts.size());
+
+        for (int i = start; i < end; ++i) {
+            NewsFeed post = posts.get(i);
+            write(WHITE); print((i+1) + "."); write(GREY3);
+            final int iLen = 37-String.valueOf(i+1).length();
+            String line = WordUtils.wrap(filterPrintable(HtmlUtils.htmlClean(post.title)), iLen, "\r", true);
+            println(line.replaceAll("\r", "\r " + repeat(" ", 37-iLen)));
+        }
+        newline();
+        flush();
+    }
+
+    private void displayPost(NewsFeed feed, NewsSection section) throws Exception {
+        cls();
+        gotoXY(23,2); write(WHITE); print(section.title);
+        write(HOME); write(LOGO_SECTION);
+        write(GREY3);
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        final String head = feed.title + "<br>Date: " + dateFormat.format(feed.publishedDate) + "<br>---------------------------------------<br>";
+        List<String> rows = wordWrap(head);
+        List<String> article = wordWrap(feed.description);
+        rows.addAll(article);
+
         int page = 1;
         int j = 0;
         boolean forward = true;
-        while (j < rows.length) {
+        while (j < rows.size()) {
             if (j>0 && j % screenRows == 0 && forward) {
                 println();
                 write(WHITE);
                 print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT");
                 write(GREY3);
-
-                resetInput(); int ch = readKey();
+                flush(); resetInput(); int ch = readKey();
                 if (ch == '.') {
-                    return true;
+                    return;
                 } else if (ch == '-' && page > 1) {
-                    j -= (screenRows * 2);
+                    j -= (screenRows *2);
                     --page;
                     forward = false;
                     cls();
-                    write(LOGO_OPEN);
-                    write(GREY3);
+                    logo();
                     continue;
                 } else {
                     ++page;
                 }
                 cls();
-                write(LOGO_OPEN);
-                write(GREY3);
+                logo();
             }
-            String row = rows[j];
+            String row = rows.get(j);
             println(row);
             forward = true;
             ++j;
         }
         println();
-        return false;
     }
 
-    protected String[] wordWrap(String s) {
-        String[] cleaned = filterPrintableWithNewline(HtmlUtils.htmlClean(s)).replaceAll(" +", " ").split("\n");
-        List<String> result = new LinkedList<>();
+    protected List<String> wordWrap(String s) {
+        String[] cleaned = filterPrintableWithNewline(HtmlUtils.htmlClean(s)).split("\n");
+        List<String> result = new ArrayList<>();
         for (String item: cleaned) {
             String[] wrappedLine = WordUtils
                     .wrap(item, 39, "\n", true)
                     .split("\n");
             result.addAll(asList(wrappedLine));
         }
-        return Arrays.copyOf(result.toArray(), result.size(), String[].class);
+        return result;
     }
 
     private void logo() throws IOException {
@@ -246,6 +277,19 @@ public class OpenOnline extends PetsciiThread {
             32, -110, 32, 18, 32, -110, -95, 18, -95, 32, -110, -95, 13, 32, 32, 32,
             32, 32, 32, 32, 32, 32, 32, 32, 18, -94, -94, -94, -94, -94, -94, -94,
             -94, -94, -94, -94, -94, -94, -94, -94, -94, -94, -94, -94, -110, 13
+    };
+
+    public final static byte[] LOGO_SECTION = new byte[] {
+            18, 5, 32, 32, 32, 32, -94, -94, 32, 32, -94, -94, -69, 32, -94, -94,
+            -94, 32, -94, 32, -84, -69, 32, 32, 32, -110, 13, 18, -95, 32, 32, -110,
+            -66, 18, -66, -68, -110, -68, 18, 32, -110, 32, 18, 32, -110, 32, 18, 32,
+            -110, 32, 18, 32, 32, 32, -110, 32, -68, -95, 18, -95, 32, 32, -110, -95,
+            13, 32, 18, 32, 32, -110, 32, 18, 32, 32, -110, 32, 18, 32, -110, 32,
+            -94, 18, -66, 32, -110, 32, -94, 18, -66, 32, -110, 32, 18, -68, -110, 32,
+            18, -95, 32, 32, -110, 13, 32, 18, -95, 32, 32, -94, -110, -66, 18, -66,
+            32, -110, 32, 18, 32, 32, 32, -110, 32, 18, -94, -94, 32, -110, 32, 18,
+            32, -110, -95, 18, -95, 32, -110, -95, 13, 32, 32, 18, -94, -94, -94, -94,
+            -94, -94, -94, -94, -94, -94, -94, -94, -94, -94, -94, -94, -94, -94, -94, -110, 13
     };
 
     protected void waitOn() {

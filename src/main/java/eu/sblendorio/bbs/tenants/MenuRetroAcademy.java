@@ -15,13 +15,13 @@ public class MenuRetroAcademy extends PetsciiThread {
             log("Starting MenuRetroAcademy BBS / main menu");
             logo();
 
-            gotoXY(5, delta + 4); write(WHITE); print("Blogs"); write(GREY3);
+            gotoXY(5, delta + 4); write(WHITE); print("Blog / News"); write(GREY3);
             gotoXY(5, delta + 6); write(REVON); print(" 1 "); write(REVOFF); print(" Retroacademy");
             gotoXY(5, delta + 7); write(REVON); print(" 2 "); write(REVOFF); print(" Disinformatico");
             gotoXY(5, delta + 8); write(REVON); print(" 3 "); write(REVOFF); print(" MedBunker");
             gotoXY(5, delta + 9); write(REVON); print(" 4 "); write(REVOFF); print(" Dottore, e' vero che...");
             gotoXY(5, delta + 10); write(REVON); print(" 5 "); write(REVOFF); print(" David Puente");
-            gotoXY(5, delta + 11); write(REVON); print(" 6 "); write(REVOFF); print(" VC Federation");
+            gotoXY(5, delta + 11); write(REVON); print(" 6 "); write(REVOFF); print(" Open Online");
 
             gotoXY(24, delta + 11); write(WHITE); print("Games"); write(GREY3);
             gotoXY(24, delta + 13); write(REVON); print(" 7 "); write(REVOFF); print(" TIC-TAC-TOE");
@@ -50,7 +50,7 @@ public class MenuRetroAcademy extends PetsciiThread {
                     else if (key == '3') launch(new Medbunker());
                     else if (key == '4') launch(new DottoreMaEVeroChe());
                     else if (key == '5') launch(new DavidPuenteBlog());
-                    else if (key == '6') launch(new Vcfed());
+                    else if (key == '6') launch(new OpenOnline());
                     else if (key == '7') launch(new TicTacToe());
                     else if (key == '8') launch(new ConnectFour());
                     else if (key == '9') launch(new TelevideoRai());
