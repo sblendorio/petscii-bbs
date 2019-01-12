@@ -2,10 +2,14 @@ package eu.sblendorio.bbs.tenants;
 
 import eu.sblendorio.bbs.core.PetsciiThread;
 
-import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import static eu.sblendorio.bbs.core.Keys.*;
 import static eu.sblendorio.bbs.core.Colors.*;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.length;
 
 public class Ossa extends PetsciiThread {
 
@@ -16,6 +20,8 @@ public class Ossa extends PetsciiThread {
             "ossa/gamba_draw",
     };
 
+    private final static String HOME_STRING = new String(new byte[] { HOME }, ISO_8859_1);
+
     @Override
     public void doLoop() throws Exception {
         write(WHITE);
@@ -25,13 +31,16 @@ public class Ossa extends PetsciiThread {
             do {
                 resetInput();
                 choice = readKey();
-            } while ("12.".indexOf(choice) == -1);
-            if (choice == '1') startLessons();
-        } while (choice != '2' && choice != '.');
+            } while ("123.".indexOf(choice) == -1);
+            switch (choice) {
+                case '1': startLessons(); break;
+                case '2': startQuestions(); break;
+            }
+        } while (choice != '3' && choice != '.');
         write(CLR, LOWERCASE);
     }
 
-    public void displayMainMenu() throws Exception {
+    private void displayMainMenu() throws Exception {
         write(CLR, UPPERCASE, CASE_LOCK);
         gotoXY(4,25); print("(c) 1985 mantrasoft, diego & e.t.a.");
         write(HOME, RETURN, RETURN);
@@ -46,13 +55,14 @@ public class Ossa extends PetsciiThread {
         println("   desideri :");
         write(32, 32, 32, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, RETURN, RETURN);
         println("1. spiegazione."); newline();
-        println("2. fine."); newline();
+        println("2. interrogazione."); newline();
+        println("3. fine."); newline();
         newline();
         print("   scegli: ");
         flush();
     }
 
-    public void startLessons() throws Exception {
+    private void startLessons() throws Exception {
         int choice = 0;
         do {
             displayMenuLessons();
@@ -69,7 +79,7 @@ public class Ossa extends PetsciiThread {
         } while (choice != '5' && choice != '.');
     }
 
-    public void displayMenuLessons() throws Exception {
+    private void displayMenuLessons() throws Exception {
         cls();
         println("spiegazione.");
         newline();
@@ -84,7 +94,7 @@ public class Ossa extends PetsciiThread {
         flush();
     }
 
-    public void displayBodyPart(String name) throws Exception {
+    private void displayBodyPart(String name) throws Exception {
         int key;
         cls();
         writeRawFile("ossa/" + name + "_draw");
@@ -100,7 +110,24 @@ public class Ossa extends PetsciiThread {
         } while ("cC.".indexOf(key)==-1);
     }
 
-    public void writeFileWithDelay(String filename, long delayInMillis) throws Exception {
+    private void startQuestions() throws Exception {
+
+    }
+
+    private List<String> readBodyPart(String bodyPart) throws Exception {
+        byte[] bytes = readBinaryFile("ossa/" + bodyPart + "_info");
+        String content = new String(bytes, ISO_8859_1);
+        String[] chunks = content.split(HOME_STRING);
+        List<String> parts = new ArrayList<>();
+        for (String chunk: chunks) if (length(chunk) > 3) parts.add(chunk);
+        return parts;
+    }
+
+    private String clean(String in) {
+        return in.replaceAll("[^\\x20-\\x7F]", EMPTY);
+    }
+
+    private void writeFileWithDelay(String filename, long delayInMillis) throws Exception {
         byte[] bytes = readBinaryFile(filename);
         for (byte b: bytes) {
             write(b);
