@@ -171,7 +171,6 @@ public class OpenOnline extends PetsciiThread {
                 listPosts(section);
             } else if (toInt(input) >= 1 && toInt(input) <= posts.size()) {
                 displayPost(posts.get(toInt(input) - 1), section);
-                listPosts(section);
             } else if ("".equals(input)) {
                 listPosts(section);
             }
