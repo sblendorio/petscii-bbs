@@ -8,7 +8,6 @@ import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import org.apache.commons.text.WordUtils;
 
-import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -138,7 +137,7 @@ public class OpenOnline extends PetsciiThread {
         listPosts(section);
 
         while (true) {
-            log("Wordpress waiting for input");
+            log("OpenOnline waiting for input");
             write(WHITE); print("#"); write(GREY3); print(", ["); write(WHITE); print("+-"); write(GREY3); print("]Page [");
             write(WHITE); print("R"); write(GREY3); print("]eload [");
             write(WHITE); print("."); write(GREY3); print("]"); write(WHITE); print("Q"); write(GREY3); print("uit> ");
@@ -170,7 +169,8 @@ public class OpenOnline extends PetsciiThread {
                 posts = null;
                 listPosts(section);
             } else if (toInt(input) >= 1 && toInt(input) <= posts.size()) {
-                displayPost(posts.get(toInt(input) - 1), section);
+                boolean exitByUser = displayPost(posts.get(toInt(input) - 1), section);
+                if (exitByUser) listPosts(section);
             } else if ("".equals(input)) {
                 listPosts(section);
             }
@@ -202,7 +202,7 @@ public class OpenOnline extends PetsciiThread {
         flush();
     }
 
-    private void displayPost(NewsFeed feed, NewsSection section) throws Exception {
+    private boolean displayPost(NewsFeed feed, NewsSection section) throws Exception {
         logo(section);
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         final String head = feed.title + " - di " + feed.author + "<br>---------------------------------------<br>";
@@ -221,7 +221,7 @@ public class OpenOnline extends PetsciiThread {
                 write(GREY3);
                 flush(); resetInput(); int ch = readKey();
                 if (ch == '.') {
-                    return;
+                    return true;
                 } else if (ch == '-' && page > 1) {
                     j -= (screenRows *2);
                     --page;
@@ -239,6 +239,7 @@ public class OpenOnline extends PetsciiThread {
             ++j;
         }
         println();
+        return false;
     }
 
     private void logo(NewsSection section) throws Exception {
