@@ -101,7 +101,12 @@ public class OpenOnline extends PetsciiThread {
         List<NewsFeed> result = new ArrayList<>();
         List<SyndEntry> entries = feed.getEntries();
         for (SyndEntry e : entries)
-            result.add(new NewsFeed(e.getPublishedDate(), e.getTitle(), e.getDescription().getValue(), e.getUri(), e.getAuthor()));
+            result.add(new NewsFeed(e.getPublishedDate(),
+                    e.getTitle().replace("\u00a0", " "),
+                    e.getDescription().getValue(),
+                    e.getUri(),
+                    e.getAuthor().replace("\u00a0", " ")
+            ));
         return result;
     }
 
@@ -205,7 +210,7 @@ public class OpenOnline extends PetsciiThread {
     private boolean displayPost(NewsFeed feed, NewsSection section) throws Exception {
         logo(section);
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        final String head = feed.title + " - di " + feed.author + "<br>---------------------------------------<br>";
+        final String head = trim(feed.title) + " - di " + trim(feed.author) + "<br>---------------------------------------<br>";
         List<String> rows = wordWrap(head);
         List<String> article = wordWrap(dateFormat.format(feed.publishedDate) + " - " + feed.description.replaceAll("^[\\s\\n\\r]+|^(<(br|p)[^>]*>)+", EMPTY));
         rows.addAll(article);
