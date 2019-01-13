@@ -52,9 +52,10 @@ public class OpenOnline extends PetsciiThread {
         final String title;
         final String description;
         final String uri;
+        final String author;
 
-        public NewsFeed(Date publishedDate, String title, String description, String uri) {
-            this.publishedDate = publishedDate; this.title = title; this.description = description; this.uri = uri;
+        public NewsFeed(Date publishedDate, String title, String description, String uri, String author) {
+            this.publishedDate = publishedDate; this.title = title; this.description = description; this.uri = uri; this.author = author;
         }
 
         public String toString() {
@@ -101,7 +102,7 @@ public class OpenOnline extends PetsciiThread {
         List<NewsFeed> result = new ArrayList<>();
         List<SyndEntry> entries = feed.getEntries();
         for (SyndEntry e : entries)
-            result.add(new NewsFeed(e.getPublishedDate(), e.getTitle(), e.getDescription().getValue(), e.getUri()));
+            result.add(new NewsFeed(e.getPublishedDate(), e.getTitle(), e.getDescription().getValue(), e.getUri(), e.getAuthor()));
         return result;
     }
 
@@ -203,14 +204,11 @@ public class OpenOnline extends PetsciiThread {
     }
 
     private void displayPost(NewsFeed feed, NewsSection section) throws Exception {
-        cls();
-        gotoXY(23,2); write(WHITE); print(section.title);
-        write(HOME); write(LOGO_SECTION);
-        write(GREY3);
+        logo(section);
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        final String head = feed.title + "<br>Date: " + dateFormat.format(feed.publishedDate) + "<br>---------------------------------------<br>";
+        final String head = feed.title + " - di " + feed.author + "<br>---------------------------------------<br>";
         List<String> rows = wordWrap(head);
-        List<String> article = wordWrap(feed.description);
+        List<String> article = wordWrap(dateFormat.format(feed.publishedDate) + " - " + feed.description.replaceAll("^[\\s\\n\\r]+|^(<(br|p)[^>]*>)+", EMPTY));
         rows.addAll(article);
 
         int page = 1;
@@ -229,14 +227,12 @@ public class OpenOnline extends PetsciiThread {
                     j -= (screenRows *2);
                     --page;
                     forward = false;
-                    cls();
-                    logo();
+                    logo(section);
                     continue;
                 } else {
                     ++page;
                 }
-                cls();
-                logo();
+                logo(section);
             }
             String row = rows.get(j);
             println(row);
@@ -244,6 +240,16 @@ public class OpenOnline extends PetsciiThread {
             ++j;
         }
         println();
+    }
+
+    private void logo(NewsSection section) throws Exception {
+        cls();
+        gotoXY(23,2);
+        write(WHITE);
+        print(section.title);
+        write(HOME);
+        write(LOGO_SECTION);
+        write(GREY3);
     }
 
     protected List<String> wordWrap(String s) {
@@ -256,11 +262,6 @@ public class OpenOnline extends PetsciiThread {
             result.addAll(asList(wrappedLine));
         }
         return result;
-    }
-
-    private void logo() throws IOException {
-        write(LOGO_OPEN);
-        write(GREY3);
     }
 
     public final static byte[] LOGO_OPEN = new byte[] {

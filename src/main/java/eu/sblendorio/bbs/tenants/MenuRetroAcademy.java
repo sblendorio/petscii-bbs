@@ -43,7 +43,7 @@ public class MenuRetroAcademy extends PetsciiThread {
                 log("Menu. Waiting for key pressed.");
                 resetInput(); int key = readKey();
                 key = Character.toLowerCase(key);
-                log("Menu. Pressed: "+key);
+                log("Menu. Pressed: '" + (key == 13 || key == 10 ? "chr("+key+")" : ((char) key)) + "' (code=" + key + ")");
                 if (key == '.') return;
                     else if (key == '1') launch(new RetroAcademy());
                     else if (key == '2') launch(new Disinformatico());
