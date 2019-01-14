@@ -22,7 +22,7 @@ public class HtmlUtils {
                 .replace("\r", "")
                 .replace("©","(C)")
                 .replace("\n", " ")
-                .replaceAll("…|&#8230;", "...")
+                .replaceAll("…|&#8230;|&hellip;", "...")
                 .replaceAll("–|&#8211;|&#8212;|&mdash;", "-")
                 .replaceAll("<br( [^>]*)?>", "\n")
                 .replaceAll("<p( [^>]*)?>", "\n")
