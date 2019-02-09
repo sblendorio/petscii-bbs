@@ -147,6 +147,7 @@ public abstract class PetsciiThread extends Thread {
         System.err.println(logRow);
     }
 
+    public static char chr(int code) { return (char) code; }
     public void write(byte[] buf, int off, int len) { cbm.write(buf, off, len); }
     public void write(byte[] b) throws IOException { cbm.write(b); }
     public void write(int b) { cbm.write(b); }

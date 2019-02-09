@@ -6,6 +6,7 @@ import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
 import java.net.URL;
@@ -28,6 +29,8 @@ import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class OpenOnline extends PetsciiThread {
+
+    static String HR_TOP = StringUtils.repeat(chr(163), 39);
 
     protected int screenRows = 18;
     protected int pageSize = 6;
@@ -210,7 +213,7 @@ public class OpenOnline extends PetsciiThread {
     private boolean displayPost(NewsFeed feed, NewsSection section) throws Exception {
         logo(section);
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        final String head = trim(feed.title) + " - di " + trim(feed.author) + "<br>---------------------------------------<br>";
+        final String head = trim(feed.title) + " - di " + trim(feed.author) + "<br>" + HR_TOP + "<br>";
         List<String> rows = wordWrap(head);
         List<String> article = wordWrap(dateFormat.format(feed.publishedDate) + " - " + feed.description.replaceAll("^[\\s\\n\\r]+|^(<(br|p)[^>]*>)+", EMPTY));
         rows.addAll(article);

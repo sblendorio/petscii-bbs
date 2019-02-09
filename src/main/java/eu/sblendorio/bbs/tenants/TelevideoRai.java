@@ -7,6 +7,7 @@ import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
 import java.io.IOException;
@@ -22,6 +23,7 @@ import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.*;
 
 public class TelevideoRai extends PetsciiThread {
+    static String HR_TOP = StringUtils.repeat(chr(163), 39);
 
     static String PREFIX = "http://www.servizitelevideo.rai.it/televideo/pub/";
     protected int screenRows = 19;
@@ -159,9 +161,13 @@ public class TelevideoRai extends PetsciiThread {
         String text = EMPTY;
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         for (NewsFeed feed: feeds) {
-            text += "---------------------------------------" + "<br>";
-            text += feed.title + "<br>" + "---------------------------------------" + "<br>";
-            text += dateFormat.format(feed.publishedDate) + " " + feed.description + "<br>" + "<br>";
+            String post = EMPTY;
+            post += feed.title + "<br>" + HR_TOP + "<br>";
+            post += dateFormat.format(feed.publishedDate) + " " + feed.description + "<br>";
+            int lineFeeds = (screenRows - (wordWrap(post).length % screenRows)) % screenRows;
+
+            post += StringUtils.repeat("&c64nbsp;<br>", lineFeeds);
+            text += post;
         }
         waitOff();
 
@@ -207,7 +213,7 @@ public class TelevideoRai extends PetsciiThread {
                 write(GREY3);
             }
             String row = rows[j];
-            println(row);
+            println(row.replaceAll("&c64nbsp;", EMPTY));
             forward = true;
             ++j;
         }

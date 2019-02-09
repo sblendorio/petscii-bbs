@@ -3,11 +3,14 @@ package eu.sblendorio.bbs.tenants;
 import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static eu.sblendorio.bbs.core.Keys.*;
@@ -21,6 +24,8 @@ import static org.apache.commons.lang3.math.NumberUtils.*;
 
 @Hidden
 public class WordpressProxy extends PetsciiThread {
+
+    static String HR_TOP = StringUtils.repeat(chr(163), 39);
 
     static class Post {
         long id;
@@ -210,14 +215,21 @@ public class WordpressProxy extends PetsciiThread {
     }
 
     protected void displayPost(int n) throws Exception {
+        int i = 3;
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         cls();
         logo();
         final Post p = posts.get(n);
-        final String head = p.title + "<br>Date: " + p.date + "<br>---------------------------------------<br>";
+        final String content = p.content
+                .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(<(br|div|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
+                .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(<(br|div|img|p|h[0-9])[^>]*>\\s*)+", EMPTY);
+        final String head = p.title + "<br>" + HR_TOP ;
         List<String> rows = wordWrap(head);
-        List<String> article = wordWrap(p.content);
-        rows.addAll(article);
 
+        List<String> article = wordWrap(p.date.replaceAll("^(\\d\\d\\d\\d).(\\d\\d).(\\d\\d).*","$3/$2/$1") +
+                " - " + content
+        );
+        rows.addAll(article);
         int page = 1;
         int j = 0;
         boolean forward = true;

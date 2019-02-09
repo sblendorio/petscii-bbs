@@ -10,6 +10,7 @@ import com.google.api.services.blogger.BloggerScopes;
 import com.google.api.services.blogger.model.Post;
 import com.google.api.services.blogger.model.PostList;
 import eu.sblendorio.bbs.core.*;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
 import java.io.FileInputStream;
@@ -27,6 +28,8 @@ import static org.apache.commons.lang3.math.NumberUtils.*;
 
 @Hidden
 public class GoogleBloggerProxy extends PetsciiThread {
+
+    static String HR_TOP = StringUtils.repeat(chr(163), 39);
 
     protected String blogUrl = "https://blogger.googleblog.com";
     protected byte[] logo = LOGO_BLOGGER;
@@ -259,13 +262,19 @@ public class GoogleBloggerProxy extends PetsciiThread {
         cls();
         logo();
         final Post p = posts.get(n);
-        final String head = p.getTitle() + "<br>Date: "
-                + p.getPublished().toStringRfc3339()
-                    .replace("T", SPACE)
-                    .replaceAll(":\\d\\d\\.\\d\\d\\d[+\\-]\\d\\d:\\d\\d\\s*$", EMPTY)
-                + "<br>---------------------------------------<br>";
+        String content = p.getContent()
+                .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(<(br|div|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
+                .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(<(br|div|img|p|h[0-9])[^>]*>\\s*)+", EMPTY);
+        System.out.println(content);
+        final String head = p.getTitle() +
+                "<br>" +
+                HR_TOP +
+                "<br>";
         List<String> rows = wordWrap(head);
-        List<String> article = wordWrap(p.getContent());
+        List<String> article = wordWrap(
+                p.getPublished().toStringRfc3339().replaceAll("^(\\d\\d\\d\\d).(\\d\\d).(\\d\\d).*","$3/$2/$1") +
+                 " - " +
+                 content);
         rows.addAll(article);
 
         int page = 1;
