@@ -515,9 +515,9 @@ public class CbmInputOutput extends Reader {
                 continue;
             else if (c == '_')
                 c = (char) 228;
-            else if (Character.isLowerCase(c))
+            else if (c >= 'a' && c <= 'z')
                 c = Character.toUpperCase(c);
-            else if (Character.isUpperCase(c))
+            else if (c >= 'A' && c <= 'Z')
                 c = Character.toLowerCase(c);
 
             out.write(c);

@@ -261,11 +261,11 @@ public class GoogleBloggerProxy extends PetsciiThread {
     protected void displayPost(int n) throws Exception {
         cls();
         logo();
+        waitOn();
         final Post p = posts.get(n);
         String content = p.getContent()
                 .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(<(br|div|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
                 .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(<(br|div|img|p|h[0-9])[^>]*>\\s*)+", EMPTY);
-        System.out.println(content);
         final String head = p.getTitle() +
                 "<br>" +
                 HR_TOP +
@@ -276,6 +276,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
                  " - " +
                  content);
         rows.addAll(article);
+        waitOff();
 
         int page = 1;
         int j = 0;

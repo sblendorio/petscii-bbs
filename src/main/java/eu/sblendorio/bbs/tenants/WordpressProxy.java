@@ -219,6 +219,8 @@ public class WordpressProxy extends PetsciiThread {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         cls();
         logo();
+        waitOn();
+
         final Post p = posts.get(n);
         final String content = p.content
                 .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(<(br|div|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
@@ -230,6 +232,7 @@ public class WordpressProxy extends PetsciiThread {
                 " - " + content
         );
         rows.addAll(article);
+        waitOff();
         int page = 1;
         int j = 0;
         boolean forward = true;
