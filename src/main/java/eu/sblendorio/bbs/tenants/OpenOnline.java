@@ -213,7 +213,8 @@ public class OpenOnline extends PetsciiThread {
     private boolean displayPost(NewsFeed feed, NewsSection section) throws Exception {
         logo(section);
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        final String head = trim(feed.title) + " - di " + trim(feed.author) + "<br>" + HR_TOP + "<br>";
+        final String author = isBlank(trim(feed.author)) ? EMPTY : " - di " + trim(feed.author);
+        final String head = trim(feed.title) + author + "<br>" + HR_TOP + "<br>";
         List<String> rows = wordWrap(head);
         List<String> article = wordWrap(dateFormat.format(feed.publishedDate) + " - " + feed.description.replaceAll("^[\\s\\n\\r]+|^(<(br|p)[^>]*>)+", EMPTY));
         rows.addAll(article);
