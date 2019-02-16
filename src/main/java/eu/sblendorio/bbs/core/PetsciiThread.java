@@ -162,6 +162,7 @@ public abstract class PetsciiThread extends Thread {
     public void println() { println(EMPTY); }
     public String readLine() throws IOException { return cbm.readLine(); }
     public String readLine(int maxLength) throws IOException { return cbm.readLine(maxLength); }
+    public String readPassword() throws Exception { return cbm.readPassword(); }
     public int readKey() throws IOException { return cbm.readKey(); }
     public void resetInput() throws IOException { cbm.resetInput(); }
     public void writeRawFile(String filename) throws Exception { cbm.writeRawFile(filename); }

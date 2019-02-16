@@ -194,6 +194,10 @@ public class CbmInputOutput extends Reader {
     }
 
     public String readLine(boolean ignoreLF, int maxLength) throws IOException {
+        return readLine(ignoreLF, maxLength, false);
+    }
+
+    public String readLine(boolean ignoreLF, int maxLength, boolean mask) throws IOException {
         StringBuffer s = null;
         int startChar;
         synchronized (lock) {
@@ -259,7 +263,7 @@ public class CbmInputOutput extends Reader {
                             out.write(157);
                             ++size;
                         } else {
-                            out.write(c);
+                            out.write(mask && c != 13 && c != 10 ? '*' : c);
                             ++size;
                         }
                         out.flush();
@@ -318,6 +322,10 @@ public class CbmInputOutput extends Reader {
         }
         final String result = new String(output, 0, i+1, ISO_8859_1);
         return result;
+    }
+
+    public String readPassword() throws IOException {
+        return readLine(false, 0, true);
     }
 
     public String readLine() throws IOException {
