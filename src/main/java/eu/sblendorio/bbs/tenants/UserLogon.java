@@ -10,8 +10,13 @@ import java.sql.PreparedStatement;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static eu.sblendorio.bbs.core.Colors.*;
+import static eu.sblendorio.bbs.core.Keys.REVOFF;
+import static eu.sblendorio.bbs.core.Keys.REVON;
 import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
 import static org.apache.commons.lang3.StringUtils.*;
 
@@ -77,49 +82,100 @@ public class UserLogon extends PetsciiThread {
     public void doLoop() throws Exception {
         String username;
         String password;
+        cls();
+        write(LOGO);
+        write(GREY3);
         do {
             do {
-                print("username or NEW to sign up: ");
-                username = readLine();
+                print("USERID or 'NEW': ");
+                flush(); username = readLine();
                 if (isBlank(username)) return;
                 if (equalsIgnoreCase(username, "new")) {
-                    if (createNewUser())
-                        println("User created successfully");
-                    else
-                        println("Error during creation");
+                    if (createNewUser()) {
+                        write(GREEN); println("User created successfully.");
+                    } else {
+                        write(RED); println("Operation aborted.");
+                    }
+                    write(GREY3);
                     newline();
                 }
             } while (equalsIgnoreCase(username, "new"));
-            print("password: ");
-            password = readPassword();
+            print("PASSWORD: ");
+            flush(); password = readPassword();
             user = getUser(username, password);
-            if (user == null) println("Wrong username and/or password");
+            if (user == null) {
+                write(RED);
+                newline();
+                write(REVON); println("Wrong username or password"); write(REVOFF);
+                newline();
+                write(GREY3);
+            }
         } while (user == null);
-        println("Welcome, " + user.realname + "!");
         mainMenu();
     }
 
     public void mainMenu() throws Exception {
         int choice;
         do {
-            //cls();
-            println("Welcome, " + user.realname);
+            cls();
+            write(LOGO);
+            write(CYAN);
+            println("Welcome, " + (isBlank(user.realname) ? user.nick : user.realname));
+            long unread = countUnreadMessages(user.nick);
+            if (unread > 0) {
+                print("You have");
+                write(WHITE); print(" " +unread + " "); write(CYAN);
+                println("unread message"+(unread > 1 ? "s" : EMPTY) + ".");
+
+            }
+            write(GREY3);
             newline();
-            println("1. List all messages");
-            println("2. List unread messages");
-            println("3. Send a message");
-            println(". = EXIT");
-            print(">");
+            write(' ',REVON, ' ', '0', ' ', REVOFF,' '); println(" List all users");
+            write(' ',REVON, ' ', '1', ' ', REVOFF,' '); println(" List unread private messages");
+            write(' ',REVON, ' ', '2', ' ', REVOFF,' '); println(" List all private messages");
+            write(' ',REVON, ' ', '3', ' ', REVOFF,' '); println(" Send a message");
+            write(' ',REVON, ' ', '.', ' ', REVOFF,' '); println(" EXIT ");
             flush(); resetInput(); choice = readKey();
             newline();
 
             switch (choice) {
-                case '1': listMessages(false); break;
-                case '2': listMessages(true); break;
+                case '0': listUsers(); break;
+                case '1': listMessages(true); break;
+                case '2': listMessages(false); break;
                 case '3': sendMessageGui(); break;
             }
 
         } while (choice != '.');
+    }
+
+    public void listUsers() throws Exception {
+        cls();
+        write(LOGO);
+        write(GREY3);
+        List<User> users = getUsers();
+        int i = 0;
+        for (User user: users) {
+            ++i;
+            write(CYAN);
+            print(user.nick);
+            write(GREY3);
+            String realname = user.realname;
+            if (isNotBlank(realname) && (user.nick + realname).length() > 36)
+                realname = realname.substring(0, 33-user.nick.length())+"...";
+            println((isBlank(realname) ? EMPTY : " (" + realname + ")"));
+            if (i % 19 == 0 && i < users.size()) {
+                newline();
+                write(WHITE); print("ANY KEY FOR NEXT PAGE, '.' TO GO BACK "); write(GREY3);
+                flush(); resetInput(); int ch = readKey(); resetInput();
+                if (ch == '.') return;
+                cls();
+                write(LOGO);
+                write(GREY3);
+            }
+        }
+        newline();
+        write(WHITE); print("PRESS ANY KEY TO GO BACK "); write(GREY3);
+        flush(); resetInput(); readKey(); resetInput();
     }
 
     public void sendMessageGui() throws Exception {
@@ -130,21 +186,24 @@ public class UserLogon extends PetsciiThread {
 
         do {
             print("send to: ");
-            receipt = readLine();
+            flush(); receipt = readLine();
             if (isBlank(receipt)) return;
             ok = existsUser(receipt);
             if (!ok) println("WARN: not existing user");
         } while (!ok);
 
         print("subject: ");
-        subject = readLine();
+        flush(); subject = readLine();
         if (isBlank(subject)) return;
 
         print("message: ");
-        message = readLine();
+        flush(); message = readLine();
 
         sendMessage(user.nick, receipt, subject, message);
-        println("Message sent!\n");
+        newline(); write(WHITE);
+        print("MESSAGE SENT - PRESS ANY KEY ");
+        write(GREY3);
+        flush(); resetInput(); readKey(); resetInput();
     }
 
     public void sendMessage(String from, String to, String subject, String message) throws Exception {
@@ -160,15 +219,38 @@ public class UserLogon extends PetsciiThread {
     }
 
     public void listMessages(boolean onlyUnread) throws Exception {
-        long i = 1;
+        cls();
+        write(LOGO);
+        write(GREY3);
+        long i;
         Map<Long, Message> map = new TreeMap<>();
         List<Message> messages = getMessages(user.nick, onlyUnread);
         println("Got "+ messages.size()+" messages.");
+        i = 1;
         for (Message m: messages) {
             map.put(i, m);
-            println("["+i+"] "+m.userFrom+" "+m.subject);
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            String date = df.format(m.dateTime);
+            println((m.isRead ? " " : "*") + i + " "+ date + " " + m.userFrom + ": " + m.subject);
             i++;
         }
+
+        resetInput(); readKey(); resetInput();
+    }
+
+    public List<User> getUsers() throws Exception {
+        List<User> result = new LinkedList<>();
+        try (Statement s = conn.createStatement();
+                ResultSet r = s.executeQuery("select id, nick, realname, email from users order by nick")) {
+            while (r.next())
+                result.add(new User(
+                    r.getLong("id"),
+                    r.getString("nick"),
+                    r.getString("realname"),
+                    r.getString("email")
+            ));
+        }
+        return result;
     }
 
     public List<Message> getMessages(String userTo, boolean onlyUnread) throws Exception {
@@ -199,32 +281,28 @@ public class UserLogon extends PetsciiThread {
         String realname;
         String email;
         boolean exists;
+        newline();
+        write(WHITE);
+        println("ADDING NEW USER");
+        println(StringUtils.repeat(chr(163), 15));
+        write(GREY3);
         do {
             print("Username: ");
-            username = readLine();
+            flush(); username = readLine();
             if (isBlank(username)) return false;
             exists = existsUser(username);
             if (exists) println("WARN: Username not available");
         } while (exists);
-        print("Real name: "); realname = readLine();
-        print("Email: "); email = readLine();
+        print("Real name: "); flush(); realname = readLine();
+        print("Email: "); flush(); email = readLine();
         do {
             print("Password: ");
-            password = readPassword();
+            flush(); password = readPassword();
         } while (isBlank(password));
-        return addUser(username, realname, email, password);
-    }
-
-    public static void main(String[] args) throws Exception {
-        System.out.println("START");
-        UserLogon u = new UserLogon();
-        //u.addUser("sblendorio", "Francesco Sblendorio", "sblendorio@gmail.com", "abc123");
-        System.out.println("User="+u.getUser("sblendorio","abc123"));
-        System.out.println("END");
-    }
-
-    public void read() throws Exception {
-
+        write(LIGHT_RED); print("Do you confirm creation? (Y/N)"); write(GREY3);
+        flush(); resetInput(); int key = readKey(); resetInput();
+        newline();
+        return (key=='Y' || key=='y') ? addUser(username, realname, email, password) : false;
     }
 
     public boolean addUser(String nick, String realname, String email, String password) throws Exception {
@@ -241,6 +319,23 @@ public class UserLogon extends PetsciiThread {
         ps.execute();
         ps.close();
         return true;
+    }
+
+    public long countTotalMessages(String nick) throws Exception {
+        try (PreparedStatement ps = conn.prepareStatement("select count(*) from messages where user_to=?")) {
+            ps.setString(1, nick);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? rs.getLong(1) : 0;
+            }
+        }
+    }
+    public long countUnreadMessages(String nick) throws Exception {
+        try (PreparedStatement ps = conn.prepareStatement("select count(*) from messages where user_to=? and is_read=0")) {
+            ps.setString(1, nick);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? rs.getLong(1) : 0;
+            }
+        }
     }
 
     public boolean existsUser(String nick) throws Exception {
@@ -284,4 +379,19 @@ public class UserLogon extends PetsciiThread {
         conn.close();
     }
 
+    public static byte[] LOGO = new byte[] {32, 32, 32, 32, 32, 28, -84, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+            32, 32, 32, 32, 32, -104, -69, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+            32, 32, 5, -81, -81, -81, -81, -81, -81, -81, 13, 18, 28, -95, -65, -110,
+            -84, 18, -69, -110, -69, 18, -69, -110, -66, 18, -68, -110, -66, 18, -65, -110,
+            -65, -104, -84, 18, -94, -110, -95, 18, -65, -110, -66, 18, -65, -69, -110, -84,
+            18, -94, -110, -95, 18, -65, -68, -95, -69, -110, -65, 18, -95, -110, 32, -95,
+            32, 32, 32, 18, 5, -48, -46, -55, -42, -63, -44, -59, -110, 13, 18, 28,
+            -95, -110, 32, -68, 18, -68, -110, 32, -68, -69, -95, 32, -65, 18, -65, -110,
+            -104, -68, -94, -95, -65, -69, -65, 18, -66, -110, -68, -94, -95, 18, -69, -110,
+            -69, 18, -95, -95, -95, -110, -68, -94, -95, 30, -94, -94, 32, 18, 5, -45,
+            -59, -61, -44, -55, -49, -50, -110, 13, 32, 32, 32, 32, 32, 32, 32, 32,
+            32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+            32, 32, 32, -104, -94, -66, 32, 32, 32, 5, -93, -93, -93, -93, -93, -93,
+            -93, 13
+    };
 }
