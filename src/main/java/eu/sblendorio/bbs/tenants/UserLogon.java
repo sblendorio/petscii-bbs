@@ -1,8 +1,8 @@
 package eu.sblendorio.bbs.tenants;
 
 import eu.sblendorio.bbs.core.PetsciiThread;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.io.File;
 import java.sql.Connection;
@@ -19,6 +19,7 @@ import static eu.sblendorio.bbs.core.Keys.REVOFF;
 import static eu.sblendorio.bbs.core.Keys.REVON;
 import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
 import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class UserLogon extends PetsciiThread {
 
@@ -53,7 +54,7 @@ public class UserLogon extends PetsciiThread {
         public final String userFrom;
         public final String userTo;
         public final Date dateTime;
-        public final boolean isRead;
+        public boolean isRead;
         public final String subject;
         public final String message;
 
@@ -140,8 +141,8 @@ public class UserLogon extends PetsciiThread {
 
             switch (choice) {
                 case '0': listUsers(); break;
-                case '1': listMessages(true); break;
-                case '2': listMessages(false); break;
+                case '1': listMessages(false); break;
+                case '2': listMessages(true); break;
                 case '3': sendMessageGui(); break;
             }
 
@@ -219,23 +220,87 @@ public class UserLogon extends PetsciiThread {
     }
 
     public void listMessages(boolean onlyUnread) throws Exception {
+        List<Message> messages = getMessages(user.nick, onlyUnread);
+
+        int size = messages.size();
+        if (size == 0) {
+            cls();
+            write(LOGO);
+            write(GREY3);
+            println("No " + (onlyUnread ? "unread " : EMPTY) + "message.");
+            newline();
+            write(WHITE);
+            print("PRESS ANY KEY TO GO BACK ");
+            flush(); resetInput(); readKey(); resetInput();
+            return;
+        }
+        int pagesize = 3;
+        int offset = 0;
+        String cmd = EMPTY;
+        do {
+            cls();
+            write(LOGO);
+            write(GREY3);
+            println("Got "+ messages.size()+" messages.");
+            newline();
+            for (int i=offset; i<Math.min(offset+pagesize, size); ++i) {
+                Message m = messages.get(i);
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                DateFormat tf = new SimpleDateFormat("hh:mm:ssa");
+                String nowString= df.format(new Date(System.currentTimeMillis()));
+                String date = df.format(m.dateTime);
+                if (date.equals(nowString)) date = tf.format(m.dateTime);
+                String subject = isNotBlank(m.subject) ? m.subject : defaultString(m.message).replaceAll("[\r\n]", " ");
+                if (isNotBlank(subject) && (1+(""+i).length()+1+10+1+m.userFrom.length()+1+m.subject.length() )>39)
+                    subject = subject.substring(0,39-(1+(""+i).length()+1+10+1+m.userFrom.length()+1));
+                write(LIGHT_RED); print((m.isRead ? " " : "*"));
+                write(WHITE); print((i+1) + " ");
+                write(GREY3); print(date + " ");
+                write(CYAN); print(m.userFrom);
+                print(" ");
+                write(WHITE); print(subject);
+                newline();
+            }
+            write(GREY3);
+            newline();
+            print("> ");
+            flush(); cmd = readLine();
+            cmd = trim(lowerCase(cmd));
+            int index = toInt(cmd);
+            if ("+".equals(cmd) && (offset+pagesize<size)) {
+                offset += pagesize;
+            } else if ("-".equals(cmd) && offset > 0) {
+                offset -= pagesize;
+            } else if (isNumeric(cmd) && index>0 && index<=size) {
+                displayMessage(messages.get(index - 1));
+            }
+        } while (!".".equals(cmd));
+
+    }
+
+    public void displayMessage(Message m) throws Exception {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         cls();
         write(LOGO);
         write(GREY3);
-        long i;
-        Map<Long, Message> map = new TreeMap<>();
-        List<Message> messages = getMessages(user.nick, onlyUnread);
-        println("Got "+ messages.size()+" messages.");
-        i = 1;
-        for (Message m: messages) {
-            map.put(i, m);
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            String date = df.format(m.dateTime);
-            println((m.isRead ? " " : "*") + i + " "+ date + " " + m.userFrom + ": " + m.subject);
-            i++;
-        }
-
+        println("From: "+ m.userFrom);
+        println("To:   "+ m.userTo);
+        println("Date: "+ df.format(m.dateTime));
+        println("Subj: "+ m.subject);
+        println(StringUtils.repeat(chr(163),39));
+        println(m.message);
+        markAsRead(m);
+        newline();
+        flush();
         resetInput(); readKey(); resetInput();
+    }
+
+    void markAsRead(Message m) throws Exception {
+        m.isRead = true;
+        try (PreparedStatement ps = conn.prepareStatement("update messages set is_read=1 where rowid=?")) {
+            ps.setLong(1, m.rowId);
+            ps.executeUpdate();
+        }
     }
 
     public List<User> getUsers() throws Exception {
@@ -254,7 +319,7 @@ public class UserLogon extends PetsciiThread {
     }
 
     public List<Message> getMessages(String userTo, boolean onlyUnread) throws Exception {
-        List<Message> result = new LinkedList<>();
+        List<Message> result = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement("" +
                 "SELECT rowid, user_from, user_to, datetime, is_read, subject, message FROM messages WHERE user_to=? "+
                 (onlyUnread ? " AND is_read = 0 " : EMPTY) + " ORDER BY datetime DESC") ) {
