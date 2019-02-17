@@ -34,6 +34,9 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(6, delta + 19); write(REVON); print(" P "); write(REVOFF); print(" PETSCII Art Gallery");
             gotoXY(6, delta + 20); write(REVON); print(" . "); write(REVOFF); print(" Logoff");
 
+            gotoXY(27, delta + 4); write(WHITE); print("Servizi"); write(GREY3);
+            gotoXY(27, delta + 6); write(REVON); print(" M "); write(REVOFF); print(" Messaggi");
+
             gotoXY(4, 23); write(GREY3); print("Copyright (C) 2018 Retroacademy ");
 
             flush();
@@ -62,6 +65,7 @@ public class MenuRetroAcademy extends PetsciiThread {
                     else if (key == '0') launch(new Ossa());
                     else if (key == 'p') launch(new PetsciiArtGallery());
                     else if (key == 's') launch(new Sportal());
+                    else if (key == 'm') launch(new UserLogon());
                     else validKey = false;
             } while (!validKey);
         }
