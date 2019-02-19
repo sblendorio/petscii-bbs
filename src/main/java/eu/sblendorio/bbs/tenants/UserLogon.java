@@ -377,7 +377,7 @@ public class UserLogon extends PetsciiThread {
 
         PreparedStatement ps = conn.prepareStatement("insert into users (nick, realname, email, salt, password) values (?,?,?,?,?)");
         String salt = generateId();
-        String hash = sha1Hex(salt+password);
+        String hash = sha1Hex(salt + password);
         ps.setString(1, nick);
         ps.setString(2, realname);
         ps.setString(3, email);
