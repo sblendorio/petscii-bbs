@@ -2,9 +2,10 @@ package eu.sblendorio.bbs.tenants;
 
 import eu.sblendorio.bbs.core.PetsciiThread;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 
 import java.io.File;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.DriverManager;
@@ -25,6 +26,7 @@ public class UserLogon extends PetsciiThread {
 
     public static final String dbFile = System.getProperty("user.home") + "/mydatabase.db";
     public static Properties properties;
+    SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
 
     static {
         properties = new Properties();
@@ -374,7 +376,7 @@ public class UserLogon extends PetsciiThread {
         if (existsUser(nick)) return false;
 
         PreparedStatement ps = conn.prepareStatement("insert into users (nick, realname, email, salt, password) values (?,?,?,?,?)");
-        String salt = UUID.randomUUID().toString();
+        String salt = generateId();
         String hash = sha1Hex(salt+password);
         ps.setString(1, nick);
         ps.setString(2, realname);
@@ -459,4 +461,16 @@ public class UserLogon extends PetsciiThread {
             32, 32, 32, -104, -94, -66, 32, 32, 32, 5, -93, -93, -93, -93, -93, -93,
             -93, 13
     };
+
+    public String generateId()  throws NoSuchAlgorithmException{
+        byte[] bytes = new byte[32];
+        random.nextBytes(bytes);
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < bytes.length; i++) {
+            String theHex = Integer.toHexString(bytes[i] & 0xFF).toLowerCase();
+            sb.append(theHex.length() == 1 ? "0" + theHex : theHex);
+        }
+        return sb.toString();
+    }
 }
+
