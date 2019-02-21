@@ -249,8 +249,9 @@ public class UserLogon extends PetsciiThread {
             write(REVON); print(" # "); write(REVOFF); print(" Read message number ");
             write(REVON); print(" K "); write(REVOFF); println(" Unsubscribe");
 
-            write(REVON); print(" + "); write(REVOFF); print(" Go to next page ");
-            write(REVON); print(" - "); write(REVOFF); println(" Go to prev page");
+            write(REVON); print(" + "); write(REVOFF); print(" Next page ");
+            write(REVON); print(" - "); write(REVOFF); print(" Prev page ");
+            write(REVON); print(" P "); write(REVOFF); println(" Privacy");
 
             write(WHITE);println(StringUtils.repeat(chr(163), 39));write(GREY3);
             print("> ");
