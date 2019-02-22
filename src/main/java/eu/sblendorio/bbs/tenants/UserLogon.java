@@ -1,8 +1,8 @@
 package eu.sblendorio.bbs.tenants;
 
 import eu.sblendorio.bbs.core.PetsciiThread;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.WordUtils;
 
 import java.io.File;
 import java.security.NoSuchAlgorithmException;
@@ -18,6 +18,7 @@ import java.util.*;
 
 import static eu.sblendorio.bbs.core.Colors.*;
 import static eu.sblendorio.bbs.core.Keys.*;
+import static java.util.Arrays.asList;
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.*;
@@ -478,7 +479,10 @@ public class UserLogon extends PetsciiThread {
     }
 
     public void showPrivacyPolicy() throws Exception {
-        List<String> text = readTextFile("gdpr/privacy-statement.txt");
+        List<String> rawText = readTextFile("gdpr/privacy-statement.txt");
+        List<String> text = new ArrayList<>();
+        for (String row: rawText)
+            text.addAll(asList(WordUtils.wrap(row, 39, "\n", true).split("\n")));
         if (isEmpty(text)) return;
         int size = text.size();
         int pagesize = 18;
