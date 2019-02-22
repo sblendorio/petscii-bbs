@@ -2,6 +2,8 @@ package eu.sblendorio.bbs.core;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 import static eu.sblendorio.bbs.core.Utils.isControlChar;
 import static eu.sblendorio.bbs.core.Utils.isPrintableChar;
@@ -539,11 +541,21 @@ public class CbmInputOutput extends Reader {
 
     public byte[] readBinaryFile(String filename) throws Exception {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
-             ByteArrayOutputStream os = new ByteArrayOutputStream();) {
+             ByteArrayOutputStream os = new ByteArrayOutputStream()) {
             byte[] buffer = new byte[2048];
             for (int len = is.read(buffer); len != -1; len = is.read(buffer)) os.write(buffer, 0, len);
             return os.toByteArray();
         }
+    }
+
+    public List<String> readTextFile(String filename) throws Exception {
+        List<String> result = new ArrayList<>();
+        String line;
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
+             BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+            while ((line = br.readLine()) != null) result.add(line);
+        }
+        return result;
     }
 
     public static final String httpMessage = "<html><head><title>Warning</title></head>" +

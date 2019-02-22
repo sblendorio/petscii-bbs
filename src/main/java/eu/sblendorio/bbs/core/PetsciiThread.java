@@ -6,6 +6,7 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.net.*;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -167,6 +168,7 @@ public abstract class PetsciiThread extends Thread {
     public void resetInput() throws IOException { cbm.resetInput(); }
     public void writeRawFile(String filename) throws Exception { cbm.writeRawFile(filename); }
     public byte[] readBinaryFile(String filename) throws Exception { return cbm.readBinaryFile(filename); }
+    public List<String> readTextFile(String filename) throws Exception { return cbm.readTextFile(filename); }
     public void gotoXY(int x, int y) {
         write(HOME);
         for (int i=0; i<x; ++i) write(RIGHT);

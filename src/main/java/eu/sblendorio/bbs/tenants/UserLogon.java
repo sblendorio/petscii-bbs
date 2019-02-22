@@ -270,6 +270,8 @@ public class UserLogon extends PetsciiThread {
                 onlyUnread = true;
             } else if ("m".equals(cmd)) {
                 sendMessageGui();
+            } else if ("p".equals(cmd)) {
+                showPrivacyPolicy();
             } else if (isNumeric(cmd) && index>0 && index<=size) {
                 displayMessage(messages.get(index - 1));
             }
@@ -473,5 +475,38 @@ public class UserLogon extends PetsciiThread {
         return sb.toString();
     }
 
+    public void showPrivacyPolicy() throws Exception {
+        List<String> text = readTextFile("gdpr/privacy-statement.txt");
+        int size = text.size();
+        int pagesize = 18;
+        int offset = 0;
+        int cmd = 0;
+        do {
+            cls();
+            write(LOGO);
+            write(GREY3);
+            newline();
+            for (int i = offset; i < Math.min(offset + pagesize, size); ++i) {
+                println(text.get(i));
+
+            }
+            println();
+            print("[");
+            write(WHITE); print("+-");
+            write(GREY3); print("] Next/Prev page  [");
+            write(WHITE); print(".");
+            write(GREY3); print("] EXIT");
+            flush();
+            resetInput();
+            cmd = readKey();
+            if (cmd == '.') {
+                return;
+            } else if (cmd == '-' && offset > 0) {
+                offset -= pagesize;
+            } else if (offset + pagesize < size) {
+                offset += pagesize;
+            }
+        } while (true);
+    }
 }
 
