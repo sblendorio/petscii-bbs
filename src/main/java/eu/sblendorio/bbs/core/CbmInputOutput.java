@@ -554,8 +554,9 @@ public class CbmInputOutput extends Reader {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
              BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
             while ((line = br.readLine()) != null) result.add(line);
+        } finally {
+            return result;
         }
-        return result;
     }
 
     public static final String httpMessage = "<html><head><title>Warning</title></head>" +
