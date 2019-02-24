@@ -351,7 +351,7 @@ public class UserLogon extends PetsciiThread {
         String password;
         String realname;
         String email;
-        boolean exists;
+        boolean notValid;
         newline();
         write(WHITE);
         println("ADDING NEW USER");
@@ -361,9 +361,9 @@ public class UserLogon extends PetsciiThread {
             print("Username: ");
             flush(); username = readLine();
             if (isBlank(username)) return false;
-            exists = existsUser(username) || "?".equals(username);
-            if (exists) println("WARN: Username not available");
-        } while (exists);
+            notValid = existsUser(username) || userInVault(username) || "?".equals(username);
+            if (notValid) println("WARN: Username not available");
+        } while (notValid);
         print("Real name: "); flush(); realname = readLine();
         print("Email: "); flush(); email = readLine();
         do {
@@ -418,6 +418,15 @@ public class UserLogon extends PetsciiThread {
         }
     }
 
+    public boolean userInVault(String nick) throws Exception {
+        try (PreparedStatement ps = conn.prepareStatement("select hash from user_vault where hash=?")) {
+            ps.setString(1, sha256Hex(nick));
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
     public User getUser(String nick, String givenPassword) throws Exception {
         try (PreparedStatement ps = conn.prepareStatement("select id, realname, email, salt, password from users where nick=?");) {
             ps.setString(1, nick);
@@ -435,17 +444,37 @@ public class UserLogon extends PetsciiThread {
         }
     }
 
+    public void killUser(String nick) throws Exception {
+        try (PreparedStatement ps = conn.prepareStatement("delete from user where nick=?")) {
+            ps.setString(1, nick);
+            ps.executeUpdate();
+        }
+
+        try (PreparedStatement ps = conn.prepareStatement("delete from messages where user_to=?")) {
+            ps.setString(1, nick);
+            ps.executeUpdate();
+        }
+
+        try (PreparedStatement ps = conn.prepareStatement("insert into user_vault (hash) values (?)")) {
+            ps.setString(1, sha256Hex(nick));
+            ps.executeUpdate();
+        }
+    }
+
     public void createDatabase(Properties properties) throws Exception {
         Connection conn = DriverManager.getConnection("jdbc:sqlite:"+dbFile, properties);
-        Statement s;
 
-        s = conn.createStatement();
-        s.executeUpdate("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, nick TEXT, realname TEXT, email TEXT, salt text, password TEXT)");
-        s.close();
+        try (Statement s = conn.createStatement()) {
+            s.executeUpdate("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, nick TEXT, realname TEXT, email TEXT, salt text, password TEXT)");
+        }
 
-        s = conn.createStatement();
-        s.executeUpdate("CREATE TABLE messages (user_from TEXT, user_to TEXT, datetime INTEGER, is_read INTEGER, subject TEXT, message TEXT)");
-        s.close();
+        try (Statement s = conn.createStatement()) {
+            s.executeUpdate("CREATE TABLE messages (user_from TEXT, user_to TEXT, datetime INTEGER, is_read INTEGER, subject TEXT, message TEXT)");
+        }
+
+        try (Statement s = conn.createStatement()) {
+            s.executeUpdate("CREATE TABLE user_vault (hash TEXT)");
+        }
 
         conn.close();
     }
