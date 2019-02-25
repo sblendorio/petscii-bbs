@@ -249,8 +249,8 @@ public class UserLogon extends PetsciiThread {
             write(REVON); print(" A "); write(REVOFF); print(" All messag ");
             write(REVON); print(" R "); write(REVOFF); println(" Only unread messages");
 
-            write(REVON); print(" # "); write(REVOFF); print(" Read message number ");
-            write(REVON); print(" K "); write(REVOFF); println(" Unsubscribe");
+            write(REVON); print(" # "); write(REVOFF); print(" Read message number  ");
+            write(REVON); print(" K "); write(REVOFF); println(" User prefs");
 
             write(REVON); print(" + "); write(REVOFF); print(" Next page ");
             write(REVON); print(" - "); write(REVOFF); print(" Prev page ");
@@ -275,6 +275,8 @@ public class UserLogon extends PetsciiThread {
                 sendMessageGui();
             } else if ("p".equals(cmd)) {
                 showPrivacyPolicy();
+            } else if ("k".equals(cmd)) {
+                userPreferences();
             } else if (isNumeric(cmd) && index>0 && index<=size) {
                 displayMessage(messages.get(index - 1));
             }
@@ -344,6 +346,47 @@ public class UserLogon extends PetsciiThread {
             }
         }
         return result;
+    }
+
+    public void userPreferences() throws Exception {
+        int ch;
+        do {
+            cls();
+            write(LOGO);
+            write(GREY3);
+            println("User preferences [" + user.nick + "]");
+            newline();
+            write(REVON); print(" 1 "); write(REVOFF); println(" Change password");
+            write(REVON); print(" 2 "); write(REVOFF); println(" Change realname");
+            write(REVON); print(" 3 "); write(REVOFF); println(" Erase user");
+            write(REVON); print(" 4 "); write(REVOFF); println(" Back to messages");
+            newline();
+            flush(); resetInput();
+            ch = readKey();
+
+            if (ch == '3') {
+                write(RED);
+                write(REVON); println("         ");
+                write(REVON); println(" WARNING ");
+                write(REVON); println("         "); write(REVOFF);
+                newline();
+                println("This choice will erase your account");
+                print("Are you sure? (Y/N) ");
+                flush(); resetInput();
+                int erase = readKey();
+                if (erase == 'y' || erase == 'Y') {
+                    newline();
+                    newline();
+                    write(REVON); println("                      ");
+                    write(REVON); println(" USER FINALLY DELETED ");
+                    write(REVON); println("                      "); write(REVOFF);
+                    write(GREY3); newline();
+                    println("PRESS ANY KEY TO EXIT");
+                    readKey();
+                    throw new UserRemovedException();
+                }
+            }
+        } while (ch != '.');
     }
 
     public boolean createNewUser() throws Exception {
@@ -544,5 +587,7 @@ public class UserLogon extends PetsciiThread {
             }
         } while (true);
     }
+
+    public static class UserRemovedException extends RuntimeException {}
 }
 

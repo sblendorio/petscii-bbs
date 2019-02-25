@@ -133,7 +133,7 @@ public abstract class PetsciiThread extends Thread {
         } catch (Exception e) {
             child = null;
             clientClass = getClass();
-            log("Exception during launching of " + bbs.getClass().getSimpleName()+" within " + this.getClass().getSimpleName()+". Launch interrupted. Stack trace:");
+            log(e.getClass().getSimpleName() + " during launching of " + bbs.getClass().getSimpleName()+" within " + this.getClass().getSimpleName()+". Launch interrupted. Stack trace:");
             e.printStackTrace();
             return false;
         }
