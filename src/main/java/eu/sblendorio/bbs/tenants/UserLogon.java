@@ -359,7 +359,7 @@ public class UserLogon extends PetsciiThread {
             write(REVON); print(" 1 "); write(REVOFF); println(" Change password");
             write(REVON); print(" 2 "); write(REVOFF); println(" Change realname");
             write(REVON); print(" 3 "); write(REVOFF); println(" Erase user");
-            write(REVON); print(" 4 "); write(REVOFF); println(" Back to messages");
+            write(REVON); print(" . "); write(REVOFF); println(" Back to messages");
             newline();
             flush(); resetInput();
             ch = readKey();
@@ -377,6 +377,7 @@ public class UserLogon extends PetsciiThread {
                 if (erase == 'y' || erase == 'Y') {
                     newline();
                     newline();
+                    killUser(user.nick);
                     write(REVON); println("                      ");
                     write(REVON); println(" USER FINALLY DELETED ");
                     write(REVON); println("                      "); write(REVOFF);
@@ -488,7 +489,7 @@ public class UserLogon extends PetsciiThread {
     }
 
     public void killUser(String nick) throws Exception {
-        try (PreparedStatement ps = conn.prepareStatement("delete from user where nick=?")) {
+        try (PreparedStatement ps = conn.prepareStatement("delete from users where nick=?")) {
             ps.setString(1, nick);
             ps.executeUpdate();
         }
