@@ -26,7 +26,7 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class UserLogon extends PetsciiThread {
 
-    public static final String dbFile = System.getProperty("user.home") + "/mydatabase.db";
+    public static final String dbFile = System.getProperty("user.home") + "/bbs-data.db";
     public static Properties properties;
     SecureRandom random;
 
@@ -98,12 +98,24 @@ public class UserLogon extends PetsciiThread {
         write(CASE_LOCK, LOWERCASE);
         write(LOGO);
         write(GREY3);
+        newline();
+        println("Enter 'P' for privacy policy");
+        newline();
         do {
             do {
                 print("USERID or 'NEW': ");
                 flush(); username = readLine();
                 if (isBlank(username)) return;
-                if (equalsIgnoreCase(username, "new")) {
+                if (equalsIgnoreCase(username, "p")) {
+                    showPrivacyPolicy();
+                    cls();
+                    write(CASE_LOCK, LOWERCASE);
+                    write(LOGO);
+                    write(GREY3);
+                    newline();
+                    println("Enter 'P' as USERID for privacy policy");
+                    newline();
+                } else if (equalsIgnoreCase(username, "new")) {
                     if (createNewUser()) {
                         write(GREEN); println("User created successfully.");
                     } else {
@@ -112,7 +124,7 @@ public class UserLogon extends PetsciiThread {
                     write(GREY3);
                     newline();
                 }
-            } while (equalsIgnoreCase(username, "new"));
+            } while (equalsIgnoreCase(username, "new") || equalsIgnoreCase(username, "p"));
             print("PASSWORD: ");
             flush(); password = readPassword();
             user = getUser(username, password);
@@ -160,7 +172,6 @@ public class UserLogon extends PetsciiThread {
     public void sendMessageGui() throws Exception {
         String receipt;
         String subject;
-        String message;
         boolean ok = false;
 
         do {
@@ -179,9 +190,17 @@ public class UserLogon extends PetsciiThread {
         print("subject: ");
         flush(); subject = readLine();
         if (isBlank(subject)) return;
-
-        print("message: ");
-        flush(); message = readLine();
+        newline();
+        println("Message (end with EMPTY LINE)");
+        println("-----------------------------");
+        String line = EMPTY;
+        String message = EMPTY;
+        do {
+            flush();
+            line = readLine();
+            if (isNotBlank(line))
+                message += line + "\n";
+        } while (isNotBlank(line));
 
         sendMessage(user.nick, receipt, subject, message);
         newline(); write(WHITE);
@@ -295,9 +314,12 @@ public class UserLogon extends PetsciiThread {
         println("Date: "+ df.format(m.dateTime));
         println("Subj: "+ m.subject);
         println(StringUtils.repeat(chr(163),39));
-        println(m.message);
+        String[] lines = defaultString(m.message).split("\n");
+        for (String line: lines)
+            println(WordUtils.wrap(line, 39, "\r", true ));
         markAsRead(m);
         newline();
+        print("PRESS ANY KEY TO GO BACK");
         flush();
         resetInput(); readKey(); resetInput();
     }
@@ -405,7 +427,7 @@ public class UserLogon extends PetsciiThread {
             print("Username: ");
             flush(); username = readLine();
             if (isBlank(username)) return false;
-            notValid = existsUser(username) || userInVault(username) || "?".equals(username);
+            notValid = existsUser(username) || userInVault(username) || "?".equals(username) || "p".equalsIgnoreCase(username);
             if (notValid) println("WARN: Username not available");
         } while (notValid);
         print("Real name: "); flush(); realname = readLine();
@@ -571,11 +593,12 @@ public class UserLogon extends PetsciiThread {
 
             }
             println();
-            print("[");
-            write(WHITE); print("+-");
-            write(GREY3); print("] Next/Prev page  [");
+            write(WHITE); print("SPACE");
+            write(GREY3); print("=Next page [");
+            write(WHITE); print("-");
+            write(GREY3); print("]=Prev page [");
             write(WHITE); print(".");
-            write(GREY3); print("] EXIT");
+            write(GREY3); print("]=EXIT");
             flush();
             resetInput();
             cmd = readKey();
