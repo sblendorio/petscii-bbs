@@ -2,6 +2,8 @@ package eu.sblendorio.bbs.core;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 import static eu.sblendorio.bbs.core.Utils.isControlChar;
 import static eu.sblendorio.bbs.core.Utils.isPrintableChar;
@@ -194,6 +196,10 @@ public class CbmInputOutput extends Reader {
     }
 
     public String readLine(boolean ignoreLF, int maxLength) throws IOException {
+        return readLine(ignoreLF, maxLength, false);
+    }
+
+    public String readLine(boolean ignoreLF, int maxLength, boolean mask) throws IOException {
         StringBuffer s = null;
         int startChar;
         synchronized (lock) {
@@ -259,7 +265,7 @@ public class CbmInputOutput extends Reader {
                             out.write(157);
                             ++size;
                         } else {
-                            out.write(c);
+                            out.write(mask && c != 13 && c != 10 ? '*' : c);
                             ++size;
                         }
                         out.flush();
@@ -318,6 +324,10 @@ public class CbmInputOutput extends Reader {
         }
         final String result = new String(output, 0, i+1, ISO_8859_1);
         return result;
+    }
+
+    public String readPassword() throws IOException {
+        return readLine(false, 0, true);
     }
 
     public String readLine() throws IOException {
@@ -531,10 +541,21 @@ public class CbmInputOutput extends Reader {
 
     public byte[] readBinaryFile(String filename) throws Exception {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
-             ByteArrayOutputStream os = new ByteArrayOutputStream();) {
+             ByteArrayOutputStream os = new ByteArrayOutputStream()) {
             byte[] buffer = new byte[2048];
             for (int len = is.read(buffer); len != -1; len = is.read(buffer)) os.write(buffer, 0, len);
             return os.toByteArray();
+        }
+    }
+
+    public List<String> readTextFile(String filename) throws Exception {
+        List<String> result = new ArrayList<>();
+        String line;
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
+             BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+            while ((line = br.readLine()) != null) result.add(line);
+        } finally {
+            return result;
         }
     }
 

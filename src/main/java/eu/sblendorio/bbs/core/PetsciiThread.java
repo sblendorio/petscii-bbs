@@ -6,6 +6,7 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.net.*;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -132,7 +133,7 @@ public abstract class PetsciiThread extends Thread {
         } catch (Exception e) {
             child = null;
             clientClass = getClass();
-            log("Exception during launching of " + bbs.getClass().getSimpleName()+" within " + this.getClass().getSimpleName()+". Launch interrupted. Stack trace:");
+            log(e.getClass().getSimpleName() + " during launching of " + bbs.getClass().getSimpleName()+" within " + this.getClass().getSimpleName()+". Launch interrupted. Stack trace:");
             e.printStackTrace();
             return false;
         }
@@ -162,10 +163,12 @@ public abstract class PetsciiThread extends Thread {
     public void println() { println(EMPTY); }
     public String readLine() throws IOException { return cbm.readLine(); }
     public String readLine(int maxLength) throws IOException { return cbm.readLine(maxLength); }
+    public String readPassword() throws Exception { return cbm.readPassword(); }
     public int readKey() throws IOException { return cbm.readKey(); }
     public void resetInput() throws IOException { cbm.resetInput(); }
     public void writeRawFile(String filename) throws Exception { cbm.writeRawFile(filename); }
     public byte[] readBinaryFile(String filename) throws Exception { return cbm.readBinaryFile(filename); }
+    public List<String> readTextFile(String filename) throws Exception { return cbm.readTextFile(filename); }
     public void gotoXY(int x, int y) {
         write(HOME);
         for (int i=0; i<x; ++i) write(RIGHT);

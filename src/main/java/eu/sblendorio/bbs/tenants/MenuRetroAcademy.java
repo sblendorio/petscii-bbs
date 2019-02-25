@@ -28,11 +28,14 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(24, delta + 14); write(REVON); print(" 8 "); write(REVOFF); print(" CONNECT-4");
 
             gotoXY(6, delta + 14); write(WHITE); print("Misc"); write(GREY3);
-            gotoXY(6, delta + 16); write(REVON); print(" 9 "); write(REVOFF); print(" Televideo RAI");
+            gotoXY(6, delta + 16); write(REVON); print(" 9 "); write(REVOFF); print(" Sportal.IT");
             gotoXY(6, delta + 17); write(REVON); print(" 0 "); write(REVOFF); print(" Impariamo a conoscere le ossa");
-            gotoXY(6, delta + 18); write(REVON); print(" S "); write(REVOFF); print(" Sportal.IT");
-            gotoXY(6, delta + 19); write(REVON); print(" P "); write(REVOFF); print(" PETSCII Art Gallery");
-            gotoXY(6, delta + 20); write(REVON); print(" . "); write(REVOFF); print(" Logoff");
+            gotoXY(6, delta + 18); write(REVON); print(" P "); write(REVOFF); print(" PETSCII Art Gallery");
+            gotoXY(6, delta + 19); write(REVON); print(" . "); write(REVOFF); print(" Logoff");
+
+            gotoXY(26, delta + 4); write(WHITE); print("Servizi"); write(GREY3);
+            gotoXY(26, delta + 6); write(REVON); print(" M "); write(REVOFF); print(" Messaggi");
+            gotoXY(26, delta + 7); write(REVON); print(" T "); write(REVOFF); print(" Televideo");
 
             gotoXY(4, 23); write(GREY3); print("Copyright (C) 2018 Retroacademy ");
 
@@ -44,7 +47,12 @@ public class MenuRetroAcademy extends PetsciiThread {
                 resetInput(); int key = readKey();
                 key = Character.toLowerCase(key);
                 log("Menu. Pressed: '" + (key == 13 || key == 10 ? "chr("+key+")" : ((char) key)) + "' (code=" + key + ")");
-                if (key == '.') return;
+                if (key == '.') {
+                    newline();
+                    newline();
+                    println("Disconnected.");
+                    return;
+                }
                     else if (key == '1') launch(new RetroAcademy());
                     else if (key == '2') launch(new Disinformatico());
                     else if (key == '3') launch(new Medbunker());
@@ -52,11 +60,12 @@ public class MenuRetroAcademy extends PetsciiThread {
                     else if (key == '5') launch(new DavidPuenteBlog());
                     else if (key == '6') launch(new OpenOnline());
                     else if (key == '7') launch(new TicTacToe());
+                    else if (key == '9') launch(new Sportal());
                     else if (key == '8') launch(new ConnectFour());
-                    else if (key == '9') launch(new TelevideoRai());
                     else if (key == '0') launch(new Ossa());
                     else if (key == 'p') launch(new PetsciiArtGallery());
-                    else if (key == 's') launch(new Sportal());
+                    else if (key == 'm') launch(new UserLogon());
+                    else if (key == 't') launch(new TelevideoRai());
                     else validKey = false;
             } while (!validKey);
         }
