@@ -390,10 +390,13 @@ public class UserLogon extends PetsciiThread {
                 print("Real name: ");
                 flush();
                 String newName = readLine();
-                user = changeUserName(user, newName);
-                newline();
-                write(LIGHT_GREEN); println("Real name change successfully"); write(GREY3);
-                flush(); resetInput(); readKey();
+                if (isNotBlank(newName)) {
+                    user = changeUserName(user, newName);
+                    newline();
+                    write(LIGHT_GREEN); println("Real name change successfully"); write(GREY3);
+                    flush();
+                    resetInput(); readKey();
+                }
             } else if (ch == '3') {
                 write(RED);
                 write(REVON); println("         ");
