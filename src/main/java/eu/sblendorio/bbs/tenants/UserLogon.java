@@ -167,26 +167,38 @@ public class UserLogon extends PetsciiThread {
     }
 
     public void sendMessageGui() throws Exception {
+        sendMessageGui(null, null);
+    }
+
+    public void sendMessageGui(String toUser, String toSubject) throws Exception {
         String receipt;
         String subject;
         boolean ok = false;
 
-        do {
-            print("send to (? for user list): ");
-            flush(); receipt = readLine();
-            if (isBlank(receipt)) return;
-            ok = existsUser(receipt);
-            if (!ok && !"?".equals(receipt)) println("WARN: not existing user");
-            if ("?".equals(receipt)) {
-                listUsers();
-                newline();
-                newline();
-            }
-        } while (!ok);
+        if (toUser != null) {
+            receipt = toUser;
+            subject = defaultString(toSubject);
+            print("send to: "); println(receipt);
+            print("subject: "); println(subject);
+        }
+        else {
+            do {
+                print("send to (? for user list): ");
+                flush(); receipt = readLine();
+                if (isBlank(receipt)) return;
+                ok = existsUser(receipt);
+                if (!ok && !"?".equals(receipt)) println("WARN: not existing user");
+                if ("?".equals(receipt)) {
+                    listUsers();
+                    newline();
+                    newline();
+                }
+            } while (!ok);
 
-        print("subject: ");
-        flush(); subject = readLine();
-        if (isBlank(subject)) return;
+            print("subject: ");
+            flush(); subject = readLine();
+            if (isBlank(subject)) return;
+        }
         newline();
         println("Message (end with EMPTY LINE)");
         println("-----------------------------");
@@ -316,9 +328,14 @@ public class UserLogon extends PetsciiThread {
             println(WordUtils.wrap(line, 39, "\r", true ));
         markAsRead(m);
         newline();
-        print("PRESS ANY KEY TO GO BACK");
+        print("press "); write(WHITE); print("'R'"); write(GREY3); print(" to REPLY, any key to go back.");
         flush();
-        resetInput(); readKey(); resetInput();
+        resetInput(); int ch = readKey();
+        if (ch == 'r' || ch == 'R') {
+            newline();
+            newline();
+            sendMessageGui(m.userFrom, m.subject);
+        }
     }
 
     void markAsRead(Message m) throws Exception {
