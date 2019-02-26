@@ -7,14 +7,11 @@ import org.apache.commons.text.WordUtils;
 import java.io.File;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.DriverManager;
-import java.sql.Statement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
 
 import static eu.sblendorio.bbs.core.Colors.*;
 import static eu.sblendorio.bbs.core.Keys.*;
@@ -386,7 +383,18 @@ public class UserLogon extends PetsciiThread {
             flush(); resetInput();
             ch = readKey();
 
-            if (ch == '3') {
+            if (ch == '1')  {
+
+            } else if (ch == '2') {
+                newline();
+                print("Real name: ");
+                flush();
+                String newName = readLine();
+                user = changeUserName(user, newName);
+                newline();
+                write(LIGHT_GREEN); println("Real name change successfully"); write(GREY3);
+                flush(); resetInput(); readKey();
+            } else if (ch == '3') {
                 write(RED);
                 write(REVON); println("         ");
                 write(REVON); println(" WARNING ");
@@ -473,6 +481,26 @@ public class UserLogon extends PetsciiThread {
                 return rs.next() ? rs.getLong(1) : 0;
             }
         }
+    }
+
+    public User getUserById(Long id) throws Exception {
+        try (PreparedStatement ps = conn.prepareStatement("select id, nick, realname, email, salt, password from users where id=?")) {
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                return new User(rs.getLong("id"), rs.getString("nick"), rs.getString("realname"), rs.getString("email"));
+            }
+        }
+    }
+
+    public User changeUserName(User user, String newName) throws Exception {
+        try (PreparedStatement ps = conn.prepareStatement("update users set realname=? where id=?")) {
+            ps.setString(1, newName);
+            ps.setLong(2, user.id);
+            ps.executeUpdate();
+        }
+
+        return getUserById(user.id);
     }
 
     public boolean existsUser(String nick) throws Exception {
