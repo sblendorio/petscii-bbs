@@ -48,6 +48,9 @@ public class PetsciiArtGallery extends PetsciiThread {
             write(RetroAcademy.LOGO);
             write(GREY3);
             newline();
+            println("Select your favourite artist");
+            print("During slideshow, press "); write(REVON); print(" . "); write(REVOFF); println(" to STOP");
+            newline();
             for (int i = 0; i < authors.size(); ++i) {
                 write(REVON);
                 print(" " + (i + 1) + " ");
