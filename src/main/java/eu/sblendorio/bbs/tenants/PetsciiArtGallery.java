@@ -75,7 +75,7 @@ public class PetsciiArtGallery extends PetsciiThread {
         List<Path> drawings = getDirContent(p.toString());
         int i = 0;
         while (i < drawings.size()) {
-            write(CLR, UPPERCASE);
+            write(CLR, RETURN, CLR, UPPERCASE, REVOFF);
             String filename = drawings.get(i).toString().substring(1);
             log("PETSCII FILENAME=" + filename);
             writeRawFile(filename);
@@ -89,6 +89,8 @@ public class PetsciiArtGallery extends PetsciiThread {
             else
                 ++i;
         }
+        write(CLR, RETURN, CLR, LOWERCASE, REVOFF);
+
     }
 
 }
