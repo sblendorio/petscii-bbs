@@ -1,41 +1,27 @@
 package eu.sblendorio.bbs.tenants;
 
 import com.google.common.collect.ImmutableMap;
-import eu.sblendorio.bbs.core.CbmInputOutput;
 import eu.sblendorio.bbs.core.PetsciiThread;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.Socket;
 import java.net.URL;
 import java.nio.file.*;
 import java.util.*;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
-import static eu.sblendorio.bbs.core.Keys.LOWERCASE;
-import static eu.sblendorio.bbs.core.Keys.UPPERCASE;
-import static eu.sblendorio.bbs.core.Keys.CASE_LOCK;
-import static eu.sblendorio.bbs.core.Keys.CLR;
-import static org.apache.commons.lang3.StringUtils.countMatches;
+import static eu.sblendorio.bbs.core.Colors.GREY3;
+import static eu.sblendorio.bbs.core.Keys.*;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 public class PetsciiArtGallery extends PetsciiThread {
 
+    public static String rootPath = "petscii-art-gallery";
 
     public static Map<String, String> authorDetails = ImmutableMap.of(
       "John Canady", "commodore4ever.com"
     );
 
-    public static void main(String s[]) throws Exception {
-        PetsciiArtGallery m= new PetsciiArtGallery();
-        List<Path> res = m.getDirContent("petscii-art-gallery/John Canady");
-        for (Path p: res) System.out.println("* "+p);
-    }
 
     public List<Path> getDirContent(String path) throws Exception {
-        List<Path> result = new LinkedList<>();
+        List<Path> result = new ArrayList<>();
         URL jar = getClass().getProtectionDomain().getCodeSource().getLocation();
         Path jarFile = Paths.get(jar.toURI());
         FileSystem fs = FileSystems.newFileSystem(jarFile, null);
@@ -44,8 +30,7 @@ public class PetsciiArtGallery extends PetsciiThread {
         Collections.sort(result, new Comparator<Path>() {
             @Override
             public int compare(Path o1, Path o2) {
-                return o1 == null || o2 == null ? 0 :
-                        o1.getFileName().toString().compareTo(o2.getFileName().toString());
+                return o1 == null || o2 == null ? 0 : o1.getFileName().toString().compareTo(o2.getFileName().toString());
             }
         });
         return result;
@@ -55,20 +40,52 @@ public class PetsciiArtGallery extends PetsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        List<String> authors = new LinkedList<>();
-        write(CLR, UPPERCASE, CASE_LOCK);
-        System.out.println("authors="+authors);
-        for (String author: authors) {
-            cls();
-            System.out.println("author="+author);
-            println("author="+author);
-            resetInput();
-            int key = readKey();
-            if (key == '.') break;
-        }
-        write(CLR, LOWERCASE);
+        List<Path> authors = getDirContent(rootPath);
+        int key;
+        int choice;
+        do {
+            write(CLR, LOWERCASE, CASE_LOCK);
+            write(RetroAcademy.LOGO);
+            write(GREY3);
+            newline();
+            for (int i = 0; i < authors.size(); ++i) {
+                write(REVON);
+                print(" " + (i + 1) + " ");
+                write(REVOFF);
+                println(" " + authors.get(i).getFileName().toString().replaceAll("/", EMPTY));
+            }
+            write(REVON); print(" . "); write(REVOFF); println(" Go back");
+            newline();
+            print("> ");
+            do {
+                flush(); resetInput(); key = readKey();
+                choice = 0;
+                if (key >= '1' && key <= '9') choice = key - '0';
+                if (choice > authors.size()) choice = 0;
+            } while (choice == 0 && key != '.');
+            if (choice > 0) displayAuthor(authors.get(choice - 1));
+        } while (key != '.');
     }
 
-
+    public void displayAuthor(Path p) throws Exception {
+        cls();
+        List<Path> drawings = getDirContent(p.toString());
+        int i = 0;
+        while (i < drawings.size()) {
+            write(CLR, UPPERCASE);
+            String filename = drawings.get(i).toString().substring(1);
+            System.out.println("FILENAME=" + filename);
+            writeRawFile(filename);
+            flush();
+            resetInput();
+            int key = readKey();
+            if (key == '.')
+                break;
+            else if (key == '-' && i > 0)
+                --i;
+            else
+                ++i;
+        }
+    }
 
 }
