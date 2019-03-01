@@ -77,7 +77,7 @@ public class PetsciiArtGallery extends PetsciiThread {
         while (i < drawings.size()) {
             write(CLR, UPPERCASE);
             String filename = drawings.get(i).toString().substring(1);
-            System.out.println("FILENAME=" + filename);
+            log("PETSCII FILENAME=" + filename);
             writeRawFile(filename);
             flush();
             resetInput();
