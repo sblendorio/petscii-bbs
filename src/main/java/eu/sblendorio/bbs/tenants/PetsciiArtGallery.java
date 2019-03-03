@@ -40,7 +40,6 @@ public class PetsciiArtGallery extends PetsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        //writeRawFile("petscii-art-gallery/John Canady/apache"); readKey(); if (1==1) return; //60
         List<Path> authors = getDirContent(rootPath);
         int key;
         int choice;
