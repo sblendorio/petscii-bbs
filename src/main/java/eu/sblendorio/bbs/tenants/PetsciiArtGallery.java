@@ -8,6 +8,7 @@ import java.nio.file.*;
 import java.util.*;
 
 import static eu.sblendorio.bbs.core.Colors.GREY3;
+import static eu.sblendorio.bbs.core.Colors.WHITE;
 import static eu.sblendorio.bbs.core.Keys.*;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
@@ -36,8 +37,6 @@ public class PetsciiArtGallery extends PetsciiThread {
         return result;
     }
 
-
-
     @Override
     public void doLoop() throws Exception {
         List<Path> authors = getDirContent(rootPath);
@@ -50,6 +49,7 @@ public class PetsciiArtGallery extends PetsciiThread {
             newline();
             println("Select your favourite artist");
             print("During slideshow, press "); write(REVON); print(" . "); write(REVOFF); println(" to STOP");
+            print("Use "); write(REVON); print(" X "); write(REVOFF); println(" to toggle status bar");
             newline();
             for (int i = 0; i < authors.size(); ++i) {
                 write(REVON);
@@ -71,19 +71,27 @@ public class PetsciiArtGallery extends PetsciiThread {
     }
 
     public void displayAuthor(Path p) throws Exception {
+        boolean statusLine = false;
         cls();
         List<Path> drawings = getDirContent(p.toString());
+        int size = drawings.size();
         int i = 0;
-        while (i < drawings.size()) {
+        while (i < size) {
             write(CLR, RETURN, CLR, UPPERCASE, REVOFF);
             String filename = drawings.get(i).toString().substring(1);
             log("PETSCII ("+i+") FILENAME=" + filename);
             writeRawFile(filename);
+            if (statusLine) {
+                write(HOME, WHITE, REVOFF);
+                print((i+1)+"/"+size);
+            }
             flush();
             resetInput();
             int key = readKey();
             if (key == '.')
                 break;
+            else if (key == 'x' || key == 'X')
+                statusLine = !statusLine;
             else if (key == '-' && i > 0)
                 --i;
             else
