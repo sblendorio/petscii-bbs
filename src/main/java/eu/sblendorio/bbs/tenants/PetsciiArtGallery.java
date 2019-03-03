@@ -53,9 +53,9 @@ public class PetsciiArtGallery extends PetsciiThread {
             println(")" + (randomize ? " " : ""));
             newline();
             println("During slideshow, use:");
-            print("  key "); write(REVON); print(" . "); write(REVOFF); println(" to STOP");
-            print("  use "); write(REVON); print(" - "); write(REVOFF); println(" to go to previous picture,");
-            print("  and "); write(REVON); print(" X "); write(REVOFF); println(" to toggle statusline.");
+            print("  key "); write(REVON, WHITE); print(" . "); write(REVOFF, GREY3); println(" to STOP");
+            print("  use "); write(REVON, WHITE); print(" - "); write(REVOFF, GREY3); println(" to go to previous picture,");
+            print("  and "); write(REVON, WHITE); print(" X "); write(REVOFF, GREY3); println(" to toggle statusline.");
             newline();
             println("Select your favourite artist:");
             newline();
