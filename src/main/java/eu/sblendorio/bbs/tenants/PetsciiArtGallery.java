@@ -53,20 +53,20 @@ public class PetsciiArtGallery extends PetsciiThread {
             println(")" + (randomize ? " " : ""));
             newline();
             println("During slideshow, use:");
-            print("  key "); write(REVON, WHITE); print(" . "); write(REVOFF, GREY3); println(" to STOP");
-            print("  use "); write(REVON, WHITE); print(" - "); write(REVOFF, GREY3); println(" to go to previous picture,");
-            print("  and "); write(REVON, WHITE); print(" X "); write(REVOFF, GREY3); println(" to toggle statusline.");
+            print("  key "); write(REVON); print(" . "); write(REVOFF); println(" to STOP");
+            print("  use "); write(REVON); print(" - "); write(REVOFF); println(" to go to previous picture,");
+            print("  and "); write(REVON); print(" X "); write(REVOFF); println(" to toggle statusline.");
             newline();
             println("Select your favourite artist:");
             newline();
             for (int i = 0; i < authors.size(); ++i) {
                 print(" ");
-                write(REVON);
+                write(REVON, WHITE);
                 print(" " + (i + 1) + " ");
-                write(REVOFF);
+                write(REVOFF, GREY3);
                 println(" " + authors.get(i).getFileName().toString().replaceAll("/", EMPTY));
             }
-            print(" "); write(REVON); print(" . "); write(REVOFF); println(" Go back");
+            print(" "); write(REVON, WHITE); print(" . "); write(REVOFF, GREY3); println(" Go back");
             newline();
             print("> ");
             do {
