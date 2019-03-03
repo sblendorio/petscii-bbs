@@ -40,6 +40,7 @@ public class PetsciiArtGallery extends PetsciiThread {
     @Override
     public void doLoop() throws Exception {
         List<Path> authors = getDirContent(rootPath);
+        boolean randomize = false;
         int key;
         int choice;
         do {
@@ -47,33 +48,43 @@ public class PetsciiArtGallery extends PetsciiThread {
             write(RetroAcademy.LOGO);
             write(GREY3);
             newline();
-            println("Select your favourite artist");
-            print("During slideshow, press "); write(REVON); print(" . "); write(REVOFF); println(" to STOP");
-            print("Use "); write(REVON); print(" X "); write(REVOFF); println(" to toggle status bar");
+            print("Press "); write(REVON); print(" R "); write(REVOFF); print(" to toggle randomize (now ");
+            write(WHITE); print(randomize ? "ON" : "OFF"); write(GREY3);
+            println(")" + (randomize ? " " : ""));
+            newline();
+            println("During slideshow, use:");
+            print("  key "); write(REVON); print(" . "); write(REVOFF); println(" to STOP");
+            print("  use "); write(REVON); print(" - "); write(REVOFF); println(" to go to previous picture,");
+            print("  and "); write(REVON); print(" X "); write(REVOFF); println(" to toggle statusline.");
+            newline();
+            println("Select your favourite artist:");
             newline();
             for (int i = 0; i < authors.size(); ++i) {
+                print(" ");
                 write(REVON);
                 print(" " + (i + 1) + " ");
                 write(REVOFF);
                 println(" " + authors.get(i).getFileName().toString().replaceAll("/", EMPTY));
             }
-            write(REVON); print(" . "); write(REVOFF); println(" Go back");
+            print(" "); write(REVON); print(" . "); write(REVOFF); println(" Go back");
             newline();
             print("> ");
             do {
                 flush(); resetInput(); key = readKey();
                 choice = 0;
+                if (key == 'r' || key == 'R') randomize = !randomize;
                 if (key >= '1' && key <= '9') choice = key - '0';
                 if (choice > authors.size()) choice = 0;
-            } while (choice == 0 && key != '.');
-            if (choice > 0) displayAuthor(authors.get(choice - 1));
+            } while (choice == 0 && key != '.' && key != 'r' && key != 'R');
+            if (choice > 0) displayAuthor(authors.get(choice - 1), randomize);
         } while (key != '.');
     }
 
-    public void displayAuthor(Path p) throws Exception {
+    public void displayAuthor(Path p, boolean randomize) throws Exception {
         boolean statusLine = false;
         cls();
         List<Path> drawings = getDirContent(p.toString());
+        if (randomize) Collections.shuffle(drawings);
         int size = drawings.size();
         int i = 0;
         while (i < size) {
