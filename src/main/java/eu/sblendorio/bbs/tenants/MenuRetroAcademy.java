@@ -16,20 +16,21 @@ public class MenuRetroAcademy extends PetsciiThread {
             logo();
 
             gotoXY(5, delta + 4); write(WHITE); print("Blog / News"); write(GREY3);
-            gotoXY(5, delta + 6); write(REVON); print(" 1 "); write(REVOFF); print(" Retroacademy");
+            gotoXY(5, delta + 6); write(REVON); print(" 1 "); write(REVOFF); print(" Next Quotidiano");
             gotoXY(5, delta + 7); write(REVON); print(" 2 "); write(REVOFF); print(" Disinformatico");
             gotoXY(5, delta + 8); write(REVON); print(" 3 "); write(REVOFF); print(" MedBunker");
-            gotoXY(5, delta + 9); write(REVON); print(" 4 "); write(REVOFF); print(" Dottore, e' vero che...");
+            gotoXY(5, delta + 9); write(REVON); print(" 4 "); write(REVOFF); print(" Il Fatto Quotidiano");
             gotoXY(5, delta + 10); write(REVON); print(" 5 "); write(REVOFF); print(" David Puente");
             gotoXY(5, delta + 11); write(REVON); print(" 6 "); write(REVOFF); print(" Open Online");
+            gotoXY(5, delta + 12); write(REVON); print(" 7 "); write(REVOFF); print(" Il Post");
 
             gotoXY(24, delta + 11); write(WHITE); print("Games"); write(GREY3);
-            gotoXY(24, delta + 13); write(REVON); print(" 7 "); write(REVOFF); print(" TIC-TAC-TOE");
-            gotoXY(24, delta + 14); write(REVON); print(" 8 "); write(REVOFF); print(" CONNECT-4");
+            gotoXY(24, delta + 13); write(REVON); print(" 8 "); write(REVOFF); print(" TIC-TAC-TOE");
+            gotoXY(24, delta + 14); write(REVON); print(" 9 "); write(REVOFF); print(" CONNECT-4");
 
             gotoXY(6, delta + 14); write(WHITE); print("Misc"); write(GREY3);
-            gotoXY(6, delta + 16); write(REVON); print(" 9 "); write(REVOFF); print(" Sportal.IT");
-            gotoXY(6, delta + 17); write(REVON); print(" 0 "); write(REVOFF); print(" Impariamo a conoscere le ossa");
+            gotoXY(6, delta + 16); write(REVON); print(" 0 "); write(REVOFF); print(" Sportal.IT");
+            gotoXY(6, delta + 17); write(REVON); print(" C "); write(REVOFF); print(" Impariamo a conoscere le ossa");
             gotoXY(6, delta + 18); write(REVON); print(" P "); write(REVOFF); print(" PETSCII Art Gallery");
             gotoXY(6, delta + 19); write(REVON); print(" . "); write(REVOFF); print(" Logoff");
 
@@ -53,16 +54,17 @@ public class MenuRetroAcademy extends PetsciiThread {
                     println("Disconnected.");
                     return;
                 }
-                    else if (key == '1') launch(new RetroAcademy());
+                    else if (key == '1') launch(new NextQuotidiano());
                     else if (key == '2') launch(new Disinformatico());
                     else if (key == '3') launch(new Medbunker());
-                    else if (key == '4') launch(new DottoreMaEVeroChe());
+                    else if (key == '4') launch(new IlFattoQuotidiano());
                     else if (key == '5') launch(new DavidPuenteBlog());
                     else if (key == '6') launch(new OpenOnline());
-                    else if (key == '7') launch(new TicTacToe());
-                    else if (key == '9') launch(new Sportal());
-                    else if (key == '8') launch(new ConnectFour());
-                    else if (key == '0') launch(new Ossa());
+                    else if (key == '7') launch(new IlPost());
+                    else if (key == '8') launch(new TicTacToe());
+                    else if (key == '9') launch(new ConnectFour());
+                    else if (key == '0') launch(new Sportal());
+                    else if (key == 'c') launch(new Ossa());
                     else if (key == 'p') launch(new PetsciiArtGallery());
                     else if (key == 'm') launch(new UserLogon());
                     else if (key == 't') launch(new TelevideoRai());
