@@ -34,7 +34,6 @@ public class MenuRetroAcademy extends PetsciiThread {
 
     public void init() throws IOException {
         try {
-            System.out.println("** "+socket.getInetAddress());
             File maxmindDb = new File(MAXMIND_DB);
             maxmindReader = new Reader(maxmindDb);
             maxmindResponse = maxmindReader.get(socket.getInetAddress());
