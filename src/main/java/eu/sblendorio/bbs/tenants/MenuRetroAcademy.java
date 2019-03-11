@@ -6,7 +6,6 @@ import eu.sblendorio.bbs.core.PetsciiThread;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
 
 import static eu.sblendorio.bbs.core.Keys.*;
 import static eu.sblendorio.bbs.core.Colors.*;
@@ -69,7 +68,7 @@ public class MenuRetroAcademy extends PetsciiThread {
             logo();
 
             gotoXY(5, delta + 3); write(WHITE); print("Blog / News"); write(GREY3);
-            gotoXY(5, delta + 5); write(REVON); print(" 1 "); write(REVOFF); print(" Retroacademy");
+            gotoXY(5, delta + 5); write(REVON); print(" 1 "); write(REVOFF); print(" Wired Italia");
             gotoXY(5, delta + 6); write(REVON); print(" 2 "); write(REVOFF); print(" Disinformatico");
             gotoXY(5, delta + 7); write(REVON); print(" 3 "); write(REVOFF); print(" Next Quotidiano");
             gotoXY(5, delta + 8); write(REVON); print(" 4 "); write(REVOFF); print(" MedBunker");
@@ -112,7 +111,7 @@ public class MenuRetroAcademy extends PetsciiThread {
                     println("Disconnected.");
                     return;
                 }
-                    else if (key == '1') launch(new RetroAcademy());
+                    else if (key == '1') launch(new WiredItalia());
                     else if (key == '2') launch(new Disinformatico());
                     else if (key == '3') launch(new NextQuotidiano());
                     else if (key == '4') launch(new Medbunker());

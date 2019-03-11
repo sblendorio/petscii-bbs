@@ -177,13 +177,21 @@ public abstract class PetsciiThread extends Thread {
 
 
     public static Object httpGetJson(String url) throws IOException, ParseException {
-        final String result = httpGet(url);
+        return httpGetJson(url, null);
+    }
+
+    public static Object httpGetJson(String url, String userAgent) throws IOException, ParseException {
+        final String result = httpGet(url, userAgent);
         return isBlank(result) ? null : new JSONParser().parse(result);
     }
 
     public static String httpGet(String url) throws IOException {
+        return httpGet(url, null);
+    }
+    public static String httpGet(String url, String userAgent) throws IOException {
         final URL object=new URL(url);
         HttpURLConnection conn = (HttpURLConnection) object.openConnection();
+        if (isNotBlank(userAgent)) conn.setRequestProperty("User-Agent", userAgent);
         conn.setDoOutput(true);
         conn.setDoInput(true);
         conn.setRequestMethod("GET");
