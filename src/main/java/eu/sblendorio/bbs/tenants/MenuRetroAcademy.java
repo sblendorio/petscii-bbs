@@ -6,6 +6,7 @@ import eu.sblendorio.bbs.core.PetsciiThread;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
 
 import static eu.sblendorio.bbs.core.Keys.*;
 import static eu.sblendorio.bbs.core.Colors.*;
@@ -14,12 +15,14 @@ public class MenuRetroAcademy extends PetsciiThread {
 
     public static class GeoData {
         public final String city;
+        public final String cityGeonameId;
         public final String country;
         public final Double latitude;
         public final Double longitude;
         public final String timeZone;
-        public GeoData(final String city, final String country, final Double latitude, final Double longitude, final String timeZone) {
+        public GeoData(final String city, final String cityGeonameId, final String country, final Double latitude, final Double longitude, final String timeZone) {
             this.city = city;
+            this.cityGeonameId = cityGeonameId;
             this.country = country;
             this.latitude = latitude;
             this.longitude = longitude;
@@ -39,12 +42,15 @@ public class MenuRetroAcademy extends PetsciiThread {
             maxmindResponse = maxmindReader.get(socket.getInetAddress());
             maxmindReader.close();
 
-            geoData = new GeoData(maxmindResponse.get("city").get("names").get("en").asText(),
+            geoData = new GeoData(
+                    maxmindResponse.get("city").get("names").get("en").asText(),
+                    maxmindResponse.get("city").get("geoname_id").asText(),
                     maxmindResponse.get("country").get("names").get("en").asText(),
                     maxmindResponse.get("location").get("latitude").asDouble(),
                     maxmindResponse.get("location").get("longitude").asDouble(),
                     maxmindResponse.get("location").get("time_zone").asText()
             );
+            System.out.println(geoData.toString());
         } catch (Exception e) {
             maxmindResponse = null;
             geoData = null;
