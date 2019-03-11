@@ -1,36 +1,85 @@
 package eu.sblendorio.bbs.tenants;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.maxmind.db.Reader;
 import eu.sblendorio.bbs.core.PetsciiThread;
+
+import java.io.File;
+import java.io.IOException;
 
 import static eu.sblendorio.bbs.core.Keys.*;
 import static eu.sblendorio.bbs.core.Colors.*;
 
 public class MenuRetroAcademy extends PetsciiThread {
 
+    public static class GeoData {
+        public final String city;
+        public final String country;
+        public final Double latitude;
+        public final Double longitude;
+        public final String timeZone;
+        public GeoData(final String city, final String country, final Double latitude, final Double longitude, final String timeZone) {
+            this.city = city;
+            this.country = country;
+            this.latitude = latitude;
+            this.longitude = longitude;
+            this.timeZone = timeZone;
+        }
+    }
+
+    public static String MAXMIND_DB = System.getProperty("user.home") + File.separator + "GeoLite2-City.mmdb";
+    private Reader maxmindReader;
+    private JsonNode maxmindResponse;
+    private GeoData geoData;
+
+    public void init() throws IOException {
+        try {
+            System.out.println("** "+socket.getInetAddress());
+            File maxmindDb = new File(MAXMIND_DB);
+            maxmindReader = new Reader(maxmindDb);
+            maxmindResponse = maxmindReader.get(socket.getInetAddress());
+            maxmindReader.close();
+
+            geoData = new GeoData(maxmindResponse.get("city").get("names").get("en").asText(),
+                    maxmindResponse.get("country").get("names").get("en").asText(),
+                    maxmindResponse.get("location").get("latitude").asDouble(),
+                    maxmindResponse.get("location").get("longitude").asDouble(),
+                    maxmindResponse.get("location").get("time_zone").asText()
+            );
+        } catch (Exception e) {
+            maxmindResponse = null;
+            geoData = null;
+            log("Error during IP data");
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void doLoop() throws Exception {
+        init();
         while (true) {
             int delta = 1;
             write(CLR, LOWERCASE, CASE_LOCK);
             log("Starting MenuRetroAcademy BBS / main menu");
             logo();
 
-            gotoXY(5, delta + 4); write(WHITE); print("Blog / News"); write(GREY3);
-            gotoXY(5, delta + 6); write(REVON); print(" 1 "); write(REVOFF); print(" Next Quotidiano");
-            gotoXY(5, delta + 7); write(REVON); print(" 2 "); write(REVOFF); print(" Disinformatico");
-            gotoXY(5, delta + 8); write(REVON); print(" 3 "); write(REVOFF); print(" MedBunker");
-            gotoXY(5, delta + 9); write(REVON); print(" 4 "); write(REVOFF); print(" Il Fatto Quotidiano");
-            gotoXY(5, delta + 10); write(REVON); print(" 5 "); write(REVOFF); print(" David Puente");
-            gotoXY(5, delta + 11); write(REVON); print(" 6 "); write(REVOFF); print(" Open Online");
-            gotoXY(5, delta + 12); write(REVON); print(" 7 "); write(REVOFF); print(" Il Post");
+            gotoXY(5, delta + 3); write(WHITE); print("Blog / News"); write(GREY3);
+            gotoXY(5, delta + 5); write(REVON); print(" 1 "); write(REVOFF); print(" Retroacademy");
+            gotoXY(5, delta + 6); write(REVON); print(" 2 "); write(REVOFF); print(" Disinformatico");
+            gotoXY(5, delta + 7); write(REVON); print(" 3 "); write(REVOFF); print(" Next Quotidiano");
+            gotoXY(5, delta + 8); write(REVON); print(" 4 "); write(REVOFF); print(" MedBunker");
+            gotoXY(5, delta + 9); write(REVON); print(" 5 "); write(REVOFF); print(" Il Fatto Quotidiano");
+            gotoXY(5, delta + 10); write(REVON); print(" 6 "); write(REVOFF); print(" David Puente");
+            gotoXY(5, delta + 11); write(REVON); print(" 7 "); write(REVOFF); print(" Open Online");
+            gotoXY(5, delta + 12); write(REVON); print(" 8 "); write(REVOFF); print(" Il Post");
 
             gotoXY(24, delta + 11); write(WHITE); print("Games"); write(GREY3);
-            gotoXY(24, delta + 13); write(REVON); print(" 8 "); write(REVOFF); print(" TIC-TAC-TOE");
-            gotoXY(24, delta + 14); write(REVON); print(" 9 "); write(REVOFF); print(" CONNECT-4");
+            gotoXY(24, delta + 13); write(REVON); print(" X "); write(REVOFF); print(" TIC-TAC-TOE");
+            gotoXY(24, delta + 14); write(REVON); print(" C "); write(REVOFF); print(" CONNECT-4");
 
             gotoXY(6, delta + 14); write(WHITE); print("Misc"); write(GREY3);
-            gotoXY(6, delta + 16); write(REVON); print(" 0 "); write(REVOFF); print(" Sportal.IT");
-            gotoXY(6, delta + 17); write(REVON); print(" C "); write(REVOFF); print(" Impariamo a conoscere le ossa");
+            gotoXY(6, delta + 16); write(REVON); print(" S "); write(REVOFF); print(" Sportal.IT");
+            gotoXY(6, delta + 17); write(REVON); print(" L "); write(REVOFF); print(" Impariamo a conoscere le ossa");
             gotoXY(6, delta + 18); write(REVON); print(" P "); write(REVOFF); print(" PETSCII Art Gallery");
             gotoXY(6, delta + 19); write(REVON); print(" . "); write(REVOFF); print(" Logoff");
 
@@ -38,7 +87,11 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(26, delta + 6); write(REVON); print(" M "); write(REVOFF); print(" Messaggi");
             gotoXY(26, delta + 7); write(REVON); print(" T "); write(REVOFF); print(" Televideo");
 
-            gotoXY(4, 23); write(GREY3); print("Copyright (C) 2018 Retroacademy ");
+            if (geoData != null) {
+                final String line = "Connected from "+geoData.city+", "+geoData.country;
+                gotoXY((39-line.length()) / 2, 23);
+                write(GREY3); print(line);
+            }
 
             flush();
             boolean validKey;
@@ -54,17 +107,18 @@ public class MenuRetroAcademy extends PetsciiThread {
                     println("Disconnected.");
                     return;
                 }
-                    else if (key == '1') launch(new NextQuotidiano());
+                    else if (key == '1') launch(new RetroAcademy());
                     else if (key == '2') launch(new Disinformatico());
-                    else if (key == '3') launch(new Medbunker());
-                    else if (key == '4') launch(new IlFattoQuotidiano());
-                    else if (key == '5') launch(new DavidPuenteBlog());
-                    else if (key == '6') launch(new OpenOnline());
-                    else if (key == '7') launch(new IlPost());
-                    else if (key == '8') launch(new TicTacToe());
-                    else if (key == '9') launch(new ConnectFour());
-                    else if (key == '0') launch(new Sportal());
-                    else if (key == 'c') launch(new Ossa());
+                    else if (key == '3') launch(new NextQuotidiano());
+                    else if (key == '4') launch(new Medbunker());
+                    else if (key == '5') launch(new IlFattoQuotidiano());
+                    else if (key == '6') launch(new DavidPuenteBlog());
+                    else if (key == '7') launch(new OpenOnline());
+                    else if (key == '8') launch(new IlPost());
+                    else if (key == 'x') launch(new TicTacToe());
+                    else if (key == 'c') launch(new ConnectFour());
+                    else if (key == 's') launch(new Sportal());
+                    else if (key == 'l') launch(new Ossa());
                     else if (key == 'p') launch(new PetsciiArtGallery());
                     else if (key == 'm') launch(new UserLogon());
                     else if (key == 't') launch(new TelevideoRai());

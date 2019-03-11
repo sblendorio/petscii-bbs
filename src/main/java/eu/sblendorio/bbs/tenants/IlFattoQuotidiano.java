@@ -8,6 +8,7 @@ public class IlFattoQuotidiano extends WordpressProxy {
         this.domain = "https://www.ilfattoquotidiano.it";
         this.pageSize = 5;
         this.screenRows = 19;
+        this.showAuthor = true;
     }
 
     public final static byte[] LOGO = new byte[] {

@@ -33,12 +33,14 @@ public class WordpressProxy extends PetsciiThread {
         String date;
         String content;
         String excerpt;
+        Long authorId;
     }
 
     protected String domain = "https://wordpress.org/news";
     protected byte[] logo = LOGO_WORDPRESS;
     protected int pageSize = 10;
     protected int screenRows = 19;
+    protected boolean showAuthor = false;
 
     protected Map<Integer, Post> posts = emptyMap();
     protected int currentPage = 1;
@@ -169,6 +171,7 @@ public class WordpressProxy extends PetsciiThread {
             post.title = (String) ((JSONObject) postJ.get("title")).get("rendered");
             post.date = ((String) postJ.get("date")).replace("T", SPACE).replaceAll(":\\d\\d\\s*$", EMPTY);
             post.excerpt = (String) ((JSONObject) postJ.get("excerpt")).get("rendered");
+            post.authorId = toLong(postJ.get("author").toString());
             result.put(i+1+(perPage*(page-1)), post);
         }
         return result;
@@ -221,11 +224,22 @@ public class WordpressProxy extends PetsciiThread {
         logo();
         waitOn();
 
+        String author = null;
         final Post p = posts.get(n);
+
+        try {
+            if (showAuthor) {
+                JSONObject authorJ = (JSONObject) httpGetJson(getApi() + "users/" + p.authorId);
+                author = authorJ.get("name").toString();
+            }
+        } catch (Exception e) {
+            log("Error during retrieving author");
+            e.printStackTrace();
+        }
         final String content = p.content
                 .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(<(br|div|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
                 .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(<(br|div|img|p|h[0-9])[^>]*>\\s*)+", EMPTY);
-        final String head = p.title + "<br>" + HR_TOP ;
+        final String head = p.title + (isNotBlank(author) ? " - di " + author : EMPTY) + "<br>" + HR_TOP ;
         List<String> rows = wordWrap(head);
 
         List<String> article = wordWrap(p.date.replaceAll("^(\\d\\d\\d\\d).(\\d\\d).(\\d\\d).*","$3/$2/$1") +

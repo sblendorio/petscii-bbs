@@ -8,6 +8,7 @@ public class NextQuotidiano extends WordpressProxy {
         this.domain = "https://www.nextquotidiano.it";
         this.pageSize = 8;
         this.screenRows = 19;
+        this.showAuthor = true;
     }
 
     public final static byte[] LOGO = new byte[] {

@@ -1,5 +1,10 @@
 package eu.sblendorio.bbs.core;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.maxmind.db.Reader;
+
+import java.io.File;
+import java.net.InetAddress;
 import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.*;
@@ -7,13 +12,13 @@ import static org.apache.commons.lang3.StringUtils.*;
 public class Utils {
 
     private static Set<Integer> CONTROL_CHARS = new HashSet<>(Arrays.asList(
-        1, 2, 3, 4, 5, 6, 7, 8, 9,
-        11, 12,
-        14, 15, 16, 17, 18, 19,
-        21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-        128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140,
-        142, 143, 144, 145, 146, 147,
-        149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159
+            1, 2, 3, 4, 5, 6, 7, 8, 9,
+            11, 12,
+            14, 15, 16, 17, 18, 19,
+            21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+            128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140,
+            142, 143, 144, 145, 146, 147,
+            149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159
     ));
 
     private static Set<Integer> EXTRA_CONTROL_CHARS = new HashSet<>(Arrays.asList(0, 10, 13, 20, 141, 148));

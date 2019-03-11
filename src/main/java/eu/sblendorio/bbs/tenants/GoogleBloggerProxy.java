@@ -13,6 +13,7 @@ import eu.sblendorio.bbs.core.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
@@ -36,7 +37,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
     protected int pageSize = 10;
     protected int screenRows = 19;
 
-    protected final String CRED_FILE_PATH = System.getProperty("user.home") + "/credentials.json";
+    protected final String CRED_FILE_PATH = System.getProperty("user.home") + File.separator + "credentials.json";
 
     protected GoogleCredential credential;
     protected Blogger blogger;
