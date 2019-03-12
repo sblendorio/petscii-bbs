@@ -265,8 +265,10 @@ public class GoogleBloggerProxy extends PetsciiThread {
         waitOn();
         final Post p = posts.get(n);
         String content = p.getContent()
-                .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(<(br|div|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
-                .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(<(br|div|img|p|h[0-9])[^>]*>\\s*)+", EMPTY);
+                .replaceAll("(?is)<style>.*</style>", EMPTY)
+                .replaceAll("(?is)<script .*</script>", EMPTY)
+                .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(/?<(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
+                .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(/?<(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY);
         final String head = p.getTitle() +
                 "<br>" +
                 HR_TOP +

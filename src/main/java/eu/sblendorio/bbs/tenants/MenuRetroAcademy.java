@@ -49,7 +49,7 @@ public class MenuRetroAcademy extends PetsciiThread {
                     maxmindResponse.get("location").get("longitude").asDouble(),
                     maxmindResponse.get("location").get("time_zone").asText()
             );
-            System.out.println(geoData.toString());
+            log("Location: " + geoData.city + ", " + geoData.country);
         } catch (Exception e) {
             maxmindResponse = null;
             geoData = null;

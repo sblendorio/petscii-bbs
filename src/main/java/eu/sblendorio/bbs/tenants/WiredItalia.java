@@ -215,7 +215,7 @@ public class WiredItalia extends PetsciiThread {
         final String content = p.content
                 .replaceAll("(?is)<style>.*</style>", EMPTY)
                 .replaceAll("(?is)<script .*</script>", EMPTY)
-                .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(</?(br|div|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY);
+                .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(</?(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY);
         final String head = p.title + " - di " + p.author + "<br>" + HR_TOP ;
         List<String> rows = wordWrap(head);
 
