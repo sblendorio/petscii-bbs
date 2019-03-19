@@ -3,12 +3,14 @@ package eu.sblendorio.bbs.tenants;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.maxmind.db.Reader;
 import eu.sblendorio.bbs.core.PetsciiThread;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
 
 import static eu.sblendorio.bbs.core.Keys.*;
 import static eu.sblendorio.bbs.core.Colors.*;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 public class MenuRetroAcademy extends PetsciiThread {
 
@@ -91,11 +93,9 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(26, delta + 6); write(REVON); print(" M "); write(REVOFF); print(" Messaggi");
             gotoXY(26, delta + 7); write(REVON); print(" T "); write(REVOFF); print(" Televideo");
 
-            if (geoData != null) {
-                final String line = "Connected from "+geoData.city+", "+geoData.country;
-                gotoXY((39-line.length()) / 2, 23);
-                write(GREY3); print(line);
-            }
+            final String line = geoData != null ? "Connected from "+geoData.city+", "+geoData.country : EMPTY;
+            gotoXY((39-line.length()) / 2, 23);
+            write(GREY3); print(line);
 
             flush();
             boolean validKey;

@@ -21,8 +21,10 @@ public abstract class PetsciiThread extends Thread {
     protected Class clientClass;
     protected Socket socket = null;
     protected CbmInputOutput cbm;
+    protected Object customObject = null;
 
     protected PetsciiThread child = null;
+    protected PetsciiThread parent = null;
 
     protected static Map<Long, PetsciiThread> clients = new ConcurrentHashMap<>();
     protected static AtomicLong clientCount = new AtomicLong(0);
@@ -75,6 +77,7 @@ public abstract class PetsciiThread extends Thread {
         setCbmInputOutput(source.cbm);
         setClientId(source.getClientId());
         setClientName(source.getClientName());
+        parent = source;
     }
 
     public void setCbmInputOutput(CbmInputOutput cbm) {
@@ -213,4 +216,7 @@ public abstract class PetsciiThread extends Thread {
     public static Map<Long, PetsciiThread> getClients() {
         return clients;
     }
+
+    public Object getCustomObject() { return customObject; }
+    public void setCustomObject(Object obj) { this.customObject = obj; }
 }

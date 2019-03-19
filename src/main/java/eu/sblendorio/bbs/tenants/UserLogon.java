@@ -78,17 +78,24 @@ public class UserLogon extends PetsciiThread {
             conn = DriverManager.getConnection("jdbc:sqlite:"+dbFile, properties);
     }
 
-    public UserLogon() throws Exception {
+    public void init() throws Exception {
         try {
             random = SecureRandom.getInstance("SHA1PRNG");
         } catch (NoSuchAlgorithmException e) {
             random = null;
+        }
+        user = null;
+        try {
+            user = (User) parent.getCustomObject();
+        } catch (NullPointerException | ClassCastException e) {
+            log("User not logged " + e.getClass().getName() + " " + e.getMessage() );
         }
         openConnection();
     }
 
     @Override
     public void doLoop() throws Exception {
+        init();
         String username;
         String password;
         cls();
@@ -98,7 +105,7 @@ public class UserLogon extends PetsciiThread {
         newline();
         println("Enter 'P' for privacy policy");
         newline();
-        do {
+        while (user == null) {
             do {
                 print("USERID or 'NEW': ");
                 flush(); username = readLine();
@@ -132,7 +139,12 @@ public class UserLogon extends PetsciiThread {
                 newline();
                 write(GREY3);
             }
-        } while (user == null);
+        }
+        try {
+            parent.setCustomObject(user);
+        } catch (NullPointerException e) {
+            // do nothing
+        }
         listMessages(false);
     }
 
