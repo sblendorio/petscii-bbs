@@ -194,7 +194,7 @@ public abstract class PetsciiThread extends Thread {
     public static String httpGet(String url, String userAgent) throws IOException {
         final URL object=new URL(url);
         HttpURLConnection conn = (HttpURLConnection) object.openConnection();
-        if (isNotBlank(userAgent)) conn.setRequestProperty("User-Agent", userAgent);
+        conn.setRequestProperty("User-Agent", defaultString(userAgent));
         conn.setDoOutput(true);
         conn.setDoInput(true);
         conn.setRequestMethod("GET");
