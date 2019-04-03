@@ -268,7 +268,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
                 .replaceAll("(?is)<style>.*</style>", EMPTY)
                 .replaceAll("(?is)<script .*</script>", EMPTY)
                 .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(/?<(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
-                .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(/?<(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY);
+                .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r)*)+", EMPTY);
         final String head = p.getTitle() +
                 "<br>" +
                 HR_TOP +
