@@ -22,6 +22,8 @@ public class HtmlUtils {
                 .replace("\r", "")
                 .replace("©","(C)")
                 .replace("\n", " ")
+                .replaceAll("<script(\\s|>).*?</script\\s*>", "")
+                .replaceAll("<script.*?>", "")
                 .replaceAll("…|&#8230;|&hellip;", "...")
                 .replaceAll("–|&#8211;|&#8212;|&mdash;", "-")
                 .replaceAll("<br( [^>]*)?>", "\n")
