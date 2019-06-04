@@ -262,6 +262,7 @@ public class UserLogon extends PetsciiThread {
             println("Got " + size  + (onlyUnread ? " unread" : EMPTY) + " message" + (size != 1 ? "s" : EMPTY) + (onlyUnread || unread == 0 ? EMPTY : " (" + unread + " unread)") + ".");
             newline();
             for (int i=offset; i<Math.min(offset+pagesize, size); ++i) {
+                int i1=i+1;
                 Message m = messages.get(i);
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                 DateFormat tf = new SimpleDateFormat("hh:mm:ssa");
@@ -269,10 +270,10 @@ public class UserLogon extends PetsciiThread {
                 String date = df.format(m.dateTime);
                 if (date.equals(nowString)) date = tf.format(m.dateTime);
                 String subject = isNotBlank(m.subject) ? m.subject : defaultString(m.message).replaceAll("[\r\n]", " ");
-                if (isNotBlank(subject) && (1+(""+i).length()+1+10+1+m.userFrom.length()+1+m.subject.length() )>39)
-                    subject = subject.substring(0,39-(1+(""+i).length()+1+10+1+m.userFrom.length()+1));
+                if (isNotBlank(subject) && (1+(""+i1).length()+1+10+1+m.userFrom.length()+1+m.subject.length() )>39)
+                    subject = subject.substring(0,39-(1+(""+i1).length()+1+10+1+m.userFrom.length()+1));
                 write(LIGHT_RED); print((m.isRead ? " " : "*"));
-                write(WHITE); print((i+1) + " ");
+                write(WHITE); print(i1 + " ");
                 write(GREY3); print(date + " ");
                 write(m.receiverExists ? CYAN : RED); print(m.userFrom);
                 print(" ");
