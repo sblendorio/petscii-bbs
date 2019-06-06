@@ -55,8 +55,7 @@ public class MenuRetroAcademy extends PetsciiThread {
         } catch (Exception e) {
             maxmindResponse = null;
             geoData = null;
-            log("Error during IP data");
-            e.printStackTrace();
+            log("Error retrieving GeoIP data: " + e.getClass().getName());
         }
     }
 
@@ -82,6 +81,7 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(24, delta + 11); write(WHITE); print("Games"); write(GREY3);
             gotoXY(24, delta + 13); write(REVON); print(" X "); write(REVOFF); print(" TIC-TAC-TOE");
             gotoXY(24, delta + 14); write(REVON); print(" C "); write(REVOFF); print(" CONNECT-4");
+            gotoXY(24, delta + 15); write(REVON); print(" F "); write(REVOFF); print(" MAGIC-15");
 
             gotoXY(6, delta + 14); write(WHITE); print("Misc"); write(GREY3);
             gotoXY(6, delta + 16); write(REVON); print(" S "); write(REVOFF); print(" Sportal.IT");
@@ -121,6 +121,7 @@ public class MenuRetroAcademy extends PetsciiThread {
                     else if (key == '8') launch(new IlPost());
                     else if (key == 'x') launch(new TicTacToe());
                     else if (key == 'c') launch(new ConnectFour());
+                    else if (key == 'f') launch(new Magic15());
                     else if (key == 's') launch(new Sportal());
                     else if (key == 'l') launch(new Ossa());
                     else if (key == 'p') launch(new PetsciiArtGallery());
