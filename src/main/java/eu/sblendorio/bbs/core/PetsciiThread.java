@@ -1,5 +1,7 @@
 package eu.sblendorio.bbs.core;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -191,6 +193,7 @@ public abstract class PetsciiThread extends Thread {
     public static String httpGet(String url) throws IOException {
         return httpGet(url, null);
     }
+
     public static String httpGet(String url, String userAgent) throws IOException {
         final URL object=new URL(url);
         HttpURLConnection conn = (HttpURLConnection) object.openConnection();
@@ -211,6 +214,36 @@ public abstract class PetsciiThread extends Thread {
         }
         conn.disconnect();
         return null;
+    }
+
+    public static byte[] downloadFile(URL url) throws IOException {
+        return downloadFile(url, null);
+    }
+
+    public static byte[] downloadFile(URL url, String userAgent) throws IOException {
+        try {
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("User-Agent", defaultString(userAgent));
+            conn.setConnectTimeout(15000);
+            conn.setReadTimeout(15000);
+
+            int responseCode = conn.getResponseCode();
+            if (responseCode >= 301 && responseCode <= 399) {
+                final String newLocation = conn.getHeaderField("Location");
+                return downloadFile(new URL(newLocation), userAgent);
+            } else if (responseCode >= 200 && responseCode <= 299) {
+                conn.connect();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                IOUtils.copy(conn.getInputStream(), baos);
+
+                return baos.toByteArray();
+            } else {
+                throw new CbmIOException("Error during download from "+url);
+            }
+        }
+        catch (IOException e) {
+            throw new CbmIOException("Timeout during download from "+url);
+        }
     }
 
     public static Map<Long, PetsciiThread> getClients() {
