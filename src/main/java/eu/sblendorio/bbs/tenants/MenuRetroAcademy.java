@@ -73,7 +73,7 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(5, delta + 6); write(REVON); print(" 2 "); write(REVOFF); print(" Disinformatico");
             gotoXY(5, delta + 7); write(REVON); print(" 3 "); write(REVOFF); print(" Next Quotidiano");
             gotoXY(5, delta + 8); write(REVON); print(" 4 "); write(REVOFF); print(" MedBunker");
-            gotoXY(5, delta + 9); write(REVON); print(" 5 "); write(REVOFF); print(" Il Fatto Quotidiano");
+            gotoXY(5, delta + 9); write(REVON); print(" 5 "); write(REVOFF); print(" Fatto Quotidiano");
             gotoXY(5, delta + 10); write(REVON); print(" 6 "); write(REVOFF); print(" David Puente");
             gotoXY(5, delta + 11); write(REVON); print(" 7 "); write(REVOFF); print(" Open Online");
             gotoXY(5, delta + 12); write(REVON); print(" 8 "); write(REVOFF); print(" Il Post");
@@ -92,6 +92,7 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(26, delta + 4); write(WHITE); print("Servizi"); write(GREY3);
             gotoXY(26, delta + 6); write(REVON); print(" M "); write(REVOFF); print(" Messaggi");
             gotoXY(26, delta + 7); write(REVON); print(" T "); write(REVOFF); print(" Televideo");
+            gotoXY(26, delta + 8); write(REVON); print(" D "); write(REVOFF); print(" CSDb");
 
             final String line = geoData != null ? "Connected from "+geoData.city+", "+geoData.country : EMPTY;
             gotoXY((39-line.length()) / 2, 23);
@@ -127,6 +128,7 @@ public class MenuRetroAcademy extends PetsciiThread {
                     else if (key == 'p') launch(new PetsciiArtGallery());
                     else if (key == 'm') launch(new UserLogon());
                     else if (key == 't') launch(new TelevideoRai());
+                    else if (key == 'd') launch(new CsdbLatestReleases());
                     else validKey = false;
             } while (!validKey);
         }
