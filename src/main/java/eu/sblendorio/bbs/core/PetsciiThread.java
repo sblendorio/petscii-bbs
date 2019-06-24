@@ -201,8 +201,14 @@ public abstract class PetsciiThread extends Thread {
         conn.setDoOutput(true);
         conn.setDoInput(true);
         conn.setRequestMethod("GET");
-        StringBuilder sb = new StringBuilder();
-        if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+
+        final StringBuilder sb;
+        int responseCode = conn.getResponseCode();
+        if (responseCode >= 301 && responseCode <= 399) {
+            final String newLocation = conn.getHeaderField("Location");
+            return httpGet(newLocation, userAgent);
+        } else if (responseCode >= 200 && responseCode <= 299) {
+            sb = new StringBuilder();
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), UTF_8));
             String line;
             while ((line = br.readLine()) != null) sb.append(line + "\n");
