@@ -134,10 +134,14 @@ public class XModem {
             }
             log("Out of cycle");
             boolean isAck = false;
-            while (!isAck) {
+            int tries = 0;
+            while (!isAck && tries < 9) {
                 putchar(EOT);
                 isAck = getchar() == ACK;
+                ++tries;
+                if (!isAck) Thread.sleep(200);
             }
+            if (!isAck) log("Transmission interrupted ater EOT, missing ACK");
             log("Transmission complete.");
         }
         return true;
@@ -159,6 +163,7 @@ public class XModem {
 
     private void die(int how) {
         System.err.println("Error code " + how);
+        throw new RuntimeException(new CbmIOException("Too many errors during XModem transfer: " + how));
     }
 
     private void log(String message) {
