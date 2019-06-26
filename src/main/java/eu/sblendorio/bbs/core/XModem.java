@@ -103,7 +103,7 @@ public class XModem {
                     ++errorcount;
             } while (character != NAK && errorcount < MAXERRORS);
 
-            log("transmission beginning");
+            log("Transmission beginning");
             if (errorcount == MAXERRORS) xerror();
 
             Arrays.fill(sector, CPMEOF);
@@ -141,7 +141,7 @@ public class XModem {
                 ++tries;
                 if (!isAck) Thread.sleep(200);
             }
-            if (!isAck) log("Transmission interrupted ater EOT, missing ACK");
+            if (!isAck) log("Transmission interrupted after EOT, missing ACK");
             log("Transmission complete.");
         }
         return true;

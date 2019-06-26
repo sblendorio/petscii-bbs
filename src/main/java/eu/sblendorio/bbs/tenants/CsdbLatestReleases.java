@@ -175,6 +175,8 @@ public class CsdbLatestReleases extends PetsciiThread {
         write(WHITE); println("Let's start XMODEM transfer!");
         XModem xm = new XModem(cbm, cbm.out());
         xm.send(content);
+        println();
+        write(CYAN); print("DONE - press any key to go back ");
         readKey();
         resetInput();
     }
