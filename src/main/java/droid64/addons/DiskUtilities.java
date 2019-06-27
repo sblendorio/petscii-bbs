@@ -13,7 +13,7 @@ public class DiskUtilities {
     public static void main(String[] args) throws Exception {
         //DiskImage diskImage = DiskImage.getDiskImage("/Users/francesco.sblendorio/Dropbox/emul/C64/best1.d64");
         //DownloadData file = download(new URL("https://csdb.dk/release/download.php?id=214492"));
-        DownloadData file = download(new URL("http://arnold.c64.org/pub/games/f/Freds_Back.Markt_und_Technik.+2-SCS.zip"));
+        DownloadData file = download(new URL("ftp://arnold.c64.org/pub/games/f/Freds_Back.Markt_und_Technik.+2-SCS.zip"));
         System.out.println("NAME = "+file.getFilename());
         DiskImage diskImage;
         try {

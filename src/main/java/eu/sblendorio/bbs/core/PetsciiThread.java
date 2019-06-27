@@ -250,8 +250,7 @@ public abstract class PetsciiThread extends Thread {
 
     public static DownloadData download(URL url, String userAgent) throws IOException {
         if ("ftp".equalsIgnoreCase(url.getProtocol()))
-            return null; // TODO
-
+            return ftpDownload(url);
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("User-Agent", defaultString(userAgent));
@@ -277,6 +276,26 @@ public abstract class PetsciiThread extends Thread {
         catch (IOException e) {
             throw new CbmIOException("Timeout during download from "+url);
         }
+    }
+
+    public static DownloadData ftpDownload(URL url) throws IOException {
+        URLConnection conn = url.openConnection();
+        InputStream inputStream = conn.getInputStream();
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[16384];
+        int bytesRead = -1;
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead);
+        }
+
+        outputStream.close();
+        inputStream.close();
+
+        return new DownloadData(
+                url.toString().replaceAll("(?is)^.*/([^\\?&#]+).*$","$1"),
+                outputStream.toByteArray()
+        );
     }
 
     public static Map<Long, PetsciiThread> getClients() {
