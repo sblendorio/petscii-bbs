@@ -6,7 +6,7 @@ import droid64.db.DiskFile;
 
 public class DiskUtilities {
     public static void main(String[] args) throws Exception {
-        DiskImage diskImage = DiskImage.getDiskImage("/Users/francesco.sblendorio/Dropbox/emul/C64/best1.d64");
+        DiskImage diskImage = DiskImage.getDiskImage("/path/imagefile.d64");
         diskImage.readDirectory();
         for (DiskFile f: diskImage.getDisk().getFileList()) {
             System.out.println(f.getFileNum() + "/" + f.getName() + "/" + f.getFileTypeString());
