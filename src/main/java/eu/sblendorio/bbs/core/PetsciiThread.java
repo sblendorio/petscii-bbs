@@ -18,6 +18,20 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.commons.lang3.StringUtils.*;
 
 public abstract class PetsciiThread extends Thread {
+
+    public static class DownloadData {
+        private final String filename;
+        private final byte[] content;
+
+        public DownloadData(final String filename, final byte[] content) {
+            this.filename = filename;
+            this.content = content;
+        }
+
+        public String getFilename() { return filename; }
+        public byte[] getContent() { return content; }
+    }
+
     protected long clientId;
     protected String clientName;
     protected Class clientClass;
@@ -223,26 +237,39 @@ public abstract class PetsciiThread extends Thread {
     }
 
     public static byte[] downloadFile(URL url) throws IOException {
-        return downloadFile(url, null);
+        return download(url, null).getContent();
     }
 
     public static byte[] downloadFile(URL url, String userAgent) throws IOException {
+        return download(url, userAgent).getContent();
+    }
+
+    public static DownloadData download(URL url) throws IOException {
+        return download(url, null);
+    }
+
+    public static DownloadData download(URL url, String userAgent) throws IOException {
+        if ("ftp".equalsIgnoreCase(url.getProtocol()))
+            return null; // TODO
+
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("User-Agent", defaultString(userAgent));
-            conn.setConnectTimeout(15000);
-            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(30000);
+            conn.setReadTimeout(30000);
 
             int responseCode = conn.getResponseCode();
+            final String contentDisposition = defaultString(conn.getHeaderField("Content-Disposition"));
+            final String contentPart = contentDisposition.replaceAll("(?is)^.*?;\\s*?filename=['\"](.*?)['\"].*$", "$1");
+            final String filename = isEmpty(contentPart) ? url.toString().replaceAll("(?is)^.*/([^\\?&#]+).*$","$1") : contentPart;
             if (responseCode >= 301 && responseCode <= 399) {
                 final String newLocation = conn.getHeaderField("Location");
-                return downloadFile(new URL(newLocation), userAgent);
+                return download(new URL(newLocation), userAgent);
             } else if (responseCode >= 200 && responseCode <= 299) {
                 conn.connect();
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 IOUtils.copy(conn.getInputStream(), baos);
-
-                return baos.toByteArray();
+                return new DownloadData(filename, baos.toByteArray());
             } else {
                 throw new CbmIOException("Error during download from "+url);
             }
