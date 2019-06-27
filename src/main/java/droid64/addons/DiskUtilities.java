@@ -13,12 +13,13 @@ public class DiskUtilities {
     public static void main(String[] args) throws Exception {
         //DiskImage diskImage = DiskImage.getDiskImage("/Users/francesco.sblendorio/Dropbox/emul/C64/best1.d64");
         //DownloadData file = download(new URL("https://csdb.dk/release/download.php?id=214492"));
-        DownloadData file = download(new URL("ftp://arnold.c64.org/pub/games/f/Freds_Back.Markt_und_Technik.+2-SCS.zip"));
+        //DownloadData file = download(new URL("ftp://arnold.c64.org/pub/games/f/Freds_Back.Markt_und_Technik.+2-SCS.zip"));
+        DownloadData file = download(new URL("https://csdb.dk/release/download.php?id=214492"));
+
         System.out.println("NAME = "+file.getFilename());
         DiskImage diskImage;
         try {
-            diskImage = DiskImage.getDiskImage("/Users/francesco.sblendorio/Downloads/FEARSOFD.T64");
-            //diskImage = DiskImage.getDiskImage("/Users/francesco.sblendorio/Dropbox/emul/C64/best1.d64");
+            diskImage = DiskImage.getDiskImage(file.getFilename(), file.getContent());
         } catch (CbmException e) {
             System.out.println("NOT A DISK IMAGE");
             throw e;
