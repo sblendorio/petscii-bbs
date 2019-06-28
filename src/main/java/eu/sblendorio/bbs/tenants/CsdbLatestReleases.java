@@ -181,7 +181,6 @@ public class CsdbLatestReleases extends PetsciiThread {
         resetInput();
     }
 
-
     protected void listPosts() throws Exception {
         cls();
         logo();
