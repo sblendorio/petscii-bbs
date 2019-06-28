@@ -1,5 +1,6 @@
 package droid64.addons;
 import droid64.d64.CbmException;
+import droid64.d64.CbmFile;
 import droid64.d64.DiskImage;
 import droid64.db.DiskFile;
 
@@ -20,7 +21,8 @@ public class DiskUtilities {
 
     /* This main is for testing purposes only */
     public static void main(String[] args) throws Exception {
-        String url = "ftp://arnold.c64.org/pub/games/f/Freds_Back.Markt_und_Technik.+2-SCS.zip";
+        //String url = "ftp://arnold.c64.org/pub/games/f/Freds_Back.Markt_und_Technik.+2-SCS.zip";
+        String url = "http://www.sblendorio.eu/cruis.D64.zip";
 
         byte[] bytes = getPrgContent(url);
         if (bytes == null) {
@@ -36,14 +38,17 @@ public class DiskUtilities {
         byte[] result = null;
 
         DownloadData file = download(new URL(urlString));
-        if (isValidZip(file.getContent())) file = singleFileInZip(file.getContent());
+        if (isValidZip(file.getContent()))
+            file = singleFileInZip(file.getContent());
         if (file != null && isValidFilename(file.getFilename())) {
             if (isPRG(file.getFilename())) {
                 result = file.getContent();
             } else if (isT64(file.getFilename())) {
-                result = singleFileInArchive(file, true).getContent();
+                file = singleFileInArchive(file, true);
+                result = file != null ? file.getContent() : null;
             } else { // is a disk
-                result = singleFileInArchive(file, false).getContent();
+                file = singleFileInArchive(file, false);
+                result = file != null ? file.getContent() : null;
             }
         } else {
             result = null;
@@ -86,8 +91,9 @@ public class DiskUtilities {
         String filename = "";
         try {
             diskImage = DiskImage.getDiskImage(file.getFilename(), file.getContent());
+            diskImage.readDirectory();
             for (DiskFile f: diskImage.getDisk().getFileList()) {
-                if (isT64 || isPRG(f.getName())) {
+                if (isT64 || f.getFileType() == CbmFile.TYPE_PRG) {
                     ++count;
                     num = f.getFileNum();
                     filename = f.getName();
@@ -104,11 +110,13 @@ public class DiskUtilities {
         int count = 0;
         String filename = null;
         for (String file: fileList) {
-            if (file.matches("(?is)^.*\\.(prg|d64|d71|d81|d82|t64|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz|t64\\.gz)$")) {
+            if (file.matches("(?is)^.*\\.(prg|d64|d71|d81|d82|t64|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz|t64\\.gz)$") &&
+                !file.matches("^.*/\\.[^/]+?$")) {
                 ++count;
                 filename = file;
             }
         }
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] buffer = new byte[8192];
         if (count == 1) {
