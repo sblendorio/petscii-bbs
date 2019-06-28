@@ -21,8 +21,7 @@ public class DiskUtilities {
 
     /* This main is for testing purposes only */
     public static void main(String[] args) throws Exception {
-        //String url = "ftp://arnold.c64.org/pub/games/f/Freds_Back.Markt_und_Technik.+2-SCS.zip";
-        String url = "http://www.sblendorio.eu/cruis.D64.zip";
+        String url = "ftp://arnold.c64.org/pub/games/f/Freds_Back.Markt_und_Technik.+2-SCS.zip";
 
         byte[] bytes = getPrgContent(url);
         if (bytes == null) {
