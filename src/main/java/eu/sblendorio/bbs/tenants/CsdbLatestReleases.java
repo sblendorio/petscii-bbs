@@ -4,6 +4,7 @@ import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
+import droid64.addons.DiskUtilities;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.XModem;
@@ -37,8 +38,8 @@ public class CsdbLatestReleases extends PetsciiThread {
         final String description;
         final String uri;
 
-        public NewsFeed(Date publishedDate, String title, String description, String uri) {
-            this.publishedDate = publishedDate; this.title = title; this.description = description; this.uri = uri;
+        public NewsFeed(Date publishedDate, String title, String description, String downloadUri) {
+            this.publishedDate = publishedDate; this.title = title; this.description = description; this.uri = downloadUri;
         }
 
         public String toString() {
@@ -48,14 +49,15 @@ public class CsdbLatestReleases extends PetsciiThread {
 
     static class ReleaseEntry {
         final String id;
+        final String releaseUri;
         final String type;
         final Date publishedDate;
         final String title;
         final String releasedBy;
         final List<String> links;
 
-        public ReleaseEntry(String id, String type, Date publishedDate, String title, String releasedBy, List<String> links) {
-            this.id = id; this.type = type;
+        public ReleaseEntry(String id, String releaseUri, String type, Date publishedDate, String title, String releasedBy, List<String> links) {
+            this.id = id; this.releaseUri = releaseUri; this.type = type;
             this.publishedDate = publishedDate; this.title = title; this.releasedBy = releasedBy; this.links = links;
         }
 
@@ -146,15 +148,15 @@ public class CsdbLatestReleases extends PetsciiThread {
             strDate = EMPTY;
         }
         final String releasedBy = p.releasedBy;
-        final URL url = new URL(p.links.get(0));
+        final String url = p.links.get(0);
         final String title = p.title;
         final String type = p.type;
-        final String id = p.id;
-        byte[] content = downloadFile(url);
+        final String releaseUri = p.releaseUri;
+        byte[] content = DiskUtilities.getPrgContent(url);
         waitOff();
 
-        write(WHITE); print(title);
-        write(GREY3); print(" from ");
+        write(WHITE); println(title);
+        write(GREY3); print("From: ");
         write(WHITE); print(releasedBy);
         println();
         write(GREY3); print("Type: ");
@@ -165,20 +167,36 @@ public class CsdbLatestReleases extends PetsciiThread {
         println();
         println();
         write(GREY3); println("URL:");
-        write(WHITE); println(url.toString());
+        write(WHITE); println(releaseUri);
         println();
-        write(GREY3); println("Press any key to prepare to download");
-        println("Or press \".\" to abort it");
-        resetInput(); int ch = readKey();
-        if (ch == '.') return;
-        println();
-        write(WHITE); println("Let's start XMODEM transfer!");
-        XModem xm = new XModem(cbm, cbm.out());
-        xm.send(content);
-        println();
-        write(CYAN); print("DONE - press any key to go back ");
-        readKey();
-        resetInput();
+        if (content == null) {
+            log("Can't download " + releaseUri);
+            write(RED, REVON); println("      ");
+            write(RED, REVON); print(" WARN "); write(WHITE, REVOFF); println(" Can't handle this. Use browser.");
+            write(RED, REVON); println("      "); write(WHITE, REVOFF);
+            write(CYAN); println();
+            print("SORRY - press any key to go back ");
+            readKey();
+            resetInput();
+        } else {
+            write(GREY3);
+            println("Press any key to prepare to download");
+            println("Or press \".\" to abort it");
+            resetInput();
+            int ch = readKey();
+            if (ch == '.') return;
+            println();
+            write(WHITE);
+            println("Let's start XMODEM transfer!");
+            log("Downloading " + title + " - " + releaseUri);
+            XModem xm = new XModem(cbm, cbm.out());
+            xm.send(content);
+            println();
+            write(CYAN);
+            print("DONE - press any key to go back ");
+            readKey();
+            resetInput();
+        }
     }
 
     protected void listPosts() throws Exception {
@@ -202,17 +220,18 @@ public class CsdbLatestReleases extends PetsciiThread {
     }
 
     private static List<ReleaseEntry> getReleases(List<NewsFeed> entries) throws Exception {
-        Pattern p = Pattern.compile("(?is)<a href=['\\\"]([^'\\\"]*?)['\\\"] title=['\\\"][^'\\\"]*?\\.prg['\\\"]>");
+        Pattern p = Pattern.compile("(?is)<a href=['\\\"]([^'\\\"]*?)['\\\"] title=['\\\"][^'\\\"]*?\\.(prg|zip|d64|d71|d81|d82)['\\\"]>");
         List<ReleaseEntry> list = new LinkedList<>();
         for (NewsFeed item: entries) {
-            if (item.description.matches("(?is).*=\\s*[\\\"'][^\\\"']*\\.prg[^\\\"']*[\\\"'].*")) {
+            if (item.description.matches("(?is).*=\\s*[\\\"'][^\\\"']*\\.(prg|zip|d64|d71|d81|d82)[^\\\"']*[\\\"'].*")) {
+                String releaseUri = item.uri;
                 String id = item.uri.replaceAll("(?is).*id=([0-9a-zA-Z_\\-]+).*$", "$1"); // https://csdb.dk/release/?id=178862&rs
                 String releasedBy = item.description.replaceAll("(?is).*Released by:\\s*[^>]*>(.*?)<.*", "$1");
                 String type = item.description.replaceAll("(?is).*Type:\\s*[^>]*>(.*?)<.*", "$1");
                 Matcher m = p.matcher(item.description);
                 List<String> urls = new ArrayList<>();
                 while (m.find()) urls.add(m.group(1));
-                list.add(new ReleaseEntry(id, type, item.publishedDate, item.title, releasedBy, urls));
+                list.add(new ReleaseEntry(id, releaseUri, type, item.publishedDate, item.title, releasedBy, urls));
             }
         }
         return list;
@@ -229,21 +248,6 @@ public class CsdbLatestReleases extends PetsciiThread {
         for (int i=(page-1)*perPage; i<page*perPage; ++i)
             if (i<list.size()) result.put(i+1, list.get(i));
         return result;
-        /*
-        JSONArray posts = (JSONArray) httpGetJson(getApi() + "posts?context=view&page="+page+"&per_page="+perPage);
-        for (int i=0; i<posts.size(); ++i) {
-            Post post = new Post();
-            JSONObject postJ = (JSONObject) posts.get(i);
-            post.id = (Long) postJ.get("id");
-            post.content = ((String) ((JSONObject) postJ.get("content")).get("rendered")).replaceAll("(?is)(\\[/?vc_[^]]*\\])*", EMPTY);
-            post.title = (String) ((JSONObject) postJ.get("title")).get("rendered");
-            post.date = ((String) postJ.get("date")).replace("T", SPACE).replaceAll(":\\d\\d\\s*$", EMPTY);
-            post.excerpt = (String) ((JSONObject) postJ.get("excerpt")).get("rendered");
-            post.authorId = toLong(postJ.get("author").toString());
-            result.put(i+1+(perPage*(page-1)), post);
-        }
-        return result;
-         */
     }
 
 
