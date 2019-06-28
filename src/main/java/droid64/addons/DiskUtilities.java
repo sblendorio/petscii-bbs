@@ -115,10 +115,11 @@ public class DiskUtilities {
                 filename = file;
             }
         }
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        byte[] buffer = new byte[8192];
+        ByteArrayOutputStream baos = null;
+        byte[] buffer;
         if (count == 1) {
+            buffer = new byte[8192];
+            baos = new ByteArrayOutputStream();
             ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(content));
             ZipEntry entry = zis.getNextEntry();
             while (entry != null) {
