@@ -72,7 +72,7 @@ public class DiskUtilities {
     }
 
     private static boolean isValidFilename(String filename) {
-        return filename.matches("(?is)^.*\\.(prg|d64|d71|d81|d82|t64)$");
+        return filename.matches("(?is)^.*\\.(prg|d64|d71|d81|d82|t64|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz|t64\\.gz)$");
     }
 
     private static boolean isPRG(String filename) {
