@@ -80,7 +80,7 @@ public class DiskUtilities {
     }
 
     private static boolean isT64(String filename) {
-        return filename.matches("(?is)^.*\\.t64$");
+        return filename.matches("(?is)^.*\\.(t64|t64\\.gz)$");
     }
 
     private static DownloadData singleFileInArchive(DownloadData file, boolean isT64) throws IOException {
