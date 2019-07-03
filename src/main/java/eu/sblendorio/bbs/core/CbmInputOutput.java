@@ -468,7 +468,7 @@ public class CbmInputOutput extends Reader {
             out.close();
             this.close();
             throw new CbmIOException("SEVERE. CbmInputOutput::resetInput, potential DoS detected.");
-        } else if (missingInput.matches("(?is)^(G?ET|P?OST|H?EAD|P?UT|D?ELETE) [^\n]+ HTTP/[0-9.]+.*")) {
+        } else if (missingInput.matches("(?is)^(G?ET|P?OST|H?EAD|P?UT|D?ELETE|C?ONNECT) [^\n]+ HTTP/[0-9.]+.*")) {
             if (sendResponse) out.println("HTTP/1.1 200 OK\n" +
                     "Server: PETSCII BBS Server for 8-bit Commodore Computers\n" +
                     "Content-Type: text/html; charset=utf-8\n" +

@@ -285,7 +285,7 @@ public class WordpressProxy extends PetsciiThread {
     }
 
     protected void waitOn() {
-        print("WAIT PLEASE...");
+        print("PLEASE WAIT...");
         flush();
     }
 

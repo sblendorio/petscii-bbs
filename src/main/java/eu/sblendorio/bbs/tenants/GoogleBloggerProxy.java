@@ -317,7 +317,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
     }
 
     protected void waitOn() {
-        print("WAIT PLEASE...");
+        print("PLEASE WAIT...");
         flush();
     }
 

@@ -94,7 +94,6 @@ public class CsdbLatestReleases extends PetsciiThread {
             } else if ("help".equals(input) || "h".equals(input)) {
                 help();
                 listPosts();
-                continue;
             } else if ("+".equals(input)) {
                 ++currentPage;
                 posts = null;
@@ -104,36 +103,30 @@ public class CsdbLatestReleases extends PetsciiThread {
                     --currentPage;
                     posts = null;
                     listPosts();
-                    continue;
                 }
-                continue;
             } else if ("-".equals(input) && currentPage > 1) {
                 --currentPage;
                 posts = null;
                 listPosts();
-                continue;
             } else if ("--".equals(input) && currentPage > 1) {
                 currentPage = 1;
                 posts = null;
                 listPosts();
-                continue;
             } else if ("r".equals(input) || "reload".equals(input) || "refresh".equals(input)) {
                 posts = null;
                 listPosts();
-                continue;
             } else if (posts.containsKey(toInt(input))) {
                 displayPost(toInt(input));
                 listPosts();
             } else if ("".equals(input)) {
                 listPosts();
-                continue;
             }
         }
         flush();
     }
 
 
-    protected void displayPost(int n) throws Exception {
+    private void displayPost(int n) throws Exception {
         int i = 3;
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         cls();
@@ -199,7 +192,7 @@ public class CsdbLatestReleases extends PetsciiThread {
         }
     }
 
-    protected void listPosts() throws Exception {
+    private void listPosts() throws Exception {
         cls();
         logo();
         if (isEmpty(posts)) {
@@ -238,7 +231,7 @@ public class CsdbLatestReleases extends PetsciiThread {
     }
 
 
-    protected Map<Integer, ReleaseEntry> getPosts(int page, int perPage) throws Exception {
+    private Map<Integer, ReleaseEntry> getPosts(int page, int perPage) throws Exception {
         if (page < 1 || perPage < 1) return null;
 
         List<NewsFeed> entries = getFeeds(RSS);
@@ -262,7 +255,7 @@ public class CsdbLatestReleases extends PetsciiThread {
         return result;
     }
 
-    protected void help() throws Exception {
+    private void help() throws Exception {
         cls();
         logo();
         println();
@@ -280,7 +273,7 @@ public class CsdbLatestReleases extends PetsciiThread {
     }
 
     private void waitOn() {
-        print("WAIT PLEASE...");
+        print("PLEASE WAIT...");
         flush();
     }
 
