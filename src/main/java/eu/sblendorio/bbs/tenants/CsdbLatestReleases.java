@@ -27,9 +27,9 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class CsdbLatestReleases extends PetsciiThread {
 
-    public static final String RSS = "https://csdb.dk/rss/latestreleases.php";
+    private static final String RSS = "https://csdb.dk/rss/latestreleases.php";
 
-    protected int currentPage = 1;
+    private int currentPage = 1;
     protected int pageSize = 10;
 
     static class NewsFeed {
@@ -38,7 +38,7 @@ public class CsdbLatestReleases extends PetsciiThread {
         final String description;
         final String uri;
 
-        public NewsFeed(Date publishedDate, String title, String description, String downloadUri) {
+        NewsFeed(Date publishedDate, String title, String description, String downloadUri) {
             this.publishedDate = publishedDate; this.title = title; this.description = description; this.uri = downloadUri;
         }
 
@@ -56,7 +56,7 @@ public class CsdbLatestReleases extends PetsciiThread {
         final String releasedBy;
         final List<String> links;
 
-        public ReleaseEntry(String id, String releaseUri, String type, Date publishedDate, String title, String releasedBy, List<String> links) {
+        ReleaseEntry(String id, String releaseUri, String type, Date publishedDate, String title, String releasedBy, List<String> links) {
             this.id = id; this.releaseUri = releaseUri; this.type = type;
             this.publishedDate = publishedDate; this.title = title; this.releasedBy = releasedBy; this.links = links;
         }
@@ -67,7 +67,7 @@ public class CsdbLatestReleases extends PetsciiThread {
 
     }
 
-    protected Map<Integer, ReleaseEntry> posts = emptyMap();
+    private Map<Integer, ReleaseEntry> posts = emptyMap();
 
     @Override
     public void doLoop() throws Exception {

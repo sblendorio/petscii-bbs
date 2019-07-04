@@ -53,8 +53,15 @@ public class ArnoldC64 extends PetsciiThread {
     @Override
     public void doLoop() throws Exception {
         logo();
-        println("Enter search criteria"); flush();
-        resetInput(); String search = readLine();
+        println("Enter search criteria:");
+        println();
+        println(StringUtils.repeat(chr(163), 22));
+        write(UP, UP);
+        flush();
+        resetInput();
+        String search = readLine();
+        println();
+        println();
         waitOn();
         List<Entry> entries = getUrls(URL_TEMPLATE + URLEncoder.encode(search, "UTF-8"));
         waitOff();
