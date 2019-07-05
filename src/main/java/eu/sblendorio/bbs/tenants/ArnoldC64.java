@@ -169,6 +169,11 @@ public class ArnoldC64 extends PetsciiThread {
             resetInput();
         } else {
             write(GREY3);
+            println("Size:");
+            write(WHITE);
+            println(content.length + " bytes");
+            println();
+            write(GREY3);
             println("Press any key to prepare to download");
             println("Or press \".\" to abort it");
             resetInput();

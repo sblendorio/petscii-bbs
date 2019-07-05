@@ -155,8 +155,11 @@ public class CsdbLatestReleases extends PetsciiThread {
         write(WHITE); print(type);
         println();
         write(GREY3); print("Date: ");
-        write(WHITE); print(strDate);
-        println();
+        write(WHITE); println(strDate);
+        if (content != null) {
+            write(GREY3); print("Size: ");
+            write(WHITE); println(content.length + " bytes");
+        }
         println();
         write(GREY3); println("URL:");
         write(WHITE); println(releaseUri);
