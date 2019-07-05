@@ -138,7 +138,6 @@ public class ArnoldC64 extends PetsciiThread {
         flush();
     }
 
-
     private void displayPost(int n) throws Exception {
         int i = 3;
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
