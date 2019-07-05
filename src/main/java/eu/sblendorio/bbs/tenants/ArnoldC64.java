@@ -50,6 +50,7 @@ public class ArnoldC64 extends PetsciiThread {
     @Override
     public void doLoop() throws Exception {
         do {
+            currentPage = 1;
             logo();
             println();
             print("Enter search criteria ");
