@@ -125,7 +125,6 @@ public class CsdbLatestReleases extends PetsciiThread {
         flush();
     }
 
-
     private void displayPost(int n) throws Exception {
         int i = 3;
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -179,8 +178,11 @@ public class CsdbLatestReleases extends PetsciiThread {
             int ch = readKey();
             if (ch == '.') return;
             println();
-            write(WHITE);
-            println("Let's start XMODEM transfer!");
+            write(REVON, LIGHT_GREEN);
+            write(REVON); println("                              ");
+            write(REVON); println(" Please start XMODEM transfer ");
+            write(REVON); println("                              ");
+            write(REVOFF, WHITE);
             log("Downloading " + title + " - " + releaseUri);
             XModem xm = new XModem(cbm, cbm.out());
             xm.send(content);

@@ -1,33 +1,30 @@
 package eu.sblendorio.bbs.tenants;
 
-import com.google.api.services.blogger.Blogger;
-import com.google.api.services.blogger.model.Post;
-import com.google.api.services.blogger.model.PostList;
-import eu.sblendorio.bbs.core.Hidden;
+import droid64.addons.DiskUtilities;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.core.XModem;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.WordUtils;
 
-import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static eu.sblendorio.bbs.core.Colors.CYAN;
-import static eu.sblendorio.bbs.core.Colors.GREY3;
-import static eu.sblendorio.bbs.core.Colors.WHITE;
+import static eu.sblendorio.bbs.core.Colors.*;
 import static eu.sblendorio.bbs.core.Keys.*;
 import static eu.sblendorio.bbs.core.Utils.filterPrintable;
 import static java.util.Collections.emptyMap;
-import static org.apache.commons.collections4.MapUtils.isEmpty;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
-@Hidden
+//@Hidden
 public class ArnoldC64 extends PetsciiThread {
 
     public static final String URL_TEMPLATE = "https://cbm8bit.com/search-embedded?servers%5B1%5D=on&width=900&results_per_page=100&embedder=arnold&query=";
@@ -52,20 +49,33 @@ public class ArnoldC64 extends PetsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        logo();
-        println("Enter search criteria:");
-        println();
-        println(StringUtils.repeat(chr(163), 22));
-        write(UP, UP);
-        flush();
-        resetInput();
-        String search = readLine();
-        println();
-        println();
-        waitOn();
-        List<Entry> entries = getUrls(URL_TEMPLATE + URLEncoder.encode(search, "UTF-8"));
-        waitOff();
-        displaySearchResults(entries);
+        do {
+            logo();
+            println();
+            print("Enter search criteria ");
+            write(GREY1);
+            println("(\".\" to go back):");
+            write(GREY3);
+            println();
+            println(StringUtils.repeat(chr(163), 21));
+            write(UP, UP);
+            flush();
+            resetInput();
+            String search = readLine();
+            if (defaultString(search).trim().equals(".") || isBlank(search))
+                return;
+            println();
+            println();
+            waitOn();
+            List<Entry> entries = getUrls(URL_TEMPLATE + URLEncoder.encode(search, "UTF-8"));
+            waitOff();
+            if (isEmpty(entries)) {
+                write(RED); println("Zero result page - press any key");
+                flush(); resetInput(); readKey();
+                continue;
+            }
+            displaySearchResults(entries);
+        } while (true);
     }
     private void logo() throws Exception {
         write(CLR, LOWERCASE, CASE_LOCK);
@@ -76,7 +86,7 @@ public class ArnoldC64 extends PetsciiThread {
     public void displaySearchResults(List<Entry> entries) throws Exception {
         listPosts(entries);
         while (true) {
-            log("CSDb waiting for input");
+            log("ArnoldC64 waiting for input");
             write(WHITE);print("#"); write(GREY3);
             print(", [");
             write(WHITE); print("+-"); write(GREY3);
@@ -119,13 +129,66 @@ public class ArnoldC64 extends PetsciiThread {
                 posts = null;
                 listPosts(entries);
             } else if (posts.containsKey(toInt(input))) {
-                // displayPost(toInt(input));
+                displayPost(toInt(input));
                 listPosts(entries);
             } else if ("".equals(input)) {
                 listPosts(entries);
             }
         }
         flush();
+    }
+
+
+    private void displayPost(int n) throws Exception {
+        int i = 3;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        cls();
+        logo();
+
+        waitOn();
+        final Entry p = posts.get(n);
+        final String url = p.url;
+        final String title = p.name;
+        final String type = p.fileType;
+        byte[] content = DiskUtilities.getPrgContent(url);
+        waitOff();
+
+        write(GREY3);
+        println("Title:");
+        write(WHITE);
+        println(title.replaceAll("(?is)\\.[a-z0-9]+(\\.gz)?$", EMPTY));
+        println();
+        if (content == null) {
+            log("Can't download " + url);
+            write(RED, REVON); println("      ");
+            write(RED, REVON); print(" WARN "); write(WHITE, REVOFF); println(" Can't handle this. Use browser.");
+            write(RED, REVON); println("      "); write(WHITE, REVOFF);
+            write(CYAN); println();
+            print("SORRY - press any key to go back ");
+            readKey();
+            resetInput();
+        } else {
+            write(GREY3);
+            println("Press any key to prepare to download");
+            println("Or press \".\" to abort it");
+            resetInput();
+            int ch = readKey();
+            if (ch == '.') return;
+            println();
+            write(REVON, LIGHT_GREEN);
+            write(REVON); println("                              ");
+            write(REVON); println(" Please start XMODEM transfer ");
+            write(REVON); println("                              ");
+            write(REVOFF, WHITE);
+            log("Downloading " + url);
+            XModem xm = new XModem(cbm, cbm.out());
+            xm.send(content);
+            println();
+            write(CYAN);
+            print("DONE - press any key to go back ");
+            readKey();
+            resetInput();
+        }
     }
 
     private void listPosts(List<Entry> entries) throws Exception {
@@ -151,7 +214,6 @@ public class ArnoldC64 extends PetsciiThread {
             if (i<entries.size()) result.put(i+1, entries.get(i));
         return result;
     }
-
 
 
     public static void main(String[] args) throws Exception {
