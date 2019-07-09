@@ -24,7 +24,6 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
-//@Hidden
 public class ArnoldC64 extends PetsciiThread {
 
     public static final String URL_TEMPLATE = "https://cbm8bit.com/search-embedded?servers%5B1%5D=on&width=900&results_per_page=100&embedder=arnold&query=";

@@ -73,7 +73,7 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(5, delta + 7); write(REVON); print(" 3 "); write(REVOFF); print(" Next Quotidiano");
             gotoXY(5, delta + 8); write(REVON); print(" 4 "); write(REVOFF); print(" MedBunker");
             gotoXY(5, delta + 9); write(REVON); print(" 5 "); write(REVOFF); print(" Fatto Quotidiano");
-            gotoXY(5, delta + 10); write(REVON); print(" 6 "); write(REVOFF); print(" David Puente");
+            gotoXY(5, delta + 10); write(REVON); print(" 6 "); write(REVOFF); print(" IndieRetroNews");
             gotoXY(5, delta + 11); write(REVON); print(" 7 "); write(REVOFF); print(" Open Online");
             gotoXY(5, delta + 12); write(REVON); print(" 8 "); write(REVOFF); print(" Il Post");
 
@@ -117,7 +117,7 @@ public class MenuRetroAcademy extends PetsciiThread {
                     else if (key == '3') launch(new NextQuotidiano());
                     else if (key == '4') launch(new Medbunker());
                     else if (key == '5') launch(new IlFattoQuotidiano());
-                    else if (key == '6') launch(new DavidPuenteBlog());
+                    else if (key == '6') launch(new IndieRetroNews());
                     else if (key == '7') launch(new OpenOnline());
                     else if (key == '8') launch(new IlPost());
                     else if (key == 'x') launch(new TicTacToe());
