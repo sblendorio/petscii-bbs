@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
@@ -22,14 +23,13 @@ public class DiskUtilities {
 
     /* This main is for testing purposes only */
     public static void main(String[] args) throws Exception {
-        String url = "ftp://arnold.c64.org/pub/games/f/Freds_Back.Markt_und_Technik.+2-SCS.zip";
-
+        String url = "ftp://arnold.c64.org/pub/games/s/Slurpy.Creative_Sparks.zip";
         byte[] bytes = getPrgContent(url);
         if (bytes == null) {
             System.out.println("INVALID");
             System.exit(1);
         }
-        Path path = Paths.get("/tmp/sample.prg");
+        Path path = Paths.get("C:/temp/sample.prg");
         Files.write(path, bytes);
         System.out.println("DONE!");
     }
@@ -43,6 +43,8 @@ public class DiskUtilities {
         if (file != null && isValidFilename(file.getFilename())) {
             if (isPRG(file.getFilename())) {
                 result = file.getContent();
+            } else if (isP00(file.getFilename())) {
+                result = Arrays.copyOfRange(file.getContent(),26, file.getContent().length);
             } else if (isT64(file.getFilename())) {
                 file = singleFileInArchive(file, true);
                 result = file != null ? file.getContent() : null;
@@ -73,11 +75,15 @@ public class DiskUtilities {
     }
 
     private static boolean isValidFilename(String filename) {
-        return filename.matches("(?is)^.*\\.(prg|d64|d71|d81|d82|t64|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz|t64\\.gz)$");
+        return filename.matches("(?is)^.*\\.(p00|prg|d64|d71|d81|d82|t64|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz|t64\\.gz)$");
     }
 
     private static boolean isPRG(String filename) {
         return filename.matches("(?is)^.*\\.prg$");
+    }
+
+    private static boolean isP00(String filename) {
+        return filename.matches("(?is)^.*\\.p00$");
     }
 
     private static boolean isT64(String filename) {
@@ -110,7 +116,7 @@ public class DiskUtilities {
         int count = 0;
         String filename = null;
         for (String file: fileList) {
-            if (file.matches("(?is)^.*\\.(prg|d64|d71|d81|d82|t64|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz|t64\\.gz)$") &&
+            if (file.matches("(?is)^.*\\.(p00|prg|d64|d71|d81|d82|t64|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz|t64\\.gz)$") &&
                 !file.matches("^.*/\\.[^/]+?$")) {
                 ++count;
                 filename = file;
