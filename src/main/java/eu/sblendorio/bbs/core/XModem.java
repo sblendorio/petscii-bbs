@@ -133,14 +133,8 @@ public class XModem {
                 Arrays.fill(sector, CPMEOF);
             }
             log("Out of cycle");
-            boolean isAck = false;
-            int tries = 0;
-            while (!isAck && tries < 9) {
-                putchar(EOT);
-                isAck = getchar() == ACK;
-                ++tries;
-                if (!isAck) Thread.sleep(200);
-            }
+            putchar(EOT);
+            final boolean isAck = getchar() == ACK;
             if (!isAck) log("Transmission interrupted after EOT, missing ACK");
             log("Transmission complete.");
         }
