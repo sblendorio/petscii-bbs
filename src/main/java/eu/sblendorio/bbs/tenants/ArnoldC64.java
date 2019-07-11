@@ -230,7 +230,7 @@ public class ArnoldC64 extends PetsciiThread {
 
     public static List<Entry> getUrls(String url) throws Exception {
         String output = httpGet(url);
-        Pattern p = Pattern.compile("(?is)href=\"(ftp://[^\"]+\\.(prg|d64|zip|t64|d71|d81|d64\\.gz|t64\\.gz|d81\\.gz|d71\\.gz))\"");
+        Pattern p = Pattern.compile("(?is)href=\"(ftp://[^\"]+\\.(p00|prg|d64|zip|t64|d71|d81|d82|d64\\.gz|t64\\.gz|d81\\.gz|d82\\.gz|d71\\.gz))\"");
         Matcher m = p.matcher(output);
         List<Entry> urls = new ArrayList<>();
         while (m.find()) urls.add(new Entry(m.group(1)));

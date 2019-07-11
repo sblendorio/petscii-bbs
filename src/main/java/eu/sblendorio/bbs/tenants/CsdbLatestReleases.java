@@ -218,10 +218,10 @@ public class CsdbLatestReleases extends PetsciiThread {
     }
 
     private static List<ReleaseEntry> getReleases(List<NewsFeed> entries) throws Exception {
-        Pattern p = Pattern.compile("(?is)<a href=['\\\"]([^'\\\"]*?)['\\\"] title=['\\\"][^'\\\"]*?\\.(prg|zip|d64|d71|d81|d82)['\\\"]>");
+        Pattern p = Pattern.compile("(?is)<a href=['\\\"]([^'\\\"]*?)['\\\"] title=['\\\"][^'\\\"]*?\\.(p00|prg|zip|d64|d71|d81|d82|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz)['\\\"]>");
         List<ReleaseEntry> list = new LinkedList<>();
         for (NewsFeed item: entries) {
-            if (item.description.matches("(?is).*=\\s*[\\\"'][^\\\"']*\\.(prg|zip|d64|d71|d81|d82)[^\\\"']*[\\\"'].*")) {
+            if (item.description.matches("(?is).*=\\s*[\\\"'][^\\\"']*\\.(p00|prg|zip|d64|d71|d81|d82|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz)[^\\\"']*[\\\"'].*")) {
                 String releaseUri = item.uri;
                 String id = item.uri.replaceAll("(?is).*id=([0-9a-zA-Z_\\-]+).*$", "$1"); // https://csdb.dk/release/?id=178862&rs
                 String releasedBy = item.description.replaceAll("(?is).*Released by:\\s*[^>]*>(.*?)<.*", "$1");
