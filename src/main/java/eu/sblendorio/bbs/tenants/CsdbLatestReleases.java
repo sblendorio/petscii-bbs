@@ -23,7 +23,9 @@ import java.util.regex.Pattern;
 import static eu.sblendorio.bbs.core.Colors.*;
 import static eu.sblendorio.bbs.core.Keys.*;
 import static eu.sblendorio.bbs.core.Utils.filterPrintable;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.collections4.MapUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
@@ -74,6 +76,7 @@ public class CsdbLatestReleases extends PetsciiThread {
     }
 
     private Map<Integer, ReleaseEntry> posts = emptyMap();
+    private List<NewsFeed> entries = emptyList();
 
     @Override
     public void doLoop() throws Exception {
@@ -99,15 +102,17 @@ public class CsdbLatestReleases extends PetsciiThread {
                 if (nsearch.equals(".") || isBlank(search)) {
                     return;
                 } else if ("r".equalsIgnoreCase(nsearch)) {
+                    entries = emptyList();
                     browseLatestReleases(RSS_LATESTRELEASES);
                 } else if ("a".equalsIgnoreCase(nsearch)) {
+                    entries = emptyList();
                     browseLatestReleases(RSS_LATESTADDITIONS);
                 } else {
                     println();
                     println();
                     waitOn();
                     /*
-                    List<ArnoldC64.Entry> entries = getUrls(URL_TEMPLATE + URLEncoder.encode(search, "UTF-8"));
+                    entries = getUrls(URL_TEMPLATE + URLEncoder.encode(search, "UTF-8"));
                     waitOff();
                     if (CollectionUtils.isEmpty(entries)) {
                         write(RED); println("Zero result page - press any key");
@@ -270,7 +275,7 @@ public class CsdbLatestReleases extends PetsciiThread {
         newline();
     }
 
-    private static List<ReleaseEntry> getReleases(List<NewsFeed> entries) throws Exception {
+    private List<ReleaseEntry> getReleases() throws Exception {
         Pattern p = Pattern.compile("(?is)<a href=['\\\"]([^'\\\"]*?)['\\\"] title=['\\\"][^'\\\"]*?\\.(p00|prg|zip|t64|d64|d71|d81|d82|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz|t64\\.gz)['\\\"]>");
         List<ReleaseEntry> list = new LinkedList<>();
         for (NewsFeed item: entries) {
@@ -292,8 +297,8 @@ public class CsdbLatestReleases extends PetsciiThread {
     private Map<Integer, ReleaseEntry> getPosts(String rssURL, int page, int perPage) throws Exception {
         if (page < 1 || perPage < 1) return null;
 
-        List<NewsFeed> entries = getFeeds(rssURL);
-        List<ReleaseEntry> list = getReleases(entries);
+        if (isEmpty(entries)) entries = getFeeds(rssURL);
+        List<ReleaseEntry> list = getReleases();
 
         Map<Integer, ReleaseEntry> result = new LinkedHashMap<>();
         for (int i=(page-1)*perPage; i<page*perPage; ++i)
