@@ -8,9 +8,12 @@ import droid64.addons.DiskUtilities;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.XModem;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -27,7 +30,10 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class CsdbLatestReleases extends PetsciiThread {
 
-    private static final String RSS = "https://csdb.dk/rss/latestreleases.php";
+    private static final String RSS_LATESTRELEASES = "https://csdb.dk/rss/latestreleases.php";
+    private static final String RSS_LATESTADDITIONS = "https://csdb.dk/rss/latestadditions.php?type=release";
+
+    public static final String URL_TEMPLATE = "https://csdb.dk/search/?seinsel=releases&all=1&search=";
 
     private int currentPage = 1;
     protected int pageSize = 10;
@@ -71,7 +77,54 @@ public class CsdbLatestReleases extends PetsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        listPosts();
+        {
+            do {
+                currentPage = 1;
+                logo();
+                println();
+                write(WHITE); print("R"); write(GREY2); println(" for latest releases");
+                write(WHITE); print("A"); write(GREY2); println(" for latest additions");
+                write(WHITE); print("."); write(GREY2); println(" to go back");
+                println();
+                write(GREY3);
+                println(repeat(' ',9) + "Enter search criteria ");
+                println();
+                println(repeat(' ',9) + repeat(chr(163), 21));
+                write(UP, UP);
+                print(repeat(' ',9));
+                flush();
+                resetInput();
+                final String search = readLine();
+                final String nsearch = defaultString(search).trim();
+                if (nsearch.equals(".") || isBlank(search)) {
+                    return;
+                } else if ("r".equalsIgnoreCase(nsearch)) {
+                    browseLatestReleases(RSS_LATESTRELEASES);
+                } else if ("a".equalsIgnoreCase(nsearch)) {
+                    browseLatestReleases(RSS_LATESTADDITIONS);
+                } else {
+                    println();
+                    println();
+                    waitOn();
+                    /*
+                    List<ArnoldC64.Entry> entries = getUrls(URL_TEMPLATE + URLEncoder.encode(search, "UTF-8"));
+                    waitOff();
+                    if (CollectionUtils.isEmpty(entries)) {
+                        write(RED); println("Zero result page - press any key");
+                        flush(); resetInput(); readKey();
+                        continue;
+                    }
+                    displaySearchResults(entries);
+                    */
+                }
+            } while (true);
+        }
+    }
+
+    public void browseLatestReleases(String rssUrl) throws Exception {
+        posts = null;
+        currentPage = 1;
+        listPosts(rssUrl);
         while (true) {
             log("CSDb waiting for input");
             write(WHITE);print("#"); write(GREY3);
@@ -93,33 +146,33 @@ public class CsdbLatestReleases extends PetsciiThread {
                 break;
             } else if ("help".equals(input) || "h".equals(input)) {
                 help();
-                listPosts();
+                listPosts(rssUrl);
             } else if ("+".equals(input)) {
                 ++currentPage;
                 posts = null;
                 try {
-                    listPosts();
+                    listPosts(rssUrl);
                 } catch (NullPointerException e) {
                     --currentPage;
                     posts = null;
-                    listPosts();
+                    listPosts(rssUrl);
                 }
             } else if ("-".equals(input) && currentPage > 1) {
                 --currentPage;
                 posts = null;
-                listPosts();
+                listPosts(rssUrl);
             } else if ("--".equals(input) && currentPage > 1) {
                 currentPage = 1;
                 posts = null;
-                listPosts();
+                listPosts(rssUrl);
             } else if ("r".equals(input) || "reload".equals(input) || "refresh".equals(input)) {
                 posts = null;
-                listPosts();
+                listPosts(rssUrl);
             } else if (posts.containsKey(toInt(input))) {
                 displayPost(toInt(input));
-                listPosts();
+                listPosts(rssUrl);
             } else if ("".equals(input)) {
-                listPosts();
+                listPosts(rssUrl);
             }
         }
         flush();
@@ -197,12 +250,12 @@ public class CsdbLatestReleases extends PetsciiThread {
         }
     }
 
-    private void listPosts() throws Exception {
+    private void listPosts(String rssUrl) throws Exception {
         cls();
         logo();
         if (isEmpty(posts)) {
             waitOn();
-            posts = getPosts(currentPage, pageSize);
+            posts = getPosts(rssUrl, currentPage, pageSize);
             waitOff();
         }
         for (Map.Entry<Integer, ReleaseEntry> entry: posts.entrySet()) {
@@ -218,10 +271,10 @@ public class CsdbLatestReleases extends PetsciiThread {
     }
 
     private static List<ReleaseEntry> getReleases(List<NewsFeed> entries) throws Exception {
-        Pattern p = Pattern.compile("(?is)<a href=['\\\"]([^'\\\"]*?)['\\\"] title=['\\\"][^'\\\"]*?\\.(p00|prg|zip|d64|d71|d81|d82|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz)['\\\"]>");
+        Pattern p = Pattern.compile("(?is)<a href=['\\\"]([^'\\\"]*?)['\\\"] title=['\\\"][^'\\\"]*?\\.(p00|prg|zip|t64|d64|d71|d81|d82|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz|t64\\.gz)['\\\"]>");
         List<ReleaseEntry> list = new LinkedList<>();
         for (NewsFeed item: entries) {
-            if (item.description.matches("(?is).*=\\s*[\\\"'][^\\\"']*\\.(p00|prg|zip|d64|d71|d81|d82|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz)[^\\\"']*[\\\"'].*")) {
+            if (item.description.matches("(?is).*=\\s*[\\\"'][^\\\"']*\\.(p00|prg|zip|t64|d64|d71|d81|d82|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz|t64\\.gz)[^\\\"']*[\\\"'].*")) {
                 String releaseUri = item.uri;
                 String id = item.uri.replaceAll("(?is).*id=([0-9a-zA-Z_\\-]+).*$", "$1"); // https://csdb.dk/release/?id=178862&rs
                 String releasedBy = item.description.replaceAll("(?is).*Released by:\\s*[^>]*>(.*?)<.*", "$1");
@@ -236,10 +289,10 @@ public class CsdbLatestReleases extends PetsciiThread {
     }
 
 
-    private Map<Integer, ReleaseEntry> getPosts(int page, int perPage) throws Exception {
+    private Map<Integer, ReleaseEntry> getPosts(String rssURL, int page, int perPage) throws Exception {
         if (page < 1 || perPage < 1) return null;
 
-        List<NewsFeed> entries = getFeeds(RSS);
+        List<NewsFeed> entries = getFeeds(rssURL);
         List<ReleaseEntry> list = getReleases(entries);
 
         Map<Integer, ReleaseEntry> result = new LinkedHashMap<>();
@@ -256,7 +309,11 @@ public class CsdbLatestReleases extends PetsciiThread {
         List<CsdbLatestReleases.NewsFeed> result = new LinkedList<>();
         List<SyndEntry> entries = feed.getEntries();
         for (SyndEntry e : entries)
-            result.add(new CsdbLatestReleases.NewsFeed(e.getPublishedDate(), e.getTitle(), e.getDescription().getValue(), e.getUri()));
+            result.add(new CsdbLatestReleases.NewsFeed(
+                    e.getPublishedDate(),
+                    e.getTitle().replaceAll("(?is) by .*?$", EMPTY),
+                    e.getDescription().getValue(),
+                    e.getUri()));
         return result;
     }
 
