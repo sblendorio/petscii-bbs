@@ -10,6 +10,7 @@ import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.XModem;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.WordUtils;
 
 import java.net.URL;
@@ -111,15 +112,15 @@ public class CsdbLatestReleases extends PetsciiThread {
                     println();
                     println();
                     waitOn();
-                    /*
                     entries = getUrls(URL_TEMPLATE + URLEncoder.encode(search, "UTF-8"));
                     waitOff();
-                    if (CollectionUtils.isEmpty(entries)) {
+                    if (isEmpty(entries)) {
                         write(RED); println("Zero result page - press any key");
                         flush(); resetInput(); readKey();
                         continue;
                     }
-                    displaySearchResults(entries);
+                    /*
+                    displaySearchResults();
                     */
                 }
             } while (true);
@@ -169,8 +170,10 @@ public class CsdbLatestReleases extends PetsciiThread {
             } else if ("--".equals(input) && currentPage > 1) {
                 currentPage = 1;
                 posts = null;
+                entries = null;
                 listPosts(rssUrl);
             } else if ("r".equals(input) || "reload".equals(input) || "refresh".equals(input)) {
+                entries = null;
                 posts = null;
                 listPosts(rssUrl);
             } else if (posts.containsKey(toInt(input))) {
@@ -347,6 +350,15 @@ public class CsdbLatestReleases extends PetsciiThread {
     private void waitOff() {
         for (int i=0; i<14; ++i) write(DEL);
         flush();
+    }
+
+    public static List<NewsFeed> getUrls(String url) throws Exception {
+        String output = httpGet(url);
+        Pattern p = Pattern.compile("(?is)href=\"(ftp://[^\"]+\\.(p00|prg|d64|zip|t64|d71|d81|d82|d64\\.gz|t64\\.gz|d81\\.gz|d82\\.gz|d71\\.gz))\"");
+        Matcher m = p.matcher(output);
+        List<NewsFeed> urls = new ArrayList<>();
+        //while (m.find()) urls.add(NewsFeed(m.group(1)));
+        return urls;
     }
 
     private static final byte[] LOGO = new byte[] {
