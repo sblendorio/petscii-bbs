@@ -248,7 +248,6 @@ public class ArnoldC64 extends PetsciiThread {
         return urls;
     }
 
-
     private void waitOn() {
         print("PLEASE WAIT...");
         flush();

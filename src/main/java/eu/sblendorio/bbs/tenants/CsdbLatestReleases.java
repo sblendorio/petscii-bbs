@@ -11,6 +11,7 @@ import eu.sblendorio.bbs.core.XModem;
 import org.apache.commons.text.WordUtils;
 
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -20,14 +21,20 @@ import java.util.regex.Pattern;
 import static eu.sblendorio.bbs.core.Colors.*;
 import static eu.sblendorio.bbs.core.Keys.*;
 import static eu.sblendorio.bbs.core.Utils.filterPrintable;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.collections4.MapUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class CsdbLatestReleases extends PetsciiThread {
 
-    private static final String RSS = "https://csdb.dk/rss/latestreleases.php";
+    private static final String RSS_LATESTRELEASES = "https://csdb.dk/rss/latestreleases.php";
+    private static final String RSS_LATESTADDITIONS = "https://csdb.dk/rss/latestadditions.php?type=release";
+
+    private static final String URL_TEMPLATE = "https://csdb.dk/search/?seinsel=releases&all=1&search=";
 
     private int currentPage = 1;
     protected int pageSize = 10;
@@ -43,7 +50,7 @@ public class CsdbLatestReleases extends PetsciiThread {
         }
 
         public String toString() {
-            return "Title: "+title+"\nDate:"+publishedDate+"\nDescription:"+description+"\n";
+            return "Title: "+title+"\nDate:"+publishedDate+"\nDescription:"+description+"\nUri:"+uri+"\n";
         }
     }
 
@@ -52,26 +59,85 @@ public class CsdbLatestReleases extends PetsciiThread {
         final String releaseUri;
         final String type;
         final Date publishedDate;
+        final String strDate;
         final String title;
         final String releasedBy;
         final List<String> links;
 
         ReleaseEntry(String id, String releaseUri, String type, Date publishedDate, String title, String releasedBy, List<String> links) {
+            this.strDate = null;
             this.id = id; this.releaseUri = releaseUri; this.type = type;
             this.publishedDate = publishedDate; this.title = title; this.releasedBy = releasedBy; this.links = links;
         }
 
+        ReleaseEntry(String id, String releaseUri, String type, String strDate, String title, String releasedBy, List<String> links) {
+            this.publishedDate = null;
+            this.id = id; this.releaseUri = releaseUri; this.type = type;
+            this.strDate = strDate; this.title = title; this.releasedBy = releasedBy; this.links = links;
+        }
+
         public String toString() {
-            return "Title: "+title+"\nDate:"+publishedDate+"\nreleasedBy:"+releasedBy+"\nlinks:"+links+"\n";
+            return "releaseUri: "+releaseUri+"\nid: "+id+"\nTitle: "+title+"\nStrDate:"+strDate+"\nDate:"+publishedDate+"\nreleasedBy:"+releasedBy+"\nlinks:"+links+"\n";
         }
 
     }
 
     private Map<Integer, ReleaseEntry> posts = emptyMap();
+    private List<NewsFeed> entries = emptyList();
+    private List<ReleaseEntry> searchResults = emptyList();
+    private boolean searchMode = false;
 
     @Override
     public void doLoop() throws Exception {
-        listPosts();
+        do {
+            currentPage = 1;
+            logo();
+            println();
+            write(WHITE); print("R"); write(GREY2); println(" for latest releases");
+            write(WHITE); print("A"); write(GREY2); println(" for latest additions");
+            write(WHITE); print("."); write(GREY2); println(" to go back");
+            println();
+            write(GREY3);
+            println(repeat(' ',9) + "Enter search criteria ");
+            println();
+            println(repeat(' ',9) + repeat(chr(163), 21));
+            write(UP, UP);
+            print(repeat(' ',9));
+            flush();
+            resetInput();
+            final String search = readLine();
+            final String nsearch = defaultString(search).trim();
+            if (nsearch.equals(".") || isBlank(search)) {
+                return;
+            } else if ("r".equalsIgnoreCase(nsearch)) {
+                entries = emptyList();
+                searchMode = false;
+                browseLatestReleases(RSS_LATESTRELEASES);
+            } else if ("a".equalsIgnoreCase(nsearch)) {
+                entries = emptyList();
+                searchMode = false;
+                browseLatestReleases(RSS_LATESTADDITIONS);
+            } else {
+                println();
+                println();
+                waitOn();
+                searchResults = searchReleaseEntries(URL_TEMPLATE + URLEncoder.encode(search, "UTF-8"));
+                waitOff();
+                if (isEmpty(searchResults)) {
+                    write(RED); println("Zero result page - press any key");
+                    flush(); resetInput(); readKey();
+                    continue;
+                }
+                searchMode = true;
+                browseLatestReleases(EMPTY);
+            }
+        } while (true);
+    }
+
+    public void browseLatestReleases(String rssUrl) throws Exception {
+        posts = null;
+        currentPage = 1;
+        listPosts(rssUrl);
         while (true) {
             log("CSDb waiting for input");
             write(WHITE);print("#"); write(GREY3);
@@ -93,33 +159,35 @@ public class CsdbLatestReleases extends PetsciiThread {
                 break;
             } else if ("help".equals(input) || "h".equals(input)) {
                 help();
-                listPosts();
+                listPosts(rssUrl);
             } else if ("+".equals(input)) {
                 ++currentPage;
                 posts = null;
                 try {
-                    listPosts();
+                    listPosts(rssUrl);
                 } catch (NullPointerException e) {
                     --currentPage;
                     posts = null;
-                    listPosts();
+                    listPosts(rssUrl);
                 }
             } else if ("-".equals(input) && currentPage > 1) {
                 --currentPage;
                 posts = null;
-                listPosts();
+                listPosts(rssUrl);
             } else if ("--".equals(input) && currentPage > 1) {
                 currentPage = 1;
                 posts = null;
-                listPosts();
+                entries = null;
+                listPosts(rssUrl);
             } else if ("r".equals(input) || "reload".equals(input) || "refresh".equals(input)) {
+                entries = null;
                 posts = null;
-                listPosts();
+                listPosts(rssUrl);
             } else if (posts.containsKey(toInt(input))) {
                 displayPost(toInt(input));
-                listPosts();
+                listPosts(rssUrl);
             } else if ("".equals(input)) {
-                listPosts();
+                listPosts(rssUrl);
             }
         }
         flush();
@@ -135,7 +203,7 @@ public class CsdbLatestReleases extends PetsciiThread {
         final ReleaseEntry p = posts.get(n);
         String strDate;
         try {
-            strDate = dateFormat.format(p.publishedDate);
+            strDate = p.strDate == null ? dateFormat.format(p.publishedDate) : p.strDate;
         } catch (Exception e) {
             strDate = EMPTY;
         }
@@ -197,12 +265,12 @@ public class CsdbLatestReleases extends PetsciiThread {
         }
     }
 
-    private void listPosts() throws Exception {
+    private void listPosts(String rssUrl) throws Exception {
         cls();
         logo();
         if (isEmpty(posts)) {
             waitOn();
-            posts = getPosts(currentPage, pageSize);
+            posts = getPosts(rssUrl, currentPage, pageSize);
             waitOff();
         }
         for (Map.Entry<Integer, ReleaseEntry> entry: posts.entrySet()) {
@@ -210,18 +278,18 @@ public class CsdbLatestReleases extends PetsciiThread {
             ReleaseEntry post = entry.getValue();
             write(WHITE); print(i + "."); write(GREY3);
             final int iLen = 37-String.valueOf(i).length();
-            String title = post.title + " (" + post.releasedBy+")";
+            String title = post.title + (isNotBlank(post.releasedBy) ? " (" + post.releasedBy+")" : EMPTY);
             String line = WordUtils.wrap(filterPrintable(HtmlUtils.htmlClean(title)), iLen, "\r", true);
             println(line.replaceAll("\r", "\r " + repeat(" ", 37-iLen)));
         }
         newline();
     }
 
-    private static List<ReleaseEntry> getReleases(List<NewsFeed> entries) throws Exception {
-        Pattern p = Pattern.compile("(?is)<a href=['\\\"]([^'\\\"]*?)['\\\"] title=['\\\"][^'\\\"]*?\\.(p00|prg|zip|d64|d71|d81|d82|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz)['\\\"]>");
+    private List<ReleaseEntry> getReleases() throws Exception {
+        Pattern p = Pattern.compile("(?is)<a href=['\\\"]([^'\\\"]*?)['\\\"] title=['\\\"][^'\\\"]*?\\.(p00|prg|zip|t64|d64|d71|d81|d82|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz|t64\\.gz)['\\\"]>");
         List<ReleaseEntry> list = new LinkedList<>();
         for (NewsFeed item: entries) {
-            if (item.description.matches("(?is).*=\\s*[\\\"'][^\\\"']*\\.(p00|prg|zip|d64|d71|d81|d82|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz)[^\\\"']*[\\\"'].*")) {
+            if (item.description.matches("(?is).*=\\s*[\\\"'][^\\\"']*\\.(p00|prg|zip|t64|d64|d71|d81|d82|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz|t64\\.gz)[^\\\"']*[\\\"'].*")) {
                 String releaseUri = item.uri;
                 String id = item.uri.replaceAll("(?is).*id=([0-9a-zA-Z_\\-]+).*$", "$1"); // https://csdb.dk/release/?id=178862&rs
                 String releasedBy = item.description.replaceAll("(?is).*Released by:\\s*[^>]*>(.*?)<.*", "$1");
@@ -235,19 +303,26 @@ public class CsdbLatestReleases extends PetsciiThread {
         return list;
     }
 
-
-    private Map<Integer, ReleaseEntry> getPosts(int page, int perPage) throws Exception {
+    private Map<Integer, ReleaseEntry> getPosts(String rssURL, int page, int perPage) throws Exception {
         if (page < 1 || perPage < 1) return null;
+        List<ReleaseEntry> list;
 
-        List<NewsFeed> entries = getFeeds(RSS);
-        List<ReleaseEntry> list = getReleases(entries);
+        if (searchMode) {
+            list = searchResults;
+        } else {
+            if (isEmpty(entries)) entries = getFeeds(rssURL);
+            list = getReleases();
+        }
 
+        return pagePosts(list, page, perPage);
+    }
+
+    private Map<Integer, ReleaseEntry> pagePosts(List<ReleaseEntry> list, int page, int perPage) throws Exception {
         Map<Integer, ReleaseEntry> result = new LinkedHashMap<>();
         for (int i=(page-1)*perPage; i<page*perPage; ++i)
             if (i<list.size()) result.put(i+1, list.get(i));
         return result;
     }
-
 
     private static List<NewsFeed> getFeeds(String urlString) throws Exception {
         URL url = new URL(urlString);
@@ -256,7 +331,11 @@ public class CsdbLatestReleases extends PetsciiThread {
         List<CsdbLatestReleases.NewsFeed> result = new LinkedList<>();
         List<SyndEntry> entries = feed.getEntries();
         for (SyndEntry e : entries)
-            result.add(new CsdbLatestReleases.NewsFeed(e.getPublishedDate(), e.getTitle(), e.getDescription().getValue(), e.getUri()));
+            result.add(new CsdbLatestReleases.NewsFeed(
+                    e.getPublishedDate(),
+                    e.getTitle().replaceAll("(?is) by .*?$", EMPTY),
+                    e.getDescription().getValue(),
+                    e.getUri()));
         return result;
     }
 
@@ -272,7 +351,7 @@ public class CsdbLatestReleases extends PetsciiThread {
     private void logo() throws Exception {
         write(CLR, LOWERCASE, CASE_LOCK);
         write(LOGO);
-        write(CYAN); gotoXY(15,3); print("Latest .PRG releases");
+        write(CYAN); gotoXY(15,3); print("Search your releases");
         write(GREY3); gotoXY(0,5);
 
     }
@@ -285,6 +364,25 @@ public class CsdbLatestReleases extends PetsciiThread {
     private void waitOff() {
         for (int i=0; i<14; ++i) write(DEL);
         flush();
+    }
+
+    public static List<ReleaseEntry> searchReleaseEntries(String url) throws Exception {
+        String output = httpGet(url);
+        Pattern p = Pattern.compile("<li>\\s*<a href=\"([^\\\"]+?)\">\\s*<img .*?Download.*?>\\s*</a>\\s*<a href=\"([^\\\"]+?)\">([^<]+?)</a>\\s*\\(([^\\)]+?)\\)(\\s*by\\s*.*?<font .*?>([^<]+?)<)?([^\\(\\n]*?\\(([^\\)]+?)\\))?.*?<br>");
+        Matcher m = p.matcher(output);
+        List<ReleaseEntry> urls = new ArrayList<>();
+        while (m.find()) {
+            int count = m.groupCount();
+            final String link = "https://csdb.dk" + m.group(1);
+            final String releaseUri = "https://csdb.dk" + m.group(2);
+            final String id = m.group(2).replaceAll("(?is)^.*/\\?id=(.*)$","$1");
+            final String title = m.group(3);
+            final String type = m.group(4);
+            final String releasedBy = defaultString(count >= 6 ? m.group(6) : null);
+            final String date = defaultString(count >= 8 ? m.group(8) : null);
+            urls.add(new ReleaseEntry(id, releaseUri, type, date, title, releasedBy, asList(link)));
+        }
+        return urls;
     }
 
     private static final byte[] LOGO = new byte[] {
