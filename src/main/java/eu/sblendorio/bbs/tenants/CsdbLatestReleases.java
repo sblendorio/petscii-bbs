@@ -8,9 +8,6 @@ import droid64.addons.DiskUtilities;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.XModem;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.WordUtils;
 
 import java.net.URL;
@@ -37,7 +34,7 @@ public class CsdbLatestReleases extends PetsciiThread {
     private static final String RSS_LATESTRELEASES = "https://csdb.dk/rss/latestreleases.php";
     private static final String RSS_LATESTADDITIONS = "https://csdb.dk/rss/latestadditions.php?type=release";
 
-    public static final String URL_TEMPLATE = "https://csdb.dk/search/?seinsel=releases&all=1&search=";
+    private static final String URL_TEMPLATE = "https://csdb.dk/search/?seinsel=releases&all=1&search=";
 
     private int currentPage = 1;
     protected int pageSize = 10;
@@ -87,53 +84,54 @@ public class CsdbLatestReleases extends PetsciiThread {
 
     private Map<Integer, ReleaseEntry> posts = emptyMap();
     private List<NewsFeed> entries = emptyList();
+    private List<ReleaseEntry> searchResults = emptyList();
+    private boolean searchMode = false;
 
     @Override
     public void doLoop() throws Exception {
-        {
-            do {
-                currentPage = 1;
-                logo();
+        do {
+            currentPage = 1;
+            logo();
+            println();
+            write(WHITE); print("R"); write(GREY2); println(" for latest releases");
+            write(WHITE); print("A"); write(GREY2); println(" for latest additions");
+            write(WHITE); print("."); write(GREY2); println(" to go back");
+            println();
+            write(GREY3);
+            println(repeat(' ',9) + "Enter search criteria ");
+            println();
+            println(repeat(' ',9) + repeat(chr(163), 21));
+            write(UP, UP);
+            print(repeat(' ',9));
+            flush();
+            resetInput();
+            final String search = readLine();
+            final String nsearch = defaultString(search).trim();
+            if (nsearch.equals(".") || isBlank(search)) {
+                return;
+            } else if ("r".equalsIgnoreCase(nsearch)) {
+                entries = emptyList();
+                searchMode = false;
+                browseLatestReleases(RSS_LATESTRELEASES);
+            } else if ("a".equalsIgnoreCase(nsearch)) {
+                entries = emptyList();
+                searchMode = false;
+                browseLatestReleases(RSS_LATESTADDITIONS);
+            } else {
                 println();
-                write(WHITE); print("R"); write(GREY2); println(" for latest releases");
-                write(WHITE); print("A"); write(GREY2); println(" for latest additions");
-                write(WHITE); print("."); write(GREY2); println(" to go back");
                 println();
-                write(GREY3);
-                println(repeat(' ',9) + "Enter search criteria ");
-                println();
-                println(repeat(' ',9) + repeat(chr(163), 21));
-                write(UP, UP);
-                print(repeat(' ',9));
-                flush();
-                resetInput();
-                final String search = readLine();
-                final String nsearch = defaultString(search).trim();
-                if (nsearch.equals(".") || isBlank(search)) {
-                    return;
-                } else if ("r".equalsIgnoreCase(nsearch)) {
-                    entries = emptyList();
-                    browseLatestReleases(RSS_LATESTRELEASES);
-                } else if ("a".equalsIgnoreCase(nsearch)) {
-                    entries = emptyList();
-                    browseLatestReleases(RSS_LATESTADDITIONS);
-                } else {
-                    println();
-                    println();
-                    waitOn();
-                    List<ReleaseEntry> rentries = getUrls(URL_TEMPLATE + URLEncoder.encode(search, "UTF-8"));
-                    waitOff();
-                    if (isEmpty(rentries)) {
-                        write(RED); println("Zero result page - press any key");
-                        flush(); resetInput(); readKey();
-                        continue;
-                    }
-                    /*
-                    displaySearchResults();
-                    */
+                waitOn();
+                searchResults = searchReleaseEntries(URL_TEMPLATE + URLEncoder.encode(search, "UTF-8"));
+                waitOff();
+                if (isEmpty(searchResults)) {
+                    write(RED); println("Zero result page - press any key");
+                    flush(); resetInput(); readKey();
+                    continue;
                 }
-            } while (true);
-        }
+                searchMode = true;
+                browseLatestReleases(EMPTY);
+            }
+        } while (true);
     }
 
     public void browseLatestReleases(String rssUrl) throws Exception {
@@ -280,7 +278,7 @@ public class CsdbLatestReleases extends PetsciiThread {
             ReleaseEntry post = entry.getValue();
             write(WHITE); print(i + "."); write(GREY3);
             final int iLen = 37-String.valueOf(i).length();
-            String title = post.title + " (" + post.releasedBy+")";
+            String title = post.title + (isNotBlank(post.releasedBy) ? " (" + post.releasedBy+")" : EMPTY);
             String line = WordUtils.wrap(filterPrintable(HtmlUtils.htmlClean(title)), iLen, "\r", true);
             println(line.replaceAll("\r", "\r " + repeat(" ", 37-iLen)));
         }
@@ -305,19 +303,26 @@ public class CsdbLatestReleases extends PetsciiThread {
         return list;
     }
 
-
     private Map<Integer, ReleaseEntry> getPosts(String rssURL, int page, int perPage) throws Exception {
         if (page < 1 || perPage < 1) return null;
+        List<ReleaseEntry> list;
 
-        if (isEmpty(entries)) entries = getFeeds(rssURL);
-        List<ReleaseEntry> list = getReleases();
+        if (searchMode) {
+            list = searchResults;
+        } else {
+            if (isEmpty(entries)) entries = getFeeds(rssURL);
+            list = getReleases();
+        }
 
+        return pagePosts(list, page, perPage);
+    }
+
+    private Map<Integer, ReleaseEntry> pagePosts(List<ReleaseEntry> list, int page, int perPage) throws Exception {
         Map<Integer, ReleaseEntry> result = new LinkedHashMap<>();
         for (int i=(page-1)*perPage; i<page*perPage; ++i)
             if (i<list.size()) result.put(i+1, list.get(i));
         return result;
     }
-
 
     private static List<NewsFeed> getFeeds(String urlString) throws Exception {
         URL url = new URL(urlString);
@@ -346,7 +351,7 @@ public class CsdbLatestReleases extends PetsciiThread {
     private void logo() throws Exception {
         write(CLR, LOWERCASE, CASE_LOCK);
         write(LOGO);
-        write(CYAN); gotoXY(15,3); print("Latest .PRG releases");
+        write(CYAN); gotoXY(15,3); print("Search your releases");
         write(GREY3); gotoXY(0,5);
 
     }
@@ -361,7 +366,7 @@ public class CsdbLatestReleases extends PetsciiThread {
         flush();
     }
 
-    public static List<ReleaseEntry> getUrls(String url) throws Exception {
+    public static List<ReleaseEntry> searchReleaseEntries(String url) throws Exception {
         String output = httpGet(url);
         Pattern p = Pattern.compile("<li>\\s*<a href=\"([^\\\"]+?)\">\\s*<img .*?Download.*?>\\s*</a>\\s*<a href=\"([^\\\"]+?)\">([^<]+?)</a>\\s*\\(([^\\)]+?)\\)(\\s*by\\s*.*?<font .*?>([^<]+?)<)?([^\\(\\n]*?\\(([^\\)]+?)\\))?.*?<br>");
         Matcher m = p.matcher(output);
