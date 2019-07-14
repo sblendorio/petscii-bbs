@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 import static eu.sblendorio.bbs.core.Colors.*;
 import static eu.sblendorio.bbs.core.Keys.*;
 import static eu.sblendorio.bbs.core.Utils.filterPrintable;
+import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
@@ -52,7 +53,7 @@ public class CsdbLatestReleases extends PetsciiThread {
         }
 
         public String toString() {
-            return "Title: "+title+"\nDate:"+publishedDate+"\nDescription:"+description+"\n";
+            return "Title: "+title+"\nDate:"+publishedDate+"\nDescription:"+description+"\nUri:"+uri+"\n";
         }
     }
 
@@ -61,17 +62,25 @@ public class CsdbLatestReleases extends PetsciiThread {
         final String releaseUri;
         final String type;
         final Date publishedDate;
+        final String strDate;
         final String title;
         final String releasedBy;
         final List<String> links;
 
         ReleaseEntry(String id, String releaseUri, String type, Date publishedDate, String title, String releasedBy, List<String> links) {
+            this.strDate = null;
             this.id = id; this.releaseUri = releaseUri; this.type = type;
             this.publishedDate = publishedDate; this.title = title; this.releasedBy = releasedBy; this.links = links;
         }
 
+        ReleaseEntry(String id, String releaseUri, String type, String strDate, String title, String releasedBy, List<String> links) {
+            this.publishedDate = null;
+            this.id = id; this.releaseUri = releaseUri; this.type = type;
+            this.strDate = strDate; this.title = title; this.releasedBy = releasedBy; this.links = links;
+        }
+
         public String toString() {
-            return "Title: "+title+"\nDate:"+publishedDate+"\nreleasedBy:"+releasedBy+"\nlinks:"+links+"\n";
+            return "releaseUri: "+releaseUri+"\nid: "+id+"\nTitle: "+title+"\nStrDate:"+strDate+"\nDate:"+publishedDate+"\nreleasedBy:"+releasedBy+"\nlinks:"+links+"\n";
         }
 
     }
@@ -112,9 +121,9 @@ public class CsdbLatestReleases extends PetsciiThread {
                     println();
                     println();
                     waitOn();
-                    entries = getUrls(URL_TEMPLATE + URLEncoder.encode(search, "UTF-8"));
+                    List<ReleaseEntry> rentries = getUrls(URL_TEMPLATE + URLEncoder.encode(search, "UTF-8"));
                     waitOff();
-                    if (isEmpty(entries)) {
+                    if (isEmpty(rentries)) {
                         write(RED); println("Zero result page - press any key");
                         flush(); resetInput(); readKey();
                         continue;
@@ -196,7 +205,7 @@ public class CsdbLatestReleases extends PetsciiThread {
         final ReleaseEntry p = posts.get(n);
         String strDate;
         try {
-            strDate = dateFormat.format(p.publishedDate);
+            strDate = p.strDate == null ? dateFormat.format(p.publishedDate) : p.strDate;
         } catch (Exception e) {
             strDate = EMPTY;
         }
@@ -352,12 +361,22 @@ public class CsdbLatestReleases extends PetsciiThread {
         flush();
     }
 
-    public static List<NewsFeed> getUrls(String url) throws Exception {
+    public static List<ReleaseEntry> getUrls(String url) throws Exception {
         String output = httpGet(url);
-        Pattern p = Pattern.compile("(?is)href=\"(ftp://[^\"]+\\.(p00|prg|d64|zip|t64|d71|d81|d82|d64\\.gz|t64\\.gz|d81\\.gz|d82\\.gz|d71\\.gz))\"");
+        Pattern p = Pattern.compile("<li>\\s*<a href=\"([^\\\"]+?)\">\\s*<img .*?Download.*?>\\s*</a>\\s*<a href=\"([^\\\"]+?)\">([^<]+?)</a>\\s*\\(([^\\)]+?)\\)(\\s*by\\s*.*?<font .*?>([^<]+?)<)?([^\\(\\n]*?\\(([^\\)]+?)\\))?.*?<br>");
         Matcher m = p.matcher(output);
-        List<NewsFeed> urls = new ArrayList<>();
-        //while (m.find()) urls.add(NewsFeed(m.group(1)));
+        List<ReleaseEntry> urls = new ArrayList<>();
+        while (m.find()) {
+            int count = m.groupCount();
+            final String link = "https://csdb.dk" + m.group(1);
+            final String releaseUri = "https://csdb.dk" + m.group(2);
+            final String id = m.group(2).replaceAll("(?is)^.*/\\?id=(.*)$","$1");
+            final String title = m.group(3);
+            final String type = m.group(4);
+            final String releasedBy = defaultString(count >= 6 ? m.group(6) : null);
+            final String date = defaultString(count >= 8 ? m.group(8) : null);
+            urls.add(new ReleaseEntry(id, releaseUri, type, date, title, releasedBy, asList(link)));
+        }
         return urls;
     }
 
