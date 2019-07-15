@@ -38,6 +38,7 @@ public class CsdbLatestReleases extends PetsciiThread {
     private static final String RSS_LATESTADDITIONS = "https://csdb.dk/rss/latestadditions.php?type=release";
 
     private static final String URL_TEMPLATE = "https://csdb.dk/search/?seinsel=releases&all=1&search=";
+    private static final String OTHER_PLATFORM = "Other Platform C64 Tool";
 
     private int currentPage = 1;
     protected int pageSize = 10;
@@ -294,13 +295,13 @@ public class CsdbLatestReleases extends PetsciiThread {
         for (NewsFeed item: entries) {
             if (item.description.matches("(?is).*=\\s*[\\\"'][^\\\"']*\\.(p00|prg|zip|t64|d64|d71|d81|d82|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz|t64\\.gz)[^\\\"']*[\\\"'].*")) {
                 String releaseUri = item.uri;
-                String id = item.uri.replaceAll("(?is).*id=([0-9a-zA-Z_\\-]+).*$", "$1"); // https://csdb.dk/release/?id=178862&rs
-                String releasedBy = item.description.replaceAll("(?is).*Released by:\\s*[^>]*>(.*?)<.*", "$1");
-                String type = item.description.replaceAll("(?is).*Type:\\s*[^>]*>(.*?)<.*", "$1");
+                String id = item.uri.replaceAll("(?is)^.*id=([0-9a-zA-Z_\\-]+).*$", "$1"); // https://csdb.dk/release/?id=178862&rs
+                String releasedBy = item.description.matches("(?is)^.*Released by:\\s*<a [^>]*>(.*?)<.*$") ? item.description.replaceAll("(?is)^.*Released by:\\s*<a [^>]*>(.*?)<.*$", "$1") : EMPTY;
+                String type = item.description.matches("(?is)^.*Type:\\s*[^>]*>(.*?)<.*$") ? item.description.replaceAll("(?is)^.*Type:\\s*[^>]*>(.*?)<.*$", "$1") : EMPTY;
                 Matcher m = p.matcher(item.description);
                 List<String> urls = new ArrayList<>();
                 while (m.find()) urls.add(m.group(1));
-                list.add(new ReleaseEntry(id, releaseUri, type, item.publishedDate, item.title, releasedBy, urls));
+                if (!type.equalsIgnoreCase(OTHER_PLATFORM)) list.add(new ReleaseEntry(id, releaseUri, type, item.publishedDate, item.title, releasedBy, urls));
             }
         }
         return list;
@@ -382,7 +383,9 @@ public class CsdbLatestReleases extends PetsciiThread {
             final String type = output.matches("(?is)^.*<b>Type :</b><br><a href=\"[^\"\\n]+?\">([^<]+?)<.*$") ? output.replaceAll("(?is)^.*<b>Type :</b><br><a href=\"[^\"\\n]+?\">([^<]+)<.*$", "$1").trim() : EMPTY;
             final String releasedBy = output.matches("(?is)^.*<b>Released by :</b><br><a href=\"[^\"]+?\">([^<\\n]+?)</a>.*$") ? output.replaceAll("(?is)^.*<b>Released by :</b><br><a href=\"[^\"]+?\">([^<\\n]+?)</a>.*$", "$1").trim() : EMPTY;
             final String date = output.matches("(?is)^.*<b>Release Date :</b><br>.*?<font [^>\\n]+?>([^<\\n]+?)</font>.*$") ? output.replaceAll("(?is)^.*<b>Release Date :</b><br>.*?<font [^>\\n]+?>([^<\\n]+?)</font>.*$","$1").trim() : EMPTY;
-            return asList(new ReleaseEntry(id, releaseUri, type, date, title, releasedBy, asList(link)));
+            return type.equalsIgnoreCase(OTHER_PLATFORM)
+                    ? Collections.<ReleaseEntry> emptyList()
+                    : asList(new ReleaseEntry(id, releaseUri, type, date, title, releasedBy, asList(link)));
         }
         Pattern p = Pattern.compile("<li>\\s*<a href=\"([^\\\"]+?)\">\\s*<img .*?Download.*?>\\s*</a>\\s*<a href=\"([^\\\"]+?)\">([^<]+?)</a>\\s*\\(([^\\)]+?)\\)(\\s*by\\s*.*?<font .*?>([^<]+?)<)?([^\\(\\n]*?\\(([^\\)]+?)\\))?.*?<br>");
         Matcher m = p.matcher(output);
@@ -396,7 +399,7 @@ public class CsdbLatestReleases extends PetsciiThread {
             final String type = trim(m.group(4));
             final String releasedBy = trim(defaultString(count >= 6 ? m.group(6) : null));
             final String date = defaultString(count >= 8 ? m.group(8) : null);
-            urls.add(new ReleaseEntry(id, releaseUri, type, date, title, releasedBy, asList(link)));
+            if (!type.equalsIgnoreCase(OTHER_PLATFORM)) urls.add(new ReleaseEntry(id, releaseUri, type, date, title, releasedBy, asList(link)));
         }
         return urls;
     }
