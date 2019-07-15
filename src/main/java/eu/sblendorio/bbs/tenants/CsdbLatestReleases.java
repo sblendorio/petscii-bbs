@@ -8,6 +8,7 @@ import droid64.addons.DiskUtilities;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.XModem;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
 import java.net.URL;
@@ -367,18 +368,30 @@ public class CsdbLatestReleases extends PetsciiThread {
     }
 
     public static List<ReleaseEntry> searchReleaseEntries(String url) throws Exception {
-        String output = httpGet(url);
+        String output = defaultString(httpGet(url));
+        if (!output.matches("(?is)^.*<title>\\[CSDb\\] - Search for.*$")
+                && output.matches("(?is)^.*<font size=6>([^<\\n]+?)</font.*$")) {
+            // PARSE RESULT SINGLE OUTPUT
+            final String link = "";
+            final String releaseUri = "";
+            final String id = "";
+            final String title = output.matches("(?is)^.*<font size=6>([^<\\n]+?)</font.*$") ? output.replaceAll("(?is)^.*<font size=6>([^<\\n]+?)</font.*$", "$1").trim() : EMPTY;
+            final String type = "";
+            final String releasedBy = output.matches("(?is)^.*<b>Released by :</b><br><a href=\"[^\"]+?\">([^<]+?)</a>.*?") ? output.replaceAll("(?is)^.*<b>Released by :</b><br><a href=\"[^\"]+?\">([^<]+?)</a>.*?", "$1").trim() : EMPTY;
+            final String date = "";
+            return asList(new ReleaseEntry(id, releaseUri, type, date, title, releasedBy, asList(link)));
+        }
         Pattern p = Pattern.compile("<li>\\s*<a href=\"([^\\\"]+?)\">\\s*<img .*?Download.*?>\\s*</a>\\s*<a href=\"([^\\\"]+?)\">([^<]+?)</a>\\s*\\(([^\\)]+?)\\)(\\s*by\\s*.*?<font .*?>([^<]+?)<)?([^\\(\\n]*?\\(([^\\)]+?)\\))?.*?<br>");
         Matcher m = p.matcher(output);
         List<ReleaseEntry> urls = new ArrayList<>();
         while (m.find()) {
             int count = m.groupCount();
-            final String link = "https://csdb.dk" + m.group(1);
-            final String releaseUri = "https://csdb.dk" + m.group(2);
-            final String id = m.group(2).replaceAll("(?is)^.*/\\?id=(.*)$","$1");
-            final String title = m.group(3);
-            final String type = m.group(4);
-            final String releasedBy = defaultString(count >= 6 ? m.group(6) : null);
+            final String link = "https://csdb.dk" + trim(m.group(1));
+            final String releaseUri = "https://csdb.dk" + trim(m.group(2));
+            final String id = trim(m.group(2).replaceAll("(?is)^.*/\\?id=(.*)$","$1"));
+            final String title = trim(m.group(3));
+            final String type = trim(m.group(4));
+            final String releasedBy = trim(defaultString(count >= 6 ? m.group(6) : null));
             final String date = defaultString(count >= 8 ? m.group(8) : null);
             urls.add(new ReleaseEntry(id, releaseUri, type, date, title, releasedBy, asList(link)));
         }
