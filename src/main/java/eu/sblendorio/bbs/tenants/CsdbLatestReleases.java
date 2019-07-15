@@ -373,8 +373,8 @@ public class CsdbLatestReleases extends PetsciiThread {
                 && output.matches("(?is)^.*<font size=6>([^<\\n]+?)</font.*$")) {
             // PARSE RESULT SINGLE OUTPUT
             final String link = "";
-            final String releaseUri = "";
-            final String id = "";
+            final String id = output.matches("(?is)<a href=\"/voteview.php\\?type=release&id=([^\"'\\n']+?)\">") ? output.replaceAll("(?is)<a href=\"/voteview.php\\?type=release&id=([^\"'\\n']+?)\">", "$1").trim() : EMPTY;
+            final String releaseUri = isBlank(id) ? EMPTY : "https://csdb.dk/release/?id=" + id;
             final String title = output.matches("(?is)^.*<font size=6>([^<\\n]+?)</font.*$") ? output.replaceAll("(?is)^.*<font size=6>([^<\\n]+?)</font.*$", "$1").trim() : EMPTY;
             final String type = output.matches("(?is)^.*<b>Type :</b><br><a href=\"[^\\\"\\n]+?\">([^<\\n]+?)</a>") ? output.replaceAll("(?is)^.*<b>Type :</b><br><a href=\"[^\\\"\\n]+?\">([^<\\n]+?)</a>", "$1").trim() : EMPTY;
             final String releasedBy = output.matches("(?is)^.*<b>Released by :</b><br><a href=\"[^\"]+?\">([^<]+?)</a>.*?") ? output.replaceAll("(?is)^.*<b>Released by :</b><br><a href=\"[^\"]+?\">([^<]+?)</a>.*?", "$1").trim() : EMPTY;
