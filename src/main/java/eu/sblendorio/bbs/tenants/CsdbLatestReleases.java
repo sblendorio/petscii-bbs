@@ -370,7 +370,8 @@ public class CsdbLatestReleases extends PetsciiThread {
     public static List<ReleaseEntry> searchReleaseEntries(String url) throws Exception {
         String output = defaultString(httpGet(url));
         if (!output.matches("(?is)^.*<title>\\[CSDb\\] - Search for.*$")
-                && output.matches("(?is)^.*<font size=6>([^<\\n]+?)</font.*$")) {
+                && output.matches("(?is)^.*<font size=6>([^<\\n]+?)</font.*$")
+                && !output.matches("^.*There are no downloads because.*$")) {
             // PARSE RESULT SINGLE OUTPUT
             final String link = "";
             final String id = output.matches("(?is)<a href=\"/voteview.php\\?type=release&id=([^\"'\\n']+?)\">") ? output.replaceAll("(?is)<a href=\"/voteview.php\\?type=release&id=([^\"'\\n']+?)\">", "$1").trim() : EMPTY;
