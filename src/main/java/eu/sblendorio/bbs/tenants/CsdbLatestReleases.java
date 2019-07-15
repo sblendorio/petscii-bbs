@@ -9,6 +9,7 @@ import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.XModem;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.WordUtils;
 
 import java.net.URL;
@@ -22,6 +23,7 @@ import java.util.regex.Pattern;
 import static eu.sblendorio.bbs.core.Colors.*;
 import static eu.sblendorio.bbs.core.Keys.*;
 import static eu.sblendorio.bbs.core.Utils.filterPrintable;
+import static java.lang.Integer.compare;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
@@ -373,25 +375,13 @@ public class CsdbLatestReleases extends PetsciiThread {
                 && output.matches("(?is)^.*<font size=6>([^<\\n]+?)</font.*$")
                 && !output.matches("^.*There are no downloads because.*$")) {
             // PARSE RESULT SINGLE OUTPUT
-            final String link = "";
+            final String link = findDownloadLink(output);
             final String id = output.matches("(?is)^.*<a href=\"/voteview.php\\?type=release&id=([^\"'\\n']+?)\">.*$") ? output.replaceAll("(?is)^.*<a href=\"/voteview.php\\?type=release&id=([^\"'\\n']+?)\">.*$", "$1").trim() : EMPTY;
             final String releaseUri = isBlank(id) ? EMPTY : "https://csdb.dk/release/?id=" + id;
             final String title = output.matches("(?is)^.*<font size=6>([^<\\n]+?)</font.*$") ? output.replaceAll("(?is)^.*<font size=6>([^<\\n]+?)</font.*$", "$1").trim() : EMPTY;
             final String type = output.matches("(?is)^.*<b>Type :</b><br><a href=\"[^\"\\n]+?\">([^<]+?)<.*$") ? output.replaceAll("(?is)^.*<b>Type :</b><br><a href=\"[^\"\\n]+?\">([^<]+)<.*$", "$1").trim() : EMPTY;
             final String releasedBy = output.matches("(?is)^.*<b>Released by :</b><br><a href=\"[^\"]+?\">([^<\\n]+?)</a>.*$") ? output.replaceAll("(?is)^.*<b>Released by :</b><br><a href=\"[^\"]+?\">([^<\\n]+?)</a>.*$", "$1").trim() : EMPTY;
             final String date = output.matches("(?is)^.*<b>Release Date :</b><br>.*?<font [^>\\n]+?>([^<\\n]+?)</font>.*$") ? output.replaceAll("(?is)^.*<b>Release Date :</b><br>.*?font [^>\\n]+?>([^<\\n]+?)</font>.*$","$1").trim() : EMPTY;
-            System.out.println("id="+id);
-            System.out.println();
-            System.out.println("releaseUri="+releaseUri);
-            System.out.println();
-            System.out.println("title="+title);
-            System.out.println();
-            System.out.println("type="+type);
-            System.out.println();
-            System.out.println("releasedBy="+releasedBy);
-            System.out.println();
-            System.out.println("date="+date);
-            System.out.println();
             return asList(new ReleaseEntry(id, releaseUri, type, date, title, releasedBy, asList(link)));
         }
         Pattern p = Pattern.compile("<li>\\s*<a href=\"([^\\\"]+?)\">\\s*<img .*?Download.*?>\\s*</a>\\s*<a href=\"([^\\\"]+?)\">([^<]+?)</a>\\s*\\(([^\\)]+?)\\)(\\s*by\\s*.*?<font .*?>([^<]+?)<)?([^\\(\\n]*?\\(([^\\)]+?)\\))?.*?<br>");
@@ -409,6 +399,71 @@ public class CsdbLatestReleases extends PetsciiThread {
             urls.add(new ReleaseEntry(id, releaseUri, type, date, title, releasedBy, asList(link)));
         }
         return urls;
+    }
+
+    static class DownloadEntry implements Comparable<DownloadEntry> {
+        public final String link;
+        public final String caption;
+        public final int downloads;
+
+        public DownloadEntry(String link, String caption, int downloads) {
+            this.link = defaultString(link);
+            this.caption = defaultString(caption);
+            this.downloads = downloads;
+        }
+
+        @Override
+        public int compareTo(DownloadEntry o2) {
+            if (o2 == null) return -1;
+            String ext1 = defaultString(this.link.replaceAll("^.*\\.([^\\.]+)$", "$1")).toLowerCase();
+            String ext2 = defaultString(o2.link.replaceAll("^.*\\.([^\\.]+)$", "$1")).toLowerCase();
+
+            if ("prg".equals(ext1) && !"prg".equals(ext2))
+                return -1;
+            if ("prg".equals(ext2) && !"prg".equals(ext1))
+                return 1;
+
+            if ("p00".equals(ext1) && !"p00".equals(ext2))
+                return -1;
+            if ("p00".equals(ext2) && !"p00".equals(ext1))
+                return 1;
+
+            if ("t64".equals(ext1) && !"t64".equals(ext2))
+                return -1;
+            if ("t64".equals(ext2) && !"t64".equals(ext1))
+                return 1;
+
+            if ("d64".equals(ext1) && !"d64".equals(ext2))
+                return -1;
+            if ("d64".equals(ext2) && !"d64".equals(ext1))
+                return 1;
+
+            if ("d71".equals(ext1) && !"d71".equals(ext2))
+                return -1;
+            if ("d71".equals(ext2) && !"d71".equals(ext1))
+                return 1;
+
+            if ("d81".equals(ext1) && !"d81".equals(ext2))
+                return -1;
+            if ("d81".equals(ext2) && !"d81".equals(ext1))
+                return 1;
+
+            return -compare(this.downloads, o2.downloads);
+        }
+    }
+
+    private static String findDownloadLink(String output) {
+        // <a href="download.php?id=214496">http://csdb.dk/getinternalfile.php/177919/ultimate-term.d64</a>
+        Pattern p = Pattern.compile("<a href=\"(download\\.php\\?id=[^\"]+?)\">([^<]+?)</a>( \\(downloads: [0-9]+\\))?");
+        Matcher m = p.matcher(output);
+        List<DownloadEntry> list = new ArrayList<>();
+        while (m.find()) {
+            final String link = "https://csdb.dk/release/" + trim(m.group(1));
+            final String caption = trim(m.group(2));
+            final int downloads = m.groupCount() >=3 ? toInt(m.group(3).replaceAll("[^0-9]", EMPTY)) : 0;
+            list.add(new DownloadEntry(link, caption, downloads));
+        }
+        return list.size() == 0 ? EMPTY : list.get(0).link;
     }
 
     private static final byte[] LOGO = new byte[] {
