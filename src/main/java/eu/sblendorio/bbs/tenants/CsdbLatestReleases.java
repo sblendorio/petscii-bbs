@@ -381,7 +381,7 @@ public class CsdbLatestReleases extends PetsciiThread {
             final String title = output.matches("(?is)^.*<font size=6>([^<\\n]+?)</font.*$") ? output.replaceAll("(?is)^.*<font size=6>([^<\\n]+?)</font.*$", "$1").trim() : EMPTY;
             final String type = output.matches("(?is)^.*<b>Type :</b><br><a href=\"[^\"\\n]+?\">([^<]+?)<.*$") ? output.replaceAll("(?is)^.*<b>Type :</b><br><a href=\"[^\"\\n]+?\">([^<]+)<.*$", "$1").trim() : EMPTY;
             final String releasedBy = output.matches("(?is)^.*<b>Released by :</b><br><a href=\"[^\"]+?\">([^<\\n]+?)</a>.*$") ? output.replaceAll("(?is)^.*<b>Released by :</b><br><a href=\"[^\"]+?\">([^<\\n]+?)</a>.*$", "$1").trim() : EMPTY;
-            final String date = output.matches("(?is)^.*<b>Release Date :</b><br>.*?<font [^>\\n]+?>([^<\\n]+?)</font>.*$") ? output.replaceAll("(?is)^.*<b>Release Date :</b><br>.*?font [^>\\n]+?>([^<\\n]+?)</font>.*$","$1").trim() : EMPTY;
+            final String date = output.matches("(?is)^.*<b>Release Date :</b><br>.*?<font [^>\\n]+?>([^<\\n]+?)</font>.*$") ? output.replaceAll("(?is)^.*<b>Release Date :</b><br>.*?<font [^>\\n]+?>([^<\\n]+?)</font>.*$","$1").trim() : EMPTY;
             return asList(new ReleaseEntry(id, releaseUri, type, date, title, releasedBy, asList(link)));
         }
         Pattern p = Pattern.compile("<li>\\s*<a href=\"([^\\\"]+?)\">\\s*<img .*?Download.*?>\\s*</a>\\s*<a href=\"([^\\\"]+?)\">([^<]+?)</a>\\s*\\(([^\\)]+?)\\)(\\s*by\\s*.*?<font .*?>([^<]+?)<)?([^\\(\\n]*?\\(([^\\)]+?)\\))?.*?<br>");
@@ -415,9 +415,8 @@ public class CsdbLatestReleases extends PetsciiThread {
         @Override
         public int compareTo(DownloadEntry o2) {
             if (o2 == null) return -1;
-            String ext1 = defaultString(this.link.replaceAll("^.*\\.([^\\.]+)$", "$1")).toLowerCase();
-            String ext2 = defaultString(o2.link.replaceAll("^.*\\.([^\\.]+)$", "$1")).toLowerCase();
-
+            String ext1 = defaultString(this.caption.replaceAll("^.*\\.([^\\.]+)$", "$1")).toLowerCase();
+            String ext2 = defaultString(o2.caption.replaceAll("^.*\\.([^\\.]+)$", "$1")).toLowerCase();
             if ("prg".equals(ext1) && !"prg".equals(ext2))
                 return -1;
             if ("prg".equals(ext2) && !"prg".equals(ext1))
@@ -438,6 +437,11 @@ public class CsdbLatestReleases extends PetsciiThread {
             if ("d64".equals(ext2) && !"d64".equals(ext1))
                 return 1;
 
+            if ("zip".equals(ext1) && !"zip".equals(ext2))
+                return -1;
+            if ("zip".equals(ext2) && !"zip".equals(ext1))
+                return 1;
+
             if ("d71".equals(ext1) && !"d71".equals(ext2))
                 return -1;
             if ("d71".equals(ext2) && !"d71".equals(ext1))
@@ -448,7 +452,10 @@ public class CsdbLatestReleases extends PetsciiThread {
             if ("d81".equals(ext2) && !"d81".equals(ext1))
                 return 1;
 
-            return -compare(this.downloads, o2.downloads);
+            if (ext1.equals(ext2))
+                return -compare(this.downloads, o2.downloads);
+            else
+                return -ext1.compareTo(ext2);
         }
     }
 
@@ -463,6 +470,7 @@ public class CsdbLatestReleases extends PetsciiThread {
             final int downloads = m.groupCount() >=3 ? toInt(m.group(3).replaceAll("[^0-9]", EMPTY)) : 0;
             list.add(new DownloadEntry(link, caption, downloads));
         }
+        Collections.sort(list);
         return list.size() == 0 ? EMPTY : list.get(0).link;
     }
 
