@@ -374,12 +374,24 @@ public class CsdbLatestReleases extends PetsciiThread {
                 && !output.matches("^.*There are no downloads because.*$")) {
             // PARSE RESULT SINGLE OUTPUT
             final String link = "";
-            final String id = output.matches("(?is)<a href=\"/voteview.php\\?type=release&id=([^\"'\\n']+?)\">") ? output.replaceAll("(?is)<a href=\"/voteview.php\\?type=release&id=([^\"'\\n']+?)\">", "$1").trim() : EMPTY;
+            final String id = output.matches("(?is)^.*<a href=\"/voteview.php\\?type=release&id=([^\"'\\n']+?)\">.*$") ? output.replaceAll("(?is)^.*<a href=\"/voteview.php\\?type=release&id=([^\"'\\n']+?)\">.*$", "$1").trim() : EMPTY;
             final String releaseUri = isBlank(id) ? EMPTY : "https://csdb.dk/release/?id=" + id;
             final String title = output.matches("(?is)^.*<font size=6>([^<\\n]+?)</font.*$") ? output.replaceAll("(?is)^.*<font size=6>([^<\\n]+?)</font.*$", "$1").trim() : EMPTY;
-            final String type = output.matches("(?is)^.*<b>Type :</b><br><a href=\"[^\\\"\\n]+?\">([^<\\n]+?)</a>") ? output.replaceAll("(?is)^.*<b>Type :</b><br><a href=\"[^\\\"\\n]+?\">([^<\\n]+?)</a>", "$1").trim() : EMPTY;
-            final String releasedBy = output.matches("(?is)^.*<b>Released by :</b><br><a href=\"[^\"]+?\">([^<]+?)</a>.*?") ? output.replaceAll("(?is)^.*<b>Released by :</b><br><a href=\"[^\"]+?\">([^<]+?)</a>.*?", "$1").trim() : EMPTY;
-            final String date = output.matches("(?is)<b>Release Date :</b><br>\\n<font [^>\\n]+?>([^<\\n]+?)</font>.*$") ? output.replaceAll("(?is)<b>Release Date :</b><br>\\n<font [^>\\n]+?>([^<\\n]+?)</font>.*$","$1").trim() : EMPTY;
+            final String type = output.matches("(?is)^.*<b>Type :</b><br><a href=\"[^\"\\n]+?\">([^<\\n]+?)</a>.*$") ? output.replaceAll("(?is)^.*<b>Type :</b><br><a href=\"[^\"\\n]+?\">([^<\\n]+?).*?", "$1").trim() : EMPTY;
+            final String releasedBy = output.matches("(?is)^.*<b>Released by :</b><br><a href=\"[^\"]+?\">([^<\\n]+?)</a>.*$") ? output.replaceAll("(?is)^.*<b>Released by :</b><br><a href=\"[^\"]+?\">([^<\\n]+?)</a>.*$", "$1").trim() : EMPTY;
+            final String date = output.matches("(?is)^.*<b>Release Date :</b><br>.*?<font [^>\\n]+?>([^<\\n]+?)</font>.*$") ? output.replaceAll("(?is)^.*<b>Release Date :</b><br>.*?font [^>\\n]+?>([^<\\n]+?)</font>.*$","$1").trim() : EMPTY;
+            System.out.println("id="+id);
+            System.out.println();
+            System.out.println("releaseUri="+releaseUri);
+            System.out.println();
+            System.out.println("title="+title);
+            System.out.println();
+            System.out.println("type="+type);
+            System.out.println();
+            System.out.println("releasedBy="+releasedBy);
+            System.out.println();
+            System.out.println("date="+date);
+            System.out.println();
             return asList(new ReleaseEntry(id, releaseUri, type, date, title, releasedBy, asList(link)));
         }
         Pattern p = Pattern.compile("<li>\\s*<a href=\"([^\\\"]+?)\">\\s*<img .*?Download.*?>\\s*</a>\\s*<a href=\"([^\\\"]+?)\">([^<]+?)</a>\\s*\\(([^\\)]+?)\\)(\\s*by\\s*.*?<font .*?>([^<]+?)<)?([^\\(\\n]*?\\(([^\\)]+?)\\))?.*?<br>");
