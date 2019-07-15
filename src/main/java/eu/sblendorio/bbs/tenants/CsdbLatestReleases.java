@@ -378,7 +378,7 @@ public class CsdbLatestReleases extends PetsciiThread {
             final String title = output.matches("(?is)^.*<font size=6>([^<\\n]+?)</font.*$") ? output.replaceAll("(?is)^.*<font size=6>([^<\\n]+?)</font.*$", "$1").trim() : EMPTY;
             final String type = output.matches("(?is)^.*<b>Type :</b><br><a href=\"[^\\\"\\n]+?\">([^<\\n]+?)</a>") ? output.replaceAll("(?is)^.*<b>Type :</b><br><a href=\"[^\\\"\\n]+?\">([^<\\n]+?)</a>", "$1").trim() : EMPTY;
             final String releasedBy = output.matches("(?is)^.*<b>Released by :</b><br><a href=\"[^\"]+?\">([^<]+?)</a>.*?") ? output.replaceAll("(?is)^.*<b>Released by :</b><br><a href=\"[^\"]+?\">([^<]+?)</a>.*?", "$1").trim() : EMPTY;
-            final String date = "";
+            final String date = output.matches("(?is)<b>Release Date :</b><br>\\n<font [^>\\n]+?>([^<\\n]+?)</font>.*$") ? output.replaceAll("(?is)<b>Release Date :</b><br>\\n<font [^>\\n]+?>([^<\\n]+?)</font>.*$","$1").trim() : EMPTY;
             return asList(new ReleaseEntry(id, releaseUri, type, date, title, releasedBy, asList(link)));
         }
         Pattern p = Pattern.compile("<li>\\s*<a href=\"([^\\\"]+?)\">\\s*<img .*?Download.*?>\\s*</a>\\s*<a href=\"([^\\\"]+?)\">([^<]+?)</a>\\s*\\(([^\\)]+?)\\)(\\s*by\\s*.*?<font .*?>([^<]+?)<)?([^\\(\\n]*?\\(([^\\)]+?)\\))?.*?<br>");
