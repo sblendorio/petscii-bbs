@@ -212,10 +212,10 @@ public class CsdbLatestReleases extends PetsciiThread {
             strDate = EMPTY;
         }
         final String releasedBy = p.releasedBy;
-        final String url = p.links.get(0);
+        final String releaseUri = p.releaseUri;
+        final String url = isEmpty(p.links) ? findDownloadLink(new URL(p.releaseUri)) : p.links.get(0);
         final String title = p.title;
         final String type = p.type;
-        final String releaseUri = p.releaseUri;
         byte[] content = DiskUtilities.getPrgContent(url);
         waitOff();
 
@@ -301,7 +301,7 @@ public class CsdbLatestReleases extends PetsciiThread {
                 Matcher m = p.matcher(item.description);
                 List<String> urls = new ArrayList<>();
                 while (m.find()) urls.add(m.group(1));
-                if (!type.equalsIgnoreCase(OTHER_PLATFORM)) list.add(new ReleaseEntry(id, releaseUri, type, item.publishedDate, item.title, releasedBy, urls));
+                if (!type.equalsIgnoreCase(OTHER_PLATFORM)) list.add(new ReleaseEntry(id, releaseUri, type, item.publishedDate, item.title, releasedBy, null));
             }
         }
         return list;
@@ -399,7 +399,7 @@ public class CsdbLatestReleases extends PetsciiThread {
             final String type = trim(m.group(4));
             final String releasedBy = trim(defaultString(count >= 6 ? m.group(6) : null));
             final String date = defaultString(count >= 8 ? m.group(8) : null);
-            if (!type.equalsIgnoreCase(OTHER_PLATFORM)) urls.add(new ReleaseEntry(id, releaseUri, type, date, title, releasedBy, asList(link)));
+            if (!type.equalsIgnoreCase(OTHER_PLATFORM)) urls.add(new ReleaseEntry(id, releaseUri, type, date, title, releasedBy, null));
         }
         return urls;
     }
@@ -420,6 +420,7 @@ public class CsdbLatestReleases extends PetsciiThread {
             if (o2 == null) return -1;
             String ext1 = defaultString(this.caption.replaceAll("^.*\\.([^\\.]+)$", "$1")).toLowerCase();
             String ext2 = defaultString(o2.caption.replaceAll("^.*\\.([^\\.]+)$", "$1")).toLowerCase();
+
             if ("prg".equals(ext1) && !"prg".equals(ext2))
                 return -1;
             if ("prg".equals(ext2) && !"prg".equals(ext1))
@@ -460,6 +461,10 @@ public class CsdbLatestReleases extends PetsciiThread {
             else
                 return -ext1.compareTo(ext2);
         }
+    }
+
+    private static String findDownloadLink(URL url) throws Exception {
+        return findDownloadLink(defaultString(httpGet(url.toString())));
     }
 
     private static String findDownloadLink(String output) {
