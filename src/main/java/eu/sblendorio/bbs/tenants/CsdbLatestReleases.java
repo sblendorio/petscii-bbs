@@ -376,7 +376,7 @@ public class CsdbLatestReleases extends PetsciiThread {
             final String releaseUri = "";
             final String id = "";
             final String title = output.matches("(?is)^.*<font size=6>([^<\\n]+?)</font.*$") ? output.replaceAll("(?is)^.*<font size=6>([^<\\n]+?)</font.*$", "$1").trim() : EMPTY;
-            final String type = "";
+            final String type = output.matches("(?is)^.*<b>Type :</b><br><a href=\"[^\\\"\\n]+?\">([^<\\n]+?)</a>") ? output.replaceAll("(?is)^.*<b>Type :</b><br><a href=\"[^\\\"\\n]+?\">([^<\\n]+?)</a>", "$1").trim() : EMPTY;
             final String releasedBy = output.matches("(?is)^.*<b>Released by :</b><br><a href=\"[^\"]+?\">([^<]+?)</a>.*?") ? output.replaceAll("(?is)^.*<b>Released by :</b><br><a href=\"[^\"]+?\">([^<]+?)</a>.*?", "$1").trim() : EMPTY;
             final String date = "";
             return asList(new ReleaseEntry(id, releaseUri, type, date, title, releasedBy, asList(link)));
