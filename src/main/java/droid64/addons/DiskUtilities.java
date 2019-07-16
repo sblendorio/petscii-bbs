@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import static eu.sblendorio.bbs.core.PetsciiThread.*;
 
@@ -24,7 +25,7 @@ public class DiskUtilities {
     /* This main is for testing purposes only */
     public static void main(String[] args) throws Exception {
         String url = "ftp://arnold.c64.org/pub/games/s/Slurpy.Creative_Sparks.zip";
-        byte[] bytes = getPrgContent(url);
+        byte[] bytes = getPrgContentFromUrl(url);
         if (bytes == null) {
             System.out.println("INVALID");
             System.exit(1);
@@ -34,10 +35,16 @@ public class DiskUtilities {
         System.out.println("DONE!");
     }
 
-    public static byte[] getPrgContent(String urlString) throws Exception {
+    public static byte[] getPrgContentFromUrl(String urlString) throws Exception {
         byte[] result = null;
 
         DownloadData file = download(new URL(urlString));
+        return getPrgContentFromFile(file);
+    }
+
+    public static byte[] getPrgContentFromFile(DownloadData file) throws Exception {
+        byte[] result = null;
+
         if (isValidZip(file.getContent()))
             file = singleFileInZip(file.getContent());
         if (file != null && isValidFilename(file.getFilename())) {
@@ -140,6 +147,18 @@ public class DiskUtilities {
             }
         }
         return count==1 ? new DownloadData(filename, baos.toByteArray()) : null;
+    }
+
+    public static byte[] zipBytes(String filename, byte[] input) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ZipOutputStream zos = new ZipOutputStream(baos);
+        ZipEntry entry = new ZipEntry(filename);
+        entry.setSize(input.length);
+        zos.putNextEntry(entry);
+        zos.write(input);
+        zos.closeEntry();
+        zos.close();
+        return baos.toByteArray();
     }
 
 }

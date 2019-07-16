@@ -1,8 +1,5 @@
 package eu.sblendorio.bbs.tenants;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class CicapLombardia extends WordpressProxy {
 
     public CicapLombardia() {

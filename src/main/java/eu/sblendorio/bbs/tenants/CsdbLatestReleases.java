@@ -8,8 +8,6 @@ import droid64.addons.DiskUtilities;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.XModem;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.WordUtils;
 
 import java.net.URL;
@@ -216,7 +214,7 @@ public class CsdbLatestReleases extends PetsciiThread {
         final String url = isEmpty(p.links) ? findDownloadLink(new URL(p.releaseUri)) : p.links.get(0);
         final String title = p.title;
         final String type = p.type;
-        byte[] content = DiskUtilities.getPrgContent(url);
+        byte[] content = DiskUtilities.getPrgContentFromUrl(url);
         waitOff();
 
         write(WHITE); println(title);
