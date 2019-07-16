@@ -473,7 +473,12 @@ public class CsdbLatestReleases extends PetsciiThread {
         while (m.find()) {
             final String link = "https://csdb.dk/release/" + trim(m.group(1));
             final String caption = trim(m.group(2));
-            final int downloads = m.groupCount() >=3 ? toInt(m.group(3).replaceAll("[^0-9]", EMPTY)) : 0;
+            int downloads = 0;
+            try {
+                downloads = m.groupCount() >= 3 ? toInt(m.group(3).replaceAll("[^0-9]", EMPTY)) : 0;
+            } catch (NullPointerException e) {
+                // do nothing: downloads keeps 0
+            }
             list.add(new DownloadEntry(link, caption, downloads));
         }
         Collections.sort(list);
