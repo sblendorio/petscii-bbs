@@ -84,8 +84,8 @@ public class MenuRetroAcademy extends PetsciiThread {
 
             gotoXY(6, delta + 14); write(WHITE); print("Misc"); write(GREY3);
             gotoXY(6, delta + 16); write(REVON); print(" S "); write(REVOFF); print(" Sportal.IT");
-            gotoXY(6, delta + 17); write(REVON); print(" L "); write(REVOFF); print(" Impariamo a conoscere le ossa");
-            gotoXY(6, delta + 18); write(REVON); print(" P "); write(REVOFF); print(" PETSCII Art Gallery");
+            gotoXY(6, delta + 17); write(REVON); print(" L "); write(REVOFF); print(" Le ossa");
+            gotoXY(6, delta + 18); write(REVON); print(" P "); write(REVOFF); print(" PETSCII Art");
             gotoXY(6, delta + 19); write(REVON); print(" . "); write(REVOFF); print(" Logoff");
 
             gotoXY(26, delta + 4); write(WHITE); print("Servizi"); write(GREY3);
@@ -93,6 +93,9 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(26, delta + 7); write(REVON); print(" T "); write(REVOFF); print(" Televideo");
             gotoXY(26, delta + 8); write(REVON); print(" D "); write(REVOFF); print(" CSDb");
             gotoXY(26, delta + 9); write(REVON); print(" A "); write(REVOFF); print(" Arnold 64");
+
+            gotoXY(24, delta + 17); write(WHITE); print("Experimental"); write(GREY3);
+            gotoXY(24, delta + 19); write(REVON); print(" K "); write(REVOFF); print(" CSDb SD2IEC");
 
             final String line = geoData != null ? "Connected from "+geoData.city+", "+geoData.country : EMPTY;
             gotoXY((39-line.length()) / 2, 23);
@@ -130,6 +133,7 @@ public class MenuRetroAcademy extends PetsciiThread {
                     else if (key == 't') launch(new TelevideoRai());
                     else if (key == 'd') launch(new CsdbLatestReleases());
                     else if (key == 'a') launch(new ArnoldC64());
+                    else if (key == 'k') launch(new CsdbLatestReleasesSD2IEC());
                     else validKey = false;
             } while (!validKey);
         }
