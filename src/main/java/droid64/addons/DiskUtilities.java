@@ -100,19 +100,19 @@ public class DiskUtilities {
     private static DownloadData singleFileInArchive(DownloadData file, boolean isT64) throws IOException {
         DiskImage diskImage;
         int count = 0;
-        int num = 0;
-        String filename = "";
+        Integer num = null;
+        String filename = null;
         try {
             diskImage = DiskImage.getDiskImage(file.getFilename(), file.getContent());
             diskImage.readDirectory();
             for (DiskFile f: diskImage.getDisk().getFileList()) {
                 if (isT64 || f.getFileType() == CbmFile.TYPE_PRG) {
                     ++count;
-                    num = f.getFileNum();
-                    filename = f.getName();
+                    if (num == null) num = f.getFileNum();
+                    if (filename == null) filename = f.getName();
                 }
             }
-            return count==1 ? new DownloadData(filename, diskImage.getFileData(num)) : null;
+            return count >=1 && count <= 2 ? new DownloadData(filename, diskImage.getFileData(num)) : null;
         } catch (CbmException e) {
             return null;
         }
