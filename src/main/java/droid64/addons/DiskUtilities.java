@@ -99,7 +99,8 @@ public class DiskUtilities {
 
     private static DownloadData singleFileInArchive(DownloadData file, boolean isT64) throws IOException {
         DiskImage diskImage;
-        int count = 0;
+        int countPRG = 0;
+        int countDEL = 0;
         Integer num = null;
         String filename = null;
         try {
@@ -107,12 +108,15 @@ public class DiskUtilities {
             diskImage.readDirectory();
             for (DiskFile f: diskImage.getDisk().getFileList()) {
                 if (isT64 || f.getFileType() == CbmFile.TYPE_PRG) {
-                    ++count;
+                    ++countPRG;
                     if (num == null) num = f.getFileNum();
                     if (filename == null) filename = f.getName();
                 }
+                if (!isT64 && f.getFileType() == CbmFile.TYPE_DEL) ++countDEL;
             }
-            return (!isT64 && count >=1 && count <= 2) || (isT64 && count == 1)
+            return (isT64 && countPRG == 1) ||
+                    (!isT64 && countPRG == 1 && countDEL == 0) ||
+                    (!isT64 && countPRG >= 1 && countPRG <= 2 && countDEL > 0)
                     ? new DownloadData(filename, diskImage.getFileData(num))
                     : null;
         } catch (CbmException e) {
