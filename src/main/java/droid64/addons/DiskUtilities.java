@@ -112,7 +112,9 @@ public class DiskUtilities {
                     if (filename == null) filename = f.getName();
                 }
             }
-            return count >=1 && count <= 2 ? new DownloadData(filename, diskImage.getFileData(num)) : null;
+            return (!isT64 && count >=1 && count <= 2) || (isT64 && count == 1)
+                    ? new DownloadData(filename, diskImage.getFileData(num))
+                    : null;
         } catch (CbmException e) {
             return null;
         }
