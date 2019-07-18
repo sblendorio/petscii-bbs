@@ -300,7 +300,7 @@ public class UserLogon extends PetsciiThread {
             write(WHITE);println(StringUtils.repeat(chr(163), 39));write(GREY3);
             print("> ");
             flush(); cmd = readLine();
-            cmd = trim(lowerCase(cmd));
+            cmd = defaultString(trim(lowerCase(cmd)));
             int index = toInt(cmd);
             if ("+".equals(cmd) && (offset+pagesize<size)) {
                 offset += pagesize;
@@ -318,7 +318,7 @@ public class UserLogon extends PetsciiThread {
                 showPrivacyPolicy();
             } else if ("k".equals(cmd)) {
                 userPreferences();
-            } else if (isNumeric(cmd) && index>0 && index<=size) {
+            } else if (isNumeric(cmd.replace("#", EMPTY)) && index>0 && index<=size) {
                 displayMessage(messages.get(index - 1));
             }
             messages = getMessages(user.nick, onlyUnread);
