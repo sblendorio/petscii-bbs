@@ -301,7 +301,7 @@ public class UserLogon extends PetsciiThread {
             print("> ");
             flush(); cmd = readLine();
             cmd = defaultString(trim(lowerCase(cmd)));
-            int index = toInt(cmd);
+            int index = toInt(cmd.replace("#", EMPTY));
             if ("+".equals(cmd) && (offset+pagesize<size)) {
                 offset += pagesize;
             } else if ("-".equals(cmd) && offset > 0) {
