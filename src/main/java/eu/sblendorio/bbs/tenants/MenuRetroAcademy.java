@@ -131,9 +131,9 @@ public class MenuRetroAcademy extends PetsciiThread {
                     else if (key == 'p') launch(new PetsciiArtGallery());
                     else if (key == 'm') launch(new UserLogon());
                     else if (key == 't') launch(new TelevideoRai());
-                    else if (key == 'd') launch(new CsdbLatestReleases());
+                    else if (key == 'd') launch(new CsdbReleases());
                     else if (key == 'a') launch(new ArnoldC64());
-                    else if (key == 'k') launch(new CsdbLatestReleasesSD2IEC());
+                    else if (key == 'k') launch(new CsdbReleasesSD2IEC());
                     else validKey = false;
             } while (!validKey);
         }
