@@ -13,12 +13,11 @@ import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
+import java.util.zip.*;
 
 import static eu.sblendorio.bbs.core.PetsciiThread.*;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.defaultString;
 
 public class DiskUtilities {
 
@@ -45,8 +44,14 @@ public class DiskUtilities {
     public static byte[] getPrgContentFromFile(DownloadData file) throws Exception {
         byte[] result = null;
 
+        if (defaultString(file.getFilename()).matches("(?is)^.*\\.gz$"))
+            file = new DownloadData(
+                    defaultString(file.getFilename()).replaceAll("(?is)\\.gz$", EMPTY),
+                    readGZippedBytes(file.getContent()));
+
         if (isValidZip(file.getContent()))
             file = singleFileInZip(file.getContent());
+
         if (file != null && isValidFilename(file.getFilename())) {
             if (isPRG(file.getFilename())) {
                 result = file.getContent();
@@ -165,6 +170,19 @@ public class DiskUtilities {
         zos.closeEntry();
         zos.close();
         return baos.toByteArray();
+    }
+
+    public static byte[] readGZippedBytes(byte[] content) throws CbmException {
+        try (ByteArrayInputStream fis = new ByteArrayInputStream(content);
+             GZIPInputStream gis = new GZIPInputStream(fis, 65536);
+             ByteArrayOutputStream bos = new ByteArrayOutputStream(1048576)) {
+            while (gis.available() == 1) {
+                bos.write(gis.read());
+            }
+            return bos.toByteArray();
+        } catch (IOException e) {
+            throw new CbmException("Error during GUnZipping" + e.getMessage(), e);
+        }
     }
 
 }
