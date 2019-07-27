@@ -24,13 +24,13 @@ public class DiskUtilities {
 
     /* This main is for testing purposes only */
     public static void main(String[] args) throws Exception {
-        String url = "ftp://arnold.c64.org/pub/games/s/Slurpy.Creative_Sparks.zip";
+        String url = "http://www.sblendorio.eu/b.t64.gz";
         byte[] bytes = getPrgContentFromUrl(url);
         if (bytes == null) {
             System.out.println("INVALID");
             System.exit(1);
         }
-        Path path = Paths.get("C:/temp/sample.prg");
+        Path path = Paths.get("/tmp/a.prg");
         Files.write(path, bytes);
         System.out.println("DONE!");
     }
