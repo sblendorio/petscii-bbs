@@ -295,7 +295,7 @@ public abstract class DiskImage implements Serializable {
 					case DiskImage.D71_IMAGE_TYPE:
 						return new D71(imageData);
 					case DiskImage.D81_IMAGE_TYPE:
-						return new D81();
+						return new D81(imageData);
 					case DiskImage.T64_IMAGE_TYPE:
 						return new T64(imageData);
 					case DiskImage.D80_IMAGE_TYPE:
