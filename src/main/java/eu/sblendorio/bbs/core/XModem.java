@@ -46,6 +46,7 @@ public class XModem {
     protected final byte SOH = 1;    /* Start Of Header */
     protected final byte EOT = 4;    /* End Of Transmission */
     protected final byte ACK = 6;    /* ACKnowlege */
+    protected final byte CAN = 24;   /* CANcel */
     protected final byte NAK = 0x15; /* Negative AcKnowlege */
 
     protected Reader inStream;
@@ -121,7 +122,10 @@ public class XModem {
                         checksum += sector[index];
                     }
                     putchar(checksum);
-                    if (getchar() != ACK)
+                    character = getchar();
+                    if (character == CAN)
+                        throw new CancelTransferException();
+                    else if (character != ACK)
                         ++errorcount;
                     else
                         break;
@@ -137,6 +141,8 @@ public class XModem {
             final boolean isAck = getchar() == ACK;
             if (!isAck) log("Transmission interrupted after EOT, missing ACK");
             log("Transmission complete.");
+        } catch (CancelTransferException e) {
+            log("BREAK: Transmission canceled");
         }
         return true;
     }
@@ -163,4 +169,6 @@ public class XModem {
     private void log(String message) {
         System.err.println(message);
     }
+
+    private static class CancelTransferException extends RuntimeException {}
 }
