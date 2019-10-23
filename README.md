@@ -11,11 +11,11 @@ This framework provides base classes for build your own **BBS** in PETSCII mode,
 - a common PC/Mac running [SyncTerm](https://sourceforge.net/projects/syncterm/) (*ConnectionType*=_Telnet_, *ScreenMode*=_C64_)
 
 ## System requirements
-- Java Development Kit (JDK) and JRE version 1.7+
+- Java Development Kit (JDK) and JRE version 1.8+
 - A machine that will act as server
 
 ## Required skills
-- Knowledge of Java language (compiler version 1.7+)
+- Knowledge of Java language (compiler version 1.8+)
 - BASIC TCP/IP concepts
 - Knowledge of PETSCII encoding
 

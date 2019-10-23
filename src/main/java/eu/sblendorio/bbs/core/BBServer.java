@@ -1,13 +1,15 @@
 package eu.sblendorio.bbs.core;
 
+import com.google.common.reflect.ClassPath;
 import org.apache.commons.cli.*;
-import org.reflections.Reflections;
 
+import java.io.IOException;
 import java.net.*;
 import java.sql.Timestamp;
 import java.util.*;
 
-import static org.apache.commons.lang3.StringUtils.*;
+import static java.util.Collections.emptyList;
+import static java.util.Comparator.comparing;
 import static org.apache.commons.lang3.math.NumberUtils.INTEGER_ZERO;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
@@ -73,38 +75,40 @@ public class BBServer {
         }
     }
 
-    private static Class<? extends PetsciiThread> findTenant(String bbsName) {
+    private static Class<? extends PetsciiThread> findTenant(final String bbsName) {
         try {
-            for (Class<? extends PetsciiThread> c: tenants) {
-                if (c.getSimpleName().equalsIgnoreCase(bbsName))
-                    return c;
-            }
+            return tenants.stream().filter(c -> c.getSimpleName().equalsIgnoreCase(bbsName)).findFirst().get();
         } catch (Exception e) {
             return null;
         }
-        return null;
     }
 
     private static void displayHelp(Options options) {
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp( System.getProperty("sun.java.command"), options);
+        formatter.printHelp(System.getProperty("sun.java.command"), options);
         System.out.println("List of available BBS:");
-        for (Class c: tenants) {
-            System.out.println(" * " + c.getSimpleName());
-        }
+        tenants.forEach(c -> System.out.println(" * " + c.getSimpleName()));
     }
 
     private static List<Class<? extends PetsciiThread>> filterPetsciiThread() {
-        return filterPetsciiThread(null);
-    }
-
-    private static List<Class<? extends PetsciiThread>> filterPetsciiThread(String packageName) {
         List<Class<? extends PetsciiThread>> result = new LinkedList<>();
-        for (Class<? extends PetsciiThread> elem: new LinkedList<>(new Reflections(defaultString(packageName)).getSubTypesOf(PetsciiThread.class)))
-            if (!elem.isAnnotationPresent(Hidden.class)) result.add(elem);
-        Collections.sort(result, new Comparator<Class<? extends PetsciiThread>>() {
-            public int compare(Class<? extends PetsciiThread> o1, Class<? extends PetsciiThread> o2) { return o1.getSimpleName().compareTo(o2.getSimpleName()); }
-        });
+        final ClassLoader classLoader = BBServer.class.getClassLoader();
+        final Set<ClassPath.ClassInfo> classesInPackage;
+        try {
+            classesInPackage = ClassPath.from(classLoader).getTopLevelClasses();
+        } catch (IOException ioe) {
+            return emptyList();
+        }
+        for (ClassPath.ClassInfo classInfo : classesInPackage) {
+            try {
+                Class c = classInfo.load();
+                if (PetsciiThread.class.isAssignableFrom(c) && !c.isAnnotationPresent(Hidden.class))
+                    result.add(c);
+            } catch (NoClassDefFoundError e) {
+                // SKIP
+            }
+        }
+        result.sort(comparing(Class::getSimpleName));
         return result;
     }
 }

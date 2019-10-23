@@ -19,8 +19,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
 
@@ -89,11 +89,6 @@
             <version>1.4</version>
         </dependency>
         <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>0.9.11</version>
-        </dependency>
-        <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-blogger</artifactId>
             <version>v3-rev61-1.25.0</version>
@@ -117,6 +112,11 @@
             <groupId>com.maxmind.db</groupId>
             <artifactId>maxmind-db</artifactId>
             <version>1.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.1-jre</version>
         </dependency>
     </dependencies>
 </project>

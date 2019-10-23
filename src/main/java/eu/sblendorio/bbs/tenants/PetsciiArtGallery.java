@@ -25,7 +25,8 @@ public class PetsciiArtGallery extends PetsciiThread {
         List<Path> result = new ArrayList<>();
         URL jar = getClass().getProtectionDomain().getCodeSource().getLocation();
         Path jarFile = Paths.get(jar.toURI());
-        FileSystem fs = FileSystems.newFileSystem(jarFile, null);
+        final ClassLoader nullClassLoader = null;
+        FileSystem fs = FileSystems.newFileSystem(jarFile, nullClassLoader);
         DirectoryStream<Path> directoryStream = Files.newDirectoryStream(fs.getPath(path));
         for (Path p : directoryStream) result.add(p);
         Collections.sort(result, new Comparator<Path>() {
