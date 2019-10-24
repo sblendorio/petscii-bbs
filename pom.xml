@@ -55,18 +55,24 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.8</version>
+            <version>3.9</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -81,7 +87,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
-            <version>1.3</version>
+            <version>1.8</version>
         </dependency>
         <dependency>
             <groupId>commons-cli</groupId>
@@ -91,7 +97,13 @@
         <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-blogger</artifactId>
-            <version>v3-rev61-1.25.0</version>
+            <version>v3-rev62-1.25.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.rometools</groupId>
@@ -106,7 +118,7 @@
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.11</version>
+            <version>1.13</version>
         </dependency>
         <dependency>
             <groupId>com.maxmind.db</groupId>

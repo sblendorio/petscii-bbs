@@ -34,7 +34,7 @@ public class BBServer {
                 socket.setSoTimeout(timeout);
 
                 CbmInputOutput cbm = new CbmInputOutput(socket);
-                PetsciiThread thread = bbs.newInstance();
+                PetsciiThread thread = bbs.getDeclaredConstructor().gitnewInstance();
                 thread.setSocket(socket);
                 thread.setCbmInputOutput(cbm);
                 thread.start();
