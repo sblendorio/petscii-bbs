@@ -104,7 +104,7 @@ public class BBServer {
                 Class c = classInfo.load();
                 if (PetsciiThread.class.isAssignableFrom(c) && !c.isAnnotationPresent(Hidden.class))
                     result.add(c);
-            } catch (NoClassDefFoundError e) {
+            } catch (LinkageError e) {
                 // SKIP
             }
         }
