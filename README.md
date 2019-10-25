@@ -5,8 +5,8 @@ A Java framework for building highly customizable **PETSCII**-enabled **BBS**es,
 This framework provides base classes for build your own **BBS** in PETSCII mode, accessibile through:
 - a Commodore 64 with a [RR-NET](http://wiki.icomp.de/wiki/RR-Net) compatible card, running [KipperTerm](https://csdb.dk/release/index.php?id=174537)
 - a Commodore 64 with a [WiFi modem card](http://www.codingkoala.com/kc64wifi/), running [CCGMS](https://csdb.dk/release/?id=156523)
-- a Commodore 64/128 with a [1541Ultimate](http://www.1541ultimate.net), running [UltimateTerm](https://csdb.dk/release/?id=174462)
-- an [Ultimate 64](https://ultimate64.com/), running [UltimateTerm](https://csdb.dk/release/?id=174462)
+- a Commodore 64/128 with a [1541Ultimate](http://www.1541ultimate.net), running [UltimateTerm](https://csdb.dk/release/?id=181558)
+- an [Ultimate 64](https://ultimate64.com/), running [UltimateTerm](https://csdb.dk/release/?id=181558)
 - a Commodore 64 with an [Easy Flash 3](http://store.go4retro.com/easyflash-3/) (with [CCGMS-EF](https://csdb.dk/release/?id=158760)) + a PC running [EF3USB](https://csdb.dk/release/?id=144900&show=notes)
 - a common PC/Mac running [SyncTerm](https://sourceforge.net/projects/syncterm/) (*ConnectionType*=_Telnet_, *ScreenMode*=_C64_)
 
