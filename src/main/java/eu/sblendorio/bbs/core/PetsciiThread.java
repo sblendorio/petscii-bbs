@@ -9,6 +9,7 @@ import java.net.*;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -41,7 +42,12 @@ public abstract class PetsciiThread extends Thread {
     protected PetsciiThread child = null;
     protected PetsciiThread parent = null;
 
-    protected static Map<Long, PetsciiThread> clients = new ConcurrentHashMap<>();
+    protected static Map<Long, PetsciiThread> clients = defaultClientsMapImplementation();
+
+    static ConcurrentHashMap<Long, PetsciiThread> defaultClientsMapImplementation() {
+        return new ConcurrentHashMap<>();
+    }
+
     protected static AtomicLong clientCount = new AtomicLong(0);
 
     public abstract void doLoop() throws Exception;
@@ -67,22 +73,28 @@ public abstract class PetsciiThread extends Thread {
     public int changeClientName(String clientName) {
         clientName = trim(clientName);
         if (isBlank(clientName) || clientName.matches("(?i)^client[0-9]+$")) return -1;
-        for (Map.Entry<Long, PetsciiThread> entry: clients.entrySet())
-            if (entry.getKey() != getClientId() && isEmpty(entry.getValue().getClientName()) && entry.getValue().getClientName().equals(clientName))
+        for (Map.Entry<Long, PetsciiThread> entry: clients.entrySet()) {
+            if (entry.getKey() != getClientId() && isEmpty(entry.getValue().getClientName()) && entry.getValue().getClientName().equals(clientName)) {
                 return -2;
+            }
+        }
 
-        PetsciiThread client = getClientByName(this.clientName);
+        changeClientName(this.clientName, clientName);
         setClientName(clientName);
-        client.setClientName(clientName);
         return 0;
     }
 
-    public static PetsciiThread getClientByName(final String clientName) {
-        for (Map.Entry<Long, PetsciiThread> entry: clients.entrySet())
-            if (defaultString(clientName).equals(entry.getValue().getClientName()))
-                return entry.getValue();
+    static void changeClientName(final String sourceClientName, final String targetClientName) {
+        getClientByName(sourceClientName).ifPresent(client -> client.setClientName(targetClientName));
+    }
 
-        return null;
+    static Optional<PetsciiThread> getClientByName(final String clientName) {
+        for (Map.Entry<Long, PetsciiThread> entry: clients.entrySet()) {
+            if (defaultString(clientName).equals(entry.getValue().getClientName())) {
+                return Optional.of(entry.getValue());
+            }
+        }
+        return Optional.empty();
     }
 
     public String getClientName() { return clientName; }
