@@ -2,8 +2,9 @@ package eu.sblendorio.bbs.core;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static eu.sblendorio.bbs.core.Utils.isControlChar;
 import static eu.sblendorio.bbs.core.Utils.isPrintableChar;
@@ -18,8 +19,9 @@ public class CbmInputOutput extends Reader {
     private Reader in;
     private PrintStream out;
 
-    private char cb[];
-    private int nChars, nextChar;
+    private char[] cb;
+    private int nChars;
+    private int nextChar;
 
     private static final int INVALIDATED = -2;
     private static final int UNMARKED = -1;
@@ -87,7 +89,7 @@ public class CbmInputOutput extends Reader {
                     dst = delta;
                 } else {
                     /* Reallocate buffer to accommodate read-ahead limit */
-                    char ncb[] = new char[readAheadLimit];
+                    char[] ncb = new char[readAheadLimit];
                     arraycopy(cb, markedChar, ncb, 0, delta);
                     cb = ncb;
                     markedChar = 0;
@@ -115,6 +117,7 @@ public class CbmInputOutput extends Reader {
      *         end of the stream has been reached
      * @exception  IOException  If an I/O error occurs
      */
+    @Override
     public int read() throws IOException {
         synchronized (lock) {
             ensureOpen();
@@ -207,7 +210,6 @@ public class CbmInputOutput extends Reader {
             ensureOpen();
             boolean omitLF = ignoreLF || skipLF;
 
-            bufferLoop:
             for (;;) {
                 if (nextChar >= nChars)
                     fill();
@@ -322,8 +324,7 @@ public class CbmInputOutput extends Reader {
             }
             output[++i] = b;
         }
-        final String result = new String(output, 0, i+1, ISO_8859_1);
-        return result;
+        return new String(output, 0, i+1, ISO_8859_1);
     }
 
     public String readPassword() throws IOException {
@@ -338,6 +339,7 @@ public class CbmInputOutput extends Reader {
         return readLine(false, maxLength);
     }
 
+    @Override
     public long skip(long n) throws IOException {
         if (n < 0L) {
             throw new IllegalArgumentException("skip value is negative");
@@ -356,6 +358,7 @@ public class CbmInputOutput extends Reader {
                         nextChar++;
                     }
                 }
+                //TODO: is overflow expected here?
                 long d = nChars - nextChar;
                 if (r <= d) {
                     nextChar += r;
@@ -371,6 +374,7 @@ public class CbmInputOutput extends Reader {
         }
     }
 
+    @Override
     public boolean ready() throws IOException {
         synchronized (lock) {
             ensureOpen();
@@ -396,10 +400,12 @@ public class CbmInputOutput extends Reader {
         }
     }
 
+    @Override
     public boolean markSupported() {
         return true;
     }
 
+    @Override
     public void mark(int readAheadLimit) throws IOException {
         if (readAheadLimit < 0) {
             throw new IllegalArgumentException("Read-ahead limit < 0");
@@ -412,6 +418,7 @@ public class CbmInputOutput extends Reader {
         }
     }
 
+    @Override
     public void reset() throws IOException {
         synchronized (lock) {
             ensureOpen();
@@ -552,14 +559,24 @@ public class CbmInputOutput extends Reader {
         }
     }
 
-    public List<String> readTextFile(String filename) throws Exception {
-        List<String> result = new ArrayList<>();
-        String line;
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
-             BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
-            while ((line = br.readLine()) != null) result.add(line);
-        } finally {
-            return result;
+    static List<String> readTextFile(String filename) throws IOException {
+        try (InputStream is = CbmInputOutput.class.getResourceAsStream(filename)) {
+            return readFromInputStream(is);
+        }
+    }
+
+    /**
+     *
+     * @param is
+     * @return
+     * @throws IOException the close method of the BufferedReader could generate an IOException.
+     */
+    private static List<String> readFromInputStream(InputStream is) throws IOException {
+        if(is == null) {
+            return Collections.emptyList();
+        }
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+          return br.lines().collect(Collectors.toList());
         }
     }
 
