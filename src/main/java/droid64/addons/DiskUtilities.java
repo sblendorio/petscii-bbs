@@ -4,6 +4,7 @@ import droid64.d64.CbmException;
 import droid64.d64.CbmFile;
 import droid64.d64.DiskImage;
 import droid64.db.DiskFile;
+import eu.sblendorio.bbs.core.PetsciiThread;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -140,24 +141,30 @@ public class DiskUtilities {
                 filename = file;
             }
         }
-        ByteArrayOutputStream baos = null;
-        byte[] buffer;
-        if (count == 1) {
-            buffer = new byte[8192];
-            baos = new ByteArrayOutputStream();
-            ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(content));
-            ZipEntry entry = zis.getNextEntry();
-            while (entry != null) {
-                if (entry.getName().equals(filename)) {
-                    int len;
-                    while ((len = zis.read(buffer)) > 0) baos.write(buffer, 0, len);
-                    baos.close();
-                    break;
-                }
-                entry = zis.getNextEntry();
-            }
+        return getDownloadData(content, count, filename);
+    }
+
+    static DownloadData getDownloadData(byte[] content, int count, String filename) throws IOException {
+        if(count != 1) {
+            return null;
         }
-        return count==1 ? new DownloadData(filename, baos.toByteArray()) : null;
+
+        byte[] buffer = new byte[8192];
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(content));
+        ZipEntry entry = zis.getNextEntry();
+        while (entry != null) {
+            if (entry.getName().equals(filename)) {
+                int len;
+                while ((len = zis.read(buffer)) > 0) {
+                    baos.write(buffer, 0, len);
+                }
+                baos.close();
+                break;
+            }
+            entry = zis.getNextEntry();
+        }
+        return new DownloadData(filename, baos.toByteArray());
     }
 
     public static byte[] zipBytes(String filename, byte[] input) throws IOException {
