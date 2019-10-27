@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/felicepagano/petscii-bbs.svg?branch=master)](https://travis-ci.org/felicepagano/petscii-bbs)
+
 # PETSCII BBS Builder
 A Java framework for building highly customizable **PETSCII**-enabled **BBS**es, accessible from 8-bit Commodore computers
 
