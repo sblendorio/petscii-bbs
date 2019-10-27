@@ -1,5 +1,7 @@
 package droid64.db;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +51,7 @@ public class Parameter {
 		}
 
 		Parameter that = (Parameter) obj;
-		if (!stringsEqual(name, that.name)) {
+		if (!StringUtils.equals(name, that.name)) {
 			return false;
 		}
 		if (this.value == null || that.value == null) {
@@ -61,16 +63,6 @@ public class Parameter {
 	@Override
 	public int hashCode() {
 		return (value != null ? value.hashCode() : 0) + (name != null ? name.hashCode() : 0);
-	}
-
-	private boolean stringsEqual(String s1, String s2) {
-		if (s1 == s2) {
-			return true;
-		}
-		if (s1 == null || s2 == null) {
-			return false;
-		}
-		return s1.equals(s2);
 	}
 
 	public String getName() {
