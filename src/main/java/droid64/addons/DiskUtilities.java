@@ -4,19 +4,21 @@ import droid64.d64.CbmException;
 import droid64.d64.CbmFile;
 import droid64.d64.DiskImage;
 import droid64.db.DiskFile;
-import eu.sblendorio.bbs.core.PetsciiThread;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.zip.*;
 
-import static eu.sblendorio.bbs.core.PetsciiThread.*;
+import static eu.sblendorio.bbs.core.PetsciiThread.DownloadData;
+import static eu.sblendorio.bbs.core.PetsciiThread.download;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
