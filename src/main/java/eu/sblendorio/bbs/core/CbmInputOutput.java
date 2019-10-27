@@ -217,8 +217,9 @@ public class CbmInputOutput extends Reader {
                     if (s != null && s.length() > 0) {
                         final String missingInput = decode(s.toString());
                         throw new CbmIOException("CbmInputOutput::readLine(), missingInput='"+missingInput+"'", missingInput);
-                    } else
+                    } else {
                         throw new CbmIOException("CbmInputOutput::readLine()");
+                    }
                 }
                 boolean eol = false;
                 char c = 0;
