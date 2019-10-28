@@ -10,7 +10,7 @@ package eu.sblendorio.bbs.games_ai;
 //        logic for AI game play.
 //
 
-import java.util.Random; // ai gameplay
+import java.util.Random;
 
 public class TicTacToeAI
 {
@@ -22,6 +22,7 @@ public class TicTacToeAI
     private boolean   gameIsComplete;              // monitor game completion state
     private char      gameWinner;                  // who won the game?
     private WinPath   winPath = new WinPath();     // how was the 3 in a row made?
+    private Random    rgen = new Random();         // Computer
 
     // Class WinPath
     // A win path is the path on the game board followed to make 3 in a row.
@@ -208,7 +209,6 @@ public class TicTacToeAI
     // Makes the computer's move.
     public void computerMove()
     {
-        Random rgen = new Random();                            // Computer
         if ( playWin() ) return;                               // always plays win
         if ( computerIsDifficult() ) {                         // always blocks when hard
             if ( blockWin() ) return;

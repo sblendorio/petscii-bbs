@@ -1,30 +1,57 @@
 package eu.sblendorio.bbs.tenants;
 
-import droid64.addons.DiskUtilities;
-import eu.sblendorio.bbs.core.HtmlUtils;
-import eu.sblendorio.bbs.core.PetsciiThread;
-import eu.sblendorio.bbs.core.XModem;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.text.WordUtils;
+import static eu.sblendorio.bbs.core.Colors.CYAN;
+import static eu.sblendorio.bbs.core.Colors.GREY1;
+import static eu.sblendorio.bbs.core.Colors.GREY3;
+import static eu.sblendorio.bbs.core.Colors.LIGHT_GREEN;
+import static eu.sblendorio.bbs.core.Colors.RED;
+import static eu.sblendorio.bbs.core.Colors.WHITE;
+import static eu.sblendorio.bbs.core.Keys.CASE_LOCK;
+import static eu.sblendorio.bbs.core.Keys.CLR;
+import static eu.sblendorio.bbs.core.Keys.DEL;
+import static eu.sblendorio.bbs.core.Keys.LOWERCASE;
+import static eu.sblendorio.bbs.core.Keys.REVOFF;
+import static eu.sblendorio.bbs.core.Keys.REVON;
+import static eu.sblendorio.bbs.core.Keys.UP;
+import static eu.sblendorio.bbs.core.Utils.filterPrintable;
+import static java.util.Collections.emptyMap;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.lowerCase;
+import static org.apache.commons.lang3.StringUtils.repeat;
+import static org.apache.commons.lang3.StringUtils.trim;
+import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.BiPredicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 
-import static eu.sblendorio.bbs.core.Colors.*;
-import static eu.sblendorio.bbs.core.Keys.*;
-import static eu.sblendorio.bbs.core.Utils.filterPrintable;
-import static java.util.Collections.emptyMap;
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.*;
-import static org.apache.commons.lang3.math.NumberUtils.toInt;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.text.WordUtils;
+
+import droid64.addons.DiskUtilities;
+import eu.sblendorio.bbs.core.HtmlUtils;
+import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.core.XModem;
 
 public class ArnoldC64 extends PetsciiThread {
+
+    private static final BiPredicate<Integer, Integer> generateOverflow = (i, j) -> (i-1) * j < 0 || i * j < 0;
+    private static final BiPredicate<Integer, Integer> negativePageOrPerPage = (i, j) -> i < 1 || j < 1;
 
     public static final String URL_TEMPLATE = "https://cbm8bit.com/search-embedded?servers%5B1%5D=on&width=900&results_per_page=100&embedder=arnold&query=";
 
@@ -210,13 +237,20 @@ public class ArnoldC64 extends PetsciiThread {
         newline();
     }
 
-    private Map<Integer, Entry> getPosts(List<Entry> entries, int page, int perPage) throws Exception {
-        if (page < 1 || perPage < 1) return null;
+    static Map<Integer, Entry> getPosts(List<Entry> entries, int page, int perPage) {
+        Objects.requireNonNull(entries);
+        if(negativePageOrPerPage.test(page, perPage)) {
+            return Collections.emptyMap();
+        }
 
-        Map<Integer, Entry> result = new LinkedHashMap<>();
-        for (int i=(page-1)*perPage; i<page*perPage; ++i)
-            if (i<entries.size()) result.put(i+1, entries.get(i));
-        return result;
+        if(generateOverflow.test(page, perPage)) {
+            return Collections.emptyMap();
+        }
+
+        return IntStream.rangeClosed((page - 1) * perPage, page * perPage)
+                .filter(i -> i >= 0 && i < entries.size())
+                .boxed()
+                .collect(LinkedHashMap::new, (m, i) -> m.put(i, entries.get(i)), LinkedHashMap::putAll);
     }
 
 
@@ -266,7 +300,7 @@ public class ArnoldC64 extends PetsciiThread {
         readKey();
     }
 
-    private final static byte[] LOGO = {
+    private static final byte[] LOGO = {
             32, 32, 28, -95, 32, 32, -41, 69, 76, 67, 79, 77, 69, 32, 84, 79,
             32, -95, 32, 32, 32, 18, -95, -110, 13, 32, 18, -95, -95, -65, -110, 32,
             -69, -94, 32, -84, 32, -84, 32, -84, -69, 32, -84, -66, 32, -84, -69, -95,

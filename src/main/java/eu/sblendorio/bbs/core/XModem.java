@@ -1,6 +1,10 @@
 package eu.sblendorio.bbs.core;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.Reader;
 import java.util.Arrays;
 
 /**
@@ -69,10 +73,14 @@ public class XModem {
             this.message = message;
         }
 
+        @Override
         public void run() {
             try {
                 Thread.sleep(milliseconds);
-            } catch (InterruptedException e) {} // can't happen
+            } catch (InterruptedException e) {
+                // RESTORE THE INTERRUPTED STATUS
+                Thread.currentThread().interrupt();
+            } // can't happen
             if (!gotChar) {
                 log("Timed out waiting for " + message);
                 die(1);
@@ -80,9 +88,12 @@ public class XModem {
         }
     }
 
-    public boolean send(byte[] inputByteArray) throws IOException, InterruptedException
+    public boolean send(byte[] inputByteArray) throws IOException
     {
-        char checksum, index, blocknumber, errorcount;
+        char checksum;
+        char index;
+        char blocknumber;
+        char errorcount;
         byte character;
         byte[] sector = new byte[SECSIZE];
         int nbytes;
@@ -100,17 +111,21 @@ public class XModem {
             do {
                 character = getchar();
                 gotChar = true;
-                if (character != NAK && errorcount < MAXERRORS)
+                if (character != NAK) {
                     ++errorcount;
+                }
             } while (character != NAK && errorcount < MAXERRORS);
 
             log("Transmission beginning");
-            if (errorcount == MAXERRORS) xerror();
+            if (errorcount == MAXERRORS) {
+                xerror();
+            }
 
             Arrays.fill(sector, CPMEOF);
             while ((nbytes = inputData.read(sector)) > 0) {
-                if (nbytes < SECSIZE)
+                if (nbytes < SECSIZE) {
                     sector[nbytes] = CPMEOF;
+                }
                 errorcount = 0;
                 while (errorcount < MAXERRORS) {
                     putchar(SOH);   /* here is our header */

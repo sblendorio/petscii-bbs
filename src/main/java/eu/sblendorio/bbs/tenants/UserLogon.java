@@ -1,25 +1,50 @@
 package eu.sblendorio.bbs.tenants;
 
-import eu.sblendorio.bbs.core.PetsciiThread;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
+import static eu.sblendorio.bbs.core.Colors.CYAN;
+import static eu.sblendorio.bbs.core.Colors.GREEN;
+import static eu.sblendorio.bbs.core.Colors.GREY3;
+import static eu.sblendorio.bbs.core.Colors.LIGHT_GREEN;
+import static eu.sblendorio.bbs.core.Colors.LIGHT_RED;
+import static eu.sblendorio.bbs.core.Colors.RED;
+import static eu.sblendorio.bbs.core.Colors.WHITE;
+import static eu.sblendorio.bbs.core.Keys.CASE_LOCK;
+import static eu.sblendorio.bbs.core.Keys.LOWERCASE;
+import static eu.sblendorio.bbs.core.Keys.REVOFF;
+import static eu.sblendorio.bbs.core.Keys.REVON;
+import static java.util.Arrays.asList;
+import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.isNumeric;
+import static org.apache.commons.lang3.StringUtils.lowerCase;
+import static org.apache.commons.lang3.StringUtils.trim;
+import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 import java.io.File;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Properties;
+import java.util.UUID;
 
-import static eu.sblendorio.bbs.core.Colors.*;
-import static eu.sblendorio.bbs.core.Keys.*;
-import static java.util.Arrays.asList;
-import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.*;
-import static org.apache.commons.lang3.math.NumberUtils.toInt;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.WordUtils;
+
+import eu.sblendorio.bbs.core.PetsciiThread;
 
 public class UserLogon extends PetsciiThread {
 
@@ -484,18 +509,21 @@ public class UserLogon extends PetsciiThread {
     }
 
     public boolean addUser(String nick, String realname, String email, String password) throws Exception {
-        if (existsUser(nick)) return false;
+        if (existsUser(nick)) {
+            return false;
+        }
 
-        PreparedStatement ps = conn.prepareStatement("insert into users (nick, realname, email, salt, password) values (?,?,?,?,?)");
-        String salt = generateId();
-        String hash = sha256Hex(salt + password);
-        ps.setString(1, nick);
-        ps.setString(2, realname);
-        ps.setString(3, email);
-        ps.setString(4, salt);
-        ps.setString(5, hash);
-        ps.execute();
-        ps.close();
+        try (PreparedStatement ps = conn.prepareStatement(
+                "insert into users (nick, realname, email, salt, password) values (?,?,?,?,?)")) {
+            String salt = generateId();
+            String hash = sha256Hex(salt + password);
+            ps.setString(1, nick);
+            ps.setString(2, realname);
+            ps.setString(3, email);
+            ps.setString(4, salt);
+            ps.setString(5, hash);
+            ps.execute();
+        }
         return true;
     }
 
@@ -589,21 +617,22 @@ public class UserLogon extends PetsciiThread {
     }
 
     public void createDatabase(Properties properties) throws Exception {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:"+dbFile, properties);
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile, properties)) {
 
-        try (Statement s = conn.createStatement()) {
-            s.executeUpdate("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, nick TEXT, realname TEXT, email TEXT, salt text, password TEXT)");
+            try (Statement s = conn.createStatement()) {
+                s.executeUpdate(
+                        "CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, nick TEXT, realname TEXT, email TEXT, salt text, password TEXT)");
+            }
+
+            try (Statement s = conn.createStatement()) {
+                s.executeUpdate(
+                        "CREATE TABLE messages (user_from TEXT, user_to TEXT, datetime INTEGER, is_read INTEGER, subject TEXT, message TEXT)");
+            }
+
+            try (Statement s = conn.createStatement()) {
+                s.executeUpdate("CREATE TABLE user_vault (hash TEXT)");
+            }
         }
-
-        try (Statement s = conn.createStatement()) {
-            s.executeUpdate("CREATE TABLE messages (user_from TEXT, user_to TEXT, datetime INTEGER, is_read INTEGER, subject TEXT, message TEXT)");
-        }
-
-        try (Statement s = conn.createStatement()) {
-            s.executeUpdate("CREATE TABLE user_vault (hash TEXT)");
-        }
-
-        conn.close();
     }
 
     public static byte[] LOGO = new byte[] {32, 32, 32, 32, 32, 28, -84, 32, 32, 32, 32, 32, 32, 32, 32, 32,
