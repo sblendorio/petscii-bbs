@@ -9,13 +9,16 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.zip.*;
 
-import static eu.sblendorio.bbs.core.PetsciiThread.*;
+import static eu.sblendorio.bbs.core.PetsciiThread.DownloadData;
+import static eu.sblendorio.bbs.core.PetsciiThread.download;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
@@ -140,24 +143,30 @@ public class DiskUtilities {
                 filename = file;
             }
         }
-        ByteArrayOutputStream baos = null;
-        byte[] buffer;
-        if (count == 1) {
-            buffer = new byte[8192];
-            baos = new ByteArrayOutputStream();
-            ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(content));
-            ZipEntry entry = zis.getNextEntry();
-            while (entry != null) {
-                if (entry.getName().equals(filename)) {
-                    int len;
-                    while ((len = zis.read(buffer)) > 0) baos.write(buffer, 0, len);
-                    baos.close();
-                    break;
-                }
-                entry = zis.getNextEntry();
-            }
+        return getDownloadData(content, count, filename);
+    }
+
+    static DownloadData getDownloadData(byte[] content, int count, String filename) throws IOException {
+        if(count != 1) {
+            return null;
         }
-        return count==1 ? new DownloadData(filename, baos.toByteArray()) : null;
+
+        byte[] buffer = new byte[8192];
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(content));
+        ZipEntry entry = zis.getNextEntry();
+        while (entry != null) {
+            if (entry.getName().equals(filename)) {
+                int len;
+                while ((len = zis.read(buffer)) > 0) {
+                    baos.write(buffer, 0, len);
+                }
+                baos.close();
+                break;
+            }
+            entry = zis.getNextEntry();
+        }
+        return new DownloadData(filename, baos.toByteArray());
     }
 
     public static byte[] zipBytes(String filename, byte[] input) throws IOException {

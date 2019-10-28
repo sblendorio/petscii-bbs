@@ -1,0 +1,15 @@
+language: java
+jdk:
+- openjdk8
+addons:
+  sonarcloud:
+    organization: "p3tsc11bbs"
+    token:
+      secure: nc95UNn65UmXa8GKAqutDaZ/w6htPuS9ytdFtttCGM9l4Dg/b/zvQIXJmJHBpFk512LRYtfLOJZiUB6IkMTRCgWMlW9Fx5zksZ9hRU+wCtlTTBnA03KLaa4kY/yl08kSiFKRTtBi6tARI6QTdOq8EuX0bEcaBNegyHys800DmBSTmPqL9CwnUCh5GKFKuurvBkakk3aULIOxsUUslw1DRRUxNvKSqs8iB9vv253pUFjbFf9F9mBZ70J5PVF34lYxdtBtZeWffSmaptsO6+he4pJlcmvhyQd99iQMl9muq5z/Wie2zjGldmSLuATxmHlN4pNeGQopwOUzhMWppGH4sIHUy7Idimh1NJ2xKiygpqtp+BZ2ACtHYDAxp5w/s1Td+ZnQ4SvQv3d3q7ZpBvmz5+V3rsEDd0p74d191XL4yPeo9s2FCqYHI4Gp3h9+6tgUakBE6wZhFY4yRHJ8GR6HM55EVgTIvPmQNGT71la+6Nkq0FA/m2XePMe3wglmJPdSMe9giCtXpK2OQSYOTPJl9f8cWmu9iekRGJiVoTf7xxLC3DZb51kCQwmX0rNZqFcoGNbNVvCfwb6VxuqanZVWayNjrbpEcQu7IprJwlsFzHViJjb1BF2lrIuBfRvxiOKe30JbwqtDV0xUkAKcXqkMuFTpXOXzihWOLeFbL+FlKU8=
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean install sonar:sonar -Pcoverage -Dsonar.projectKey=felicepagano_petscii-bbs
+cache:
+  directories:
+    - $HOME/.m2/repository
+    - $HOME/.sonar/cache
