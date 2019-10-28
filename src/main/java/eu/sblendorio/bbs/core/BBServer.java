@@ -98,13 +98,13 @@ public class BBServer {
     private static List<Class<? extends PetsciiThread>> filterPetsciiThread() {
         List<Class<? extends PetsciiThread>> result = new LinkedList<>();
         final ClassLoader classLoader = BBServer.class.getClassLoader();
-        final Set<ClassPath.ClassInfo> classesInPackage;
+        final Set<ClassPath.ClassInfo> classes;
         try {
-            classesInPackage = ClassPath.from(classLoader).getTopLevelClasses();
+            classes = ClassPath.from(classLoader).getTopLevelClasses();
         } catch (IOException ioe) {
             return emptyList();
         }
-        for (ClassPath.ClassInfo classInfo : classesInPackage) {
+        for (ClassPath.ClassInfo classInfo : classes) {
             try {
                 Class c = classInfo.load();
                 if (PetsciiThread.class.isAssignableFrom(c) && !c.isAnnotationPresent(Hidden.class))
