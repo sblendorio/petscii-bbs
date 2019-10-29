@@ -1,15 +1,20 @@
 package eu.sblendorio.bbs.tenants;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.maxmind.db.Reader;
-import eu.sblendorio.bbs.core.PetsciiThread;
+import static eu.sblendorio.bbs.core.Colors.GREY3;
+import static eu.sblendorio.bbs.core.Colors.WHITE;
+import static eu.sblendorio.bbs.core.Keys.CASE_LOCK;
+import static eu.sblendorio.bbs.core.Keys.CLR;
+import static eu.sblendorio.bbs.core.Keys.LOWERCASE;
+import static eu.sblendorio.bbs.core.Keys.REVOFF;
+import static eu.sblendorio.bbs.core.Keys.REVON;
 
 import java.io.File;
 import java.io.IOException;
 
-import static eu.sblendorio.bbs.core.Keys.*;
-import static eu.sblendorio.bbs.core.Colors.*;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.maxmind.db.Reader;
+
+import eu.sblendorio.bbs.core.PetsciiThread;
 
 public class MenuRetroAcademy extends PetsciiThread {
 
@@ -30,7 +35,7 @@ public class MenuRetroAcademy extends PetsciiThread {
         }
     }
 
-    public static String MAXMIND_DB = System.getProperty("user.home") + File.separator + "GeoLite2-City.mmdb";
+    private static final String MAXMIND_DB = System.getProperty("user.home") + File.separator + "GeoLite2-City.mmdb";
     private Reader maxmindReader;
     private JsonNode maxmindResponse;
     private GeoData geoData;
@@ -144,7 +149,7 @@ public class MenuRetroAcademy extends PetsciiThread {
         write(LOGO);
     }
 
-    public static byte[] LOGO = new byte[] {
+    public static final byte[] LOGO = new byte[] {
         32,  32,  32,  32,  32,  28, -84,  32,  32,  32,  32,  32,  32,  32,  32,  32,
         32,  32,  32,  32,  32,-104, -69,  32,  32,  32,  32,  32,  32,  32,  32,  32,
         32,  32,  32,-101, -69, -84,  32, -84, -84,  13,  18,  28, -95, -65,-110, -84,
