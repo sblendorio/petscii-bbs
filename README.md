@@ -68,14 +68,14 @@ Once you have written your own BBS as an extension of *PetsciiThread* class, sim
 
     mvn package
 
-The build process will result in the file **petscii-bbs-1.0-SNAPSHOT.jar**, it will be found in the **target** directory. So you can run it with:
+The build process will result in the file **petscii-bbs.jar**, it will be found in the **target** directory. So you can run it with:
 
-    java -jar target/petscii-bbs-1.0-SNAPSHOT.jar
+    java -jar target/petscii-bbs.jar
 
 ## Running the BBS Server
 Running the server with no parameters, a help screen will be displayed:
 
-    usage: target/petscii-bbs-1.0-SNAPSHOT.jar
+    usage: target/petscii-bbs.jar
      -b,--bbs <arg>       Run specific BBS (mandatory - see list below)
      -h,--help            Displays help
      -p,--port <arg>      TCP port used by server process (default 6510)
