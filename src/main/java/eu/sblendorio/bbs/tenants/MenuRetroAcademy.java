@@ -149,7 +149,7 @@ public class MenuRetroAcademy extends PetsciiThread {
         write(LOGO);
     }
 
-    public static final byte[] LOGO = new byte[] {
+    private static final byte[] LOGO = new byte[] {
         32,  32,  32,  32,  32,  28, -84,  32,  32,  32,  32,  32,  32,  32,  32,  32,
         32,  32,  32,  32,  32,-104, -69,  32,  32,  32,  32,  32,  32,  32,  32,  32,
         32,  32,  32,-101, -69, -84,  32, -84, -84,  13,  18,  28, -95, -65,-110, -84,
