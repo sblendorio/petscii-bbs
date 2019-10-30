@@ -1,16 +1,34 @@
 package eu.sblendorio.bbs.tenants;
 
-import com.google.common.collect.ImmutableMap;
-import eu.sblendorio.bbs.core.PetsciiThread;
-
-import java.net.URL;
-import java.nio.file.*;
-import java.util.*;
-
 import static eu.sblendorio.bbs.core.Colors.GREY3;
 import static eu.sblendorio.bbs.core.Colors.WHITE;
-import static eu.sblendorio.bbs.core.Keys.*;
+import static eu.sblendorio.bbs.core.Keys.CASE_LOCK;
+import static eu.sblendorio.bbs.core.Keys.CLR;
+import static eu.sblendorio.bbs.core.Keys.HOME;
+import static eu.sblendorio.bbs.core.Keys.LOWERCASE;
+import static eu.sblendorio.bbs.core.Keys.RETURN;
+import static eu.sblendorio.bbs.core.Keys.REVOFF;
+import static eu.sblendorio.bbs.core.Keys.REVON;
+import static eu.sblendorio.bbs.core.Keys.UPPERCASE;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
+
+import eu.sblendorio.bbs.core.PetsciiThread;
 
 public class PetsciiArtGallery extends PetsciiThread {
 
@@ -21,21 +39,22 @@ public class PetsciiArtGallery extends PetsciiThread {
     );
 
 
-    public List<Path> getDirContent(String path) throws Exception {
+    public List<Path> getDirContent(String path) throws URISyntaxException, IOException {
         List<Path> result = new ArrayList<>();
         URL jar = getClass().getProtectionDomain().getCodeSource().getLocation();
         Path jarFile = Paths.get(jar.toURI());
-        final ClassLoader nullClassLoader = null;
-        FileSystem fs = FileSystems.newFileSystem(jarFile, nullClassLoader);
-        DirectoryStream<Path> directoryStream = Files.newDirectoryStream(fs.getPath(path));
-        for (Path p : directoryStream) result.add(p);
-        Collections.sort(result, new Comparator<Path>() {
-            @Override
-            public int compare(Path o1, Path o2) {
-                return o1 == null || o2 == null ? 0 : o1.getFileName().toString().compareTo(o2.getFileName().toString());
+        try (FileSystem fs = FileSystems.newFileSystem(jarFile, null);
+            DirectoryStream<Path> directoryStream = Files.newDirectoryStream(fs.getPath(path))) {
+            for (Path p : directoryStream) {
+                result.add(p);
             }
-        });
-        return result;
+
+            result.sort((o1, o2) -> o1 == null || o2 == null ?
+                    0 :
+                    // TODO: check if I can compare path directly
+                    o1.getFileName().toString().compareTo(o2.getFileName().toString()));
+            return result;
+        }
     }
 
     @Override

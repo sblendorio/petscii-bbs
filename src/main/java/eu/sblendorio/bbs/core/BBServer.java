@@ -4,9 +4,12 @@ import com.google.common.reflect.ClassPath;
 import org.apache.commons.cli.*;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import static java.util.Collections.emptyList;
 import static java.util.Comparator.comparing;
@@ -24,11 +27,11 @@ public class BBServer {
     public static void main(String[] args) throws Exception {
         // args = new String[] {"-b", "MenuRetroAcademy", "-p", "6510"};
         readParameters(args);
-        ServerSocket listener = new ServerSocket(port);
-        listener.setSoTimeout(INTEGER_ZERO);
+
         System.out.print(new Timestamp(System.currentTimeMillis())+" ");
         System.out.println("The BBS "+bbs.getSimpleName()+" is running: port = " + port + ", timeout = " + timeout + " millis");
-        try {
+        try(ServerSocket listener = new ServerSocket(port)) {
+            listener.setSoTimeout(INTEGER_ZERO);
             while (true) {
                 Socket socket = listener.accept();
                 socket.setSoTimeout(timeout);
@@ -39,8 +42,6 @@ public class BBServer {
                 thread.setCbmInputOutput(cbm);
                 thread.start();
             }
-        } finally {
-            listener.close();
         }
     }
 
@@ -76,11 +77,15 @@ public class BBServer {
     }
 
     private static Class<? extends PetsciiThread> findTenant(final String bbsName) {
-        try {
-            return tenants.stream().filter(c -> c.getSimpleName().equalsIgnoreCase(bbsName)).findFirst().get();
-        } catch (Exception e) {
-            return null;
-        }
+        return findTenant(tenants, bbsName);
+    }
+
+    static Class<? extends PetsciiThread> findTenant(final List<Class<? extends PetsciiThread>> tenants,
+                                                     final String bbsName) {
+        return tenants.stream()
+            .filter(c -> c.getSimpleName().equalsIgnoreCase(bbsName))
+            .findFirst()
+            .orElse(null);
     }
 
     private static void displayHelp(Options options) {
@@ -93,13 +98,13 @@ public class BBServer {
     private static List<Class<? extends PetsciiThread>> filterPetsciiThread() {
         List<Class<? extends PetsciiThread>> result = new LinkedList<>();
         final ClassLoader classLoader = BBServer.class.getClassLoader();
-        final Set<ClassPath.ClassInfo> classesInPackage;
+        final Set<ClassPath.ClassInfo> classes;
         try {
-            classesInPackage = ClassPath.from(classLoader).getTopLevelClasses();
+            classes = ClassPath.from(classLoader).getTopLevelClasses();
         } catch (IOException ioe) {
             return emptyList();
         }
-        for (ClassPath.ClassInfo classInfo : classesInPackage) {
+        for (ClassPath.ClassInfo classInfo : classes) {
             try {
                 Class c = classInfo.load();
                 if (PetsciiThread.class.isAssignableFrom(c) && !c.isAnnotationPresent(Hidden.class))

@@ -1,26 +1,53 @@
 package eu.sblendorio.bbs.tenants;
 
-import com.google.common.collect.ImmutableMap;
-import com.rometools.rome.feed.synd.SyndEntry;
-import com.rometools.rome.feed.synd.SyndFeed;
-import com.rometools.rome.io.SyndFeedInput;
-import com.rometools.rome.io.XmlReader;
-import eu.sblendorio.bbs.core.HtmlUtils;
-import eu.sblendorio.bbs.core.PetsciiThread;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
+import static eu.sblendorio.bbs.core.Colors.BLUE;
+import static eu.sblendorio.bbs.core.Colors.CYAN;
+import static eu.sblendorio.bbs.core.Colors.GREEN;
+import static eu.sblendorio.bbs.core.Colors.GREY1;
+import static eu.sblendorio.bbs.core.Colors.GREY2;
+import static eu.sblendorio.bbs.core.Colors.GREY3;
+import static eu.sblendorio.bbs.core.Colors.LIGHT_BLUE;
+import static eu.sblendorio.bbs.core.Colors.LIGHT_GREEN;
+import static eu.sblendorio.bbs.core.Colors.LIGHT_RED;
+import static eu.sblendorio.bbs.core.Colors.PURPLE;
+import static eu.sblendorio.bbs.core.Colors.RED;
+import static eu.sblendorio.bbs.core.Colors.WHITE;
+import static eu.sblendorio.bbs.core.Colors.YELLOW;
+import static eu.sblendorio.bbs.core.Keys.DEL;
+import static eu.sblendorio.bbs.core.Keys.RETURN;
+import static eu.sblendorio.bbs.core.Keys.REVOFF;
+import static eu.sblendorio.bbs.core.Keys.REVON;
+import static eu.sblendorio.bbs.core.Keys.RIGHT;
+import static eu.sblendorio.bbs.core.Keys.SPACE_CHAR;
+import static eu.sblendorio.bbs.core.Keys.UP;
+import static eu.sblendorio.bbs.core.Utils.filterPrintableWithNewline;
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.substring;
+import static org.apache.commons.lang3.StringUtils.trim;
 
 import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
-import static eu.sblendorio.bbs.core.Colors.*;
-import static eu.sblendorio.bbs.core.Keys.*;
-import static eu.sblendorio.bbs.core.Utils.filterPrintableWithNewline;
-import static java.util.Arrays.asList;
-import static org.apache.commons.lang3.StringUtils.*;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.WordUtils;
+
+import com.google.common.collect.ImmutableMap;
+import com.rometools.rome.feed.synd.SyndEntry;
+import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.io.SyndFeedInput;
+import com.rometools.rome.io.XmlReader;
+
+import eu.sblendorio.bbs.core.HtmlUtils;
+import eu.sblendorio.bbs.core.PetsciiThread;
 
 public class TelevideoRai extends PetsciiThread {
     static String HR_TOP = StringUtils.repeat(chr(163), 39);
@@ -147,7 +174,10 @@ public class TelevideoRai extends PetsciiThread {
                     write(UP); println("        "); write(UP);
                 }
             } while (inputFail);
-            if (trim(command).equals(".")) break;
+            if (trim(command).equals(".")) {
+                break;
+            }
+            // TODO: NPE should not appens due to the previous if
             log("Televideo choice = " + command + " " + choice.title);
             view(choice);
         }
