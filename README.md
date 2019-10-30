@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/felicepagano/petscii-bbs.svg?branch=master)](https://travis-ci.org/felicepagano/petscii-bbs) 
+[![Build Status](https://travis-ci.org/sblendorio/petscii-bbs.svg?branch=master)](https://travis-ci.org/sblendorio/petscii-bbs) 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=felicepagano_petscii-bbs&metric=alert_status)](https://sonarcloud.io/dashboard?id=felicepagano_petscii-bbs)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=felicepagano_petscii-bbs&metric=coverage)](https://sonarcloud.io/dashboard?id=felicepagano_petscii-bbs)
 
