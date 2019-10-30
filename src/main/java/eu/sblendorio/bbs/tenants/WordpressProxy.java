@@ -1,31 +1,52 @@
 package eu.sblendorio.bbs.tenants;
 
-import eu.sblendorio.bbs.core.Hidden;
-import eu.sblendorio.bbs.core.HtmlUtils;
-import eu.sblendorio.bbs.core.PetsciiThread;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import static eu.sblendorio.bbs.core.Colors.GREY3;
+import static eu.sblendorio.bbs.core.Colors.WHITE;
+import static eu.sblendorio.bbs.core.Keys.CASE_LOCK;
+import static eu.sblendorio.bbs.core.Keys.DEL;
+import static eu.sblendorio.bbs.core.Keys.LOWERCASE;
+import static eu.sblendorio.bbs.core.Utils.equalsDomain;
+import static eu.sblendorio.bbs.core.Utils.filterPrintable;
+import static eu.sblendorio.bbs.core.Utils.filterPrintableWithNewline;
+import static eu.sblendorio.bbs.core.Utils.normalizeDomain;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyMap;
+import static org.apache.commons.collections4.MapUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.SPACE;
+import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.lowerCase;
+import static org.apache.commons.lang3.StringUtils.repeat;
+import static org.apache.commons.lang3.StringUtils.substring;
+import static org.apache.commons.lang3.StringUtils.trim;
+import static org.apache.commons.lang3.math.NumberUtils.toInt;
+import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-import static eu.sblendorio.bbs.core.Keys.*;
-import static eu.sblendorio.bbs.core.Colors.*;
-import static eu.sblendorio.bbs.core.Utils.*;
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyMap;
-import static org.apache.commons.collections4.MapUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.*;
-import static org.apache.commons.lang3.math.NumberUtils.*;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.WordUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import eu.sblendorio.bbs.core.Hidden;
+import eu.sblendorio.bbs.core.HtmlUtils;
+import eu.sblendorio.bbs.core.PetsciiThread;
 
 @Hidden
 public class WordpressProxy extends PetsciiThread {
 
     static String HR_TOP = StringUtils.repeat(chr(163), 39);
+    private static final Logger logger = LoggerFactory.getLogger(WordpressProxy.class);
 
     static class Post {
         long id;
@@ -234,7 +255,7 @@ public class WordpressProxy extends PetsciiThread {
             }
         } catch (Exception e) {
             log("Error during retrieving author");
-            e.printStackTrace();
+            logger.error("Error during retrieving author", e);
         }
         final String content = p.content
                 .replaceAll("(?is)<style>.*</style>", EMPTY)

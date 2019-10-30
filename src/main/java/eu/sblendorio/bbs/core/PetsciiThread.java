@@ -1,11 +1,27 @@
 package eu.sblendorio.bbs.core;
 
-import org.apache.commons.io.IOUtils;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import static eu.sblendorio.bbs.core.Keys.DOWN;
+import static eu.sblendorio.bbs.core.Keys.HOME;
+import static eu.sblendorio.bbs.core.Keys.RIGHT;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.substring;
+import static org.apache.commons.lang3.StringUtils.trim;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
@@ -13,11 +29,15 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static eu.sblendorio.bbs.core.Keys.*;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.lang3.StringUtils.*;
+import org.apache.commons.io.IOUtils;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class PetsciiThread extends Thread {
+
+    private static final Logger logger = LoggerFactory.getLogger(PetsciiThread.class);
 
     public static class DownloadData {
         private final String filename;
@@ -137,7 +157,7 @@ public abstract class PetsciiThread extends Thread {
             log("BROKEN PIPE " + e);
         } catch (Exception e) {
             log("ERROR handling: " + e);
-            e.printStackTrace();
+            logger.error("ERROR handling", e);
         } finally {
             try {
                 socket.close();
@@ -164,7 +184,7 @@ public abstract class PetsciiThread extends Thread {
             child = null;
             clientClass = getClass();
             log(e.getClass().getSimpleName() + " during launching of " + bbs.getClass().getSimpleName()+" within " + this.getClass().getSimpleName()+". Launch interrupted. Stack trace:");
-            e.printStackTrace();
+            logger.error("Launch interrupted", e);
             return false;
         }
     }
