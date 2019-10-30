@@ -177,8 +177,7 @@ public class TelevideoRai extends PetsciiThread {
             if (trim(command).equals(".")) {
                 break;
             }
-            // TODO: NPE should not appens due to the previous if
-            log("Televideo choice = " + command + " " + choice.title);
+            log("Televideo choice = " + command + " " + (choice == null ? EMPTY : choice.title));
             view(choice);
         }
         log("Televideo-EXIT");
