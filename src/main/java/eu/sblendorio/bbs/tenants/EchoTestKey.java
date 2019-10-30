@@ -8,11 +8,11 @@ public class EchoTestKey extends PetsciiThread {
     public void doLoop() throws Exception {
         cls();
         newline();
-        while (true) {
+        int key;
+        do {
             print("Command> ");
-            flush(); int key = readKey();
+            flush(); key = readKey();
             println("You wrote: "+key);
-            if (key == 46) break;
-        }
+        } while (key == 46);
     }
 }
