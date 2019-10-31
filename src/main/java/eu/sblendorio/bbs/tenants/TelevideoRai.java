@@ -271,7 +271,7 @@ public class TelevideoRai extends PetsciiThread {
         write(GREY3);
     }
 
-    public final static byte[] LOGO_TELEVIDEO = new byte[] {
+    private final static byte[] LOGO_TELEVIDEO = new byte[] {
         32, 32, 18, -98, 32, 32, 32, 32, -110, -95, 18, 32, 32, 32, -110, -95,
         18, 32, -110, -95, 32, 32, 18, 32, 32, 32, -110, -95, 18, 32, -110, -95,
         32, 18, 32, -95, 32, -95, 32, 32, -68, -110, 32, 18, 32, 32, 32, -110,

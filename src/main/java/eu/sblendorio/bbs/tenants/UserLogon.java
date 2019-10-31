@@ -48,8 +48,8 @@ import eu.sblendorio.bbs.core.PetsciiThread;
 
 public class UserLogon extends PetsciiThread {
 
-    public static final String dbFile = System.getProperty("user.home") + "/bbs-data.db";
-    public static Properties properties;
+    protected static final String dbFile = System.getProperty("user.home") + "/bbs-data.db";
+    protected static final Properties properties;
     SecureRandom random;
 
     static {
@@ -80,7 +80,7 @@ public class UserLogon extends PetsciiThread {
         public final String userFrom;
         public final String userTo;
         public final Date dateTime;
-        public boolean isRead;
+        private boolean isRead;
         public final String subject;
         public final String message;
         public final boolean receiverExists;
