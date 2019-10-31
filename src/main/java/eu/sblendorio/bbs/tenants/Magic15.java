@@ -20,7 +20,7 @@ public class Magic15 extends PetsciiThread {
             GREY3, RED,   GREY3, RED,
             RED,   GREY3, RED
     };
-    private final static String BLANK = "     ";
+    private static final String BLANK = "     ";
     private final int K_UP = 'w';
     private final int K_LEFT = 'a';
     private final int K_DOWN = 's';

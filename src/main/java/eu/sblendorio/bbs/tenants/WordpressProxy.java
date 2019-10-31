@@ -315,7 +315,7 @@ public class WordpressProxy extends PetsciiThread {
         flush();
     }
 
-    protected final static byte[] LOGO_WORDPRESS = new byte[] {
+    protected static final byte[] LOGO_WORDPRESS = new byte[] {
         -104, -84, 32, 32, -84, 32, 32, 32, 32, 32, 32, 32, 32, -84, -94, 13,
         -68, -69, 32, 18, -65, -110, -84, 18, -94, -110, -65, 18, -95, -94, -110, -69,
         18, -84, -110, -65, 18, -95, -110, 32, -95, 18, -84, -110, -65, 18, -95, -94,

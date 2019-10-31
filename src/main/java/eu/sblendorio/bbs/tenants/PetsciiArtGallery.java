@@ -28,7 +28,7 @@ import eu.sblendorio.bbs.core.PetsciiThread;
 
 public class PetsciiArtGallery extends PetsciiThread {
 
-    private final static String rootPath = "petscii-art-gallery";
+    private static final String ROOT_PATH = "petscii-art-gallery";
 
     public List<Path> getDirContent(String path) throws URISyntaxException, IOException {
         List<Path> result = new ArrayList<>();
@@ -48,7 +48,7 @@ public class PetsciiArtGallery extends PetsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        List<Path> authors = getDirContent(rootPath);
+        List<Path> authors = getDirContent(ROOT_PATH);
         boolean randomize = false;
         int key;
         int choice;
