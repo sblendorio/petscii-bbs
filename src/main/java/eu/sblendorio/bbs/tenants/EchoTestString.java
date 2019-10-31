@@ -10,11 +10,12 @@ public class EchoTestString extends PetsciiThread {
     public void doLoop() throws Exception {
         cls();
         newline();
-        while (true) {
+        String input;
+        do {
             print("Command> ");
             flush(); String inputRaw = readLine();
-            String input = lowerCase(inputRaw);
+            input = lowerCase(inputRaw);
             println("You wrote: "+input+ " (len="+input.length()+")");
-        }
+        } while ("end".equalsIgnoreCase(input));
     }
 }
