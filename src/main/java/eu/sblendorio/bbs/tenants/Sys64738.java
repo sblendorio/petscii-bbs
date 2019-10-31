@@ -10,7 +10,7 @@ public class Sys64738 extends WordpressProxy {
         this.screenRows = 18;
     }
 
-    public final static byte[] LOGO = new byte[] {
+    private final static byte[] LOGO = new byte[] {
         -102, -84, 18, -84, -69, -110, -69, 18, -95, -110, -95, 18, -95, -110, -95, -84,
         18, -84, -69, -110, -69, -84, 18, -84, -69, -110, -69, 32, 32, 18, -66, -110,
         -95, 18, -95, -84, -69, -110, -95, -84, 18, -84, -69, -110, -69, -84, 18, -84,

@@ -10,7 +10,7 @@ public class Disinformatico extends GoogleBloggerProxy {
         this.screenRows = 19;
     }
 
-    public final static byte[] LOGO = new byte[] {
+    private final static byte[] LOGO = new byte[] {
         18, -127, 32, -94, -94, 32, 32, -110, 32, 5, -84, -84, 32, -84, -94, 32,
         -69, 32, 32, -69, 32, 32, -84, -69, 32, 32, 32, 32, 32, 32, 32, 32,
         32, -84, 32, -69, 13, 18, -127, 32, -110, 32, 18, -68, -110, -68, 18, 32,

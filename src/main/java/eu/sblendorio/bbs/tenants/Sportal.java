@@ -10,7 +10,7 @@ public class Sportal extends WordpressProxy {
         this.screenRows = 19;
     }
 
-    public final static byte[] LOGO = new byte[] {
+    private final static byte[] LOGO = new byte[] {
         32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 31, -69, 32,
         32, 32, -84, 32, -127, -84, -84, 13, 31, -68, 18, -94, -68, -110, 32, -94,
         -69, -94, -69, 32, -94, 32, -69, -69, 18, -68, -110, 32, -84, -94, 18, -95,

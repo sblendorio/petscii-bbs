@@ -10,7 +10,7 @@ public class DavidPuenteBlog extends WordpressProxy {
         this.screenRows = 18;
     }
 
-    public final static byte[] LOGO = new byte[] {
+    private final static byte[] LOGO = new byte[] {
         32, 32, 32, 32, 32, 32, 32, 32, 32, 18, 5, -95, -94, -110, -69, 32,
         32, 32, 32, 32, 18, -97, -65, -110, -69, 32, 32, 5, -95, 32, 18, -84,
         -110, -65, 32, 32, 32, 32, 32, 32, 32, -84, 18, -68, -110, 13, 32, -97,

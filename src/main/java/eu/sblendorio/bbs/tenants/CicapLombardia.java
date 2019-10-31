@@ -10,7 +10,7 @@ public class CicapLombardia extends WordpressProxy {
         this.screenRows = 18;
     }
 
-    public final static byte[] LOGO = new byte[] {
+    private final static byte[] LOGO = new byte[] {
         32, 31, -94, -84, -69, -94, -84, -69, -94, 32, 5, -84, 18, -94, -110, -68,
         18, -84, -110, -84, 18, -94, -110, -84, 18, -94, -110, -69, 18, -84, -110, -65,
         13, 32, 18, 31, -94, -110, -68, -66, 18, -94, -110, -68, -66, 18, -94, -110,

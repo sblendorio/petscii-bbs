@@ -11,7 +11,7 @@ public class NextQuotidiano extends WordpressProxy {
         this.showAuthor = true;
     }
 
-    public final static byte[] LOGO = new byte[] {
+    private final static byte[] LOGO = new byte[] {
         32, 32, 32, 32, 32, 32, 28, -65, 32, -84, -66, 5, -69, 13, 32, -94,
         -69, 32, -94, 32, 32, 28, -65, -66, 32, 18, 5, -84, -110, 32, 32, -104,
         -84, 18, -94, -110, -69, 18, -95, -110, 32, -95, 18, -65, -110, -65, -68, 18,

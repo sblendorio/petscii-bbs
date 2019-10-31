@@ -10,7 +10,7 @@ public class TheFoolBlog extends WordpressProxy {
         this.screenRows = 18;
     }
 
-    public final static byte[] LOGO = new byte[] {
+    private final static byte[] LOGO = new byte[] {
         32, 5, -69, -84, 32, 32, 32, 32, 32, 18, -66, -69, -110, -69, 32, 32,
         32, 32, 32, 32, 18, -95, -110, -95, 32, -97, -84, -94, -94, 32, -94, 32,
         32, -84, -94, -69, 32, -94, -94, 13, 32, 18, 5, -84, -95, -110, -69, -84,

@@ -10,7 +10,7 @@ public class IndieRetroNews extends GoogleBloggerProxy {
         this.screenRows = 18;
     }
 
-    public final static byte[] LOGO = new byte[] {
+    private final static byte[] LOGO = new byte[] {
         32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
         32, -106, -55, -50, -60, -55, -59, 13, 18, -95, -84, -69, -110, -69, 18, 32,
         -94, -110, -66, 18, -94, 32, -94, -95, -84, -69, -110, -69, 18, -66, -94, -68,

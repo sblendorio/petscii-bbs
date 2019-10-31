@@ -12,7 +12,7 @@ public class DottoreMaEVeroChe extends WordpressProxy {
         this.screenRows = 19;
     }
 
-    public final static byte[] LOGO = new byte[] {
+    private final static byte[] LOGO = new byte[] {
         32, (byte) GREY2, -84, 32, 32, 32, -69, -84, 32, 32, 5, 'f', 'n', 'o', 'm', 'c', 'E', 'o', (byte) GREY2,
         32, 32, -127, -65, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
         32, 32, 32, -69, 13, (byte) GREY2, -84, 18, -66, -110, 32, -94, 32, 18, -84, -95,
