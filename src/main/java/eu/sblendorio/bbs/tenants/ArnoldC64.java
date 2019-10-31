@@ -26,8 +26,6 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
