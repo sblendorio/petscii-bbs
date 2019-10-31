@@ -3,7 +3,7 @@ package eu.sblendorio.bbs.core;
 import java.io.IOException;
 
 public class CbmIOException extends IOException {
-    final private String missingInput;
+    private final String missingInput;
 
     public CbmIOException(String msg) {
         super(msg);

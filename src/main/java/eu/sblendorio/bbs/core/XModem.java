@@ -41,17 +41,17 @@ import java.util.Arrays;
  */
 public class XModem {
 
-    protected final byte CPMEOF = 26;       /* control/z */
-    protected final int MAXERRORS = 10;     /* max times to retry one block */
-    protected final int SECSIZE = 128;      /* cpm sector, transmission block */
-    protected final int SENTIMOUT = 30;     /* timeout time in send */
+    protected static final byte CPMEOF = 26;       /* control/z */
+    protected static final int MAXERRORS = 10;     /* max times to retry one block */
+    protected static final int SECSIZE = 128;      /* cpm sector, transmission block */
+    protected static final int SENTIMOUT = 30;     /* timeout time in send */
 
     /* Protocol characters used */
-    protected final byte SOH = 1;    /* Start Of Header */
-    protected final byte EOT = 4;    /* End Of Transmission */
-    protected final byte ACK = 6;    /* ACKnowlege */
-    protected final byte CAN = 24;   /* CANcel */
-    protected final byte NAK = 0x15; /* Negative AcKnowlege */
+    protected static final byte SOH = 1;    /* Start Of Header */
+    protected static final byte EOT = 4;    /* End Of Transmission */
+    protected static final byte ACK = 6;    /* ACKnowlege */
+    protected static final byte CAN = 24;   /* CANcel */
+    protected static final byte NAK = 0x15; /* Negative AcKnowlege */
 
     protected Reader inStream;
     protected PrintStream outStream;

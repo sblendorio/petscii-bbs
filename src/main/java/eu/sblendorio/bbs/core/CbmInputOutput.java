@@ -173,7 +173,7 @@ public class CbmInputOutput extends Reader {
         return n;
     }
 
-    public int read(char cbuf[], int off, int len) throws IOException {
+    public int read(char[] cbuf, int off, int len) throws IOException {
         synchronized (lock) {
             ensureOpen();
             if ((off < 0) || (off > cbuf.length) || (len < 0) ||
@@ -306,7 +306,7 @@ public class CbmInputOutput extends Reader {
         }
     }
 
-    private String decode(String s) throws IOException {
+    private String decode(String s) {
         byte[] bytes = s.getBytes(ISO_8859_1);
         byte[] output = new byte[s.length()];
         int i=-1;

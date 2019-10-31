@@ -17,4 +17,8 @@ public class Colors {
     public static final int LIGHT_GREEN = 153;
     public static final int LIGHT_BLUE = 154;
     public static final int GREY3 = 155;
+
+    private Colors() {
+        throw new IllegalStateException("Utility class");
+    }
 }

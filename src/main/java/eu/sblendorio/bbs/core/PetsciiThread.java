@@ -131,7 +131,7 @@ public abstract class PetsciiThread extends Thread {
         this.cbm = cbm;
     }
 
-    public void setSocket(Socket socket) throws IOException {
+    public void setSocket(Socket socket) {
         this.socket = socket;
     }
 
@@ -139,6 +139,7 @@ public abstract class PetsciiThread extends Thread {
     public long getClientId() { return clientId; }
     public Class getClientClass() { return clientClass; }
 
+    @Override
     public void run() {
         try {
             setClientId(clientCount.incrementAndGet());

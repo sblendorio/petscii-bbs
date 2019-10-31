@@ -1,17 +1,12 @@
 package eu.sblendorio.bbs.core;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.maxmind.db.Reader;
-
-import java.io.File;
-import java.net.InetAddress;
 import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.*;
 
 public class Utils {
 
-    private static Set<Integer> CONTROL_CHARS = new HashSet<>(Arrays.asList(
+    private final static Set<Integer> CONTROL_CHARS = new HashSet<>(Arrays.asList(
             1, 2, 3, 4, 5, 6, 7, 8, 9,
             11, 12,
             14, 15, 16, 17, 18, 19,
@@ -21,7 +16,7 @@ public class Utils {
             149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159
     ));
 
-    private static Set<Integer> EXTRA_CONTROL_CHARS = new HashSet<>(Arrays.asList(0, 10, 13, 20, 141, 148));
+    // EXTRA_CONTROL_CHARS: 0, 10, 13, 20, 141, 148
 
     public static boolean isControlChar(int c) { return CONTROL_CHARS.contains(c); }
     public static boolean isControlChar(char c) { return isControlChar((int) c); }
@@ -34,14 +29,14 @@ public class Utils {
     }
 
     public static String filterPrintable(String s) {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         for (char c: defaultString(s).toCharArray())
             if (isPrintableChar(c)) result.append(c);
         return result.toString();
     }
 
     public static String filterPrintableWithNewline(String s) {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         for (char c: defaultString(s).toCharArray())
             if (isPrintableChar(c) || c == '\n' || c == '\r') result.append(c);
         return result.toString();

@@ -18,7 +18,7 @@ public class HtmlUtils {
     }
 
     public static String htmlClean(String s) {
-        final String result = replacePreTags(defaultString(s))
+        return replacePreTags(defaultString(s))
                 .replace("\r", "")
                 .replace("©","(C)")
                 .replace("\n", " ")
@@ -47,14 +47,13 @@ public class HtmlUtils {
                 .replaceAll("’|‘|°|&apos;|&rsquo;|&rsquor;|&lsquo;|&lsquor;|&sbquo;|&#x2019;|&#8216;|&#8217;|&#039;|&#39;|\u0300|\u0301", "'")
                 .replaceAll("“|”|&quot;|«|»|&#8220;|&#8221;|&laquo;|&raquo;|&#xAB;|&#xBB;|&#x201C;|&#x201D;", "\"")
                 .replaceAll("&amp;?", "&")
-                .replaceAll("&gt;", ">")
-                .replaceAll("&lt;", "<")
+                .replace("&gt;", ">")
+                .replace("&lt;", "<")
                 .replace("&#038;", "&")
                 .replace("&#38;", "&")
                 .replaceAll("\n(\\s*\n)+", "\n\n")
                 .replaceAll("^(\n|\r|\\s)*", "")
                 ;
-        return result;
     }
 
 }

@@ -29,4 +29,8 @@ public class Keys {
     public static final int REVOFF = 146;
     public static final int CASE_LOCK = 8;
     public static final int CASE_UNLOCK = 9;
+
+    private Keys() {
+        throw new IllegalStateException("Utility class");
+    }
 }
