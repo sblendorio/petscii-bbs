@@ -6,7 +6,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 
 public class Utils {
 
-    private final static Set<Integer> CONTROL_CHARS = new HashSet<>(Arrays.asList(
+    private static final Set<Integer> CONTROL_CHARS = new HashSet<>(Arrays.asList(
             1, 2, 3, 4, 5, 6, 7, 8, 9,
             11, 12,
             14, 15, 16, 17, 18, 19,

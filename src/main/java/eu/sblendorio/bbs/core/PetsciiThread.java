@@ -119,7 +119,7 @@ public abstract class PetsciiThread extends Thread {
 
     public String getClientName() { return clientName; }
 
-    public void contextFrom(PetsciiThread source) throws IOException {
+    public void contextFrom(PetsciiThread source) {
         setSocket(source.socket);
         setCbmInputOutput(source.cbm);
         setClientId(source.getClientId());
