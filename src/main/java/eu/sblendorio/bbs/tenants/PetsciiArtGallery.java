@@ -49,9 +49,7 @@ public class PetsciiArtGallery extends PetsciiThread {
                 result.add(p);
             }
 
-            result.sort((o1, o2) -> o1 == null || o2 == null ?
-                    0 :
-                    // TODO: check if I can compare path directly
+            result.sort((o1, o2) -> o1 == null || o2 == null ? 0 :
                     o1.getFileName().toString().compareTo(o2.getFileName().toString()));
             return result;
         }

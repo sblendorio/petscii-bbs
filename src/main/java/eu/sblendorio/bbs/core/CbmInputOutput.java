@@ -359,8 +359,7 @@ public class CbmInputOutput extends Reader {
                         nextChar++;
                     }
                 }
-                //TODO: is overflow expected here?
-                long d = nChars - nextChar;
+                long d = ((long) nChars) - ((long) nextChar);
                 if (r <= d) {
                     nextChar += r;
                     r = 0;

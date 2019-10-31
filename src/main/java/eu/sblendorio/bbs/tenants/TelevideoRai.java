@@ -76,6 +76,7 @@ public class TelevideoRai extends PetsciiThread {
             this.publishedDate = publishedDate; this.title = title; this.description = description; this.uri = uri;
         }
 
+        @Override
         public String toString() {
             return "Title: "+title+"\nDate:"+publishedDate+"\nDescription:"+description+"\n";
         }
@@ -163,7 +164,6 @@ public class TelevideoRai extends PetsciiThread {
             NewsSection choice;
             boolean inputFail;
             do {
-                choice = null;
                 print(" > ");
                 flush();
                 resetInput();
@@ -184,6 +184,10 @@ public class TelevideoRai extends PetsciiThread {
     }
 
     private void view(NewsSection section) throws Exception {
+        if (section == null) {
+            return;
+        }
+
         cls();
         waitOn();
         List<NewsFeed> feeds = getFeeds(section.url);
