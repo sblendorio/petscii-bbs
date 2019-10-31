@@ -19,6 +19,7 @@ import static eu.sblendorio.bbs.core.Keys.REVON;
 import static eu.sblendorio.bbs.core.Keys.UP;
 import static eu.sblendorio.bbs.core.Utils.filterPrintable;
 import static java.lang.Integer.compare;
+import static java.lang.Integer.signum;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
@@ -558,7 +559,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
             if (ext1.equals(ext2))
                 return -compare(this.downloads, o2.downloads);
             else
-                return -ext1.compareTo(ext2);
+                return -signum(ext1.compareTo(ext2));
         }
     }
 
