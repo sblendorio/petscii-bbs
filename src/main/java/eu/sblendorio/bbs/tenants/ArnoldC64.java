@@ -43,7 +43,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.WordUtils;
 
-import droid64.addons.DiskUtilities;
+import net.sourceforge.droid64.addons.DiskUtilities;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.XModem;
