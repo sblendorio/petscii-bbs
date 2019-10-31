@@ -299,7 +299,7 @@ public class TelevideoRai extends PetsciiThread {
     }
 
     static class Logos {
-        public final static byte[] LOGO_ULTIMORA = new byte[] {
+        final static byte[] LOGO_ULTIMORA = new byte[] {
             32, 32, 32, 18, -98, 32, -110, -95, 32, 18, 32, -95, 32, -110, 32, 18,
             32, 32, 32, 32, -110, -95, 18, 32, -110, -95, 18, 32, -68, -110, -84, 18,
             32, -95, -110, -84, 18, 32, 32, 32, -110, -69, 18, 32, 32, 32, 32, -110,
@@ -316,7 +316,7 @@ public class TelevideoRai extends PetsciiThread {
             -66, -68, 18, -94, -110, -66, 18, -94, -110, -66, 32, 18, -94, -110, 13
         };
 
-        public final static byte[] LOGO_POLITICA = new byte[] {
+        final static byte[] LOGO_POLITICA = new byte[] {
             32, 32, 32, 32, 32, 18, -98, 32, 32, 32, -68, -110, -84, 18, 32, 32,
             32, -110, -69, 18, 32, -110, -95, 32, 32, 18, 32, -110, -95, 18, 32, 32,
             32, 32, -110, -95, 18, 32, -110, -95, 18, -66, 32, 32, 32, -110, -84, 18,
@@ -332,7 +332,7 @@ public class TelevideoRai extends PetsciiThread {
             -66, -68, 18, -94, -94, -94, -110, -68, 18, -94, -110, 32, -68, -66, 13
         };
 
-        public final static byte[] LOGO_ECONOMIA = new byte[] {
+        final static byte[] LOGO_ECONOMIA = new byte[] {
             32, 32, 32, 32, 18, -98, 32, 32, 32, -110, -95, 18, -66, 32, 32, -110,
             -95, 18, -66, 32, 32, -68, -95, 32, -110, -69, 18, 32, -110, -95, 18, -66,
             32, 32, -68, -95, 32, -110, -69, 18, -66, -110, -95, 18, 32, -110, -95, 18,
@@ -349,7 +349,7 @@ public class TelevideoRai extends PetsciiThread {
             13
         };
 
-        public final static byte[] LOGO_DALLITALIA = new byte[] {
+        final static byte[] LOGO_DALLITALIA = new byte[] {
             18, -98, 32, 32, 32, -110, -69, -84, 18, 32, 32, 32, -110, -69, 18, 32,
             -110, -95, 32, 32, 18, 32, -110, -95, 32, 18, -95, -110, -95, 18, 32, -110,
             -95, 18, 32, 32, 32, 32, -110, -95, 18, -66, 32, 32, -68, -95, 32, -110,
@@ -367,7 +367,7 @@ public class TelevideoRai extends PetsciiThread {
             -110, -68, 18, -94, -110, 32, -68, -66
         };
 
-        public final static byte[] LOGO_DALMONDO = new byte[] {
+        final static byte[] LOGO_DALMONDO = new byte[] {
             32, 32, 18, -98, 32, 32, 32, -110, -69, -84, 18, 32, 32, 32, -110, -69,
             18, 32, -110, -95, 32, 32, 32, 18, -95, 32, -110, -69, 18, -66, -110, -95,
             18, -66, 32, 32, -68, -95, 32, -110, -69, 18, 32, -95, 32, 32, -68, -110,
@@ -384,7 +384,7 @@ public class TelevideoRai extends PetsciiThread {
             -110, -66, 13
         };
 
-        public final static byte[] LOGO_CULTURE = new byte[] {
+        final static byte[] LOGO_CULTURE = new byte[] {
             32, 32, 32, 32, 32, 32, 18, -98, -66, 32, 32, -110, -95, 18, 32, -110,
             -95, 32, 18, 32, -95, 32, -110, 32, 18, 32, 32, 32, 32, -110, -95, 18,
             32, -110, -95, 32, 18, 32, -95, 32, 32, -68, -110, -69, 18, 32, 32, 32,
@@ -400,7 +400,7 @@ public class TelevideoRai extends PetsciiThread {
             -94, -94, -94, -110, -66, 13
         };
 
-        public final static byte[] LOGO_BREVICALCIO = new byte[] {
+        final static byte[] LOGO_BREVICALCIO = new byte[] {
             32, 32, 32, 32, 32, 18, -98, -66, 32, 32, -110, -95, 18, -66, 32, 32,
             -68, -95, 32, -110, 32, 32, -84, 18, 32, 32, 32, -95, -110, -95, 18, -66,
             32, 32, -68, -110, 13, 32, 32, 32, 32, 32, 18, 32, -84, -94, -110, -66,
@@ -414,7 +414,7 @@ public class TelevideoRai extends PetsciiThread {
             -68, 18, -94, -94, -110, -66, 13
         };
 
-        public final static byte[] LOGO_CALCIOSQUADRE = new byte[] {
+        final static byte[] LOGO_CALCIOSQUADRE = new byte[] {
             32, 32, 32, 32, 18, -98, -66, 32, 32, -110, -95, 18, -66, 32, 32, -68,
             -95, 32, -110, 32, 32, -84, 18, 32, 32, 32, -95, -110, -95, 18, -66, 32,
             32, -68, -110, 13, 32, 32, 32, 32, 18, 32, -84, -94, -110, -66, 18, 32,
@@ -428,7 +428,7 @@ public class TelevideoRai extends PetsciiThread {
             -68, 18, -94, -94, -110, -66, 13
         };
 
-        public final static byte[] LOGO_ALTRISPORT = new byte[] {
+        final static byte[] LOGO_ALTRISPORT = new byte[] {
             32, 32, 32, 32, 32, 32, 32, 32, 32, 18, -98, -66, 32, 32, -110, 32,
             18, 32, 32, 32, -68, -110, 5, -63, -52, -44, -46, -55, 18, -98, -95, 32,
             32, -68, -95, 32, 32, 32, 32, -110, 13, 32, 32, 32, 32, 32, 32, 32,
@@ -442,7 +442,7 @@ public class TelevideoRai extends PetsciiThread {
             32, 18, -94, -110, -66, 13
         };
 
-        public final static byte[] LOGO_MOTORI = new byte[] {
+        final static byte[] LOGO_MOTORI = new byte[] {
             32, 32, 32, 32, 32, 32, 18, -98, -95, 32, -110, -69, 18, -66, 32, -110,
             -84, 18, 32, 32, 32, -110, -69, 18, 32, 32, 32, 32, -110, -95, 18, -66,
             32, 32, -68, -95, 32, 32, 32, -68, -95, 32, -110, 13, 32, 32, 32, 32,
@@ -457,7 +457,7 @@ public class TelevideoRai extends PetsciiThread {
             13
         };
 
-        public final static byte[] LOGO_SPORTBREVISSIME = new byte[] {
+        final static byte[] LOGO_SPORTBREVISSIME = new byte[] {
             32, 32, 32, 18, -98, -66, 32, 32, -110, 32, 18, 32, 32, 32, -68, -110,
             -84, 18, 32, 32, 32, -68, -95, 32, 32, -68, -95, 32, 32, 32, 32, -110,
             13, 32, 32, 32, 18, -69, -68, -110, -94, 32, 18, 32, -94, -69, 32, -95,
@@ -471,7 +471,7 @@ public class TelevideoRai extends PetsciiThread {
             -94, -110, -66, 13
         };
 
-        public final static byte[] LOGO_PRIMOPIANO = new byte[] {
+        final static byte[] LOGO_PRIMOPIANO = new byte[] {
             18, -98, 32, 32, 32, -68, -95, 32, 32, 32, -110, -69, 18, 32, -110, -95,
             18, 32, -68, -110, -84, 18, 32, -110, -84, 18, 32, 32, 32, -110, -69, 32,
             18, 32, 32, 32, -68, -95, 32, -110, -84, 18, 32, 32, -68, -95, -68, -95,
@@ -489,7 +489,7 @@ public class TelevideoRai extends PetsciiThread {
             -110, -66, 13
         };
 
-        public final static byte[] LOGO_NOSTOP24H = new byte[] {
+        final static byte[] LOGO_NOSTOP24H = new byte[] {
             32, 18, -98, -66, 32, 32, -110, -69, 18, -95, -110, -95, 32, 32, 18, -95,
             -110, -95, 32, 32, 32, 32, 18, 5, -95, -68, -95, -110, -95, 18, -66, -94,
             -68, -110, 32, 32, -84, 18, -84, -69, -110, -69, 18, -94, 32, -94, -110, -84,
@@ -508,7 +508,7 @@ public class TelevideoRai extends PetsciiThread {
             18, -94, -110, 13
         };
 
-        public final static byte[] LOGO_SPECIALE = new byte[] {
+        final static byte[] LOGO_SPECIALE = new byte[] {
             32, 32, 32, 32, 18, -98, -66, 32, -110, -95, 18, -95, 32, 32, -110, -69,
             18, -95, 32, 32, -110, -95, -84, 18, 32, 32, -68, -110, 32, 18, 32, 32,
             -110, 32, 18, -66, 32, 32, -110, -69, 18, -95, -110, -95, 32, 32, 18, -95,
@@ -525,7 +525,7 @@ public class TelevideoRai extends PetsciiThread {
             -94, -110, -66, 13
         };
 
-        public final static byte[] LOGO_ATLANTECRISI = new byte[] {
+        final static byte[] LOGO_ATLANTECRISI = new byte[] {
             18, -98, -66, 32, -68, -95, 32, 32, 32, -95, -110, -95, 32, 32, 18, -66,
             32, -68, -95, -68, -95, -110, -95, 18, 32, 32, 32, -110, -95, 18, 32, 32,
             -110, -95, 32, 18, -66, 32, -68, -95, 32, 32, -110, -69, 18, 32, -110, -84,
@@ -544,7 +544,7 @@ public class TelevideoRai extends PetsciiThread {
             18, -94, -110, -68, 18, -94, -94, -110, 32, 18, -94, -110, 13
         };
 
-        public final static byte[] LOGO_CITTADINI = new byte[] {
+        final static byte[] LOGO_CITTADINI = new byte[] {
             32, 32, 32, 18, -98, -66, 32, 32, -110, -95, 18, 32, -110, -95, 18, 32,
             32, 32, 32, 32, -95, 32, 32, 32, 32, -110, -84, 18, 32, 32, 32, -110,
             -69, 18, 32, 32, 32, -110, -69, 18, -95, 32, -95, 32, -110, -69, 18, 32,

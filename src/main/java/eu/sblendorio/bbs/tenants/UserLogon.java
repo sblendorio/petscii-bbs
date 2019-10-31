@@ -95,6 +95,10 @@ public class UserLogon extends PetsciiThread {
             this.message = message;
             this.receiverExists = receiverExists;
         }
+
+        public void setIsRead(boolean value)  {
+            this.isRead = value;
+        }
     }
 
     private void openConnection() throws Exception {
@@ -377,7 +381,7 @@ public class UserLogon extends PetsciiThread {
     }
 
     void markAsRead(Message m) throws Exception {
-        m.isRead = true;
+        m.setIsRead(true);
         try (PreparedStatement ps = conn.prepareStatement("update messages set is_read=1 where rowid=?")) {
             ps.setLong(1, m.rowId);
             ps.executeUpdate();
@@ -635,7 +639,7 @@ public class UserLogon extends PetsciiThread {
         }
     }
 
-    public static byte[] LOGO = new byte[] {32, 32, 32, 32, 32, 28, -84, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+    private static byte[] LOGO = new byte[] {32, 32, 32, 32, 32, 28, -84, 32, 32, 32, 32, 32, 32, 32, 32, 32,
             32, 32, 32, 32, 32, -104, -69, 32, 32, 32, 32, 32, 32, 32, 32, 32,
             32, 32, 5, -81, -81, -81, -81, -81, -81, -81, 13, 18, 28, -95, -65, -110,
             -84, 18, -69, -110, -69, 18, -69, -110, -66, 18, -68, -110, -66, 18, -65, -110,

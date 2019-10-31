@@ -24,20 +24,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-
-import com.google.common.collect.ImmutableMap;
-
 import eu.sblendorio.bbs.core.PetsciiThread;
 
 public class PetsciiArtGallery extends PetsciiThread {
 
-    public static String rootPath = "petscii-art-gallery";
-
-    public static Map<String, String> authorDetails = ImmutableMap.of(
-      "John Canady", "commodore4ever.com"
-    );
-
+    private final static String rootPath = "petscii-art-gallery";
 
     public List<Path> getDirContent(String path) throws URISyntaxException, IOException {
         List<Path> result = new ArrayList<>();

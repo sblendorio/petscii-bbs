@@ -14,13 +14,6 @@ import static eu.sblendorio.bbs.core.Colors.*;
 
 public class Ossa extends PetsciiThread {
 
-    public static String[] bodyParts = {
-            "ossa/cranio_draw",
-            "ossa/tronco_draw",
-            "ossa/braccio_draw",
-            "ossa/gamba_draw",
-    };
-
     @Override
     public void doLoop() throws Exception {
         write(WHITE);

@@ -326,7 +326,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
         flush();
     }
 
-    public final static byte[] LOGO_BLOGGER = new byte[] {
+    protected final static byte[] LOGO_BLOGGER = new byte[] {
         18, -127, 32, -94, -94, 32, 32, -110, 32, 5, -84, -94, 32, -69, 13, 18,
         -127, 32, -110, 32, 18, -94, -110, -68, 18, 32, -110, 32, 18, 5, -95, -110,
         -94, -66, -95, 18, -65, -110, -65, -84, 18, -94, -110, -69, 18, -65, -110, -65,
