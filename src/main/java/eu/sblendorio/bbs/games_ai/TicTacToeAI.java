@@ -22,7 +22,7 @@ public class TicTacToeAI
     private boolean   gameIsComplete;              // monitor game completion state
     private char      gameWinner;                  // who won the game?
     private WinPath   winPath = new WinPath();     // how was the 3 in a row made?
-    private Random    rgen = new Random(System.currentTimeMillis()); // Computer
+    private static final Random rgen = new Random(System.currentTimeMillis()); // Computer
 
     // Class WinPath
     // A win path is the path on the game board followed to make 3 in a row.
