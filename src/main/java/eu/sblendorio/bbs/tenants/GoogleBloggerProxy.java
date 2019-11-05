@@ -295,7 +295,8 @@ public class GoogleBloggerProxy extends PetsciiThread {
                 if (ch == '.') {
                     listPosts();
                     return;
-                } else if (ch == '-' && page > 1) {
+                }
+                if (ch == '-' && page > 1) {
                     j -= (screenRows *2);
                     --page;
                     forward = false;
