@@ -2,6 +2,8 @@ package eu.sblendorio.bbs.tenants;
 
 import eu.sblendorio.bbs.core.PetsciiThread;
 
+import java.io.IOException;
+
 import static eu.sblendorio.bbs.core.Keys.*;
 import static eu.sblendorio.bbs.core.Colors.*;
 
@@ -75,7 +77,7 @@ public class Ossa extends PetsciiThread {
         flush();
     }
 
-    public void displayBodyPart(String name) throws Exception {
+    public void displayBodyPart(String name) throws IOException, InterruptedException {
         int key;
         cls();
         writeRawFile("ossa/" + name + "_draw");
@@ -91,7 +93,7 @@ public class Ossa extends PetsciiThread {
         } while ("cC.".indexOf(key)==-1);
     }
 
-    public void writeFileWithDelay(String filename, long delayInMillis) throws Exception {
+    public void writeFileWithDelay(String filename, long delayInMillis) throws IOException, InterruptedException {
         byte[] bytes = readBinaryFile(filename);
         for (byte b: bytes) {
             write(b);

@@ -90,7 +90,7 @@ public class PetsciiArtGallery extends PetsciiThread {
         } while (key != '.');
     }
 
-    public void displayAuthor(Path p, boolean randomize) throws Exception {
+    public void displayAuthor(Path p, boolean randomize) throws IOException, URISyntaxException {
         boolean statusLine = false;
         cls();
         List<Path> drawings = getDirContent(p.toString());

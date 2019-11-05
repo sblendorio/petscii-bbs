@@ -217,8 +217,8 @@ public abstract class PetsciiThread extends Thread {
     public String readPassword() throws Exception { return cbm.readPassword(); }
     public int readKey() throws IOException { return cbm.readKey(); }
     public void resetInput() throws IOException { cbm.resetInput(); }
-    public void writeRawFile(String filename) throws Exception { cbm.writeRawFile(filename); }
-    public byte[] readBinaryFile(String filename) throws Exception { return cbm.readBinaryFile(filename); }
+    public void writeRawFile(String filename) throws IOException { cbm.writeRawFile(filename); }
+    public byte[] readBinaryFile(String filename) throws IOException { return cbm.readBinaryFile(filename); }
 
     public List<String> readTextFile(String filename) throws IOException {
         return CbmInputOutput.readTextFile(filename);

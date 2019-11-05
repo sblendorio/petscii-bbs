@@ -483,7 +483,7 @@ public class CbmInputOutput extends Reader {
                         "Content-Type: text/html; charset=utf-8\n" +
                         "Connection: Closed\n" +
                         "\n" +
-                        httpMessage);
+                        HTTP_MESSAGE);
                 */
             }
             out.flush();
@@ -551,12 +551,12 @@ public class CbmInputOutput extends Reader {
         }
     }
 
-    public void writeRawFile(String filename) throws Exception {
+    public void writeRawFile(String filename) throws IOException {
         write(readBinaryFile(filename));
         flush();
     }
 
-    public byte[] readBinaryFile(String filename) throws Exception {
+    public byte[] readBinaryFile(String filename) throws IOException {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
              ByteArrayOutputStream os = new ByteArrayOutputStream()) {
             byte[] buffer = new byte[2048];
@@ -586,7 +586,7 @@ public class CbmInputOutput extends Reader {
         }
     }
 
-    public static final String httpMessage = "<html><head><title>Warning</title></head>" +
+    public static final String HTTP_MESSAGE = "<html><head><title>Warning</title></head>" +
             "<body style='font-family: tahoma,verdana,arial,helvetica'><blockquote><br/>" +
             "<center><h1>WARNING: This is <b><u>NOT</u></b> a website</h1></center>" +
             "<br/>" +
