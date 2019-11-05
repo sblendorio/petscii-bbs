@@ -53,21 +53,21 @@ public class DiskUtilities {
         if (isValidZip(file.getContent()))
             file = singleFileInZip(file.getContent());
 
-        if (file != null && isValidFilename(file.getFilename())) {
-            if (isPRG(file.getFilename())) {
-                result = file.getContent();
-            } else if (isP00(file.getFilename())) {
-                result = Arrays.copyOfRange(file.getContent(),26, file.getContent().length);
-            } else if (isT64(file.getFilename())) {
-                file = singleFileInArchive(file, true);
-                result = file != null ? file.getContent() : null;
-            } else { // is a disk
-                file = singleFileInArchive(file, false);
-                result = file != null ? file.getContent() : null;
-            }
-        } else {
-            result = null;
+        if (file == null || !isValidFilename(file.getFilename()))
+            return null;
+
+        if (isPRG(file.getFilename())) {
+            result = file.getContent();
+        } else if (isP00(file.getFilename())) {
+            result = Arrays.copyOfRange(file.getContent(), 26, file.getContent().length);
+        } else if (isT64(file.getFilename())) {
+            file = singleFileInArchive(file, true);
+            result = file != null ? file.getContent() : null;
+        } else { // is a disk
+            file = singleFileInArchive(file, false);
+            result = file != null ? file.getContent() : null;
         }
+
         return result;
     }
 

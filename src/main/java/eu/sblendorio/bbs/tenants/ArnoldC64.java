@@ -110,7 +110,7 @@ public class ArnoldC64 extends PetsciiThread {
         write(GREY3); gotoXY(0,5);
     }
 
-    public void displaySearchResults(List<Entry> entries) throws Exception {
+    public void displaySearchResults(List<Entry> entries) throws IOException, CbmException {
         listPosts(entries);
         while (true) {
             log("ArnoldC64 waiting for input");

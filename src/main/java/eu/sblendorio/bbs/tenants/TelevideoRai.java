@@ -22,6 +22,7 @@ import static eu.sblendorio.bbs.core.Keys.SPACE_CHAR;
 import static eu.sblendorio.bbs.core.Keys.UP;
 import static eu.sblendorio.bbs.core.Utils.filterPrintableWithNewline;
 import static java.util.Arrays.asList;
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.substring;
 import static org.apache.commons.lang3.StringUtils.trim;
@@ -38,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.rometools.rome.io.FeedException;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
@@ -214,7 +216,7 @@ public class TelevideoRai extends PetsciiThread {
 
     protected boolean displayText(String text, int screenRows, byte[] logo) throws IOException {
         cls();
-        write(logo == null ? LOGO_TELEVIDEO : logo);
+        write(defaultIfNull(logo, LOGO_TELEVIDEO));
         write(GREY3);
 
         String[] rows = wordWrap(text);
@@ -231,7 +233,8 @@ public class TelevideoRai extends PetsciiThread {
                 resetInput(); int ch = readKey();
                 if (ch == '.') {
                     return true;
-                } else if (ch == '-' && page > 1) {
+                }
+                if (ch == '-' && page > 1) {
                     j -= (screenRows * 2);
                     --page;
                     forward = false;
