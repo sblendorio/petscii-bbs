@@ -4,14 +4,14 @@ public class NextQuotidiano extends WordpressProxy {
 
     public NextQuotidiano() {
         super();
-        this.logo = LOGO;
+        this.logo = LOGO_BYTES;
         this.domain = "https://www.nextquotidiano.it";
         this.pageSize = 8;
         this.screenRows = 19;
         this.showAuthor = true;
     }
 
-    private static final byte[] LOGO = new byte[] {
+    private static final byte[] LOGO_BYTES = new byte[] {
         32, 32, 32, 32, 32, 32, 28, -65, 32, -84, -66, 5, -69, 13, 32, -94,
         -69, 32, -94, 32, 32, 28, -65, -66, 32, 18, 5, -84, -110, 32, 32, -104,
         -84, 18, -94, -110, -69, 18, -95, -110, 32, -95, 18, -65, -110, -65, -68, 18,

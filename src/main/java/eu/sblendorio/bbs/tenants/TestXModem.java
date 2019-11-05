@@ -5,7 +5,7 @@ import eu.sblendorio.bbs.core.*;
 import java.net.URL;
 import java.nio.file.*;
 
-public class TestModem extends PetsciiThread {
+public class TestXModem extends PetsciiThread {
 
     @Override
     public void doLoop() throws Exception {

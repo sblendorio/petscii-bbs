@@ -221,7 +221,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
 
     protected void listPosts() throws Exception {
         cls();
-        logo();
+        drawLogo();
         if (posts == null) {
             waitOn();
             posts = getPosts();
@@ -252,7 +252,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
 
     protected void help() throws Exception {
         cls();
-        logo();
+        drawLogo();
         println();
         println();
         println("Press any key to go back to posts");
@@ -261,7 +261,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
 
     protected void displayPost(int n) throws Exception {
         cls();
-        logo();
+        drawLogo();
         waitOn();
         final Post p = posts.get(n);
         String content = p.getContent()
@@ -300,13 +300,13 @@ public class GoogleBloggerProxy extends PetsciiThread {
                     --page;
                     forward = false;
                     cls();
-                    logo();
+                    drawLogo();
                     continue;
                 } else {
                     ++page;
                 }
                 cls();
-                logo();
+                drawLogo();
             }
             String row = rows.get(j);
             println(row);
@@ -337,7 +337,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
         5, -94, -66, -84, 18, -65, -110, 13
     };
 
-    protected void logo() throws IOException {
+    protected void drawLogo() throws IOException {
         if (!equalsDomain(blogUrl, originalBlogUrl)) {
             final String normDomain = normalizeDomain(blogUrl);
             gotoXY(23,1); write(WHITE); print(substring(normDomain, 0, 16));
@@ -365,7 +365,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
     protected void exitWithError() throws IOException {
         log("Missing file " + CRED_FILE_PATH + " on the server's filesystem");
         cls();
-        logo();
+        drawLogo();
         newline(); write(REVOFF);
         print(" "); write(LIGHT_RED, REVON); print("       "); write(WHITE, REVOFF); println(" Missing Google credentials on");
         print(" "); write(LIGHT_RED, REVON); print(" ERROR "); write(WHITE, REVOFF); println(" server's filesystem. Contact");

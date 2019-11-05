@@ -56,4 +56,8 @@ public class HtmlUtils {
                 ;
     }
 
+    private HtmlUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
 }

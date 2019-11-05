@@ -75,7 +75,7 @@ public class ArnoldC64 extends PetsciiThread {
     public void doLoop() throws Exception {
         do {
             currentPage = 1;
-            logo();
+            drawLogo();
             println();
             print("Enter search criteria ");
             write(GREY1);
@@ -102,9 +102,9 @@ public class ArnoldC64 extends PetsciiThread {
             displaySearchResults(entries);
         } while (true);
     }
-    private void logo() throws Exception {
+    private void drawLogo() throws Exception {
         write(CLR, LOWERCASE, CASE_LOCK);
-        write(LOGO);
+        write(LOGO_BYTES);
         write(GREY3); gotoXY(0,5);
     }
 
@@ -166,7 +166,7 @@ public class ArnoldC64 extends PetsciiThread {
     private void displayPost(int n) throws Exception {
         int i = 3;
         cls();
-        logo();
+        drawLogo();
 
         waitOn();
         final Entry p = posts.get(n);
@@ -220,7 +220,7 @@ public class ArnoldC64 extends PetsciiThread {
     }
 
     private void listPosts(List<Entry> entries) throws Exception {
-        logo();
+        drawLogo();
         posts = getPosts(entries, currentPage, pageSize);
         for (Map.Entry<Integer, Entry> entry: posts.entrySet()) {
             int i = entry.getKey();
@@ -290,14 +290,14 @@ public class ArnoldC64 extends PetsciiThread {
     }
 
     private void help() throws Exception {
-        logo();
+        drawLogo();
         println();
         println();
         println("Press any key to go back");
         readKey();
     }
 
-    private static final byte[] LOGO = {
+    private static final byte[] LOGO_BYTES = {
             32, 32, 28, -95, 32, 32, -41, 69, 76, 67, 79, 77, 69, 32, 84, 79,
             32, -95, 32, 32, 32, 18, -95, -110, 13, 32, 18, -95, -95, -65, -110, 32,
             -69, -94, 32, -84, 32, -84, 32, -84, -69, 32, -84, -66, 32, -84, -69, -95,

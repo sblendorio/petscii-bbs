@@ -4,14 +4,14 @@ public class IlFattoQuotidiano extends WordpressProxy {
 
     public IlFattoQuotidiano() {
         super();
-        this.logo = LOGO;
+        this.logo = LOGO_BYTES;
         this.domain = "https://www.ilfattoquotidiano.it";
         this.pageSize = 5;
         this.screenRows = 19;
         this.showAuthor = true;
     }
 
-    private static final byte[] LOGO = new byte[] {
+    private static final byte[] LOGO_BYTES = new byte[] {
         28, -84, -69, 18, -69, -110, -95, -68, 18, 32, -94, -69, -110, -95, -94, -69,
         32, 18, -66, -110, 32, -84, -95, 13, -84, -69, 18, -95, -110, -95, 32, 18,
         32, -66, -110, 32, -84, -94, 18, 32, -110, -68, 18, 32, -94, -69, -84, -110,

@@ -129,7 +129,7 @@ public class UserLogon extends PetsciiThread {
         String password;
         cls();
         write(CASE_LOCK, LOWERCASE);
-        write(LOGO);
+        write(LOGO_BYTES);
         write(GREY3);
         newline();
         println("Enter 'P' for privacy policy");
@@ -143,7 +143,7 @@ public class UserLogon extends PetsciiThread {
                     showPrivacyPolicy();
                     cls();
                     write(CASE_LOCK, LOWERCASE);
-                    write(LOGO);
+                    write(LOGO_BYTES);
                     write(GREY3);
                     newline();
                     println("Enter 'P' as USERID for privacy policy");
@@ -179,26 +179,26 @@ public class UserLogon extends PetsciiThread {
 
     public void listUsers() throws Exception {
         cls();
-        write(LOGO);
+        write(LOGO_BYTES);
         write(GREY3);
         List<User> users = getUsers();
         int i = 0;
-        for (User user: users) {
+        for (User u: users) {
             ++i;
             write(CYAN);
-            print(user.nick);
+            print(u.nick);
             write(GREY3);
-            String realname = user.realname;
-            if (isNotBlank(realname) && (user.nick + realname).length() > 36)
-                realname = realname.substring(0, 33-user.nick.length())+"...";
-            println((isBlank(realname) ? EMPTY : " (" + realname + ")"));
+            String realname = u.realname;
+            if (isNotBlank(realname) && (u.nick + realname).length() > 36)
+                realname = realname.substring(0, 33 - u.nick.length()) + "...";
+            println(isBlank(realname) ? EMPTY : " (" + realname + ")");
             if (i % 19 == 0 && i < users.size()) {
                 newline();
                 write(WHITE); print("ANY KEY FOR NEXT PAGE, '.' TO GO BACK "); write(GREY3);
                 flush(); resetInput(); int ch = readKey(); resetInput();
                 if (ch == '.') return;
                 cls();
-                write(LOGO);
+                write(LOGO_BYTES);
                 write(GREY3);
             }
         }
@@ -243,7 +243,7 @@ public class UserLogon extends PetsciiThread {
         newline();
         println("Message (end with EMPTY LINE)");
         println("-----------------------------");
-        String line = EMPTY;
+        String line;
         String message = EMPTY;
         do {
             flush();
@@ -286,7 +286,7 @@ public class UserLogon extends PetsciiThread {
             }
             long unread = countUnreadMessages(user.nick);
             cls();
-            write(LOGO);
+            write(LOGO_BYTES);
             write(GREY3);
             println("Got " + size  + (onlyUnread ? " unread" : EMPTY) + " message" + (size != 1 ? "s" : EMPTY) + (onlyUnread || unread == 0 ? EMPTY : " (" + unread + " unread)") + ".");
             newline();
@@ -358,7 +358,7 @@ public class UserLogon extends PetsciiThread {
     public void displayMessage(Message m) throws Exception {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         cls();
-        write(LOGO);
+        write(LOGO_BYTES);
         write(GREY3);
         println("From: "+ m.userFrom);
         println("To:   "+ m.userTo);
@@ -430,7 +430,7 @@ public class UserLogon extends PetsciiThread {
         int ch;
         do {
             cls();
-            write(LOGO);
+            write(LOGO_BYTES);
             write(GREY3);
             println("User preferences [" + user.nick + "]");
             newline();
@@ -639,7 +639,8 @@ public class UserLogon extends PetsciiThread {
         }
     }
 
-    private static final byte[] LOGO = new byte[] {32, 32, 32, 32, 32, 28, -84, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+    private static final byte[] LOGO_BYTES = new byte[] {
+            32, 32, 32, 32, 32, 28, -84, 32, 32, 32, 32, 32, 32, 32, 32, 32,
             32, 32, 32, 32, 32, -104, -69, 32, 32, 32, 32, 32, 32, 32, 32, 32,
             32, 32, 5, -81, -81, -81, -81, -81, -81, -81, 13, 18, 28, -95, -65, -110,
             -84, 18, -69, -110, -69, 18, -69, -110, -66, 18, -68, -110, -66, 18, -65, -110,
@@ -679,7 +680,7 @@ public class UserLogon extends PetsciiThread {
         int cmd = 0;
         do {
             cls();
-            write(LOGO);
+            write(LOGO_BYTES);
             write(GREY3);
             newline();
             for (int i = offset; i < Math.min(offset + pagesize, size); ++i) {

@@ -4,13 +4,13 @@ public class Sys64738 extends WordpressProxy {
 
     public Sys64738() {
         super();
-        this.logo = LOGO;
+        this.logo = LOGO_BYTES;
         this.domain = "https://sys64738.org";
         this.pageSize = 8;
         this.screenRows = 18;
     }
 
-    private static final byte[] LOGO = new byte[] {
+    private static final byte[] LOGO_BYTES = new byte[] {
         -102, -84, 18, -84, -69, -110, -69, 18, -95, -110, -95, 18, -95, -110, -95, -84,
         18, -84, -69, -110, -69, -84, 18, -84, -69, -110, -69, 32, 32, 18, -66, -110,
         -95, 18, -95, -84, -69, -110, -95, -84, 18, -84, -69, -110, -69, -84, 18, -84,

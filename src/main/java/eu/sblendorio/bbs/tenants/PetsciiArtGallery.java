@@ -54,7 +54,7 @@ public class PetsciiArtGallery extends PetsciiThread {
         int choice;
         do {
             write(CLR, LOWERCASE, CASE_LOCK);
-            write(RetroAcademy.LOGO);
+            write(RetroAcademy.LOGO_BYTES);
             write(GREY3);
             newline();
             print("Press "); write(REVON); print(" R "); write(REVOFF); print(" to toggle randomize (now ");

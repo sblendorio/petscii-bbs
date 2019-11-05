@@ -4,14 +4,14 @@ public class IlPost extends WordpressProxy {
 
     public IlPost() {
         super();
-        this.logo = LOGO;
+        this.logo = LOGO_BYTES;
         this.domain = "https://www.ilpost.it";
         this.pageSize = 7;
         this.screenRows = 18;
         this.showAuthor = true;
     }
 
-    private static final byte[] LOGO = new byte[] {
+    private static final byte[] LOGO_BYTES = new byte[] {
         32, 5, -66, -95, 32, 18, -95, 32, 32, -110, -69, -84, 18, 32, 32, -68,
         -110, 32, 32, -97, -94, -94, -95, 18, 5, -95, 32, 32, 32, -110, -95, 13,
         32, -95, -95, 32, 18, -95, -110, -95, 18, -95, -110, -95, 18, -95, -110, -95,

@@ -123,7 +123,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
     public void doLoop() throws Exception {
         do {
             currentPage = 1;
-            logo();
+            drawLogo();
             println();
             write(WHITE); print("R"); write(GREY2); println(" for latest releases");
             write(WHITE); print("A"); write(GREY2); println(" for latest additions");
@@ -226,10 +226,9 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
     }
 
     private void displayPost(int n) throws Exception {
-        int i = 3;
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         cls();
-        logo();
+        drawLogo();
 
         waitOn();
         final ReleaseEntry p = posts.get(n);
@@ -255,7 +254,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
 
         //Is D64
         if("D64".equals(fileName.substring(fileName.length()-3, fileName.length()).toUpperCase())) {
-            logo();
+            drawLogo();
             print("----------------------------------------");
             write(GREEN);
             print("       Download ");write(LIGHT_GREEN);print("D");write(GREEN);print("64 or ");write(LIGHT_GREEN);print("Z");write(GREEN);println("IP file?");
@@ -281,7 +280,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
                 "ZIP".equals(fileName.substring(fileName.length()-3, fileName.length()).toUpperCase()) &&
                         !type.equals(OTHER_PLATFORM)
         ) {
-            logo();
+            drawLogo();
             print("----------------------------------------");
             write(GREEN);
             println("       After Download Zipfile...");
@@ -368,7 +367,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
 
     private void listPosts(String rssUrl) throws Exception {
         cls();
-        logo();
+        drawLogo();
         if (isEmpty(posts)) {
             waitOn();
             posts = getPosts(rssUrl, currentPage, pageSize);
@@ -442,16 +441,16 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
 
     private void help() throws Exception {
         cls();
-        logo();
+        drawLogo();
         println();
         println();
         println("Press any key to go back");
         readKey();
     }
 
-    private void logo() throws Exception {
+    private void drawLogo() throws Exception {
         write(CLR, LOWERCASE, CASE_LOCK);
-        write(LOGO);
+        write(LOGO_BYTES);
         write(YELLOW);
         gotoXY(15,3); print("Search your releases");
         write(LOWERCASE);
@@ -587,7 +586,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
         return list.size() == 0 ? EMPTY : list.get(0).link;
     }
 
-    private static final byte[] LOGO = new byte[] {
+    private static final byte[] LOGO_BYTES = new byte[] {
             32, 18, 5, -66, -69, -110, -69, 18, -66, -69, -110, -69, 18, 32, -69, -110,
             -69, 18, 32, -110, 13, 32, 18, 32, -110, -68, -66, 18, -69, -65, -110, -66,
             18, 32, -95, -110, -95, 18, 32, -69, -110, -69, 32, -102, -44, -56, -59, -96,

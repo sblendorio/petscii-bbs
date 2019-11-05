@@ -6,13 +6,13 @@ public class DottoreMaEVeroChe extends WordpressProxy {
 
     public DottoreMaEVeroChe() {
         super();
-        this.logo = LOGO;
+        this.logo = LOGO_BYTES;
         this.domain = "https://dottoremaeveroche.it";
         this.pageSize = 9;
         this.screenRows = 19;
     }
 
-    private static final byte[] LOGO = new byte[] {
+    private static final byte[] LOGO_BYTES = new byte[] {
         32, (byte) GREY2, -84, 32, 32, 32, -69, -84, 32, 32, 5, 'f', 'n', 'o', 'm', 'c', 'E', 'o', (byte) GREY2,
         32, 32, -127, -65, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
         32, 32, 32, -69, 13, (byte) GREY2, -84, 18, -66, -110, 32, -94, 32, 18, -84, -95,

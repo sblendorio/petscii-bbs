@@ -4,13 +4,13 @@ public class Disinformatico extends GoogleBloggerProxy {
 
     public Disinformatico() {
         super();
-        this.logo = LOGO;
+        this.logo = LOGO_BYTES;
         this.blogUrl = "https://attivissimo.blogspot.com";
         this.pageSize = 7;
         this.screenRows = 19;
     }
 
-    private static final byte[] LOGO = new byte[] {
+    private static final byte[] LOGO_BYTES = new byte[] {
         18, -127, 32, -94, -94, 32, 32, -110, 32, 5, -84, -84, 32, -84, -94, 32,
         -69, 32, 32, -69, 32, 32, -84, -69, 32, 32, 32, 32, 32, 32, 32, 32,
         32, -84, 32, -69, 13, 18, -127, 32, -110, 32, 18, -68, -110, -68, 18, 32,

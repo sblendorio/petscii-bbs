@@ -42,7 +42,7 @@ public class ConnectFour extends PetsciiThread {
         log("CONNECT-4. Start match");
         boolean userTurn = true;
         write(CLR, LOWERCASE, CASE_LOCK);
-        logo();
+        drawLogo();
         drawBoard();
         gotoXY(33,23); write(GREY3); print(".=EXIT");
         boolean isHumanTurn = true;
@@ -167,7 +167,7 @@ public class ConnectFour extends PetsciiThread {
         for (int j = 1; j <= 7; ++j) print("  "+j+" ");
     }
 
-    private void logo() {
+    private void drawLogo() {
         write(HOME,
             32, -103, -94, -69, -102, -84, -94, 32, -106, -69, 32, 28, -69, -98, -69, 32,
             -107, -69, 5, -94, -97, -94, 32, -101, -94, 5, -69, -100, -94, -94, -69, 13,

@@ -4,13 +4,13 @@ public class Sportal extends WordpressProxy {
 
     public Sportal() {
         super();
-        this.logo = LOGO;
+        this.logo = LOGO_BYTES;
         this.domain = "http://www.sportal.it";
         this.pageSize = 11;
         this.screenRows = 19;
     }
 
-    private static final byte[] LOGO = new byte[] {
+    private static final byte[] LOGO_BYTES = new byte[] {
         32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 31, -69, 32,
         32, 32, -84, 32, -127, -84, -84, 13, 31, -68, 18, -94, -68, -110, 32, -94,
         -69, -94, -69, 32, -94, 32, -69, -69, 18, -68, -110, 32, -84, -94, 18, -95,

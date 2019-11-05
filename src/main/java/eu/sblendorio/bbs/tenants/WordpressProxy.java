@@ -200,7 +200,7 @@ public class WordpressProxy extends PetsciiThread {
 
     protected void listPosts() throws Exception {
         cls();
-        logo();
+        drawLogo();
         if (isEmpty(posts)) {
             waitOn();
             posts = getPosts(currentPage, pageSize);
@@ -231,7 +231,7 @@ public class WordpressProxy extends PetsciiThread {
 
     protected void help() throws Exception {
         cls();
-        logo();
+        drawLogo();
         println();
         println();
         println("Press any key to go back to posts");
@@ -239,10 +239,8 @@ public class WordpressProxy extends PetsciiThread {
     }
 
     protected void displayPost(int n) throws Exception {
-        int i = 3;
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         cls();
-        logo();
+        drawLogo();
         waitOn();
 
         String author = null;
@@ -289,13 +287,13 @@ public class WordpressProxy extends PetsciiThread {
                     --page;
                     forward = false;
                     cls();
-                    logo();
+                    drawLogo();
                     continue;
                 } else {
                     ++page;
                 }
                 cls();
-                logo();
+                drawLogo();
             }
             String row = rows.get(j);
             println(row);
@@ -327,7 +325,7 @@ public class WordpressProxy extends PetsciiThread {
         -110, -66, 13
     };
 
-    protected void logo() throws IOException {
+    protected void drawLogo() throws IOException {
         if (!equalsDomain(domain, originalDomain)) {
             final String normDomain = normalizeDomain(domain);
             gotoXY(25,1); write(WHITE); print(substring(normDomain, 0, 14));

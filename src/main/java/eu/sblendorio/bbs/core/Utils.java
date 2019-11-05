@@ -50,4 +50,8 @@ public class Utils {
         return lowerCase(trim(s)).replaceAll("https?:(//)?", EMPTY).replace("www.", EMPTY).replaceAll("/+?$", EMPTY);
     }
 
+    private Utils() {
+        throw new IllegalStateException("Utility class");
+    }
+
 }

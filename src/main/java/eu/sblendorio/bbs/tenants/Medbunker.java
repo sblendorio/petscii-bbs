@@ -4,13 +4,13 @@ public class Medbunker extends GoogleBloggerProxy {
 
     public Medbunker() {
         super();
-        this.logo = LOGO;
+        this.logo = LOGO_BYTES;
         this.blogUrl = "https://medbunker.blogspot.com";
         this.pageSize = 10;
         this.screenRows = 19;
     }
 
-    private static final byte[] LOGO = new byte[] {
+    private static final byte[] LOGO_BYTES = new byte[] {
         5, -68, 18, -68, -110, -84, 18, -84, -110, 32, 32, 32, 32, 18, -69, -110,
         32, 18, -69, -94, -110, -69, 32, 32, 32, 32, 32, 32, -68, -95, -84, -69,
         32, 32, 32, 32, 32, 18, -97, -95, -110, -51, 69, 68, 73, 67, 73, 78,

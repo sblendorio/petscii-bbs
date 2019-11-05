@@ -70,7 +70,7 @@ public class MenuRetroAcademy extends PetsciiThread {
             int delta = 1;
             write(CLR, LOWERCASE, CASE_LOCK);
             log("Starting MenuRetroAcademy BBS / main menu");
-            logo();
+            drawLogo();
 
             gotoXY(5, delta + 3); write(WHITE); print("Blog / News"); write(GREY3);
             gotoXY(5, delta + 5); write(REVON); print(" 1 "); write(REVOFF); print(" Wired Italia");
@@ -145,11 +145,11 @@ public class MenuRetroAcademy extends PetsciiThread {
         }
     }
 
-    public void logo() throws Exception {
-        write(LOGO);
+    public void drawLogo() throws Exception {
+        write(LOGO_BYTES);
     }
 
-    private static final byte[] LOGO = new byte[] {
+    private static final byte[] LOGO_BYTES = new byte[] {
         32,  32,  32,  32,  32,  28, -84,  32,  32,  32,  32,  32,  32,  32,  32,  32,
         32,  32,  32,  32,  32,-104, -69,  32,  32,  32,  32,  32,  32,  32,  32,  32,
         32,  32,  32,-101, -69, -84,  32, -84, -84,  13,  18,  28, -95, -65,-110, -84,

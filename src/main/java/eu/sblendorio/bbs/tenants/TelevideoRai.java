@@ -158,7 +158,7 @@ public class TelevideoRai extends PetsciiThread {
         log("Entered TelevideoRai");
         while (true) {
             cls();
-            logo();
+            drawLogo();
             printChannelList();
             String command = null;
             NewsSection choice;
@@ -266,7 +266,7 @@ public class TelevideoRai extends PetsciiThread {
         return Arrays.copyOf(result.toArray(), result.size(), String[].class);
     }
 
-    private void logo() throws IOException {
+    private void drawLogo() throws IOException {
         write(LOGO_TELEVIDEO);
         write(GREY3);
     }

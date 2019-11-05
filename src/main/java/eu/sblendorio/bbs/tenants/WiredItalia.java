@@ -4,13 +4,13 @@ public class WiredItalia extends WordpressProxy {
 
     public WiredItalia() {
         super();
-        this.logo = LOGO;
+        this.logo = LOGO_BYTES;
         this.domain = "https://www.wired.it";
         this.pageSize = 7;
         this.screenRows = 19;
     }
 
-    private static final byte[] LOGO = new byte[] {
+    private static final byte[] LOGO_BYTES = new byte[] {
         18, 5, -84, 32, -84, -110, -95, -84, -94, 32, 18, -84, -94, 32, -110, -84,
         -94, -69, 18, -84, -94, 32, -110, 13, -95, -95, -95, -95, 32, -95, 32, -95,
         18, -94, -66, -95, -110, -94, 32, -95, 18, 32, -95, -110, 32, -101, 46, -55,

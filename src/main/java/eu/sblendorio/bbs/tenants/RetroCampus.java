@@ -4,13 +4,13 @@ public class RetroCampus extends WordpressProxy {
 
     public RetroCampus() {
         super();
-        this.logo = LOGO;
+        this.logo = LOGO_BYTES;
         this.domain = "http://www.retrocampus.com";
         this.pageSize = 9;
         this.screenRows = 18;
     }
 
-    private static final byte[] LOGO = new byte[] {
+    private static final byte[] LOGO_BYTES = new byte[] {
         18, 5, -84, -94, -69, -84, -94, -69, -94, -94, -69, -94, -94, 32, -94, -94,
         -69, -110, 32, -84, -94, 32, 32, -69, -84, -94, -94, -94, -94, -84, -94, -69,
         -84, 32, 32, -69, -84, -94, -69, 13, -95, 18, -94, -110, -68, -95, 18, -94,

@@ -65,7 +65,7 @@ public class Magic15 extends PetsciiThread {
     }
 
     private void initScreen() {
-        logo();
+        drawLogo();
         write(HOME, YELLOW);
         for (int i = 0; i < 4; ++i) {
             if (i == 0) {
@@ -147,7 +147,7 @@ public class Magic15 extends PetsciiThread {
         }
     }
 
-    private void logo() {
+    private void drawLogo() {
         write(
                 19, 32, 13, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
                 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, -97, -69, 32,

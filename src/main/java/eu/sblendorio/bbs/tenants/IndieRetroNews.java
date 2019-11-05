@@ -4,13 +4,13 @@ public class IndieRetroNews extends GoogleBloggerProxy {
 
     public IndieRetroNews() {
         super();
-        this.logo = LOGO;
+        this.logo = LOGO_BYTES;
         this.blogUrl = "https://www.indieretronews.com/";
         this.pageSize = 7;
         this.screenRows = 18;
     }
 
-    private static final byte[] LOGO = new byte[] {
+    private static final byte[] LOGO_BYTES = new byte[] {
         32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
         32, -106, -55, -50, -60, -55, -59, 13, 18, -95, -84, -69, -110, -69, 18, 32,
         -94, -110, -66, 18, -94, 32, -94, -95, -84, -69, -110, -69, 18, -66, -94, -68,

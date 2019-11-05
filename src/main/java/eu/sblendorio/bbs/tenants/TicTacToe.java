@@ -24,7 +24,7 @@ public class TicTacToe extends PetsciiThread {
         model.performWinCheck();
         boolean userTurn = true;
         write(CLR, UPPERCASE, CASE_LOCK);
-        logo();
+        drawLogo();
         drawBoard();
         do {
             log("TicTacToe, userTurn="+userTurn);
@@ -148,7 +148,7 @@ public class TicTacToe extends PetsciiThread {
         return result;
     }
 
-    private void logo() throws IOException {
+    private void drawLogo() throws IOException {
         write(new byte[]{
                 32,  13,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,
                 32,  32,  32,  32,  32,  31, -84, -94, -94, -94, -94, -94, -94, -94, -94, -94,
