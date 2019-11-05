@@ -42,7 +42,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
-import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 

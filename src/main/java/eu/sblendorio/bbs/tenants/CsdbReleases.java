@@ -10,7 +10,6 @@ import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.XModem;
 import net.sourceforge.droid64.d64.CbmException;
-import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.text.WordUtils;
 
 import java.io.IOException;

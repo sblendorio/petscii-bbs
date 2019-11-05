@@ -50,7 +50,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.text.WordUtils;
 
 import com.rometools.rome.feed.synd.SyndEntry;

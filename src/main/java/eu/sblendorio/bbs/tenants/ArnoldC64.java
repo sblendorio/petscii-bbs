@@ -41,7 +41,6 @@ import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 import net.sourceforge.droid64.d64.CbmException;
-import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.WordUtils;
