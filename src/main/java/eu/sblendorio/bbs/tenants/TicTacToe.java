@@ -4,8 +4,6 @@ import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.games_ai.TicTacToeAI;
 
-import java.io.IOException;
-
 import static eu.sblendorio.bbs.core.Keys.*;
 import static eu.sblendorio.bbs.core.Colors.*;
 import static org.apache.commons.lang3.StringUtils.*;

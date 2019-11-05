@@ -522,7 +522,7 @@ public class CbmInputOutput extends Reader {
         try {
             out.write(b);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
     public void write(int b) { out.write(b); }

@@ -24,6 +24,7 @@ import static org.apache.commons.lang3.StringUtils.repeat;
 import static org.apache.commons.lang3.StringUtils.trim;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
+import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
+import net.sourceforge.droid64.d64.CbmException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.WordUtils;
@@ -163,8 +165,7 @@ public class ArnoldC64 extends PetsciiThread {
         flush();
     }
 
-    private void displayPost(int n) throws Exception {
-        int i = 3;
+    private void displayPost(int n) throws IOException, CbmException {
         cls();
         drawLogo();
 
@@ -289,7 +290,7 @@ public class ArnoldC64 extends PetsciiThread {
         flush();
     }
 
-    private void help() throws Exception {
+    private void help() throws IOException {
         drawLogo();
         println();
         println();
