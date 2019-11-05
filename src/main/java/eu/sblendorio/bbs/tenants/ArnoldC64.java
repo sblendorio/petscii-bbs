@@ -15,6 +15,7 @@ import static eu.sblendorio.bbs.core.Keys.REVON;
 import static eu.sblendorio.bbs.core.Keys.UP;
 import static eu.sblendorio.bbs.core.Utils.filterPrintable;
 import static java.util.Collections.emptyMap;
+import static org.apache.commons.codec.CharEncoding.UTF_8;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
@@ -25,6 +26,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -39,6 +41,7 @@ import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 import net.sourceforge.droid64.d64.CbmException;
+import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.WordUtils;
@@ -63,9 +66,9 @@ public class ArnoldC64 extends PetsciiThread {
         public final String url;
         public final String fileType;
 
-        public Entry(String url) throws Exception {
+        public Entry(String url) throws UnsupportedEncodingException {
             this.url = defaultString(url);
-            this.name = URLDecoder.decode(defaultString(this.url).replaceAll("(?is)^.*/([^/]*?)$", "$1"), "UTF-8");
+            this.name = URLDecoder.decode(defaultString(this.url).replaceAll("(?is)^.*/([^/]*?)$", "$1"), UTF_8);
             this.fileType = defaultString(this.name).replaceAll("(?is)^.*\\.(.*?)$", "$1").toLowerCase();
         }
     }
@@ -94,7 +97,7 @@ public class ArnoldC64 extends PetsciiThread {
             println();
             println();
             waitOn();
-            List<Entry> entries = getUrls(URL_TEMPLATE + URLEncoder.encode(search, "UTF-8"));
+            List<Entry> entries = getUrls(URL_TEMPLATE + URLEncoder.encode(search, UTF_8));
             waitOff();
             if (isEmpty(entries)) {
                 write(RED); println("Zero result page - press any key");
@@ -253,14 +256,14 @@ public class ArnoldC64 extends PetsciiThread {
 
 
     public static void main(String[] args) throws Exception {
-        List<Entry> urls = getUrls(URL_TEMPLATE + URLEncoder.encode("super", "UTF-8"));
+        List<Entry> urls = getUrls(URL_TEMPLATE + URLEncoder.encode("super", UTF_8));
 
         int c = 0;
         for (Entry url: urls)
             System.out.println((++c)+"* "+url.name);
     }
 
-    public static List<Entry> getUrls(String url) throws Exception {
+    public static List<Entry> getUrls(String url) throws IOException {
         String output = httpGet(url);
         Pattern p = Pattern.compile("(?is)href=\"(ftp://[^\"]+\\.(p00|prg|d64|zip|t64|d71|d81|d82|d64\\.gz|t64\\.gz|d81\\.gz|d82\\.gz|d71\\.gz))\"");
         Matcher m = p.matcher(output);

@@ -166,7 +166,7 @@ public class XModem {
         return (byte)inStream.read();
     }
 
-    private void putchar(int c) throws IOException {
+    private void putchar(int c) {
         outStream.write(c);
         outStream.flush();
     }

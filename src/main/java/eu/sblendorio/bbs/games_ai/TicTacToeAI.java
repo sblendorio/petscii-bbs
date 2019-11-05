@@ -142,7 +142,8 @@ public class TicTacToeAI
     private boolean rowWins()
     {
         for ( int i = 0; i < 3; i++ ) {
-            int xCount = 0, oCount = 0;
+            int xCount = 0;
+            int oCount = 0;
             for ( int j = 0; j < 3; j++ ) {
                 if ( gameBoard[i][j] == 'x' ) ++xCount;
                 if ( gameBoard[i][j] == 'o' ) ++oCount;
@@ -162,7 +163,8 @@ public class TicTacToeAI
     private boolean colWins()
     {
         for ( int i = 0; i < 3; i++ ) {
-            int xCount = 0, oCount = 0;
+            int xCount = 0;
+            int oCount = 0;
             for ( int j = 0; j < 3; j++ ) {
                 if ( gameBoard[j][i] == 'x' ) ++xCount;
                 if ( gameBoard[j][i] == 'o' ) ++oCount;
@@ -228,14 +230,12 @@ public class TicTacToeAI
         playEmptySide();
     }
 
-    private boolean playWin()
-    {
-        return playThirdInSequenceOfTwo('o') ? true : false;
+    private boolean playWin()  {
+        return playThirdInSequenceOfTwo('o');
     }
 
-    private boolean blockWin()
-    {
-        return playThirdInSequenceOfTwo('x') ? true : false;
+    private boolean blockWin() {
+        return playThirdInSequenceOfTwo('x');
     }
 
     // PlayThirdInSequenceOfTwo() is used to find rows, columns and diagonals that have two of the
@@ -249,7 +249,8 @@ public class TicTacToeAI
 
         // Search rows for 2 plus empty square.
         for ( int i = 0; i < 3; i++ ) {
-            int count = 0, emptyCount = 0;
+            int count = 0;
+            int emptyCount = 0;
             for ( int j = 0; j < 3; j++ ) {
                 if ( gameBoard[i][j] == playedBy ) ++count;
                 if ( gameBoard[i][j] == ' ' ) ++emptyCount;
@@ -264,7 +265,8 @@ public class TicTacToeAI
 
         // Search columns for 2 plus empty square.
         for ( int i = 0; i < 3; i++ ) {
-            int count = 0, emptyCount = 0;
+            int count = 0;
+            int emptyCount = 0;
             for ( int j = 0; j < 3; j++ ) {
                 if ( gameBoard[j][i] == playedBy ) ++count;
                 if ( gameBoard[j][i] == ' ' ) ++emptyCount;
@@ -278,7 +280,8 @@ public class TicTacToeAI
         } // end column search
 
         // Search downward diagonal for 2 plus empty square.
-        int count = 0, emptyCount = 0;
+        int count = 0;
+        int emptyCount = 0;
         for ( int i = 0, j = 0; i < 3; ++i, ++j )
         {
             if ( gameBoard[i][j] == playedBy ) ++count;

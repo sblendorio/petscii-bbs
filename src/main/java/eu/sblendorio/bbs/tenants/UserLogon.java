@@ -12,6 +12,7 @@ import static eu.sblendorio.bbs.core.Keys.LOWERCASE;
 import static eu.sblendorio.bbs.core.Keys.REVOFF;
 import static eu.sblendorio.bbs.core.Keys.REVON;
 import static java.util.Arrays.asList;
+import static org.apache.commons.codec.CharEncoding.UTF_8;
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
@@ -41,6 +42,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
+import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
@@ -54,8 +56,8 @@ public class UserLogon extends PetsciiThread {
 
     static {
         properties = new Properties();
-        properties.setProperty("characterEncoding", "UTF-8");
-        properties.setProperty("encoding", "\"UTF-8\"");
+        properties.setProperty("characterEncoding", UTF_8);
+        properties.setProperty("encoding", "\"" + UTF_8 + "\"");
     }
 
     private Connection conn = null;

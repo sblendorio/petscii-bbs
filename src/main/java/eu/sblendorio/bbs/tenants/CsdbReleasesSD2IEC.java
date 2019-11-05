@@ -23,6 +23,7 @@ import static java.lang.Integer.signum;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
+import static org.apache.commons.codec.CharEncoding.UTF_8;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.collections4.MapUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
@@ -49,6 +50,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.text.WordUtils;
 
 import com.rometools.rome.feed.synd.SyndEntry;
@@ -154,7 +156,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
                 println();
                 println();
                 waitOn();
-                searchResults = searchReleaseEntries(URL_TEMPLATE + URLEncoder.encode(search, "UTF-8"));
+                searchResults = searchReleaseEntries(URL_TEMPLATE + URLEncoder.encode(search, UTF_8));
                 waitOff();
                 if (isEmpty(searchResults)) {
                     write(RED); println("Zero result page - press any key");

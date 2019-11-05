@@ -45,7 +45,7 @@ public class Ossa extends PetsciiThread {
         flush();
     }
 
-    public void startLessons() throws Exception {
+    public void startLessons() throws IOException, InterruptedException {
         int choice = 0;
         do {
             displayMenuLessons();
