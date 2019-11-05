@@ -37,15 +37,13 @@ public class DiskUtilities {
         System.out.println("DONE!");
     }
 
-    public static byte[] getPrgContentFromUrl(String urlString) throws Exception {
-        byte[] result = null;
-
+    public static byte[] getPrgContentFromUrl(String urlString) throws IOException, CbmException {
         DownloadData file = download(new URL(urlString));
         return getPrgContentFromFile(file);
     }
 
-    public static byte[] getPrgContentFromFile(DownloadData file) throws Exception {
-        byte[] result = null;
+    public static byte[] getPrgContentFromFile(DownloadData file) throws CbmException, IOException {
+        byte[] result;
 
         if (defaultString(file.getFilename()).matches("(?is)^.*\\.gz$"))
             file = new DownloadData(

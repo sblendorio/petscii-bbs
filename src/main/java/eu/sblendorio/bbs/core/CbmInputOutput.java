@@ -518,7 +518,13 @@ public class CbmInputOutput extends Reader {
     }
 
     public void write(byte[] buf, int off, int len) { out.write(buf, off, len); }
-    public void write(byte[] b) throws IOException { out.write(b); }
+    public void write(byte[] b) {
+        try {
+            out.write(b);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public void write(int b) { out.write(b); }
     public void write(int... b) { for (int c: b) out.write(c); }
     public void flush() { out.flush(); }

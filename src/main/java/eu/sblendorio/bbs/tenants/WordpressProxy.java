@@ -24,8 +24,6 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -325,7 +323,7 @@ public class WordpressProxy extends PetsciiThread {
         -110, -66, 13
     };
 
-    protected void drawLogo() throws IOException {
+    protected void drawLogo() {
         if (!equalsDomain(domain, originalDomain)) {
             final String normDomain = normalizeDomain(domain);
             gotoXY(25,1); write(WHITE); print(substring(normDomain, 0, 14));

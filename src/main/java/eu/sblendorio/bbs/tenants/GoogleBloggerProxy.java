@@ -337,7 +337,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
         5, -94, -66, -84, 18, -65, -110, 13
     };
 
-    protected void drawLogo() throws IOException {
+    protected void drawLogo() {
         if (!equalsDomain(blogUrl, originalBlogUrl)) {
             final String normDomain = normalizeDomain(blogUrl);
             gotoXY(23,1); write(WHITE); print(substring(normDomain, 0, 16));
@@ -352,7 +352,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
         write(GREY3);
     }
 
-    protected void listClients() throws Exception {
+    protected void listClients() {
         cls();
         println("You are #" + getClientId() + ": "+getClientName() + " [" + getClientClass().getSimpleName() + "]");
         newline();

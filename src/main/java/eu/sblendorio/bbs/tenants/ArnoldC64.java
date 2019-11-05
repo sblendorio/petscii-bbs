@@ -102,7 +102,7 @@ public class ArnoldC64 extends PetsciiThread {
             displaySearchResults(entries);
         } while (true);
     }
-    private void drawLogo() throws Exception {
+    private void drawLogo() {
         write(CLR, LOWERCASE, CASE_LOCK);
         write(LOGO_BYTES);
         write(GREY3); gotoXY(0,5);
@@ -219,7 +219,7 @@ public class ArnoldC64 extends PetsciiThread {
         }
     }
 
-    private void listPosts(List<Entry> entries) throws Exception {
+    private void listPosts(List<Entry> entries) {
         drawLogo();
         posts = getPosts(entries, currentPage, pageSize);
         for (Map.Entry<Integer, Entry> entry: posts.entrySet()) {

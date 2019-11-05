@@ -29,12 +29,13 @@ import eu.sblendorio.bbs.core.PetsciiThread;
 public class PetsciiArtGallery extends PetsciiThread {
 
     private static final String ROOT_PATH = "petscii-art-gallery";
+    private static final ClassLoader NULL_CLASSLOADER = null;
 
     public List<Path> getDirContent(String path) throws URISyntaxException, IOException {
         List<Path> result = new ArrayList<>();
         URL jar = getClass().getProtectionDomain().getCodeSource().getLocation();
         Path jarFile = Paths.get(jar.toURI());
-        try (FileSystem fs = FileSystems.newFileSystem(jarFile, null);
+        try (FileSystem fs = FileSystems.newFileSystem(jarFile, NULL_CLASSLOADER);
             DirectoryStream<Path> directoryStream = Files.newDirectoryStream(fs.getPath(path))) {
             for (Path p : directoryStream) {
                 result.add(p);

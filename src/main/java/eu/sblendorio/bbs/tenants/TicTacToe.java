@@ -148,7 +148,7 @@ public class TicTacToe extends PetsciiThread {
         return result;
     }
 
-    private void drawLogo() throws IOException {
+    private void drawLogo() {
         write(new byte[]{
                 32,  13,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,
                 32,  32,  32,  32,  32,  31, -84, -94, -94, -94, -94, -94, -94, -94, -94, -94,

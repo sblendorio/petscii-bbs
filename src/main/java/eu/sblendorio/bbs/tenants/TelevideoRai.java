@@ -37,6 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.rometools.rome.io.FeedException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
@@ -142,7 +143,7 @@ public class TelevideoRai extends PetsciiThread {
         flush();
     }
 
-    public static List<NewsFeed> getFeeds(String urlString) throws Exception {
+    public static List<NewsFeed> getFeeds(String urlString) throws IOException, FeedException {
         URL url = new URL(urlString);
         SyndFeedInput input = new SyndFeedInput();
         SyndFeed feed = input.build(new XmlReader(url));
@@ -183,7 +184,7 @@ public class TelevideoRai extends PetsciiThread {
         log("Televideo-EXIT");
     }
 
-    private void view(NewsSection section) throws Exception {
+    private void view(NewsSection section) throws IOException, FeedException {
         if (section == null) {
             return;
         }
@@ -211,7 +212,7 @@ public class TelevideoRai extends PetsciiThread {
         }
     }
 
-    protected boolean displayText(String text, int screenRows, byte[] logo) throws Exception {
+    protected boolean displayText(String text, int screenRows, byte[] logo) throws IOException {
         cls();
         write(logo == null ? LOGO_TELEVIDEO : logo);
         write(GREY3);
@@ -266,7 +267,7 @@ public class TelevideoRai extends PetsciiThread {
         return Arrays.copyOf(result.toArray(), result.size(), String[].class);
     }
 
-    private void drawLogo() throws IOException {
+    private void drawLogo() {
         write(LOGO_TELEVIDEO);
         write(GREY3);
     }

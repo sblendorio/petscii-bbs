@@ -34,6 +34,7 @@ import static org.apache.commons.lang3.StringUtils.repeat;
 import static org.apache.commons.lang3.StringUtils.trim;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DateFormat;
@@ -385,7 +386,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
         newline();
     }
 
-    private List<ReleaseEntry> getReleases() throws Exception {
+    private List<ReleaseEntry> getReleases() {
         Pattern p = Pattern.compile("(?is)<a href=['\\\"]([^'\\\"]*?)['\\\"] title=['\\\"][^'\\\"]*?\\.(p00|prg|zip|t64|d64|d71|d81|d82|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz|t64\\.gz)['\\\"]>");
         List<ReleaseEntry> list = new LinkedList<>();
         for (NewsFeed item: entries) {
@@ -417,7 +418,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
         return pagePosts(list, page, perPage);
     }
 
-    private Map<Integer, ReleaseEntry> pagePosts(List<ReleaseEntry> list, int page, int perPage) throws Exception {
+    private Map<Integer, ReleaseEntry> pagePosts(List<ReleaseEntry> list, int page, int perPage) {
         Map<Integer, ReleaseEntry> result = new LinkedHashMap<>();
         for (int i=(page-1)*perPage; i<page*perPage; ++i)
             if (i<list.size()) result.put(i+1, list.get(i));
@@ -439,7 +440,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
         return result;
     }
 
-    private void help() throws Exception {
+    private void help() throws IOException {
         cls();
         drawLogo();
         println();
@@ -448,7 +449,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
         readKey();
     }
 
-    private void drawLogo() throws Exception {
+    private void drawLogo() {
         write(CLR, LOWERCASE, CASE_LOCK);
         write(LOGO_BYTES);
         write(YELLOW);
@@ -469,7 +470,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
         flush();
     }
 
-    public static List<ReleaseEntry> searchReleaseEntries(String url) throws Exception {
+    public static List<ReleaseEntry> searchReleaseEntries(String url) throws IOException {
         String output = defaultString(httpGet(url));
         if (!output.matches("(?is)^.*<title>\\[CSDb\\] - Search for.*$")
                 && output.matches("(?is)^.*<font size=6>([^<\\n]+?)</font.*$")

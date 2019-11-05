@@ -2,14 +2,17 @@ package eu.sblendorio.bbs.tenants;
 
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import net.sourceforge.droid64.addons.DiskUtilities;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.XModem;
+import net.sourceforge.droid64.d64.CbmException;
 import org.apache.commons.text.WordUtils;
 
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DateFormat;
@@ -137,7 +140,7 @@ public class CsdbReleases extends PetsciiThread {
         } while (true);
     }
 
-    public void browseLatestReleases(String rssUrl) throws Exception {
+    public void browseLatestReleases(String rssUrl) throws IOException, CbmException, FeedException {
         posts = null;
         currentPage = 1;
         listPosts(rssUrl);
@@ -196,7 +199,7 @@ public class CsdbReleases extends PetsciiThread {
         flush();
     }
 
-    private void displayPost(int n) throws Exception {
+    private void displayPost(int n) throws IOException, CbmException {
         int i = 3;
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         cls();
@@ -268,7 +271,7 @@ public class CsdbReleases extends PetsciiThread {
         }
     }
 
-    private void listPosts(String rssUrl) throws Exception {
+    private void listPosts(String rssUrl) throws IOException, FeedException {
         cls();
         drawLogo();
         if (isEmpty(posts)) {
@@ -288,7 +291,7 @@ public class CsdbReleases extends PetsciiThread {
         newline();
     }
 
-    private List<ReleaseEntry> getReleases() throws Exception {
+    private List<ReleaseEntry> getReleases() {
         Pattern p = Pattern.compile("(?is)<a href=['\\\"]([^'\\\"]*?)['\\\"] title=['\\\"][^'\\\"]*?\\.(p00|prg|zip|t64|d64|d71|d81|d82|d64\\.gz|d71\\.gz|d81\\.gz|d82\\.gz|t64\\.gz)['\\\"]>");
         List<ReleaseEntry> list = new LinkedList<>();
         for (NewsFeed item: entries) {
@@ -306,7 +309,7 @@ public class CsdbReleases extends PetsciiThread {
         return list;
     }
 
-    private Map<Integer, ReleaseEntry> getPosts(String rssURL, int page, int perPage) throws Exception {
+    private Map<Integer, ReleaseEntry> getPosts(String rssURL, int page, int perPage) throws IOException, FeedException {
         if (page < 1 || perPage < 1) return null;
         List<ReleaseEntry> list;
 
@@ -320,14 +323,14 @@ public class CsdbReleases extends PetsciiThread {
         return pagePosts(list, page, perPage);
     }
 
-    private Map<Integer, ReleaseEntry> pagePosts(List<ReleaseEntry> list, int page, int perPage) throws Exception {
+    private Map<Integer, ReleaseEntry> pagePosts(List<ReleaseEntry> list, int page, int perPage)  {
         Map<Integer, ReleaseEntry> result = new LinkedHashMap<>();
         for (int i=(page-1)*perPage; i<page*perPage; ++i)
             if (i<list.size()) result.put(i+1, list.get(i));
         return result;
     }
 
-    private static List<NewsFeed> getFeeds(String urlString) throws Exception {
+    private static List<NewsFeed> getFeeds(String urlString) throws IOException, FeedException {
         URL url = new URL(urlString);
         SyndFeedInput input = new SyndFeedInput();
         SyndFeed feed = input.build(new XmlReader(url));
@@ -342,7 +345,7 @@ public class CsdbReleases extends PetsciiThread {
         return result;
     }
 
-    private void help() throws Exception {
+    private void help() throws IOException {
         cls();
         drawLogo();
         println();
@@ -351,7 +354,7 @@ public class CsdbReleases extends PetsciiThread {
         readKey();
     }
 
-    private void drawLogo() throws Exception {
+    private void drawLogo() {
         write(CLR, LOWERCASE, CASE_LOCK);
         write(LOGO_BYTES);
         write(CYAN); gotoXY(15,3); print("Search your releases");
@@ -369,7 +372,7 @@ public class CsdbReleases extends PetsciiThread {
         flush();
     }
 
-    public static List<ReleaseEntry> searchReleaseEntries(String url) throws Exception {
+    public static List<ReleaseEntry> searchReleaseEntries(String url) throws IOException {
         String output = defaultString(httpGet(url));
         if (!output.matches("(?is)^.*<title>\\[CSDb\\] - Search for.*$")
                 && output.matches("(?is)^.*<font size=6>([^<\\n]+?)</font.*$")
@@ -462,7 +465,7 @@ public class CsdbReleases extends PetsciiThread {
         }
     }
 
-    private static String findDownloadLink(URL url) throws Exception {
+    private static String findDownloadLink(URL url) throws IOException {
         return findDownloadLink(defaultString(httpGet(url.toString())));
     }
 

@@ -145,7 +145,7 @@ public class MenuRetroAcademy extends PetsciiThread {
         }
     }
 
-    public void drawLogo() throws Exception {
+    public void drawLogo() {
         write(LOGO_BYTES);
     }
 

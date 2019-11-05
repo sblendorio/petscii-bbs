@@ -2,13 +2,6 @@ package eu.sblendorio.bbs.tenants;
 
 import eu.sblendorio.bbs.core.PetsciiThread;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-
 import static eu.sblendorio.bbs.core.Keys.*;
 import static eu.sblendorio.bbs.core.Colors.*;
 
@@ -17,7 +10,7 @@ public class Ossa extends PetsciiThread {
     @Override
     public void doLoop() throws Exception {
         write(WHITE);
-        int choice = 0;
+        int choice;
         do {
             displayMainMenu();
             do {
@@ -29,7 +22,7 @@ public class Ossa extends PetsciiThread {
         write(CLR, LOWERCASE);
     }
 
-    public void displayMainMenu() throws Exception {
+    public void displayMainMenu() {
         write(CLR, UPPERCASE, CASE_LOCK);
         gotoXY(4,25); print("(c) 1985 mantrasoft, diego & e.t.a.");
         write(HOME, RETURN, RETURN);
@@ -67,7 +60,7 @@ public class Ossa extends PetsciiThread {
         } while (choice != '5' && choice != '.');
     }
 
-    public void displayMenuLessons() throws Exception {
+    public void displayMenuLessons() {
         cls();
         println("spiegazione.");
         newline();
