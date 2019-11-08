@@ -373,7 +373,7 @@ public class ConnectFourAI {
     }
 
     private static void print(String s) {
-        System.out.print(s);gu
+        System.out.print(s);
     }
 
     private static void println(String s) {
