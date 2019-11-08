@@ -7,6 +7,9 @@ import java.io.PrintStream;
 import java.io.Reader;
 import java.util.Arrays;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * a tiny version of Ward Christensen's MODEM program for UNIX.
  * Written ~ 1980 by Andrew Scott Beals. Last revised 1982.
@@ -40,6 +43,8 @@ import java.util.Arrays;
  * </pre>
  */
 public class XModem {
+
+    private static final Logger logger = LoggerFactory.getLogger(PetsciiThread.class);
 
     protected static final byte CPMEOF = 26;       /* control/z */
     protected static final int MAXERRORS = 10;     /* max times to retry one block */
@@ -172,17 +177,17 @@ public class XModem {
     }
 
     private void xerror() {
-        System.err.println("too many errors... aborting");
+        logger.error("too many errors... aborting");
         die(1);
     }
 
     private void die(int how) {
-        System.err.println("Error code " + how);
+        logger.error("Error code " + how);
         throw new RuntimeException(new CbmIOException("Too many errors during XModem transfer: " + how));
     }
 
     private void log(String message) {
-        System.err.println(message);
+        logger.error(message);
     }
 
     private static class CancelTransferException extends RuntimeException {}

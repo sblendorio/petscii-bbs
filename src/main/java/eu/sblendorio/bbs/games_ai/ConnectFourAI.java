@@ -16,10 +16,10 @@ public class ConnectFourAI {
 
     //Opponent's turn
     public void letOpponentMove(){
-        System.out.println("Your move (1-7): ");
+        println("Your move (1-7): ");
         int move = scan.nextInt();
         while(move<1 || move > 7 || !b.isLegalMove(move-1)){
-            System.out.println("Invalid move.\n\nYour move (1-7): ");
+            println("Invalid move.\n\nYour move (1-7): ");
             move = scan.nextInt();
         }
 
@@ -281,7 +281,7 @@ public class ConnectFourAI {
 
     public void playAgainstAIConsole() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Would you like to play first? (yes/no) ");
+        println("Would you like to play first? (yes/no) ");
         String answer = scanner.next().trim();
 
         if (answer.equalsIgnoreCase("yes")) letOpponentMove();
@@ -294,16 +294,16 @@ public class ConnectFourAI {
             b.displayBoard();
 
             int gameResult = gameResult(b);
-            if (gameResult == 1) {System.out.println("AI Wins!");break;}
-            else if (gameResult == 2) {System.out.println("You Win!");break;}
-            else if (gameResult == 0) {System.out.println("Draw!");break;}
+            if (gameResult == 1) {println("AI Wins!");break;}
+            else if (gameResult == 2) {println("You Win!");break;}
+            else if (gameResult == 0) {println("Draw!");break;}
 
             b.placeMove(getAIMove(), 1);
             b.displayBoard();
             gameResult = gameResult(b);
-            if (gameResult == 1) {System.out.println("AI Wins!");break;}
-            else if (gameResult == 2) {System.out.println("You Win!");break;}
-            else if (gameResult == 0) {System.out.println("Draw!");break;}
+            if (gameResult == 1) {println("AI Wins!");break;}
+            else if (gameResult == 2) {println("You Win!");break;}
+            else if (gameResult == 0) {println("Draw!");break;}
         }
 
     }
@@ -340,7 +340,7 @@ public class ConnectFourAI {
 
         //Placing a Move on the board
         public boolean placeMove(int column, int player){
-            if (!isLegalMove(column)) {System.out.println("Illegal move!"); return false;}
+            if (!isLegalMove(column)) {println("Illegal move!"); return false;}
             for (int i = 5; i >= 0; --i){
                 if (board[i][column] == 0) {
                     board[i][column] = (byte)player;
@@ -361,15 +361,26 @@ public class ConnectFourAI {
 
         //Printing the board
         public void displayBoard() {
-            System.out.println();
+            println();
             for (int i = 0; i <= 5; ++i) {
                 for (int j = 0; j <= 6; ++j) {
-                    System.out.print(board[i][j] + " ");
+                    print(board[i][j] + " ");
                 }
-                System.out.println();
+                println();
             }
-            System.out.println();
+            println();
         }
     }
 
+    private static void print(String s) {
+        System.out.print(s);gu
+    }
+
+    private static void println(String s) {
+        print(s);
+        println();
+    }
+    private static void println() {
+        System.out.println();
+    }
 }

@@ -13,8 +13,13 @@ import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.substring;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /* This class is a modified version of original BufferedReader from original java IO library */
 public class CbmInputOutput extends Reader {
+
+    private static final Logger logger = LoggerFactory.getLogger(CbmInputOutput.class);
 
     private Reader in;
     private PrintStream out;
@@ -445,10 +450,6 @@ public class CbmInputOutput extends Reader {
     }
 
     public void resetInput() throws IOException {
-        resetInput(false);
-    }
-
-    public void resetInput(boolean sendResponse) throws IOException {
         final int THRESHOLD = 2048;
         byte[] buffer = new byte[THRESHOLD];
 
@@ -463,7 +464,7 @@ public class CbmInputOutput extends Reader {
         byte[] excludedInput = new byte[count];
         arraycopy(buffer, 0, excludedInput, 0, count);
         final String missingInput = new String(excludedInput, ISO_8859_1);
-        System.err.println("Flushing input buffer: '" +
+        logger.info("Flushing input buffer: '" +
                 substring(missingInput
                         .replaceAll("\r+", "\\\\r")
                         .replaceAll("\n+", "\\\\n"),0,120) +
@@ -476,20 +477,10 @@ public class CbmInputOutput extends Reader {
             this.close();
             throw new CbmIOException("SEVERE. CbmInputOutput::resetInput, potential DoS detected.");
         } else if (missingInput.matches("(?is)^(G?ET|P?OST|H?EAD|P?UT|D?ELETE|C?ONNECT) [^\n]+ HTTP/[0-9.]+.*")) {
-            if (sendResponse)  {
-                /*
-                out.println("HTTP/1.1 200 OK\n" +
-                        "Server: PETSCII BBS Server for 8-bit Commodore Computers\n" +
-                        "Content-Type: text/html; charset=utf-8\n" +
-                        "Connection: Closed\n" +
-                        "\n" +
-                        HTTP_MESSAGE);
-                */
-            }
             out.flush();
             out.close();
             this.close();
-            throw new CbmIOException("HTTP Connection detected, closing socket" + (sendResponse ? " [sendResponse]." : "."));
+            throw new CbmIOException("HTTP Connection detected, closing socket.");
         } else if (missingInput.matches("(?is)^.*Cookie: mstshash=[a-z].*")) {
             out.flush();
             out.close();
@@ -585,17 +576,5 @@ public class CbmInputOutput extends Reader {
           return br.lines().collect(Collectors.toList());
         }
     }
-
-    public static final String HTTP_MESSAGE = "<html><head><title>Warning</title></head>" +
-            "<body style='font-family: tahoma,verdana,arial,helvetica'><blockquote><br/>" +
-            "<center><h1>WARNING: This is <b><u>NOT</u></b> a website</h1></center>" +
-            "<br/>" +
-            "This is a <b>BBS Server</b> for 8-bit Commodore computers. Please connect through a PETSCII Terminal, " +
-            "either a 'real' (a C64) or an emulated one (like <a href='https://sourceforge.net/projects/syncterm/'>SyncTERM</a>). " +
-            "If you use a <b>real</b> C64, you can access the Internet though a <b>RR-NET</b> compatible cartridge or " +
-            "though a <b>WiFi modem</b> connected to the <i>user port</i>." +
-            "<br/><br/><center>" +
-            "<img src='data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEwAACxMBAJqcGAAABKxJREFUeJzt3T+IHHUcxuE3McQ/QWI0kELEQuxS2AgighIsLGJnZ+mJjYWIhdjZaCU2IoKpU4iFRRobgxAEQcgRCIjViRhThBCF6AmGWBiLGOfdXGb2dvfueWCrX+Z339vcB4aZub0EAAAAAAAAAACAsfYsegCSJEeSPD7i+LNJrk40CyydtSTXR7ye2P6Rd4e9ix4AlplAoBAIFAKBQiBQCAQK90G2zztJHhxYeyjJ+RF735vk4MDa5STvjdgbtsVGhu9jrI/ce73svTFy713NKRYUAoFCIFAIBAqBQCEQKAQChUCgEAgUAoFCIFAIBAqBQCEQKAQChUCgEAgUAoFCIFAIBAqBQCEQKAQChUCgEAgUAoFCIFAIBAqBQCEQKAQChUCgEAgUAoFCIFAIBAqBQCEQKAQChUCgEAgUAoFCIFAIBIp9ix5ghTyd5KsRx9891SBb9GiSzRHHH0vyzUSzrByB3L69WdwP+Vhj5t7VZxm7+puHWQQChUCgEAgUAoHCVaybHUuyf2DtUJIvR+z9bJJ7Rhx/pzaTfD3i+EeSvHCHx/6U5PyIr82SuZTk+sDrzMi9N8re6yP3Xi97b4zc+0zZe9brxMivvXBOsaAQCBQCgUIgUAgECoFA4T4IY1xN8lZZ35fkk7L+cZJzk040MYEwxmZ6AGtJXivrp7LkgTjFgkIgUAgECoFAIRAoBALFMl7m/TTJi3Pa+80kJ+e0N7c6mX8u5Q75MMOPxF9L8vDkE23RMgZyKMmROe1935z25f/9fuM15P4M/19fm36crXOKBYVAoBAIFAKBQiBQLONVrFm+HXHs3iRPlfV5vh9nk1wcWPth5N7nMvwJ7r+M3Jsl83n6R8mM+SE+MWPv9hr7sT+rqn3sz6WRe58qe/81cu9JOMWCQiBQCAQKgUAhECgEAsUq3gcZ47Mk35f1d+OJ3//6KMkXA2vtSV3mZJ73QWaZ558/4Fbug8AqEwgUAoFCIFAIBAqBQLGM90FeT/J2WT+f5K6BtdNJXp18InatZQxk6JeK/vVYhgNpNwFhy5xiQSEQKAQChUCgEAgUy3gVa5Z2mfdikqPl2AtJLk8+EayI4+mPyq/NON7j7tvL4+6wygQChUCgEAgUAoFCIFCs4n2QefogyYGBtR+3cxCWg0Bu9v6iB2C5OMWCQiBQCAQKgUAhECgEAsVOu8x7JsmTZf2lJN+V9eeTXJl0Ilghs/4M9OHFjbYr+X0QWGUCgUIgUAgECoFAsdMu87JcDiQ5VNavJPl5YO3a9OMwi8u822st/f0+vrjRbo9TLCgEAoVAoBAIFAKBQiBQ7Lb7IKeTbJb1l5PsGVi7kOSzySeCFeLPH0zLfRDYyQQChUCgEAgUAoFCIFAIBAqBQCEQKAQChUCgEAgUAoFitz3uPstvGX5PriZ5oBz7R5I/J59oue1JcnDGv/m1rC3FB1QzjWfSH91+Y3GjLczh9PfkxOJGm4ZTLCgEAoVAoBAIFAKBQiBQCAQKgUAhECgEAoVAoBAIFAKBQiBQ+H2Q6byS5LlFD7HN9i96gHkTyHSO3nixgzjFgkIgUAgECoFAIRAoBAIAAAAAAAAAADDe30hxG6K21esTAAAAAElFTkSuQmCC'></img>" +
-            "</center></body></html>";
 
 }

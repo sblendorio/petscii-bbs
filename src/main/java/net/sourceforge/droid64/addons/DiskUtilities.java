@@ -8,6 +8,7 @@ import net.sourceforge.droid64.db.DiskFile;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,16 +26,14 @@ import static org.apache.commons.lang3.StringUtils.defaultString;
 public class DiskUtilities {
 
     /* This main is for testing purposes only */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException, CbmException {
         String url = "http://www.sblendorio.eu/b.t64.gz";
         byte[] bytes = getPrgContentFromUrl(url);
         if (bytes == null) {
-            System.out.println("INVALID");
-            System.exit(1);
+            throw new MalformedURLException();
         }
         Path path = Paths.get("/tmp/a.prg");
         Files.write(path, bytes);
-        System.out.println("DONE!");
     }
 
     public static byte[] getPrgContentFromUrl(String urlString) throws IOException, CbmException {

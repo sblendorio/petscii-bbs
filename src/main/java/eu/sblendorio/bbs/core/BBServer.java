@@ -2,6 +2,8 @@ package eu.sblendorio.bbs.core;
 
 import com.google.common.reflect.ClassPath;
 import org.apache.commons.cli.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -24,12 +26,13 @@ public class BBServer {
     private static final long DEFAULT_TIMEOUT_IN_MILLIS = 3600000;
     private static final long DEFAULT_PORT = 6510;
 
+    private static final Logger logger = LoggerFactory.getLogger(BBServer.class);
+
     public static void main(String[] args) throws Exception {
         // args = new String[] {"-b", "MenuRetroAcademy", "-p", "6510"};
         readParameters(args);
 
-        System.out.print(new Timestamp(System.currentTimeMillis())+" ");
-        System.out.println("The BBS "+bbs.getSimpleName()+" is running: port = " + port + ", timeout = " + timeout + " millis");
+        logger.info(new Timestamp(System.currentTimeMillis())+" The BBS "+bbs.getSimpleName()+" is running: port = " + port + ", timeout = " + timeout + " millis");
         try(ServerSocket listener = new ServerSocket(port)) {
             listener.setSoTimeout(INTEGER_ZERO);
             while (true) {
@@ -56,7 +59,7 @@ public class BBServer {
         try {
             cmd = parser.parse(options, args);
         } catch (ParseException pe) {
-            System.out.println(pe.getMessage());
+            logger.error(pe.getMessage());
             displayHelp(options);
             System.exit(2);
             return;
@@ -70,7 +73,7 @@ public class BBServer {
         final String bbsName = cmd.getOptionValue("bbs");
         bbs = findTenant(bbsName);
         if (bbs == null) {
-            System.out.println("BBS \"" + bbsName + "\" not recognized");
+            logger.error("BBS \"" + bbsName + "\" not recognized");
             displayHelp(options);
             System.exit(3);
         }
@@ -91,8 +94,8 @@ public class BBServer {
     private static void displayHelp(Options options) {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp(System.getProperty("sun.java.command"), options);
-        System.out.println("List of available BBS:");
-        tenants.forEach(c -> System.out.println(" * " + c.getSimpleName()));
+        logger.info("List of available BBS:");
+        tenants.forEach(c -> logger.info(" * " + c.getSimpleName()));
     }
 
     private static List<Class<? extends PetsciiThread>> filterPetsciiThread() {

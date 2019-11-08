@@ -254,14 +254,6 @@ public class ArnoldC64 extends PetsciiThread {
     }
 
 
-    public static void main(String[] args) throws Exception {
-        List<Entry> urls = getUrls(URL_TEMPLATE + URLEncoder.encode("super", UTF_8));
-
-        int c = 0;
-        for (Entry url: urls)
-            System.out.println((++c)+"* "+url.name);
-    }
-
     public static List<Entry> getUrls(String url) throws IOException {
         String output = httpGet(url);
         Pattern p = Pattern.compile("(?is)href=\"(ftp://[^\"]+\\.(p00|prg|d64|zip|t64|d71|d81|d82|d64\\.gz|t64\\.gz|d81\\.gz|d82\\.gz|d71\\.gz))\"");

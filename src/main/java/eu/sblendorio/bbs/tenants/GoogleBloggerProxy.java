@@ -170,9 +170,9 @@ public class GoogleBloggerProxy extends PetsciiThread {
                 long client = toLong(input.replaceAll("^send ([0-9]+).*$", "$1"));
                 String message = input.replaceAll("^send [0-9]+ (.*)$", "$1");
                 if (getClients().containsKey(client) && isNotBlank(message)) {
-                    System.out.println("Sending '"+message+"' to #"+client);
+                    log("Sending '"+message+"' to #"+client);
                     int exitCode = send(client, message);
-                    System.out.println("Message sent, exitCode="+exitCode+".");
+                    log("Message sent, exitCode="+exitCode+".");
                 }
             } else if (substring(input,0,5).equalsIgnoreCase("name ")) {
                 String newName = defaultString(input.replaceAll("^name ([^\\s]+).*$", "$1"));

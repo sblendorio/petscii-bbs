@@ -146,7 +146,7 @@ public abstract class PetsciiThread extends Thread {
             clientClass = getClass();
             log("New connection at " + socket);
             Thread.sleep(200);
-            cbm.resetInput(true);
+            cbm.resetInput();
             setClientName("client"+getClientId());
             clients.put(getClientId(), this);
             doLoop();
@@ -196,7 +196,7 @@ public abstract class PetsciiThread extends Thread {
             " Client #" + getClientId() + ". " +
             message
         ;
-        System.err.println(logRow);
+        logger.info(logRow);
     }
 
     public static char chr(int code) { return (char) code; }
@@ -266,7 +266,7 @@ public abstract class PetsciiThread extends Thread {
             conn.disconnect();
             return sb.toString();
         } else {
-            System.err.println(conn.getResponseMessage());
+            logger.info(conn.getResponseMessage());
         }
         conn.disconnect();
         return null;
