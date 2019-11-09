@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
  */
 public class XModem {
 
-    private static final Logger logger = LoggerFactory.getLogger(PetsciiThread.class);
+    private static final Logger logger = LoggerFactory.getLogger(XModem.class);
 
     protected static final byte CPMEOF = 26;       /* control/z */
     protected static final int MAXERRORS = 10;     /* max times to retry one block */
@@ -182,7 +182,7 @@ public class XModem {
     }
 
     private void die(int how) {
-        logger.error("Error code " + how);
+        logger.error("Error code {}", how);
         throw new RuntimeException(new CbmIOException("Too many errors during XModem transfer: " + how));
     }
 

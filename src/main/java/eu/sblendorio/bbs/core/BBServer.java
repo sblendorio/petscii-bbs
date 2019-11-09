@@ -32,7 +32,11 @@ public class BBServer {
         // args = new String[] {"-b", "MenuRetroAcademy", "-p", "6510"};
         readParameters(args);
 
-        logger.info(new Timestamp(System.currentTimeMillis())+" The BBS "+bbs.getSimpleName()+" is running: port = " + port + ", timeout = " + timeout + " millis");
+        logger.info("{} The BBS {} is running: port = {}, timeout = {} millis",
+                    new Timestamp(System.currentTimeMillis()),
+                    bbs.getSimpleName(),
+                    port,
+                    timeout);
         try(ServerSocket listener = new ServerSocket(port)) {
             listener.setSoTimeout(INTEGER_ZERO);
             while (true) {
@@ -73,7 +77,7 @@ public class BBServer {
         final String bbsName = cmd.getOptionValue("bbs");
         bbs = findTenant(bbsName);
         if (bbs == null) {
-            logger.error("BBS \"" + bbsName + "\" not recognized");
+            logger.error("BBS \"{}\" not recognized", bbsName);
             displayHelp(options);
             System.exit(3);
         }
@@ -95,7 +99,7 @@ public class BBServer {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp(System.getProperty("sun.java.command"), options);
         logger.info("List of available BBS:");
-        tenants.forEach(c -> logger.info(" * " + c.getSimpleName()));
+        tenants.forEach(c -> logger.info(" * {}", c.getSimpleName()));
     }
 
     private static List<Class<? extends PetsciiThread>> filterPetsciiThread() {
