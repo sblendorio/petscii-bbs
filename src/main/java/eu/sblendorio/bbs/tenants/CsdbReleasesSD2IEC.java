@@ -562,6 +562,13 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
             else
                 return -signum(ext1.compareTo(ext2));
         }
+
+
+        @Override
+        public boolean equals(Object o2) {
+            return this.compareTo((DownloadEntry) o2) == 0;
+        }
+
     }
 
     private static String findDownloadLink(URL url) throws Exception {
@@ -585,7 +592,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
             list.add(new DownloadEntry(link, caption, downloads));
         }
         Collections.sort(list);
-        return list.size() == 0 ? EMPTY : list.get(0).link;
+        return list.isEmpty() ? EMPTY : list.get(0).link;
     }
 
     private static final byte[] LOGO_BYTES = new byte[] {

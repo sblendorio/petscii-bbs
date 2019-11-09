@@ -40,7 +40,6 @@ public class ConnectFour extends PetsciiThread {
     @Override
     public void doLoop() throws Exception {
         log("CONNECT-4. Start match");
-        boolean userTurn = true;
         write(CLR, LOWERCASE, CASE_LOCK);
         drawLogo();
         drawBoard();

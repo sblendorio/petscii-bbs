@@ -113,7 +113,7 @@ public class TicTacToeAI
     // Returns true if a square is already played.
     public boolean squareHasBeenPlayed( int row, int col )
     {
-        return gameBoard[row][col] != 'x' && gameBoard[row][col] != 'o' ? false : true;
+        return gameBoard[row][col] == 'x' || gameBoard[row][col] == 'o';
     }
 
     // Makes a move in a game board square.
@@ -211,22 +211,14 @@ public class TicTacToeAI
     // Makes the computer's move.
     public void computerMove()
     {
-        if ( playWin() ) return;                               // always plays win
-        if ( computerIsDifficult() ) {                         // always blocks when hard
-            if ( blockWin() ) return;
-        }
-        if ( !computerIsDifficult() && rgen.nextBoolean() ) {  // sometimes blocks when easy
-            if ( blockWin() ) return;
-        }
-        if ( computerIsDifficult() ) {                         // always prevents forks when hard
-            if ( preventForkScenarios() ) return;
-        }
-        if ( !computerIsDifficult() && rgen.nextBoolean() ) {  // sometimes prevents forks when easy
-            if ( preventForkScenarios() ) return;
-        }
-        if ( playCenter() ) return;
-        if ( playOppositeCorner() ) return;
-        if ( playEmptyCorner() ) return;
+        if (playWin()) return;                            // always plays win
+        if (computerIsDifficult() && blockWin()) return;  // always blocks when hard
+        if (!computerIsDifficult() && rgen.nextBoolean() && blockWin()) return;  // sometimes blocks when easy
+        if (computerIsDifficult() && preventForkScenarios()) return; // always prevents forks when hard
+        if (!computerIsDifficult() && rgen.nextBoolean() && preventForkScenarios()) return;  // sometimes prevents forks when easy
+        if (playCenter()) return;
+        if (playOppositeCorner()) return;
+        if (playEmptyCorner()) return;
         playEmptySide();
     }
 

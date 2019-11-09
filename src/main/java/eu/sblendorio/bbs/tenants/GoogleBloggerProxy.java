@@ -30,7 +30,7 @@ import static org.apache.commons.lang3.math.NumberUtils.*;
 @Hidden
 public class GoogleBloggerProxy extends PetsciiThread {
 
-    static String HR_TOP = StringUtils.repeat(chr(163), 39);
+    final static String HR_TOP = StringUtils.repeat(chr(163), 39);
 
     protected String blogUrl = "https://blogger.googleblog.com";
     protected byte[] logo = LOGO_BLOGGER;
