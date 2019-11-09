@@ -15,7 +15,6 @@ import java.util.Set;
 
 import static java.util.Collections.emptyList;
 import static java.util.Comparator.comparing;
-import static org.apache.commons.lang3.math.NumberUtils.INTEGER_ZERO;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class BBServer {
@@ -38,7 +37,7 @@ public class BBServer {
                     port,
                     timeout);
         try(ServerSocket listener = new ServerSocket(port)) {
-            listener.setSoTimeout(INTEGER_ZERO);
+            listener.setSoTimeout(0);
             while (true) {
                 Socket socket = listener.accept();
                 socket.setSoTimeout(timeout);

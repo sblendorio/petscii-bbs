@@ -201,7 +201,6 @@ public class CsdbReleases extends PetsciiThread {
     }
 
     private void displayPost(int n) throws IOException, CbmException {
-        int i = 3;
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         cls();
         drawLogo();

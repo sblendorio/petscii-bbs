@@ -58,6 +58,7 @@ public class Ossa extends PetsciiThread {
                 case '2': displayBodyPart("tronco"); break;
                 case '3': displayBodyPart("braccio"); break;
                 case '4': displayBodyPart("gamba"); break;
+                default:
             }
         } while (choice != '5' && choice != '.');
     }

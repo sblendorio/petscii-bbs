@@ -4,7 +4,9 @@ import eu.sblendorio.bbs.core.PetsciiThread;
 
 public class WelcomeBBS extends PetsciiThread {
 
-    public WelcomeBBS() {}
+    public WelcomeBBS() {
+        // No operation
+    }
 
     @Override
     public void doLoop() throws Exception {

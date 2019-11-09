@@ -464,7 +464,7 @@ public class CbmInputOutput extends Reader {
         byte[] excludedInput = new byte[count];
         arraycopy(buffer, 0, excludedInput, 0, count);
         final String missingInput = new String(excludedInput, ISO_8859_1);
-        logger.info("Flushing input buffer: '{}', len = ",
+        logger.info("Flushing input buffer: '{}', len = {}",
                     substring(missingInput
                                       .replaceAll("\r+", "\\\\r")
                                       .replaceAll("\n+", "\\\\n"),0,120) +

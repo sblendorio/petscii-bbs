@@ -249,7 +249,7 @@ public class TelevideoRai extends PetsciiThread {
                 write(GREY3);
             }
             String row = rows[j];
-            println(row.replaceAll("&c64nbsp;", EMPTY));
+            println(row.replace("&c64nbsp;", EMPTY));
             forward = true;
             ++j;
         }

@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.util.Arrays;
 
 import org.slf4j.Logger;
@@ -183,7 +184,7 @@ public class XModem {
 
     private void die(int how) {
         logger.error("Error code {}", how);
-        throw new RuntimeException(new CbmIOException("Too many errors during XModem transfer: " + how));
+        throw new UncheckedIOException(new CbmIOException("Too many errors during XModem transfer: " + how));
     }
 
     private void log(String message) {
