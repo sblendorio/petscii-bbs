@@ -153,10 +153,10 @@ public class CbmFile implements Comparable<CbmFile>, Serializable {
 	public CbmFile(byte[] data, int position) {
 		dirTrack = data[position + 0x00] & 0xff;
 		dirSector = data[position + 0x01] & 0xff;
-		fileScratched = (data[position + 0x02] & 0xff) == 0 ? true : false;
+		fileScratched = (data[position + 0x02] & 0xff) == 0;
 		fileType = data[position + 0x02] & 0x07;
-		fileLocked = (data[position + 0x02] & 0x40) == 0 ? false : true;
-		fileClosed = (data[position + 0x02] & 0x80) == 0 ? false : true;
+		fileLocked = (data[position + 0x02] & 0x40) != 0;
+		fileClosed = (data[position + 0x02] & 0x80) != 0;
 		track = data[position + 0x03] & 0xff;
 		sector = data[position + 0x04] & 0xff;
 		StringBuilder buf = new StringBuilder();

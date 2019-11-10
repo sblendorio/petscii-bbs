@@ -24,10 +24,4 @@ public class NextQuotidiano extends WordpressProxy {
         -94, -94, -110, 32, 18, -94, -110, 32, -68, -66, 32, -66, -68, -68, 18, -94,
         -110, 32, -66, -66, -68, -68, 32, -66, -68, -66, 13
     };
-
-    @Override
-    public void doLoop() throws Exception {
-        super.doLoop();
-    }
-
 }

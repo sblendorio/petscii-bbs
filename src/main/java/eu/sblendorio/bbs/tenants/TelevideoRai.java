@@ -52,9 +52,9 @@ import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
 
 public class TelevideoRai extends PetsciiThread {
-    static String HR_TOP = StringUtils.repeat(chr(163), 39);
+    static final String HR_TOP = StringUtils.repeat(chr(163), 39);
 
-    static String PREFIX = "http://www.servizitelevideo.rai.it/televideo/pub/";
+    static final String PREFIX = "http://www.servizitelevideo.rai.it/televideo/pub/";
     protected int screenRows = 19;
 
     static class NewsSection {
@@ -105,7 +105,7 @@ public class TelevideoRai extends PetsciiThread {
 
     private void printChannelList() {
         gotoXY(0, 5);
-        List<String> keys = new LinkedList<String>(sections.keySet());
+        List<String> keys = new LinkedList<>(sections.keySet());
         Collections.sort(keys);
         for (int i=0; i<8; ++i) {
             int even = i;

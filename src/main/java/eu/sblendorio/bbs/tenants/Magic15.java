@@ -12,19 +12,19 @@ import static org.apache.commons.lang3.StringUtils.SPACE;
 public class Magic15 extends PetsciiThread {
     private static final Random random = new Random(System.currentTimeMillis());
     private int[] board = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0};
-    private final int MAX_SWAPS = 80;
-    private final int[] ORDERED_BOARD = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0};
-    private final int[] color = new int[] {WHITE,
+    private static final int MAX_SWAPS = 80;
+    private static final int[] ORDERED_BOARD = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0};
+    private static final int[] color = new int[] {WHITE,
             GREY3, RED,   GREY3, RED,
             RED,   GREY3, RED,   GREY3,
             GREY3, RED,   GREY3, RED,
             RED,   GREY3, RED
     };
     private static final String BLANK = "     ";
-    private final int K_UP = 'w';
-    private final int K_LEFT = 'a';
-    private final int K_DOWN = 's';
-    private final int K_RIGHT = 'd';
+    private static final int K_UP = 'w';
+    private static final int K_LEFT = 'a';
+    private static final int K_DOWN = 's';
+    private static final int K_RIGHT = 'd';
 
     @Override
     public void doLoop() throws Exception {

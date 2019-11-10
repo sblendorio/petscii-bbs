@@ -49,7 +49,7 @@ import eu.sblendorio.bbs.core.PetsciiThread;
 
 public class UserLogon extends PetsciiThread {
 
-    protected static final String dbFile = System.getProperty("user.home") + "/bbs-data.db";
+    protected static final String DB_FILE = System.getProperty("user.home") + "/bbs-data.db";
     protected static final Properties properties;
     SecureRandom random;
 
@@ -103,9 +103,9 @@ public class UserLogon extends PetsciiThread {
     }
 
     private void openConnection() throws Exception {
-        if (!new File(dbFile).exists()) createDatabase(properties);
+        if (!new File(DB_FILE).exists()) createDatabase(properties);
         if (conn == null || conn.isClosed())
-            conn = DriverManager.getConnection("jdbc:sqlite:"+dbFile, properties);
+            conn = DriverManager.getConnection("jdbc:sqlite:"+ DB_FILE, properties);
     }
 
     public void init() throws Exception {
@@ -277,7 +277,7 @@ public class UserLogon extends PetsciiThread {
 
         int pagesize = 12;
         int offset = 0;
-        String cmd = EMPTY;
+        String cmd;
         do {
             int size = messages.size();
             if (onlyUnread && size == 0) {
@@ -622,7 +622,7 @@ public class UserLogon extends PetsciiThread {
     }
 
     public void createDatabase(Properties properties) throws Exception {
-        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile, properties)) {
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + DB_FILE, properties)) {
 
             try (Statement s = conn.createStatement()) {
                 s.executeUpdate(

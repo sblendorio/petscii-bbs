@@ -30,14 +30,14 @@ import static org.apache.commons.lang3.math.NumberUtils.*;
 @Hidden
 public class GoogleBloggerProxy extends PetsciiThread {
 
-    final static String HR_TOP = StringUtils.repeat(chr(163), 39);
+    static final String HR_TOP = StringUtils.repeat(chr(163), 39);
 
     protected String blogUrl = "https://blogger.googleblog.com";
     protected byte[] logo = LOGO_BLOGGER;
     protected int pageSize = 10;
     protected int screenRows = 19;
 
-    protected final String CRED_FILE_PATH = System.getProperty("user.home") + File.separator + "credentials.json";
+    protected static final String CRED_FILE_PATH = System.getProperty("user.home") + File.separator + "credentials.json";
 
     protected GoogleCredential credential;
     protected Blogger blogger;
@@ -79,14 +79,12 @@ public class GoogleBloggerProxy extends PetsciiThread {
             cls();
             write(GREY3);
             waitOn();
-            final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
-            final JsonFactory JSON_FACTORY = new JacksonFactory();
 
             this.credential = GoogleCredential
                     .fromStream(new FileInputStream(CRED_FILE_PATH))
                     .createScoped(Arrays.asList(BloggerScopes.BLOGGER));
 
-            this.blogger = new Blogger.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+            this.blogger = new Blogger.Builder(new NetHttpTransport(), new JacksonFactory(), credential)
                     .setApplicationName("PETSCII BBS Builder - Blogger Proxy - " + this.getClass().getSimpleName())
                     .build();
 

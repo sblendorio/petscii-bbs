@@ -102,7 +102,7 @@ public class DiskUtilities {
         return filename.matches("(?is)^.*\\.(t64|t64\\.gz)$");
     }
 
-    private static DownloadData singleFileInArchive(DownloadData file, boolean isT64) throws IOException {
+    private static DownloadData singleFileInArchive(DownloadData file, boolean isT64) {
         DiskImage diskImage;
         int countPRG = 0;
         int countDEL = 0;

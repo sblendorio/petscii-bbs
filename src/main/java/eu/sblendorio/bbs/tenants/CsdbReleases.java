@@ -466,8 +466,13 @@ public class CsdbReleases extends PetsciiThread {
         }
 
         @Override
+        public int hashCode() {
+            return defaultString(link).hashCode();
+        }
+
+        @Override
         public boolean equals(Object o2) {
-            return this.compareTo((DownloadEntry) o2) == 0;
+            return o2 instanceof DownloadEntry && this.compareTo((DownloadEntry) o2) == 0;
         }
     }
 

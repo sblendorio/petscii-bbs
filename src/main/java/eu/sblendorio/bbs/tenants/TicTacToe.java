@@ -82,7 +82,6 @@ public class TicTacToe extends PetsciiThread {
         log("Exiting TIC-TAC-TOE after match end");
         write(CLR, LOWERCASE);
         log("Going back to main menu");
-        return;
     }
 
 
@@ -147,7 +146,7 @@ public class TicTacToe extends PetsciiThread {
     }
 
     private void drawLogo() {
-        write(new byte[]{
+        write(new byte[] {
                 32,  13,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,  32,
                 32,  32,  32,  32,  32,  31, -84, -94, -94, -94, -94, -94, -94, -94, -94, -94,
                 -94, -94, -94, -94, -94, -94, -94, -94,  13,  32,  32,  32,  32,  32,  32,  32,

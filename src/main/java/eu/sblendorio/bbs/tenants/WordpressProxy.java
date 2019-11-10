@@ -42,7 +42,7 @@ import eu.sblendorio.bbs.core.PetsciiThread;
 @Hidden
 public class WordpressProxy extends PetsciiThread {
 
-    static String HR_TOP = StringUtils.repeat(chr(163), 39);
+    static final String HR_TOP = StringUtils.repeat(chr(163), 39);
     private static final Logger logger = LoggerFactory.getLogger(WordpressProxy.class);
 
     static class Post {
@@ -78,7 +78,7 @@ public class WordpressProxy extends PetsciiThread {
         this.logo = logo;
     }
 
-    protected final String getApi() { return domain + "/wp-json/wp/v2/"; };
+    protected final String getApi() { return domain + "/wp-json/wp/v2/"; }
 
     @Override
     public void doLoop() throws Exception {
@@ -338,7 +338,7 @@ public class WordpressProxy extends PetsciiThread {
         write(GREY3);
     }
 
-    protected void listClients() throws Exception {
+    protected void listClients() {
         cls();
         println("You are #" + getClientId() + ": "+getClientName() + " [" + getClientClass().getSimpleName() + "]");
         newline();

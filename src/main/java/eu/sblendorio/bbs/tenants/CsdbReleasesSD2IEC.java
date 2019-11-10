@@ -563,10 +563,14 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
                 return -signum(ext1.compareTo(ext2));
         }
 
+        @Override
+        public int hashCode() {
+            return defaultString(link).hashCode();
+        }
 
         @Override
         public boolean equals(Object o2) {
-            return this.compareTo((DownloadEntry) o2) == 0;
+            return o2 instanceof DownloadEntry && this.compareTo((DownloadEntry) o2) == 0;
         }
 
     }
