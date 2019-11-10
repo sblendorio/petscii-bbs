@@ -54,6 +54,7 @@ import org.apache.commons.text.WordUtils;
 
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 
@@ -61,6 +62,7 @@ import net.sourceforge.droid64.addons.DiskUtilities;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.XModem;
+import net.sourceforge.droid64.d64.CbmException;
 
 public class CsdbReleasesSD2IEC extends PetsciiThread {
 
@@ -168,7 +170,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
         } while (true);
     }
 
-    public void browseLatestReleases(String rssUrl) throws Exception {
+    public void browseLatestReleases(String rssUrl) throws IOException, FeedException, CbmException {
         posts = null;
         currentPage = 1;
         listPosts(rssUrl);
@@ -227,7 +229,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
         flush();
     }
 
-    private void displayPost(int n) throws Exception {
+    private void displayPost(int n) throws IOException, CbmException {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         cls();
         drawLogo();
@@ -255,7 +257,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
         byte[] content = null;
 
         //Is D64
-        if("D64".equals(fileName.substring(fileName.length()-3, fileName.length()).toUpperCase())) {
+        if ("d64".equalsIgnoreCase(fileName.substring(fileName.length()-3))) {
             drawLogo();
             print("----------------------------------------");
             write(GREEN);
@@ -279,7 +281,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
         }
         //Is ZIP file
         else if (
-                "ZIP".equals(fileName.substring(fileName.length()-3, fileName.length()).toUpperCase()) &&
+                "zip".equalsIgnoreCase(fileName.substring(fileName.length()-3)) &&
                         !type.equals(OTHER_PLATFORM)
         ) {
             drawLogo();
@@ -367,7 +369,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
         }
     }
 
-    private void listPosts(String rssUrl) throws Exception {
+    private void listPosts(String rssUrl) throws IOException, FeedException {
         cls();
         drawLogo();
         if (isEmpty(posts)) {
@@ -405,7 +407,8 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
         return list;
     }
 
-    private Map<Integer, ReleaseEntry> getPosts(String rssURL, int page, int perPage) throws Exception {
+    private Map<Integer, ReleaseEntry> getPosts(String rssURL, int page, int perPage)
+            throws IOException, FeedException {
         if (page < 1 || perPage < 1) return null;
         List<ReleaseEntry> list;
 
@@ -426,7 +429,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
         return result;
     }
 
-    private static List<NewsFeed> getFeeds(String urlString) throws Exception {
+    private static List<NewsFeed> getFeeds(String urlString) throws IOException, FeedException {
         URL url = new URL(urlString);
         SyndFeedInput input = new SyndFeedInput();
         SyndFeed feed = input.build(new XmlReader(url));
@@ -575,7 +578,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
 
     }
 
-    private static String findDownloadLink(URL url) throws Exception {
+    private static String findDownloadLink(URL url) throws IOException {
         return findDownloadLink(defaultString(httpGet(url.toString())));
     }
 
