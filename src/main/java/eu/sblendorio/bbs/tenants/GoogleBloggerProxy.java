@@ -1,9 +1,7 @@
 package eu.sblendorio.bbs.tenants;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.blogger.Blogger;
 import com.google.api.services.blogger.BloggerScopes;
@@ -200,7 +198,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
         flush();
     }
 
-    protected Map<Integer, Post> getPosts() throws Exception {
+    protected Map<Integer, Post> getPosts() throws IOException {
         Map<Integer, Post> result = new LinkedHashMap<>();
 
         Blogger.Posts.List action = blogger.posts().list(blogId).setPageToken(pageTokens.curr);
@@ -217,7 +215,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
         return result;
     }
 
-    protected void listPosts() throws Exception {
+    protected void listPosts() throws IOException {
         cls();
         drawLogo();
         if (posts == null) {
@@ -248,7 +246,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
         return result;
     }
 
-    protected void help() throws Exception {
+    protected void help() throws IOException {
         cls();
         drawLogo();
         println();
@@ -257,7 +255,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
         readKey();
     }
 
-    protected void displayPost(int n) throws Exception {
+    protected void displayPost(int n) throws IOException {
         cls();
         drawLogo();
         waitOn();
