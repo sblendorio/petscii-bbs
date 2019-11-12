@@ -54,7 +54,7 @@ public class PetsciiArtGallery extends PetsciiThread {
         int key;
         int choice;
         do {
-            write(CLR, LOWERCASE, CASE_LOCK);
+            write(CLR, LOWERCASE, CASE_LOCK, HOME);
             write(RetroAcademy.LOGO_BYTES);
             write(GREY3);
             newline();
