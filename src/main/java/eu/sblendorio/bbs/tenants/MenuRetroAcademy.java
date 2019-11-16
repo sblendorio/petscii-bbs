@@ -2,11 +2,7 @@ package eu.sblendorio.bbs.tenants;
 
 import static eu.sblendorio.bbs.core.Colors.GREY3;
 import static eu.sblendorio.bbs.core.Colors.WHITE;
-import static eu.sblendorio.bbs.core.Keys.CASE_LOCK;
-import static eu.sblendorio.bbs.core.Keys.CLR;
-import static eu.sblendorio.bbs.core.Keys.LOWERCASE;
-import static eu.sblendorio.bbs.core.Keys.REVOFF;
-import static eu.sblendorio.bbs.core.Keys.REVON;
+import static eu.sblendorio.bbs.core.Keys.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,7 +64,7 @@ public class MenuRetroAcademy extends PetsciiThread {
         init();
         while (true) {
             int delta = 1;
-            write(CLR, LOWERCASE, CASE_LOCK);
+            write(CLR, LOWERCASE, CASE_LOCK, HOME);
             log("Starting MenuRetroAcademy BBS / main menu");
             drawLogo();
 

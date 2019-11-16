@@ -454,7 +454,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
     }
 
     private void drawLogo() {
-        write(CLR, LOWERCASE, CASE_LOCK);
+        write(CLR, LOWERCASE, CASE_LOCK, HOME);
         write(LOGO_BYTES);
         write(YELLOW);
         gotoXY(15,3); print("Search your releases");

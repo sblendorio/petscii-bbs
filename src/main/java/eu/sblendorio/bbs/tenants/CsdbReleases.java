@@ -356,7 +356,7 @@ public class CsdbReleases extends PetsciiThread {
     }
 
     private void drawLogo() {
-        write(CLR, LOWERCASE, CASE_LOCK);
+        write(CLR, LOWERCASE, CASE_LOCK, HOME);
         write(LOGO_BYTES);
         write(CYAN); gotoXY(15,3); print("Search your releases");
         write(GREY3); gotoXY(0,5);
