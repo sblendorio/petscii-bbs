@@ -138,7 +138,7 @@ public class PetsciiArtGallery extends PetsciiThread {
         printPetmateJson(fileContent, 0, 0);
     }
 
-    // This function "printPetmateJson" (C) Seth Parson
+    // This function "printPetmateJson" (C) CityXen
     private void printPetmateJson(final String fileContent, final Integer xLoc, final Integer yLoc) throws ParseException {
         final Map<Integer, Integer> codeHash = new HashMap<>();
         for (int i = 0; i < 32; i++)    { codeHash.put(i, i + 64); }
