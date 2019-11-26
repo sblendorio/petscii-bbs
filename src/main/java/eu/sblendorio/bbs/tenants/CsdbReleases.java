@@ -31,7 +31,6 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static org.apache.commons.codec.CharEncoding.UTF_8;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.apache.commons.collections4.CollectionUtils.retainAll;
 import static org.apache.commons.collections4.MapUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
@@ -356,7 +355,7 @@ public class CsdbReleases extends PetsciiThread {
     }
 
     private void drawLogo() {
-        write(CLR, LOWERCASE, CASE_LOCK);
+        write(CLR, LOWERCASE, CASE_LOCK, HOME);
         write(LOGO_BYTES);
         write(CYAN); gotoXY(15,3); print("Search your releases");
         write(GREY3); gotoXY(0,5);
