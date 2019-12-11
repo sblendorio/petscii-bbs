@@ -50,16 +50,11 @@ import org.zmpp.vmutil.FileUtils;
  */
 public class ApplicationMachineFactory extends MachineFactory<ZmppFrame> {
 
-  private File storyfile = null;
   private ZmppFrame frame;
   private FormChunk blorbchunk;
   private SaveGameDataStore savegamestore;
   private byte[] byteArrayStory = null;
 
-  public ApplicationMachineFactory(File storyfile) {
-
-    this.storyfile = storyfile;
-  }
   public ApplicationMachineFactory(byte[] byteArrayStory) {
 
     this.byteArrayStory = byteArrayStory;
@@ -70,7 +65,7 @@ public class ApplicationMachineFactory extends MachineFactory<ZmppFrame> {
    */
   protected byte[] readStoryData() throws IOException {
 
-      return byteArrayStory != null ? byteArrayStory : FileUtils.readFileBytes(storyfile);
+      return byteArrayStory;
 
   }
 
