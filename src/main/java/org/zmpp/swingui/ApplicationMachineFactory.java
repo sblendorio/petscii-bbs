@@ -50,64 +50,28 @@ import org.zmpp.vmutil.FileUtils;
  */
 public class ApplicationMachineFactory extends MachineFactory<ZmppFrame> {
 
-  private File storyfile;
-  private File blorbfile;
+  private File storyfile = null;
   private ZmppFrame frame;
   private FormChunk blorbchunk;
   private SaveGameDataStore savegamestore;
-  
-  public ApplicationMachineFactory(File storyfile, File blorbfile) {
-  
+  private byte[] byteArrayStory = null;
+
+  public ApplicationMachineFactory(File storyfile) {
+
     this.storyfile = storyfile;
-    this.blorbfile = blorbfile;
+  }
+  public ApplicationMachineFactory(byte[] byteArrayStory) {
+
+    this.byteArrayStory = byteArrayStory;
   }
 
-  public ApplicationMachineFactory(File blorbfile) {
-    
-    this.blorbfile = blorbfile;
-  }
-  
   /**
    * {@inheritDoc}
    */
   protected byte[] readStoryData() throws IOException {
-        
-    if (storyfile != null) {
-      
-      return FileUtils.readFileBytes(storyfile);
-      
-    } else {
-      
-      // Read from Z BLORB
-      FormChunk formchunk = readBlorb();
-      return formchunk != null ? new BlorbStory(formchunk).getStoryData() : null;
-    }
-  }
-  
-  private FormChunk readBlorb() throws IOException {
-    
-    if (blorbchunk == null) {
-      
-      byte[] data = FileUtils.readFileBytes(blorbfile);
-      if (data != null) {
-        
-        blorbchunk = new DefaultFormChunk(new DefaultMemoryAccess(data));
-        if (!"IFRS".equals(new String(blorbchunk.getSubId()))) {
-          
-          throw new IOException("not a valid Blorb file");
-        }
-      }
-    }
-    return blorbchunk;
-  }
-  
-  /**
-   * {@inheritDoc}
-   */
-  protected Resources readResources() throws IOException {
 
-    FormChunk formchunk = readBlorb();
-    return (formchunk != null) ? new BlorbResources(formchunk) : null;
+      return byteArrayStory != null ? byteArrayStory : FileUtils.readFileBytes(storyfile);
+
   }
 
   /**

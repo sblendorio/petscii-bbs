@@ -51,7 +51,7 @@ public abstract class MachineFactory<T> {
   public Machine buildMachine() throws IOException {
     
     final GameData gamedata =
-      new GameDataImpl(readStoryData(), readResources());
+      new GameDataImpl(readStoryData(), null);
   
     if (isInvalidStory(gamedata.getStoryFileHeader().getVersion())) {
     
@@ -91,15 +91,7 @@ public abstract class MachineFactory<T> {
    * @throws IOException if reading story file reveiled an error
    */
   abstract protected byte[] readStoryData() throws IOException;
-  
-  /**
-   * Reads the resource data.
-   * 
-   * @return the resource data
-   * @throws IOException if reading resources reveiled an error
-   */
-  abstract protected Resources readResources() throws IOException;
-  
+
   /**
    * This function is called to report an invalid story file.
    */
