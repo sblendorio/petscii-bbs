@@ -24,6 +24,16 @@ package org.zmpp.swingui;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.swing.JFileChooser;
@@ -49,7 +59,7 @@ public class Main {
    * 
    * @param args the arguments
    */
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
     
     System.setProperty("swing.aatext", "true");
     
@@ -61,7 +71,7 @@ public class Main {
       
       ex.printStackTrace();
     }
-    
+    /*
     if (args.length >= 1) {
       
       storyfile = new File(args[0]);      
@@ -75,10 +85,33 @@ public class Main {
         storyfile = fileChooser.getSelectedFile();
       }
     }
-    
+    */
+//minizork
+    List<Path> dir = getDirContent("zmpp");
+    dir.forEach(System.out::println);
+
+    ///storyfile =   dir.get(0).toFile();
+
+    storyfile = new File(Main.class.getResource("/zmpp/minizork.z3").getFile());
     runStoryFile(storyfile);
   }
-  
+  private static final ClassLoader NULL_CLASSLOADER = null;
+
+  public static List<Path> getDirContent(String path) throws URISyntaxException, IOException {
+    List<Path> result = new ArrayList<>();
+    URL jar = Main.class.getProtectionDomain().getCodeSource().getLocation();
+    Path jarFile = Paths.get(jar.toURI());
+    try (FileSystem fs = FileSystems.newFileSystem(jarFile, NULL_CLASSLOADER);
+         DirectoryStream<Path> directoryStream = Files.newDirectoryStream(fs.getPath(path))) {
+      for (Path p : directoryStream) {
+        result.add(p);
+      }
+
+      result.sort((o1, o2) -> o1 == null || o2 == null ? 0 :
+              o1.getFileName().toString().compareTo(o2.getFileName().toString()));
+      return result;
+    }
+  }
   /**
    * This method opens a frame and runs the specified story file.
    * 
@@ -95,6 +128,12 @@ public class Main {
           "ZMPP");
     }
     // Read in the story file
+
+    //minizork
+    System.out.println("storyfile="+storyfile);
+    System.out.println("storyfile.exists="+storyfile.exists());
+    System.out.println("storyfile.isFile="+storyfile.isFile());
+
     if (storyfile != null && storyfile.exists() && storyfile.isFile()) {
       
       ApplicationMachineFactory factory;
