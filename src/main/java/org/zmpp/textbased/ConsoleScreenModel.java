@@ -5,6 +5,9 @@ import org.zmpp.vm.ScreenModel;
 import org.zmpp.vm.TextCursor;
 
 public class ConsoleScreenModel implements ScreenModel {
+
+    OutputStream outputStream = new ConsoleOutputStream();
+
     @Override
     public void reset() {
 
@@ -82,7 +85,7 @@ public class ConsoleScreenModel implements ScreenModel {
 
     @Override
     public OutputStream getOutputStream() {
-        return null;
+        return outputStream;
     }
 
     @Override

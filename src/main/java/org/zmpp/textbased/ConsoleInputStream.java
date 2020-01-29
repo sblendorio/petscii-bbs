@@ -3,6 +3,7 @@ package org.zmpp.textbased;
 import org.zmpp.io.InputStream;
 
 public class ConsoleInputStream implements InputStream {
+
     @Override
     public void cancelInput() {
 
