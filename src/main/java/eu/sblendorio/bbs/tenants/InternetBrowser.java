@@ -1,3 +1,8 @@
+/*
+ * Credits for this InternetBrowser:
+ * Richard Bettridge (ssshake) of TheOldNet
+ * http://bit.ly/38ZlPaS
+ */
 package eu.sblendorio.bbs.tenants;
 
 import eu.sblendorio.bbs.core.HtmlUtils;
@@ -157,6 +162,7 @@ public class InternetBrowser extends PetsciiThread {
 
             if (startOfPage){
                 printPageNumber(pager.page);
+                gotoXY(0, pager.currentRow % __screenRows + 3);
             }
 
             if (endOfPage || endOfDocument) {
@@ -273,17 +279,20 @@ public class InternetBrowser extends PetsciiThread {
     }
 
     String formattedWebpage(Document webpage){
-        return webpage
+        log("WPA="+webpage.toString());
+        final String result = webpage == null ? "" :webpage
                 .toString()
-                .replaceAll("<img.[^>]*>", "<br>[IMAGE] ")
-                .replaceAll("<a.[^>]*>", " <br>[LINK] ")
+                .replaceAll("<img [^>]*>", "<br>[IMAGE] ")
+                .replaceAll("<a [^>]*>", " <br>[LINK] ")
                 .replaceAll("&quot;", "\"")
                 .replaceAll("&apos;", "'")
                 .replaceAll("&#xA0;", " ")
-                .replaceAll("(?is)<style>.*</style>", EMPTY)
-                .replaceAll("(?is)<script .*</script>", EMPTY)
+                .replaceAll("(?is)<style(\\s|>).*?</style>", EMPTY)
+                .replaceAll("(?is)<script(\\s|>).*?</script>", EMPTY)
                 .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(</?(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
                 .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r)*)+", EMPTY);
+        //log("wpage="+result);
+        return result;
     }
 
     void printRowWithColor(Pager pager, List<String> rows){
@@ -299,16 +308,17 @@ public class InternetBrowser extends PetsciiThread {
         boolean matchesImage = matcherImage.matches();
 
         if (matchesLink){
-            log("MATCHES!!!!!!!!!!!");
             write(LIGHT_BLUE);
         }
 
         if (matchesImage){
-            log("MATCHES!!!!!!!!!!!");
             write(YELLOW);
         }
-        gotoXY(0, pager.currentRow % __screenRows + 3);
-        print(row);
+
+//        gotoXY(0, pager.currentRow % __screenRows + 3);
+        println(row);
+
+        System.out.println("> " + row);
 
         if (matchesLink || matchesImage){
             write(GREY3);
@@ -485,7 +495,7 @@ public class InternetBrowser extends PetsciiThread {
     private void loading() {
         gotoXY(10,1);
         write(PURPLE);
-        print("LOADING...                 ");
+        print("LOADING...                  ");
         write(BLACK);
         flush();
     }
@@ -505,10 +515,11 @@ public class InternetBrowser extends PetsciiThread {
         write(BLACK);
         gotoXY(0, 3);
         for (int i=0; i<18; ++i) {
-            gotoXY(0, i + 3);
+            //gotoXY(0, i + 3);
             for (int j=0; j<39; ++j) {
                 write(SPACE_CHAR);
             }
+            println();
         }
         flush();
         write(GREY3);
