@@ -458,19 +458,24 @@ public class InternetBrowser extends PetsciiThread {
     }
 
     public static Document getWebpage(String url) throws Exception {
+        Connection conn = null;
         try {
-            System.out.println("URL=="+url);
-
-            Document result = Jsoup
-                    .connect(url)
-                    // .header("HTTP-User-Agent", "")
-                    .get();
-            return result;
+            conn = Jsoup.connect(url);
+        } catch (Exception e1) {
+            try {
+                conn = Jsoup.connect("https://" + url);
+            } catch (Exception e2) {
+                try {
+                    conn = Jsoup.connect("https://" + url);
+                } catch (Exception e3) {
+                    System.out.println("Couldn't connect with the website.");
+                    return null;
+                }
+            }
         }
-        catch (Exception ex){
-            System.out.println("Couldn't connect with the website.");
-        }
-        return null;
+        return conn
+                //.header("HTTP-User-Agent", "")
+                .get();
     }
 
     protected List<String> wordWrap(String s) {
