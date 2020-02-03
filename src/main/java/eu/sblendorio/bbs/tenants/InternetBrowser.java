@@ -31,6 +31,7 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -110,7 +111,7 @@ public class InternetBrowser extends PetsciiThread {
         resetInput();
         String search = readLine();
 
-        if (defaultString(search).trim().equals(".") || isBlank(search)) {
+        if (isBlank(search) || search.trim().equals(".")) {
             return "_quit_program";
         }
 
@@ -470,14 +471,16 @@ public class InternetBrowser extends PetsciiThread {
     }
 
     public static Document getWebpage(String url) throws Exception {
-        Document doc = null;
-        try{
-            doc = Jsoup.connect(url).get();
+        try {
+            return Jsoup
+                    .connect(url)
+                    // .header("HTTP-User-Agent", "")
+                    .get();
         }
         catch (Exception ex){
             System.out.println("Couldn't connect with the website.");
         }
-        return doc;
+        return null;
     }
 
     protected List<String> wordWrap(String s) {
