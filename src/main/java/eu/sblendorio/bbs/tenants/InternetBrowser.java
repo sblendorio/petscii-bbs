@@ -101,7 +101,7 @@ public class InternetBrowser extends PetsciiThread {
     }
 
     String makeUrl(String url) throws Exception {
-        return URL_TEMPLATE + URLEncoder.encode(url, "UTF-8");
+        return url; //URL_TEMPLATE + URLEncoder.encode(url, "UTF-8");
     }
 
     String focusAddressBar() throws Exception{
@@ -145,9 +145,7 @@ public class InternetBrowser extends PetsciiThread {
 
         final String content = formattedWebpage(webpage);
 
-        String address = removeProxyFromUrl(url);
-
-        writeAddressBar(address);
+        writeAddressBar(url);
 
         List<String> rows = wordWrap("");
         rows.addAll(wordWrap(content));
@@ -169,7 +167,7 @@ public class InternetBrowser extends PetsciiThread {
             if (endOfPage || endOfDocument) {
                 parkCursor();
 
-                String nextStep = promptForUserInput(pager, webpage, address, startOfDocument, endOfDocument);
+                String nextStep = promptForUserInput(pager, webpage, url, startOfDocument, endOfDocument);
                 switch (nextStep){
                     case "skip":
                         continue;
@@ -188,13 +186,6 @@ public class InternetBrowser extends PetsciiThread {
         }
     }
 
-    String removeProxyFromUrl(String url){
-        try {
-            return url.split("url=")[1];
-        } catch (ArrayIndexOutOfBoundsException e){
-            return url;
-        }
-    }
     void logPaging(Pager pager, List<String> rows){
         log("Current Row: " + Integer.toString(pager.currentRow));
         log("Rows: " + Integer.toString(rows.size()));
@@ -280,7 +271,7 @@ public class InternetBrowser extends PetsciiThread {
     }
 
     String formattedWebpage(Document webpage){
-        log("WPA="+webpage.toString());
+        log("WPA=" + (webpage==null ? "": webpage.toString()));
         final String result = webpage == null ? "" :webpage
                 .toString()
                 .replaceAll("<img [^>]*>", "<br>[IMAGE] ")
@@ -454,17 +445,13 @@ public class InternetBrowser extends PetsciiThread {
             link=links.get(j);
 
             String label = "Empty";
-            if (!StringUtils.isBlank(link.text())){
-                label = link.text();
+            if (StringUtils.isBlank(link.text())){
+                label = link.attr("href");
             } else {
-                try {
-                    label = link.attr("href").split("url=")[1];
-                } catch (ArrayIndexOutOfBoundsException e){
-                    label = link.attr("href");
-                }
+                label = link.text();
             }
 
-            urls.add(new Entry(link.attr("href"), label));
+            urls.add(new Entry(link.absUrl("href"), label));
 
         }
         return urls;
@@ -472,10 +459,13 @@ public class InternetBrowser extends PetsciiThread {
 
     public static Document getWebpage(String url) throws Exception {
         try {
-            return Jsoup
+            System.out.println("URL=="+url);
+
+            Document result = Jsoup
                     .connect(url)
                     // .header("HTTP-User-Agent", "")
                     .get();
+            return result;
         }
         catch (Exception ex){
             System.out.println("Couldn't connect with the website.");
