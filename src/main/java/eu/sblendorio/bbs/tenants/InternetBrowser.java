@@ -100,8 +100,9 @@ public class InternetBrowser extends PetsciiThread {
         } while (true);
     }
 
-    String makeUrl(String url) throws Exception {
-        return url; //URL_TEMPLATE + URLEncoder.encode(url, "UTF-8");
+    String makeUrl(String url) {
+        if (!defaultString(url).startsWith("http")) return "http://" + defaultString(url);
+        return url;
     }
 
     String focusAddressBar() throws Exception{
@@ -462,16 +463,8 @@ public class InternetBrowser extends PetsciiThread {
         try {
             conn = Jsoup.connect(url);
         } catch (Exception e1) {
-            try {
-                conn = Jsoup.connect("https://" + url);
-            } catch (Exception e2) {
-                try {
-                    conn = Jsoup.connect("https://" + url);
-                } catch (Exception e3) {
-                    System.out.println("Couldn't connect with the website.");
-                    return null;
-                }
-            }
+            System.out.println("Couldn't connect with the website.");
+            return null;
         }
         return conn
                 //.header("HTTP-User-Agent", "")
