@@ -5,6 +5,7 @@
  */
 package eu.sblendorio.bbs.tenants;
 
+import eu.sblendorio.bbs.core.CbmIOException;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +16,7 @@ import org.json.simple.JSONObject;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -32,6 +34,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 import org.jsoup.Connection;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -91,8 +94,8 @@ public class InternetBrowser extends PetsciiThread {
 
             String url = focusAddressBar();
 
-            if (url == "_quit_program"){
-                return;
+            if ("_quit_program".equalsIgnoreCase(url)){
+                throw new CbmIOException("Exiting " + this.getClass().getSimpleName());
             }
 
             loadWebPage(url);
@@ -127,6 +130,11 @@ public class InternetBrowser extends PetsciiThread {
 
     void enterAddress(String previousAddress) throws Exception {
         String url = focusAddressBar();
+
+        if ("_quit_program".equalsIgnoreCase(url)) {
+            throw new CbmIOException("Exiting " + this.getClass().getSimpleName());
+        }
+
         loadWebPage(url);
         clearBrowserWindow();
         writeAddressBar(previousAddress);
@@ -135,7 +143,12 @@ public class InternetBrowser extends PetsciiThread {
     void loadWebPage(String url) throws Exception{
         loading();
         clearBrowserWindow();
-        Document webpage = getWebpage(url);
+        Document webpage;
+        try {
+            webpage = getWebpage(url);
+        } catch (HttpStatusException | UnknownHostException ex) {
+            webpage = Jsoup.parseBodyFragment("HTTP connection error");
+        }
         displayPage(webpage, url);
     }
 
@@ -202,6 +215,7 @@ public class InternetBrowser extends PetsciiThread {
                 enterAddress(currentAddress);
                 break;
             case '.':
+                throw new CbmIOException("Exiting: " + getClass().getSimpleName());
             case 'b':
             case 'B':
                 instruction = "exit";
