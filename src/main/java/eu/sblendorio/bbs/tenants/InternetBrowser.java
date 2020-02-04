@@ -42,11 +42,9 @@ import org.jsoup.select.Elements;
 
 public class InternetBrowser extends PetsciiThread {
 
-    public static final String URL_TEMPLATE = "http://theoldnet.com/get?url=";
-
     protected int __currentPage = 1;
     protected int __pageSize = 10;
-    protected int __screenRows = 16;
+    protected int __screenRows = 18;
 
     static class Entry {
         public final String name;
@@ -327,16 +325,16 @@ public class InternetBrowser extends PetsciiThread {
 
         System.out.println("> " + row);
 
-        if (matchesLink || matchesImage){
+        if (matchesLink || matchesImage) {
             write(GREY3);
         }
     }
 
-    void printPageNumber(int page){
+    void printPageNumber(int page) {
         write(BLACK);
         gotoXY(1,22);
         write(WHITE);
-        print("PAGE " + page);
+        print("PAGE " + page + StringUtils.repeat(' ', 3-String.valueOf(page).length()));
         write(GREY3);
     }
 
@@ -346,7 +344,7 @@ public class InternetBrowser extends PetsciiThread {
         writeAddressBar(head);
     }
 
-    void writeAddressBar(String url){
+    void writeAddressBar(String url) {
         clearAddressBar();
         write(GREEN);
         gotoXY(10,1);
@@ -372,18 +370,22 @@ public class InternetBrowser extends PetsciiThread {
             String input = lowerCase(trim(inputRaw));
 
             //QUIT
-            if ("B".equals(input) || "b".equals(input) || ".".equals(input) || "exit".equals(input) || "quit".equals(input) || "q".equals(input)) {
+            if ("b".equalsIgnoreCase(input)
+                    || ".".equals(input)
+                    || "exit".equalsIgnoreCase(input)
+                    || "quit".equalsIgnoreCase(input)
+                    || "q".equalsIgnoreCase(input)) {
                 break;
             }
 
             //NEXT PAGE
-            else if ("n".equals(input) || "N".equals(input)) {
+            else if ("n".equalsIgnoreCase(input)) {
                 ++__currentPage;
                 links = null;
             }
 
             //PREVIOUS PAGE
-            else if (("p".equals(input) || "P".equals(input))  && __currentPage > 1) {
+            else if ("p".equalsIgnoreCase(input) && __currentPage > 1) {
                 --__currentPage;
                 links = null;
             }
@@ -425,7 +427,7 @@ public class InternetBrowser extends PetsciiThread {
             print(i + ".");
             write(GREY3);
 
-            final int iLen = 37-String.valueOf(i).length(); //I'm guessing something to do with the row width
+            final int iLen = 37 - String.valueOf(i).length(); //I'm guessing something to do with the row width
 
             String title = post.name;
             String line = WordUtils.wrap(filterPrintable(HtmlUtils.htmlClean(title)), iLen, "\r", true);
