@@ -459,7 +459,7 @@ public class InternetBrowser extends PetsciiThread {
     }
 
     public static Document getWebpage(String url) throws Exception {
-        Connection conn = null;
+        Connection conn;
         try {
             conn = Jsoup.connect(url);
         } catch (Exception e1) {
