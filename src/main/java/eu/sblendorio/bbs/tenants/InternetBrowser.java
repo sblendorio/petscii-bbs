@@ -159,7 +159,7 @@ public class InternetBrowser extends PetsciiThread {
 
         writeAddressBar(url);
 
-        List<String> rows = wordWrap("");
+        List<String> rows = new ArrayList<>();
         rows.addAll(wordWrap(content));
 
         while (pager.currentRow < rows.size() + 1) {
@@ -287,8 +287,8 @@ public class InternetBrowser extends PetsciiThread {
         log("WPA=" + (webpage==null ? "": webpage.toString()));
         final String result = webpage == null ? "" :webpage
                 .toString()
-                .replaceAll("<img [^>]*>", "<br>[IMAGE] ")
-                .replaceAll("<a [^>]*>", " <br>[LINK] ")
+                .replaceAll("<img [^>]*?>", "<br>[IMAGE] ")
+                .replaceAll("<a [^>]*?>(.*)?</a>", " <br>[LINK] $1")
                 .replaceAll("&quot;", "\"")
                 .replaceAll("&apos;", "'")
                 .replaceAll("&#xA0;", " ")
@@ -460,13 +460,7 @@ public class InternetBrowser extends PetsciiThread {
 
         for(int j=0; j < links.size(); j++){
             link=links.get(j);
-
-            String label = "Empty";
-            if (StringUtils.isBlank(link.text())){
-                label = link.attr("href");
-            } else {
-                label = link.text();
-            }
+            final String label = defaultIfBlank(link.text(), link.attr("href"));
 
             urls.add(new Entry(link.absUrl("href"), label));
 
