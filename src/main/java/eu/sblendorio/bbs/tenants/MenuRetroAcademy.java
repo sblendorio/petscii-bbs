@@ -75,13 +75,13 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(5, delta + 8); write(REVON); print(" 4 "); write(REVOFF); print(" MedBunker");
             gotoXY(5, delta + 9); write(REVON); print(" 5 "); write(REVOFF); print(" Fatto Quotidiano");
             gotoXY(5, delta + 10); write(REVON); print(" 6 "); write(REVOFF); print(" IndieRetroNews");
-            gotoXY(5, delta + 11); write(REVON); print(" 7 "); write(REVOFF); print(" Open Online");
+            gotoXY(5, delta + 11); write(REVON); print(" 7 "); write(REVOFF); print(" Retrocampus");
             gotoXY(5, delta + 12); write(REVON); print(" 8 "); write(REVOFF); print(" Il Post");
 
-            gotoXY(24, delta + 11); write(WHITE); print("Games"); write(GREY3);
-            gotoXY(24, delta + 13); write(REVON); print(" X "); write(REVOFF); print(" TIC-TAC-TOE");
-            gotoXY(24, delta + 14); write(REVON); print(" C "); write(REVOFF); print(" CONNECT-4");
-            gotoXY(24, delta + 15); write(REVON); print(" F "); write(REVOFF); print(" MAGIC-15");
+            gotoXY(24, delta + 12); write(WHITE); print("Games"); write(GREY3);
+            gotoXY(24, delta + 14); write(REVON); print(" X "); write(REVOFF); print(" TIC-TAC-TOE");
+            gotoXY(24, delta + 15); write(REVON); print(" C "); write(REVOFF); print(" CONNECT-4");
+            gotoXY(24, delta + 16); write(REVON); print(" F "); write(REVOFF); print(" MAGIC-15");
 
             gotoXY(6, delta + 14); write(WHITE); print("Misc"); write(GREY3);
             gotoXY(6, delta + 16); write(REVON); print(" S "); write(REVOFF); print(" Sportal.IT");
@@ -94,9 +94,10 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(26, delta + 7); write(REVON); print(" T "); write(REVOFF); print(" Televideo");
             gotoXY(26, delta + 8); write(REVON); print(" D "); write(REVOFF); print(" CSDb");
             gotoXY(26, delta + 9); write(REVON); print(" A "); write(REVOFF); print(" Arnold 64");
+            gotoXY(26, delta + 10); write(REVON); print(" I "); write(REVOFF); print(" Browser");
 
-            gotoXY(24, delta + 17); write(WHITE); print("Experimental"); write(GREY3);
-            gotoXY(24, delta + 19); write(REVON); print(" K "); write(REVOFF); print(" CSDb SD2IEC");
+            gotoXY(24, delta + 18); write(WHITE); print("Experimental"); write(GREY3);
+            gotoXY(24, delta + 20); write(REVON); print(" K "); write(REVOFF); print(" CSDb SD2IEC");
 
             //final String line = geoData != null ? "Connected from "+geoData.city+", "+geoData.country : EMPTY;
             final String line = "(C) F. Sblendorio in 2018, 2019";
@@ -123,7 +124,7 @@ public class MenuRetroAcademy extends PetsciiThread {
                     else if (key == '4') launch(new Medbunker());
                     else if (key == '5') launch(new IlFattoQuotidiano());
                     else if (key == '6') launch(new IndieRetroNews());
-                    else if (key == '7') launch(new OpenOnline());
+                    else if (key == '7') launch(new RetroCampus());
                     else if (key == '8') launch(new IlPost());
                     else if (key == 'x') launch(new TicTacToe());
                     else if (key == 'c') launch(new ConnectFour());
@@ -136,6 +137,7 @@ public class MenuRetroAcademy extends PetsciiThread {
                     else if (key == 'd') launch(new CsdbReleases());
                     else if (key == 'a') launch(new ArnoldC64());
                     else if (key == 'k') launch(new CsdbReleasesSD2IEC());
+                    else if (key == 'i') launch(new InternetBrowser());
                     else validKey = false;
             } while (!validKey);
         }
