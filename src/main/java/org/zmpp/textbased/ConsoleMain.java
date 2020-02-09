@@ -4,8 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.zmpp.vm.Machine;
-import org.zmpp.vm.ScreenModel;
 
 public class ConsoleMain {
 
@@ -26,11 +24,9 @@ public class ConsoleMain {
     public static void runStoryFile(byte[] story) throws Exception {
         ConsoleMachineFactory factory;
         factory = new ConsoleMachineFactory(story);
-        Machine machine = factory.buildMachine();
-        ScreenModel screen = factory.getScreenModel();
-        //currentGame = new GameThread(machine, screen);
-        //currentGame.start();
         factory.buildMachine();
+        VirtualConsole console = factory.getUI();
+        console.runTheGame();
         //frame.startMachine();
     }
 
