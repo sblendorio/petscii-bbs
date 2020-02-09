@@ -22,11 +22,13 @@
  */
 package org.zmpp.textbased;
 
+import org.zmpp.textbased.cli.*;
+
 import org.zmpp.io.IOSystem;
 import org.zmpp.io.InputStream;
 import org.zmpp.vm.*;
 
-import java.io.Console;
+import org.zmpp.textbased.VirtualConsole;
 import java.io.IOException;
 
 /**
@@ -35,13 +37,14 @@ import java.io.IOException;
  * @author Francesco Sblendorio
  * @version 1.0
  */
-public class ConsoleMachineFactory extends MachineFactory<Void> {
+public class ConsoleMachineFactory extends MachineFactory<VirtualConsole> {
 
-  IOSystem ioSystem = new ConsoleIOSystem();
-  InputStream inputStream = new ConsoleInputStream();
-  StatusLine statusLine = new ConsoleStatusLine();
-  ScreenModel screenModel = new ConsoleScreenModel();
-  SaveGameDataStore saveGameDataStore = new ConsoleSaveGameDataStore();
+  VirtualConsole console;
+  IOSystem ioSystem;
+  InputStream inputStream;
+  StatusLine statusLine;
+  ScreenModel screenModel;
+  SaveGameDataStore saveGameDataStore;
 
   private byte[] byteArrayStory;
 
@@ -54,15 +57,21 @@ public class ConsoleMachineFactory extends MachineFactory<Void> {
   }
 
   protected void reportInvalidStory() {
-    System.err.println("Invalid story.");
-    System.exit(0);
+    console.reportInvalidStory();
   }
 
-  protected Void initUI(Machine machine) {
-    return null;
+  protected VirtualConsole initUI(Machine machine) {
+    CLIConsole cliConsole  = new CLIConsole(machine,false);
+    console = cliConsole;
+    saveGameDataStore = cliConsole;
+    ioSystem = cliConsole;
+    inputStream = cliConsole.getInputStream();
+    screenModel = cliConsole.getScreenModel();
+    statusLine = (StatusLine) cliConsole.getScreenModel();
+    return console;
   }
 
-  public Void getUI() { return null; }
+  public VirtualConsole getUI() { return console; }
 
   protected IOSystem getIOSystem() { return ioSystem; }
 
