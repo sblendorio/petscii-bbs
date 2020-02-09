@@ -27,7 +27,6 @@ public class ConsoleMain {
         factory.buildMachine();
         VirtualConsole console = factory.getUI();
         console.runTheGame();
-        //frame.startMachine();
     }
 
 }
