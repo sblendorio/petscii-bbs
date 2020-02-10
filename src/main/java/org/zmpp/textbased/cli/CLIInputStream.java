@@ -27,6 +27,7 @@ public class CLIInputStream implements InputStream {
         char c;
         try {
             c = (char) this.console.reader().read();
+            if (c=='a'||c=='A') c='X';
         } catch (IOException e) {
             throw new java.lang.UnsupportedOperationException("unsupported character exception");
         }
