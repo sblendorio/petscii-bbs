@@ -228,6 +228,10 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
             buffer.append("\n");
             this.petsciiThread.newline();
+          } else if (zsciiChar == 20) {
+            buffer.append(zsciiChar);
+            this.petsciiThread.write(20, 20); // TODO FIXME SBLEND
+            this.petsciiThread.flush();
           } else {
             char c = machine.getGameData().getZsciiEncoding().getUnicodeChar(zsciiChar);
             buffer.append(c);
