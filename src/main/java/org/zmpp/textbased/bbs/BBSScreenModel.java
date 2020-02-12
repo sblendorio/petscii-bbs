@@ -189,11 +189,14 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
     @Override
     public void redraw() {
+/* TODO FIX SBLEND
         petsciiThread.write(Keys.CLR); // clear screen
          petsciiThread.flush();                  // flush 
          printStatusBar();
          trimAndPrintBuffer();
          petsciiThread.flush();
+
+ */
     }
 
     @Override
