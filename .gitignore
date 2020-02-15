@@ -5,3 +5,6 @@ target/
 dependency-reduced-pom.xml
 petscii-bbs.log
 Thumbs.db
+.classpath
+.project
+.settings/

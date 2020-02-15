@@ -18,7 +18,6 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     PetsciiThread petsciiThread;
     Machine machine;
     BBSInputStream cliInputStream;
-    StringBuffer buffer;
 
     String adventureName = "";
     int score = 0;
@@ -26,60 +25,16 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     int hours = 0;
     int minutes = 0;
 
+    int inputCharCount = 0;
 
-    static int BUFFER_LENGTH = 880; // = 40 columns x 22 rows (+1 for title + 2 for input)  
 
+    
     private boolean isSelected = false;
 
     public BBSScreenModel(PetsciiThread petsciiThread, Machine machine) {
         this.petsciiThread = petsciiThread;
         this.machine = machine;
-        buffer = new StringBuffer(BUFFER_LENGTH);
     }
-
-    private void trimAndPrintBuffer(){
-
-        String[] rows = buffer.toString().split("\n");
-        String newContent = rows[rows.length-1];
-        int maxRows = 21;
-
-        int index = rows.length-2;
-        String row = "";
-        
-        
-        while(maxRows>0 && index >= 0){
-            row = rows[index];
-            int rowCount   = row.length() / 40;
-            if(rowCount == 0 ){
-                rowCount = 1;
-            }
-            if(rowCount<=maxRows){
-                maxRows = maxRows - rowCount;
-                newContent = row + "\n" + newContent;
-            }else{
-                newContent =  row.substring(maxRows*40) +  "\n" + newContent;
-                maxRows = 0;
-            }
-            index--;
-            
-        }
-        buffer.delete(0, buffer.length());
-        buffer.append(newContent);
-
-        cbmPrintString(buffer.toString());
-
-
-        
-    }
-
-    private void cbmPrintString(String value){
-        String[] rows = value.toString().split("\n");
-        for(int i = 0; i< rows.length; i++){
-            this.petsciiThread.print(rows[i]);
-            this.petsciiThread.newline();
-        }
-    }
-
     private void printStatusBar(){
         String rightStatus = score+"/"+steps;
         int spaces = 40 - adventureName.length() - 1 - rightStatus.length();
@@ -90,8 +45,7 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
         String statusBar = String.format("%s:%s%s",adventureName,spacesString.toString(),rightStatus);
         petsciiThread.write(Colors.WHITE);
         petsciiThread.print(statusBar);
-        petsciiThread.write(Colors.GREY1);
-        petsciiThread.newline();
+        petsciiThread.write(Colors.LIGHT_BLUE);
     }
 
     @Override
@@ -189,14 +143,18 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
     @Override
     public void redraw() {
-/* TODO FIX SBLEND
-        petsciiThread.write(Keys.CLR); // clear screen
-         petsciiThread.flush();                  // flush 
-         printStatusBar();
-         trimAndPrintBuffer();
-         petsciiThread.flush();
-
- */
+        petsciiThread.write(Keys.HOME);
+        printStatusBar();
+        petsciiThread.write(Keys.HOME);
+        for(int i=0; i< 24;i++){
+            petsciiThread.write(Keys.DOWN);
+        }
+        petsciiThread.print(">");
+        for(int i=0; i<this.inputCharCount;i++){
+            petsciiThread.write(Keys.RIGHT);
+        }
+        petsciiThread.flush();
+        System.out.println("redraw");
     }
 
     @Override
@@ -225,16 +183,16 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     @Override
     public void print(short zsciiChar, boolean isInput) {
         if (zsciiChar == ZsciiEncoding.NEWLINE) {
-
-            buffer.append("\n");
+            this.inputCharCount = 0;
             this.petsciiThread.newline();
           } else if (zsciiChar == 20) {
-            buffer.append(zsciiChar);
-            this.petsciiThread.write(20, 20); // TODO FIXME SBLEND
+            this.inputCharCount--;
+            this.petsciiThread.write(20); // TODO FIXME SBLEND
             this.petsciiThread.flush();
           } else {
+            this.inputCharCount++;
             char c = machine.getGameData().getZsciiEncoding().getUnicodeChar(zsciiChar);
-            buffer.append(c);
+            System.out.print(""+c);
             this.petsciiThread.print(""+c);
           }
 
