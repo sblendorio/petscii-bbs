@@ -189,11 +189,14 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
     @Override
     public void redraw() {
+/* TODO FIX SBLEND
         petsciiThread.write(Keys.CLR); // clear screen
          petsciiThread.flush();                  // flush 
          printStatusBar();
          trimAndPrintBuffer();
          petsciiThread.flush();
+
+ */
     }
 
     @Override
@@ -225,6 +228,10 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
             buffer.append("\n");
             this.petsciiThread.newline();
+          } else if (zsciiChar == 20) {
+            buffer.append(zsciiChar);
+            this.petsciiThread.write(20, 20); // TODO FIXME SBLEND
+            this.petsciiThread.flush();
           } else {
             char c = machine.getGameData().getZsciiEncoding().getUnicodeChar(zsciiChar);
             buffer.append(c);

@@ -27,20 +27,26 @@ public class BBSInputStream implements InputStream {
 
     @Override
     public short getZsciiChar(boolean flushBeforeGet) {
-        short traslatedChar;
+        short translatedChar;
         try {
             int key  = this.petsciiThread.readKey();
             System.out.println("getZsciiChar: input char: "+key);
             switch (key){
-                case Keys.RETURN: this.petsciiThread.readKey(); traslatedChar = ZsciiEncoding.NEWLINE; //skip the carriage return 
-                case Keys.DEL : traslatedChar = ZsciiEncoding.DELETE;
-                default : traslatedChar = machine.getGameData().getZsciiEncoding().getZsciiChar((char)key);
+                case Keys.RETURN: this.petsciiThread.readKey(); translatedChar = ZsciiEncoding.NEWLINE; break; //skip the carriage return
+                case Keys.DEL : translatedChar = Keys.DEL; System.out.println(ZsciiEncoding.DELETE); break; // FIXME TODO SBLEND
+                default :
+                    translatedChar = machine.getGameData().getZsciiEncoding().getZsciiChar((char)key);
+                    if (Character.isLowerCase(translatedChar))
+                        translatedChar = (short) Character.toUpperCase(translatedChar);
+                    else if (Character.isUpperCase(translatedChar))
+                        translatedChar = (short) Character.toLowerCase(translatedChar);
+                    break;
             }
             
         } catch (IOException e) {
             throw new java.lang.UnsupportedOperationException("unsupported character exception");
         }
-        return traslatedChar;
+        return translatedChar;
        
     }
 

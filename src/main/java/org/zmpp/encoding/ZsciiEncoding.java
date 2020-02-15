@@ -89,6 +89,7 @@ public class ZsciiEncoding {
     
     case NULL:
     case DELETE:
+    case 20:
     case NEWLINE:
     case ESCAPE:
       return true;

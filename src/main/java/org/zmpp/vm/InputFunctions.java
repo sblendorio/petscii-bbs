@@ -328,7 +328,6 @@ public class InputFunctions implements InputLine {
    * This is the main input loop.
    * 
    * @param textbuffer the text buffer address
-   * @param pointerstart the offset of the text pointer start, either 0 or 1
    * @param pointer the starting pointer including previous input
    * @param inputbuffer the input buffer
    * @return the terminating character
@@ -349,9 +348,12 @@ public class InputFunctions implements InputLine {
       displayCursor(false);
       
       if (zsciiChar == ZsciiEncoding.DELETE) {
-   
         newpointer = deletePreviousChar(inputbuffer, newpointer);
-        
+      } else if (zsciiChar == 20) { // TODO FIXME SBLEND
+        if (inputbuffer != null && inputbuffer.size() > 0) {
+          machine.getOutput().printZsciiChar((short) 20, false);
+        }
+        newpointer = deletePreviousChar(inputbuffer, newpointer);
       } else if (!isTerminatingCharacter(zsciiChar)) {
         
         if (history.isHistoryChar(zsciiChar)) {
