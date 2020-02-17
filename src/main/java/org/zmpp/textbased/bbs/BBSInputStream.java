@@ -30,10 +30,9 @@ public class BBSInputStream implements InputStream {
         short translatedChar;
         try {
             int key  = this.petsciiThread.readKey();
-            System.out.println("getZsciiChar: input char: "+key);
             switch (key){
                 case Keys.RETURN: this.petsciiThread.readKey(); translatedChar = ZsciiEncoding.NEWLINE; break; //skip the carriage return
-                case Keys.DEL : translatedChar = Keys.DEL; System.out.println(ZsciiEncoding.DELETE); break; // FIXME TODO SBLEND
+                case Keys.DEL : translatedChar = Keys.DEL; break;
                 default :
                     translatedChar = machine.getGameData().getZsciiEncoding().getZsciiChar((char)key);
                     if (Character.isLowerCase(translatedChar))

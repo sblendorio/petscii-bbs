@@ -225,12 +225,11 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     @Override
     public void print(short zsciiChar, boolean isInput) {
         if (zsciiChar == ZsciiEncoding.NEWLINE) {
-
             buffer.append("\n");
             this.petsciiThread.newline();
           } else if (zsciiChar == 20) {
             buffer.append(zsciiChar);
-            this.petsciiThread.write(20, 20); // TODO FIXME SBLEND
+            this.petsciiThread.write( 20);
             this.petsciiThread.flush();
           } else {
             char c = machine.getGameData().getZsciiEncoding().getUnicodeChar(zsciiChar);
@@ -242,7 +241,7 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
     @Override
     public void deletePrevious(short zchar) {
-        petsciiThread.print(""+machine.getGameData().getZsciiEncoding().getUnicodeChar(zchar));
+        // petsciiThread.print(""+machine.getGameData().getZsciiEncoding().getUnicodeChar(zchar));
 
     }
 
