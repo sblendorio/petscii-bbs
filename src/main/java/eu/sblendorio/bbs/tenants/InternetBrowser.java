@@ -81,24 +81,28 @@ public class InternetBrowser extends PetsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        do {
-            write(CLR, LOWERCASE, CASE_LOCK);
-            // write(BROWSERSPLASH);
-            writeHeader();
-            writeFooter();
+        try {
+            do {
+                write(CLR, LOWERCASE, CASE_LOCK);
+                // write(BROWSERSPLASH);
+                writeHeader();
+                writeFooter();
 
-            loadWebPage(makeUrl("w3c.org"));
-            clearBrowserWindow();
+                loadWebPage(makeUrl("w3c.org"));
+                clearBrowserWindow();
 
-            String url = focusAddressBar();
+                String url = focusAddressBar();
 
-            if ("_quit_program".equalsIgnoreCase(url)){
-                throw new CbmIOException("Exiting " + this.getClass().getSimpleName());
-            }
+                if ("_quit_program".equalsIgnoreCase(url)) {
+                    break;
+                }
 
-            loadWebPage(url);
+                loadWebPage(url);
 
-        } while (true);
+            } while (true);
+        } catch (UnsupportedOperationException ex) {
+            log("Exit browser");
+        }
     }
 
     String makeUrl(String url) {
@@ -130,7 +134,7 @@ public class InternetBrowser extends PetsciiThread {
         String url = focusAddressBar();
 
         if ("_quit_program".equalsIgnoreCase(url)) {
-            throw new CbmIOException("Exiting " + this.getClass().getSimpleName());
+            throw new UnsupportedOperationException();
         }
 
         loadWebPage(url);
@@ -213,7 +217,7 @@ public class InternetBrowser extends PetsciiThread {
                 enterAddress(currentAddress);
                 break;
             case '.':
-                throw new CbmIOException("Exiting: " + getClass().getSimpleName());
+                throw new UnsupportedOperationException();
             case 'b':
             case 'B':
                 instruction = "exit";
