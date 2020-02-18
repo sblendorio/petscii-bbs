@@ -1,16 +1,19 @@
 package org.zmpp.textbased.bbs;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import org.zmpp.vm.StatusLine;
+import org.apache.commons.text.WordUtils;
 import org.zmpp.encoding.ZsciiEncoding;
 import org.zmpp.io.OutputStream;
 import org.zmpp.vm.Machine;
 import org.zmpp.vm.ScreenModel;
+import org.zmpp.vm.StatusLine;
 import org.zmpp.vm.TextCursor;
 
 import eu.sblendorio.bbs.core.Colors;
 import eu.sblendorio.bbs.core.Keys;
-
 import eu.sblendorio.bbs.core.PetsciiThread;
 
 public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
@@ -222,10 +225,24 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
     }
 
+    protected List<String> wordWrap(String s) {
+        String[] cleaned = s.split("\n");
+        List<String> result = new ArrayList<>();
+        for (String item: cleaned) {
+            String[] wrappedLine = WordUtils
+                    .wrap(item, 39, "\n", true)
+                    .split("\n");
+            result.addAll(Arrays.asList(wrappedLine));
+        }
+        return result;
+    }
+
+
     @Override
     public void print(short zsciiChar, boolean isInput) {
         if (isInput) {
-            if (zsciiChar == ZsciiEncoding.NEWLINE) {
+            System.out.println("code = "+zsciiChar);
+            if (zsciiChar == ZsciiEncoding.NEWLINE || zsciiChar == ZsciiEncoding.NEWLINE_10) {
 //                buffer.append("\n");
                 this.petsciiThread.newline();
             } else if (zsciiChar == 20) {
@@ -239,8 +256,8 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
             }
         } else {
             if (zsciiChar == ZsciiEncoding.NEWLINE || zsciiChar == ZsciiEncoding.NEWLINE_10) {
-                buffer.append("\r");
-                this.petsciiThread.print(buffer.toString());
+                //this.petsciiThread.print(buffer.toString());
+                wordWrap(buffer.toString()).forEach(petsciiThread::println);
                 buffer = new StringBuffer(BUFFER_LENGTH);
             } else if (zsciiChar == '>') {
                 buffer.append(">");
@@ -256,7 +273,6 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     @Override
     public void deletePrevious(short zchar) {
         // petsciiThread.print(""+machine.getGameData().getZsciiEncoding().getUnicodeChar(zchar));
-
     }
 
     @Override
@@ -280,8 +296,5 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     public boolean isSelected() {
         return isSelected;
     }
-    
-    
-
 
 }

@@ -22,7 +22,6 @@ public class BBSInputStream implements InputStream {
     @Override
     public void cancelInput() {
         throw new java.lang.UnsupportedOperationException("cancelInput not yet implemented");
-
     }
 
     @Override
@@ -31,8 +30,12 @@ public class BBSInputStream implements InputStream {
         try {
             int key  = this.petsciiThread.readKey();
             switch (key){
-                case Keys.RETURN: this.petsciiThread.readKey(); translatedChar = ZsciiEncoding.NEWLINE; break; //skip the carriage return
-                case Keys.DEL : translatedChar = Keys.DEL; break;
+                case Keys.RETURN:
+                    this.petsciiThread.readKey(); // SBLEND FIX TODO ELIMINARE
+                    translatedChar = ZsciiEncoding.NEWLINE;
+                    break; //skip the carriage return
+                case Keys.DEL : translatedChar = Keys.DEL;
+                    break;
                 default :
                     translatedChar = machine.getGameData().getZsciiEncoding().getZsciiChar((char)key);
                     if (Character.isLowerCase(translatedChar))
