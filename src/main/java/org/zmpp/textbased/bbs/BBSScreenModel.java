@@ -224,19 +224,33 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
     @Override
     public void print(short zsciiChar, boolean isInput) {
-        if (zsciiChar == ZsciiEncoding.NEWLINE) {
-            buffer.append("\n");
-            this.petsciiThread.newline();
-          } else if (zsciiChar == 20) {
-            buffer.append(zsciiChar);
-            this.petsciiThread.write( 20);
-            this.petsciiThread.flush();
-          } else {
-            char c = machine.getGameData().getZsciiEncoding().getUnicodeChar(zsciiChar);
-            buffer.append(c);
-            this.petsciiThread.print(""+c);
-          }
-
+        if (isInput) {
+            if (zsciiChar == ZsciiEncoding.NEWLINE) {
+//                buffer.append("\n");
+                this.petsciiThread.newline();
+            } else if (zsciiChar == 20) {
+//                buffer.append(zsciiChar);
+                this.petsciiThread.write(20);
+                this.petsciiThread.flush();
+            } else {
+                char c = machine.getGameData().getZsciiEncoding().getUnicodeChar(zsciiChar);
+//                buffer.append(c);
+                this.petsciiThread.print("" + c);
+            }
+        } else {
+            if (zsciiChar == ZsciiEncoding.NEWLINE || zsciiChar == ZsciiEncoding.NEWLINE_10) {
+                buffer.append("\r");
+                this.petsciiThread.print(buffer.toString());
+                buffer = new StringBuffer(BUFFER_LENGTH);
+            } else if (zsciiChar == '>') {
+                buffer.append(">");
+                this.petsciiThread.print(buffer.toString());
+                buffer = new StringBuffer(BUFFER_LENGTH);
+            } else {
+                char c = machine.getGameData().getZsciiEncoding().getUnicodeChar(zsciiChar);
+                buffer.append(c);
+            }
+        }
     }
 
     @Override
