@@ -2,7 +2,7 @@
  * $Id: ConsoleMachineFactory.java,v 1.0 2019/12/11 21:00 sblendorio Exp $
  * 
  * Created on 2019/12/11
- * Copyright 2019 Francesco Sblendorio
+ * Copyright 2019 Francesco Sblendorio, Roberto Manicardi
  *
  * This file is part of The Z-machine Preservation Project (ZMPP).
  *
