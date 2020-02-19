@@ -35,7 +35,7 @@ import java.io.IOException;
 /**
  * This class implements machine creation console application (stdin/stdout);
  * 
- * @author Francesco Sblendorio
+ * @author Francesco Sblendorio, Roberto Manicardi
  * @version 1.0
  */
 public class BBSMachineFactory extends MachineFactory<VirtualConsole> {
