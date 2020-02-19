@@ -31,7 +31,6 @@ public class BBSInputStream implements InputStream {
         try {
             int key  = this.petsciiThread.readKey();
             switch (key){
-                case 10: translatedChar = -1; break;
                 case Keys.RETURN:
                     translatedChar = ZsciiEncoding.NEWLINE;
                     break; //skip the carriage return
