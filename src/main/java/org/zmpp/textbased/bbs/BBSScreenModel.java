@@ -282,13 +282,11 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     @Override
     public void flush() {
         petsciiThread.flush();
-
     }
 
     @Override
     public void select(boolean flag) {
         isSelected = flag;
-
     }
 
     @Override

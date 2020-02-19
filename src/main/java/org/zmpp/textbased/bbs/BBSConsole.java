@@ -82,7 +82,7 @@ public class BBSConsole implements VirtualConsole, SaveGameDataStore,  IOSystem 
                     petsciiThread.println("Aborted.");
                     return false;
                 }
-                saveFile = new File(currentdir + File.separator + filename);
+                saveFile = new File(currentdir + File.separator + filename + ".ziff");
                 if (saveFile.exists()) {
                     petsciiThread.println("WARNING: File already exists.");
                     petsciiThread.print("Keep going with this? (Y/N) ");
@@ -124,7 +124,7 @@ public class BBSConsole implements VirtualConsole, SaveGameDataStore,  IOSystem 
                 petsciiThread.println("Aborted.");
                 return null;
             }
-            File saveFile = new File(currentdir + File.separator + filename);
+            File saveFile = new File(currentdir + File.separator + filename + ".ziff");
             if (!saveFile.exists()) {
                 petsciiThread.println("File not found. Aborted.");
                 return null;
