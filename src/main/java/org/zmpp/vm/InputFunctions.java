@@ -346,7 +346,9 @@ public class InputFunctions implements InputLine {
       zsciiChar = machine.getInput().getSelectedInputStream().getZsciiChar(flushBeforeGet);
       flushBeforeGet = false; // all subsequent input should not flush the buffer
       displayCursor(false);
-      
+
+      if (zsciiChar == -1) continue;
+
       if (zsciiChar == ZsciiEncoding.DELETE) {
         newpointer = deletePreviousChar(inputbuffer, newpointer);
       } else if (zsciiChar == 20) { // TODO FIXME SBLEND
