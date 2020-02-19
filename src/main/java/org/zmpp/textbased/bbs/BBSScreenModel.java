@@ -241,7 +241,6 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     @Override
     public void print(short zsciiChar, boolean isInput) {
         if (isInput) {
-            System.out.println("code = "+zsciiChar);
             if (zsciiChar == ZsciiEncoding.NEWLINE || zsciiChar == ZsciiEncoding.NEWLINE_10) {
 //                buffer.append("\n");
                 this.petsciiThread.newline();

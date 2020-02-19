@@ -1,8 +1,15 @@
 package org.zmpp.textbased.bbs;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.RandomAccessFile;
 import java.io.Writer;
 import java.io.Reader;
 
+import org.zmpp.base.DefaultMemoryAccess;
+import org.zmpp.iff.DefaultFormChunk;
 import org.zmpp.iff.FormChunk;
 import org.zmpp.iff.WritableFormChunk;
 import org.zmpp.io.IOSystem;
@@ -36,11 +43,11 @@ public class BBSConsole implements VirtualConsole, SaveGameDataStore,  IOSystem 
 
     @Override
     public void runTheGame() {
-        screenModel.waitInitialized();  
+        screenModel.waitInitialized();
         machine.start();
-    
+
         while (machine.getCpu().isRunning()) {
-        
+
         Instruction instr = machine.getCpu().nextStep();
         if (this.debugMode) {
             String message = String.format("%05x: %s", machine.getCpu().getProgramCounter(),
@@ -55,13 +62,51 @@ public class BBSConsole implements VirtualConsole, SaveGameDataStore,  IOSystem 
     /** SaveGameDataStore */
     @Override
     public boolean saveFormChunk(final WritableFormChunk formchunk) {
-        throw new java.lang.UnsupportedOperationException("Save game not yet implemented");
+        RandomAccessFile raf = null;
+        String currentdir = new File(System.getProperty("user.dir")).getAbsolutePath();
+        try {
+            petsciiThread.newline();
+            petsciiThread.print("Filename: ");
+            petsciiThread.flush();
+            petsciiThread.resetInput();
+            String filename = petsciiThread.readLine();
+            File savefile = new File(currentdir + File.pathSeparatorChar + filename);
+            raf = new RandomAccessFile(savefile, "rw");
+            byte[] data = formchunk.getBytes();
+            raf.write(data);
+            return true;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (raf != null) try { raf.close(); } catch (Exception ex) { }
+        }
+
+        return false;
     }
 
     /** SaveGameDataStore */
     @Override
     public FormChunk retrieveFormChunk() {
-        throw new java.lang.UnsupportedOperationException("Load game not yet implemented");
+        RandomAccessFile raf = null;
+        String currentdir = new File(System.getProperty("user.dir")).getAbsolutePath();
+        try {
+            petsciiThread.newline();
+            petsciiThread.print("Filename: ");
+            petsciiThread.flush();
+            petsciiThread.resetInput();
+            String filename = petsciiThread.readLine();
+            File savefile = new File(currentdir + File.pathSeparatorChar + filename);
+            raf = new RandomAccessFile(savefile, "r");
+            byte[] data = new byte[(int) raf.length()];
+            raf.readFully(data);
+            return new DefaultFormChunk(new DefaultMemoryAccess(data));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (raf != null) try { raf.close(); } catch (Exception ex) { }
+        }
+
+        return null;
     }
 
     /** IOSystem */
