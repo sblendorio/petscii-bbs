@@ -70,7 +70,7 @@ public class BBSConsole implements VirtualConsole, SaveGameDataStore,  IOSystem 
             petsciiThread.flush();
             petsciiThread.resetInput();
             String filename = petsciiThread.readLine();
-            File savefile = new File(currentdir + File.pathSeparatorChar + filename);
+            File savefile = new File(currentdir + File.separator + filename);
             raf = new RandomAccessFile(savefile, "rw");
             byte[] data = formchunk.getBytes();
             raf.write(data);
@@ -95,7 +95,7 @@ public class BBSConsole implements VirtualConsole, SaveGameDataStore,  IOSystem 
             petsciiThread.flush();
             petsciiThread.resetInput();
             String filename = petsciiThread.readLine();
-            File savefile = new File(currentdir + File.pathSeparatorChar + filename);
+            File savefile = new File(currentdir + File.separator + filename);
             raf = new RandomAccessFile(savefile, "r");
             byte[] data = new byte[(int) raf.length()];
             raf.readFully(data);
