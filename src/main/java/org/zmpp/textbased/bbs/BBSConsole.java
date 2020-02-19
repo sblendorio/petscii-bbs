@@ -1,5 +1,9 @@
 package org.zmpp.textbased.bbs;
 
+import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.prependIfMissing;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,6 +12,7 @@ import java.io.RandomAccessFile;
 import java.io.Writer;
 import java.io.Reader;
 
+import org.apache.commons.lang3.StringUtils;
 import org.zmpp.base.DefaultMemoryAccess;
 import org.zmpp.iff.DefaultFormChunk;
 import org.zmpp.iff.FormChunk;
@@ -66,12 +71,32 @@ public class BBSConsole implements VirtualConsole, SaveGameDataStore,  IOSystem 
         String currentdir = new File(System.getProperty("user.dir")).getAbsolutePath();
         try {
             petsciiThread.newline();
-            petsciiThread.print("Filename: ");
-            petsciiThread.flush();
-            petsciiThread.resetInput();
-            String filename = petsciiThread.readLine();
-            File savefile = new File(currentdir + File.separator + filename);
-            raf = new RandomAccessFile(savefile, "rw");
+            File saveFile;
+            boolean sure = true;
+            do {
+                petsciiThread.print("Filename: ");
+                petsciiThread.flush();
+                petsciiThread.resetInput();
+                String filename = petsciiThread.readLine();
+                if (isBlank(filename)) {
+                    petsciiThread.println("Aborted.");
+                    return false;
+                }
+                saveFile = new File(currentdir + File.separator + filename);
+                if (saveFile.exists()) {
+                    petsciiThread.println("WARNING: File already exists.");
+                    petsciiThread.print("Keep going with this? (Y/N) ");
+                    petsciiThread.flush();
+                    petsciiThread.resetInput();
+                    String line = petsciiThread.readLine();
+                    if (isBlank(line)) {
+                        petsciiThread.println("Aborted.");
+                        return false;
+                    }
+                    sure = defaultString(line).trim().toLowerCase().equals("y");
+                }
+            } while (!sure);
+            raf = new RandomAccessFile(saveFile, "rw");
             byte[] data = formchunk.getBytes();
             raf.write(data);
             return true;
@@ -95,8 +120,16 @@ public class BBSConsole implements VirtualConsole, SaveGameDataStore,  IOSystem 
             petsciiThread.flush();
             petsciiThread.resetInput();
             String filename = petsciiThread.readLine();
-            File savefile = new File(currentdir + File.separator + filename);
-            raf = new RandomAccessFile(savefile, "r");
+            if (isBlank(filename)) {
+                petsciiThread.println("Aborted.");
+                return null;
+            }
+            File saveFile = new File(currentdir + File.separator + filename);
+            if (!saveFile.exists()) {
+                petsciiThread.println("File not found. Aborted.");
+                return null;
+            }
+            raf = new RandomAccessFile(saveFile, "r");
             byte[] data = new byte[(int) raf.length()];
             raf.readFully(data);
             return new DefaultFormChunk(new DefaultMemoryAccess(data));
