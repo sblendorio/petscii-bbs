@@ -99,31 +99,29 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
     @Override
     public void reset() {
-        throw new java.lang.UnsupportedOperationException("reset not yet implemented");
-
+        petsciiThread.log("reset not yet implemented");
     }
 
     @Override
     public void splitWindow(int linesUpperWindow) {
-        throw new java.lang.UnsupportedOperationException("splitWindow not yet implemented");
-
+        petsciiThread.log("splitWindow not yet implemented");
     }
 
     @Override
     public void setWindow(int window) {
-        throw new java.lang.UnsupportedOperationException("setWindow not yet implemented");
+        petsciiThread.log("setWindow not yet implemented");
 
     }
 
     @Override
     public void setTextStyle(int style) {
-        throw new java.lang.UnsupportedOperationException("setTextStyle not yet implemented");
+        petsciiThread.log("setTextStyle not yet implemented");
 
     }
 
     @Override
     public void setBufferMode(boolean flag) {
-        throw new java.lang.UnsupportedOperationException("setBufferMode not yet implemented");
+        petsciiThread.log("setBufferMode not yet implemented");
 
     }
 
@@ -150,44 +148,42 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
     @Override
     public void eraseWindow(int window) {
-        throw new java.lang.UnsupportedOperationException("eraseWindow not yet implemented");
+        petsciiThread.log("eraseWindow not yet implemented");
 
     }
 
     @Override
     public void setTextCursor(int line, int column, int window) {
-        throw new java.lang.UnsupportedOperationException("setTextCursor not yet implemented");
+        petsciiThread.log("setTextCursor not yet implemented");
 
     }
 
     @Override
     public TextCursor getTextCursor() {
-        throw new java.lang.UnsupportedOperationException("getTextCursor not yet implemented");
-
+        petsciiThread.log("getTextCursor not yet implemented");
+        return null;
     }
 
     @Override
     public void setPaging(boolean flag) {
-        throw new java.lang.UnsupportedOperationException("setPaging not yet implemented");
+        petsciiThread.log("setPaging not yet implemented");
 
     }
 
     @Override
     public int setFont(int fontnumber) {
-        throw new java.lang.UnsupportedOperationException("setFont not yet implemented");
-
+        petsciiThread.log("setFont not yet implemented");
+        return 0;
     }
 
     @Override
     public void setBackgroundColor(int colornumber, int window) {
-        throw new java.lang.UnsupportedOperationException("setBackgroundColor not yet implemented");
-
+        petsciiThread.log("setBackgroundColor not yet implemented");
     }
 
     @Override
     public void setForegroundColor(int colornumber, int window) {
-        throw new java.lang.UnsupportedOperationException("setForegroundColor not yet implemented");
-
+        petsciiThread.log("setForegroundColor not yet implemented");
     }
 
     @Override
