@@ -203,10 +203,7 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     }
 
     @Override
-    public void displayCursor(boolean flag) {
-        //throw new java.lang.UnsupportedOperationException("displayCursor not yet implemented");
-
-    }
+    public void displayCursor(boolean flag) {}
 
     @Override
     public OutputStream getOutputStream() {
@@ -214,16 +211,10 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     }
 
     @Override
-    public void waitInitialized() {
-        // TODO Auto-generated method stub
-
-    }
+    public void waitInitialized() {}
 
     @Override
-    public void resetPagers() {
-        // TODO Auto-generated method stub
-
-    }
+    public void resetPagers() {}
 
     protected List<String> wordWrap(String s) {
         String[] cleaned = s.split("\n");
@@ -237,30 +228,30 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
         return result;
     }
 
-
     @Override
     public void print(short zsciiChar, boolean isInput) {
         if (isInput) {
             if (zsciiChar == ZsciiEncoding.NEWLINE || zsciiChar == ZsciiEncoding.NEWLINE_10) {
-//                buffer.append("\n");
-                this.petsciiThread.newline();
-            } else if (zsciiChar == 20) {
-//                buffer.append(zsciiChar);
-                this.petsciiThread.write(20);
-                this.petsciiThread.flush();
-            } else {
+                petsciiThread.newline();
+                petsciiThread.flush();
+            } else if (zsciiChar != ZsciiEncoding.INSTDEL && zsciiChar != -1) {
                 char c = machine.getGameData().getZsciiEncoding().getUnicodeChar(zsciiChar);
-//                buffer.append(c);
-                this.petsciiThread.print("" + c);
+                petsciiThread.print("" + c);
+                petsciiThread.flush();
             }
         } else {
             if (zsciiChar == ZsciiEncoding.NEWLINE || zsciiChar == ZsciiEncoding.NEWLINE_10) {
-                //this.petsciiThread.print(buffer.toString());
                 wordWrap(buffer.toString()).forEach(petsciiThread::println);
+                petsciiThread.flush();
                 buffer = new StringBuffer(BUFFER_LENGTH);
             } else if (zsciiChar == '>') {
                 buffer.append(">");
-                this.petsciiThread.print(buffer.toString());
+                List<String> lines = wordWrap(buffer.toString());
+                for (int i=0; i<lines.size(); ++i) {
+                    petsciiThread.print(lines.get(i));
+                    if (i != lines.size()-1) petsciiThread.newline();
+                }
+                petsciiThread.flush();
                 buffer = new StringBuffer(BUFFER_LENGTH);
             } else {
                 char c = machine.getGameData().getZsciiEncoding().getUnicodeChar(zsciiChar);
@@ -271,7 +262,7 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
     @Override
     public void deletePrevious(short zchar) {
-        // petsciiThread.print(""+machine.getGameData().getZsciiEncoding().getUnicodeChar(zchar));
+        this.petsciiThread.write(ZsciiEncoding.INSTDEL);
     }
 
     @Override

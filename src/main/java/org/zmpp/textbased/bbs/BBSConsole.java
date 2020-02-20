@@ -93,7 +93,8 @@ public class BBSConsole implements VirtualConsole, SaveGameDataStore,  IOSystem 
                         petsciiThread.println("Aborted.");
                         return false;
                     }
-                    sure = defaultString(line).trim().toLowerCase().equals("y");
+                    final String response = defaultString(line).trim().toLowerCase();
+                    sure = response.equals("y") || response.equals("yes");
                 }
             } while (!sure);
             raf = new RandomAccessFile(saveFile, "rw");
