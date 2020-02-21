@@ -6,6 +6,7 @@ import org.zmpp.encoding.ZsciiEncoding;
 import org.zmpp.io.InputStream;
 import org.zmpp.vm.Machine;
 
+import eu.sblendorio.bbs.core.CbmIOException;
 import eu.sblendorio.bbs.core.Keys;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.Utils;
@@ -22,7 +23,7 @@ public class BBSInputStream implements InputStream {
 
     @Override
     public void cancelInput() {
-        throw new java.lang.UnsupportedOperationException("cancelInput not yet implemented");
+        petsciiThread.log("cancelInput not yet implemented");
     }
 
     @Override
@@ -48,9 +49,8 @@ public class BBSInputStream implements InputStream {
                     }
                     break;
             }
-            
         } catch (IOException e) {
-            throw new java.lang.UnsupportedOperationException("unsupported character exception");
+            return -1;
         }
         return translatedChar;
        
@@ -58,8 +58,7 @@ public class BBSInputStream implements InputStream {
 
     @Override
     public void close() {
-        throw new java.lang.UnsupportedOperationException("close not yet implemented");
-
+        throw new RuntimeException("Exit from ZMPP game");
     }
 
 }

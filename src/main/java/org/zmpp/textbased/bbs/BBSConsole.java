@@ -146,13 +146,15 @@ public class BBSConsole implements VirtualConsole, SaveGameDataStore,  IOSystem 
     /** IOSystem */
     @Override
     public Writer getTranscriptWriter() {
-        throw new java.lang.UnsupportedOperationException("Transcript of game not yet implemented");
+        petsciiThread.log("Transcript of game not yet implemented");
+        return null;
     }
 
     /** IOSystem */
     @Override
     public Reader getInputStreamReader() {
-        throw new java.lang.UnsupportedOperationException("Inputting commands from file not yet implemented");
+        petsciiThread.log("Inputting commands from file not yet implemented");
+        return null;
     }
 
     public ScreenModel getScreenModel(){
