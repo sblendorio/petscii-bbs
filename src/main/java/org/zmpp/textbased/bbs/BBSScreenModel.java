@@ -20,7 +20,6 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
     PetsciiThread petsciiThread;
     Machine machine;
-    BBSInputStream cliInputStream;
     StringBuffer buffer;
 
     String adventureName = "";
@@ -28,7 +27,6 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     int steps = 0;
     int hours = 0;
     int minutes = 0;
-
 
     static int BUFFER_LENGTH = 880; // = 40 columns x 22 rows (+1 for title + 2 for input)  
 
@@ -70,9 +68,6 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
         buffer.append(newContent);
 
         cbmPrintString(buffer.toString());
-
-
-        
     }
 
     private void cbmPrintString(String value){
@@ -110,19 +105,16 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     @Override
     public void setWindow(int window) {
         petsciiThread.log("setWindow not yet implemented");
-
     }
 
     @Override
     public void setTextStyle(int style) {
         petsciiThread.log("setTextStyle not yet implemented");
-
     }
 
     @Override
     public void setBufferMode(boolean flag) {
         petsciiThread.log("setBufferMode not yet implemented");
-
     }
 
     @Override
@@ -143,19 +135,16 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     public void eraseLine(int value) {
         petsciiThread.write(Keys.HOME);
         petsciiThread.flush();
-
     }
 
     @Override
     public void eraseWindow(int window) {
         petsciiThread.log("eraseWindow not yet implemented");
-
     }
 
     @Override
     public void setTextCursor(int line, int column, int window) {
         petsciiThread.log("setTextCursor not yet implemented");
-
     }
 
     @Override
@@ -167,7 +156,6 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     @Override
     public void setPaging(boolean flag) {
         petsciiThread.log("setPaging not yet implemented");
-
     }
 
     @Override
@@ -263,7 +251,6 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
     @Override
     public void close() {
-
     }
 
     @Override

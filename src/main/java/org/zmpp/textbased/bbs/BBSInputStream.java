@@ -53,7 +53,6 @@ public class BBSInputStream implements InputStream {
             return -1;
         }
         return translatedChar;
-       
     }
 
     @Override
