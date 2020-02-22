@@ -81,7 +81,7 @@ public class TranscriptOutputStream implements OutputStream {
         
         flush();
         
-      } else if (zsciiChar == ZsciiEncoding.DELETE || zsciiChar == 20) {
+      } else if (zsciiChar == ZsciiEncoding.DELETE || zsciiChar == ZsciiEncoding.INSTDEL) {
         linebuffer.deleteCharAt(linebuffer.length() - 1);
         
       } else {

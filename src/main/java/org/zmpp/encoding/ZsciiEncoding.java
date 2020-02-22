@@ -40,6 +40,7 @@ public class ZsciiEncoding {
 
   public static final short NULL          = 0;
   public static final short DELETE        = 8;
+  public static final short INSTDEL       = 20;
   public static final short NEWLINE_10    = 10;
   public static final short NEWLINE       = 13;
   public static final short ESCAPE        = 27;
@@ -89,7 +90,7 @@ public class ZsciiEncoding {
     
     case NULL:
     case DELETE:
-    case 20:
+    case INSTDEL:
     case NEWLINE:
     case ESCAPE:
       return true;
