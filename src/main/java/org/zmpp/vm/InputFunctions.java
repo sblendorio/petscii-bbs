@@ -351,7 +351,7 @@ public class InputFunctions implements InputLine {
         newpointer = deletePreviousChar(inputbuffer, newpointer);
       } else if (zsciiChar == 20) { // TODO FIXME SBLEND
         if (inputbuffer != null && inputbuffer.size() > 0) {
-          machine.getOutput().printZsciiChar((short) 20, false);
+          machine.getOutput().printZsciiChar((short) 20, true);
         }
         newpointer = deletePreviousChar(inputbuffer, newpointer);
       } else if (!isTerminatingCharacter(zsciiChar)) {

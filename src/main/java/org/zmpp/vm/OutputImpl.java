@@ -86,8 +86,6 @@ public class OutputImpl implements Output {
    * {@inheritDoc}
    */
   public void printZsciiChar(final short zchar, final boolean isInput) {
-    
-    //System.out.println("printZsciiChar: '" + (char) zchar + "'");
     zchars[0] = zchar;
     printZsciiChars(new ZsciiString(zchars), isInput);
   }
@@ -122,24 +120,21 @@ public class OutputImpl implements Output {
     checkTranscriptFlag();
     
     if (outputStream[OUTPUTSTREAM_MEMORY - 1].isSelected()) {
-      
+
       for (int i = 0, n = zsciiString.length(); i < n; i++) {
-        
         outputStream[OUTPUTSTREAM_MEMORY - 1].print(zsciiString.charAt(i), isInput);
       }
       
     } else {
-    
+
       for (int i = 0; i < outputStream.length; i++) {
-      
         if (outputStream[i] != null && outputStream[i].isSelected()) {
-      
           for (int j = 0, n = zsciiString.length(); j < n; j++) {
-          
             outputStream[i].print(zsciiString.charAt(j), isInput);
           }
         }
       }
+
     }
   }
   

@@ -1,16 +1,19 @@
 package org.zmpp.textbased.bbs;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import org.zmpp.vm.StatusLine;
+import org.apache.commons.text.WordUtils;
 import org.zmpp.encoding.ZsciiEncoding;
 import org.zmpp.io.OutputStream;
 import org.zmpp.vm.Machine;
 import org.zmpp.vm.ScreenModel;
+import org.zmpp.vm.StatusLine;
 import org.zmpp.vm.TextCursor;
 
 import eu.sblendorio.bbs.core.Colors;
 import eu.sblendorio.bbs.core.Keys;
-
 import eu.sblendorio.bbs.core.PetsciiThread;
 
 public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
@@ -180,28 +183,25 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
     }
 
+
     @Override
     public void print(short zsciiChar, boolean isInput) {
         if (zsciiChar == ZsciiEncoding.NEWLINE) {
-            this.inputCharCount = 0;
             this.petsciiThread.newline();
           } else if (zsciiChar == 20) {
-            this.inputCharCount--;
-            this.petsciiThread.write(20); // TODO FIXME SBLEND
+            this.petsciiThread.write( 20);
             this.petsciiThread.flush();
+            this.inputCharCount--;
           } else {
-            this.inputCharCount++;
             char c = machine.getGameData().getZsciiEncoding().getUnicodeChar(zsciiChar);
-            System.out.print(""+c);
             this.petsciiThread.print(""+c);
+            this.inputCharCount++;
           }
-
     }
 
     @Override
     public void deletePrevious(short zchar) {
-        petsciiThread.print(""+machine.getGameData().getZsciiEncoding().getUnicodeChar(zchar));
-
+        // petsciiThread.print(""+machine.getGameData().getZsciiEncoding().getUnicodeChar(zchar));
     }
 
     @Override
@@ -225,8 +225,5 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     public boolean isSelected() {
         return isSelected;
     }
-    
-    
-
 
 }
