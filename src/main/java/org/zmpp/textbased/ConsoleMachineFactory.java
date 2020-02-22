@@ -2,7 +2,7 @@
  * $Id: ConsoleMachineFactory.java,v 1.0 2019/12/11 21:00 sblendorio Exp $
  * 
  * Created on 2019/12/11
- * Copyright 2019 Francesco Sblendorio
+ * Copyright 2019 Francesco Sblendorio, Roberto Manicardi
  *
  * This file is part of The Z-machine Preservation Project (ZMPP).
  *
@@ -34,7 +34,7 @@ import java.io.IOException;
 /**
  * This class implements machine creation console application (stdin/stdout);
  * 
- * @author Francesco Sblendorio
+ * @author Francesco Sblendorio, Roberto Manicardi
  * @version 1.0
  */
 public class ConsoleMachineFactory extends MachineFactory<VirtualConsole> {

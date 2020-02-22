@@ -1,5 +1,6 @@
 package org.zmpp.textbased.bbs;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +21,6 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
     PetsciiThread petsciiThread;
     Machine machine;
-    BBSInputStream cliInputStream;
 
     String adventureName = "";
     int score = 0;
@@ -30,7 +30,6 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
     int inputCharCount = 0;
 
-
     
     private boolean isSelected = false;
 
@@ -38,6 +37,8 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
         this.petsciiThread = petsciiThread;
         this.machine = machine;
     }
+
+
     private void printStatusBar(){
         String rightStatus = score+"/"+steps;
         int spaces = 40 - adventureName.length() - 1 - rightStatus.length();
@@ -48,37 +49,32 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
         String statusBar = String.format("%s:%s%s",adventureName,spacesString.toString(),rightStatus);
         petsciiThread.write(Colors.WHITE);
         petsciiThread.print(statusBar);
-        petsciiThread.write(Colors.LIGHT_BLUE);
+        petsciiThread.write(Colors.GREY3);
     }
 
     @Override
     public void reset() {
-        throw new java.lang.UnsupportedOperationException("reset not yet implemented");
-
+        petsciiThread.log("reset not yet implemented");
     }
 
     @Override
     public void splitWindow(int linesUpperWindow) {
-        throw new java.lang.UnsupportedOperationException("splitWindow not yet implemented");
-
+        petsciiThread.log("splitWindow not yet implemented");
     }
 
     @Override
     public void setWindow(int window) {
-        throw new java.lang.UnsupportedOperationException("setWindow not yet implemented");
-
+        petsciiThread.log("setWindow not yet implemented");
     }
 
     @Override
     public void setTextStyle(int style) {
-        throw new java.lang.UnsupportedOperationException("setTextStyle not yet implemented");
-
+        petsciiThread.log("setTextStyle not yet implemented");
     }
 
     @Override
     public void setBufferMode(boolean flag) {
-        throw new java.lang.UnsupportedOperationException("setBufferMode not yet implemented");
-
+        petsciiThread.log("setBufferMode not yet implemented");
     }
 
     @Override
@@ -99,49 +95,43 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     public void eraseLine(int value) {
         petsciiThread.write(Keys.HOME);
         petsciiThread.flush();
-
     }
 
     @Override
     public void eraseWindow(int window) {
-        throw new java.lang.UnsupportedOperationException("eraseWindow not yet implemented");
-
+        petsciiThread.log("eraseWindow not yet implemented");
     }
 
     @Override
     public void setTextCursor(int line, int column, int window) {
-        throw new java.lang.UnsupportedOperationException("setTextCursor not yet implemented");
-
+        petsciiThread.log("setTextCursor not yet implemented");
     }
 
     @Override
     public TextCursor getTextCursor() {
-        throw new java.lang.UnsupportedOperationException("getTextCursor not yet implemented");
-
+        petsciiThread.log("getTextCursor not yet implemented");
+        return null;
     }
 
     @Override
     public void setPaging(boolean flag) {
-        throw new java.lang.UnsupportedOperationException("setPaging not yet implemented");
-
+        petsciiThread.log("setPaging not yet implemented");
     }
 
     @Override
     public int setFont(int fontnumber) {
-        throw new java.lang.UnsupportedOperationException("setFont not yet implemented");
-
+        petsciiThread.log("setFont not yet implemented");
+        return 0;
     }
 
     @Override
     public void setBackgroundColor(int colornumber, int window) {
-        throw new java.lang.UnsupportedOperationException("setBackgroundColor not yet implemented");
-
+        petsciiThread.log("setBackgroundColor not yet implemented");
     }
 
     @Override
     public void setForegroundColor(int colornumber, int window) {
-        throw new java.lang.UnsupportedOperationException("setForegroundColor not yet implemented");
-
+        petsciiThread.log("setForegroundColor not yet implemented");
     }
 
     @Override
@@ -157,14 +147,10 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
             petsciiThread.write(Keys.RIGHT);
         }
         petsciiThread.flush();
-        System.out.println("redraw");
     }
 
     @Override
-    public void displayCursor(boolean flag) {
-        //throw new java.lang.UnsupportedOperationException("displayCursor not yet implemented");
-
-    }
+    public void displayCursor(boolean flag) {}
 
     @Override
     public OutputStream getOutputStream() {
@@ -172,53 +158,56 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     }
 
     @Override
-    public void waitInitialized() {
-        // TODO Auto-generated method stub
-
-    }
+    public void waitInitialized() {}
 
     @Override
-    public void resetPagers() {
-        // TODO Auto-generated method stub
+    public void resetPagers() {}
 
+    protected List<String> wordWrap(String s) {
+        String[] cleaned = s.split("\n");
+        List<String> result = new ArrayList<>();
+        for (String item: cleaned) {
+            String[] wrappedLine = WordUtils
+                    .wrap(item, 39, "\n", true)
+                    .split("\n");
+            result.addAll(Arrays.asList(wrappedLine));
+        }
+        return result;
     }
-
 
     @Override
     public void print(short zsciiChar, boolean isInput) {
-        if (zsciiChar == ZsciiEncoding.NEWLINE) {
-            this.petsciiThread.newline();
-          } else if (zsciiChar == 20) {
-            this.petsciiThread.write( 20);
-            this.petsciiThread.flush();
-            this.inputCharCount--;
-          } else {
+        if (zsciiChar == ZsciiEncoding.NEWLINE || zsciiChar == ZsciiEncoding.NEWLINE_10) {
+            petsciiThread.newline();
+            petsciiThread.flush();
+            this.inputCharCount=0;
+        } else if (zsciiChar != ZsciiEncoding.INSTDEL && zsciiChar != -1) {
             char c = machine.getGameData().getZsciiEncoding().getUnicodeChar(zsciiChar);
-            this.petsciiThread.print(""+c);
+            petsciiThread.print("" + c);
+            petsciiThread.flush();
             this.inputCharCount++;
-          }
+        }else{
+            this.inputCharCount--;
+        }
     }
 
     @Override
     public void deletePrevious(short zchar) {
-        // petsciiThread.print(""+machine.getGameData().getZsciiEncoding().getUnicodeChar(zchar));
+        this.petsciiThread.write(ZsciiEncoding.INSTDEL);
     }
 
     @Override
     public void close() {
-
     }
 
     @Override
     public void flush() {
         petsciiThread.flush();
-
     }
 
     @Override
     public void select(boolean flag) {
         isSelected = flag;
-
     }
 
     @Override
