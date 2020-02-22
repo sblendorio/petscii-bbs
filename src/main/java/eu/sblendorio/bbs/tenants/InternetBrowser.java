@@ -203,10 +203,12 @@ public class InternetBrowser extends PetsciiThread {
     }
 
     void logPaging(Pager pager, List<String> rows){
+        /*
         log("Current Row: " + Integer.toString(pager.currentRow));
         log("Rows: " + Integer.toString(rows.size()));
         log("Page: " + Integer.toString(pager.page));
         log("Prior Page Start Row: " + Integer.toString((pager.page - 1 )* __screenRows));
+         */
     }
 
     String promptForUserInput(Pager pager, Document webpage, String currentAddress, boolean startOfDocument, boolean endOfDocument) throws Exception {
