@@ -290,7 +290,6 @@ public class InternetBrowser extends PetsciiThread {
     }
 
     String formattedWebpage(Document webpage){
-        log("WPA=" + (webpage==null ? "": webpage.toString()));
         final String result = webpage == null ? "" :webpage
                 .toString()
                 .replaceAll("<img [^>]*?>", "<br>[IMAGE] ")
@@ -302,7 +301,6 @@ public class InternetBrowser extends PetsciiThread {
                 .replaceAll("(?is)<script(\\s|>).*?</script>", EMPTY)
                 .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(</?(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
                 .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r)*)+", EMPTY);
-        //log("wpage="+result);
         return result;
     }
 
@@ -328,8 +326,6 @@ public class InternetBrowser extends PetsciiThread {
 
 //        gotoXY(0, pager.currentRow % __screenRows + 3);
         println(row);
-
-        System.out.println("> " + row);
 
         if (matchesLink || matchesImage) {
             write(GREY3);
@@ -474,12 +470,12 @@ public class InternetBrowser extends PetsciiThread {
         return urls;
     }
 
-    public static Document getWebpage(String url) throws Exception {
+    public Document getWebpage(String url) throws Exception {
         Connection conn;
         try {
             conn = Jsoup.connect(url);
         } catch (Exception e1) {
-            System.out.println("Couldn't connect with the website.");
+            log("Couldn't connect with the website.");
             return null;
         }
         return conn
