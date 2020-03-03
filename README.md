@@ -65,7 +65,7 @@ All you have to do now is to build and run the BBS on your server, ready to be c
 ## Building the server
 Once you have written your own BBS as an extension of *PetsciiThread* class, simply build the *fat jar* with this command:
 
-    mvn package
+    mvn clean package
 
 The build process will result in the file **petscii-bbs.jar**, it will be found in the **target** directory. So you can run it with:
 
