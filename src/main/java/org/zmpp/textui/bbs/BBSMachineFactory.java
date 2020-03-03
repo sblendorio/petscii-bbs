@@ -20,7 +20,7 @@
  * along with ZMPP; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.zmpp.textbased.bbs;
+package org.zmpp.textui.bbs;
 
 
 import org.zmpp.io.IOSystem;
@@ -29,7 +29,7 @@ import org.zmpp.vm.*;
 
 import eu.sblendorio.bbs.core.PetsciiThread;
 
-import org.zmpp.textbased.VirtualConsole;
+import org.zmpp.textui.VirtualConsole;
 import java.io.IOException;
 
 /**
@@ -74,16 +74,28 @@ public class BBSMachineFactory extends MachineFactory<VirtualConsole> {
     return bbsConsole;
   }
 
-  public VirtualConsole getUI() { return console; }
+  public VirtualConsole getUI() {
+    return console;
+  }
 
-  protected IOSystem getIOSystem() { return ioSystem; }
+  protected IOSystem getIOSystem() {
+    return ioSystem;
+  }
 
-  protected InputStream getKeyboardInputStream() { return inputStream; }
+  protected InputStream getKeyboardInputStream() {
+    return inputStream;
+  }
 
-  protected StatusLine getStatusLine() { return statusLine; }
+  protected StatusLine getStatusLine() {
+    return statusLine;
+  }
 
-  protected ScreenModel getScreenModel() { return screenModel; }
+  protected ScreenModel getScreenModel() {
+    return screenModel;
+  }
 
-  protected SaveGameDataStore getSaveGameDataStore() { return saveGameDataStore; }
+  protected SaveGameDataStore getSaveGameDataStore() {
+    return saveGameDataStore;
+  }
 
 }

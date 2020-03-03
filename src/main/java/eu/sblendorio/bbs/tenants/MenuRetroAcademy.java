@@ -75,19 +75,23 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(5, delta + 8); write(REVON); print(" 4 "); write(REVOFF); print(" MedBunker");
             gotoXY(5, delta + 9); write(REVON); print(" 5 "); write(REVOFF); print(" Fatto Quotidiano");
             gotoXY(5, delta + 10); write(REVON); print(" 6 "); write(REVOFF); print(" IndieRetroNews");
-            gotoXY(5, delta + 11); write(REVON); print(" 7 "); write(REVOFF); print(" Open Online");
+            gotoXY(5, delta + 11); write(REVON); print(" 7 "); write(REVOFF); print(" Archeologia Informatica");
             gotoXY(5, delta + 12); write(REVON); print(" 8 "); write(REVOFF); print(" Il Post");
 
-            gotoXY(24, delta + 11); write(WHITE); print("Games"); write(GREY3);
-            gotoXY(24, delta + 13); write(REVON); print(" X "); write(REVOFF); print(" TIC-TAC-TOE");
-            gotoXY(24, delta + 14); write(REVON); print(" C "); write(REVOFF); print(" CONNECT-4");
-            gotoXY(24, delta + 15); write(REVON); print(" F "); write(REVOFF); print(" MAGIC-15");
+            gotoXY(24, delta + 13); write(WHITE); print("Games"); write(GREY3);
+            gotoXY(24, delta + 15); write(REVON); print(" E "); write(REVOFF); print(" TIC-TAC-TOE");
+            gotoXY(24, delta + 16); write(REVON); print(" C "); write(REVOFF); print(" CONNECT-4");
+            gotoXY(24, delta + 17); write(REVON); print(" F "); write(REVOFF); print(" MAGIC-15");
+            gotoXY(24, delta + 18); write(REVON); print(" X "); write(REVOFF); print(" Zork I");
+            gotoXY(24, delta + 19); write(REVON); print(" Y "); write(REVOFF); print(" Zork II");
+            gotoXY(24, delta + 20); write(REVON); print(" Z "); write(REVOFF); print(" Zork III");
 
             gotoXY(6, delta + 14); write(WHITE); print("Misc"); write(GREY3);
             gotoXY(6, delta + 16); write(REVON); print(" S "); write(REVOFF); print(" Sportal.IT");
             gotoXY(6, delta + 17); write(REVON); print(" L "); write(REVOFF); print(" Le ossa");
             gotoXY(6, delta + 18); write(REVON); print(" P "); write(REVOFF); print(" PETSCII Art");
-            gotoXY(6, delta + 19); write(REVON); print(" . "); write(REVOFF); print(" Logoff");
+            gotoXY(6, delta + 19); write(REVON); print(" K "); write(REVOFF); print(" CSDb SD2IEC");
+            gotoXY(6, delta + 20); write(REVON); print(" . "); write(REVOFF); print(" Logoff");
 
             gotoXY(26, delta + 4); write(WHITE); print("Servizi"); write(GREY3);
             gotoXY(26, delta + 6); write(REVON); print(" M "); write(REVOFF); print(" Messaggi");
@@ -95,11 +99,8 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(26, delta + 8); write(REVON); print(" D "); write(REVOFF); print(" CSDb");
             gotoXY(26, delta + 9); write(REVON); print(" A "); write(REVOFF); print(" Arnold 64");
 
-            gotoXY(24, delta + 17); write(WHITE); print("Experimental"); write(GREY3);
-            gotoXY(24, delta + 19); write(REVON); print(" K "); write(REVOFF); print(" CSDb SD2IEC");
-
             //final String line = geoData != null ? "Connected from "+geoData.city+", "+geoData.country : EMPTY;
-            final String line = "(C) F. Sblendorio in 2018, 2019";
+            final String line = "(C) F. Sblendorio in 2018-2020";
             gotoXY((39-line.length()) / 2, 23);
             write(GREY3); print(line);
 
@@ -123,9 +124,9 @@ public class MenuRetroAcademy extends PetsciiThread {
                     else if (key == '4') launch(new Medbunker());
                     else if (key == '5') launch(new IlFattoQuotidiano());
                     else if (key == '6') launch(new IndieRetroNews());
-                    else if (key == '7') launch(new OpenOnline());
+                    else if (key == '7') launch(new ArcheologiaInformatica());
                     else if (key == '8') launch(new IlPost());
-                    else if (key == 'x') launch(new TicTacToe());
+                    else if (key == 'e') launch(new TicTacToe());
                     else if (key == 'c') launch(new ConnectFour());
                     else if (key == 'f') launch(new Magic15());
                     else if (key == 's') launch(new Sportal());
@@ -136,6 +137,9 @@ public class MenuRetroAcademy extends PetsciiThread {
                     else if (key == 'd') launch(new CsdbReleases());
                     else if (key == 'a') launch(new ArnoldC64());
                     else if (key == 'k') launch(new CsdbReleasesSD2IEC());
+                    else if (key == 'x') launch(new ZorkMachine("zmpp/zork1.z3"));
+                    else if (key == 'y') launch(new ZorkMachine("zmpp/zork2.z3"));
+                    else if (key == 'z') launch(new ZorkMachine("zmpp/zork3.z3"));
                     else validKey = false;
             } while (!validKey);
         }

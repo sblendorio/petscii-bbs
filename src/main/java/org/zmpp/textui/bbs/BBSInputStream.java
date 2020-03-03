@@ -1,4 +1,4 @@
-package org.zmpp.textbased.bbs;
+package org.zmpp.textui.bbs;
 
 import java.io.IOException;
 
@@ -6,7 +6,6 @@ import org.zmpp.encoding.ZsciiEncoding;
 import org.zmpp.io.InputStream;
 import org.zmpp.vm.Machine;
 
-import eu.sblendorio.bbs.core.CbmIOException;
 import eu.sblendorio.bbs.core.Keys;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.Utils;
@@ -50,7 +49,7 @@ public class BBSInputStream implements InputStream {
                     break;
             }
         } catch (IOException e) {
-            return -1;
+            throw new RuntimeException(e);
         }
         return translatedChar;
     }

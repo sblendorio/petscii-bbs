@@ -1,4 +1,4 @@
-package org.zmpp.textbased.cli;
+package org.zmpp.textui.cli;
 
 import java.io.Console;
 import java.io.Reader;
@@ -12,7 +12,7 @@ import org.zmpp.vm.Instruction;
 import org.zmpp.vm.Machine;
 import org.zmpp.vm.SaveGameDataStore;
 import org.zmpp.vm.ScreenModel;
-import org.zmpp.textbased.VirtualConsole;
+import org.zmpp.textui.VirtualConsole;
 
 /**
  * Implements a CLI based interface and the load/save logic based on local

@@ -1,9 +1,10 @@
-package org.zmpp.textbased;
+package org.zmpp.textui.cli;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.zmpp.textui.VirtualConsole;
 
 public class ConsoleMain {
 

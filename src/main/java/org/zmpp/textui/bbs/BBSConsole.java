@@ -1,24 +1,20 @@
-package org.zmpp.textbased.bbs;
+package org.zmpp.textui.bbs;
 
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.prependIfMissing;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
 import java.io.Writer;
 import java.io.Reader;
 
-import org.apache.commons.lang3.StringUtils;
 import org.zmpp.base.DefaultMemoryAccess;
 import org.zmpp.iff.DefaultFormChunk;
 import org.zmpp.iff.FormChunk;
 import org.zmpp.iff.WritableFormChunk;
 import org.zmpp.io.IOSystem;
-import org.zmpp.textbased.VirtualConsole;
+import org.zmpp.textui.VirtualConsole;
 import org.zmpp.vm.Instruction;
 import org.zmpp.vm.Machine;
 import org.zmpp.vm.SaveGameDataStore;
@@ -82,7 +78,7 @@ public class BBSConsole implements VirtualConsole, SaveGameDataStore,  IOSystem 
                     petsciiThread.println("Aborted.");
                     return false;
                 }
-                saveFile = new File(currentdir + File.separator + filename + ".ziff");
+                saveFile = new File(currentdir + File.separator + filename.toLowerCase() + ".ziff");
                 if (saveFile.exists()) {
                     petsciiThread.println("WARNING: File already exists.");
                     petsciiThread.print("Keep going with this? (Y/N) ");
@@ -125,12 +121,12 @@ public class BBSConsole implements VirtualConsole, SaveGameDataStore,  IOSystem 
                 petsciiThread.println("Aborted.");
                 return null;
             }
-            File saveFile = new File(currentdir + File.separator + filename + ".ziff");
-            if (!saveFile.exists()) {
+            File loadFile = new File(currentdir + File.separator + filename.toLowerCase() + ".ziff");
+            if (!loadFile.exists()) {
                 petsciiThread.println("File not found. Aborted.");
                 return null;
             }
-            raf = new RandomAccessFile(saveFile, "r");
+            raf = new RandomAccessFile(loadFile, "r");
             byte[] data = new byte[(int) raf.length()];
             raf.readFully(data);
             return new DefaultFormChunk(new DefaultMemoryAccess(data));
@@ -160,6 +156,4 @@ public class BBSConsole implements VirtualConsole, SaveGameDataStore,  IOSystem 
     public ScreenModel getScreenModel(){
         return screenModel;
     }
-
-
 }

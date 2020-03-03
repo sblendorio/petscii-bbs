@@ -20,15 +20,14 @@
  * along with ZMPP; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.zmpp.textbased;
+package org.zmpp.textui.cli;
 
-import org.zmpp.textbased.cli.*;
+import org.zmpp.textui.VirtualConsole;
 
 import org.zmpp.io.IOSystem;
 import org.zmpp.io.InputStream;
 import org.zmpp.vm.*;
 
-import org.zmpp.textbased.VirtualConsole;
 import java.io.IOException;
 
 /**

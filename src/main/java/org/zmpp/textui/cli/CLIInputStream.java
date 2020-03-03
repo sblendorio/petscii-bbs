@@ -1,4 +1,4 @@
-package org.zmpp.textbased.cli;
+package org.zmpp.textui.cli;
 
 import java.io.Console;
 import java.io.IOException;
