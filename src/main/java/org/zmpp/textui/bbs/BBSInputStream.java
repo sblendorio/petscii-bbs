@@ -1,0 +1,62 @@
+package org.zmpp.textui.bbs;
+
+import java.io.IOException;
+
+import org.zmpp.encoding.ZsciiEncoding;
+import org.zmpp.io.InputStream;
+import org.zmpp.vm.Machine;
+
+import eu.sblendorio.bbs.core.Keys;
+import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.core.Utils;
+
+public class BBSInputStream implements InputStream {
+
+    PetsciiThread petsciiThread;
+    Machine machine;
+
+    public BBSInputStream(Machine machine, PetsciiThread petsciiThread) {
+        this.petsciiThread = petsciiThread;
+        this.machine = machine;
+    }
+
+    @Override
+    public void cancelInput() {
+        petsciiThread.log("cancelInput not yet implemented");
+    }
+
+    @Override
+    public short getZsciiChar(boolean flushBeforeGet) {
+        short translatedChar;
+        try {
+            int key  = this.petsciiThread.readKey();
+            switch (key){
+                case Keys.RETURN:
+                    translatedChar = ZsciiEncoding.NEWLINE;
+                    break; //skip the carriage return
+                case Keys.DEL : translatedChar = Keys.DEL;
+                    break;
+                default :
+                    if (!Utils.isPrintableChar(key)) {
+                        translatedChar = -1;
+                    } else {
+                        translatedChar = machine.getGameData().getZsciiEncoding().getZsciiChar((char) key);
+                        if (Character.isLowerCase(translatedChar))
+                            translatedChar = (short) Character.toUpperCase(translatedChar);
+                        else if (Character.isUpperCase(translatedChar))
+                            translatedChar = (short) Character.toLowerCase(translatedChar);
+                    }
+                    break;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return translatedChar;
+    }
+
+    @Override
+    public void close() {
+        throw new RuntimeException("Exit from ZMPP game");
+    }
+
+}
