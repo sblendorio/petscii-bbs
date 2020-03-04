@@ -156,6 +156,18 @@ public abstract class PetsciiThread extends Thread {
             log("TIMEOUT " + e);
         } catch (SocketException e) {
             log("BROKEN PIPE " + e);
+        } catch (RuntimeException e) {
+            if (e.getCause() == null) {
+                e.printStackTrace();
+            } else if (e.getCause() instanceof CbmIOException) {
+                log("EOF " + e);
+            } else if (e.getCause() instanceof SocketTimeoutException) {
+                log("TIMEOUT " + e);
+            } else if (e.getCause() instanceof SocketException) {
+                log("BROKEN PIPE " + e);
+            } else {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             log("ERROR handling: " + e);
             logger.error("ERROR handling", e);
