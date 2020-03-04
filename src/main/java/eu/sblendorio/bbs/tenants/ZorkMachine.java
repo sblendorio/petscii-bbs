@@ -45,7 +45,8 @@ public class ZorkMachine extends PetsciiThread {
             console.runTheGame();
         } catch (Exception ex) {
             if (!"Exit from ZMPP game".equalsIgnoreCase(ex.getMessage())) {
-                ex.printStackTrace();
+                log("Forced exit from zork machine (" + filename + ")");
+                throw ex;
             }
             log("Exiting zork machine (" + filename + ")");
         }

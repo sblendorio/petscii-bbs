@@ -194,6 +194,7 @@ public abstract class PetsciiThread extends Thread {
         } catch (SocketException | SocketTimeoutException | CbmIOException e) {
             throw e;
         } catch (Exception e) {
+            if (e instanceof RuntimeException && e.getCause() != null) throw e;
             child = null;
             clientClass = getClass();
             log(e.getClass().getSimpleName() + " during launching of " + bbs.getClass().getSimpleName()+" within " + this.getClass().getSimpleName()+". Launch interrupted. Stack trace:");
