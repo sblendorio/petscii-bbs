@@ -467,7 +467,8 @@ public class CbmInputOutput extends Reader {
         logger.info("Flushing input buffer: '{}', len = {}",
                     substring(missingInput
                                       .replaceAll("\r+", "\\\\r")
-                                      .replaceAll("\n+", "\\\\n"),0,120) +
+                                      .replaceAll("\n+", "\\\\n")
+                                      .replaceAll("\\p{C}", "?"), 0, 120) +
                             (missingInput.length() > 120 ? "..." : EMPTY),
                     missingInput.length());
 
