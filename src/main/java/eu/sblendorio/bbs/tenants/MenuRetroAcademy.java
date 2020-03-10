@@ -10,7 +10,9 @@ import java.io.IOException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.maxmind.db.Reader;
 
+import eu.sblendorio.bbs.core.CbmInputOutput;
 import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.core.Utils;
 
 public class MenuRetroAcademy extends PetsciiThread {
 
@@ -113,7 +115,7 @@ public class MenuRetroAcademy extends PetsciiThread {
                 log("Menu. Waiting for key pressed.");
                 resetInput(); int key = readKey();
                 key = Character.toLowerCase(key);
-                log("Menu. Pressed: '" + (key == 13 || key == 10 ? "chr("+key+")" : ((char) key)) + "' (code=" + key + ")");
+                log("Menu. Pressed: '" + (key < 32 || key > 127 ? "chr("+key+")" : ((char) key)) + "' (code=" + key + ")");
                 if (key == '.') {
                     newline();
                     newline();
