@@ -26,6 +26,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -73,6 +74,7 @@ public abstract class PetsciiThread extends Thread {
     public abstract void doLoop() throws Exception;
 
     public void receive(long senderId, Object message) {
+
         if (child == null)
             log("WARNING: default receive method from [" + getClass().getSimpleName() + "] sender #" + senderId + ", message=\"" + message + "\".");
         else
@@ -136,7 +138,17 @@ public abstract class PetsciiThread extends Thread {
     }
 
     public void setClientId(long id) { this.clientId = id; }
+    
     public long getClientId() { return clientId; }
+    
+    public Long getClientIdByName(String name) {
+        return clients.entrySet().stream()
+                .filter(x -> x.getValue().getClientName().equals(name))
+                .findAny()
+                .map(thread -> thread.getKey())
+                .orElse(null);
+    }
+
     public Class getClientClass() { return clientClass; }
 
     @Override
