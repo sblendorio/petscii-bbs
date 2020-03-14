@@ -3,6 +3,7 @@ package eu.sblendorio.bbs.tenants;
 import static eu.sblendorio.bbs.core.Colors.CYAN;
 import static eu.sblendorio.bbs.core.Colors.GREY3;
 import static eu.sblendorio.bbs.core.Colors.WHITE;
+import static java.util.Optional.ofNullable;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
@@ -94,14 +95,14 @@ public class Chat extends PetsciiThread {
                 println();
                 displayMessages();
 
-                String recipientName = Optional.ofNullable(recipient).map(x -> getClients().get(x).getClientName()).orElse(null);
-                if (recipientName != null) {
-                    write(Colors.YELLOW);
-                    print("[" + recipientName + "]");
+                write(Colors.GREY1);
+                if (recipient != null) {
+                     ofNullable(getClients().get(recipient)).ifPresent(client -> print("[to "+client.getClientName()));
                 }
 
+                write(Colors.GREY1);
+                print("]");
                 write(Colors.GREY3);
-                print(">");
                 command = readLine();
                 command = defaultString(command).trim();
                 if (StringUtils.isBlank(command)) {
@@ -177,17 +178,22 @@ public class Chat extends PetsciiThread {
         write(Colors.GREY3);
         rows.forEach(row ->
             {
-                String from =  getClients().get(row.recipientId).getClientName();
-                String to = getClients().get(row.message.receiverId).getClientName();
+                String from = ofNullable(getClients().get(row.recipientId)).map(PetsciiThread::getClientName).orElse(null);
+                String to = ofNullable(getClients().get(row.message.receiverId)).map(PetsciiThread::getClientName).orElse(null);
                 String text = row.message.text;
 
-                if (from.equals(getClientName())) {
+                if (from == null || to == null)
+                    return;
+
+                if (getClientName().equals(from)) {
                     write(Colors.GREY1);
-                    print("to " + to + ">");
+                    print("<to " + to + ">");
+                    write(Colors.GREY3);
                     println(text);
                 } else {
-                    write(Colors.GREY3);
-                    print(from + ">");
+                    write(Colors.BROWN);
+                    print("<" + from + ">");
+                    write(Colors.YELLOW);
                     println(text);
                 }
             }
