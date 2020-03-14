@@ -58,6 +58,9 @@ public class Chat extends PetsciiThread {
             do {
                 print("Enter your name: ");
                 String name = readLine();
+                if (isBlank(name) || ".".equalsIgnoreCase(name)) {
+                    return;
+                }
                 status = changeClientName(name);
                 if (status != 0) {
                     println("Error: name already used.");
