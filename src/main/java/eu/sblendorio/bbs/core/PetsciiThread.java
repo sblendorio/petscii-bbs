@@ -8,6 +8,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.substring;
 import static org.apache.commons.lang3.StringUtils.trim;
 
@@ -26,6 +27,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -73,6 +75,7 @@ public abstract class PetsciiThread extends Thread {
     public abstract void doLoop() throws Exception;
 
     public void receive(long senderId, Object message) {
+
         if (child == null)
             log("WARNING: default receive method from [" + getClass().getSimpleName() + "] sender #" + senderId + ", message=\"" + message + "\".");
         else
@@ -94,7 +97,7 @@ public abstract class PetsciiThread extends Thread {
         clientName = trim(clientName);
         if (isBlank(clientName) || clientName.matches("(?i)^client[0-9]+$")) return -1;
         for (Map.Entry<Long, PetsciiThread> entry: clients.entrySet()) {
-            if (entry.getKey() != getClientId() && isEmpty(entry.getValue().getClientName()) && entry.getValue().getClientName().equals(clientName)) {
+            if (entry.getKey() != getClientId() && isNotBlank(entry.getValue().getClientName()) && entry.getValue().getClientName().equals(clientName)) {
                 return -2;
             }
         }
@@ -136,7 +139,17 @@ public abstract class PetsciiThread extends Thread {
     }
 
     public void setClientId(long id) { this.clientId = id; }
+    
     public long getClientId() { return clientId; }
+    
+    public Long getClientIdByName(String name) {
+        return clients.entrySet().stream()
+                .filter(x -> x.getValue().getClientName().equals(name))
+                .findAny()
+                .map(thread -> thread.getKey())
+                .orElse(null);
+    }
+
     public Class getClientClass() { return clientClass; }
 
     @Override
