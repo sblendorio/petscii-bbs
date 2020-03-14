@@ -96,12 +96,13 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(6, delta + 20); write(REVON); print(" K "); write(REVOFF); print(" CSDb SD2IEC");
             gotoXY(6, delta + 21); write(REVON); print(" . "); write(REVOFF); print(" Logoff");
 
-            gotoXY(26, delta +  4); write(WHITE); print("Servizi"); write(GREY3);
-            gotoXY(26, delta +  6); write(REVON); print(" M "); write(REVOFF); print(" Messaggi");
-            gotoXY(26, delta +  7); write(REVON); print(" T "); write(REVOFF); print(" Televideo");
-            gotoXY(26, delta +  8); write(REVON); print(" D "); write(REVOFF); print(" CSDb");
-            gotoXY(26, delta +  9); write(REVON); print(" A "); write(REVOFF); print(" Arnold 64");
-            gotoXY(26, delta + 10); write(REVON); print(" I "); write(REVOFF); print(" Internet");
+            gotoXY(32, delta +  3); write(WHITE); print("Servizi"); write(GREY3);
+            gotoXY(26, delta +  5); write(REVON); print(" M "); write(REVOFF); print(" Messaggi");
+            gotoXY(26, delta +  6); write(REVON); print(" T "); write(REVOFF); print(" Televideo");
+            gotoXY(26, delta +  7); write(REVON); print(" D "); write(REVOFF); print(" CSDb");
+            gotoXY(26, delta +  8); write(REVON); print(" A "); write(REVOFF); print(" Arnold 64");
+            gotoXY(26, delta +  9); write(REVON); print(" I "); write(REVOFF); print(" Internet");
+            gotoXY(26, delta + 10); write(REVON); print(" H "); write(REVOFF); print(" Chat");
 
             //final String line = geoData != null ? "Connected from "+geoData.city+", "+geoData.country : EMPTY;
             final String line = "(C) F. Sblendorio in 2018-2020";
@@ -142,6 +143,7 @@ public class MenuRetroAcademy extends PetsciiThread {
                 else if (key == 'd') launch(new CsdbReleases());
                 else if (key == 'a') launch(new ArnoldC64());
                 else if (key == 'i') launch(new InternetBrowser());
+                else if (key == 'h') launch(new Chat());
                 else if (key == 'k') launch(new CsdbReleasesSD2IEC());
                 else if (key == 'x') launch(new ZorkMachine("zmpp/zork1.z3"));
                 else if (key == 'y') launch(new ZorkMachine("zmpp/zork2.z3"));

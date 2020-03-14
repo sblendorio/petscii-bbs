@@ -8,6 +8,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.substring;
 import static org.apache.commons.lang3.StringUtils.trim;
 
@@ -96,7 +97,7 @@ public abstract class PetsciiThread extends Thread {
         clientName = trim(clientName);
         if (isBlank(clientName) || clientName.matches("(?i)^client[0-9]+$")) return -1;
         for (Map.Entry<Long, PetsciiThread> entry: clients.entrySet()) {
-            if (entry.getKey() != getClientId() && isEmpty(entry.getValue().getClientName()) && entry.getValue().getClientName().equals(clientName)) {
+            if (entry.getKey() != getClientId() && isNotBlank(entry.getValue().getClientName()) && entry.getValue().getClientName().equals(clientName)) {
                 return -2;
             }
         }
