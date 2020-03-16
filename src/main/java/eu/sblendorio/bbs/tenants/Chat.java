@@ -130,7 +130,8 @@ public class Chat extends PetsciiThread {
 
     private void notifyEnteringUser() {
         getClients().keySet().stream()
-                .filter(id -> id != getClientId())
+                .filter(id -> getClients().get(id) != null)
+                .filter(id -> id != getClientId() && getClientClass().equals(getClients().get(id).getClientClass()))
                 .forEach(id -> {
                     send(id, new ChatMessage(-1, getClientName() + " has entered"));
                 });
@@ -138,7 +139,8 @@ public class Chat extends PetsciiThread {
 
     private void notifyExitingUser() {
         getClients().keySet().stream()
-                .filter(id -> id != getClientId())
+                .filter(id -> getClients().get(id) != null)
+                .filter(id -> id != getClientId() && getClientClass().equals(getClients().get(id).getClientClass()))
                 .forEach(id -> {
                     send(id, new ChatMessage(-2, getClientName() + " just leaved"));
                 });
