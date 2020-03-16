@@ -29,6 +29,8 @@ import eu.sblendorio.bbs.core.Utils;
 
 public class Chat extends PetsciiThread {
 
+    private static final int INPUT_COLOR = GREY3;
+
     public static class ChatMessage {
         final long receiverId;
         final String text;
@@ -50,6 +52,7 @@ public class Chat extends PetsciiThread {
 
     private Long recipient = null;
     private String commandLine = EMPTY;
+    private boolean canRedraw = true;
 
     private ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<Row>();
 
@@ -73,7 +76,7 @@ public class Chat extends PetsciiThread {
             String command = null;
             do {
                 redraw();
-                write(Colors.GREY3);
+                write(INPUT_COLOR);
                 command = readCommandLine();
                 command = defaultString(command).trim();
                 if (StringUtils.isBlank(command)) {
@@ -90,7 +93,9 @@ public class Chat extends PetsciiThread {
                         println("Error: name already used. Press any key.");
                         readKey();
                     }
-                } else if (command.equalsIgnoreCase("/users")) {
+                } else if (command.equalsIgnoreCase("/users") ||
+                           command.equalsIgnoreCase("/user")||
+                           command.equalsIgnoreCase("/u")) {
                     showUsers();
                 } else if (recipient != null) {
                     send(recipient, new ChatMessage(recipient, command));
@@ -129,9 +134,10 @@ public class Chat extends PetsciiThread {
         return commandLine;
     }
 
-    private void redraw() {
+    private synchronized void redraw() {
+        canRedraw = false;
         write(Keys.CLR, Colors.YELLOW);
-        print("              BBS Chat 1.0");
+        print("              BBS Chat 1.1");
         write(Colors.WHITE);
         println(StringUtils.repeat(' ', 13 - defaultString(getClientName()).length()) + getClientName());
         write(Colors.BLUE);
@@ -166,6 +172,7 @@ public class Chat extends PetsciiThread {
 
         write(Colors.GREY1);
         print("]");
+        canRedraw = true;
     }
 
     private void showUsers() throws IOException {
@@ -241,5 +248,10 @@ public class Chat extends PetsciiThread {
     public synchronized void receive(long senderId, Object message) {
         rows.addLast(new Row(senderId, (ChatMessage) message));
         while (rows.size() > 10) rows.removeFirst();
+        if (canRedraw) {
+            redraw();
+            write(INPUT_COLOR);
+            print(commandLine);
+        }
     }
 }
