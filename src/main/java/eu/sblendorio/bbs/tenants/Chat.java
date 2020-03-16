@@ -109,7 +109,7 @@ public class Chat extends PetsciiThread {
                     }
                     redraw();
                 } else if (command.equalsIgnoreCase("/users") ||
-                           command.equalsIgnoreCase("/user")||
+                           command.equalsIgnoreCase("/user")  ||
                            command.equalsIgnoreCase("/u")) {
                     showUsers();
                     redraw();
