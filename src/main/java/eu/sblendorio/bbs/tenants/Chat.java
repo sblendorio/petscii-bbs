@@ -132,18 +132,18 @@ public class Chat extends PetsciiThread {
         getClients().keySet().stream()
                 .filter(id -> getClients().get(id) != null)
                 .filter(id -> id != getClientId() && getClientClass().equals(getClients().get(id).getClientClass()))
-                .forEach(id -> {
-                    send(id, new ChatMessage(-1, getClientName() + " has entered"));
-                });
+                .forEach(id ->
+                    send(id, new ChatMessage(-1, getClientName() + " has entered"))
+                );
     }
 
     private void notifyExitingUser() {
         getClients().keySet().stream()
                 .filter(id -> getClients().get(id) != null)
                 .filter(id -> id != getClientId() && getClientClass().equals(getClients().get(id).getClientClass()))
-                .forEach(id -> {
-                    send(id, new ChatMessage(-2, getClientName() + " just leaved"));
-                });
+                .forEach(id ->
+                    send(id, new ChatMessage(-2, getClientName() + " just leaved"))
+                );
     }
 
     private String readCommandLine() throws IOException {
