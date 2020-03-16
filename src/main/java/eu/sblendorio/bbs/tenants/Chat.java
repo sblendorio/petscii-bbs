@@ -52,13 +52,14 @@ public class Chat extends PetsciiThread {
 
     private Long recipient = null;
     private String commandLine = EMPTY;
-    private boolean canRedraw = true;
+    private boolean canRedraw = false;
 
     private ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<Row>();
 
     @Override
     public void doLoop() throws Exception {
         try {
+            canRedraw = false;
             write(Colors.GREY3, Keys.CLR, Keys.LOWERCASE, Keys.CASE_LOCK, Keys.HOME);
             int status;
             do {
@@ -143,9 +144,13 @@ public class Chat extends PetsciiThread {
         write(Colors.BLUE);
         println("Commands");
         write(Colors.LIGHT_BLUE);
-        print("/users ");
+        print("/users");
         write(Colors.GREY2);
-        println("        to list users");
+        print(" or ");
+        write(Colors.LIGHT_BLUE);
+        print("/u");
+        write(Colors.GREY2);
+        println("   to list users");
         write(Colors.LIGHT_BLUE);
         print("/to <person>");
         write(Colors.GREY2);
