@@ -26,29 +26,29 @@ import eu.sblendorio.bbs.core.PetsciiThread;
 
 public class Chat extends PetsciiThread {
 
-    public static class Message {
+    public static class ChatMessage {
         final long receiverId;
         final String text;
 
-        Message(long receiverId, String text) {
+        ChatMessage(long receiverId, String text) {
             this.receiverId = receiverId;
             this.text = text;
         }
     }
-
     public static class Row {
         final long recipientId;
-        final Message message;
+        final ChatMessage message;
 
-        Row(long recipientId, Message message) {
+        Row(long recipientId, ChatMessage message) {
             this.recipientId = recipientId;
             this.message = message;
         }
     }
 
-    Long recipient = null;
+    private Long recipient = null;
+    private String commandLine = EMPTY;
 
-    ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<Row>();
+    private ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<Row>();
 
     @Override
     public void doLoop() throws Exception {
@@ -69,42 +69,7 @@ public class Chat extends PetsciiThread {
 
             String command = null;
             do {
-                write(Keys.CLR, Colors.YELLOW);
-                print("              BBS Chat 1.0");
-                write(Colors.WHITE);
-                println(StringUtils.repeat(' ', 13 - defaultString(getClientName()).length()) + getClientName());
-                write(Colors.BLUE);
-                println("Commands");
-                write(Colors.LIGHT_BLUE);
-                print("/users ");
-                write(Colors.GREY2);
-                println("        to list users");
-                write(Colors.LIGHT_BLUE);
-                print("/to <person>");
-                write(Colors.GREY2);
-                println("   to talk with someone");
-                write(Colors.LIGHT_BLUE);
-                print("/nick <name>");
-                write(Colors.GREY2);
-                println("   to change nick");
-                write(Colors.WHITE);
-                print(".           ");
-                write(Colors.GREY2);
-                println("   to exit chat");
-                write(Colors.WHITE);
-                print("<RETURN>");
-                write(Colors.GREY2);
-                println("       to refresh screen");
-                println();
-                displayMessages();
-
-                write(Colors.GREY1);
-                if (recipient != null) {
-                     ofNullable(getClients().get(recipient)).ifPresent(client -> print("[to "+client.getClientName()));
-                }
-
-                write(Colors.GREY1);
-                print("]");
+                redraw();
                 write(Colors.GREY3);
                 command = readLine();
                 command = defaultString(command).trim();
@@ -125,13 +90,52 @@ public class Chat extends PetsciiThread {
                 } else if (command.equalsIgnoreCase("/users")) {
                     showUsers();
                 } else if (recipient != null) {
-                    send(recipient, new Message(recipient, command));
-                    send(getClientId(), new Message(recipient, command));
+                    send(recipient, new ChatMessage(recipient, command));
+                    send(getClientId(), new ChatMessage(recipient, command));
                 }
             } while (!".".equals(command));
         } finally {
             changeClientName(UUID.randomUUID().toString());
         }
+    }
+
+    private void redraw() {
+        write(Keys.CLR, Colors.YELLOW);
+        print("              BBS Chat 1.0");
+        write(Colors.WHITE);
+        println(StringUtils.repeat(' ', 13 - defaultString(getClientName()).length()) + getClientName());
+        write(Colors.BLUE);
+        println("Commands");
+        write(Colors.LIGHT_BLUE);
+        print("/users ");
+        write(Colors.GREY2);
+        println("        to list users");
+        write(Colors.LIGHT_BLUE);
+        print("/to <person>");
+        write(Colors.GREY2);
+        println("   to talk with someone");
+        write(Colors.LIGHT_BLUE);
+        print("/nick <name>");
+        write(Colors.GREY2);
+        println("   to change nick");
+        write(Colors.WHITE);
+        print(".           ");
+        write(Colors.GREY2);
+        println("   to exit chat");
+        write(Colors.WHITE);
+        print("<RETURN>");
+        write(Colors.GREY2);
+        println("       to refresh screen");
+        println();
+        displayMessages();
+
+        write(Colors.GREY1);
+        if (recipient != null) {
+             ofNullable(getClients().get(recipient)).ifPresent(client -> print("[to "+client.getClientName()));
+        }
+
+        write(Colors.GREY1);
+        print("]");
     }
 
     private void showUsers() throws IOException {
@@ -204,10 +208,8 @@ public class Chat extends PetsciiThread {
     }
 
     @Override
-    public synchronized void receive(long senderId, Object object) {
-        Message message = (Message) object;
-        String text = defaultString(message.text);
-        rows.addLast(new Row(senderId, new Message(message.receiverId, text)));
+    public synchronized void receive(long senderId, Object message) {
+        rows.addLast(new Row(senderId, (ChatMessage) message));
         while (rows.size() > 10) {
             rows.removeFirst();
         }
