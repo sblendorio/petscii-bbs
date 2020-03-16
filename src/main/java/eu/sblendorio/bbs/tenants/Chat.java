@@ -10,6 +10,7 @@ import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.length;
+import static org.apache.commons.lang3.StringUtils.trim;
 
 import java.io.IOException;
 import java.util.List;
@@ -76,35 +77,46 @@ public class Chat extends PetsciiThread {
 
             notifyEnteringUser();
             String command = null;
+            redraw();
             do {
-                redraw();
                 write(INPUT_COLOR);
                 command = readCommandLine();
                 command = defaultString(command).trim();
                 if (StringUtils.isBlank(command)) {
-                    continue;
-                } else if (command.matches("(?is)/to [a-zA-Z0-9]+")) {
-                    Long candidateRecipient = getClientIdByName(command.replaceAll("\\s+", " ").substring(4));
+                    redraw();
+                } else if (command.matches("(?is)^/to [a-zA-Z0-9-]+(\\s+.*)?$")) {
+                    String text = defaultString(command.replaceAll("(?is)^/to [a-zA-Z0-9-]+(\\s+.*)?$", "$1")).trim();
+                    Long candidateRecipient = getClientIdByName(command.replaceAll("(?is)^/to ([a-zA-Z0-9-]+)(\\s+.*)?$", "$1"));
                     if (candidateRecipient != null && candidateRecipient != getClientId()) {
                         recipient = candidateRecipient;
+                        if (isNotBlank(text)) {
+                            send(recipient, new ChatMessage(recipient, text));
+                            send(getClientId(), new ChatMessage(recipient, text));
+                        }
                     }
-                } else if (command.matches("(?is)/nick [a-zA-Z0-9]+")) {
+                    if (isBlank(text)) redraw();
+                } else if (command.matches("(?is)/nick [a-zA-Z0-9-]+")) {
                     String newName = command.replaceAll("\\s+", " ").substring(6);
                     int res = changeClientName(newName);
                     if (res != 0) {
                         println("Error: name already used. Press any key.");
                         readKey();
                     }
+                    redraw();
                 } else if (command.equalsIgnoreCase("/users") ||
                            command.equalsIgnoreCase("/user")||
                            command.equalsIgnoreCase("/u")) {
                     showUsers();
+                    redraw();
                 } else if (recipient != null) {
                     send(recipient, new ChatMessage(recipient, command));
                     send(getClientId(), new ChatMessage(recipient, command));
+                } else {
+                    redraw();
                 }
             } while (!".".equals(command));
         } finally {
+            notifyExitingUser();
             changeClientName(UUID.randomUUID().toString());
         }
     }
@@ -114,6 +126,14 @@ public class Chat extends PetsciiThread {
                 .filter(id -> id != getClientId())
                 .forEach(id -> {
                     send(id, new ChatMessage(-1, getClientName() + " has entered"));
+                });
+    }
+
+    private void notifyExitingUser() {
+        getClients().keySet().stream()
+                .filter(id -> id != getClientId())
+                .forEach(id -> {
+                    send(id, new ChatMessage(-2, getClientName() + " just leaved"));
                 });
     }
 
@@ -143,7 +163,9 @@ public class Chat extends PetsciiThread {
                 commandLine += (char) ch;
             }
         } while (ch != Keys.RETURN && ch != 141);
-        return commandLine;
+        final String result = commandLine;
+        commandLine = EMPTY;
+        return result;
     }
 
     private synchronized void redraw() {
@@ -238,6 +260,12 @@ public class Chat extends PetsciiThread {
         rows.forEach(row ->
             {
                 if (row.message.receiverId == -1) {
+                    write(Colors.GREEN);
+                    println(row.message.text);
+                    return;
+                }
+
+                if (row.message.receiverId == -2) {
                     write(Colors.RED);
                     println(row.message.text);
                     return;
@@ -270,7 +298,7 @@ public class Chat extends PetsciiThread {
         ChatMessage chatMessage = (ChatMessage) message;
         rows.addLast(new Row(senderId, chatMessage));
         while (rows.size() > 10) rows.removeFirst();
-        if (canRedraw && (chatMessage.receiverId != -1 || commandLine.length() == 0)) {
+        if (canRedraw && (chatMessage.receiverId > 0 || commandLine.length() == 0)) {
             redraw();
             write(INPUT_COLOR);
             print(commandLine);
