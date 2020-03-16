@@ -176,34 +176,33 @@ public class Chat extends PetsciiThread {
     }
 
     private void showUsers() throws IOException {
-        {
-            cls();
+        canRedraw = false;
+        cls();
+        write(GREY3);
+        List<PetsciiThread> users = getConnectedUsers();
+        int i = 0;
+        for (PetsciiThread u: users) {
+            ++i;
+            write(CYAN);
+            println(u.getClientName());
             write(GREY3);
-            List<PetsciiThread> users = getConnectedUsers();
-            int i = 0;
-            for (PetsciiThread u: users) {
-                ++i;
-                write(CYAN);
-                println(u.getClientName());
+            if (i % 22 == 0 && i < users.size()) {
+                newline();
+                write(WHITE); print("ANY KEY FOR NEXT PAGE, '.' TO GO BACK "); write(GREY3);
+                flush(); resetInput(); int ch = readKey(); resetInput();
+                if (ch == '.') return;
+                cls();
                 write(GREY3);
-                if (i % 22 == 0 && i < users.size()) {
-                    newline();
-                    write(WHITE); print("ANY KEY FOR NEXT PAGE, '.' TO GO BACK "); write(GREY3);
-                    flush(); resetInput(); int ch = readKey(); resetInput();
-                    if (ch == '.') return;
-                    cls();
-                    write(GREY3);
-                }
             }
-            if (isEmpty(users)) {
-                write(Colors.RED);
-                println("NO USER CONNECTED.");
-            }
-            newline();
-            write(WHITE); print("PRESS ANY KEY TO GO BACK "); write(GREY3);
-            flush(); resetInput(); readKey(); resetInput();
         }
-
+        if (isEmpty(users)) {
+            write(Colors.RED);
+            println("NO USER CONNECTED.");
+        }
+        newline();
+        write(WHITE); print("PRESS ANY KEY TO GO BACK "); write(GREY3);
+        flush(); resetInput(); readKey(); resetInput();
+        canRedraw = true;
     }
 
     private List<PetsciiThread> getConnectedUsers() {
