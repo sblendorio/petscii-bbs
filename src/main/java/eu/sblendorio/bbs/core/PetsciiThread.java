@@ -75,7 +75,6 @@ public abstract class PetsciiThread extends Thread {
     public abstract void doLoop() throws Exception;
 
     public void receive(long senderId, Object message) {
-
         if (child == null)
             log("WARNING: default receive method from [" + getClass().getSimpleName() + "] sender #" + senderId + ", message=\"" + message + "\".");
         else
