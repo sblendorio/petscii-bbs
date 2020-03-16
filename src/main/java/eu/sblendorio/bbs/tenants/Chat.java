@@ -138,6 +138,8 @@ public class Chat extends PetsciiThread {
                     ch = Character.toUpperCase(ch);
                 else if (ch >= 'A' && ch <= 'Z')
                     ch = Character.toLowerCase(ch);
+                else if (ch >= 193 && ch <= 218)
+                    ch -= 128;
                 commandLine += (char) ch;
             }
         } while (ch != Keys.RETURN && ch != 141);
