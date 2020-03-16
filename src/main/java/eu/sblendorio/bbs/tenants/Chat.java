@@ -240,8 +240,6 @@ public class Chat extends PetsciiThread {
     @Override
     public synchronized void receive(long senderId, Object message) {
         rows.addLast(new Row(senderId, (ChatMessage) message));
-        while (rows.size() > 10) {
-            rows.removeFirst();
-        }
+        while (rows.size() > 10) rows.removeFirst();
     }
 }
