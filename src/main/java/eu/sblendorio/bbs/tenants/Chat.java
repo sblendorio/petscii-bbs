@@ -74,6 +74,7 @@ public class Chat extends PetsciiThread {
                 }
             } while (status != 0);
 
+            notifyEnteringUser();
             String command = null;
             do {
                 redraw();
@@ -106,6 +107,14 @@ public class Chat extends PetsciiThread {
         } finally {
             changeClientName(UUID.randomUUID().toString());
         }
+    }
+
+    private void notifyEnteringUser() {
+        getClients().keySet().stream()
+                .filter(id -> id != getClientId())
+                .forEach(id -> {
+                    send(id, new ChatMessage(-1, getClientName() + " has entered"));
+                });
     }
 
     private String readCommandLine() throws IOException {
@@ -226,6 +235,12 @@ public class Chat extends PetsciiThread {
         write(Colors.GREY3);
         rows.forEach(row ->
             {
+                if (row.message.receiverId == -1) {
+                    write(Colors.RED);
+                    println(row.message.text);
+                    return;
+                }
+
                 String from = ofNullable(getClients().get(row.recipientId)).map(PetsciiThread::getClientName).orElse(null);
                 String to = ofNullable(getClients().get(row.message.receiverId)).map(PetsciiThread::getClientName).orElse(null);
                 String text = row.message.text;
@@ -250,9 +265,10 @@ public class Chat extends PetsciiThread {
 
     @Override
     public synchronized void receive(long senderId, Object message) {
-        rows.addLast(new Row(senderId, (ChatMessage) message));
+        ChatMessage chatMessage = (ChatMessage) message;
+        rows.addLast(new Row(senderId, chatMessage));
         while (rows.size() > 10) rows.removeFirst();
-        if (canRedraw) {
+        if (canRedraw && (chatMessage.receiverId != -1 || commandLine.length() == 0)) {
             redraw();
             write(INPUT_COLOR);
             print(commandLine);
