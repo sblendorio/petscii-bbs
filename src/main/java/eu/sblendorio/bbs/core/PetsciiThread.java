@@ -201,18 +201,19 @@ public abstract class PetsciiThread extends Thread {
             child = bbs;
             clientClass = bbs.clientClass = bbs.getClass();
             bbs.doLoop();
-            child = null;
-            clientClass = getClass();
             return true;
         } catch (SocketException | SocketTimeoutException | CbmIOException e) {
             throw e;
         } catch (Exception e) {
-            if (e instanceof RuntimeException && e.getCause() != null) throw e;
             child = null;
             clientClass = getClass();
+            if (e instanceof RuntimeException && e.getCause() != null) throw e;
             log(e.getClass().getSimpleName() + " during launching of " + bbs.getClass().getSimpleName()+" within " + this.getClass().getSimpleName()+". Launch interrupted. Stack trace:");
             logger.error("Launch interrupted", e);
             return false;
+        } finally {
+            child = null;
+            clientClass = getClass();
         }
     }
 

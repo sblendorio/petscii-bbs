@@ -40,6 +40,11 @@ public class Chat extends PetsciiThread {
             this.receiverId = receiverId;
             this.text = text;
         }
+
+        @Override
+        public String toString() {
+            return "ChatMessage{" + "receiverId=" + receiverId + ", text='" + text + '\'' + '}';
+        }
     }
     public static class Row {
         final long recipientId;
@@ -108,6 +113,8 @@ public class Chat extends PetsciiThread {
                            command.equalsIgnoreCase("/u")) {
                     showUsers();
                     redraw();
+                } else if (".".equals(command)) {
+                    log("Exiting chat.");
                 } else if (recipient != null) {
                     send(recipient, new ChatMessage(recipient, command));
                     send(getClientId(), new ChatMessage(recipient, command));
