@@ -9,6 +9,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.length;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,9 +21,11 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import eu.sblendorio.bbs.core.CbmInputOutput;
 import eu.sblendorio.bbs.core.Colors;
 import eu.sblendorio.bbs.core.Keys;
 import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.core.Utils;
 
 public class Chat extends PetsciiThread {
 
@@ -71,7 +74,7 @@ public class Chat extends PetsciiThread {
             do {
                 redraw();
                 write(Colors.GREY3);
-                command = readLine();
+                command = readCommandLine();
                 command = defaultString(command).trim();
                 if (StringUtils.isBlank(command)) {
                     continue;
@@ -97,6 +100,33 @@ public class Chat extends PetsciiThread {
         } finally {
             changeClientName(UUID.randomUUID().toString());
         }
+    }
+
+    private String readCommandLine() throws IOException {
+        int ch;
+        commandLine = EMPTY;
+        do {
+            ch = readKey();
+            if (ch == Keys.DEL || ch == Keys.INS) {
+                if (commandLine.length() > 0) {
+                    write(Keys.DEL);
+                    commandLine = commandLine.substring(0, commandLine.length()-1);
+                }
+            } else if (ch == 34) {
+                write(34, 34, Keys.DEL);
+                commandLine += "\"";
+            } else if (ch == Keys.RETURN || ch == 141) {
+                write(Keys.RETURN);
+            } else if (Utils.isPrintableChar(ch)) {
+                write(ch);
+                if (ch >= 'a' && ch <= 'z')
+                    ch = Character.toUpperCase(ch);
+                else if (ch >= 'A' && ch <= 'Z')
+                    ch = Character.toLowerCase(ch);
+                commandLine += (char) ch;
+            }
+        } while (ch != Keys.RETURN && ch != 141);
+        return commandLine;
     }
 
     private void redraw() {
