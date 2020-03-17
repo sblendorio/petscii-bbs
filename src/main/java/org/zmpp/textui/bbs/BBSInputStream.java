@@ -30,6 +30,7 @@ public class BBSInputStream implements InputStream {
         short translatedChar;
         try {
             int key  = this.petsciiThread.readKey();
+            if (key >= 193 && key <= 218) key -= 96;
             switch (key){
                 case Keys.RETURN:
                     translatedChar = ZsciiEncoding.NEWLINE;
