@@ -38,7 +38,7 @@ public class BBSInputStream implements InputStream {
                 case Keys.DEL : translatedChar = Keys.DEL;
                     break;
                 default :
-                    if (!Utils.isPrintableChar(key)) {
+                    if (key < 32 || key > 128) {
                         translatedChar = -1;
                     } else {
                         translatedChar = machine.getGameData().getZsciiEncoding().getZsciiChar((char) key);
