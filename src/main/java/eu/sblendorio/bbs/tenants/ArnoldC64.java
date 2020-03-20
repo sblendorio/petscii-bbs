@@ -250,7 +250,7 @@ public class ArnoldC64 extends PetsciiThread {
         return IntStream.rangeClosed((page - 1) * perPage, page * perPage)
                 .filter(i -> i >= 0 && i < entries.size())
                 .boxed()
-                .collect(LinkedHashMap::new, (m, i) -> m.put(i, entries.get(i)), LinkedHashMap::putAll);
+                .collect(LinkedHashMap::new, (m, i) -> m.put(i + 1, entries.get(i)), LinkedHashMap::putAll);
     }
 
 

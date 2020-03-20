@@ -79,7 +79,8 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(5, delta + 10); write(REVON); print(" 6 "); write(REVOFF); print(" IndieRetroNews");
             gotoXY(5, delta + 11); write(REVON); print(" 7 "); write(REVOFF); print(" Retrocampus");
             gotoXY(5, delta + 12); write(REVON); print(" 8 "); write(REVOFF); print(" Archeologia Informatica");
-            gotoXY(5, delta + 13); write(REVON); print(" 9 "); write(REVOFF); print(" Il Post");
+            gotoXY(5, delta + 13); write(REVON); print(" 9 "); write(REVOFF); print(" News FNOMCeO");
+            gotoXY(5, delta + 14); write(REVON); print(" 0 "); write(REVOFF); print(" Il Post");
 
             gotoXY(24, delta + 14); write(WHITE); print("Games"); write(GREY3);
             gotoXY(24, delta + 16); write(REVON); print(" E "); write(REVOFF); print(" TIC-TAC-TOE");
@@ -89,7 +90,7 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(24, delta + 20); write(REVON); print(" Y "); write(REVOFF); print(" Zork II");
             gotoXY(24, delta + 21); write(REVON); print(" Z "); write(REVOFF); print(" Zork III");
 
-            gotoXY(6, delta + 15); write(WHITE); print("Misc"); write(GREY3);
+            gotoXY(18, delta + 15); write(WHITE); print("Misc"); write(GREY3);
             gotoXY(6, delta + 17); write(REVON); print(" S "); write(REVOFF); print(" Sportal.IT");
             gotoXY(6, delta + 18); write(REVON); print(" L "); write(REVOFF); print(" Le ossa");
             gotoXY(6, delta + 19); write(REVON); print(" P "); write(REVOFF); print(" PETSCII Art");
@@ -131,7 +132,8 @@ public class MenuRetroAcademy extends PetsciiThread {
                 else if (key == '6') launch(new IndieRetroNews());
                 else if (key == '7') launch(new RetroCampus());
                 else if (key == '8') launch(new ArcheologiaInformatica());
-                else if (key == '9') launch(new IlPost());
+                else if (key == '9') launch(new DottoreMaEVeroChe());
+                else if (key == '0') launch(new IlPost());
                 else if (key == 'e') launch(new TicTacToe());
                 else if (key == 'c') launch(new ConnectFour());
                 else if (key == 'f') launch(new Magic15());
