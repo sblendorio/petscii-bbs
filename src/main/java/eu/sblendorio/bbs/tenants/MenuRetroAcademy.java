@@ -91,11 +91,11 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(24, delta + 21); write(REVON); print(" Z "); write(REVOFF); print(" Zork III");
 
             gotoXY(18, delta + 15); write(WHITE); print("Misc"); write(GREY3);
-            gotoXY(6, delta + 17); write(REVON); print(" S "); write(REVOFF); print(" Sportal.IT");
-            gotoXY(6, delta + 18); write(REVON); print(" L "); write(REVOFF); print(" Le ossa");
-            gotoXY(6, delta + 19); write(REVON); print(" P "); write(REVOFF); print(" PETSCII Art");
-            gotoXY(6, delta + 20); write(REVON); print(" K "); write(REVOFF); print(" CSDb SD2IEC");
-            gotoXY(6, delta + 21); write(REVON); print(" . "); write(REVOFF); print(" Logoff");
+            gotoXY(7, delta + 17); write(REVON); print(" S "); write(REVOFF); print(" Sportal.IT");
+            gotoXY(7, delta + 18); write(REVON); print(" L "); write(REVOFF); print(" Le ossa");
+            gotoXY(7, delta + 19); write(REVON); print(" P "); write(REVOFF); print(" PETSCII Art");
+            gotoXY(7, delta + 20); write(REVON); print(" K "); write(REVOFF); print(" CSDb SD2IEC");
+            gotoXY(7, delta + 21); write(REVON); print(" . "); write(REVOFF); print(" Logoff");
 
             gotoXY(32, delta +  3); write(WHITE); print("Servizi"); write(GREY3);
             gotoXY(26, delta +  5); write(REVON); print(" M "); write(REVOFF); print(" Messaggi");
