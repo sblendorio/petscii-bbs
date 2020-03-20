@@ -8,7 +8,7 @@ public class DottoreMaEVeroChe extends WordpressProxy {
         super();
         this.logo = LOGO_BYTES;
         this.domain = "https://dottoremaeveroche.it";
-        this.pageSize = 9;
+        this.pageSize = 8;
         this.screenRows = 19;
         this.showAuthor = false;
     }
