@@ -116,6 +116,7 @@ public class MenuRetroAcademy extends PetsciiThread {
                 validKey = true;
                 log("Menu. Waiting for key pressed.");
                 resetInput(); int key = readKey();
+                if (key >= 193 && key <= 218) key -= 96;
                 key = Character.toLowerCase(key);
                 log("Menu. Pressed: '" + (key < 32 || key > 127 ? "chr("+key+")" : ((char) key)) + "' (code=" + key + ")");
                 if (key == '.') {
