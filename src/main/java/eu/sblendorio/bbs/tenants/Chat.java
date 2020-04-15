@@ -1,7 +1,9 @@
 package eu.sblendorio.bbs.tenants;
 
 import static eu.sblendorio.bbs.core.Colors.CYAN;
+import static eu.sblendorio.bbs.core.Colors.GREY2;
 import static eu.sblendorio.bbs.core.Colors.GREY3;
+import static eu.sblendorio.bbs.core.Colors.LIGHT_BLUE;
 import static eu.sblendorio.bbs.core.Colors.WHITE;
 import static java.util.Optional.ofNullable;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
@@ -81,17 +83,19 @@ public class Chat extends PetsciiThread {
             } while (status != 0);
 
             notifyEnteringUser();
-            String command = null;
+            String rawCommand = null;
             redraw();
             do {
                 write(INPUT_COLOR);
-                command = readCommandLine();
-                command = defaultString(command).trim();
+                rawCommand = readCommandLine();
+                rawCommand = defaultString(rawCommand).trim();
+                final String command =  rawCommand;
                 if (StringUtils.isBlank(command)) {
                     redraw();
                 } else if (command.matches("(?is)^/to [a-zA-Z0-9-]+(\\s+.*)?$")) {
                     String text = defaultString(command.replaceAll("(?is)^/to [a-zA-Z0-9-]+(\\s+.*)?$", "$1")).trim();
-                    Long candidateRecipient = getClientIdByName(command.replaceAll("(?is)^/to ([a-zA-Z0-9-]+)(\\s+.*)?$", "$1"));
+                    Long candidateRecipient =
+                            getClientIdByName(command.replaceAll("(?is)^/to ([a-zA-Z0-9-]+)(\\s+.*)?$", "$1"));
                     if (candidateRecipient != null && candidateRecipient != getClientId()) {
                         recipient = candidateRecipient;
                         if (isNotBlank(text)) {
@@ -99,7 +103,17 @@ public class Chat extends PetsciiThread {
                             send(getClientId(), new ChatMessage(recipient, text));
                         }
                     }
-                    if (isBlank(text)) redraw();
+                    if (isBlank(text))
+                        redraw();
+                } else if (command.matches("(?is)^/all(\\s+.*)?$")) {
+                    recipient = null;
+                    String text = defaultString(command.replaceAll("(?is)^/all(\\s+.*)?$", "$1")).trim();
+                    if (isNotBlank(text)) {
+                        send(getClientId(), new ChatMessage(-4, text));
+                        sendToAll(new ChatMessage(-3, "<"+getClientName()+"@all>" + text));
+                    } else {
+                        redraw();
+                    }
                 } else if (command.matches("(?is)/nick [a-zA-Z0-9-]+")) {
                     String newName = command.replaceAll("\\s+", " ").substring(6);
                     int res = changeClientName(newName);
@@ -118,17 +132,20 @@ public class Chat extends PetsciiThread {
                 } else if (recipient != null) {
                     send(recipient, new ChatMessage(recipient, command));
                     send(getClientId(), new ChatMessage(recipient, command));
+                } else if (StringUtils.isNotBlank(command)) {
+                    send(getClientId(), new ChatMessage(-4, command));
+                    sendToAll(new ChatMessage(-3, "<"+getClientName()+"@all>"+ command));
                 } else {
                     redraw();
                 }
-            } while (!".".equals(command));
+            } while (!".".equals(rawCommand));
         } finally {
             notifyExitingUser();
             changeClientName(UUID.randomUUID().toString());
         }
     }
 
-    private void sendToAll(ChatMessage chatMessage) {
+    private synchronized void sendToAll(ChatMessage chatMessage) {
         getClients().keySet().stream()
                 .filter(id -> getClients().get(id) != null)
                 .filter(id -> id != getClientId() && getClientClass().equals(getClients().get(id).getClientClass()))
@@ -140,7 +157,8 @@ public class Chat extends PetsciiThread {
     }
 
     private void notifyExitingUser() {
-        sendToAll(new ChatMessage(-2, getClientName() + " just left"));
+        if (!getClientName().matches("^client[0-9]+$"))
+            sendToAll(new ChatMessage(-2, getClientName() + " just left"));
     }
 
     private String readCommandLine() throws IOException {
@@ -182,6 +200,7 @@ public class Chat extends PetsciiThread {
         println(StringUtils.repeat(' ', 13 - defaultString(getClientName()).length()) + getClientName());
         write(Colors.BLUE);
         println("Commands");
+
         write(Colors.LIGHT_BLUE);
         print("/users");
         write(Colors.GREY2);
@@ -190,22 +209,32 @@ public class Chat extends PetsciiThread {
         print("/u");
         write(Colors.GREY2);
         println("   to list users");
+
         write(Colors.LIGHT_BLUE);
         print("/to <person>");
         write(Colors.GREY2);
         println("   to talk with someone");
+
+        write(Colors.LIGHT_BLUE);
+        print("/all");
+        write(Colors.GREY2);
+        println("           to talk with all");
+
         write(Colors.LIGHT_BLUE);
         print("/nick <name>");
         write(Colors.GREY2);
         println("   to change nick");
+
         write(Colors.WHITE);
         print(".           ");
         write(Colors.GREY2);
         println("   to exit chat");
+
         write(Colors.WHITE);
         print("<RETURN>");
         write(Colors.GREY2);
         println("       to refresh screen");
+
         println();
         displayMessages();
 
@@ -273,6 +302,23 @@ public class Chat extends PetsciiThread {
 
                 if (row.message.receiverId == -2) {
                     write(Colors.RED);
+                    println(row.message.text);
+                    return;
+                }
+
+                if (row.message.receiverId == -3) {
+                    int index = row.message.text.indexOf(">");
+                    write(LIGHT_BLUE);
+                    print(row.message.text.substring(0, index+1));
+                    write(CYAN);
+                    println(row.message.text.substring(index+1));
+                    return;
+                }
+
+                if (row.message.receiverId == -4) {
+                    write(GREY2);
+                    print("<you@all>");
+                    write(WHITE);
                     println(row.message.text);
                     return;
                 }
