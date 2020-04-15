@@ -195,7 +195,7 @@ public class Chat extends PetsciiThread {
     private synchronized void redraw() {
         canRedraw = false;
         write(Keys.CLR, Colors.YELLOW);
-        print("              BBS Chat 1.1");
+        print("              BBS Chat 1.2");
         write(Colors.WHITE);
         println(StringUtils.repeat(' ', 13 - defaultString(getClientName()).length()) + getClientName());
         write(Colors.BLUE);
