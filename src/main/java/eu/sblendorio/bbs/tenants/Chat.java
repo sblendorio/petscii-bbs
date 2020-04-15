@@ -350,7 +350,7 @@ public class Chat extends PetsciiThread {
         ChatMessage chatMessage = (ChatMessage) message;
         rows.addLast(new Row(senderId, chatMessage));
         while (rows.size() > 10) rows.removeFirst();
-        if (canRedraw && (chatMessage.receiverId > 0 || commandLine.length() == 0)) {
+        if (canRedraw && (/* chatMessage.receiverId > 0 || */ commandLine.length() == 0)) {
             redraw();
             write(INPUT_COLOR);
             print(commandLine);
