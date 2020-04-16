@@ -92,10 +92,10 @@ public class Chat extends PetsciiThread {
                 final String command =  rawCommand;
                 if (StringUtils.isBlank(command)) {
                     redraw();
-                } else if (command.matches("(?is)^/to [a-zA-Z0-9-]+(\\s+.*)?$")) {
-                    String text = defaultString(command.replaceAll("(?is)^/to [a-zA-Z0-9-]+(\\s+.*)?$", "$1")).trim();
+                } else if (command.matches("(?is)^/to [\\.a-zA-Z0-9-]+(\\s+.*)?$")) {
+                    String text = defaultString(command.replaceAll("(?is)^/to [\\.a-zA-Z0-9-]+(\\s+.*)?$", "$1")).trim();
                     Long candidateRecipient =
-                            getClientIdByName(command.replaceAll("(?is)^/to ([a-zA-Z0-9-]+)(\\s+.*)?$", "$1"));
+                            getClientIdByName(command.replaceAll("(?is)^/to ([\\.a-zA-Z0-9-]+)(\\s+.*)?$", "$1"));
                     if (candidateRecipient != null && candidateRecipient != getClientId()) {
                         recipient = candidateRecipient;
                         if (isNotBlank(text)) {
@@ -114,7 +114,7 @@ public class Chat extends PetsciiThread {
                     } else {
                         redraw();
                     }
-                } else if (command.matches("(?is)/nick [a-zA-Z0-9-]+")) {
+                } else if (command.matches("(?is)/nick [\\.a-zA-Z0-9-]+")) {
                     String newName = command.replaceAll("\\s+", " ").substring(6);
                     int res = changeClientName(newName);
                     if (res != 0) {
