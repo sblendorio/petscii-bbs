@@ -477,7 +477,7 @@ public class CbmInputOutput extends Reader {
             out.close();
             this.close();
             throw new CbmIOException("SEVERE. CbmInputOutput::resetInput, potential DoS detected.");
-        } else if (missingInput.matches("(?is)^(G?ET|P?OST|H?EAD|P?UT|D?ELETE|C?ONNECT) [^\n]+ HTTP.*")) {
+        } else if (missingInput.matches("(?is)^(G?ET|P?OST|H?EAD|P?UT|D?ELETE|C?ONNECT|O?PTIONS) [^\n]+ HTTP.*")) {
             out.flush();
             out.close();
             this.close();
