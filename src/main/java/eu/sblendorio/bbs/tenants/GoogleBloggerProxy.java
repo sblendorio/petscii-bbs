@@ -108,8 +108,8 @@ public class GoogleBloggerProxy extends PetsciiThread {
         while (true) {
             log("Blogger waiting for input");
             write(WHITE);print("#"); write(GREY3);
-            print(", [");
-            write(WHITE); print("+-"); write(GREY3);
+            print(" [");
+            write(WHITE); print("N+-"); write(GREY3);
             print("]Page [");
             write(WHITE); print("H"); write(GREY3);
             print("]elp [");
@@ -128,7 +128,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
                 help();
                 listPosts();
                 continue;
-            } else if ("+".equals(input)) {
+            } else if ("+".equals(input) || "n".equals(input)) {
                 pageTokens.tokens.push(pageTokens.prev);
                 pageTokens.prev = pageTokens.curr;
                 pageTokens.curr = pageTokens.next;

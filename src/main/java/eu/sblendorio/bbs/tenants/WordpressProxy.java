@@ -89,8 +89,8 @@ public class WordpressProxy extends PetsciiThread {
         while (true) {
             log("Wordpress waiting for input");
             write(WHITE);print("#"); write(GREY3);
-            print(", [");
-            write(WHITE); print("+-"); write(GREY3);
+            print(" [");
+            write(WHITE); print("N+-"); write(GREY3);
             print("]Page [");
             write(WHITE); print("H"); write(GREY3);
             print("]elp [");
@@ -109,7 +109,7 @@ public class WordpressProxy extends PetsciiThread {
                 help();
                 listPosts();
                 continue;
-            } else if ("+".equals(input)) {
+            } else if ("+".equals(input) || "n".equals(input)) {
                 ++currentPage;
                 posts = null;
                 try {
