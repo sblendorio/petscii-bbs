@@ -14,6 +14,7 @@ import eu.sblendorio.bbs.core.CbmInputOutput;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.Utils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.impl.conn.Wire;
 
 public class MenuRetroAcademy extends PetsciiThread {
 
@@ -73,17 +74,18 @@ public class MenuRetroAcademy extends PetsciiThread {
 
             gotoXY(21, delta + 3); write(WHITE); print("News"); write(GREY3);
             gotoXY(21, delta + 4); write(WHITE); print(StringUtils.repeat(chr(163), 4)); write(GREY3);
-            gotoXY(5, delta + 4); write(REVON); print(" 1 "); write(REVOFF); print(" MedBunker");
-            gotoXY(5, delta + 5); write(REVON); print(" 2 "); write(REVOFF); print(" Disinformatico");
-            gotoXY(5, delta + 6); write(REVON); print(" 3 "); write(REVOFF); print(" Next Quotidiano");
-            gotoXY(5, delta + 7); write(REVON); print(" 4 "); write(REVOFF); print(" Wired");
-            gotoXY(5, delta + 8); write(REVON); print(" 5 "); write(REVOFF); print(" Fatto Quotidiano");
-            gotoXY(5, delta + 9); write(REVON); print(" 6 "); write(REVOFF); print(" IndieRetroNews");
-            gotoXY(5, delta + 10); write(REVON); print(" 7 "); write(REVOFF); print(" Retrocampus");
-            gotoXY(5, delta + 11); write(REVON); print(" 8 "); write(REVOFF); print(" News FNOMCeO");
-            gotoXY(5, delta + 12); write(REVON); print(" 9 "); write(REVOFF); print(" Archeologia Informatica");
-            gotoXY(5, delta + 13); write(REVON); print(" 0 "); write(REVOFF); print(" Il Post");
-            gotoXY(5, delta + 14); write(REVON); print(" N "); write(REVOFF); print(" Facta");
+            gotoXY(5, delta + 3); write(REVON); print(" 1 "); write(REVOFF); print(" MedBunker");
+            gotoXY(5, delta + 4); write(REVON); print(" 2 "); write(REVOFF); print(" Wired");
+            gotoXY(5, delta + 5); write(REVON); print(" 3 "); write(REVOFF); print(" Next Quotidiano");
+            gotoXY(5, delta + 6); write(REVON); print(" 4 "); write(REVOFF); print(" Disinformatico");
+            gotoXY(5, delta + 7); write(REVON); print(" 5 "); write(REVOFF); print(" Fatto Quotidiano");
+            gotoXY(5, delta + 8); write(REVON); print(" 6 "); write(REVOFF); print(" IndieRetroNews");
+            gotoXY(5, delta + 9); write(REVON); print(" 7 "); write(REVOFF); print(" Retrocampus");
+            gotoXY(5, delta + 10); write(REVON); print(" 8 "); write(REVOFF); print(" News FNOMCeO");
+            gotoXY(5, delta + 11); write(REVON); print(" 9 "); write(REVOFF); print(" Il Post");
+            gotoXY(5, delta + 12); write(REVON); print(" 0 "); write(REVOFF); print(" Archeologia Informatica");
+            gotoXY(5, delta + 13); write(REVON); print(" N "); write(REVOFF); print(" Facta");
+            gotoXY(5, delta + 13); write(REVON); print(" U "); write(REVOFF); print(" Butac");
 
             gotoXY(34, delta + 13); write(WHITE); print("Games"); write(GREY3);
             gotoXY(34, delta + 14); write(WHITE); print(StringUtils.repeat(chr(163), 5)); write(GREY3);
@@ -133,16 +135,17 @@ public class MenuRetroAcademy extends PetsciiThread {
                     return;
                 }
                 else if (key == '1') launch(new Medbunker());
-                else if (key == '2') launch(new Disinformatico());
+                else if (key == '2') launch(new WiredItalia());
                 else if (key == '3') launch(new NextQuotidiano());
-                else if (key == '4') launch(new WiredItalia());
+                else if (key == '4') launch(new Disinformatico());
                 else if (key == '5') launch(new IlFattoQuotidiano());
                 else if (key == '6') launch(new IndieRetroNews());
                 else if (key == '7') launch(new RetroCampus());
                 else if (key == '8') launch(new DottoreMaEVeroChe());
-                else if (key == '9') launch(new ArcheologiaInformatica());
-                else if (key == '0') launch(new IlPost());
+                else if (key == '9') launch(new IlPost());
+                else if (key == '0') launch(new ArcheologiaInformatica());
                 else if (key == 'n') launch(new FactaNews());
+                else if (key == 'u') launch(new Butac());
                 else if (key == 'e') launch(new TicTacToe());
                 else if (key == 'c') launch(new ConnectFour());
                 else if (key == 'f') launch(new Magic15());
