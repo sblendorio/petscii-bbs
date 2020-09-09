@@ -84,8 +84,9 @@ public class MenuRetroAcademy extends PetsciiThread {
             gotoXY(5, delta + 10); write(REVON); print(" 8 "); write(REVOFF); print(" News FNOMCeO");
             gotoXY(5, delta + 11); write(REVON); print(" 9 "); write(REVOFF); print(" Il Post");
             gotoXY(5, delta + 12); write(REVON); print(" 0 "); write(REVOFF); print(" Archeologia Informatica");
-            gotoXY(5, delta + 13); write(REVON); print(" N "); write(REVOFF); print(" Facta");
-            gotoXY(5, delta + 13); write(REVON); print(" U "); write(REVOFF); print(" Butac");
+            gotoXY(5, delta + 13); write(REVON); print(" J "); write(REVOFF); print(" Bufale.net");
+            gotoXY(5, delta + 14); write(REVON); print(" N "); write(REVOFF); print(" Facta");
+            gotoXY(5, delta + 15); write(REVON); print(" U "); write(REVOFF); print(" Butac");
 
             gotoXY(34, delta + 13); write(WHITE); print("Games"); write(GREY3);
             gotoXY(34, delta + 14); write(WHITE); print(StringUtils.repeat(chr(163), 5)); write(GREY3);
@@ -144,6 +145,7 @@ public class MenuRetroAcademy extends PetsciiThread {
                 else if (key == '8') launch(new DottoreMaEVeroChe());
                 else if (key == '9') launch(new IlPost());
                 else if (key == '0') launch(new ArcheologiaInformatica());
+                else if (key == 'j') launch(new BufaleNet());
                 else if (key == 'n') launch(new FactaNews());
                 else if (key == 'u') launch(new Butac());
                 else if (key == 'e') launch(new TicTacToe());
