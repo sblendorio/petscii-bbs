@@ -450,7 +450,7 @@ public class CbmInputOutput extends Reader {
     }
 
     public void resetInput() throws IOException {
-        final int THRESHOLD = 2048;
+        final int THRESHOLD = 192;
         byte[] buffer = new byte[THRESHOLD];
 
         int count = 0;
