@@ -181,6 +181,7 @@ public class WordpressProxy extends PetsciiThread {
         if (page < 1 || perPage < 1) return null;
         Map<Integer, Post> result = new LinkedHashMap<>();
         JSONArray posts = (JSONArray) httpGetJson(getApi() + "posts?context=view&page="+page+"&per_page="+perPage);
+        if (posts == null) return result;
         for (int i=0; i<posts.size(); ++i) {
             Post post = new Post();
             JSONObject postJ = (JSONObject) posts.get(i);
