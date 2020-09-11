@@ -558,7 +558,7 @@ public class CbmInputOutput extends Reader {
     }
 
     static List<String> readTextFile(String filename) throws IOException {
-        try (InputStream is = CbmInputOutput.class.getResourceAsStream(filename)) {
+        try (InputStream is = CbmInputOutput.class.getClassLoader().getResourceAsStream(filename)) {
             return readFromInputStream(is);
         }
     }

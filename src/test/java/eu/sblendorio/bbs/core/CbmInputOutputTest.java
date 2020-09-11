@@ -13,19 +13,19 @@ class CbmInputOutputTest {
 
   @Test
   void readTextFile() throws IOException {
-    List<String> fileEntries = CbmInputOutput.readTextFile("notEmptyTestFile.txt");
+    List<String> fileEntries = CbmInputOutput.readTextFile("eu/sblendorio/bbs/core/notEmptyTestFile.txt");
     assertThat(fileEntries, not(empty()));
   }
 
   @Test
   void readEmptyTextFile() throws IOException {
-    List<String> fileEntries = CbmInputOutput.readTextFile("emptyTestFile.txt");
+    List<String> fileEntries = CbmInputOutput.readTextFile("eu/sblendorio/bbs/core/emptyTestFile.txt");
     assertThat(fileEntries, empty());
   }
 
   @Test
   void notFoundTextFile() throws IOException {
-    List<String> fileEntries = CbmInputOutput.readTextFile("notFoundTestFile.txt");
+    List<String> fileEntries = CbmInputOutput.readTextFile("eu/sblendorio/bbs/core/notFoundTestFile.txt");
     assertThat(fileEntries, empty());
   }
 }
