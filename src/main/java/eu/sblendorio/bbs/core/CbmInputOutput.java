@@ -220,7 +220,10 @@ public class CbmInputOutput extends Reader {
                     fill();
                 if (nextChar >= nChars) { /* EOF */
                     if (s != null && s.length() > 0) {
-                        final String missingInput = decode(s.toString());
+                        final String missingInput = decode(s.toString())
+                            .replaceAll("\r+", "\\\\r")
+                            .replaceAll("\n+", "\\\\n")
+                            .replaceAll("\\p{C}", "?");
                         throw new CbmIOException("CbmInputOutput::readLine(), missingInput='"+missingInput+"'", missingInput);
                     } else {
                         throw new CbmIOException("CbmInputOutput::readLine()");
