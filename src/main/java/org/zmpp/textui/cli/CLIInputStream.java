@@ -37,7 +37,5 @@ public class CLIInputStream implements InputStream {
     @Override
     public void close() {
         throw new java.lang.UnsupportedOperationException("close not yet implemented");
-
     }
-
 }

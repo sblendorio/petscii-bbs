@@ -59,5 +59,4 @@ public class BBSInputStream implements InputStream {
     public void close() {
         throw new RuntimeException("Exit from ZMPP game");
     }
-
 }

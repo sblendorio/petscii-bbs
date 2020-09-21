@@ -710,4 +710,3 @@ public class UserLogon extends PetsciiThread {
 
     public static class UserRemovedException extends RuntimeException {}
 }
-

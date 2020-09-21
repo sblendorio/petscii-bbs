@@ -99,5 +99,4 @@ public class CLIConsole implements VirtualConsole, SaveGameDataStore, IOSystem {
     public InputStream getInputStream(){
         return this.cliInputStream;
     }
-
 }
