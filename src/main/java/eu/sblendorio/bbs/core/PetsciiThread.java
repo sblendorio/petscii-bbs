@@ -256,7 +256,6 @@ public abstract class PetsciiThread extends Thread {
         for (int i=0; i<y; ++i) write(DOWN);
     }
 
-
     public static Object httpGetJson(String url) throws IOException, ParseException {
         return httpGetJson(url, null);
     }

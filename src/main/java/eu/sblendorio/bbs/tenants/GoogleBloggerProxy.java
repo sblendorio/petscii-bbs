@@ -154,8 +154,8 @@ public class GoogleBloggerProxy extends PetsciiThread {
                 posts = null;
                 listPosts();
                 continue;
-            } else if (posts.containsKey(toInt(input))) {
-                displayPost(toInt(input));
+            } else if (posts.containsKey(toInt(input.replace("#", "")))) {
+                displayPost(toInt(input.replace("#", "")));
             } else if ("".equals(input)) {
                 listPosts();
                 continue;

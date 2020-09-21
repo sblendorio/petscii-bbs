@@ -59,6 +59,7 @@ public class WordpressProxy extends PetsciiThread {
     protected int pageSize = 10;
     protected int screenRows = 19;
     protected boolean showAuthor = false;
+    protected String httpUserAgent = null;
 
     protected Map<Integer, Post> posts = emptyMap();
     protected int currentPage = 1;
@@ -135,8 +136,8 @@ public class WordpressProxy extends PetsciiThread {
                 posts = null;
                 listPosts();
                 continue;
-            } else if (posts.containsKey(toInt(input))) {
-                displayPost(toInt(input));
+            } else if (posts.containsKey(toInt(input.replace("#", "")))) {
+                displayPost(toInt(input.replace("#", "")));
             } else if ("".equals(input)) {
                 listPosts();
                 continue;
@@ -180,7 +181,7 @@ public class WordpressProxy extends PetsciiThread {
     protected Map<Integer, Post> getPosts(int page, int perPage) throws Exception {
         if (page < 1 || perPage < 1) return null;
         Map<Integer, Post> result = new LinkedHashMap<>();
-        JSONArray posts = (JSONArray) httpGetJson(getApi() + "posts?context=view&page="+page+"&per_page="+perPage);
+        JSONArray posts = (JSONArray) httpGetJson(getApi() + "posts?context=view&page="+page+"&per_page="+perPage, httpUserAgent);
         if (posts == null) return result;
         for (int i=0; i<posts.size(); ++i) {
             Post post = new Post();
@@ -246,7 +247,7 @@ public class WordpressProxy extends PetsciiThread {
 
         try {
             if (showAuthor) {
-                JSONObject authorJ = (JSONObject) httpGetJson(getApi() + "users/" + p.authorId);
+                JSONObject authorJ = (JSONObject) httpGetJson(getApi() + "users/" + p.authorId, httpUserAgent);
                 author = authorJ.get("name").toString();
             }
         } catch (Exception e) {

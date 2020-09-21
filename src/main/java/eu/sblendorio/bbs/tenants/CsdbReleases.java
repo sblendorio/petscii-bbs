@@ -148,8 +148,8 @@ public class CsdbReleases extends PetsciiThread {
         while (true) {
             log("CSDb waiting for input");
             write(WHITE);print("#"); write(GREY3);
-            print(", [");
-            write(WHITE); print("+-"); write(GREY3);
+            print(" [");
+            write(WHITE); print("N+-"); write(GREY3);
             print("]Page [");
             write(WHITE); print("H"); write(GREY3);
             print("]elp [");
@@ -167,7 +167,7 @@ public class CsdbReleases extends PetsciiThread {
             } else if ("help".equals(input) || "h".equals(input)) {
                 help();
                 listPosts(rssUrl);
-            } else if ("+".equals(input)) {
+            } else if ("+".equals(input) || "n".equals(input)) {
                 ++currentPage;
                 posts = null;
                 try {
@@ -190,8 +190,8 @@ public class CsdbReleases extends PetsciiThread {
                 entries = null;
                 posts = null;
                 listPosts(rssUrl);
-            } else if (posts.containsKey(toInt(input))) {
-                displayPost(toInt(input));
+            } else if (posts.containsKey(toInt(input.replace("#", "")))) {
+                displayPost(toInt(input.replace("#", "")));
                 listPosts(rssUrl);
             } else if ("".equals(input)) {
                 listPosts(rssUrl);
