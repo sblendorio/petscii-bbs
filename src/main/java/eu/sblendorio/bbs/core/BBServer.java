@@ -28,7 +28,7 @@ public class BBServer {
     private static final Logger logger = LoggerFactory.getLogger(BBServer.class);
 
     public static void main(String[] args) throws Exception {
-        // args = new String[] {"-b", "MenuRetroAcademy", "-p", "6510"};
+        // args = new String[] {"-b", "MainMenu", "-p", "6510"};
         readParameters(args);
 
         logger.info("{} The BBS {} is running: port = {}, timeout = {} millis",
