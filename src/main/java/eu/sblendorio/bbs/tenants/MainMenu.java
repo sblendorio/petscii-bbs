@@ -73,217 +73,54 @@ public class MainMenu extends PetsciiThread {
             log("Starting Main Menu BBS");
             drawLogo();
 
-            gotoXY(21, delta + 4);
-            write(CYAN);
-            print("News");
-            write(GREY3);
-            gotoXY(21, delta + 5);
-            write(LIGHT_BLUE);
-            print(StringUtils.repeat(chr(163), 4));
-            write(GREY3);
-            gotoXY(5, delta + 4);
-            write(REVON);
-            print(" 1 ");
-            write(REVOFF);
-            print(" Wired");
-            gotoXY(5, delta + 5);
-            write(REVON);
-            print(" 2 ");
-            write(REVOFF);
-            print(" MedBunker");
-            gotoXY(5, delta + 6);
-            write(REVON);
-            print(" 3 ");
-            write(REVOFF);
-            print(" Next Quotidiano");
-            gotoXY(5, delta + 7);
-            write(REVON);
-            print(" 4 ");
-            write(REVOFF);
-            print(" Disinformatico");
-            gotoXY(5, delta + 8);
-            write(REVON);
-            print(" 5 ");
-            write(REVOFF);
-            print(" Fatto Quotidiano");
-            gotoXY(5, delta + 9);
-            write(REVON);
-            print(" 6 ");
-            write(REVOFF);
-            print(" IndieRetroNews");
-            gotoXY(5, delta + 10);
-            write(REVON);
-            print(" 7 ");
-            write(REVOFF);
-            print(" Retrocampus");
-            gotoXY(5, delta + 11);
-            write(REVON);
-            print(" 8 ");
-            write(REVOFF);
-            print(" News FNOMCeO");
-            gotoXY(5, delta + 12);
-            write(REVON);
-            print(" 9 ");
-            write(REVOFF);
-            print(" Il Post");
-            gotoXY(5, delta + 13);
-            write(REVON);
-            print(" 0 ");
-            write(REVOFF);
-            print(" Puntoinformatico");
-            gotoXY(5, delta + 14);
-            write(REVON);
-            print(" W ");
-            write(REVOFF);
-            print(" Archeologia Informatica");
-            gotoXY(5, delta + 15);
-            write(REVON);
-            print(" B ");
-            write(REVOFF);
-            print(" Medical facts");
-            gotoXY(5, delta + 16);
-            write(REVON);
-            print(" J ");
-            write(REVOFF);
-            print(" Bufale.net");
-            gotoXY(5, delta + 17);
-            write(REVON);
-            print(" Q ");
-            write(REVOFF);
-            print(" Queryonline");
-            gotoXY(5, delta + 18);
-            write(REVON);
-            print(" N ");
-            write(REVOFF);
-            print(" Facta");
-            gotoXY(5, delta + 19);
-            write(REVON);
-            print(" U ");
-            write(REVOFF);
-            print(" Butac");
+            gotoXY(21, delta + 4); write(CYAN); print("News"); write(GREY3);
+            gotoXY(21, delta + 5); write(LIGHT_BLUE); print(StringUtils.repeat(chr(163), 4)); write(GREY3);
+            gotoXY(5, delta + 4); write(REVON); print(" 1 "); write(REVOFF); print(" Wired");
+            gotoXY(5, delta + 5); write(REVON); print(" 2 "); write(REVOFF); print(" MedBunker");
+            gotoXY(5, delta + 6); write(REVON); print(" 3 "); write(REVOFF); print(" Next Quotidiano");
+            gotoXY(5, delta + 7); write(REVON); print(" 4 "); write(REVOFF); print(" Disinformatico");
+            gotoXY(5, delta + 8); write(REVON); print(" 5 "); write(REVOFF); print(" Fatto Quotidiano");
+            gotoXY(5, delta + 9); write(REVON); print(" 6 "); write(REVOFF); print(" IndieRetroNews");
+            gotoXY(5, delta + 10); write(REVON); print(" 7 "); write(REVOFF); print(" Retrocampus");
+            gotoXY(5, delta + 11); write(REVON); print(" 8 "); write(REVOFF); print(" News FNOMCeO");
+            gotoXY(5, delta + 12); write(REVON); print(" 9 "); write(REVOFF); print(" Il Post");
+            gotoXY(5, delta + 13); write(REVON); print(" 0 "); write(REVOFF); print(" Puntoinformatico");
+            gotoXY(5, delta + 14); write(REVON); print(" W "); write(REVOFF); print(" Archeologia Informatica");
+            gotoXY(5, delta + 15); write(REVON); print(" B "); write(REVOFF); print(" Medical facts");
+            gotoXY(5, delta + 16); write(REVON); print(" J "); write(REVOFF); print(" Bufale.net");
+            gotoXY(5, delta + 17); write(REVON); print(" Q "); write(REVOFF); print(" Queryonline");
+            gotoXY(5, delta + 18); write(REVON); print(" N "); write(REVOFF); print(" Facta");
+            gotoXY(5, delta + 19); write(REVON); print(" U "); write(REVOFF); print(" Butac");
 
-            gotoXY(34, delta + 14);
-            write(CYAN);
-            print("Games");
-            write(GREY3);
-            gotoXY(34, delta + 15);
-            write(LIGHT_BLUE);
-            print(StringUtils.repeat(chr(163), 5));
-            write(GREY3);
-            gotoXY(24, delta + 16);
-            write(REVON);
-            print(" E ");
-            write(REVOFF);
-            print(" TIC-TAC-TOE");
-            gotoXY(24, delta + 17);
-            write(REVON);
-            print(" C ");
-            write(REVOFF);
-            print(" CONNECT-4");
-            gotoXY(24, delta + 18);
-            write(REVON);
-            print(" F ");
-            write(REVOFF);
-            print(" MAGIC-15");
-            gotoXY(24, delta + 19);
-            write(REVON);
-            print(" X ");
-            write(REVOFF);
-            print(" Zork I");
-            gotoXY(24, delta + 20);
-            write(REVON);
-            print(" Y ");
-            write(REVOFF);
-            print(" Zork II");
-            gotoXY(24, delta + 21);
-            write(REVON);
-            print(" Z ");
-            write(REVOFF);
-            print(" Zork III");
-            gotoXY(24, delta + 22);
-            write(REVON);
-            print(" R ");
-            write(REVOFF);
-            print(" Hitchhikers");
+            gotoXY(34, delta + 14); write(CYAN); print("Games"); write(GREY3);
+            gotoXY(34, delta + 15); write(LIGHT_BLUE); print(StringUtils.repeat(chr(163), 5)); write(GREY3);
+            gotoXY(24, delta + 16); write(REVON); print(" E "); write(REVOFF); print(" TIC-TAC-TOE");
+            gotoXY(24, delta + 17); write(REVON); print(" C "); write(REVOFF); print(" CONNECT-4");
+            gotoXY(24, delta + 18); write(REVON); print(" F "); write(REVOFF); print(" MAGIC-15");
+            gotoXY(24, delta + 19); write(REVON); print(" X "); write(REVOFF); print(" Zork I");
+            gotoXY(24, delta + 20); write(REVON); print(" Y "); write(REVOFF); print(" Zork II");
+            gotoXY(24, delta + 21); write(REVON); print(" Z "); write(REVOFF); print(" Zork III");
+            gotoXY(24, delta + 22); write(REVON); print(" R "); write(REVOFF); print(" Hitchhikers");
 
-            gotoXY(16, delta + 19);
-            write(CYAN);
-            print("Misc");
-            write(GREY3);
-            gotoXY(16, delta + 20);
-            write(LIGHT_BLUE);
-            print(StringUtils.repeat(chr(163), 4));
-            write(GREY3);
-            gotoXY(4, delta + 21);
-            write(REVON);
-            print(" S ");
-            write(REVOFF);
-            print(" Sportal.IT");
-            gotoXY(4, delta + 22);
-            write(REVON);
-            print(" L ");
-            write(REVOFF);
-            print(" Le ossa");
-            gotoXY(4, delta + 23);
-            write(REVON);
-            print(" P ");
-            write(REVOFF);
-            print(" PETSCII Art");
-            gotoXY(4, delta + 24);
-            write(REVON);
-            print(" K ");
-            write(REVOFF);
-            print(" CSDb SD2IEC");
+            gotoXY(16, delta + 19); write(CYAN); print("Misc"); write(GREY3);
+            gotoXY(16, delta + 20); write(LIGHT_BLUE); print(StringUtils.repeat(chr(163), 4)); write(GREY3);
+            gotoXY(4, delta + 21); write(REVON); print(" S "); write(REVOFF); print(" Sportal.IT");
+            gotoXY(4, delta + 22); write(REVON); print(" L "); write(REVOFF); print(" Le ossa");
+            gotoXY(4, delta + 23); write(REVON); print(" P "); write(REVOFF); print(" PETSCII Art");
+            gotoXY(4, delta + 24); write(REVON); print(" K "); write(REVOFF); print(" CSDb SD2IEC");
 
-            gotoXY(32, delta + 4);
-            write(CYAN);
-            print("Servizi");
-            write(GREY3);
-            gotoXY(32, delta + 5);
-            write(LIGHT_BLUE);
-            print(StringUtils.repeat(chr(163), 7));
-            write(GREY3);
-            gotoXY(26, delta + 6);
-            write(REVON);
-            print(" M ");
-            write(REVOFF);
-            print(" Messaggi");
-            gotoXY(26, delta + 7);
-            write(REVON);
-            print(" T ");
-            write(REVOFF);
-            print(" Televideo");
-            gotoXY(26, delta + 8);
-            write(REVON);
-            print(" D ");
-            write(REVOFF);
-            print(" CSDb");
-            gotoXY(26, delta + 9);
-            write(REVON);
-            print(" A ");
-            write(REVOFF);
-            print(" Arnold 64");
-            gotoXY(26, delta + 10);
-            write(REVON);
-            print(" I ");
-            write(REVOFF);
-            print(" Internet");
-            gotoXY(26, delta + 11);
-            write(REVON);
-            print(" H ");
-            write(REVOFF);
-            print(" Chat");
-            gotoXY(26, delta + 12);
-            write(REVON);
-            print(" . ");
-            write(REVOFF);
-            print(" Logoff");
+            gotoXY(32, delta + 4); write(CYAN); print("Servizi"); write(GREY3);
+            gotoXY(32, delta + 5); write(LIGHT_BLUE); print(StringUtils.repeat(chr(163), 7)); write(GREY3);
+            gotoXY(26, delta + 6); write(REVON); print(" M "); write(REVOFF); print(" Messaggi");
+            gotoXY(26, delta + 7); write(REVON); print(" T "); write(REVOFF); print(" Televideo");
+            gotoXY(26, delta + 8); write(REVON); print(" D "); write(REVOFF); print(" CSDb");
+            gotoXY(26, delta + 9); write(REVON); print(" A "); write(REVOFF); print(" Arnold 64");
+            gotoXY(26, delta + 10); write(REVON); print(" I "); write(REVOFF); print(" Internet");
+            gotoXY(26, delta + 11); write(REVON); print(" H "); write(REVOFF); print(" Chat");
+            gotoXY(26, delta + 12); write(REVON); print(" . "); write(REVOFF); print(" Logoff");
 
             //final String line = geoData != null ? "Connected from "+geoData.city+", "+geoData.country : EMPTY;
-            gotoXY(22, 24);
-            write(GREY2);
-            print("(C) F. Sblendorio");
-            write(GREY3);
+            gotoXY(22, 24); write(GREY2); print("(C) F. Sblendorio"); write(GREY3);
             flush();
             boolean validKey;
             do {
@@ -302,73 +139,41 @@ public class MainMenu extends PetsciiThread {
                     newline();
                     println("Disconnected.");
                     return;
-                } else if (key == '1') {
-                    launch(new WiredItalia());
-                } else if (key == '2') {
-                    launch(new Medbunker());
-                } else if (key == '3') {
-                    launch(new NextQuotidiano());
-                } else if (key == '4') {
-                    launch(new Disinformatico());
-                } else if (key == '5') {
-                    launch(new IlFattoQuotidiano());
-                } else if (key == '6') {
-                    launch(new IndieRetroNews());
-                } else if (key == '7') {
-                    launch(new RetroCampus());
-                } else if (key == '8') {
-                    launch(new DottoreMaEVeroChe());
-                } else if (key == '9') {
-                    launch(new IlPost());
-                } else if (key == '0') {
-                    launch(new PuntoInformatico());
-                } else if (key == 'w') {
-                    launch(new ArcheologiaInformatica());
-                } else if (key == 'b') {
-                    launch(new MedicalFacts());
-                } else if (key == 'j') {
-                    launch(new BufaleNet());
-                } else if (key == 'q') {
-                    launch(new QueryOnline());
-                } else if (key == 'n') {
-                    launch(new FactaNews());
-                } else if (key == 'u') {
-                    launch(new Butac());
-                } else if (key == 'e') {
-                    launch(new TicTacToe());
-                } else if (key == 'c') {
-                    launch(new ConnectFour());
-                } else if (key == 'f') {
-                    launch(new Magic15());
-                } else if (key == 's') {
-                    launch(new Sportal());
-                } else if (key == 'l') {
-                    launch(new Ossa());
-                } else if (key == 'p') {
-                    launch(new PetsciiArtGallery());
-                } else if (key == 'm') {
-                    launch(new UserLogon());
-                } else if (key == 't') {
-                    launch(new TelevideoRai());
-                } else if (key == 'd') {
-                    launch(new CsdbReleases());
-                } else if (key == 'a') {
-                    launch(new ArnoldC64());
-                } else if (key == 'i') {
-                    launch(new InternetBrowser());
-                } else if (key == 'h') {
-                    launch(new Chat());
-                } else if (key == 'k') {
-                    launch(new CsdbReleasesSD2IEC());
-                } else if (key == 'x') {
-                    launch(new ZorkMachine("zmpp/zork1.z3"));
-                } else if (key == 'y') {
-                    launch(new ZorkMachine("zmpp/zork2.z3"));
-                } else if (key == 'z') {
-                    launch(new ZorkMachine("zmpp/zork3.z3"));
-                } else if (key == 'r') {
-                    launch(new ZorkMachine("zmpp/hitchhiker-r60.z3"));
-                } else {
+                }
+                else if (key == '1') launch(new WiredItalia());
+                else if (key == '2') launch(new Medbunker());
+                else if (key == '3') launch(new NextQuotidiano());
+                else if (key == '4') launch(new Disinformatico());
+                else if (key == '5') launch(new IlFattoQuotidiano());
+                else if (key == '6') launch(new IndieRetroNews());
+                else if (key == '7') launch(new RetroCampus());
+                else if (key == '8') launch(new DottoreMaEVeroChe());
+                else if (key == '9') launch(new IlPost());
+                else if (key == '0') launch(new PuntoInformatico());
+                else if (key == 'w') launch(new ArcheologiaInformatica());
+                else if (key == 'b') launch(new MedicalFacts());
+                else if (key == 'j') launch(new BufaleNet());
+                else if (key == 'q') launch(new QueryOnline());
+                else if (key == 'n') launch(new FactaNews());
+                else if (key == 'u') launch(new Butac());
+                else if (key == 'e') launch(new TicTacToe());
+                else if (key == 'c') launch(new ConnectFour());
+                else if (key == 'f') launch(new Magic15());
+                else if (key == 's') launch(new Sportal());
+                else if (key == 'l') launch(new Ossa());
+                else if (key == 'p') launch(new PetsciiArtGallery());
+                else if (key == 'm') launch(new UserLogon());
+                else if (key == 't') launch(new TelevideoRai());
+                else if (key == 'd') launch(new CsdbReleases());
+                else if (key == 'a') launch(new ArnoldC64());
+                else if (key == 'i') launch(new InternetBrowser());
+                else if (key == 'h') launch(new Chat());
+                else if (key == 'k') launch(new CsdbReleasesSD2IEC());
+                else if (key == 'x') launch(new ZorkMachine("zmpp/zork1.z3"));
+                else if (key == 'y') launch(new ZorkMachine("zmpp/zork2.z3"));
+                else if (key == 'z') launch(new ZorkMachine("zmpp/zork3.z3"));
+                else if (key == 'r') launch(new ZorkMachine("zmpp/hitchhiker-r60.z3"));
+                else {
                     validKey = false;
                 }
             } while (!validKey);
