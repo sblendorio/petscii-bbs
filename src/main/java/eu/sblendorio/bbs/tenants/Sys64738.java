@@ -6,7 +6,7 @@ public class Sys64738 extends WordpressProxy {
         super();
         this.logo = LOGO_BYTES;
         this.domain = "https://sys64738.org";
-        this.pageSize = 8;
+        this.pageSize = 10;
         this.screenRows = 18;
     }
 

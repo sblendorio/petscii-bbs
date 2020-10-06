@@ -75,22 +75,22 @@ public class MainMenu extends PetsciiThread {
 
             gotoXY(20, delta + 4); write(CYAN); print("News"); write(GREY3);
             gotoXY(20, delta + 5); write(LIGHT_BLUE); print(StringUtils.repeat(chr(163), 4)); write(GREY3);
-            gotoXY(4, delta + 4);  write(REVON, 161); print("1"); write(REVOFF, 161); print("Wired");
+            gotoXY(4, delta + 4);  write(REVON, 161); print("1"); write(REVOFF, 161); print("Linkiesta");
             gotoXY(4, delta + 5);  write(REVON, 161); print("2"); write(REVOFF, 161); print("MedBunker");
             gotoXY(4, delta + 6);  write(REVON, 161); print("3"); write(REVOFF, 161); print("Next Quotidiano");
             gotoXY(4, delta + 7);  write(REVON, 161); print("4"); write(REVOFF, 161); print("Disinformatico");
             gotoXY(4, delta + 8);  write(REVON, 161); print("5"); write(REVOFF, 161); print("Fatto Quotidiano");
-            gotoXY(4, delta + 9);  write(REVON, 161); print("6"); write(REVOFF, 161); print("IndieRetroNews");
+            gotoXY(4, delta + 9);  write(REVON, 161); print("6"); write(REVOFF, 161); print("Indie Retro News");
             gotoXY(4, delta + 10); write(REVON, 161); print("7"); write(REVOFF, 161); print("Retrocampus");
             gotoXY(4, delta + 11); write(REVON, 161); print("8"); write(REVOFF, 161); print("News FNOMCeO");
             gotoXY(4, delta + 12); write(REVON, 161); print("9"); write(REVOFF, 161); print("Il Post");
             gotoXY(4, delta + 13); write(REVON, 161); print("0"); write(REVOFF, 161); print("Punto informatico");
             gotoXY(4, delta + 14); write(REVON, 161); print("W"); write(REVOFF, 161); print("Archeologia Informatica");
             gotoXY(4, delta + 15); write(REVON, 161); print("B"); write(REVOFF, 161); print("Medical facts");
-            gotoXY(4, delta + 16); write(REVON, 161); print("J"); write(REVOFF, 161); print("Bufale.net");
-            gotoXY(4, delta + 17); write(REVON, 161); print("Q"); write(REVOFF, 161); print("Queryonline");
-            gotoXY(4, delta + 18); write(REVON, 161); print("N"); write(REVOFF, 161); print("Facta");
-            gotoXY(4, delta + 19); write(REVON, 161); print("U"); write(REVOFF, 161); print("Butac");
+            gotoXY(4, delta + 16); write(REVON, 161); print("Q"); write(REVOFF, 161); print("Query");
+            gotoXY(4, delta + 17); write(REVON, 161); print("J"); write(REVOFF, 161); print("Bufale   "); write(REVON, 161); print("O"); write(REVOFF, 161); print("Wired");
+            gotoXY(4, delta + 18); write(REVON, 161); print("V"); write(REVOFF, 161); print("Sys64738 "); write(REVON, 161); print("U"); write(REVOFF, 161); print("Butac");
+            gotoXY(4, delta + 19); write(REVON, 161); print("G"); write(REVOFF, 161); print("8bit guy "); write(REVON, 161); print("N"); write(REVOFF, 161); print("Facta");
 
             gotoXY(34, delta + 14); write(CYAN); print("Games"); write(GREY3);
             gotoXY(34, delta + 15); write(LIGHT_BLUE); print(StringUtils.repeat(chr(163), 5)); write(GREY3);
@@ -102,22 +102,22 @@ public class MainMenu extends PetsciiThread {
             gotoXY(25, delta + 21); write(REVON, 161); print("Z"); write(REVOFF, 161); print("Zork III");
             gotoXY(25, delta + 22); write(REVON, 161); print("R"); write(REVOFF, 161); print("Hitchhikers");
 
-            gotoXY(14, delta + 19); write(CYAN); print("Misc"); write(GREY3);
-            gotoXY(14, delta + 20); write(LIGHT_BLUE); print(StringUtils.repeat(chr(163), 4)); write(GREY3);
+            gotoXY(17, delta + 21); write(CYAN); print("Misc"); write(GREY3);
+            gotoXY(17, delta + 22); write(LIGHT_BLUE); print(StringUtils.repeat(chr(163), 4)); write(GREY3);
             gotoXY(2, delta + 21); write(REVON, 161); print("S"); write(REVOFF, 161); print("Sportal.IT");
-            gotoXY(2, delta + 22); write(REVON, 161); print("L"); write(REVOFF, 161); print("Le ossa");
-            gotoXY(2, delta + 23); write(REVON, 161); print("P"); write(REVOFF, 161); print("PETSCII Art");
-            gotoXY(2, delta + 24); write(REVON, 161); print("K"); write(REVOFF, 161); print("CSDb SD2IEC");
+            gotoXY(2, delta + 22); write(REVON, 161); print("P"); write(REVOFF, 161); print("PETSCII Art");
+            gotoXY(2, delta + 23); write(REVON, 161); print("L"); write(REVOFF, 161); print("Le ossa");
+            gotoXY(2, delta + 24); write(REVON, 161); print("."); write(REVOFF, 161); print("Logout");
 
             gotoXY(32, delta + 4); write(CYAN); print("Servizi"); write(GREY3);
             gotoXY(32, delta + 5); write(LIGHT_BLUE); print(StringUtils.repeat(chr(163), 7)); write(GREY3);
-            gotoXY(27, delta + 6);  write(REVON, 161); print("M"); write(REVOFF, 161); print("Messaggi");
-            gotoXY(27, delta + 7);  write(REVON, 161); print("T"); write(REVOFF, 161); print("Televideo");
-            gotoXY(27, delta + 8);  write(REVON, 161); print("D"); write(REVOFF, 161); print("CSDb");
-            gotoXY(27, delta + 9);  write(REVON, 161); print("A"); write(REVOFF, 161); print("Arnold 64");
-            gotoXY(27, delta + 10); write(REVON, 161); print("I"); write(REVOFF, 161); print("Internet");
-            gotoXY(27, delta + 11); write(REVON, 161); print("H"); write(REVOFF, 161); print("Chat");
-            gotoXY(27, delta + 12); write(REVON, 161); print("."); write(REVOFF, 161); print("Logoff");
+            gotoXY(25, delta + 6);  write(REVON, 161); print("M"); write(REVOFF, 161); print("Messaggi");
+            gotoXY(25, delta + 7);  write(REVON, 161); print("T"); write(REVOFF, 161); print("Televideo");
+            gotoXY(25, delta + 8);  write(REVON, 161); print("D"); write(REVOFF, 161); print("CSDb");
+            gotoXY(25, delta + 9);  write(REVON, 161); print("A"); write(REVOFF, 161); print("Arnold 64");
+            gotoXY(25, delta + 10); write(REVON, 161); print("I"); write(REVOFF, 161); print("Internet");
+            gotoXY(25, delta + 11); write(REVON, 161); print("H"); write(REVOFF, 161); print("Chat");
+            gotoXY(25, delta + 12); write(REVON, 161); print("K"); write(REVOFF, 161); print("CSDb SD2IEC");
 
             //final String line = geoData != null ? "Connected from "+geoData.city+", "+geoData.country : EMPTY;
             gotoXY(22, 24); write(GREY2); print("(C) F. Sblendorio"); write(GREY3);
@@ -140,7 +140,7 @@ public class MainMenu extends PetsciiThread {
                     println("Disconnected.");
                     return;
                 }
-                else if (key == '1') launch(new WiredItalia());
+                else if (key == '1') launch(new Linkiesta());
                 else if (key == '2') launch(new Medbunker());
                 else if (key == '3') launch(new NextQuotidiano());
                 else if (key == '4') launch(new Disinformatico());
@@ -153,7 +153,9 @@ public class MainMenu extends PetsciiThread {
                 else if (key == 'w') launch(new ArcheologiaInformatica());
                 else if (key == 'b') launch(new MedicalFacts());
                 else if (key == 'j') launch(new BufaleNet());
+                else if (key == 'g') launch(new The8BitGuy());
                 else if (key == 'q') launch(new QueryOnline());
+                else if (key == 'o') launch(new WiredItalia());
                 else if (key == 'n') launch(new FactaNews());
                 else if (key == 'u') launch(new Butac());
                 else if (key == 'e') launch(new TicTacToe());
@@ -164,6 +166,7 @@ public class MainMenu extends PetsciiThread {
                 else if (key == 'p') launch(new PetsciiArtGallery());
                 else if (key == 'm') launch(new UserLogon());
                 else if (key == 't') launch(new TelevideoRai());
+                else if (key == 'v') launch(new Sys64738());
                 else if (key == 'd') launch(new CsdbReleases());
                 else if (key == 'a') launch(new ArnoldC64());
                 else if (key == 'i') launch(new InternetBrowser());
