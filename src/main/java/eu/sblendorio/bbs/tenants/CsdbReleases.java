@@ -232,7 +232,8 @@ public class CsdbReleases extends PetsciiThread {
         write(WHITE); println(strDate);
         if (content != null) {
             write(GREY3); print("Size: ");
-            write(WHITE); println(content.length + " bytes");
+            final int blocks = (content.length + 255) / 256;
+            write(WHITE); println(content.length + " bytes (" + blocks + " blocks)");
         }
         println();
         write(GREY3); println("URL:");

@@ -354,6 +354,9 @@ public class Chat extends PetsciiThread {
             redraw();
             write(INPUT_COLOR);
             print(commandLine);
+            if (senderId != this.clientId) {
+                write(7);
+            }
         }
     }
 }

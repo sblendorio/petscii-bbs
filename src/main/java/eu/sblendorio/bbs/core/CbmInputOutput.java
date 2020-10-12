@@ -61,7 +61,7 @@ public class CbmInputOutput extends Reader {
     public int readKey() throws IOException {
         final int result = in.read();
         if (result == -1) throw new CbmIOException("CbmInputOutput::readKey()");
-        return result;
+        return (result >= 193 && result <= 218) ? result - 96 : result;
     }
 
     /** Checks to make sure that the stream has not been closed */

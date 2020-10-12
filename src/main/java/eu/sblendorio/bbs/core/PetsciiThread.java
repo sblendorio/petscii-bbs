@@ -3,6 +3,7 @@ package eu.sblendorio.bbs.core;
 import static eu.sblendorio.bbs.core.Keys.DOWN;
 import static eu.sblendorio.bbs.core.Keys.HOME;
 import static eu.sblendorio.bbs.core.Keys.RIGHT;
+import java.io.UncheckedIOException;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
@@ -206,8 +207,9 @@ public abstract class PetsciiThread extends Thread {
         } catch (Exception e) {
             child = null;
             clientClass = getClass();
-            if (e instanceof RuntimeException && e.getCause() != null) throw e;
-            log(e.getClass().getSimpleName() + " during launching of " + bbs.getClass().getSimpleName()+" within " + this.getClass().getSimpleName()+". Launch interrupted. Stack trace:");
+            if (e instanceof RuntimeException && !(e instanceof UncheckedIOException) && e.getCause() != null) throw e;
+            log(e.getClass().getSimpleName() + " during launching of " + bbs.getClass().getSimpleName() + " within " +
+                this.getClass().getSimpleName() + ". Launch interrupted. Stack trace:");
             logger.error("Launch interrupted", e);
             return false;
         } finally {
@@ -252,8 +254,8 @@ public abstract class PetsciiThread extends Thread {
 
     public void gotoXY(int x, int y) {
         write(HOME);
-        for (int i=0; i<x; ++i) write(RIGHT);
         for (int i=0; i<y; ++i) write(DOWN);
+        for (int i=0; i<x; ++i) write(RIGHT);
     }
 
     public static Object httpGetJson(String url) throws IOException, ParseException {
