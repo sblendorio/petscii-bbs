@@ -173,7 +173,7 @@ public class MainMenu extends PetsciiThread {
                 else if (key == 'd') launch(new CsdbReleases());
                 else if (key == 'a') launch(new ArnoldC64());
                 else if (key == 'i') launch(new InternetBrowser());
-                else if (key == 'h') launch(new Chat());
+                else if (key == 'h') launch(new ChatWithoutRedraw());
                 else if (key == 'k') launch(new CsdbReleasesSD2IEC());
                 else if (key == 'x') launch(new ZorkMachine("zmpp/zork1.z3"));
                 else if (key == 'y') launch(new ZorkMachine("zmpp/zork2.z3"));

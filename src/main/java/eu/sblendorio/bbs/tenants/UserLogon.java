@@ -128,15 +128,16 @@ public class UserLogon extends PetsciiThread {
         init();
         String username;
         String password;
-        cls();
-        write(CASE_LOCK, LOWERCASE);
-        write(LOGO_BYTES);
-        write(GREY3);
-        newline();
-        println("Enter 'P' for privacy policy");
-        newline();
         while (user == null) {
             do {
+                cls();
+                write(CASE_LOCK, LOWERCASE);
+                write(LOGO_BYTES);
+                write(GREY3);
+                newline();
+                println("Enter 'P' for privacy policy");
+                newline();
+
                 print("USERID or 'NEW': ");
                 flush(); username = readLine();
                 if (isBlank(username)) return;
