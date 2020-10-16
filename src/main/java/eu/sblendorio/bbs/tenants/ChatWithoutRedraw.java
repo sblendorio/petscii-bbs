@@ -307,6 +307,8 @@ public class ChatWithoutRedraw extends PetsciiThread {
             return;
 
         write(13, 145);
+        println(StringUtils.repeat(' ', 39));
+        write(145);
 
         write(Colors.GREY2);
         write(Colors.GREY3);
