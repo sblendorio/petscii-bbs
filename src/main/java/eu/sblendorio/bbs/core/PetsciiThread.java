@@ -66,7 +66,7 @@ public abstract class PetsciiThread extends Thread {
     protected PetsciiThread child = null;
     protected PetsciiThread parent = null;
 
-    protected boolean keepAlive = false;
+    protected boolean keepAlive = true;
     protected long keepAliveTimeout = 1000L * 60L * 60L; // 1 hour
     protected long keepAliveInterval = 1000L * 60L * 2L; // send char every 2 minutes
     protected int keepAliveChar = 1;
