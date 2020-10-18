@@ -94,6 +94,10 @@ public class CsdbReleases extends PetsciiThread {
     private List<ReleaseEntry> searchResults = emptyList();
     private boolean searchMode = false;
 
+    public CsdbReleases() {
+        this.keepAlive = false;
+    }
+
     @Override
     public void doLoop() throws Exception {
         do {

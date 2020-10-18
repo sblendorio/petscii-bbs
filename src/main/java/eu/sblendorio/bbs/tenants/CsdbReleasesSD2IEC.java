@@ -65,7 +65,6 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
     private static final String URL_TEMPLATE = "https://csdb.dk/search/?seinsel=releases&all=1&search=";
     private static final String OTHER_PLATFORM = "Other Platform C64 Tool";
 
-
     private int currentPage = 1;
     protected int pageSize = 10;
 
@@ -116,6 +115,10 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
     private List<NewsFeed> entries = emptyList();
     private List<ReleaseEntry> searchResults = emptyList();
     private boolean searchMode = false;
+
+    public CsdbReleasesSD2IEC() {
+        this.keepAlive = false;
+    }
 
     @Override
     public void doLoop() throws Exception {

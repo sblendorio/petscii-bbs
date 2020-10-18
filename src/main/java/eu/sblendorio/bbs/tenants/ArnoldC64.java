@@ -74,6 +74,9 @@ public class ArnoldC64 extends PetsciiThread {
 
     protected Map<Integer, Entry> posts = emptyMap();
 
+    public ArnoldC64() {
+        this.keepAlive = false;
+    }
 
     @Override
     public void doLoop() throws Exception {
