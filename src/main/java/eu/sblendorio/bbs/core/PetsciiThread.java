@@ -227,6 +227,7 @@ public abstract class PetsciiThread extends Thread {
             } catch (IOException e) {
                 log("Couldn't close a socket, what's going on?");
             }
+            keepAliveThread.interrupt();
             clients.remove(getClientId());
             log("STOP. Connection CLOSED.");
         }
