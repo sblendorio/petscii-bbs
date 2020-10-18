@@ -5,6 +5,7 @@ import static eu.sblendorio.bbs.core.Keys.HOME;
 import static eu.sblendorio.bbs.core.Keys.RIGHT;
 import java.io.UncheckedIOException;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import java.util.concurrent.atomic.AtomicBoolean;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -67,25 +68,31 @@ public abstract class PetsciiThread extends Thread {
 
     protected boolean keepAlive = false;
     protected long keepAliveTimeout = 1000L * 60L * 60L; // 1 hour
-    protected long keepAliveInterval = 1000L * 60L * 10L; // send char every 10 minutes
+    protected long keepAliveInterval = 1000L * 60L * 10L; // send char every 10\ minutes
     protected int keepAliveChar = 1;
     protected KeepAliveThread keepAliveThread = new KeepAliveThread();
 
     public class KeepAliveThread extends Thread {
         private long startTimestamp = System.currentTimeMillis();
+        private AtomicBoolean running = new AtomicBoolean(true);
+
+        @Override
+        public void interrupt() {
+            running.set(false);
+        }
 
         @Override
         public void run() {
-            while (true) {
+            while (running.get()) {
                 try {
                     Thread.sleep(keepAliveInterval);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                if (keepAlive
+                    if (keepAlive
                         && System.currentTimeMillis() - startTimestamp < keepAliveTimeout
                         && !PetsciiThread.this.quoteMode())
-                    PetsciiThread.this.cbm.write(keepAliveChar);
+                        cbm.write(keepAliveChar);
+                } catch (InterruptedException e) {
+                    // Thread interrupted
+                }
             }
         }
 
@@ -226,10 +233,28 @@ public abstract class PetsciiThread extends Thread {
     }
 
     public boolean launch(PetsciiThread bbs) throws Exception {
+        final boolean oldKeepAlive = keepAlive;
+        final long oldKeepAliveTimeout = keepAliveTimeout;
+        final long oldKeepAliveInterval = keepAliveInterval;
+        final int oldKeepAliveChar = keepAliveChar;
+
         try {
+            keepAlive = bbs.keepAlive;
+            keepAliveTimeout = bbs.keepAliveTimeout;
+            keepAliveInterval = bbs.keepAliveInterval;
+            keepAliveChar = bbs.keepAliveChar;
+
             bbs.contextFrom(this);
             child = bbs;
             clientClass = bbs.clientClass = bbs.getClass();
+            try {
+                keepAliveThread.interrupt();
+                keepAliveThread = new KeepAliveThread();
+                keepAliveThread.start();
+            } catch (Exception e) {
+                logger.info("Error during KeepAliveThread restart", e);
+            }
+            keepAliveThread.restartKeepAlive();
             bbs.doLoop();
             return true;
         } catch (SocketException | SocketTimeoutException | CbmIOException e) {
@@ -243,6 +268,19 @@ public abstract class PetsciiThread extends Thread {
             logger.error("Launch interrupted", e);
             return false;
         } finally {
+            keepAlive = oldKeepAlive;
+            keepAliveTimeout = oldKeepAliveTimeout;
+            keepAliveInterval = oldKeepAliveInterval;
+            keepAliveChar = oldKeepAliveChar;
+            try {
+                keepAliveThread.interrupt();
+                keepAliveThread = new KeepAliveThread();
+                keepAliveThread.start();
+            } catch (Exception e) {
+                logger.info("Error during KeepAliveThread restart", e);
+            }
+            keepAliveThread.restartKeepAlive();
+
             child = null;
             clientClass = getClass();
         }
