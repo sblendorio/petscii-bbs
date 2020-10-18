@@ -57,6 +57,10 @@ public class ChatWithoutRedraw extends PetsciiThread {
 
     private ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<Row>();
 
+    public ChatWithoutRedraw() {
+        this.keepAlive = true;
+    }
+
     @Override
     public void doLoop() throws Exception {
         try {

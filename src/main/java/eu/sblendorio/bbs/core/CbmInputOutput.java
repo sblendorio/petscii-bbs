@@ -19,10 +19,32 @@ import org.slf4j.LoggerFactory;
 /* This class is a modified version of original BufferedReader from original java IO library */
 public class CbmInputOutput extends Reader {
 
+    private static class QuotedPrintStream extends PrintStream {
+        private boolean isQuoteMode = false;
+
+        public QuotedPrintStream(OutputStream out, boolean autoFlush, String encoding)
+            throws UnsupportedEncodingException {
+            super(out, autoFlush, encoding);
+        }
+
+        public boolean quoteMode() {
+            return isQuoteMode;
+        }
+
+        @Override
+        public void write(int b) {
+            if (b == 34)
+                isQuoteMode = !isQuoteMode;
+            else if (b == 13 || b == 141)
+                isQuoteMode = false;
+            super.write(b);
+        }
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(CbmInputOutput.class);
 
     private Reader in;
-    private PrintStream out;
+    private QuotedPrintStream out;
 
     private char[] cb;
     private int nChars;
@@ -53,10 +75,14 @@ public class CbmInputOutput extends Reader {
 
     public CbmInputOutput(Socket socket) throws IOException {
         this(new InputStreamReader(socket.getInputStream(), ISO_8859_1), defaultCharBufferSize);
-        this.out = new PrintStream(socket.getOutputStream(), true, ISO_8859_1.name());
+        this.out = new QuotedPrintStream(socket.getOutputStream(), true, ISO_8859_1.name());
     }
 
     public PrintStream out() {return out;}
+
+    public boolean quoteMode() {
+        return out.quoteMode();
+    }
 
     public int readKey() throws IOException {
         final int result = in.read();

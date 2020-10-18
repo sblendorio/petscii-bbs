@@ -65,6 +65,35 @@ public abstract class PetsciiThread extends Thread {
     protected PetsciiThread child = null;
     protected PetsciiThread parent = null;
 
+    protected boolean keepAlive = false;
+    protected long keepAliveTimeout = 1000L * 60L * 60L; // 1 hour
+    protected long keepAliveInterval = 1000L * 60L * 10L; // send char every 10 minutes
+    protected int keepAliveChar = 1;
+    protected KeepAliveThread keepAliveThread = new KeepAliveThread();
+
+    public class KeepAliveThread extends Thread {
+        private long startTimestamp = System.currentTimeMillis();
+
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    Thread.sleep(keepAliveInterval);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                if (keepAlive
+                        && System.currentTimeMillis() - startTimestamp < keepAliveTimeout
+                        && !PetsciiThread.this.quoteMode())
+                    PetsciiThread.this.cbm.write(keepAliveChar);
+            }
+        }
+
+        public void restartKeepAlive() {
+            startTimestamp = System.currentTimeMillis();
+        }
+    }
+
     protected static Map<Long, PetsciiThread> clients = defaultClientsMapImplementation();
 
     static ConcurrentHashMap<Long, PetsciiThread> defaultClientsMapImplementation() {
@@ -162,6 +191,7 @@ public abstract class PetsciiThread extends Thread {
             cbm.resetInput();
             setClientName("client"+getClientId());
             clients.put(getClientId(), this);
+            keepAliveThread.start();
             doLoop();
         } catch (CbmIOException e) {
             log("EOF " + e);
@@ -240,10 +270,34 @@ public abstract class PetsciiThread extends Thread {
     public void print(String msg) { cbm.print(msg); }
     public void println(String msg) { cbm.println(msg); }
     public void println() { println(EMPTY); }
-    public String readLine() throws IOException { return cbm.readLine(); }
-    public String readLine(int maxLength) throws IOException { return cbm.readLine(maxLength); }
-    public String readPassword() throws IOException { return cbm.readPassword(); }
-    public int readKey() throws IOException { return cbm.readKey(); }
+
+    public String readLine() throws IOException {
+        keepAliveThread.restartKeepAlive();
+        final String result = cbm.readLine();
+        keepAliveThread.restartKeepAlive();
+        return result;
+    }
+
+    public String readLine(int maxLength) throws IOException {
+        keepAliveThread.restartKeepAlive();
+        final String result = cbm.readLine(maxLength);
+        keepAliveThread.restartKeepAlive();
+        return result;
+    }
+
+    public String readPassword() throws IOException {
+        keepAliveThread.restartKeepAlive();
+        final String result = cbm.readPassword();
+        keepAliveThread.restartKeepAlive();
+        return result;
+    }
+
+    public int readKey() throws IOException {
+        keepAliveThread.restartKeepAlive();
+        return cbm.readKey();
+    }
+
+    public boolean quoteMode() { return cbm.quoteMode(); }
     public void resetInput() throws IOException { cbm.resetInput(); }
     public void writeRawFile(String filename) throws IOException { cbm.writeRawFile(filename); }
     public byte[] readBinaryFile(String filename) throws IOException { return cbm.readBinaryFile(filename); }

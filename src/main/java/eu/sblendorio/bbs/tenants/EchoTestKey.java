@@ -4,6 +4,9 @@ import eu.sblendorio.bbs.core.*;
 
 public class EchoTestKey extends PetsciiThread {
 
+    public EchoTestKey() {
+    }
+
     @Override
     public void doLoop() throws Exception {
         cls();
@@ -13,6 +16,6 @@ public class EchoTestKey extends PetsciiThread {
             print("Command> ");
             flush(); key = readKey();
             println("You wrote: "+key);
-        } while (key == 46);
+        } while (key != 46);
     }
 }
