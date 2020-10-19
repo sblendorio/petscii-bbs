@@ -345,10 +345,10 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
             println("   Press any key to Prepare Download");
             println("       Press . to abort it");
             resetInput();
+            updateKeepAlive(false);
             int ch = readKey();
             if (ch == '.') return;
             println();
-            updateKeepAlive(false);
             cls();
             write(REVON, LIGHT_GREEN);
             write(REVON); println("                              ");

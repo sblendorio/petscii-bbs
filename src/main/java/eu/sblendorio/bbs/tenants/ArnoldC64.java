@@ -207,10 +207,10 @@ public class ArnoldC64 extends PetsciiThread {
             println("Press any key to prepare to download");
             println("Or press \".\" to abort it");
             resetInput();
+            updateKeepAlive(false);
             int ch = readKey();
             if (ch == '.') return;
             println();
-            updateKeepAlive(false);
             write(REVON, LIGHT_GREEN);
             write(REVON); println("                              ");
             write(REVON); println(" Please start XMODEM transfer ");
