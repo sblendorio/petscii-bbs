@@ -90,7 +90,8 @@ public abstract class PetsciiThread extends Thread {
                     Thread.sleep(keepAliveInterval);
                     if (keepAlive
                         && System.currentTimeMillis() - startTimestamp < (keepAliveTimeout <= 0 ? ONE_HOUR : keepAliveTimeout)
-                        && !PetsciiThread.this.quoteMode())
+                        && !PetsciiThread.this.quoteMode()
+                        && running.get())
                         cbm.write(keepAliveChar);
                 } catch (InterruptedException e) {
                     // Thread interrupted
@@ -260,6 +261,7 @@ public abstract class PetsciiThread extends Thread {
             try {
                 keepAliveThread.interrupt();
                 keepAliveThread = new KeepAliveThread();
+                bbs.keepAliveThread = keepAliveThread;
                 keepAliveThread.start();
             } catch (Exception e) {
                 logger.info("Error during KeepAliveThread restart", e);
@@ -342,7 +344,9 @@ public abstract class PetsciiThread extends Thread {
 
     public int readKey() throws IOException {
         keepAliveThread.restartKeepAlive();
-        return cbm.readKey();
+        final int result = cbm.readKey();
+        keepAliveThread.restartKeepAlive();
+        return result;
     }
 
     public boolean quoteMode() { return cbm.quoteMode(); }
