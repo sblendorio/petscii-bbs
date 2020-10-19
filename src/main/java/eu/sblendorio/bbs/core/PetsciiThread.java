@@ -79,6 +79,7 @@ public abstract class PetsciiThread extends Thread {
         @Override
         public void interrupt() {
             running.set(false);
+            super.interrupt();
         }
 
         @Override
@@ -99,6 +100,13 @@ public abstract class PetsciiThread extends Thread {
         public void restartKeepAlive() {
             startTimestamp = System.currentTimeMillis();
         }
+    }
+
+    public void updateKeepAlive(boolean keepAlive) {
+        this.keepAlive = keepAlive;
+        keepAliveThread.interrupt();
+        keepAliveThread = new KeepAliveThread();
+        keepAliveThread.start();
     }
 
     protected static Map<Long, PetsciiThread> clients = defaultClientsMapImplementation();
