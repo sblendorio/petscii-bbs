@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  *
  *         Path path = Paths.get("/tmp/tank-64.prg");
  *         byte[] bytes = Files.readAllBytes(path);
- *         XModem t = new XModem(this.cbm, this.cbm.out());
+ *         XModem t = new XModem(this);
  *         t.send(bytes);
  *     }
  * }
@@ -64,14 +64,16 @@ public class XModem {
     protected PrintStream outStream;
     protected PetsciiThread petsciiThread;
 
-    public XModem(Reader input, PrintStream output, PetsciiThread thread) {
+    public XModem(Reader input, PrintStream output) {
         inStream = input;
         outStream = output;
-        petsciiThread = thread;
+        petsciiThread = null;
     }
 
-    public XModem(Reader input, PrintStream output) {
-        this(input, output, null);
+    public XModem(PetsciiThread thread) {
+        petsciiThread = thread;
+        inStream = thread.cbm;
+        outStream = thread.cbm.out();
     }
 
     /** A flag used to communicate with inner class IOTimer */

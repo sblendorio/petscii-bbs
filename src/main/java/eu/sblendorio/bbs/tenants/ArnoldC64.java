@@ -216,7 +216,7 @@ public class ArnoldC64 extends PetsciiThread {
             write(REVON); println("                              ");
             write(REVOFF, WHITE);
             log("Downloading " + url);
-            XModem xm = new XModem(cbm, cbm.out(), this);
+            XModem xm = new XModem(this);
             xm.send(content);
             println();
             write(CYAN);

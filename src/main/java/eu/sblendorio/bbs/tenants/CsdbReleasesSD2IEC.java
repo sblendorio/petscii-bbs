@@ -355,7 +355,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
             write(REVON); println("                              ");
             write(REVOFF, WHITE);
             log("Downloading " + title + " - " + releaseUri);
-            XModem xm = new XModem(cbm, cbm.out(), this);
+            XModem xm = new XModem(this);
             xm.send(content);
             println();
             write(CYAN);
