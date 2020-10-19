@@ -117,7 +117,6 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
     private boolean searchMode = false;
 
     public CsdbReleasesSD2IEC() {
-        this.keepAlive = false;
     }
 
     @Override
@@ -349,6 +348,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
             int ch = readKey();
             if (ch == '.') return;
             println();
+            updateKeepAlive(false);
             cls();
             write(REVON, LIGHT_GREEN);
             write(REVON); println("                              ");
@@ -361,6 +361,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
             println();
             write(CYAN);
             print("DONE - press any key to go back ");
+            updateKeepAlive(true);
             readKey();
             resetInput();
         }

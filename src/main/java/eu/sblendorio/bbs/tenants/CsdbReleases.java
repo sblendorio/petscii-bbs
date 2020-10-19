@@ -95,7 +95,6 @@ public class CsdbReleases extends PetsciiThread {
     private boolean searchMode = false;
 
     public CsdbReleases() {
-        this.keepAlive = false;
     }
 
     @Override
@@ -260,6 +259,7 @@ public class CsdbReleases extends PetsciiThread {
             int ch = readKey();
             if (ch == '.') return;
             println();
+            updateKeepAlive(false);
             write(REVON, LIGHT_GREEN);
             write(REVON); println("                              ");
             write(REVON); println(" Please start XMODEM transfer ");
@@ -271,6 +271,7 @@ public class CsdbReleases extends PetsciiThread {
             println();
             write(CYAN);
             print("DONE - press any key to go back ");
+            updateKeepAlive(true);
             readKey();
             resetInput();
         }

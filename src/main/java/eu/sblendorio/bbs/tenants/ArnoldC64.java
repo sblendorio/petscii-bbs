@@ -1,3 +1,4 @@
+
 package eu.sblendorio.bbs.tenants;
 
 import static eu.sblendorio.bbs.core.Colors.CYAN;
@@ -75,7 +76,6 @@ public class ArnoldC64 extends PetsciiThread {
     protected Map<Integer, Entry> posts = emptyMap();
 
     public ArnoldC64() {
-        this.keepAlive = false;
     }
 
     @Override
@@ -200,7 +200,8 @@ public class ArnoldC64 extends PetsciiThread {
             write(GREY3);
             println("Size:");
             write(WHITE);
-            println(content.length + " bytes");
+            final int blocks = (content.length + 255) / 256;
+            println(content.length + " bytes (" + blocks + " blocks)");
             println();
             write(GREY3);
             println("Press any key to prepare to download");
@@ -209,6 +210,7 @@ public class ArnoldC64 extends PetsciiThread {
             int ch = readKey();
             if (ch == '.') return;
             println();
+            updateKeepAlive(false);
             write(REVON, LIGHT_GREEN);
             write(REVON); println("                              ");
             write(REVON); println(" Please start XMODEM transfer ");
@@ -220,6 +222,7 @@ public class ArnoldC64 extends PetsciiThread {
             println();
             write(CYAN);
             print("DONE - press any key to go back ");
+            updateKeepAlive(true);
             readKey();
             resetInput();
         }
