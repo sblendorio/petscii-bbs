@@ -22,7 +22,7 @@ public class BBServer {
     private static int timeout;
     private static Class<? extends PetsciiThread> bbs;
     private static List<Class<? extends PetsciiThread>> tenants = filterPetsciiThread();
-    private static final long DEFAULT_TIMEOUT_IN_MILLIS = 3600000;
+    private static final int DEFAULT_TIMEOUT_IN_MILLIS = 3600000;
     private static final long DEFAULT_PORT = 6510;
 
     private static final Logger logger = LoggerFactory.getLogger(BBServer.class);
@@ -73,7 +73,17 @@ public class BBServer {
             System.exit(1);
         }
         port = toInt(cmd.getOptionValue("port", String.valueOf(DEFAULT_PORT)));
-        timeout = toInt(cmd.getOptionValue("timeout", String.valueOf(DEFAULT_TIMEOUT_IN_MILLIS)));
+        final String timeoutStr = cmd.getOptionValue("timeout", String.valueOf(DEFAULT_TIMEOUT_IN_MILLIS));
+        if (timeoutStr.matches("^[0-9]*$"))
+            timeout = toInt(timeoutStr);
+        else if (timeoutStr.matches("^[0-9]*[hH]$"))
+            timeout = 1000 * 60 * 60 * toInt(timeoutStr.replaceAll("[^0-9]", ""));
+        else if (timeoutStr.matches("^[0-9]*[mM]$"))
+            timeout = 1000 * 60 * toInt(timeoutStr.replaceAll("[^0-9]", ""));
+        else if (timeoutStr.matches("^[0-9]*[sS]$"))
+            timeout = 1000 * toInt(timeoutStr.replaceAll("[^0-9]", ""));
+        else
+            timeout = DEFAULT_TIMEOUT_IN_MILLIS;
         final String bbsName = cmd.getOptionValue("bbs");
         bbs = findTenant(bbsName);
         if (bbs == null) {
