@@ -67,12 +67,13 @@ public abstract class PetsciiThread extends Thread {
     protected PetsciiThread parent = null;
 
     protected boolean keepAlive = true;
-    protected long keepAliveTimeout = 1000L * 60L * 60L; // 1 hour
+    protected long keepAliveTimeout = -1; // inherit from caller
     protected long keepAliveInterval = 1000L * 60L * 2L; // send char every 2 minutes
     protected int keepAliveChar = 1;
     protected KeepAliveThread keepAliveThread = new KeepAliveThread();
 
     public class KeepAliveThread extends Thread {
+        private final static long ONE_HOUR = 1000L * 60L * 60L;
         private long startTimestamp = System.currentTimeMillis();
         private AtomicBoolean running = new AtomicBoolean(true);
 
@@ -88,7 +89,7 @@ public abstract class PetsciiThread extends Thread {
                 try {
                     Thread.sleep(keepAliveInterval);
                     if (keepAlive
-                        && System.currentTimeMillis() - startTimestamp < keepAliveTimeout
+                        && System.currentTimeMillis() - startTimestamp < (keepAliveTimeout <= 0 ? ONE_HOUR : keepAliveTimeout)
                         && !PetsciiThread.this.quoteMode())
                         cbm.write(keepAliveChar);
                 } catch (InterruptedException e) {
@@ -249,7 +250,7 @@ public abstract class PetsciiThread extends Thread {
 
         try {
             keepAlive = bbs.keepAlive;
-            keepAliveTimeout = bbs.keepAliveTimeout;
+            keepAliveTimeout = bbs.keepAliveTimeout <= 0 ? oldKeepAliveTimeout : bbs.keepAliveTimeout;
             keepAliveInterval = bbs.keepAliveInterval;
             keepAliveChar = bbs.keepAliveChar;
 
