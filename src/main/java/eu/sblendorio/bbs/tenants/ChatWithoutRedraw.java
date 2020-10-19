@@ -134,6 +134,7 @@ public class ChatWithoutRedraw extends PetsciiThread {
                     showUsers(true);
                     redraw();
                 } else if (command.equalsIgnoreCase("/help") ||
+                    command.equalsIgnoreCase("/?") ||
                     command.equalsIgnoreCase("/h")) {
                     canRedraw = false;
                     displayHelp();

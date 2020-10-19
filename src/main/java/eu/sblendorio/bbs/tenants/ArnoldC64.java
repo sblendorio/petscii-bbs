@@ -207,7 +207,6 @@ public class ArnoldC64 extends PetsciiThread {
             println("Press any key to prepare to download");
             println("Or press \".\" to abort it");
             resetInput();
-            updateKeepAlive(false);
             int ch = readKey();
             if (ch == '.') return;
             println();
@@ -217,12 +216,11 @@ public class ArnoldC64 extends PetsciiThread {
             write(REVON); println("                              ");
             write(REVOFF, WHITE);
             log("Downloading " + url);
-            XModem xm = new XModem(cbm, cbm.out());
+            XModem xm = new XModem(cbm, cbm.out(), this);
             xm.send(content);
             println();
             write(CYAN);
             print("DONE - press any key to go back ");
-            updateKeepAlive(true);
             readKey();
             resetInput();
         }

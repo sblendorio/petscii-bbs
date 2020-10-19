@@ -108,6 +108,9 @@ public abstract class PetsciiThread extends Thread {
         this.keepAlive = keepAlive;
         keepAliveThread.interrupt();
         keepAliveThread = new KeepAliveThread();
+        if (parent != null) {
+            parent.keepAliveThread = keepAliveThread;
+        }
         keepAliveThread.start();
     }
 
@@ -351,6 +354,7 @@ public abstract class PetsciiThread extends Thread {
     }
 
     public boolean quoteMode() { return cbm.quoteMode(); }
+    public void setQuoteMode(boolean q) { this.cbm.setQuoteMode(q); }
     public void resetInput() throws IOException { cbm.resetInput(); }
     public void writeRawFile(String filename) throws IOException { cbm.writeRawFile(filename); }
     public byte[] readBinaryFile(String filename) throws IOException { return cbm.readBinaryFile(filename); }

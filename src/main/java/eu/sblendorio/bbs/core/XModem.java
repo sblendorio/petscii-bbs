@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.util.Arrays;
 
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,10 +62,16 @@ public class XModem {
 
     protected Reader inStream;
     protected PrintStream outStream;
+    protected PetsciiThread petsciiThread;
 
-    public XModem(Reader input, PrintStream output) {
+    public XModem(Reader input, PrintStream output, PetsciiThread thread) {
         inStream = input;
         outStream = output;
+        petsciiThread = thread;
+    }
+
+    public XModem(Reader input, PrintStream output) {
+        this(input, output, null);
     }
 
     /** A flag used to communicate with inner class IOTimer */
@@ -104,7 +111,20 @@ public class XModem {
         byte[] sector = new byte[SECSIZE];
         int nbytes;
 
+        Optional<PetsciiThread> thread = Optional.ofNullable(petsciiThread);
+
+        boolean quoteMode = thread
+            .map(PetsciiThread::quoteMode)
+            .orElse(false);
+
+        boolean keepAlive = thread
+            .map(p -> p.keepAlive)
+            .orElse(false);
+
+        thread.ifPresent(t -> t.updateKeepAlive(false));
+
         try (DataInputStream inputData = new DataInputStream(new ByteArrayInputStream(inputByteArray))) {
+
             errorcount = 0;
             blocknumber = 1;
 
@@ -164,6 +184,9 @@ public class XModem {
             log("Transmission complete.");
         } catch (CancelTransferException e) {
             log("BREAK: Transmission canceled");
+        } finally {
+            thread.ifPresent(t -> t.setQuoteMode(quoteMode));
+            thread.ifPresent(t -> t.updateKeepAlive(keepAlive));
         }
         return true;
     }

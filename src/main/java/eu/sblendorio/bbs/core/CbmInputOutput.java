@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 /* This class is a modified version of original BufferedReader from original java IO library */
 public class CbmInputOutput extends Reader {
 
-    private static class QuotedPrintStream extends PrintStream {
+    public static class QuotedPrintStream extends PrintStream {
         private boolean isQuoteMode = false;
 
         public QuotedPrintStream(OutputStream out, boolean autoFlush, String encoding)
@@ -29,6 +29,10 @@ public class CbmInputOutput extends Reader {
 
         public boolean quoteMode() {
             return isQuoteMode;
+        }
+
+        public void setQuoteMode(boolean q) {
+            this.isQuoteMode = q;
         }
 
         @Override
@@ -82,6 +86,10 @@ public class CbmInputOutput extends Reader {
 
     public boolean quoteMode() {
         return out.quoteMode();
+    }
+
+    public void setQuoteMode(boolean q) {
+        out.setQuoteMode(q);
     }
 
     public int readKey() throws IOException {
