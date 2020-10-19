@@ -70,7 +70,7 @@ public abstract class PetsciiThread extends Thread {
     protected long keepAliveTimeout = -1; // inherit from caller
     protected long keepAliveInterval = 1000L * 60L * 2L; // send char every 2 minutes
     protected int keepAliveChar = 1;
-    protected KeepAliveThread keepAliveThread = new KeepAliveThread();
+    protected KeepAliveThread keepAliveThread;
 
     public class KeepAliveThread extends Thread {
         private final static long ONE_HOUR = 1000L * 60L * 60L;
@@ -201,6 +201,7 @@ public abstract class PetsciiThread extends Thread {
     @Override
     public void run() {
         try {
+            keepAliveThread = new KeepAliveThread();
             setClientId(clientCount.incrementAndGet());
             clientClass = getClass();
             log("New connection at " + socket);
