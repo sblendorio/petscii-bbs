@@ -30,7 +30,7 @@ import eu.sblendorio.bbs.core.Keys;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.Utils;
 
-public class Chat extends PetsciiThread {
+public class ChatOld extends PetsciiThread {
 
     private static final int INPUT_COLOR = GREY3;
 

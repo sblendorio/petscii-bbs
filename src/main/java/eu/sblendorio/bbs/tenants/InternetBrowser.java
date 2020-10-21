@@ -394,7 +394,7 @@ public class InternetBrowser extends PetsciiThread {
 
             //SUCCESS PATH
             //DO THE THING WHERE YOU LOAD A NEW PAGE
-            else if (links.containsKey(toInt(input))) {
+            else if (links != null && input != null && links.containsKey(toInt(input))) {
                 final Entry link = links.get(toInt(input));
                 loadWebPage(link.url);
             }

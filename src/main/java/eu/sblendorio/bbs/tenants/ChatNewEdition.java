@@ -23,7 +23,7 @@ import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-public class ChatWithoutRedraw extends PetsciiThread {
+public class ChatNewEdition extends PetsciiThread {
 
     private static final int INPUT_COLOR = GREY3;
 
@@ -57,7 +57,7 @@ public class ChatWithoutRedraw extends PetsciiThread {
 
     private ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<Row>();
 
-    public ChatWithoutRedraw() {
+    public ChatNewEdition() {
     }
 
     @Override
