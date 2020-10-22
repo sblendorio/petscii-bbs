@@ -302,8 +302,10 @@ public class Chat extends PetsciiThread {
     private List<PetsciiThread> getConnectedUsers() {
         return getClients().values()
                 .stream()
-                .filter(x -> x.getClientClass().equals(this.getClientClass()) &&
-                             x.getClientId() != this.getClientId())
+                .filter(x -> x.getClientClass().equals(this.getClientClass())
+                          && x.getClientId() != this.getClientId()
+                          && !x.getClientName().matches("(?i)^client[0-9]+$")
+                          && !x.getClientName().matches("(?i)^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"))
                 .collect(Collectors.toList());
     }
 
