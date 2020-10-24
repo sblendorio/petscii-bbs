@@ -154,9 +154,19 @@ public class BBServer {
             PetsciiThread.clients.entrySet().stream()
                 .map(entry -> "#" + entry.getKey()
                     + ": " + entry.getValue().getClientClass().getSimpleName()
-                    + " (uptime="+((System.currentTimeMillis() - entry.getValue().startTimestamp)/1000) + "s"
+                    + " (uptime=" + showMillis(System.currentTimeMillis() - entry.getValue().startTimestamp)
                     + ", clientName=" + entry.getValue().getClientName() + ")\n")
                 .collect(Collectors.joining());
+    }
+
+    private static String showMillis(long millis) {
+        long s = (millis / 1000) % 60;
+        long m = (millis / 60000) % 60;
+        long h = (millis / 3600000); // % 24;
+
+        return (millis > 3600000 ? h+"h" : "")
+             + (millis > 60000 ? m+"m" : "")
+             + s+"s";
     }
 
     private static List<Class<? extends PetsciiThread>> filterPetsciiThread() {
