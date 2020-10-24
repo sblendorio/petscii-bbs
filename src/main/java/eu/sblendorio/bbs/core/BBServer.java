@@ -145,10 +145,11 @@ public class BBServer {
     private static String getConfigAsString() {
         return "HTTP/1.1 200 OK\n"
             + "Server: Dummy HTTP connection\n"
-            + "Content-Type: text/plain; charset=ISO-8859-1\n"
+            + "Content-Type: text/html; charset=ISO-8859-1\n"
             + "Connection: Closed\n"
             + "\n"
-            + "Number of clients: " + PetsciiThread.clientCount + "\n"
+            + "<html><head><meta http-equiv=\"refresh\" content=\"5\"></head><body><pre>\n"
+            + "Number of clients: " + PetsciiThread.clients.size() + "\n"
             + "\n" +
             PetsciiThread.clients.entrySet().stream()
                 .map(entry -> "#" + entry.getKey()
