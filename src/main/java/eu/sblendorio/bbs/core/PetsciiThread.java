@@ -56,6 +56,7 @@ public abstract class PetsciiThread extends Thread {
         public byte[] getContent() { return content; }
     }
 
+    protected long startTimestamp = 0;
     protected long clientId;
     protected String clientName;
     protected Class clientClass;
@@ -203,6 +204,7 @@ public abstract class PetsciiThread extends Thread {
 
     @Override
     public void run() {
+        this.startTimestamp = System.currentTimeMillis();
         try {
             keepAliveThread = new KeepAliveThread();
             setClientId(clientCount.incrementAndGet());

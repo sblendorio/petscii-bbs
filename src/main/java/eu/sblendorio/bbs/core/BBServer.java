@@ -1,6 +1,8 @@
 package eu.sblendorio.bbs.core;
 
 import com.google.common.reflect.ClassPath;
+import java.io.PrintWriter;
+import java.util.stream.Collectors;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,14 +18,17 @@ import java.util.Set;
 import static java.util.Collections.emptyList;
 import static java.util.Comparator.comparing;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
+import sun.nio.cs.ISO_8859_1;
 
 public class BBServer {
     private static int port;
+    private static int servicePort;
     private static int timeout;
     private static Class<? extends PetsciiThread> bbs;
     private static List<Class<? extends PetsciiThread>> tenants = filterPetsciiThread();
     private static final int DEFAULT_TIMEOUT_IN_MILLIS = 3600000;
     private static final long DEFAULT_PORT = 6510;
+    private static final long DEFAULT_SERVICE_PORT = 0;
 
     private static final Logger logger = LoggerFactory.getLogger(BBServer.class);
 
@@ -31,30 +36,54 @@ public class BBServer {
         // args = new String[] {"-b", "MainMenu", "-p", "6510"};
         readParameters(args);
 
-        logger.info("{} The BBS {} is running: port = {}, timeout = {} millis",
+        logger.info("{} The BBS {} is running: port = {}, timeout = {} millis" + (servicePort != 0 ? ", serviceport = {}" : ""),
                     new Timestamp(System.currentTimeMillis()),
                     bbs.getSimpleName(),
                     port,
-                    timeout);
-        try(ServerSocket listener = new ServerSocket(port)) {
-            listener.setSoTimeout(0);
-            while (true) {
-                Socket socket = listener.accept();
-                socket.setSoTimeout(timeout);
+                    timeout,
+                    servicePort);
 
-                CbmInputOutput cbm = new CbmInputOutput(socket);
-                PetsciiThread thread = bbs.getDeclaredConstructor().newInstance();
-                thread.setSocket(socket);
-                thread.setCbmInputOutput(cbm);
-                thread.keepAliveTimeout = thread.keepAliveTimeout <= 0 ? timeout : thread.keepAliveTimeout;
-                thread.start();
+        new Thread(() -> {
+            try (ServerSocket listener = new ServerSocket(port)) {
+                listener.setSoTimeout(0);
+                while (true) {
+                    Socket socket = listener.accept();
+                    socket.setSoTimeout(timeout);
+
+                    CbmInputOutput cbm = new CbmInputOutput(socket);
+                    PetsciiThread thread = bbs.getDeclaredConstructor().newInstance();
+                    thread.setSocket(socket);
+                    thread.setCbmInputOutput(cbm);
+                    thread.keepAliveTimeout = thread.keepAliveTimeout <= 0 ? timeout : thread.keepAliveTimeout;
+                    thread.start();
+
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
-        }
+        }).start();
+
+        if (servicePort != 0)
+            new Thread(() -> {
+                try (ServerSocket listener = new ServerSocket(servicePort)) {
+                    listener.setSoTimeout(0);
+                    while (true) {
+                        Socket socket = listener.accept();
+                        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                        out.println(getConfigAsString());
+                        socket.shutdownOutput();
+                        socket.close();
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
     }
 
     private static void readParameters(String[] args) {
         Options options = new Options();
         options.addOption("p", "port", true, "TCP port used by server process (default "+DEFAULT_PORT+")");
+        options.addOption("s", "serviceport", true, "TCP port used by service process, 0 for no-service (default "+DEFAULT_PORT+")");
         options.addOption("t", "timeout", true, "Socket timeout in millis (default " + (DEFAULT_TIMEOUT_IN_MILLIS /60000) + " minutes)");
         options.addOption("h", "help", false, "Displays help");
         options.addOption("b", "bbs", true, "Run specific BBS (mandatory - see list below)");
@@ -73,6 +102,7 @@ public class BBServer {
             System.exit(1);
         }
         port = toInt(cmd.getOptionValue("port", String.valueOf(DEFAULT_PORT)));
+        servicePort = toInt(cmd.getOptionValue("serviceport", String.valueOf(DEFAULT_SERVICE_PORT)));
         final String timeoutStr = cmd.getOptionValue("timeout", String.valueOf(DEFAULT_TIMEOUT_IN_MILLIS));
         if (timeoutStr.matches("^[0-9]*$"))
             timeout = toInt(timeoutStr);
@@ -110,6 +140,22 @@ public class BBServer {
         formatter.printHelp(System.getProperty("sun.java.command"), options);
         logger.info("List of available BBS:");
         tenants.forEach(c -> logger.info(" * {}", c.getSimpleName()));
+    }
+
+    private static String getConfigAsString() {
+        return "HTTP/1.1 200 OK\n"
+            + "Server: Dummy HTTP connection\n"
+            + "Content-Type: text/plain; charset=ISO-8859-1\n"
+            + "Connection: Closed\n"
+            + "\n"
+            + "Number of clients: " + PetsciiThread.clientCount + "\n"
+            + "\n" +
+            PetsciiThread.clients.entrySet().stream()
+                .map(entry -> "#" + entry.getKey()
+                    + ": " + entry.getValue().getClientClass().getSimpleName()
+                    + " (uptime="+((System.currentTimeMillis() - entry.getValue().startTimestamp)/1000) + "s"
+                    + ", clientName=" + entry.getValue().getClientName() + ")\n")
+                .collect(Collectors.joining());
     }
 
     private static List<Class<? extends PetsciiThread>> filterPetsciiThread() {
