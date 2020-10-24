@@ -2,6 +2,8 @@ package eu.sblendorio.bbs.core;
 
 import com.google.common.reflect.ClassPath;
 import java.io.PrintWriter;
+import java.util.Comparator;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
@@ -56,7 +58,6 @@ public class BBServer {
                     thread.setCbmInputOutput(cbm);
                     thread.keepAliveTimeout = thread.keepAliveTimeout <= 0 ? timeout : thread.keepAliveTimeout;
                     thread.start();
-
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -152,10 +153,15 @@ public class BBServer {
             + "Number of clients: " + PetsciiThread.clients.size() + "\n"
             + "\n" +
             PetsciiThread.clients.entrySet().stream()
+                .sorted(Comparator.comparingLong(Map.Entry::getKey))
                 .map(entry -> "#" + entry.getKey()
                     + ": " + entry.getValue().getClientClass().getSimpleName()
                     + " (uptime=" + showMillis(System.currentTimeMillis() - entry.getValue().startTimestamp)
-                    + ", clientName=" + entry.getValue().getClientName() + ")\n")
+                    + ", clientName=" + entry.getValue().getClientName()
+                    + ", IP=" + entry.getValue().ipAddress
+                    + ")"
+                    + "\n"
+                )
                 .collect(Collectors.joining());
     }
 

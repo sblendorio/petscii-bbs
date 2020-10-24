@@ -115,17 +115,11 @@ public class XModem {
 
         Optional<PetsciiThread> thread = Optional.ofNullable(petsciiThread);
 
-        boolean quoteMode = thread
-            .map(PetsciiThread::quoteMode)
-            .orElse(false);
-
-        boolean keepAlive = thread
-            .map(p -> p.keepAlive)
-            .orElse(false);
-
-        thread.ifPresent(t -> t.updateKeepAlive(false));
+        boolean quoteMode = thread.map(PetsciiThread::quoteMode).orElse(false);
+        boolean keepAlive = thread.map(p -> p.keepAlive).orElse(false);
 
         try (DataInputStream inputData = new DataInputStream(new ByteArrayInputStream(inputByteArray))) {
+            thread.ifPresent(t -> t.updateKeepAlive(false));
 
             errorcount = 0;
             blocknumber = 1;

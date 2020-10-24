@@ -510,6 +510,7 @@ public class CbmInputOutput extends Reader {
                     missingInput.length());
 
         if (missingInput.matches("(?is)^(G?ET|P?OST|H?EAD|P?UT|D?ELETE|C?ONNECT|O?PTIONS) [^\n]+ HTTP.*")) {
+            // out.write(10);
             out.flush();
             out.close();
             this.close();

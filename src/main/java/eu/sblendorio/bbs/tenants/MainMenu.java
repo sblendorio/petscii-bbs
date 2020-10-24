@@ -42,7 +42,7 @@ public class MainMenu extends PetsciiThread {
     private JsonNode maxmindResponse;
     private GeoData geoData;
 
-    public void init() throws IOException {
+    public void init() {
         try {
             File maxmindDb = new File(MAXMIND_DB);
             maxmindReader = new Reader(maxmindDb);

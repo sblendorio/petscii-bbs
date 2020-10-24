@@ -4,6 +4,7 @@ import static eu.sblendorio.bbs.core.Keys.DOWN;
 import static eu.sblendorio.bbs.core.Keys.HOME;
 import static eu.sblendorio.bbs.core.Keys.RIGHT;
 import java.io.UncheckedIOException;
+import java.net.InetAddress;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import java.util.concurrent.atomic.AtomicBoolean;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
@@ -57,6 +58,7 @@ public abstract class PetsciiThread extends Thread {
     }
 
     protected long startTimestamp = 0;
+    protected InetAddress ipAddress = null;
     protected long clientId;
     protected String clientName;
     protected Class clientClass;
@@ -209,6 +211,7 @@ public abstract class PetsciiThread extends Thread {
             keepAliveThread = new KeepAliveThread();
             setClientId(clientCount.incrementAndGet());
             clientClass = getClass();
+            ipAddress = socket.getInetAddress();
             log("New connection at " + socket);
             Thread.sleep(200);
             cbm.resetInput();
