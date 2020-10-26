@@ -547,6 +547,15 @@ public class CbmInputOutput extends Reader {
         }
     }
 
+    public boolean keyPressed() throws IOException {
+        boolean result = false;
+        while (in.ready()) {
+            result = true;
+            readKey();
+        }
+        return result;
+    }
+
     public void write(byte[] buf, int off, int len) { out.write(buf, off, len); }
     public void write(byte[] b) {
         try {

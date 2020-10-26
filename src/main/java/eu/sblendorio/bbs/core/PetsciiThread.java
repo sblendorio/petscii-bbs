@@ -321,6 +321,7 @@ public abstract class PetsciiThread extends Thread {
     }
 
     public static char chr(int code) { return (char) code; }
+    public boolean keyPressed() throws IOException { return cbm.keyPressed(); }
     public void write(byte[] buf, int off, int len) { cbm.write(buf, off, len); }
     public void write(byte[] b) { cbm.write(b); }
     public void write(int b) { cbm.write(b); }
