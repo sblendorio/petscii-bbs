@@ -86,6 +86,10 @@ public abstract class PetsciiThread extends Thread {
             super.interrupt();
         }
 
+        public long getStartTimestamp() {
+            return startTimestamp;
+        }
+
         @Override
         public void run() {
             while (running.get()) {

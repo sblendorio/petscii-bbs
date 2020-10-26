@@ -2,6 +2,7 @@ package eu.sblendorio.bbs.core;
 
 import com.google.common.reflect.ClassPath;
 import java.io.PrintWriter;
+import static java.lang.System.currentTimeMillis;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -39,7 +40,7 @@ public class BBServer {
         readParameters(args);
 
         logger.info("{} The BBS {} is running: port = {}, timeout = {} millis" + (servicePort != 0 ? ", serviceport = {}" : ""),
-                    new Timestamp(System.currentTimeMillis()),
+                    new Timestamp(currentTimeMillis()),
                     bbs.getSimpleName(),
                     port,
                     timeout,
@@ -156,7 +157,10 @@ public class BBServer {
                 .sorted(Comparator.comparingLong(Map.Entry::getKey))
                 .map(entry -> "#" + entry.getKey()
                     + ": " + entry.getValue().getClientClass().getSimpleName()
-                    + " (uptime=" + showMillis(System.currentTimeMillis() - entry.getValue().startTimestamp)
+                    + " (uptime=" + showMillis(currentTimeMillis() - entry.getValue().startTimestamp)
+                    + (entry.getValue().keepAlive
+                        ? ", idle="+showMillis(currentTimeMillis()-entry.getValue().keepAliveThread.getStartTimestamp())
+                        : "")
                     + ", clientName=" + entry.getValue().getClientName()
                     + ", IP=" + entry.getValue().ipAddress
                     + ")"
