@@ -74,9 +74,9 @@ public class MainMenu extends PetsciiThread {
             log("Starting Main Menu BBS");
             drawLogo();
 
-            gotoXY(20, delta + 4); write(CYAN); print("News"); write(GREY3);
-            gotoXY(20, delta + 5); write(LIGHT_BLUE); print(StringUtils.repeat(chr(163), 4)); write(GREY3);
-            gotoXY(4, delta + 4);  write(REVON, 161); print("1"); write(REVOFF, 161); print("Linkiesta");
+            gotoXY(21, delta + 4); write(CYAN); print("News"); write(GREY3);
+            gotoXY(21, delta + 5); write(LIGHT_BLUE); print(StringUtils.repeat(chr(163), 4)); write(GREY3);
+            gotoXY(4, delta + 4);  write(REVON, 161); print("1"); write(REVOFF, 161); print("RetroAcademy");
             gotoXY(4, delta + 5);  write(REVON, 161); print("2"); write(REVOFF, 161); print("MedBunker");
             gotoXY(4, delta + 6);  write(REVON, 161); print("3"); write(REVOFF, 161); print("Next Quotidiano");
             gotoXY(4, delta + 7);  write(REVON, 161); print("4"); write(REVOFF, 161); print("Disinformatico");
@@ -85,7 +85,7 @@ public class MainMenu extends PetsciiThread {
             gotoXY(4, delta + 10); write(REVON, 161); print("7"); write(REVOFF, 161); print("Retrocampus");
             gotoXY(4, delta + 11); write(REVON, 161); print("8"); write(REVOFF, 161); print("Valigia Blu");
             gotoXY(4, delta + 12); write(REVON, 161); print("9"); write(REVOFF, 161); print("Medical facts");
-            gotoXY(4, delta + 13); write(REVON, 161); print("0"); write(REVOFF, 161); print("Punto informatico");
+            gotoXY(4, delta + 13); write(REVON, 161); print("0"); write(REVOFF, 161); print("Linkiesta");
             gotoXY(4, delta + 14); write(REVON, 161); print("W"); write(REVOFF, 161); print("Archeologia Informatica");
             gotoXY(4, delta + 15); write(REVON, 161); print("V"); write(REVOFF, 161); print("FNOMCeO");
             gotoXY(4, delta + 16); write(REVON, 161); print("B"); write(REVOFF, 161); print("Il Post  "); write(REVON, 161); print("Q"); write(REVOFF, 161); print("Query");
@@ -141,7 +141,7 @@ public class MainMenu extends PetsciiThread {
                     println("Disconnected.");
                     return;
                 }
-                else if (key == '1') launch(new Linkiesta());
+                else if (key == '1') launch(new RetroAcademy());
                 else if (key == '2') launch(new Medbunker());
                 else if (key == '3') launch(new NextQuotidiano());
                 else if (key == '4') launch(new Disinformatico());
@@ -150,7 +150,7 @@ public class MainMenu extends PetsciiThread {
                 else if (key == '7') launch(new RetroCampus());
                 else if (key == '8') launch(new ValigiaBlu());
                 else if (key == '9') launch(new MedicalFacts());
-                else if (key == '0') launch(new PuntoInformatico());
+                else if (key == '0') launch(new Linkiesta());
                 else if (key == 'w') launch(new ArcheologiaInformatica());
                 else if (key == 'b') launch(new IlPost());
                 else if (key == 'j') launch(new BufaleNet());
