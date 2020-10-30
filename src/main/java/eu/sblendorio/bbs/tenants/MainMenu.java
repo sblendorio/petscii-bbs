@@ -85,7 +85,7 @@ public class MainMenu extends PetsciiThread {
             gotoXY(4, delta + 11); write(REVON, 161); print("8"); write(REVOFF, 161); print("Valigia Blu");
             gotoXY(4, delta + 12); write(REVON, 161); print("9"); write(REVOFF, 161); print("Medical facts");
             gotoXY(4, delta + 13); write(REVON, 161); print("0"); write(REVOFF, 161); print("Linkiesta");
-            gotoXY(4, delta + 14); write(REVON, 161); print("W"); write(REVOFF, 161); print("Archeologia Informatica");
+            gotoXY(4, delta + 14); write(REVON, 161); print("W"); write(REVOFF, 161); print("Arch Informatica");
             gotoXY(4, delta + 15); write(REVON, 161); print("V"); write(REVOFF, 161); print("FNOMCeO");
             gotoXY(4, delta + 16); write(REVON, 161); print("B"); write(REVOFF, 161); print("Il Post  "); write(REVON, 161); print("Q"); write(REVOFF, 161); print("Query");
             gotoXY(4, delta + 17); write(REVON, 161); print("G"); write(REVOFF, 161); print("Tpi.it   "); write(REVON, 161); print("O"); write(REVOFF, 161); print("Wired");
