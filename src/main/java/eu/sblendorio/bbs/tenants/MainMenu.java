@@ -13,7 +13,6 @@ import static eu.sblendorio.bbs.core.Keys.REVOFF;
 import static eu.sblendorio.bbs.core.Keys.REVON;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import java.io.File;
-import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
 
 public class MainMenu extends PetsciiThread {
@@ -91,8 +90,8 @@ public class MainMenu extends PetsciiThread {
             gotoXY(4, delta + 16); write(REVON, 161); print("B"); write(REVOFF, 161); print("Il Post  "); write(REVON, 161); print("Q"); write(REVOFF, 161); print("Query");
             gotoXY(4, delta + 17); write(REVON, 161); print("G"); write(REVOFF, 161); print("Tpi.it   "); write(REVON, 161); print("O"); write(REVOFF, 161); print("Wired");
             gotoXY(4, delta + 18); write(REVON, 161); print("J"); write(REVOFF, 161); print("Bufale   "); write(REVON, 161); print("U"); write(REVOFF, 161); print("Butac");
-            gotoXY(4, delta + 19); write(REVON, 161); print("%"); write(REVOFF, 161); print("Sys64738 "); write(REVON, 161); print("N"); write(REVOFF, 161); print("Facta");
-            gotoXY(4, delta + 20); write(REVON, 161); print("*"); write(REVOFF, 161); print("8bit guy "); write(REVON, 161); print("."); write(REVOFF, 161); print("Exit");
+            gotoXY(4, delta + 19); write(REVON, 161); print("*"); write(REVOFF, 161); print("8bit guy "); write(REVON, 161); print("N"); write(REVOFF, 161); print("Facta");
+            gotoXY(16, delta + 20); write(REVON, 161); print("."); write(REVOFF, 161); write(GREY2); print("Exit");
 
             gotoXY(34, delta + 14); write(CYAN); print("Games"); write(GREY3);
             gotoXY(34, delta + 15); write(LIGHT_BLUE); print(StringUtils.repeat(chr(163), 5)); write(GREY3);
@@ -104,11 +103,9 @@ public class MainMenu extends PetsciiThread {
             gotoXY(25, delta + 21); write(REVON, 161); print("Z"); write(REVOFF, 161); print("Zork III");
             gotoXY(25, delta + 22); write(REVON, 161); print("R"); write(REVOFF, 161); print("Hitchhikers");
 
-            gotoXY(17, delta + 22); write(CYAN); print("Misc"); write(GREY3);
-            gotoXY(17, delta + 23); write(LIGHT_BLUE); print(StringUtils.repeat(chr(163), 4)); write(GREY3);
+            gotoXY(2, delta + 21); write(REVON, 161); print("L"); write(REVOFF, 161); print("Le ossa ");
             gotoXY(2, delta + 22); write(REVON, 161); print("P"); write(REVOFF, 161); print("PETSCII Art");
-            gotoXY(2, delta + 23); write(REVON, 161); print("S"); write(REVOFF, 161); print("Sportal");
-            gotoXY(2, delta + 24); write(REVON, 161); print("L"); write(REVOFF, 161); print("Le ossa ");
+            gotoXY(2, delta + 24); write(GREY2); print("PWR by RetroAcademy");
 
             gotoXY(32, delta + 4); write(CYAN); print("Servizi"); write(GREY3);
             gotoXY(32, delta + 5); write(LIGHT_BLUE); print(StringUtils.repeat(chr(163), 7)); write(GREY3);
@@ -164,12 +161,10 @@ public class MainMenu extends PetsciiThread {
                 else if (key == 'e') launch(new TicTacToe());
                 else if (key == 'c') launch(new ConnectFour());
                 else if (key == 'f') launch(new Magic15());
-                else if (key == 's') launch(new Sportal());
                 else if (key == 'l') launch(new Ossa());
                 else if (key == 'p') launch(new PetsciiArtGallery());
                 else if (key == 'm') launch(new UserLogon());
                 else if (key == 't') launch(new TelevideoRai());
-                else if (key == '%') launch(new Sys64738());
                 else if (key == 'd') launch(new CsdbReleases());
                 else if (key == 'a') launch(new ArnoldC64());
                 else if (key == 'i') launch(new InternetBrowser());

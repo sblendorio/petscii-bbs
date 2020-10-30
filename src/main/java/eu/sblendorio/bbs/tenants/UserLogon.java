@@ -128,16 +128,17 @@ public class UserLogon extends PetsciiThread {
         init();
         String username;
         String password;
+        if (user == null) {
+            cls();
+            write(CASE_LOCK, LOWERCASE);
+            write(LOGO_BYTES);
+            write(GREY3);
+            newline();
+            println("Enter 'P' for privacy policy");
+            newline();
+        }
         while (user == null) {
             do {
-                cls();
-                write(CASE_LOCK, LOWERCASE);
-                write(LOGO_BYTES);
-                write(GREY3);
-                newline();
-                println("Enter 'P' for privacy policy");
-                newline();
-
                 print("USERID or 'NEW': ");
                 flush(); username = readLine();
                 if (isBlank(username)) return;
@@ -288,6 +289,7 @@ public class UserLogon extends PetsciiThread {
             }
             long unread = countUnreadMessages(user.nick);
             cls();
+            write(LOWERCASE, CASE_LOCK);
             write(LOGO_BYTES);
             write(GREY3);
             println("Got " + size  + (onlyUnread ? " unread" : EMPTY) + " message" + (size != 1 ? "s" : EMPTY) + (onlyUnread || unread == 0 ? EMPTY : " (" + unread + " unread)") + ".");
