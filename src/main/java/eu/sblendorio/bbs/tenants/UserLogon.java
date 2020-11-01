@@ -289,7 +289,7 @@ public class UserLogon extends PetsciiThread {
             }
             long unread = countUnreadMessages(user.nick);
             cls();
-            write(LOWERCASE, CASE_LOCK);
+            write(CASE_LOCK, LOWERCASE);
             write(LOGO_BYTES);
             write(GREY3);
             println("Got " + size  + (onlyUnread ? " unread" : EMPTY) + " message" + (size != 1 ? "s" : EMPTY) + (onlyUnread || unread == 0 ? EMPTY : " (" + unread + " unread)") + ".");
