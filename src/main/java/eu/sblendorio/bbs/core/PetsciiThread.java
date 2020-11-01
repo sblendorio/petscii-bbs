@@ -59,6 +59,7 @@ public abstract class PetsciiThread extends Thread {
 
     protected long startTimestamp = 0;
     protected InetAddress ipAddress = null;
+    protected InetAddress serverAddress = null;
     protected long clientId;
     protected String clientName;
     protected Class clientClass;
@@ -216,7 +217,8 @@ public abstract class PetsciiThread extends Thread {
             setClientId(clientCount.incrementAndGet());
             clientClass = getClass();
             ipAddress = socket.getInetAddress();
-            log("New connection at " + socket);
+            serverAddress = socket.getLocalAddress();
+            log("New connection at " + socket + ", server="+serverAddress.getHostAddress());
             Thread.sleep(200);
             cbm.resetInput();
             setClientName("client"+getClientId());
