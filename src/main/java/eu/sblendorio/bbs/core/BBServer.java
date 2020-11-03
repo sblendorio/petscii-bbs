@@ -163,6 +163,7 @@ public class BBServer {
                         : "")
                     + ", clientName=" + entry.getValue().getClientName()
                     + ", IP=" + entry.getValue().ipAddress
+                    + ", serverIP=" + entry.getValue().serverAddress
                     + ")"
                     + "\n"
                 )

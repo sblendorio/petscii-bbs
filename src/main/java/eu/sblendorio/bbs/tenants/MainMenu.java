@@ -1,5 +1,3 @@
-
-
 package eu.sblendorio.bbs.tenants;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -37,6 +35,7 @@ public class MainMenu extends PetsciiThread {
     }
 
     private static final String MAXMIND_DB = System.getProperty("user.home") + File.separator + "GeoLite2-City.mmdb";
+    private static final String IP_FOR_ALTERNATE_LOGO = System.getProperty("alternate.logo.ip", "none");
     private Reader maxmindReader;
     private JsonNode maxmindResponse;
     private GeoData geoData;
@@ -105,7 +104,6 @@ public class MainMenu extends PetsciiThread {
 
             gotoXY(2, delta + 21); write(REVON, 161); print("L"); write(REVOFF, 161); print("Le ossa ");
             gotoXY(2, delta + 22); write(REVON, 161); print("P"); write(REVOFF, 161); print("PETSCII Art");
-            gotoXY(2, delta + 24); write(GREY2); print("PWR by RetroAcademy");
 
             gotoXY(32, delta + 4); write(CYAN); print("Servizi"); write(GREY3);
             gotoXY(32, delta + 5); write(LIGHT_BLUE); print(StringUtils.repeat(chr(163), 7)); write(GREY3);
@@ -182,7 +180,10 @@ public class MainMenu extends PetsciiThread {
     }
 
     public void drawLogo() {
-        write(LOGO_BYTES);
+        write(IP_FOR_ALTERNATE_LOGO.equals(serverAddress.getHostAddress())
+            ? LOGO_BYTES_ALTERNATE
+            : LOGO_BYTES
+        );
     }
 
     private static final byte[] LOGO_BYTES = new byte[] {
@@ -202,5 +203,26 @@ public class MainMenu extends PetsciiThread {
         18, 32, -110, 32, 18, 32, -110, 13, 18, -94, -94, -110, -66, 13, 18, 31,
         -66, -94, -68, -110, 13, 18, -69, -110, -94, -69, 13, -94, 32, 18, 32, -110,
         13, -68, 18, -94, -110, -66, 13
+    };
+
+    private static final byte[] LOGO_BYTES_ALTERNATE = new byte[] {
+        28, -69, -69, -84, -69, -84, 18, -68, -110, -84, -84, 32, -94, 32, -104, -84,
+        -94, 32, -94, 32, -94, -69, -84, 18, -66, -110, 32, -94, 32, -94, -94, 32,
+        -69, -84, 32, 32, 32, 32, 18, -101, -65, -110, -69, -95, 32, -66, 18, -68,
+        -110, 13, 18, 28, -84, -110, 32, 18, -68, -94, -110, 32, -95, 18, -95, -110,
+        -66, 18, -95, -110, 32, -95, -104, -95, 18, -95, -95, -110, 32, 18, -95, -110,
+        32, -95, -95, 18, -95, -95, -65, -110, -66, -95, -95, -95, -95, 18, -95, -110,
+        32, 32, 32, 32, 18, -101, -65, -110, -69, 18, -84, -110, -69, -95, -95, 13,
+        28, -66, 32, -68, -66, 32, -68, -68, 32, 32, 18, -94, -110, 32, -104, -68,
+        18, -94, -110, 32, 18, -94, -110, 32, 18, -94, -110, -66, -68, 18, -94, -110,
+        32, 18, -94, -110, 32, -66, -66, -66, -68, 18, -69, -110, 30, -68, 18, -94,
+        -110, -66, 32, -101, -68, 32, 18, -94, -110, 32, -66, -68, 13, 32, 32, 32,
+        32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+        32, 32, 32, 32, 32, 32, 32, -104, -68, -66, 13, 18, -102, 32, -94, -68,
+        -110, 13, 18, 32, -110, -94, 18, -84, -110, 13, 18, 32, -110, 32, 18, 32,
+        -110, 13, 18, -94, -94, -110, -66, 13, 18, -103, 32, -94, -68, -110, 13, 18,
+        32, -110, -94, 18, -84, -110, 13, 18, 32, -110, 32, 18, 32, -110, 13, 18,
+        -94, -94, -110, -66, 13, 18, -106, -66, -94, -68, -110, 13, 18, -69, -110, -94,
+        -69, 13, -94, 32, 18, 32, -110, 13, -68, 18, -94, -110, -66, 13
     };
 }

@@ -254,8 +254,15 @@ public class Chat extends PetsciiThread {
     private synchronized void redraw() {
         canRedraw = false;
         displayMessages();
-
         write(Colors.GREY1);
+
+        if (recipient != null
+            && getClients().get(recipient) != null
+            && getClients().get(recipient).getClientName().matches("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
+            recipient = null;
+            println();
+        }
+
         if (recipient != null) {
              ofNullable(getClients().get(recipient)).ifPresent(client -> print("[to "+client.getClientName()));
         }
