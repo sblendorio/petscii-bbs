@@ -72,8 +72,8 @@ public class MainMenu extends PetsciiThread {
             log("Starting Main Menu BBS");
             drawLogo();
 
-            gotoXY(21, delta + 4); write(CYAN); print("News"); write(GREY3);
-            gotoXY(21, delta + 5); write(LIGHT_BLUE); print(StringUtils.repeat(chr(163), 4)); write(GREY3);
+            gotoXY(21, delta + 4); write(alternateLogo() ? WHITE : CYAN); print("News"); write(GREY3);
+            gotoXY(21, delta + 5); write(alternateLogo() ? GREY2 : LIGHT_BLUE); print(StringUtils.repeat(chr(163), 4)); write(GREY3);
             gotoXY(4, delta + 4);  write(REVON, 161); print("1"); write(REVOFF, 161); print("RetroAcademy");
             gotoXY(4, delta + 5);  write(REVON, 161); print("2"); write(REVOFF, 161); print("MedBunker");
             gotoXY(4, delta + 6);  write(REVON, 161); print("3"); write(REVOFF, 161); print("Next Quotidiano");
@@ -92,8 +92,8 @@ public class MainMenu extends PetsciiThread {
             gotoXY(4, delta + 19); write(REVON, 161); print("*"); write(REVOFF, 161); print("8bit guy "); write(REVON, 161); print("N"); write(REVOFF, 161); print("Facta");
             gotoXY(16, delta + 20); write(REVON, 161); print("."); write(REVOFF, 161); write(GREY2); print("Exit");
 
-            gotoXY(34, delta + 14); write(CYAN); print("Games"); write(GREY3);
-            gotoXY(34, delta + 15); write(LIGHT_BLUE); print(StringUtils.repeat(chr(163), 5)); write(GREY3);
+            gotoXY(34, delta + 14); write(alternateLogo() ? WHITE : CYAN); print("Games"); write(GREY3);
+            gotoXY(34, delta + 15); write(alternateLogo() ? GREY2 : LIGHT_BLUE); print(StringUtils.repeat(chr(163), 5)); write(GREY3);
             gotoXY(25, delta + 16); write(REVON, 161); print("E"); write(REVOFF, 161); print("TIC-TAC-TOE");
             gotoXY(25, delta + 17); write(REVON, 161); print("C"); write(REVOFF, 161); print("CONNECT-4");
             gotoXY(25, delta + 18); write(REVON, 161); print("F"); write(REVOFF, 161); print("MAGIC-15");
@@ -105,8 +105,8 @@ public class MainMenu extends PetsciiThread {
             gotoXY(2, delta + 21); write(REVON, 161); print("L"); write(REVOFF, 161); print("Le ossa ");
             gotoXY(2, delta + 22); write(REVON, 161); print("P"); write(REVOFF, 161); print("PETSCII Art");
 
-            gotoXY(32, delta + 4); write(CYAN); print("Servizi"); write(GREY3);
-            gotoXY(32, delta + 5); write(LIGHT_BLUE); print(StringUtils.repeat(chr(163), 7)); write(GREY3);
+            gotoXY(32, delta + 4); write(alternateLogo() ? WHITE : CYAN); print("Servizi"); write(GREY3);
+            gotoXY(32, delta + 5); write(alternateLogo() ? GREY2 : LIGHT_BLUE); print(StringUtils.repeat(chr(163), 7)); write(GREY3);
             gotoXY(25, delta + 6);  write(REVON, 161); print("M"); write(REVOFF, 161); print("Messaggi");
             gotoXY(25, delta + 7);  write(REVON, 161); print("T"); write(REVOFF, 161); print("Televideo");
             gotoXY(25, delta + 8);  write(REVON, 161); print("D"); write(REVOFF, 161); print("CSDb");
@@ -180,10 +180,14 @@ public class MainMenu extends PetsciiThread {
     }
 
     public void drawLogo() {
-        write(IP_FOR_ALTERNATE_LOGO.equals(serverAddress.getHostAddress())
+        write(alternateLogo()
             ? LOGO_BYTES_ALTERNATE
             : LOGO_BYTES
         );
+    }
+
+    private boolean alternateLogo() {
+        return IP_FOR_ALTERNATE_LOGO.equals(serverAddress.getHostAddress());
     }
 
     private static final byte[] LOGO_BYTES = new byte[] {
