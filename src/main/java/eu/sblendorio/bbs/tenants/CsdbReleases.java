@@ -265,8 +265,11 @@ public class CsdbReleases extends PetsciiThread {
             write(REVON); println("                              ");
             write(REVOFF, WHITE);
             log("Downloading " + title + " - " + releaseUri);
+            int socketTimeout = socket.getSoTimeout();
+            socket.setSoTimeout(3600000);
             XModem xm = new XModem(this);
             xm.send(content);
+            socket.setSoTimeout(socketTimeout);
             println();
             write(CYAN);
             print("DONE - press any key to go back ");

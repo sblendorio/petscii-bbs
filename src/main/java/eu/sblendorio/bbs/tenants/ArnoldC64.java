@@ -216,7 +216,10 @@ public class ArnoldC64 extends PetsciiThread {
             write(REVON); println("                              ");
             write(REVOFF, WHITE);
             log("Downloading " + url);
+            int socketTimeout = socket.getSoTimeout();
+            socket.setSoTimeout(3600000);
             XModem xm = new XModem(this);
+            socket.setSoTimeout(socketTimeout);
             xm.send(content);
             println();
             write(CYAN);
