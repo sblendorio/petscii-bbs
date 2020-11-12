@@ -150,7 +150,8 @@ public class BBServer {
             + "Content-Type: text/html; charset=ISO-8859-1\n"
             + "Connection: Closed\n"
             + "\n"
-            + "<html><head><meta http-equiv=\"refresh\" content=\"5\"></head><body><pre>\n"
+            + "<html><head><title>"+PetsciiThread.clients.size()+" client"+(PetsciiThread.clients.size()==1?"":"s")+"</title>"
+            + "<meta http-equiv=\"refresh\" content=\"5\"></head><body><pre>\n"
             + "Number of clients: " + PetsciiThread.clients.size() + "\n"
             + "\n" +
             PetsciiThread.clients.entrySet().stream()
