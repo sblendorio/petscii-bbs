@@ -326,7 +326,7 @@ public class UserLogon extends PetsciiThread {
             write(REVON); print(" # "); write(REVOFF); print(" Read message number  ");
             write(REVON); print(" K "); write(REVOFF); println(" User prefs");
 
-            write(REVON); print(" + "); write(REVOFF); print(" Next page ");
+            write(REVON); print(" N "); write(REVOFF); print(" Next page ");
             write(REVON); print(" - "); write(REVOFF); print(" Prev page ");
             write(REVON); print(" P "); write(REVOFF); println(" Privacy");
 
@@ -335,7 +335,7 @@ public class UserLogon extends PetsciiThread {
             flush(); cmd = readLine();
             cmd = defaultString(trim(lowerCase(cmd)));
             int index = toInt(cmd.replace("#", EMPTY));
-            if ("+".equals(cmd) && (offset+pagesize<size)) {
+            if (("+".equals(cmd) || "n".equals(cmd)) && (offset+pagesize<size)) {
                 offset += pagesize;
             } else if ("-".equals(cmd) && offset > 0) {
                 offset -= pagesize;
