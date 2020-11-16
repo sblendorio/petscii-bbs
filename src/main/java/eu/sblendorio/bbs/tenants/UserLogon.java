@@ -11,6 +11,7 @@ import static eu.sblendorio.bbs.core.Keys.CASE_LOCK;
 import static eu.sblendorio.bbs.core.Keys.LOWERCASE;
 import static eu.sblendorio.bbs.core.Keys.REVOFF;
 import static eu.sblendorio.bbs.core.Keys.REVON;
+import java.util.Arrays;
 import static java.util.Arrays.asList;
 import static org.apache.commons.codec.CharEncoding.UTF_8;
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
@@ -370,8 +371,21 @@ public class UserLogon extends PetsciiThread {
         println("Subj: "+ m.subject);
         println(StringUtils.repeat(chr(163),39));
         String[] lines = defaultString(m.message).split("\n");
-        for (String line: lines)
-            println(WordUtils.wrap(line, 39, "\r", true ));
+        List<String> rows = new LinkedList<>();
+        for (String line: lines) {
+            rows.addAll(asList(WordUtils.wrap(line, 39, "\r", true ).split("\r")));
+        }
+        int linecount = 0;
+        for (String row: rows) {
+            ++linecount;
+            println(row);
+            if (linecount % 23 == 0) {
+                println();
+                print("-- More ---");
+                readKey();
+                cls();
+            }
+        }
         markAsRead(m);
         newline();
         print("press "); write(WHITE); print("'R'"); write(GREY3); print(" to REPLY, any key to go back.");
