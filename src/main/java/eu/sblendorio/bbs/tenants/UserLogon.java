@@ -383,7 +383,8 @@ public class UserLogon extends PetsciiThread {
                 println();
                 print("-- More --");
                 readKey();
-                cls();
+                newline();
+                newline();
             }
         }
         markAsRead(m);
