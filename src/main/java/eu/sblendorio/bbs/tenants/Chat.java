@@ -68,6 +68,7 @@ public class Chat extends PetsciiThread {
             int status;
             do {
                 print("Enter your name: ");
+                flush(); resetInput();
                 String name = readLine();
                 if (isBlank(name) || ".".equalsIgnoreCase(name)) {
                     return;

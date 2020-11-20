@@ -141,7 +141,8 @@ public class UserLogon extends PetsciiThread {
         while (user == null) {
             do {
                 print("USERID or 'NEW': ");
-                flush(); username = readLine();
+                flush(); resetInput();
+                username = readLine();
                 if (isBlank(username)) return;
                 if (equalsIgnoreCase(username, "p")) {
                     showPrivacyPolicy();
