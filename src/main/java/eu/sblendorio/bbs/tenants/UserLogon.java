@@ -143,7 +143,7 @@ public class UserLogon extends PetsciiThread {
                 print("USERID or 'NEW': ");
                 flush(); resetInput();
                 username = readLine();
-                if (isBlank(username)) return;
+                if (isBlank(username) || ".".equals(username)) return;
                 if (equalsIgnoreCase(username, "p")) {
                     showPrivacyPolicy();
                     cls();
