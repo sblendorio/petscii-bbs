@@ -1,8 +1,7 @@
 package eu.sblendorio.bbs.core;
 
 import com.google.common.collect.ImmutableList;
-import eu.sblendorio.bbs.tenants.Ossa;
-import org.junit.jupiter.api.Disabled;
+import eu.sblendorio.bbs.tenants.petscii.Ossa;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

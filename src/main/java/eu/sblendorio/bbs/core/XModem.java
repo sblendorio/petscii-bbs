@@ -1,5 +1,6 @@
 package eu.sblendorio.bbs.core;
 
+import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -72,8 +73,8 @@ public class XModem {
 
     public XModem(PetsciiThread thread) {
         petsciiThread = thread;
-        inStream = thread.cbm;
-        outStream = thread.cbm.out();
+        inStream = thread.io;
+        outStream = thread.io.out();
     }
 
     /** A flag used to communicate with inner class IOTimer */
@@ -203,7 +204,7 @@ public class XModem {
 
     private void die(int how) {
         logger.error("Error code {}", how);
-        throw new UncheckedIOException(new CbmIOException("Too many errors during XModem transfer: " + how));
+        throw new UncheckedIOException(new BbsIOException("Too many errors during XModem transfer: " + how));
     }
 
     private void log(String message) {

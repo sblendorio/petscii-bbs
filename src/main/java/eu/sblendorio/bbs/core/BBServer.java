@@ -21,14 +21,13 @@ import java.util.Set;
 import static java.util.Collections.emptyList;
 import static java.util.Comparator.comparing;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
-import sun.nio.cs.ISO_8859_1;
 
 public class BBServer {
     private static int port;
     private static int servicePort;
     private static int timeout;
-    private static Class<? extends PetsciiThread> bbs;
-    private static List<Class<? extends PetsciiThread>> tenants = filterPetsciiThread();
+    private static Class<? extends BbsThread> bbs;
+    private static List<Class<? extends BbsThread>> tenants = filterBBSThread();
     private static final int DEFAULT_TIMEOUT_IN_MILLIS = 3600000;
     private static final long DEFAULT_PORT = 6510;
     private static final long DEFAULT_SERVICE_PORT = 0;
@@ -53,10 +52,10 @@ public class BBServer {
                     Socket socket = listener.accept();
                     socket.setSoTimeout(timeout);
 
-                    CbmInputOutput cbm = new CbmInputOutput(socket);
-                    PetsciiThread thread = bbs.getDeclaredConstructor().newInstance();
+                    BbsThread thread = bbs.getDeclaredConstructor().newInstance();
+                    BbsInputOutput io = thread.buildIO(socket);
                     thread.setSocket(socket);
-                    thread.setCbmInputOutput(cbm);
+                    thread.setBbsInputOutput(io);
                     thread.keepAliveTimeout = thread.keepAliveTimeout <= 0 ? timeout : thread.keepAliveTimeout;
                     thread.start();
                 }
@@ -125,12 +124,12 @@ public class BBServer {
         }
     }
 
-    private static Class<? extends PetsciiThread> findTenant(final String bbsName) {
+    private static Class<? extends BbsThread> findTenant(final String bbsName) {
         return findTenant(tenants, bbsName);
     }
 
-    static Class<? extends PetsciiThread> findTenant(final List<Class<? extends PetsciiThread>> tenants,
-                                                     final String bbsName) {
+    static Class<? extends BbsThread> findTenant(final List<Class<? extends BbsThread>> tenants,
+                                                 final String bbsName) {
         return tenants.stream()
             .filter(c -> c.getSimpleName().equalsIgnoreCase(bbsName))
             .findFirst()
@@ -150,11 +149,11 @@ public class BBServer {
             + "Content-Type: text/html; charset=ISO-8859-1\n"
             + "Connection: Closed\n"
             + "\n"
-            + "<html><head><title>"+PetsciiThread.clients.size()+" client"+(PetsciiThread.clients.size()==1?"":"s")+"</title>"
+            + "<html><head><title>"+ BbsThread.clients.size()+" client"+(BbsThread.clients.size()==1?"":"s")+"</title>"
             + "<meta http-equiv=\"refresh\" content=\"5\"></head><body><pre>\n"
-            + "Number of clients: " + PetsciiThread.clients.size() + "\n"
+            + "Number of clients: " + BbsThread.clients.size() + "\n"
             + "\n" +
-            PetsciiThread.clients.entrySet().stream()
+            BbsThread.clients.entrySet().stream()
                 .sorted(Comparator.comparingLong(Map.Entry::getKey))
                 .map(entry -> "#" + entry.getKey()
                     + ": " + entry.getValue().getClientClass().getSimpleName()
@@ -181,8 +180,8 @@ public class BBServer {
              + s+"s";
     }
 
-    private static List<Class<? extends PetsciiThread>> filterPetsciiThread() {
-        List<Class<? extends PetsciiThread>> result = new LinkedList<>();
+    private static List<Class<? extends BbsThread>> filterBBSThread() {
+        List<Class<? extends BbsThread>> result = new LinkedList<>();
         final ClassLoader classLoader = BBServer.class.getClassLoader();
         final Set<ClassPath.ClassInfo> classes;
         try {
@@ -193,7 +192,7 @@ public class BBServer {
         for (ClassPath.ClassInfo classInfo : classes) {
             try {
                 Class c = classInfo.load();
-                if (PetsciiThread.class.isAssignableFrom(c) && !c.isAnnotationPresent(Hidden.class))
+                if (BbsThread.class.isAssignableFrom(c) && !c.isAnnotationPresent(Hidden.class))
                     result.add(c);
             } catch (LinkageError e) {
                 // SKIP

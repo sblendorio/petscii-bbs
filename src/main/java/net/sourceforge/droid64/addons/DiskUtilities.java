@@ -18,8 +18,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.zip.*;
 
-import static eu.sblendorio.bbs.core.PetsciiThread.DownloadData;
-import static eu.sblendorio.bbs.core.PetsciiThread.download;
+import static eu.sblendorio.bbs.core.bbstype.PetsciiThread.DownloadData;
+import static eu.sblendorio.bbs.core.bbstype.PetsciiThread.download;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 

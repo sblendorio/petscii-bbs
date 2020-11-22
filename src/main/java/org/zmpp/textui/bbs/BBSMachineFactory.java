@@ -27,7 +27,7 @@ import org.zmpp.io.IOSystem;
 import org.zmpp.io.InputStream;
 import org.zmpp.vm.*;
 
-import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
 
 import org.zmpp.textui.VirtualConsole;
 import java.io.IOException;

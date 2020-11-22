@@ -1,5 +1,6 @@
 package eu.sblendorio.bbs.tenants;
 
+import eu.sblendorio.bbs.tenants.petscii.ArnoldC64;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.core.Is.is;

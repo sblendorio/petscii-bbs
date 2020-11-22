@@ -20,7 +20,7 @@ import org.zmpp.vm.Machine;
 import org.zmpp.vm.SaveGameDataStore;
 import org.zmpp.vm.ScreenModel;
 
-import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
 
 public class BBSConsole implements VirtualConsole, SaveGameDataStore,  IOSystem {
 

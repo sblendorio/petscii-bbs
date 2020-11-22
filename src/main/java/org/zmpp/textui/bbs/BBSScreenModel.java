@@ -5,18 +5,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.text.WordUtils;
 import org.davidmoten.text.utils.WordWrap;
 import org.zmpp.encoding.ZsciiEncoding;
 import org.zmpp.io.OutputStream;
-import org.zmpp.swingui.WordWrapper;
 import org.zmpp.vm.Machine;
 import org.zmpp.vm.ScreenModel;
 import org.zmpp.vm.StatusLine;
 import org.zmpp.vm.TextCursor;
 
-import eu.sblendorio.bbs.core.Keys;
-import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.core.PetsciiKeys;
+import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
 
 public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
@@ -83,7 +81,7 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
     @Override
     public void eraseLine(int value) {
-        petsciiThread.write(Keys.HOME);
+        petsciiThread.write(PetsciiKeys.HOME);
         petsciiThread.flush();
     }
 

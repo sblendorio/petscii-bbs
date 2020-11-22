@@ -6,9 +6,8 @@ import org.zmpp.encoding.ZsciiEncoding;
 import org.zmpp.io.InputStream;
 import org.zmpp.vm.Machine;
 
-import eu.sblendorio.bbs.core.Keys;
-import eu.sblendorio.bbs.core.PetsciiThread;
-import eu.sblendorio.bbs.core.Utils;
+import eu.sblendorio.bbs.core.PetsciiKeys;
+import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
 
 public class BBSInputStream implements InputStream {
 
@@ -32,10 +31,10 @@ public class BBSInputStream implements InputStream {
             int key  = this.petsciiThread.readKey();
             if (key >= 193 && key <= 218) key -= 96;
             switch (key){
-                case Keys.RETURN:
+                case PetsciiKeys.RETURN:
                     translatedChar = ZsciiEncoding.NEWLINE;
                     break; //skip the carriage return
-                case Keys.DEL : translatedChar = Keys.DEL;
+                case PetsciiKeys.DEL : translatedChar = PetsciiKeys.DEL;
                     break;
                 default :
                     if (key < 32 || key > 128) {

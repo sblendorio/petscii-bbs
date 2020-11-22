@@ -1,6 +1,6 @@
 package net.sourceforge.droid64.addons;
 
-import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
