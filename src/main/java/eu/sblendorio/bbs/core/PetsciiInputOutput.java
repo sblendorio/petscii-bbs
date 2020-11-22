@@ -5,7 +5,6 @@ import java.net.Socket;
 
 import static eu.sblendorio.bbs.core.Utils.isControlChar;
 import static eu.sblendorio.bbs.core.Utils.isPrintableChar;
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.substring;
 
@@ -50,6 +49,16 @@ public class PetsciiInputOutput extends BbsInputOutput {
     }
 
     @Override
+    public int backspace() {
+        return PetsciiKeys.DEL;
+    }
+
+    @Override
+    public boolean isBackspace(int ch) {
+        return ch == PetsciiKeys.DEL || ch == PetsciiKeys.INS;
+    }
+
+    @Override
     public boolean quoteMode() {
         return out.quoteMode();
     }
@@ -60,13 +69,13 @@ public class PetsciiInputOutput extends BbsInputOutput {
         String value = EMPTY;
         do {
             ch = readKey();
-            if (ch == PetsciiKeys.DEL || ch == PetsciiKeys.INS) {
+            if (isBackspace(ch)) {
                 if (value.length() > 0) {
-                    write(PetsciiKeys.DEL);
+                    write(backspace());
                     value = value.substring(0, value.length()-1);
                 }
             } else if (ch == 34) {
-                write(34, 34, PetsciiKeys.DEL);
+                write(34, 34, backspace());
                 value += "\"";
             } else if (ch == PetsciiKeys.RETURN || ch == 141) {
                 write(PetsciiKeys.RETURN);
