@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.Socket;
 
 import static eu.sblendorio.bbs.core.Utils.isControlChar;
-import static eu.sblendorio.bbs.core.Utils.isPrintableChar;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.substring;
 
@@ -64,6 +63,21 @@ public class PetsciiInputOutput extends BbsInputOutput {
     }
 
     @Override
+    public int convertToAscii(int ch) {
+        if (ch >= 'a' && ch <= 'z')
+            return Character.toUpperCase(ch);
+        else if (ch >= 'A' && ch <= 'Z')
+            return Character.toLowerCase(ch);
+        else
+            return ch;
+    }
+
+    @Override
+    public boolean isPrintableChar(int c) {
+        return (c >= 32 && c <= 127) || (c >= 160 && c <= 255);
+    }
+
+    @Override
     public boolean quoteMode() {
         return out.quoteMode();
     }
@@ -84,13 +98,9 @@ public class PetsciiInputOutput extends BbsInputOutput {
                 value += "\"";
             } else if (ch == PetsciiKeys.RETURN || ch == 141) {
                 write(PetsciiKeys.RETURN);
-            } else if (Utils.isPrintableChar(ch)) {
+            } else if (isPrintableChar(ch)) {
                 write(ch);
-                if (ch >= 'a' && ch <= 'z')
-                    ch = Character.toUpperCase(ch);
-                else if (ch >= 'A' && ch <= 'Z')
-                    ch = Character.toLowerCase(ch);
-                value += (char) ch;
+                value += (char) convertToAscii(ch);
             }
         } while (ch != PetsciiKeys.RETURN && ch != 141);
         final String result = value;

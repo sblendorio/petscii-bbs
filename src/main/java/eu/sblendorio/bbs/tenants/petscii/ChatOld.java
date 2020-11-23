@@ -172,7 +172,7 @@ public class ChatOld extends PetsciiThread {
                 commandLine += "\"";
             } else if (ch == PetsciiKeys.RETURN || ch == 141) {
                 write(PetsciiKeys.RETURN);
-            } else if (Utils.isPrintableChar(ch)) {
+            } else if (isPrintableChar(ch)) {
                 write(ch);
                 if (ch >= 'a' && ch <= 'z')
                     ch = Character.toUpperCase(ch);

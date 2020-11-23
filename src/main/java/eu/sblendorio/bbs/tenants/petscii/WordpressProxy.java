@@ -1,18 +1,24 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.Hidden;
+import eu.sblendorio.bbs.core.HtmlUtils;
 import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
 import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
 import static eu.sblendorio.bbs.core.PetsciiKeys.CASE_LOCK;
 import static eu.sblendorio.bbs.core.PetsciiKeys.DEL;
 import static eu.sblendorio.bbs.core.PetsciiKeys.LOWERCASE;
 import static eu.sblendorio.bbs.core.Utils.equalsDomain;
-import static eu.sblendorio.bbs.core.Utils.filterPrintable;
-import static eu.sblendorio.bbs.core.Utils.filterPrintableWithNewline;
 import static eu.sblendorio.bbs.core.Utils.normalizeDomain;
+import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
+import java.util.ArrayList;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import static org.apache.commons.collections4.MapUtils.isEmpty;
+import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.apache.commons.lang3.StringUtils.defaultString;
@@ -23,22 +29,11 @@ import static org.apache.commons.lang3.StringUtils.substring;
 import static org.apache.commons.lang3.StringUtils.trim;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import eu.sblendorio.bbs.core.Hidden;
-import eu.sblendorio.bbs.core.HtmlUtils;
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
 
 @Hidden
 public class WordpressProxy extends PetsciiThread {

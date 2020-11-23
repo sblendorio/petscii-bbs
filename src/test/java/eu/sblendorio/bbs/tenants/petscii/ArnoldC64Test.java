@@ -1,4 +1,4 @@
-package eu.sblendorio.bbs.tenants;
+package eu.sblendorio.bbs.tenants.petscii;
 
 import eu.sblendorio.bbs.tenants.petscii.ArnoldC64;
 import static org.hamcrest.MatcherAssert.assertThat;

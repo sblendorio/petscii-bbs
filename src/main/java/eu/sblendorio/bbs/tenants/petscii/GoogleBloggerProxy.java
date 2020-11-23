@@ -7,24 +7,42 @@ import com.google.api.services.blogger.Blogger;
 import com.google.api.services.blogger.BloggerScopes;
 import com.google.api.services.blogger.model.Post;
 import com.google.api.services.blogger.model.PostList;
-import eu.sblendorio.bbs.core.*;
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.*;
-
+import eu.sblendorio.bbs.core.BbsIOException;
+import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.Hidden;
+import eu.sblendorio.bbs.core.HtmlUtils;
 import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
 import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_RED;
 import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
-import static eu.sblendorio.bbs.core.PetsciiKeys.*;
-import static eu.sblendorio.bbs.core.Utils.*;
+import static eu.sblendorio.bbs.core.PetsciiKeys.CASE_LOCK;
+import static eu.sblendorio.bbs.core.PetsciiKeys.DEL;
+import static eu.sblendorio.bbs.core.PetsciiKeys.LOWERCASE;
+import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
+import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
+import static eu.sblendorio.bbs.core.Utils.equalsDomain;
+import static eu.sblendorio.bbs.core.Utils.normalizeDomain;
+import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import static java.util.Arrays.asList;
-import static org.apache.commons.lang3.StringUtils.*;
-import static org.apache.commons.lang3.math.NumberUtils.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+import org.apache.commons.lang3.StringUtils;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.lowerCase;
+import static org.apache.commons.lang3.StringUtils.repeat;
+import static org.apache.commons.lang3.StringUtils.substring;
+import static org.apache.commons.lang3.StringUtils.trim;
+import static org.apache.commons.lang3.math.NumberUtils.toInt;
+import static org.apache.commons.lang3.math.NumberUtils.toLong;
+import org.apache.commons.text.WordUtils;
 
 @Hidden
 public class GoogleBloggerProxy extends PetsciiThread {

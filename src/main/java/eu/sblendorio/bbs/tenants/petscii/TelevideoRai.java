@@ -1,5 +1,12 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
+import com.google.common.collect.ImmutableMap;
+import com.rometools.rome.feed.synd.SyndEntry;
+import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.io.FeedException;
+import com.rometools.rome.io.SyndFeedInput;
+import com.rometools.rome.io.XmlReader;
+import eu.sblendorio.bbs.core.HtmlUtils;
 import static eu.sblendorio.bbs.core.PetsciiColors.BLUE;
 import static eu.sblendorio.bbs.core.PetsciiColors.CYAN;
 import static eu.sblendorio.bbs.core.PetsciiColors.GREEN;
@@ -20,36 +27,24 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
 import static eu.sblendorio.bbs.core.PetsciiKeys.RIGHT;
 import static eu.sblendorio.bbs.core.PetsciiKeys.SPACE_CHAR;
 import static eu.sblendorio.bbs.core.PetsciiKeys.UP;
-import static eu.sblendorio.bbs.core.Utils.filterPrintableWithNewline;
-import static java.util.Arrays.asList;
-import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.substring;
-import static org.apache.commons.lang3.StringUtils.trim;
-
+import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import static java.util.Arrays.asList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import com.rometools.rome.io.FeedException;
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 import org.apache.commons.lang3.StringUtils;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.substring;
+import static org.apache.commons.lang3.StringUtils.trim;
 import org.apache.commons.text.WordUtils;
-
-import com.google.common.collect.ImmutableMap;
-import com.rometools.rome.feed.synd.SyndEntry;
-import com.rometools.rome.feed.synd.SyndFeed;
-import com.rometools.rome.io.SyndFeedInput;
-import com.rometools.rome.io.XmlReader;
-
-import eu.sblendorio.bbs.core.HtmlUtils;
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
 
 public class TelevideoRai extends PetsciiThread {
     static final String HR_TOP = StringUtils.repeat(chr(163), 39);

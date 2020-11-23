@@ -7,8 +7,8 @@ import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
 import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_BLUE;
 import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
 import eu.sblendorio.bbs.core.PetsciiKeys;
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
 import eu.sblendorio.bbs.core.Utils;
+import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
 import java.io.IOException;
 import java.util.List;
 import static java.util.Optional.ofNullable;
@@ -191,7 +191,7 @@ public class Chat extends PetsciiThread {
                 commandLine += "\"";
             } else if (ch == PetsciiKeys.RETURN || ch == 141) {
                 write(PetsciiKeys.RETURN);
-            } else if (Utils.isPrintableChar(ch)) {
+            } else if (isPrintableChar(ch)) {
                 write(ch);
                 if (ch >= 'a' && ch <= 'z')
                     ch = Character.toUpperCase(ch);

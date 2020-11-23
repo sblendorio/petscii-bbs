@@ -1,6 +1,7 @@
 
 package eu.sblendorio.bbs.tenants.petscii;
 
+import eu.sblendorio.bbs.core.HtmlUtils;
 import static eu.sblendorio.bbs.core.PetsciiColors.CYAN;
 import static eu.sblendorio.bbs.core.PetsciiColors.GREY1;
 import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
@@ -14,24 +15,15 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.LOWERCASE;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
 import static eu.sblendorio.bbs.core.PetsciiKeys.UP;
-import static eu.sblendorio.bbs.core.Utils.filterPrintable;
-import static java.util.Collections.emptyMap;
-import static org.apache.commons.codec.CharEncoding.UTF_8;
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.defaultString;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.lowerCase;
-import static org.apache.commons.lang3.StringUtils.repeat;
-import static org.apache.commons.lang3.StringUtils.trim;
-import static org.apache.commons.lang3.math.NumberUtils.toInt;
-
+import eu.sblendorio.bbs.core.XModem;
+import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
+import static java.util.Collections.emptyMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,16 +32,20 @@ import java.util.function.BiPredicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
-
-import net.sourceforge.droid64.d64.CbmException;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.text.WordUtils;
-
 import net.sourceforge.droid64.addons.DiskUtilities;
-import eu.sblendorio.bbs.core.HtmlUtils;
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
-import eu.sblendorio.bbs.core.XModem;
+import net.sourceforge.droid64.d64.CbmException;
+import static org.apache.commons.codec.CharEncoding.UTF_8;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
+import org.apache.commons.lang3.StringUtils;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.lowerCase;
+import static org.apache.commons.lang3.StringUtils.repeat;
+import static org.apache.commons.lang3.StringUtils.trim;
+import org.apache.commons.lang3.math.NumberUtils;
+import static org.apache.commons.lang3.math.NumberUtils.toInt;
+import org.apache.commons.text.WordUtils;
 
 public class ArnoldC64 extends PetsciiThread {
 

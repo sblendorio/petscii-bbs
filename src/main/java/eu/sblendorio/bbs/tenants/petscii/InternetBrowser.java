@@ -6,25 +6,41 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
 import eu.sblendorio.bbs.core.HtmlUtils;
+import static eu.sblendorio.bbs.core.PetsciiColors.BLACK;
+import static eu.sblendorio.bbs.core.PetsciiColors.GREEN;
+import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
+import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_BLUE;
+import static eu.sblendorio.bbs.core.PetsciiColors.ORANGE;
+import static eu.sblendorio.bbs.core.PetsciiColors.PURPLE;
+import static eu.sblendorio.bbs.core.PetsciiColors.RED;
+import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
+import static eu.sblendorio.bbs.core.PetsciiColors.YELLOW;
+import static eu.sblendorio.bbs.core.PetsciiKeys.CASE_LOCK;
+import static eu.sblendorio.bbs.core.PetsciiKeys.CLR;
+import static eu.sblendorio.bbs.core.PetsciiKeys.DEL;
+import static eu.sblendorio.bbs.core.PetsciiKeys.LOWERCASE;
+import static eu.sblendorio.bbs.core.PetsciiKeys.SPACE_CHAR;
 import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
-
 import java.net.UnknownHostException;
-import java.util.*;
+import java.util.ArrayList;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static eu.sblendorio.bbs.core.PetsciiColors.*;
-import static eu.sblendorio.bbs.core.PetsciiKeys.*;
-import static eu.sblendorio.bbs.core.Utils.*;
-import static java.util.Arrays.asList;
-import static eu.sblendorio.bbs.core.Utils.filterPrintable;
-import static java.util.Collections.emptyMap;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.*;
+import org.apache.commons.lang3.StringUtils;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
+import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.lowerCase;
+import static org.apache.commons.lang3.StringUtils.repeat;
+import static org.apache.commons.lang3.StringUtils.trim;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
-
+import org.apache.commons.text.WordUtils;
 import org.jsoup.Connection;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;

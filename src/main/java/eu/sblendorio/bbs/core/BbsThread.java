@@ -480,4 +480,25 @@ public abstract class BbsThread extends Thread {
 
     public Object getCustomObject() { return customObject; }
     public void setCustomObject(Object obj) { this.customObject = obj; }
+
+    public boolean isPrintableChar(int c) {
+        return io.isPrintableChar(c);
+    }
+
+    public boolean isPrintableChar(char c) {
+        return io.isPrintableChar(c);
+    }
+    public String filterPrintable(String s) {
+        return io.filterPrintable(s);
+    }
+
+    public String filterPrintableWithNewline(String s) {
+        return io.filterPrintableWithNewline(s);
+    }
+
+    public int lengthPrintable(String s) {
+        return filterPrintable(defaultString(s)).length();
+    }
+
+
 }

@@ -1,7 +1,6 @@
 package eu.sblendorio.bbs.core;
 
 import static eu.sblendorio.bbs.core.Utils.isControlChar;
-import static eu.sblendorio.bbs.core.Utils.isPrintableChar;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.substring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -578,9 +578,6 @@ public abstract class BbsInputOutput extends Reader {
     public void write(int... b) { for (int c: b) out.write(c); }
     public void flush() { out.flush(); }
 
-    abstract public void cls();
-    abstract public void newline();
-
     public void printlnRaw(String s) { out.print(s); newline(); }
     public void printRaw(String s) { out.print(s); }
     public void println(String msg) { print(msg); newline(); }
@@ -620,8 +617,33 @@ public abstract class BbsInputOutput extends Reader {
         }
     }
 
+    public abstract void cls();
+    public abstract void newline();
     public abstract int backspace();
     public abstract boolean isBackspace(int ch);
     public abstract void writeDoublequotes();
+    public abstract int convertToAscii(int ch);
+
+    public boolean isPrintableChar(int c) {
+        return c >= 32;
+    }
+
+    public boolean isPrintableChar(char c) {
+        return isPrintableChar((int) c);
+    }
+
+    public String filterPrintable(String s) {
+        StringBuilder result = new StringBuilder();
+        for (char c: defaultString(s).toCharArray())
+            if (isPrintableChar(c)) result.append(c);
+        return result.toString();
+    }
+
+    public String filterPrintableWithNewline(String s) {
+        StringBuilder result = new StringBuilder();
+        for (char c: defaultString(s).toCharArray())
+            if (isPrintableChar(c) || c == '\n' || c == '\r') result.append(c);
+        return result.toString();
+    }
 
 }
