@@ -59,6 +59,11 @@ public class PetsciiInputOutput extends BbsInputOutput {
     }
 
     @Override
+    public void writeDoublequotes() {
+        write(34, 34, PetsciiKeys.DEL);
+    }
+
+    @Override
     public boolean quoteMode() {
         return out.quoteMode();
     }
@@ -75,7 +80,7 @@ public class PetsciiInputOutput extends BbsInputOutput {
                     value = value.substring(0, value.length()-1);
                 }
             } else if (ch == 34) {
-                write(34, 34, backspace());
+                writeDoublequotes();
                 value += "\"";
             } else if (ch == PetsciiKeys.RETURN || ch == 141) {
                 write(PetsciiKeys.RETURN);

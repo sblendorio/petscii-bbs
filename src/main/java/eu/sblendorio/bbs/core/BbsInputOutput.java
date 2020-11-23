@@ -622,4 +622,6 @@ public abstract class BbsInputOutput extends Reader {
 
     public abstract int backspace();
     public abstract boolean isBackspace(int ch);
+    public abstract void writeDoublequotes();
+
 }
