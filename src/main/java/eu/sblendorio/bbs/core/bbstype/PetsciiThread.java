@@ -13,6 +13,7 @@ import static org.apache.commons.lang3.StringUtils.substring;
 
 public abstract class PetsciiThread extends BbsThread {
 
+    @Override
     public BbsInputOutput buildIO(Socket socket) throws IOException {
         return new PetsciiInputOutput(socket);
     }
