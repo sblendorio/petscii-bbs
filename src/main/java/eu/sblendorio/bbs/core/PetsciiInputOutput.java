@@ -1,11 +1,7 @@
 package eu.sblendorio.bbs.core;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.Socket;
-
-import static eu.sblendorio.bbs.core.Utils.isControlChar;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.substring;
 
 public class PetsciiInputOutput extends BbsInputOutput {
     public PetsciiInputOutput(Socket socket) throws IOException{

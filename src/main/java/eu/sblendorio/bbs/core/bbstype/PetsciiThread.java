@@ -8,8 +8,6 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.HOME;
 import static eu.sblendorio.bbs.core.PetsciiKeys.RIGHT;
 import java.io.IOException;
 import java.net.Socket;
-import static org.apache.commons.lang3.StringUtils.defaultString;
-import static org.apache.commons.lang3.StringUtils.substring;
 
 public abstract class PetsciiThread extends BbsThread {
 

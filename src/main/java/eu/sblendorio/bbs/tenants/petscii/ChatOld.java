@@ -1,30 +1,25 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.PetsciiColors;
 import static eu.sblendorio.bbs.core.PetsciiColors.CYAN;
 import static eu.sblendorio.bbs.core.PetsciiColors.GREY2;
 import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
 import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_BLUE;
 import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
-import static java.util.Optional.ofNullable;
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.defaultString;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
+import eu.sblendorio.bbs.core.PetsciiKeys;
+import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
 import java.io.IOException;
 import java.util.List;
+import static java.util.Optional.ofNullable;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
-
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import org.apache.commons.lang3.StringUtils;
-
-import eu.sblendorio.bbs.core.PetsciiColors;
-import eu.sblendorio.bbs.core.PetsciiKeys;
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
-import eu.sblendorio.bbs.core.Utils;
+import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class ChatOld extends PetsciiThread {
 
