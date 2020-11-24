@@ -20,8 +20,7 @@ public class PetsciiInputOutput extends BbsInputOutput {
 
     @Override
     public int readKey() throws IOException {
-        final int result = in.read();
-        if (result == -1) throw new BbsIOException("BbsIOException::readKey()");
+        final int result = super.readKey();
         return (result >= 193 && result <= 218) ? result - 96 : result;
     }
 
