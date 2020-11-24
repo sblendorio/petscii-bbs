@@ -58,6 +58,11 @@ public class PetsciiInputOutput extends BbsInputOutput {
     }
 
     @Override
+    public boolean isNewline(int ch) {
+        return ch == PetsciiKeys.RETURN || ch == 141;
+    }
+
+    @Override
     public void writeDoublequotes() {
         write(34, 34, PetsciiKeys.DEL);
     }
@@ -81,30 +86,4 @@ public class PetsciiInputOutput extends BbsInputOutput {
     public boolean quoteMode() {
         return out.quoteMode();
     }
-
-    // CICCIO
-    private String readCommandLine() throws IOException {
-        int ch;
-        String value = EMPTY;
-        do {
-            ch = readKey();
-            if (isBackspace(ch)) {
-                if (value.length() > 0) {
-                    write(backspace());
-                    value = value.substring(0, value.length()-1);
-                }
-            } else if (ch == 34) {
-                writeDoublequotes();
-                value += "\"";
-            } else if (ch == PetsciiKeys.RETURN || ch == 141) {
-                write(PetsciiKeys.RETURN);
-            } else if (isPrintableChar(ch)) {
-                write(ch);
-                value += (char) convertToAscii(ch);
-            }
-        } while (ch != PetsciiKeys.RETURN && ch != 141);
-        final String result = value;
-        return result;
-    }
-
 }

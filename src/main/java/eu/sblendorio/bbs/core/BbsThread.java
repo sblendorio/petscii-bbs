@@ -273,6 +273,7 @@ public abstract class BbsThread extends Thread {
                 keepAliveThread.interrupt();
                 keepAliveThread = new KeepAliveThread();
                 bbs.keepAliveThread = keepAliveThread;
+                bbs.serverAddress = serverAddress;
                 keepAliveThread.start();
             } catch (Exception e) {
                 logger.info("Error during KeepAliveThread restart", e);
@@ -332,6 +333,7 @@ public abstract class BbsThread extends Thread {
     public void print(String msg) { io.print(msg); }
     public void println(String msg) { io.println(msg); }
     public void println() { println(EMPTY); }
+    public String readLineBuffer() { return io.readLineBuffer(); }
 
     public String readLine() throws IOException {
         keepAliveThread.restartKeepAlive();

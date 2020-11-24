@@ -12,6 +12,7 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
 import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
 import java.io.File;
 import org.apache.commons.lang3.StringUtils;
+import static org.apache.commons.lang3.StringUtils.defaultString;
 
 public class MainMenu extends PetsciiThread {
 

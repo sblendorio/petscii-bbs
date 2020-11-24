@@ -55,7 +55,6 @@ public class ChatOld extends PetsciiThread {
     }
 
     private Long recipient = null;
-    private String commandLine = EMPTY;
     private boolean canRedraw = false;
 
     private ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<Row>();
@@ -83,7 +82,7 @@ public class ChatOld extends PetsciiThread {
             redraw();
             do {
                 write(INPUT_COLOR);
-                rawCommand = readCommandLine();
+                rawCommand = readLine();
                 rawCommand = defaultString(rawCommand).trim();
                 final String command =  rawCommand;
                 if (StringUtils.isBlank(command)) {
@@ -155,37 +154,6 @@ public class ChatOld extends PetsciiThread {
     private void notifyExitingUser() {
         if (!getClientName().matches("^client[0-9]+$"))
             sendToAll(new ChatMessage(-2, getClientName() + " just left"));
-    }
-
-    private String readCommandLine() throws IOException {
-        int ch;
-        commandLine = EMPTY;
-        do {
-            ch = readKey();
-            if (ch == PetsciiKeys.DEL || ch == PetsciiKeys.INS) {
-                if (commandLine.length() > 0) {
-                    write(PetsciiKeys.DEL);
-                    commandLine = commandLine.substring(0, commandLine.length()-1);
-                }
-            } else if (ch == 34) {
-                write(34, 34, PetsciiKeys.DEL);
-                commandLine += "\"";
-            } else if (ch == PetsciiKeys.RETURN || ch == 141) {
-                write(PetsciiKeys.RETURN);
-            } else if (isPrintableChar(ch)) {
-                write(ch);
-                if (ch >= 'a' && ch <= 'z')
-                    ch = Character.toUpperCase(ch);
-                else if (ch >= 'A' && ch <= 'Z')
-                    ch = Character.toLowerCase(ch);
-                else if (ch >= 193 && ch <= 218)
-                    ch -= 128;
-                commandLine += (char) ch;
-            }
-        } while (ch != PetsciiKeys.RETURN && ch != 141);
-        final String result = commandLine;
-        commandLine = EMPTY;
-        return result;
     }
 
     private synchronized void redraw() {
@@ -346,10 +314,10 @@ public class ChatOld extends PetsciiThread {
         ChatMessage chatMessage = (ChatMessage) message;
         rows.addLast(new Row(senderId, chatMessage));
         while (rows.size() > 10) rows.removeFirst();
-        if (canRedraw && (/* chatMessage.receiverId > 0 || */ commandLine.length() == 0)) {
+        if (canRedraw && (/* chatMessage.receiverId > 0 || */ readLineBuffer().length() == 0)) {
             redraw();
             write(INPUT_COLOR);
-            print(commandLine);
+            print(readLineBuffer());
             if (senderId != this.clientId) {
                 write(7);
             }

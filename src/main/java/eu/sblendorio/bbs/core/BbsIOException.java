@@ -5,9 +5,12 @@ import java.io.IOException;
 public class BbsIOException extends IOException {
     private final String missingInput;
 
+    public BbsIOException() {
+        this(null, null);
+    }
+
     public BbsIOException(String msg) {
-        super(msg);
-        this.missingInput = null;
+        this(msg, null);
     }
 
     public BbsIOException(String msg, String missingInput) {

@@ -1,6 +1,5 @@
 package eu.sblendorio.bbs.core;
 
-import static eu.sblendorio.bbs.core.Utils.isControlChar;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,10 +13,10 @@ import java.io.UnsupportedEncodingException;
 import static java.lang.System.arraycopy;
 import java.net.Socket;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.substring;
@@ -54,35 +53,18 @@ public abstract class BbsInputOutput extends Reader {
     }
 
     private static final Logger logger = LoggerFactory.getLogger(BbsInputOutput.class);
+    private String readBuffer = EMPTY;
 
     protected Reader in;
     protected QuotedPrintStream out;
 
-    protected char[] cb;
-    protected int nChars;
-    protected int nextChar;
-
-    protected static final int INVALIDATED = -2;
-    protected static final int UNMARKED = -1;
-    protected int markedChar = UNMARKED;
-    protected int readAheadLimit = 0; /* Valid only when markedChar > 0 */
-
-    /** If the next character is a line feed, skip it */
-    protected boolean skipLF = false;
-
-    /** The skipLF flag when the mark was set */
-    protected boolean markedSkipLF = false;
-
     protected static int defaultCharBufferSize = 8192;
-    protected static int defaultExpectedLineLength = 80;
 
     protected BbsInputOutput(Reader in, int sz) {
         super(in);
         if (sz <= 0)
             throw new IllegalArgumentException("Buffer size <= 0");
         this.in = in;
-        cb = new char[sz];
-        nextChar = nChars = 0;
     }
 
     public BbsInputOutput(Socket socket) throws IOException {
@@ -90,7 +72,9 @@ public abstract class BbsInputOutput extends Reader {
         this.out = new QuotedPrintStream(socket.getOutputStream(), true, ISO_8859_1.name());
     }
 
-    public PrintStream out() {return out;}
+    public PrintStream out() {
+        return out;
+    }
 
     public boolean quoteMode() {
         return false;
@@ -106,381 +90,49 @@ public abstract class BbsInputOutput extends Reader {
         return result;
     }
 
-    /** Checks to make sure that the stream has not been closed */
-    protected void ensureOpen() throws IOException {
-        if (in == null)
-            throw new IOException("Stream closed");
-    }
-
-    /**
-     * Fills the input buffer, taking the mark into account if it is valid.
-     */
-    protected void fill() throws IOException {
-        int dst;
-        if (markedChar <= UNMARKED) {
-            /* No mark */
-            dst = 0;
-        } else {
-            /* Marked */
-            int delta = nextChar - markedChar;
-            if (delta >= readAheadLimit) {
-                /* Gone past read-ahead limit: Invalidate mark */
-                markedChar = INVALIDATED;
-                readAheadLimit = 0;
-                dst = 0;
-            } else {
-                if (readAheadLimit <= cb.length) {
-                    /* Shuffle in the current buffer */
-                    arraycopy(cb, markedChar, cb, 0, delta);
-                    markedChar = 0;
-                    dst = delta;
-                } else {
-                    /* Reallocate buffer to accommodate read-ahead limit */
-                    char[] ncb = new char[readAheadLimit];
-                    arraycopy(cb, markedChar, ncb, 0, delta);
-                    cb = ncb;
-                    markedChar = 0;
-                    dst = delta;
-                }
-                nextChar = nChars = delta;
-            }
-        }
-
-        int n;
+    public String readLine(int maxLength, boolean mask) throws IOException {
+        int ch;
+        readBuffer = EMPTY;
         do {
-            n = in.read(cb, dst, cb.length - dst);
-        } while (n == 0);
-        if (n > 0) {
-            nChars = dst + n;
-            nextChar = dst;
-        }
+            ch = readKey();
+            if (isBackspace(ch)) {
+                if (readBuffer.length() > 0) {
+                    write(backspace());
+                    readBuffer = readBuffer.substring(0, readBuffer.length()-1);
+                }
+            } else if (ch == 34 && (maxLength == 0 || readBuffer.length() < maxLength)) {
+                if (mask) write('*'); else writeDoublequotes();
+                readBuffer += "\"";
+            } else if (isPrintableChar(ch) && (maxLength == 0 || readBuffer.length() < maxLength)) {
+                write(mask ? '*' : ch);
+                readBuffer += (char) convertToAscii(ch);
+            }
+        } while (!isNewline(ch));
+        newline();
+        final String result = readBuffer;
+        readBuffer = EMPTY;
+        return result;
     }
 
-    /**
-     * Reads a single character.
-     *
-     * @return The character read, as an integer in the range
-     *         0 to 65535 (<tt>0x00-0xffff</tt>), or -1 if the
-     *         end of the stream has been reached
-     * @exception  IOException  If an I/O error occurs
-     */
-    @Override
-    public int read() throws IOException {
-        synchronized (lock) {
-            ensureOpen();
-            for (;;) {
-                if (nextChar >= nChars) {
-                    fill();
-                    if (nextChar >= nChars)
-                        return -1;
-                }
-                if (skipLF) {
-                    skipLF = false;
-                    if (cb[nextChar] == '\n') {
-                        nextChar++;
-                        continue;
-                    }
-                }
-                char ch = cb[nextChar++];
-                return ch;
-            }
-        }
-    }
-
-    /**
-     * Reads characters into a portion of an array, reading from the underlying
-     * stream if necessary.
-     */
-    protected int read1(char[] cbuf, int off, int len) throws IOException {
-        if (nextChar >= nChars) {
-            /* If the requested length is at least as large as the buffer, and
-               if there is no mark/reset activity, and if line feeds are not
-               being skipped, do not bother to copy the characters into the
-               local buffer.  In this way buffered streams will cascade
-               harmlessly. */
-            if (len >= cb.length && markedChar <= UNMARKED && !skipLF) {
-                return in.read(cbuf, off, len);
-            }
-            fill();
-        }
-        if (nextChar >= nChars) return -1;
-        if (skipLF) {
-            skipLF = false;
-            if (cb[nextChar] == '\n') {
-                nextChar++;
-                if (nextChar >= nChars)
-                    fill();
-                if (nextChar >= nChars)
-                    return -1;
-            }
-        }
-        int n = Math.min(len, nChars - nextChar);
-        arraycopy(cb, nextChar, cbuf, off, n);
-        nextChar += n;
-        return n;
-    }
-
-    public int read(char[] cbuf, int off, int len) throws IOException {
-        synchronized (lock) {
-            ensureOpen();
-            if ((off < 0) || (off > cbuf.length) || (len < 0) ||
-                ((off + len) > cbuf.length) || ((off + len) < 0)) {
-                throw new IndexOutOfBoundsException();
-            } else if (len == 0) {
-                return 0;
-            }
-
-            int n = read1(cbuf, off, len);
-            if (n <= 0) return n;
-            while ((n < len) && in.ready()) {
-                int n1 = read1(cbuf, off + n, len - n);
-                if (n1 <= 0) break;
-                n += n1;
-            }
-            return n;
-        }
-    }
-
-    public String readLine(boolean ignoreLF) throws IOException {
-        return readLine(ignoreLF, 0);
-    }
-
-    public String readLine(boolean ignoreLF, int maxLength) throws IOException {
-        return readLine(ignoreLF, maxLength, false);
-    }
-
-    // CICCIO
-    public String readLine(boolean ignoreLF, int maxLength, boolean mask) throws IOException {
-        StringBuffer s = null;
-        int startChar;
-        synchronized (lock) {
-            int size = 0;
-            ensureOpen();
-            boolean omitLF = ignoreLF || skipLF;
-
-            for (;;) {
-                if (nextChar >= nChars)
-                    fill();
-                if (nextChar >= nChars) { /* EOF */
-                    if (s != null && s.length() > 0) {
-                        final String missingInput = decode(s.toString())
-                            .replaceAll("\r+", "\\\\r")
-                            .replaceAll("\n+", "\\\\n")
-                            .replaceAll("\\p{C}", "?");
-                        throw new BbsIOException("BbsIOException::readLine(), missingInput='"+missingInput+"'", missingInput);
-                    } else {
-                        throw new BbsIOException("BbsIOException::readLine()");
-                    }
-                }
-                boolean eol = false;
-                char c = 0;
-                int i;
-
-                if (nChars>0 && isControlChar(cb[0])) {
-                    nChars = 0;
-                    nextChar = 0;
-                    continue;
-                }
-
-                if (((int)cb[nextChar]) == 148) cb[nextChar]='\024';
-                if (
-                    (((int)cb[nextChar]) == 20 && size == 0) ||
-                        (maxLength > 0 && size >= maxLength && ((int)cb[nextChar]) != 20 && ((int)cb[nextChar]) != 13)
-                ) {
-                    nChars = 0;
-                    nextChar = 0;
-                    continue;
-                }
-                /* Skip a leftover '\n', if necessary */
-                if (omitLF && (cb[nextChar] == '\n'))
-                    nextChar++;
-                skipLF = false;
-                omitLF = false;
-
-                charLoop:
-                for (i = nextChar; i < nChars; i++) {
-                    c = cb[i];
-                    if (!isControlChar(c)) {
-                        if (c == 148) { cb[i]='\024'; c=cb[i]; }
-                        if (c == 141) { cb[i]='\r'; c=cb[i]; }
-                        if (c == 160) { cb[i]=' '; c=cb[i]; }
-                        if (c == 20 && size > 0) {
-                            out.write(157);
-                            out.write(32);
-                            out.write(157);
-                            --size;
-                        } else if (c == 20 && size <= 0) {
-                            // do nothing
-                        } else if (c == 34) {
-                            out.write(34);
-                            out.write(34);
-                            out.write(157);
-                            out.write(32);
-                            out.write(157);
-                            ++size;
-                        } else {
-                            out.write(mask && c != 13 && c != 10 ? '*' : c);
-                            ++size;
-                        }
-                        out.flush();
-                    }
-                    if ((c == '\n') || (c == '\r')) {
-                        eol = true;
-                        break charLoop;
-                    }
-                }
-
-                startChar = nextChar;
-                nextChar = i;
-
-                if (eol) {
-                    String str;
-                    if (s == null) {
-                        str = new String(cb, startChar, i - startChar);
-                    } else {
-                        s.append(cb, startChar, i - startChar);
-                        str = s.toString();
-                    }
-                    nextChar++;
-                    if (c == '\r') {
-                        skipLF = true;
-                    }
-                    out.flush();
-
-                    return decode(str);
-                }
-
-                if (s == null)
-                    s = new StringBuffer(defaultExpectedLineLength);
-                s.append(cb, startChar, i - startChar);
-            }
-        }
-    }
-
-    // CICCIO
-    protected String decode(String s) {
-        byte[] bytes = s.getBytes(ISO_8859_1);
-        byte[] output = new byte[s.length()];
-        int i=-1;
-        for (byte b: bytes) {
-            if (b == 20 && i < 0) {
-                continue;
-            } else if (b == 20 && i >= 0) {
-                i--;
-                continue;
-            } else if (b >= -63 && b <= -38) {
-                b += 128;
-            } else if (b >= 65 && b <= 90) {
-                b += 32;
-            } else if (b >= 97 && b <= 122) {
-                b -= 32;
-            }
-            output[++i] = b;
-        }
-        return new String(output, 0, i+1, ISO_8859_1);
+    public String readLineBuffer() {
+        return readBuffer;
     }
 
     public String readPassword() throws IOException {
-        return readLine(false, 0, true);
-    }
-
-    public String readLine() throws IOException {
-        return readLine(false, 0);
+        return readLine(0, true);
     }
 
     public String readLine(int maxLength) throws IOException {
-        return readLine(false, maxLength);
+        return readLine(maxLength, false);
     }
 
-    @Override
-    public long skip(long n) throws IOException {
-        if (n < 0L) {
-            throw new IllegalArgumentException("skip value is negative");
-        }
-        synchronized (lock) {
-            ensureOpen();
-            long r = n;
-            while (r > 0) {
-                if (nextChar >= nChars)
-                    fill();
-                if (nextChar >= nChars) /* EOF */
-                    break;
-                if (skipLF) {
-                    skipLF = false;
-                    if (cb[nextChar] == '\n') {
-                        nextChar++;
-                    }
-                }
-                long d = ((long) nChars) - ((long) nextChar);
-                if (r <= d) {
-                    nextChar += r;
-                    r = 0;
-                    break;
-                }
-                else {
-                    r -= d;
-                    nextChar = nChars;
-                }
-            }
-            return n - r;
-        }
+    public String readLine() throws IOException {
+        return readLine(0, false);
     }
 
     @Override
     public boolean ready() throws IOException {
-        synchronized (lock) {
-            ensureOpen();
-
-            /*
-             * If newline needs to be skipped and the next char to be read
-             * is a newline character, then just skip it right away.
-             */
-            if (skipLF) {
-                /* Note that in.ready() will return true if and only if the next
-                 * read on the stream will not block.
-                 */
-                if (nextChar >= nChars && in.ready()) {
-                    fill();
-                }
-                if (nextChar < nChars) {
-                    if (cb[nextChar] == '\n')
-                        nextChar++;
-                    skipLF = false;
-                }
-            }
-            return (nextChar < nChars) || in.ready();
-        }
-    }
-
-    @Override
-    public boolean markSupported() {
-        return true;
-    }
-
-    @Override
-    public void mark(int readAheadLimit) throws IOException {
-        if (readAheadLimit < 0) {
-            throw new IllegalArgumentException("Read-ahead limit < 0");
-        }
-        synchronized (lock) {
-            ensureOpen();
-            this.readAheadLimit = readAheadLimit;
-            markedChar = nextChar;
-            markedSkipLF = skipLF;
-        }
-    }
-
-    @Override
-    public void reset() throws IOException {
-        synchronized (lock) {
-            ensureOpen();
-            if (markedChar < 0)
-                throw new IOException((markedChar == INVALIDATED)
-                    ? "Mark invalid"
-                    : "Stream not marked");
-            nextChar = markedChar;
-            skipLF = markedSkipLF;
-        }
+        return in.ready();
     }
 
     public void close() throws IOException {
@@ -491,7 +143,6 @@ public abstract class BbsInputOutput extends Reader {
                 in.close();
             } finally {
                 in = null;
-                cb = null;
             }
         }
     }
@@ -501,8 +152,8 @@ public abstract class BbsInputOutput extends Reader {
         byte[] buffer = new byte[THRESHOLD];
 
         int count = 0;
-        while (ready() && count < THRESHOLD) {
-            int key = read();
+        while (in.ready() && count < THRESHOLD) {
+            int key = in.read();
             buffer[count++] = (byte) key;
             if (key == -1) throw new BbsIOException("BbsIOException::resetInput()");
         }
@@ -609,7 +260,7 @@ public abstract class BbsInputOutput extends Reader {
     }
 
     protected static List<String> readFromInputStream(InputStream is) throws IOException {
-        if(is == null) {
+        if (is == null) {
             return Collections.emptyList();
         }
         try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
@@ -620,6 +271,7 @@ public abstract class BbsInputOutput extends Reader {
     public abstract void cls();
     public abstract void newline();
     public abstract int backspace();
+    public abstract boolean isNewline(int ch);
     public abstract boolean isBackspace(int ch);
     public abstract void writeDoublequotes();
     public abstract int convertToAscii(int ch);
@@ -646,4 +298,8 @@ public abstract class BbsInputOutput extends Reader {
         return result.toString();
     }
 
+    @Override
+    public int read(char[] chars, int i, int i1) throws IOException {
+        return in.read(chars, i, i1);
+    }
 }
