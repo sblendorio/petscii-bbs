@@ -136,12 +136,19 @@ public abstract class BbsInputOutput extends Reader {
 
     public void close() throws IOException {
         synchronized (lock) {
-            if (in == null)
-                return;
-            try {
-                in.close();
-            } finally {
-                in = null;
+            if (out != null) {
+                try {
+                    out.close();
+                } finally {
+                    out = null;
+                }
+            }
+            if (in != null) {
+                try {
+                    in.close();
+                } finally {
+                    in = null;
+                }
             }
         }
     }
