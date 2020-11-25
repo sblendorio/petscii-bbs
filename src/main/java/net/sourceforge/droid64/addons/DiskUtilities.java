@@ -1,10 +1,7 @@
 package net.sourceforge.droid64.addons;
 
-import net.sourceforge.droid64.d64.CbmException;
-import net.sourceforge.droid64.d64.CbmFile;
-import net.sourceforge.droid64.d64.DiskImage;
-import net.sourceforge.droid64.db.DiskFile;
-
+import static eu.sblendorio.bbs.core.BbsThread.DownloadData;
+import static eu.sblendorio.bbs.core.BbsThread.download;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -16,10 +13,15 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.zip.*;
-
-import static eu.sblendorio.bbs.core.bbstype.PetsciiThread.DownloadData;
-import static eu.sblendorio.bbs.core.bbstype.PetsciiThread.download;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
+import net.sourceforge.droid64.d64.CbmException;
+import net.sourceforge.droid64.d64.CbmFile;
+import net.sourceforge.droid64.d64.DiskImage;
+import net.sourceforge.droid64.db.DiskFile;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 

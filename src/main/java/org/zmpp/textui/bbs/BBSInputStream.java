@@ -1,35 +1,32 @@
 package org.zmpp.textui.bbs;
 
+import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.PetsciiKeys;
 import java.io.IOException;
-
 import org.zmpp.encoding.ZsciiEncoding;
 import org.zmpp.io.InputStream;
 import org.zmpp.vm.Machine;
 
-import eu.sblendorio.bbs.core.PetsciiKeys;
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
-
 public class BBSInputStream implements InputStream {
 
-    PetsciiThread petsciiThread;
+    BbsThread bbsThread;
     Machine machine;
 
-    public BBSInputStream(Machine machine, PetsciiThread petsciiThread) {
-        this.petsciiThread = petsciiThread;
+    public BBSInputStream(Machine machine, BbsThread bbsThread) {
+        this.bbsThread = bbsThread;
         this.machine = machine;
     }
 
     @Override
     public void cancelInput() {
-        petsciiThread.log("cancelInput not yet implemented");
+        bbsThread.log("cancelInput not yet implemented");
     }
 
     @Override
     public short getZsciiChar(boolean flushBeforeGet) {
         short translatedChar;
         try {
-            int key  = this.petsciiThread.readKey();
-            if (key >= 193 && key <= 218) key -= 96;
+            int key  = this.bbsThread.readKey();
             switch (key){
                 case PetsciiKeys.RETURN:
                     translatedChar = ZsciiEncoding.NEWLINE;
@@ -41,10 +38,7 @@ public class BBSInputStream implements InputStream {
                         translatedChar = -1;
                     } else {
                         translatedChar = machine.getGameData().getZsciiEncoding().getZsciiChar((char) key);
-                        if (Character.isLowerCase(translatedChar))
-                            translatedChar = (short) Character.toUpperCase(translatedChar);
-                        else if (Character.isUpperCase(translatedChar))
-                            translatedChar = (short) Character.toLowerCase(translatedChar);
+                        translatedChar = (short) bbsThread.convertToAscii(translatedChar);
                     }
                     break;
             }

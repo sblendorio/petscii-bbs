@@ -328,14 +328,18 @@ public abstract class BbsThread extends Thread {
     public void flush() { io.flush(); }
     public void cls() { io.cls(); }
     public void newline() { io.newline(); }
+    public int backspace() { return io.backspace(); }
+    public byte[] newlineBytes() { return io.newlineBytes(); }
+    public String newlineString() { return io.newlineString(); }
     public void printlnRaw(String msg) { io.printlnRaw(msg); }
     public void printRaw(String msg) { io.printRaw(msg); }
     public void print(String msg) { io.print(msg); }
     public void println(String msg) { io.println(msg); }
     public void println() { println(EMPTY); }
     public String readLineBuffer() { return io.readLineBuffer(); }
+    public int convertToAscii(int ch) { return io.convertToAscii(ch); }
 
-    public String readLine() throws IOException {
+        public String readLine() throws IOException {
         keepAliveThread.restartKeepAlive();
         final String result = io.readLine();
         keepAliveThread.restartKeepAlive();

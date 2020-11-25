@@ -207,7 +207,7 @@ public class WordpressProxy extends PetsciiThread {
             write(WHITE); print(i + "."); write(GREY3);
             final int iLen = 37-String.valueOf(i).length();
             String line = WordUtils.wrap(filterPrintable(HtmlUtils.htmlClean(post.title)), iLen, "\r", true);
-            println(line.replaceAll("\r", "\r " + repeat(" ", 37-iLen)));
+            println(line.replaceAll("\r", newlineString() + " " + repeat(" ", 37-iLen)));
         }
         newline();
     }

@@ -1,14 +1,13 @@
 package org.zmpp.textui.bbs;
 
-import static org.apache.commons.lang3.StringUtils.defaultString;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-
+import eu.sblendorio.bbs.core.BbsThread;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.io.Writer;
 import java.io.Reader;
-
+import java.io.Writer;
+import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import org.zmpp.base.DefaultMemoryAccess;
 import org.zmpp.iff.DefaultFormChunk;
 import org.zmpp.iff.FormChunk;
@@ -20,25 +19,23 @@ import org.zmpp.vm.Machine;
 import org.zmpp.vm.SaveGameDataStore;
 import org.zmpp.vm.ScreenModel;
 
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
-
 public class BBSConsole implements VirtualConsole, SaveGameDataStore,  IOSystem {
 
-    PetsciiThread petsciiThread;
+    BbsThread bbsThread;
     Machine machine;
     boolean debugMode = false;
     ScreenModel screenModel;
 
-    public BBSConsole(Machine machine, PetsciiThread petsciiThread, boolean debugMode) {
-        this.petsciiThread = petsciiThread;
+    public BBSConsole(Machine machine, BbsThread bbsThread, boolean debugMode) {
+        this.bbsThread = bbsThread;
         this.machine = machine;
         this.debugMode = debugMode;
-        screenModel = new BBSScreenModel(petsciiThread,machine);
+        screenModel = new BBSScreenModel(bbsThread,machine);
     }
 
     @Override
     public void reportInvalidStory() {
-        this.petsciiThread.println("Invalid story.");
+        this.bbsThread.println("Invalid story.");
 
     }
 
@@ -53,7 +50,7 @@ public class BBSConsole implements VirtualConsole, SaveGameDataStore,  IOSystem 
         if (this.debugMode) {
             String message = String.format("%05x: %s", machine.getCpu().getProgramCounter(),
             instr.toString());
-            this.petsciiThread.print(message);
+            this.bbsThread.print(message);
         }
         instr.execute();
         }
@@ -66,27 +63,27 @@ public class BBSConsole implements VirtualConsole, SaveGameDataStore,  IOSystem 
         RandomAccessFile raf = null;
         String currentdir = new File(System.getProperty("user.dir")).getAbsolutePath();
         try {
-            petsciiThread.newline();
+            bbsThread.newline();
             File saveFile;
             boolean sure = true;
             do {
-                petsciiThread.print("Filename: ");
-                petsciiThread.flush();
-                petsciiThread.resetInput();
-                String filename = petsciiThread.readLine();
+                bbsThread.print("Filename: ");
+                bbsThread.flush();
+                bbsThread.resetInput();
+                String filename = bbsThread.readLine();
                 if (isBlank(filename)) {
-                    petsciiThread.println("Aborted.");
+                    bbsThread.println("Aborted.");
                     return false;
                 }
                 saveFile = new File(currentdir + File.separator + filename.toLowerCase() + ".ziff");
                 if (saveFile.exists()) {
-                    petsciiThread.println("WARNING: File already exists.");
-                    petsciiThread.print("Keep going with this? (Y/N) ");
-                    petsciiThread.flush();
-                    petsciiThread.resetInput();
-                    String line = petsciiThread.readLine();
+                    bbsThread.println("WARNING: File already exists.");
+                    bbsThread.print("Keep going with this? (Y/N) ");
+                    bbsThread.flush();
+                    bbsThread.resetInput();
+                    String line = bbsThread.readLine();
                     if (isBlank(line)) {
-                        petsciiThread.println("Aborted.");
+                        bbsThread.println("Aborted.");
                         return false;
                     }
                     final String response = defaultString(line).trim().toLowerCase();
@@ -112,18 +109,18 @@ public class BBSConsole implements VirtualConsole, SaveGameDataStore,  IOSystem 
         RandomAccessFile raf = null;
         String currentdir = new File(System.getProperty("user.dir")).getAbsolutePath();
         try {
-            petsciiThread.newline();
-            petsciiThread.print("Filename: ");
-            petsciiThread.flush();
-            petsciiThread.resetInput();
-            String filename = petsciiThread.readLine();
+            bbsThread.newline();
+            bbsThread.print("Filename: ");
+            bbsThread.flush();
+            bbsThread.resetInput();
+            String filename = bbsThread.readLine();
             if (isBlank(filename)) {
-                petsciiThread.println("Aborted.");
+                bbsThread.println("Aborted.");
                 return null;
             }
             File loadFile = new File(currentdir + File.separator + filename.toLowerCase() + ".ziff");
             if (!loadFile.exists()) {
-                petsciiThread.println("File not found. Aborted.");
+                bbsThread.println("File not found. Aborted.");
                 return null;
             }
             raf = new RandomAccessFile(loadFile, "r");
@@ -142,14 +139,14 @@ public class BBSConsole implements VirtualConsole, SaveGameDataStore,  IOSystem 
     /** IOSystem */
     @Override
     public Writer getTranscriptWriter() {
-        petsciiThread.log("Transcript of game not yet implemented");
+        bbsThread.log("Transcript of game not yet implemented");
         return null;
     }
 
     /** IOSystem */
     @Override
     public Reader getInputStreamReader() {
-        petsciiThread.log("Inputting commands from file not yet implemented");
+        bbsThread.log("Inputting commands from file not yet implemented");
         return null;
     }
 

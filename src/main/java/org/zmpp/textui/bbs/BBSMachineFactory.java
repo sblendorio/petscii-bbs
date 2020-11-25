@@ -23,14 +23,16 @@
 package org.zmpp.textui.bbs;
 
 
+import eu.sblendorio.bbs.core.BbsThread;
+import java.io.IOException;
 import org.zmpp.io.IOSystem;
 import org.zmpp.io.InputStream;
-import org.zmpp.vm.*;
-
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
-
 import org.zmpp.textui.VirtualConsole;
-import java.io.IOException;
+import org.zmpp.vm.Machine;
+import org.zmpp.vm.MachineFactory;
+import org.zmpp.vm.SaveGameDataStore;
+import org.zmpp.vm.ScreenModel;
+import org.zmpp.vm.StatusLine;
 
 /**
  * This class implements machine creation console application (stdin/stdout);
@@ -46,13 +48,13 @@ public class BBSMachineFactory extends MachineFactory<VirtualConsole> {
   StatusLine statusLine;
   ScreenModel screenModel;
   SaveGameDataStore saveGameDataStore;
-  PetsciiThread petsciiThread;
+  BbsThread bbsThread;
 
   private byte[] byteArrayStory;
 
-  public BBSMachineFactory(byte[] byteArrayStory , PetsciiThread petsciiThread) {
+  public BBSMachineFactory(byte[] byteArrayStory , BbsThread bbsThread) {
     this.byteArrayStory = byteArrayStory;
-    this.petsciiThread = petsciiThread;
+    this.bbsThread = bbsThread;
   }
 
   protected byte[] readStoryData() throws IOException {
@@ -64,11 +66,11 @@ public class BBSMachineFactory extends MachineFactory<VirtualConsole> {
   }
 
   protected VirtualConsole initUI(Machine machine) {
-    BBSConsole bbsConsole  = new BBSConsole(machine,this.petsciiThread,false);
+    BBSConsole bbsConsole  = new BBSConsole(machine,this.bbsThread,false);
     console = bbsConsole;
     saveGameDataStore = (SaveGameDataStore) bbsConsole;
     ioSystem = (IOSystem) bbsConsole;
-    inputStream = new BBSInputStream(machine, petsciiThread);
+    inputStream = new BBSInputStream(machine, bbsThread);
     screenModel = bbsConsole.getScreenModel();
     statusLine = (StatusLine) bbsConsole.getScreenModel();
     return bbsConsole;

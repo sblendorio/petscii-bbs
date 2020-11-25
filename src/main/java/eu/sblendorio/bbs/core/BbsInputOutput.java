@@ -97,13 +97,16 @@ public abstract class BbsInputOutput extends Reader {
             if (isBackspace(ch)) {
                 if (readBuffer.length() > 0) {
                     write(backspace());
+                    flush();
                     readBuffer = readBuffer.substring(0, readBuffer.length()-1);
                 }
             } else if (ch == 34 && (maxLength == 0 || readBuffer.length() < maxLength)) {
                 if (mask) write('*'); else writeDoublequotes();
+                flush();
                 readBuffer += "\"";
             } else if (isPrintableChar(ch) && (maxLength == 0 || readBuffer.length() < maxLength)) {
                 write(mask ? '*' : ch);
+                flush();
                 readBuffer += (char) convertToAscii(ch);
             }
         } while (!isNewline(ch));
@@ -274,8 +277,14 @@ public abstract class BbsInputOutput extends Reader {
         }
     }
 
+    public void newline() {
+        write(newlineBytes());
+    }
+    public String newlineString() {
+        return new String(newlineBytes(), ISO_8859_1);
+    };
+    public abstract byte[] newlineBytes();
     public abstract void cls();
-    public abstract void newline();
     public abstract int backspace();
     public abstract boolean isNewline(int ch);
     public abstract boolean isBackspace(int ch);

@@ -1,6 +1,5 @@
 package eu.sblendorio.bbs.core;
 
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -63,16 +62,16 @@ public class XModem {
 
     protected Reader inStream;
     protected PrintStream outStream;
-    protected PetsciiThread petsciiThread;
+    protected BbsThread bbsThread;
 
     public XModem(Reader input, PrintStream output) {
         inStream = input;
         outStream = output;
-        petsciiThread = null;
+        bbsThread = null;
     }
 
-    public XModem(PetsciiThread thread) {
-        petsciiThread = thread;
+    public XModem(BbsThread thread) {
+        bbsThread = thread;
         inStream = thread.io;
         outStream = thread.io.out();
     }
@@ -114,9 +113,9 @@ public class XModem {
         byte[] sector = new byte[SECSIZE];
         int nbytes;
 
-        Optional<PetsciiThread> thread = Optional.ofNullable(petsciiThread);
+        Optional<BbsThread> thread = Optional.ofNullable(bbsThread);
 
-        boolean quoteMode = thread.map(PetsciiThread::quoteMode).orElse(false);
+        boolean quoteMode = thread.map(BbsThread::quoteMode).orElse(false);
         boolean keepAlive = thread.map(p -> p.keepAlive).orElse(false);
 
         try (DataInputStream inputData = new DataInputStream(new ByteArrayInputStream(inputByteArray))) {
