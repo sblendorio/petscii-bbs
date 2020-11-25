@@ -52,7 +52,7 @@ public class BBSMachineFactory extends MachineFactory<VirtualConsole> {
 
   private byte[] byteArrayStory;
 
-  public BBSMachineFactory(byte[] byteArrayStory , BbsThread bbsThread) {
+  public BBSMachineFactory(byte[] byteArrayStory, BbsThread bbsThread) {
     this.byteArrayStory = byteArrayStory;
     this.bbsThread = bbsThread;
   }

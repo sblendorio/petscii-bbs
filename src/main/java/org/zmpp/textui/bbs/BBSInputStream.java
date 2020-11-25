@@ -26,19 +26,21 @@ public class BBSInputStream implements InputStream {
     public short getZsciiChar(boolean flushBeforeGet) {
         short translatedChar;
         try {
-            int key  = this.bbsThread.readKey();
-            switch (key){
-                case PetsciiKeys.RETURN:
+            int key = this.bbsThread.readKey();
+            switch (key) {
+                case ZsciiEncoding.NEWLINE_10: // CICCIO
+                case ZsciiEncoding.NEWLINE:
+                    bbsThread.flush();
                     translatedChar = ZsciiEncoding.NEWLINE;
                     break; //skip the carriage return
-                case PetsciiKeys.DEL : translatedChar = PetsciiKeys.DEL;
+                case PetsciiKeys.DEL: translatedChar = ZsciiEncoding.DELETE;
                     break;
-                default :
+                default:
                     if (key < 32 || key > 128) {
                         translatedChar = -1;
                     } else {
-                        translatedChar = machine.getGameData().getZsciiEncoding().getZsciiChar((char) key);
-                        translatedChar = (short) bbsThread.convertToAscii(translatedChar);
+                        short ch = machine.getGameData().getZsciiEncoding().getZsciiChar((char) key);
+                        translatedChar = (short) bbsThread.convertToAscii(ch);
                     }
                     break;
             }

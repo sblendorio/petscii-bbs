@@ -240,4 +240,8 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
         return isSelected;
     }
 
+    @Override
+    public short backspace() {
+        return (short) bbsThread.backspace();
+    }
 }
