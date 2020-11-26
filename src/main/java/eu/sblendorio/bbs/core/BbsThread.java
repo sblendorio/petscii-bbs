@@ -329,6 +329,8 @@ public abstract class BbsThread extends Thread {
     public void cls() { io.cls(); }
     public void newline() { io.newline(); }
     public int backspace() { return io.backspace(); }
+    public boolean isNewline(int ch) { return io.isNewline(ch); }
+    public boolean isBackspace(int ch) { return io.isBackspace(ch); }
     public byte[] newlineBytes() { return io.newlineBytes(); }
     public String newlineString() { return io.newlineString(); }
     public void printlnRaw(String msg) { io.printlnRaw(msg); }
