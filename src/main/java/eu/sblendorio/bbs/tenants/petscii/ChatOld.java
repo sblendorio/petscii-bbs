@@ -8,7 +8,7 @@ import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
 import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_BLUE;
 import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
 import eu.sblendorio.bbs.core.PetsciiKeys;
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
+import eu.sblendorio.bbs.core.PetsciiThread;
 import java.io.IOException;
 import java.util.List;
 import static java.util.Optional.ofNullable;

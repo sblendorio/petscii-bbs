@@ -1,6 +1,6 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
+import eu.sblendorio.bbs.core.PetsciiThread;
 import static org.apache.commons.lang3.StringUtils.lowerCase;
 
 public class EchoTestString extends PetsciiThread {

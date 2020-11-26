@@ -45,7 +45,7 @@ import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
+import eu.sblendorio.bbs.core.PetsciiThread;
 
 public class UserLogon extends PetsciiThread {
 

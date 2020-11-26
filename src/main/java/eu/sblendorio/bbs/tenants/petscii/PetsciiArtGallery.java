@@ -26,7 +26,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 import eu.sblendorio.bbs.core.PetsciiKeys;
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
+import eu.sblendorio.bbs.core.PetsciiThread;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

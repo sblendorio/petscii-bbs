@@ -1,8 +1,5 @@
-package eu.sblendorio.bbs.core.bbstype;
+package eu.sblendorio.bbs.core;
 
-import eu.sblendorio.bbs.core.BbsInputOutput;
-import eu.sblendorio.bbs.core.BbsThread;
-import eu.sblendorio.bbs.core.PetsciiInputOutput;
 import static eu.sblendorio.bbs.core.PetsciiKeys.DOWN;
 import static eu.sblendorio.bbs.core.PetsciiKeys.HOME;
 import static eu.sblendorio.bbs.core.PetsciiKeys.RIGHT;

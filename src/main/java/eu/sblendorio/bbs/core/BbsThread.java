@@ -1,5 +1,6 @@
 package eu.sblendorio.bbs.core;
 
+import com.rometools.utils.IO;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -177,7 +178,7 @@ public abstract class BbsThread extends Thread {
 
     public void contextFrom(BbsThread source) {
         setSocket(source.socket);
-        setBbsInputOutput(source.io);
+        setBbsInputOutput(source.io); // CICCIO
         setClientId(source.getClientId());
         setClientName(source.getClientName());
         parent = source;
@@ -259,6 +260,7 @@ public abstract class BbsThread extends Thread {
         final long oldKeepAliveTimeout = keepAliveTimeout;
         final long oldKeepAliveInterval = keepAliveInterval;
         final int oldKeepAliveChar = keepAliveChar;
+        final BbsInputOutput oldIo = io;
 
         try {
             keepAlive = bbs.keepAlive;
@@ -267,6 +269,8 @@ public abstract class BbsThread extends Thread {
             keepAliveChar = bbs.keepAliveChar;
 
             bbs.contextFrom(this);
+            bbs.setBbsInputOutput(bbs.buildIO(this.socket));
+            io = bbs.io;
             child = bbs;
             clientClass = bbs.clientClass = bbs.getClass();
             try {
@@ -304,7 +308,7 @@ public abstract class BbsThread extends Thread {
                 logger.info("Error during KeepAliveThread restart", e);
             }
             keepAliveThread.restartKeepAlive();
-
+            io = oldIo;
             child = null;
             clientClass = getClass();
         }

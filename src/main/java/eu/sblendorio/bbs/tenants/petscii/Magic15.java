@@ -1,6 +1,6 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
+import eu.sblendorio.bbs.core.PetsciiThread;
 import java.util.Random;
 
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;

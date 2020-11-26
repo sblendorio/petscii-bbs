@@ -9,7 +9,7 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.HOME;
 import static eu.sblendorio.bbs.core.PetsciiKeys.LOWERCASE;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
+import eu.sblendorio.bbs.core.PetsciiThread;
 import java.io.File;
 import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.defaultString;

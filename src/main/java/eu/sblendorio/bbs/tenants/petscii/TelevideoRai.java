@@ -27,7 +27,7 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
 import static eu.sblendorio.bbs.core.PetsciiKeys.RIGHT;
 import static eu.sblendorio.bbs.core.PetsciiKeys.SPACE_CHAR;
 import static eu.sblendorio.bbs.core.PetsciiKeys.UP;
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
+import eu.sblendorio.bbs.core.PetsciiThread;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;

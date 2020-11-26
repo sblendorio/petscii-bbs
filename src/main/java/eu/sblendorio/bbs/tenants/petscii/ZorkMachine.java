@@ -6,7 +6,7 @@ import org.zmpp.textui.bbs.BBSMachineFactory;
 
 import eu.sblendorio.bbs.core.PetsciiColors;
 import eu.sblendorio.bbs.core.PetsciiKeys;
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
+import eu.sblendorio.bbs.core.PetsciiThread;
 
 public class ZorkMachine extends PetsciiThread {
 

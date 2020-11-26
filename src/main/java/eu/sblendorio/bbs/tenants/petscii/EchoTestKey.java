@@ -1,6 +1,6 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
+import eu.sblendorio.bbs.core.PetsciiThread;
 
 public class EchoTestKey extends PetsciiThread {
 

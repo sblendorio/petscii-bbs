@@ -10,7 +10,7 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.DEL;
 import static eu.sblendorio.bbs.core.PetsciiKeys.LOWERCASE;
 import static eu.sblendorio.bbs.core.Utils.equalsDomain;
 import static eu.sblendorio.bbs.core.Utils.normalizeDomain;
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
+import eu.sblendorio.bbs.core.PetsciiThread;
 import java.util.ArrayList;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyMap;

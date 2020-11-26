@@ -21,7 +21,7 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
 import static eu.sblendorio.bbs.core.Utils.equalsDomain;
 import static eu.sblendorio.bbs.core.Utils.normalizeDomain;
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
+import eu.sblendorio.bbs.core.PetsciiThread;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

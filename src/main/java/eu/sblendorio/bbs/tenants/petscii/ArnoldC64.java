@@ -16,7 +16,7 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
 import static eu.sblendorio.bbs.core.PetsciiKeys.UP;
 import eu.sblendorio.bbs.core.XModem;
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
+import eu.sblendorio.bbs.core.PetsciiThread;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

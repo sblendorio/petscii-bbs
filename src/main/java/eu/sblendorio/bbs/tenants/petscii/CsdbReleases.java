@@ -21,7 +21,7 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
 import static eu.sblendorio.bbs.core.PetsciiKeys.UP;
 import eu.sblendorio.bbs.core.XModem;
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
+import eu.sblendorio.bbs.core.PetsciiThread;
 import java.io.IOException;
 import static java.lang.Integer.compare;
 import static java.lang.Integer.signum;

@@ -2,7 +2,7 @@ package eu.sblendorio.bbs.tenants.petscii;
 
 import eu.sblendorio.bbs.core.BbsIOException;
 import eu.sblendorio.bbs.core.PetsciiInputOutput;
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
+import eu.sblendorio.bbs.core.PetsciiThread;
 
 public class CallTest extends PetsciiThread {
     @Override

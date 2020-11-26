@@ -20,7 +20,7 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.CLR;
 import static eu.sblendorio.bbs.core.PetsciiKeys.DEL;
 import static eu.sblendorio.bbs.core.PetsciiKeys.LOWERCASE;
 import static eu.sblendorio.bbs.core.PetsciiKeys.SPACE_CHAR;
-import eu.sblendorio.bbs.core.bbstype.PetsciiThread;
+import eu.sblendorio.bbs.core.PetsciiThread;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import static java.util.Arrays.asList;
