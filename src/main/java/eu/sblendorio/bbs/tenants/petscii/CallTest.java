@@ -14,7 +14,7 @@ public class CallTest extends PetsciiThread {
         println("premi un tasto");
         readKey();
         resetInput();
-        throw new BbsIOException();
-        //launch(new MainMenu());
+        //throw new BbsIOException();
+        launch(new MainMenu());
     }
 }

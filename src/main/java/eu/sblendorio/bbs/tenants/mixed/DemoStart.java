@@ -20,9 +20,9 @@ public class DemoStart extends AsciiThread {
             resetInput();
             ch = readKey();
             if (ch == '1') {
-                launch(new DemoAscii());
-            } else if (ch == '2') {
                 launch(new DemoPetscii());
+            } else if (ch == '2') {
+                launch(new DemoAscii());
             }
         } while (ch != '.');
     }
