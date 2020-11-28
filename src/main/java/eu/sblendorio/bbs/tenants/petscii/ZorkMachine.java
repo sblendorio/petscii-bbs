@@ -1,12 +1,11 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
-import org.apache.commons.lang3.StringUtils;
-import org.zmpp.textui.VirtualConsole;
-import org.zmpp.textui.bbs.BBSMachineFactory;
-
 import eu.sblendorio.bbs.core.PetsciiColors;
 import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
+import org.apache.commons.lang3.StringUtils;
+import org.zmpp.textui.VirtualConsole;
+import org.zmpp.textui.bbs.BBSMachineFactory;
 
 public class ZorkMachine extends PetsciiThread {
 

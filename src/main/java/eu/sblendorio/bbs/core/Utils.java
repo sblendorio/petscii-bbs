@@ -1,8 +1,11 @@
 package eu.sblendorio.bbs.core;
 
-import java.util.*;
-
-import static org.apache.commons.lang3.StringUtils.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.lowerCase;
+import static org.apache.commons.lang3.StringUtils.trim;
 
 public class Utils {
 
