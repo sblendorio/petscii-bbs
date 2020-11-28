@@ -2,7 +2,11 @@ package eu.sblendorio.bbs.tenants.petscii;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.maxmind.db.Reader;
-import static eu.sblendorio.bbs.core.PetsciiColors.*;
+import static eu.sblendorio.bbs.core.PetsciiColors.CYAN;
+import static eu.sblendorio.bbs.core.PetsciiColors.GREY2;
+import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
+import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_BLUE;
+import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
 import static eu.sblendorio.bbs.core.PetsciiKeys.CASE_LOCK;
 import static eu.sblendorio.bbs.core.PetsciiKeys.CLR;
 import static eu.sblendorio.bbs.core.PetsciiKeys.HOME;
@@ -12,7 +16,6 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import java.io.File;
 import org.apache.commons.lang3.StringUtils;
-import static org.apache.commons.lang3.StringUtils.defaultString;
 
 public class MainMenu extends PetsciiThread {
 

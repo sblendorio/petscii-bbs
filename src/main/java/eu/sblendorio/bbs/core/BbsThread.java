@@ -65,7 +65,7 @@ public abstract class BbsThread extends Thread {
     protected Object customObject = null;
 
     protected BbsThread child = null;
-    protected BbsThread parent = null;
+    public BbsThread parent = null;
 
     protected boolean keepAlive = true;
     protected long keepAliveTimeout = -1; // inherit from caller
@@ -274,38 +274,47 @@ public abstract class BbsThread extends Thread {
     private Deque<BbsStatus> bbsStack = new ConcurrentLinkedDeque<>();
 
     public boolean launch(BbsThread bbs) throws Exception {
+        BbsThread root = this;
+        while (root.parent != null) {
+            root = root.parent;
+        }
         try {
-            bbs.serverAddress = serverAddress;
-            bbs.serverPort = serverPort;
-            bbs.ipAddress = ipAddress;
-            bbs.socket = socket;
+            bbs.serverAddress = root.serverAddress;
+            bbs.serverPort = root.serverPort;
+            bbs.ipAddress = root.ipAddress;
+            bbs.socket = root.socket;
             bbs.io = bbs.buildIO(socket);
             bbs.parent = this;
-            bbs.keepAliveTimeout = bbs.keepAliveTimeout <= 0 ? this.keepAliveTimeout : bbs.keepAliveTimeout;
-            bbs.clientId = clientId;
-            bbs.clientName = clientName;
+            bbs.keepAliveTimeout = bbs.keepAliveTimeout <= 0 ? root.keepAliveTimeout : bbs.keepAliveTimeout;
+            bbs.clientId = root.clientId;
+            bbs.clientName = root.clientName;
 
-            bbsStack.push(new BbsStatus(
-                keepAlive, keepAliveTimeout, keepAliveInterval, keepAliveChar, io, clientClass, child));
+            root.bbsStack.push(new BbsStatus(
+                root.keepAlive,
+                root.keepAliveTimeout,
+                root.keepAliveInterval,
+                root.keepAliveChar,
+                root.io,
+                root.clientClass,
+                root.child));
 
-            keepAlive = bbs.keepAlive;
-            keepAliveTimeout = bbs.keepAliveTimeout;
-            keepAliveInterval = bbs.keepAliveInterval;
-            keepAliveChar = bbs.keepAliveChar;
-            io = bbs.io;
-            clientClass = bbs.clientClass = bbs.getClass();
+            root.keepAlive = bbs.keepAlive;
+            root.keepAliveTimeout = bbs.keepAliveTimeout;
+            root.keepAliveInterval = bbs.keepAliveInterval;
+            root.keepAliveChar = bbs.keepAliveChar;
+            root.io = bbs.io;
+            root.clientClass = bbs.clientClass = bbs.getClass();
             child = bbs;
 
             try {
-                keepAliveThread.interrupt();
-                keepAliveThread = new KeepAliveThread();
-                bbs.keepAliveThread = keepAliveThread;
-                keepAliveThread.start();
+                root.keepAliveThread.interrupt();
+                root.keepAliveThread = new KeepAliveThread();
+                bbs.keepAliveThread = root.keepAliveThread;
+                root.keepAliveThread.start();
             } catch (Exception e) {
                 logger.info("Error during KeepAliveThread restart", e);
             }
-            keepAliveThread.restartKeepAlive();
-            // CICCIO clients.put(clientId, this);
+            root.keepAliveThread.restartKeepAlive();
             bbs.doLoop();
             return true;
         } catch (SocketException | SocketTimeoutException | BbsIOException e) {
@@ -319,25 +328,22 @@ public abstract class BbsThread extends Thread {
             logger.error("Launch interrupted", e);
             return false;
         } finally {
-            BbsStatus bbsStatus = bbsStack.pop();
-            this.keepAlive = bbsStatus.keepAlive;
-            this.keepAliveTimeout = bbsStatus.keepAliveTimeout;
-            this.keepAliveInterval = bbsStatus.keepAliveInterval;
-            this.keepAliveChar = bbsStatus.keepAliveChar;
+            BbsStatus bbsStatus = root.bbsStack.pop();
+            root.keepAlive = bbsStatus.keepAlive;
+            root.keepAliveTimeout = bbsStatus.keepAliveTimeout;
+            root.keepAliveInterval = bbsStatus.keepAliveInterval;
+            root.keepAliveChar = bbsStatus.keepAliveChar;
             try {
-                keepAliveThread.interrupt();
-                keepAliveThread = new KeepAliveThread();
-                keepAliveThread.start();
+                root.keepAliveThread.interrupt();
+                root.keepAliveThread = new KeepAliveThread();
+                root.keepAliveThread.start();
             } catch (Exception e) {
                 logger.info("Error during KeepAliveThread restart", e);
             }
-            keepAliveThread.restartKeepAlive();
-            // CICCIO clients.put(clientId, this);
+            root.keepAliveThread.restartKeepAlive();
 
-            this.io = bbsStatus.io;
-            System.out.print("<<prevClass = " + clientClass + "   ");
-            this.clientClass = bbsStatus.clientClass;
-            System.out.println("<<newClass = " + clientClass + "   ");
+            root.io = bbsStatus.io;
+            root.clientClass = bbsStatus.clientClass;
             this.child = bbsStatus.child;
         }
 
