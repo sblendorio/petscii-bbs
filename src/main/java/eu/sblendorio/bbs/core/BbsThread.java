@@ -65,7 +65,7 @@ public abstract class BbsThread extends Thread {
     protected Object customObject = null;
 
     protected BbsThread child = null;
-    public BbsThread parent = null;
+    protected BbsThread parent = null;
 
     protected boolean keepAlive = true;
     protected long keepAliveTimeout = -1; // inherit from caller
@@ -110,13 +110,11 @@ public abstract class BbsThread extends Thread {
     }
 
     public void updateKeepAlive(boolean keepAlive) {
-        this.keepAlive = keepAlive;
-        keepAliveThread.interrupt();
-        keepAliveThread = new KeepAliveThread();
-        if (parent != null) {
-            parent.keepAliveThread = keepAliveThread;
-        }
-        keepAliveThread.start();
+        BbsThread root = getRoot();
+        root.keepAlive = keepAlive;
+        root.keepAliveThread.interrupt();
+        root.keepAliveThread = root.new KeepAliveThread();
+        root.keepAliveThread.start();
     }
 
     abstract public BbsInputOutput buildIO(Socket socket) throws IOException;
@@ -273,11 +271,16 @@ public abstract class BbsThread extends Thread {
 
     private Deque<BbsStatus> bbsStack = new ConcurrentLinkedDeque<>();
 
-    public boolean launch(BbsThread bbs) throws Exception {
+    private BbsThread getRoot() {
         BbsThread root = this;
         while (root.parent != null) {
             root = root.parent;
         }
+        return root;
+    }
+
+    public boolean launch(BbsThread bbs) throws Exception {
+        BbsThread root = getRoot();
         try {
             bbs.serverAddress = root.serverAddress;
             bbs.serverPort = root.serverPort;
@@ -305,10 +308,9 @@ public abstract class BbsThread extends Thread {
             root.io = bbs.io;
             root.clientClass = bbs.clientClass = bbs.getClass();
             child = bbs;
-
             try {
                 root.keepAliveThread.interrupt();
-                root.keepAliveThread = new KeepAliveThread();
+                root.keepAliveThread = root.new KeepAliveThread();
                 bbs.keepAliveThread = root.keepAliveThread;
                 root.keepAliveThread.start();
             } catch (Exception e) {
@@ -335,7 +337,7 @@ public abstract class BbsThread extends Thread {
             root.keepAliveChar = bbsStatus.keepAliveChar;
             try {
                 root.keepAliveThread.interrupt();
-                root.keepAliveThread = new KeepAliveThread();
+                root.keepAliveThread = root.new KeepAliveThread();
                 root.keepAliveThread.start();
             } catch (Exception e) {
                 logger.info("Error during KeepAliveThread restart", e);
