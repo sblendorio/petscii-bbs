@@ -17,7 +17,7 @@ import eu.sblendorio.bbs.core.PetsciiThread;
 import java.io.File;
 import org.apache.commons.lang3.StringUtils;
 
-public class MainMenu extends PetsciiThread {
+public class PetsciiMenu extends PetsciiThread {
 
     public static class GeoData {
         public final String city;
@@ -166,7 +166,7 @@ public class MainMenu extends PetsciiThread {
                 else if (key == 'l') launch(new Ossa());
                 else if (key == 'p') launch(new PetsciiArtGallery());
                 else if (key == 'm') launch(new UserLogon());
-                else if (key == 't') launch(new TelevideoRai());
+                else if (key == 't') launch(new TelevideoRaiPetscii());
                 else if (key == 'd') launch(new CsdbReleases());
                 else if (key == 'a') launch(new ArnoldC64());
                 else if (key == 'i') launch(new InternetBrowser());

@@ -1,5 +1,8 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
+import eu.sblendorio.bbs.core.Hidden;
+
+@Hidden
 public class Tpi extends WordpressProxy {
 
     public Tpi() {

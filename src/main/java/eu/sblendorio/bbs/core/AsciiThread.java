@@ -3,6 +3,7 @@ package eu.sblendorio.bbs.core;
 import java.io.IOException;
 import java.net.Socket;
 
+@Hidden
 public abstract class AsciiThread extends BbsThread {
 
     @Override

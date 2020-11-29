@@ -5,6 +5,7 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
+import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import static eu.sblendorio.bbs.core.PetsciiColors.CYAN;
 import static eu.sblendorio.bbs.core.PetsciiColors.GREY2;
@@ -56,6 +57,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import org.apache.commons.text.WordUtils;
 
+@Hidden
 public class CsdbReleases extends PetsciiThread {
 
     private static final String RSS_LATESTRELEASES = "https://csdb.dk/rss/latestreleases.php";

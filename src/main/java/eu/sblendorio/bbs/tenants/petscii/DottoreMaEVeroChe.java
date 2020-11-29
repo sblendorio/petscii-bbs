@@ -1,7 +1,9 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
+import eu.sblendorio.bbs.core.Hidden;
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
 
+@Hidden
 public class DottoreMaEVeroChe extends WordpressProxy {
 
     public DottoreMaEVeroChe() {

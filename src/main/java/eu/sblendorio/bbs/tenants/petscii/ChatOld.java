@@ -1,6 +1,7 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.PetsciiColors;
 import static eu.sblendorio.bbs.core.PetsciiColors.CYAN;
 import static eu.sblendorio.bbs.core.PetsciiColors.GREY2;
@@ -21,6 +22,7 @@ import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+@Hidden
 public class ChatOld extends PetsciiThread {
 
     private static final int INPUT_COLOR = GREY3;

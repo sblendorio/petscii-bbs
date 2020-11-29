@@ -5,6 +5,7 @@
  */
 package eu.sblendorio.bbs.tenants.petscii;
 
+import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import static eu.sblendorio.bbs.core.PetsciiColors.BLACK;
 import static eu.sblendorio.bbs.core.PetsciiColors.GREEN;
@@ -48,6 +49,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+@Hidden
 public class InternetBrowser extends PetsciiThread {
 
     protected int __currentPage = 1;

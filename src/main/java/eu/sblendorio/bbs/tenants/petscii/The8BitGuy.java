@@ -1,5 +1,8 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
+import eu.sblendorio.bbs.core.Hidden;
+
+@Hidden
 public class The8BitGuy extends WordpressProxy {
 
     public The8BitGuy() {

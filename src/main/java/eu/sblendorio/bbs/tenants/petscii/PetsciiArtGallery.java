@@ -1,5 +1,6 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
+import eu.sblendorio.bbs.core.Hidden;
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.CASE_LOCK;
 import static eu.sblendorio.bbs.core.PetsciiKeys.CLR;
@@ -33,6 +34,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+@Hidden
 public class PetsciiArtGallery extends PetsciiThread {
 
     private static final String ROOT_PATH = "petscii-art-gallery";

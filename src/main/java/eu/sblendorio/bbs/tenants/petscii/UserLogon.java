@@ -1,5 +1,6 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
+import eu.sblendorio.bbs.core.Hidden;
 import static eu.sblendorio.bbs.core.PetsciiColors.CYAN;
 import static eu.sblendorio.bbs.core.PetsciiColors.GREEN;
 import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
@@ -47,6 +48,7 @@ import org.apache.commons.text.WordUtils;
 
 import eu.sblendorio.bbs.core.PetsciiThread;
 
+@Hidden
 public class UserLogon extends PetsciiThread {
 
     protected static final String DB_FILE = System.getProperty("user.home") + "/bbs-data.db";

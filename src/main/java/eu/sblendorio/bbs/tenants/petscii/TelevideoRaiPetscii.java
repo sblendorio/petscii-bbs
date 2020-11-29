@@ -6,6 +6,7 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
+import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import static eu.sblendorio.bbs.core.PetsciiColors.BLUE;
 import static eu.sblendorio.bbs.core.PetsciiColors.CYAN;
@@ -46,7 +47,8 @@ import static org.apache.commons.lang3.StringUtils.substring;
 import static org.apache.commons.lang3.StringUtils.trim;
 import org.apache.commons.text.WordUtils;
 
-public class TelevideoRai extends PetsciiThread {
+@Hidden
+public class TelevideoRaiPetscii extends PetsciiThread {
     static final String HR_TOP = StringUtils.repeat(chr(163), 39);
 
     static final String PREFIX = "http://www.servizitelevideo.rai.it/televideo/pub/";

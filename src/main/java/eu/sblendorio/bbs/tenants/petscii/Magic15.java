@@ -1,5 +1,6 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
+import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import java.util.Random;
 
@@ -8,6 +9,7 @@ import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.SPACE;
 
+@Hidden
 public class Magic15 extends PetsciiThread {
     private static final Random random = new Random(System.currentTimeMillis());
     private int[] board = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0};

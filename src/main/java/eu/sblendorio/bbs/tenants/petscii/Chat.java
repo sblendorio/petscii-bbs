@@ -1,6 +1,7 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.PetsciiColors;
 import static eu.sblendorio.bbs.core.PetsciiColors.CYAN;
 import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
@@ -21,6 +22,7 @@ import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+@Hidden
 public class Chat extends PetsciiThread {
 
     private static final int INPUT_COLOR = GREY3;
@@ -276,7 +278,7 @@ public class Chat extends PetsciiThread {
     private List<BbsThread> getConnectedUsers() {
         return getClients().values()
                 .stream()
-                .filter(x -> x.getClientClass().equals(this.getClientClass())
+                .filter(x -> x.getClientClass().getSimpleName().matches("^Chat.*$")
                           && x.getClientId() != this.getClientId()
                           && !x.getClientName().matches("(?i)^client[0-9]+$")
                           && !x.getClientName().matches("(?i)^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"))

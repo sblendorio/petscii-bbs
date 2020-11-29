@@ -1,5 +1,8 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
+import eu.sblendorio.bbs.core.Hidden;
+
+@Hidden
 public class FactaNews extends WordpressProxy {
 
     public FactaNews() {

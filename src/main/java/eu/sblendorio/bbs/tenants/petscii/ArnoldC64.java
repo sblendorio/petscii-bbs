@@ -1,6 +1,7 @@
 
 package eu.sblendorio.bbs.tenants.petscii;
 
+import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import static eu.sblendorio.bbs.core.PetsciiColors.CYAN;
 import static eu.sblendorio.bbs.core.PetsciiColors.GREY1;
@@ -47,6 +48,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import org.apache.commons.text.WordUtils;
 
+@Hidden
 public class ArnoldC64 extends PetsciiThread {
 
     private static final BiPredicate<Integer, Integer> generateOverflow = (i, j) -> (i-1) * j < 0 || i * j < 0;

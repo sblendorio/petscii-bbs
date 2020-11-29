@@ -1,5 +1,6 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
+import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.PetsciiColors;
 import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
@@ -7,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.zmpp.textui.VirtualConsole;
 import org.zmpp.textui.bbs.BBSMachineFactory;
 
+@Hidden
 public class ZorkMachine extends PetsciiThread {
 
     private final String filename;

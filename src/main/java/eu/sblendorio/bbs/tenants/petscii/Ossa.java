@@ -1,5 +1,6 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
+import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.PetsciiThread;
 
 import java.io.IOException;
@@ -7,6 +8,7 @@ import java.io.IOException;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
 
+@Hidden
 public class Ossa extends PetsciiThread {
 
     @Override
