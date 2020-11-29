@@ -9,8 +9,8 @@ import java.net.Socket;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import static java.util.Collections.emptyList;
-import java.util.Comparator;
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparingLong;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +25,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.substring;
 import org.apache.commons.lang3.math.NumberUtils;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import org.slf4j.Logger;
@@ -86,11 +87,7 @@ public class BBServer {
             }).start();
         }
 
-        if (servicePort != 0 && usedPorts.contains(servicePort)) {
-            logger.warn("Declared service port {} is yet used by a BBS. Ignoring it.", servicePort);
-        }
-
-        if (servicePort != 0 && !usedPorts.contains(servicePort))
+        if (servicePort != 0)
             new Thread(() -> {
                 try (ServerSocket listener = new ServerSocket(servicePort)) {
                     listener.setSoTimeout(0);
@@ -137,7 +134,6 @@ public class BBServer {
             System.exit(1);
         }
 
-        servicePort = toInt(cmd.getOptionValue("serviceport", String.valueOf(DEFAULT_SERVICE_PORT)));
         final String timeoutStr = cmd.getOptionValue("timeout", String.valueOf(DEFAULT_TIMEOUT_IN_MILLIS));
         if (timeoutStr.matches("^[0-9]*$"))
             timeout = toInt(timeoutStr);
@@ -181,6 +177,11 @@ public class BBServer {
             endPoints.add(new EndPoint(bbs, port));
             usedPorts.add(port);
         }
+        servicePort = toInt(cmd.getOptionValue("serviceport", String.valueOf(DEFAULT_SERVICE_PORT)));
+        if (usedPorts.contains(servicePort)) {
+            logger.error("Declared service port {} is already used by a BBS.", servicePort);
+            validList = false;
+        }
         if (!validList) {
             displayHelp(options);
             System.exit(1);
@@ -206,6 +207,7 @@ public class BBServer {
         tenants.forEach(c -> logger.info(" * {}", c.getSimpleName()));
     }
 
+    private final static String THREAD_ROW_FORMAT = "%5s %-40s %-35s %-15s %-7s %4s %-5s";
     private static String getConfigAsString() {
         return "HTTP/1.1 200 OK\n"
             + "Server: Dummy HTTP connection\n"
@@ -217,9 +219,9 @@ public class BBServer {
             + "Number of clients: " + BbsThread.clients.size() + "\n"
             + "\n" +
             BbsThread.clients.entrySet().stream()
-                .sorted(Comparator.comparingLong(Map.Entry::getKey))
+                .sorted(comparingLong(Map.Entry::getKey))
                 .map(entry -> "#" + entry.getKey()
-                    + ": " + entry.getValue().getClientClass().getSimpleName() + ":" + entry.getValue().serverPort
+                    + ". " + entry.getValue().getClientClass().getSimpleName() + ":" + entry.getValue().serverPort
                     + " (uptime=" + showMillis(currentTimeMillis() - entry.getValue().startTimestamp)
                     + (entry.getValue().keepAlive
                         ? ", idle="+showMillis(currentTimeMillis()-entry.getValue().keepAliveThread.getStartTimestamp())
@@ -227,10 +229,35 @@ public class BBServer {
                     + ", clientName=" + entry.getValue().getClientName()
                     + ", IP=" + entry.getValue().ipAddress
                     + ", serverIP=" + entry.getValue().serverAddress
-                    + ")"
-                    + "\n"
+                    + ")\n"
                 )
-                .collect(Collectors.joining());
+                .collect(Collectors.joining())
+            + "\n"
+            + "Thread list: \n"
+            + "\n"
+            + String.format(THREAD_ROW_FORMAT,
+            "Id", "Class[Name]", "Client", "State", "Type", "Pri", "Alive")
+            + "\n" +
+              String.format(THREAD_ROW_FORMAT,
+                  "-----", "----------------------------------------", "-----------------------------------",
+                  "---------------", "-------", "----", "-------")
+            + "\n"
+            + Thread.getAllStackTraces().keySet().stream().sorted(comparingLong(Thread::getId)).map(t -> {
+                    String clientClass = (t instanceof BbsThread) ? ((BbsThread) t).getClientClass().getSimpleName() : null;
+                    Integer serverPort = (t instanceof BbsThread) ? ((BbsThread) t).serverPort : null;
+                    Long clientId = (t instanceof BbsThread) ? ((BbsThread) t).clientId : null;
+                    return String.format(THREAD_ROW_FORMAT,
+                        t.getId(),
+                        substring(t.getClass().getSimpleName()+"[" + t.getName()+"] ", 0, 40),
+                        substring(clientClass != null ? clientClass + ":" + serverPort + " (#"+clientId+")" : "", 0, 35),
+                        t.getState(),
+                        (t.isDaemon() ? "Daemon" : "Normal"),
+                        t.getPriority(),
+                        t.isAlive()
+                        )
+                    + "\n";
+                }).collect(Collectors.joining());
+
     }
 
     private static String showMillis(long millis) {
