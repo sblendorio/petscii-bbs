@@ -89,7 +89,7 @@ So we can rename the -jar file in **bbs.jar**, and the basic syntax for running 
 
     java -jar bbs.jar --bbs WelcomeBBS:6510
 
-the port where the service will run is **6510** and the timeout is **3600000** milliseconds by default (1 hour). We can change those parameters with **-p** and **-t** switches:
+the port where the service will run is **6510** and the timeout is **3600000** milliseconds by default (1 hour). We can change the timeout parameter with **-t** switch:
 
     java -jar bbs.jar --bbs WelcomeBBS:8088 -t 7200000
     
@@ -98,6 +98,10 @@ It's possible to run multiple BBSes, each one on a different port:
     java -jar bbs.jar --bbs WelcomeBBS:6510 NewsBBS:8400 SportsBBS:9100 -t 7200000
     
 (so the port will be **8088** with a timeout of **2 hours**)
+
+It's possibile to specify a "Service Port", which makes accessible (via web browser) the inspection of JVM running BBSes:
+
+    java -jar bbs.jar --bbs WelcomeBBS:6510 NewsBBS:8400 SportsBBS:9100 -s 8080
 
 ### Keep it running
 This **.jar** is intended to be a *server process*: it has to run all time. So, it's a good thing to run it in background if you use a *UNIX* shell using **nohup** command with bash **"&"** operator:
