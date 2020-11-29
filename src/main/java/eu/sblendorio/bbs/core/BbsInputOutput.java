@@ -317,4 +317,8 @@ public abstract class BbsInputOutput extends Reader {
     public int read(char[] chars, int i, int i1) throws IOException {
         return in.read(chars, i, i1);
     }
+
+    public abstract int getScreenColumns();
+
+    public abstract int getScreenRows();
 }

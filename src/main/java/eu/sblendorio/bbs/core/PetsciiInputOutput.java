@@ -83,4 +83,15 @@ public class PetsciiInputOutput extends BbsInputOutput {
     public boolean quoteMode() {
         return out.quoteMode();
     }
+
+    @Override
+    public int getScreenColumns() {
+        return 40;
+    }
+
+    @Override
+    public int getScreenRows() {
+        return 25;
+    }
+
 }

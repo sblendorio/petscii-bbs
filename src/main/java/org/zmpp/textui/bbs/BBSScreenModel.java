@@ -149,7 +149,7 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
         for (String item: cleaned) {
             String[] wrappedLine = WordWrap
                     .from(item)
-                    .maxWidth(39)
+                    .maxWidth(bbsThread.getScreenColumns() - 1)
                     .newLine("\n")
                     .breakWords(false)
                     .wrap()

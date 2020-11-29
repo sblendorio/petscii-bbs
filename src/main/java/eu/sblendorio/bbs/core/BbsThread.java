@@ -528,6 +528,7 @@ public abstract class BbsThread extends Thread {
     }
 
     public Object getCustomObject() { return customObject; }
+
     public void setCustomObject(Object obj) { this.customObject = obj; }
 
     public boolean isPrintableChar(int c) {
@@ -537,6 +538,7 @@ public abstract class BbsThread extends Thread {
     public boolean isPrintableChar(char c) {
         return io.isPrintableChar(c);
     }
+
     public String filterPrintable(String s) {
         return io.filterPrintable(s);
     }
@@ -549,5 +551,7 @@ public abstract class BbsThread extends Thread {
         return filterPrintable(defaultString(s)).length();
     }
 
+    public int getScreenColumns() { return io.getScreenColumns(); }
 
+    public int getScreenRows() { return io.getScreenRows(); }
 }
