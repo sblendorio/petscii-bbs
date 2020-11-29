@@ -75,28 +75,34 @@ The build process will result in the file **petscii-bbs.jar**, it will be found 
 Running the server with no parameters, a help screen will be displayed:
 
     usage: target/petscii-bbs.jar
-     -b,--bbs <arg>       Run specific BBS (mandatory - see list below)
-     -h,--help            Displays help
-     -p,--port <arg>      TCP port used by server process (default 6510)
-     -t,--timeout <arg>   Socket timeout in millis (default 60 minutes)
+        --bbs <bbsName:port>   Run specific BBSes (mandatory - see list below)
+                               in the form <name1>:<port1> <name2>:<port2> ...
+     -h,--help                 Displays help
+     -s,--serviceport <arg>    TCP port used by service process, 0 for
+                               no-service (default 0)
+     -t,--timeout <arg>        Socket timeout in millis (default 60 minutes)
     List of available BBS:
      * ...
      * WelcomeBBS
 
 So we can rename the -jar file in **bbs.jar**, and the basic syntax for running our sample BBS is:
 
-    java -jar bbs.jar -b WelcomeBBS
+    java -jar bbs.jar --bbs WelcomeBBS:6510
 
-by default, the port where the service will run is **6510** and the timeout is **3600000** milliseconds (1 hour). We can change those parameters with **-p** and **-t** switches:
+the port where the service will run is **6510** and the timeout is **3600000** milliseconds by default (1 hour). We can change those parameters with **-p** and **-t** switches:
 
-    java -jar bbs.jar -b WelcomeBBS -p 8088 -t 7200000
+    java -jar bbs.jar --bbs WelcomeBBS:8088 -t 7200000
+    
+It's possible to run multiple BBSes, each one on a different port:
+
+    java -jar bbs.jar --bbs WelcomeBBS:6510 NewsBBS:8400 SportsBBS:9100 -t 7200000
     
 (so the port will be **8088** with a timeout of **2 hours**)
 
 ### Keep it running
 This **.jar** is intended to be a *server process*: it has to run all time. So, it's a good thing to run it in background if you use a *UNIX* shell using **nohup** command with bash **"&"** operator:
 
-    nohup java -jar bbs.jar -b WelcomeBBS &
+    nohup java -jar bbs.jar --bbs WelcomeBBS:6510 &
 
 It's **VERY** important not to forget the final **&** symbol to keep it running. After launching that, you can logoff from your server.
 
@@ -108,7 +114,6 @@ It's a plain process, so use plain **ps** and **kill** commands. If this *jar* i
 ## Sample BBSes in the package
 You can study the sample BBSes (all classes that extend **PetsciiThread**) in the package **eu.sblendorio.bbs.tenants** as example of complete task. The package includes some proxies for accessing *WordPress* sites through Commodore 64 and a two classic strategy games (**tic-tac-toe** and **connect-4**) 
 
-
 ## Sample online BBSes
 - **bbs.sblendorio.eu** - port **6510**
 - **bbs.retrocampus.com** - port **6510**
@@ -116,7 +121,13 @@ You can study the sample BBSes (all classes that extend **PetsciiThread**) in th
 ## Credits
 Thanks to:
 - [**Brian W. Howell**](https://github.com/bigbhowell/tic-tac-toe) for the **tic-tac-toe** AI
-- [**Jatin Thakur**](https://github.com/jn1772/Connect4AI) for the **connect-4** AI.
+- [**Felice Pagano**](https://github.com/felicepagano/) for code optimizations
+- [**Henrik Wetterström**](http://droid64.sourceforge.net/) for **droid64** project, used to read and open D64 files
+- [**Jatin Thakur**](https://github.com/jn1772/Connect4AI) for the **connect-4** AI
+- [**Piero Corasaniti**](https://github.com/corasaniti) for the *SD2IEC* version of CSDB tenant
+- [**Richard Bettridge**](https://github.com/ssshake/theoldnet-bbs) for "Internet Browser" tenant
+- [**Roberto Manicardi**](https://github.com/rmanicardi) for adapting ZMPP to BBS engine
+- [**Wei-ju Wu**](http://zmpp.sourceforge.net/) for ZMPP, a Java implementation of Z-Machine (Infocom text adventures)
 
 ## Sample screenshot of the demo pack
 ![bbs1](http://www.sblendorio.eu/attachments/bbs-tictactoe.jpg)

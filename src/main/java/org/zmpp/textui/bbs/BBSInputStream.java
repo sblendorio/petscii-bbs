@@ -1,53 +1,44 @@
 package org.zmpp.textui.bbs;
 
+import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.PetsciiKeys;
 import java.io.IOException;
-
 import org.zmpp.encoding.ZsciiEncoding;
 import org.zmpp.io.InputStream;
 import org.zmpp.vm.Machine;
 
-import eu.sblendorio.bbs.core.Keys;
-import eu.sblendorio.bbs.core.PetsciiThread;
-import eu.sblendorio.bbs.core.Utils;
-
 public class BBSInputStream implements InputStream {
 
-    PetsciiThread petsciiThread;
+    BbsThread bbsThread;
     Machine machine;
 
-    public BBSInputStream(Machine machine, PetsciiThread petsciiThread) {
-        this.petsciiThread = petsciiThread;
+    public BBSInputStream(Machine machine, BbsThread bbsThread) {
+        this.bbsThread = bbsThread;
         this.machine = machine;
     }
 
     @Override
     public void cancelInput() {
-        petsciiThread.log("cancelInput not yet implemented");
+        bbsThread.log("cancelInput not yet implemented");
     }
 
     @Override
     public short getZsciiChar(boolean flushBeforeGet) {
-        short translatedChar;
+        short translatedChar; // CICCIO
         try {
-            int key  = this.petsciiThread.readKey();
-            if (key >= 193 && key <= 218) key -= 96;
-            switch (key){
-                case Keys.RETURN:
-                    translatedChar = ZsciiEncoding.NEWLINE;
-                    break; //skip the carriage return
-                case Keys.DEL : translatedChar = Keys.DEL;
-                    break;
-                default :
-                    if (key < 32 || key > 128) {
-                        translatedChar = -1;
-                    } else {
-                        translatedChar = machine.getGameData().getZsciiEncoding().getZsciiChar((char) key);
-                        if (Character.isLowerCase(translatedChar))
-                            translatedChar = (short) Character.toUpperCase(translatedChar);
-                        else if (Character.isUpperCase(translatedChar))
-                            translatedChar = (short) Character.toLowerCase(translatedChar);
-                    }
-                    break;
+            int key = this.bbsThread.readKey();
+            if (bbsThread.isNewline(key)) {
+                bbsThread.resetInput();
+                translatedChar = ZsciiEncoding.NEWLINE;
+            } else if (bbsThread.isBackspace(key)) {
+                translatedChar = ZsciiEncoding.DELETE;
+            } else {
+                if (key < 32 || key > 128) {
+                    translatedChar = -1;
+                } else {
+                    short ch = machine.getGameData().getZsciiEncoding().getZsciiChar((char) key);
+                    translatedChar = (short) bbsThread.convertToAscii(ch);
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

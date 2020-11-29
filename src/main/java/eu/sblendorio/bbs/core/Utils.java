@@ -1,8 +1,11 @@
 package eu.sblendorio.bbs.core;
 
-import java.util.*;
-
-import static org.apache.commons.lang3.StringUtils.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.lowerCase;
+import static org.apache.commons.lang3.StringUtils.trim;
 
 public class Utils {
 
@@ -20,27 +23,6 @@ public class Utils {
 
     public static boolean isControlChar(int c) { return CONTROL_CHARS.contains(c); }
     public static boolean isControlChar(char c) { return isControlChar((int) c); }
-
-    public static boolean isPrintableChar(int c) { return (c >= 32 && c <= 127) || (c >= 160 && c <= 255); }
-    public static boolean isPrintableChar(char c) { return isPrintableChar((int) c); }
-
-    public static int lengthPrintable(String s) {
-        return filterPrintable(defaultString(s)).length();
-    }
-
-    public static String filterPrintable(String s) {
-        StringBuilder result = new StringBuilder();
-        for (char c: defaultString(s).toCharArray())
-            if (isPrintableChar(c)) result.append(c);
-        return result.toString();
-    }
-
-    public static String filterPrintableWithNewline(String s) {
-        StringBuilder result = new StringBuilder();
-        for (char c: defaultString(s).toCharArray())
-            if (isPrintableChar(c) || c == '\n' || c == '\r') result.append(c);
-        return result.toString();
-    }
 
     public static boolean equalsDomain(String a, String b) {
         return normalizeDomain(a).equals(normalizeDomain(b));

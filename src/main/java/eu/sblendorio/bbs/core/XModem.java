@@ -7,7 +7,6 @@ import java.io.PrintStream;
 import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.util.Arrays;
-
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,18 +61,18 @@ public class XModem {
 
     protected Reader inStream;
     protected PrintStream outStream;
-    protected PetsciiThread petsciiThread;
+    protected BbsThread bbsThread;
 
     public XModem(Reader input, PrintStream output) {
         inStream = input;
         outStream = output;
-        petsciiThread = null;
+        bbsThread = null;
     }
 
-    public XModem(PetsciiThread thread) {
-        petsciiThread = thread;
-        inStream = thread.cbm;
-        outStream = thread.cbm.out();
+    public XModem(BbsThread thread) {
+        bbsThread = thread;
+        inStream = thread.io;
+        outStream = thread.io.out();
     }
 
     /** A flag used to communicate with inner class IOTimer */
@@ -113,9 +112,9 @@ public class XModem {
         byte[] sector = new byte[SECSIZE];
         int nbytes;
 
-        Optional<PetsciiThread> thread = Optional.ofNullable(petsciiThread);
+        Optional<BbsThread> thread = Optional.ofNullable(bbsThread);
 
-        boolean quoteMode = thread.map(PetsciiThread::quoteMode).orElse(false);
+        boolean quoteMode = thread.map(BbsThread::quoteMode).orElse(false);
         boolean keepAlive = thread.map(p -> p.keepAlive).orElse(false);
 
         try (DataInputStream inputData = new DataInputStream(new ByteArrayInputStream(inputByteArray))) {
@@ -203,7 +202,7 @@ public class XModem {
 
     private void die(int how) {
         logger.error("Error code {}", how);
-        throw new UncheckedIOException(new CbmIOException("Too many errors during XModem transfer: " + how));
+        throw new UncheckedIOException(new BbsIOException("Too many errors during XModem transfer: " + how));
     }
 
     private void log(String message) {

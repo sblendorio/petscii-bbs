@@ -2,7 +2,6 @@ package eu.sblendorio.bbs.core;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
 public class HtmlUtils {

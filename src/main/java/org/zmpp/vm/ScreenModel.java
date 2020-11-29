@@ -22,6 +22,7 @@
  */
 package org.zmpp.vm;
 
+import org.zmpp.encoding.ZsciiEncoding;
 import org.zmpp.io.OutputStream;
 
 
@@ -184,4 +185,8 @@ public interface ScreenModel {
    * Reset the internal pagers.
    */
   void resetPagers();
+
+  default short backspace() {
+    return ZsciiEncoding.DELETE;
+  }
 }

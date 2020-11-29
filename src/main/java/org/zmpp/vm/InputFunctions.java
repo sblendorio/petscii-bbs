@@ -342,7 +342,7 @@ public class InputFunctions implements InputLine {
     boolean flushBeforeGet = true;
 
     do {
-      
+
       zsciiChar = machine.getInput().getSelectedInputStream().getZsciiChar(flushBeforeGet);
       flushBeforeGet = false; // all subsequent input should not flush the buffer
       displayCursor(false);
@@ -350,10 +350,8 @@ public class InputFunctions implements InputLine {
       if (zsciiChar == -1) continue;
 
       if (zsciiChar == ZsciiEncoding.DELETE) {
-        newpointer = deletePreviousChar(inputbuffer, newpointer);
-      } else if (zsciiChar == ZsciiEncoding.INSTDEL) { // SBLEND FIXME
-        if (inputbuffer != null && inputbuffer.size() > 0) {
-          machine.getOutput().printZsciiChar(ZsciiEncoding.INSTDEL, true);
+        if (inputbuffer != null && inputbuffer.size() > 0) { // CICCIO
+          machine.getOutput().printZsciiChar(machine.getScreen().backspace(), true);
         }
         newpointer = deletePreviousChar(inputbuffer, newpointer);
       } else if (!isTerminatingCharacter(zsciiChar)) {

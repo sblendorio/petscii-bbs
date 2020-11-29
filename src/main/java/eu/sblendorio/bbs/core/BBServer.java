@@ -1,37 +1,58 @@
 package eu.sblendorio.bbs.core;
 
 import com.google.common.reflect.ClassPath;
+import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.System.currentTimeMillis;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.stream.Collectors;
-import org.apache.commons.cli.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Timestamp;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
+import java.util.ArrayList;
 import static java.util.Collections.emptyList;
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparingLong;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.substring;
+import org.apache.commons.lang3.math.NumberUtils;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
-import sun.nio.cs.ISO_8859_1;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BBServer {
-    private static int port;
+    static class EndPoint {
+        Class<? extends BbsThread> bbs;
+        int port;
+        EndPoint(Class<? extends BbsThread> bbs, int port) {
+            this.bbs = bbs;
+            this.port = port;
+        }
+        @Override
+        public String toString() {
+            return bbs.getSimpleName() + ":" + port;
+        }
+    }
+
     private static int servicePort;
     private static int timeout;
-    private static Class<? extends PetsciiThread> bbs;
-    private static List<Class<? extends PetsciiThread>> tenants = filterPetsciiThread();
+    private static List<EndPoint> endPoints = new ArrayList<>();
+    private static List<Class<? extends BbsThread>> tenants = filterBBSThread();
     private static final int DEFAULT_TIMEOUT_IN_MILLIS = 3600000;
-    private static final long DEFAULT_PORT = 6510;
     private static final long DEFAULT_SERVICE_PORT = 0;
+    private static Set<Integer> usedPorts = new HashSet<>();
+
 
     private static final Logger logger = LoggerFactory.getLogger(BBServer.class);
 
@@ -39,31 +60,32 @@ public class BBServer {
         // args = new String[] {"-b", "MainMenu", "-p", "6510"};
         readParameters(args);
 
-        logger.info("{} The BBS {} is running: port = {}, timeout = {} millis" + (servicePort != 0 ? ", serviceport = {}" : ""),
+        logger.info("{} The BBS {} is running: timeout = {} millis" + (servicePort != 0 ? ", serviceport = {}" : ""),
                     new Timestamp(currentTimeMillis()),
-                    bbs.getSimpleName(),
-                    port,
+                    endPoints.toString(),
                     timeout,
                     servicePort);
 
-        new Thread(() -> {
-            try (ServerSocket listener = new ServerSocket(port)) {
-                listener.setSoTimeout(0);
-                while (true) {
-                    Socket socket = listener.accept();
-                    socket.setSoTimeout(timeout);
+        for (EndPoint endPoint: endPoints) {
+            new Thread(() -> {
+                try (ServerSocket listener = new ServerSocket(endPoint.port)) {
+                    listener.setSoTimeout(0);
+                    while (true) {
+                        Socket socket = listener.accept();
+                        socket.setSoTimeout(timeout);
 
-                    CbmInputOutput cbm = new CbmInputOutput(socket);
-                    PetsciiThread thread = bbs.getDeclaredConstructor().newInstance();
-                    thread.setSocket(socket);
-                    thread.setCbmInputOutput(cbm);
-                    thread.keepAliveTimeout = thread.keepAliveTimeout <= 0 ? timeout : thread.keepAliveTimeout;
-                    thread.start();
+                        BbsThread thread = endPoint.bbs.getDeclaredConstructor().newInstance();
+                        BbsInputOutput io = thread.buildIO(socket);
+                        thread.setSocket(socket);
+                        thread.setBbsInputOutput(io);
+                        thread.keepAliveTimeout = thread.keepAliveTimeout <= 0 ? timeout : thread.keepAliveTimeout;
+                        thread.start();
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }).start();
+            }).start();
+        }
 
         if (servicePort != 0)
             new Thread(() -> {
@@ -84,11 +106,19 @@ public class BBServer {
 
     private static void readParameters(String[] args) {
         Options options = new Options();
-        options.addOption("p", "port", true, "TCP port used by server process (default "+DEFAULT_PORT+")");
-        options.addOption("s", "serviceport", true, "TCP port used by service process, 0 for no-service (default "+DEFAULT_PORT+")");
+        options.addOption("s", "serviceport", true, "TCP port used by service process, 0 for no-service (default "+DEFAULT_SERVICE_PORT+")");
         options.addOption("t", "timeout", true, "Socket timeout in millis (default " + (DEFAULT_TIMEOUT_IN_MILLIS /60000) + " minutes)");
         options.addOption("h", "help", false, "Displays help");
-        options.addOption("b", "bbs", true, "Run specific BBS (mandatory - see list below)");
+
+        Option bbses = Option.builder()
+            .longOpt("bbs")
+            .argName("bbsName:port")
+            .desc("Run specific BBSes (mandatory - see list below) in the form <name1>:<port1> <name2>:<port2> ...")
+            .hasArg(true)
+            .numberOfArgs(Option.UNLIMITED_VALUES)
+            .build();
+        options.addOption(bbses);
+
         CommandLineParser parser = new DefaultParser();
         final CommandLine cmd;
         try {
@@ -103,8 +133,7 @@ public class BBServer {
             displayHelp(options);
             System.exit(1);
         }
-        port = toInt(cmd.getOptionValue("port", String.valueOf(DEFAULT_PORT)));
-        servicePort = toInt(cmd.getOptionValue("serviceport", String.valueOf(DEFAULT_SERVICE_PORT)));
+
         final String timeoutStr = cmd.getOptionValue("timeout", String.valueOf(DEFAULT_TIMEOUT_IN_MILLIS));
         if (timeoutStr.matches("^[0-9]*$"))
             timeout = toInt(timeoutStr);
@@ -116,21 +145,55 @@ public class BBServer {
             timeout = 1000 * toInt(timeoutStr.replaceAll("[^0-9]", ""));
         else
             timeout = DEFAULT_TIMEOUT_IN_MILLIS;
-        final String bbsName = cmd.getOptionValue("bbs");
-        bbs = findTenant(bbsName);
-        if (bbs == null) {
-            logger.error("BBS \"{}\" not recognized", bbsName);
+
+        String[] bbsList = cmd.getOptionValues("bbs");
+        boolean validList = true;
+        for (String bbsSpec : bbsList) {
+            if (!defaultString(bbsSpec).contains(":")) {
+                logger.error("Missing port {}", bbsSpec);
+                validList = false;
+                break;
+            }
+            int pos = bbsSpec.indexOf(":");
+            String bbsName = bbsSpec.substring(0, pos);
+            String portStr = bbsSpec.substring(pos + 1);
+            if (!NumberUtils.isCreatable(portStr)) {
+                logger.error("Invalid port {}", bbsSpec);
+                validList = false;
+                break;
+            }
+            int port = NumberUtils.createInteger(portStr);
+            if (usedPorts.contains(port)) {{
+                logger.error("Port {} already used in {}", port, bbsSpec);
+                validList = false;
+                break;
+            }}
+            Class<? extends BbsThread> bbs = findTenant(bbsName);
+            if (bbs == null) {
+                logger.error("BBS \"{}\" not recognized", bbsName);
+                validList = false;
+                break;
+            }
+            endPoints.add(new EndPoint(bbs, port));
+            usedPorts.add(port);
+        }
+        servicePort = toInt(cmd.getOptionValue("serviceport", String.valueOf(DEFAULT_SERVICE_PORT)));
+        if (usedPorts.contains(servicePort)) {
+            logger.error("Declared service port {} is already used by a BBS.", servicePort);
+            validList = false;
+        }
+        if (!validList) {
             displayHelp(options);
-            System.exit(3);
+            System.exit(1);
         }
     }
 
-    private static Class<? extends PetsciiThread> findTenant(final String bbsName) {
+    private static Class<? extends BbsThread> findTenant(final String bbsName) {
         return findTenant(tenants, bbsName);
     }
 
-    static Class<? extends PetsciiThread> findTenant(final List<Class<? extends PetsciiThread>> tenants,
-                                                     final String bbsName) {
+    static Class<? extends BbsThread> findTenant(final List<Class<? extends BbsThread>> tenants,
+                                                 final String bbsName) {
         return tenants.stream()
             .filter(c -> c.getSimpleName().equalsIgnoreCase(bbsName))
             .findFirst()
@@ -144,20 +207,21 @@ public class BBServer {
         tenants.forEach(c -> logger.info(" * {}", c.getSimpleName()));
     }
 
+    private final static String THREAD_ROW_FORMAT = "%5s %-40s %-35s %-15s %-7s %4s %-5s";
     private static String getConfigAsString() {
         return "HTTP/1.1 200 OK\n"
             + "Server: Dummy HTTP connection\n"
             + "Content-Type: text/html; charset=ISO-8859-1\n"
             + "Connection: Closed\n"
             + "\n"
-            + "<html><head><title>"+PetsciiThread.clients.size()+" client"+(PetsciiThread.clients.size()==1?"":"s")+"</title>"
+            + "<html><head><title>"+ BbsThread.clients.size()+" client"+(BbsThread.clients.size()==1?"":"s")+"</title>"
             + "<meta http-equiv=\"refresh\" content=\"5\"></head><body><pre>\n"
-            + "Number of clients: " + PetsciiThread.clients.size() + "\n"
+            + "Number of clients: " + BbsThread.clients.size() + "\n"
             + "\n" +
-            PetsciiThread.clients.entrySet().stream()
-                .sorted(Comparator.comparingLong(Map.Entry::getKey))
+            BbsThread.clients.entrySet().stream()
+                .sorted(comparingLong(Map.Entry::getKey))
                 .map(entry -> "#" + entry.getKey()
-                    + ": " + entry.getValue().getClientClass().getSimpleName()
+                    + ". " + entry.getValue().getClientClass().getSimpleName() + ":" + entry.getValue().serverPort
                     + " (uptime=" + showMillis(currentTimeMillis() - entry.getValue().startTimestamp)
                     + (entry.getValue().keepAlive
                         ? ", idle="+showMillis(currentTimeMillis()-entry.getValue().keepAliveThread.getStartTimestamp())
@@ -165,10 +229,35 @@ public class BBServer {
                     + ", clientName=" + entry.getValue().getClientName()
                     + ", IP=" + entry.getValue().ipAddress
                     + ", serverIP=" + entry.getValue().serverAddress
-                    + ")"
-                    + "\n"
+                    + ")\n"
                 )
-                .collect(Collectors.joining());
+                .collect(Collectors.joining())
+            + "\n"
+            + "Thread list: \n"
+            + "\n"
+            + String.format(THREAD_ROW_FORMAT,
+            "Id", "Class[Name]", "Client", "State", "Type", "Pri", "Alive")
+            + "\n" +
+              String.format(THREAD_ROW_FORMAT,
+                  "-----", "----------------------------------------", "-----------------------------------",
+                  "---------------", "-------", "----", "-------")
+            + "\n"
+            + Thread.getAllStackTraces().keySet().stream().sorted(comparingLong(Thread::getId)).map(t -> {
+                    String clientClass = (t instanceof BbsThread) ? ((BbsThread) t).getClientClass().getSimpleName() : null;
+                    Integer serverPort = (t instanceof BbsThread) ? ((BbsThread) t).serverPort : null;
+                    Long clientId = (t instanceof BbsThread) ? ((BbsThread) t).clientId : null;
+                    return String.format(THREAD_ROW_FORMAT,
+                        t.getId(),
+                        substring(t.getClass().getSimpleName()+"[" + t.getName()+"] ", 0, 40),
+                        substring(clientClass != null ? clientClass + ":" + serverPort + " (#"+clientId+")" : "", 0, 35),
+                        t.getState(),
+                        (t.isDaemon() ? "Daemon" : "Normal"),
+                        t.getPriority(),
+                        t.isAlive()
+                        )
+                    + "\n";
+                }).collect(Collectors.joining());
+
     }
 
     private static String showMillis(long millis) {
@@ -181,8 +270,8 @@ public class BBServer {
              + s+"s";
     }
 
-    private static List<Class<? extends PetsciiThread>> filterPetsciiThread() {
-        List<Class<? extends PetsciiThread>> result = new LinkedList<>();
+    private static List<Class<? extends BbsThread>> filterBBSThread() {
+        List<Class<? extends BbsThread>> result = new LinkedList<>();
         final ClassLoader classLoader = BBServer.class.getClassLoader();
         final Set<ClassPath.ClassInfo> classes;
         try {
@@ -193,7 +282,7 @@ public class BBServer {
         for (ClassPath.ClassInfo classInfo : classes) {
             try {
                 Class c = classInfo.load();
-                if (PetsciiThread.class.isAssignableFrom(c) && !c.isAnnotationPresent(Hidden.class))
+                if (BbsThread.class.isAssignableFrom(c) && !c.isAnnotationPresent(Hidden.class))
                     result.add(c);
             } catch (LinkageError e) {
                 // SKIP

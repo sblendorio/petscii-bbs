@@ -1,6 +1,6 @@
 package net.sourceforge.droid64.addons;
 
-import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.core.BbsThread;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ class DiskUtilitiesTest {
   @ValueSource(ints = {Integer.MIN_VALUE, -1, 0, 2, Integer.MAX_VALUE})
   @DisplayName("if count is different from 1 then null must be returned")
   void whenCountIsDifferentFromOne_ThenNullMustBeReturned(int count) throws IOException {
-    PetsciiThread.DownloadData downloadData = DiskUtilities.getDownloadData(null, count, null);
+    BbsThread.DownloadData downloadData = DiskUtilities.getDownloadData(null, count, null);
     assertNull(downloadData);
   }
 
@@ -27,7 +27,7 @@ class DiskUtilitiesTest {
   @DisplayName("if count is 1 then a DownloadData must be returned")
   void whenCountIsOne_ThenANonNullInstanceMustBeReturned() throws IOException {
     String fileName = "test";
-    PetsciiThread.DownloadData downloadData = DiskUtilities.getDownloadData(new byte[1], 1, fileName);
+    BbsThread.DownloadData downloadData = DiskUtilities.getDownloadData(new byte[1], 1, fileName);
     assertNotNull(downloadData);
     assertEquals(fileName, downloadData.getFilename());
     assertThat(ArrayUtils.toObject(downloadData.getContent()), emptyArray());
