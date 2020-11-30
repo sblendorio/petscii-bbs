@@ -193,8 +193,6 @@ public class PetsciiMenu extends PetsciiThread {
     }
 
     private boolean alternateLogo() {
-        System.out.println(">> serverPort="+serverPort);
-        System.out.println(">> IPFORALTER="+PORT_FOR_ALTERNATE_LOGO);
         return IP_FOR_ALTERNATE_LOGO.equals(serverAddress.getHostAddress())
             || serverPort == PORT_FOR_ALTERNATE_LOGO;
     }
