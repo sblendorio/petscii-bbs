@@ -66,6 +66,7 @@ public abstract class BbsThread extends Thread {
 
     protected BbsThread child = null;
     protected BbsThread parent = null;
+    protected boolean localEcho = true;
 
     protected boolean keepAlive = true;
     protected long keepAliveTimeout = -1; // inherit from caller
@@ -287,6 +288,7 @@ public abstract class BbsThread extends Thread {
             bbs.ipAddress = root.ipAddress;
             bbs.socket = root.socket;
             bbs.io = bbs.buildIO(socket);
+            bbs.io.setLocalEcho(bbs.getLocalEcho());
             bbs.parent = this;
             bbs.keepAliveTimeout = bbs.keepAliveTimeout <= 0 ? root.keepAliveTimeout : bbs.keepAliveTimeout;
             bbs.clientId = root.clientId;
@@ -556,7 +558,7 @@ public abstract class BbsThread extends Thread {
 
     public int getScreenRows() { return io.getScreenRows(); }
 
-    public void setLocalEcho(boolean value) { io.localEcho = value; }
+    public void setLocalEcho(boolean value) { localEcho = value; }
 
-    public boolean getLocalEcho() { return io.localEcho; }
+    public boolean getLocalEcho() { return localEcho; }
 }

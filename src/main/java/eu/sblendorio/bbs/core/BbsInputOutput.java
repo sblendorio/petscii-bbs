@@ -327,6 +327,9 @@ public abstract class BbsInputOutput extends Reader {
         return in.read(chars, i, i1);
     }
 
+    public void setLocalEcho(boolean value) { this.localEcho = value; }
+    public boolean getLocalEcho() { return localEcho; }
+
     public abstract int getScreenColumns();
 
     public abstract int getScreenRows();
