@@ -63,14 +63,16 @@ public class WordpressProxyAscii extends AsciiThread {
     private String originalDomain;
 
     public WordpressProxyAscii() {
-        // Mandatory
+        setLocalEcho(false);
     }
 
     public WordpressProxyAscii(String domain) {
+        this();
         this.domain = domain;
     }
 
     public WordpressProxyAscii(String domain, byte[] logo) {
+        this();
         this.domain = domain;
         this.logo = logo;
     }

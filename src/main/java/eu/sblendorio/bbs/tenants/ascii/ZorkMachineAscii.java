@@ -10,10 +10,12 @@ public class ZorkMachineAscii extends AsciiThread {
     private final String filename;
 
     public ZorkMachineAscii() {
+        setLocalEcho(false);
         this.filename = "zmpp/zork3.z3";
     }
 
     public ZorkMachineAscii(String filename) {
+        setLocalEcho(false);
         this.filename = filename;
     }
 

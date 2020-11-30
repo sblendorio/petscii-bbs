@@ -56,6 +56,7 @@ public abstract class BbsInputOutput extends Reader {
 
     protected Reader in;
     protected QuotedPrintStream out;
+    protected boolean localEcho = true;
 
     protected static int defaultCharBufferSize = 8192;
 
@@ -96,17 +97,24 @@ public abstract class BbsInputOutput extends Reader {
             ch = readKey();
             if (isBackspace(ch)) {
                 if (readBuffer.length() > 0) {
-                    write(backspace());
-                    flush();
+                    if (localEcho) {
+                        write(backspace());
+                        flush();
+                    }
                     readBuffer = readBuffer.substring(0, readBuffer.length()-1);
                 }
             } else if (ch == 34 && (maxLength == 0 || readBuffer.length() < maxLength)) {
-                if (mask) write('*'); else writeDoublequotes();
-                flush();
+                if (localEcho) {
+                    if (mask) write('*');
+                    else writeDoublequotes();
+                    flush();
+                }
                 readBuffer += "\"";
             } else if (isPrintableChar(ch) && (maxLength == 0 || readBuffer.length() < maxLength)) {
-                write(mask ? '*' : ch);
-                flush();
+                if (localEcho) {
+                    write(mask ? '*' : ch);
+                    flush();
+                }
                 readBuffer += (char) convertToAscii(ch);
             }
         } while (!isNewline(ch));

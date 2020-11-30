@@ -11,6 +11,10 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 public class TicTacToeAscii extends AsciiThread {
     TicTacToeAI model;
 
+    public TicTacToeAscii() {
+        setLocalEcho(false);
+    }
+
     @Override
     public void doLoop() throws Exception {
         model = new TicTacToeAI();

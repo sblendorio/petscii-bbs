@@ -10,6 +10,10 @@ import java.util.Map;
 @Hidden
 public class Connect4Ascii extends AsciiThread {
 
+    public Connect4Ascii() {
+        setLocalEcho(false);
+    }
+
     private Map<Integer, String> playerName = ImmutableMap.of(
         1,"Robot",
         2,"Human");

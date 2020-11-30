@@ -8,6 +8,10 @@ import java.io.IOException;
 
 public class Apple1Menu extends AsciiThread {
 
+    public Apple1Menu() {
+        setLocalEcho(false);
+    }
+
     public static class GeoData {
         public final String city;
         public final String cityGeonameId;

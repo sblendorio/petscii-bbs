@@ -57,13 +57,17 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
 
     private String originalBlogUrl;
 
-    public GoogleBloggerProxyAscii() {}
+    public GoogleBloggerProxyAscii() {
+        setLocalEcho(false);
+    }
 
     public GoogleBloggerProxyAscii(String blogUrl) {
+        this();
         this.blogUrl = blogUrl;
     }
 
     public GoogleBloggerProxyAscii(String blogUrl, byte[] logo) {
+        this();
         this.blogUrl = blogUrl;
         this.logo = logo;
     }
