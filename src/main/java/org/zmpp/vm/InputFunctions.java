@@ -195,7 +195,7 @@ public class InputFunctions implements InputLine {
     
       final short deleteChar = inputbuffer.remove(inputbuffer.size() - 1);
       newpointer--;
-      machine.getOutput().deletePreviousZsciiChar(deleteChar);
+      if (machine.getScreen().getLocalEcho()) machine.getOutput().deletePreviousZsciiChar(deleteChar);
     }
     return newpointer;
   }
@@ -216,7 +216,7 @@ public class InputFunctions implements InputLine {
                                 encoding.toLower(zsciiChar));
     inputbuffer.add(zsciiChar);
     newpointer++;
-    machine.getOutput().printZsciiChar(zsciiChar, true);
+    if (machine.getScreen().getLocalEcho()) machine.getOutput().printZsciiChar(zsciiChar, true);
     return newpointer;
   }
   
@@ -350,7 +350,7 @@ public class InputFunctions implements InputLine {
       if (zsciiChar == -1) continue;
 
       if (zsciiChar == ZsciiEncoding.DELETE) {
-        if (inputbuffer != null && inputbuffer.size() > 0) { // CICCIO
+        if (machine.getScreen().getLocalEcho() && inputbuffer != null && inputbuffer.size() > 0) { // CICCIO
           machine.getOutput().printZsciiChar(machine.getScreen().backspace(), true);
         }
         newpointer = deletePreviousChar(inputbuffer, newpointer);

@@ -35,6 +35,7 @@ public class TelevideoRaiAscii extends AsciiThread {
     public TelevideoRaiAscii() {
         setLocalEcho(false);
     }
+
     static final long TIMEOUT = NumberUtils.toLong(System.getProperty("televideo_a1_timeout", "5000"));
     static final String HR_TOP = StringUtils.repeat('-', 39);
 

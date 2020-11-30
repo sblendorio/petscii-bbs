@@ -189,4 +189,6 @@ public interface ScreenModel {
   default short backspace() {
     return ZsciiEncoding.DELETE;
   }
+
+  default boolean getLocalEcho() { return true; }
 }

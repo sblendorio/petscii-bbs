@@ -244,4 +244,9 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     public short backspace() {
         return (short) bbsThread.backspace();
     }
+
+    @Override
+    public boolean getLocalEcho() {
+        return bbsThread.getLocalEcho();
+    }
 }

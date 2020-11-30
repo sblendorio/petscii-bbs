@@ -563,5 +563,5 @@ public abstract class BbsThread extends Thread {
         if (io != null) io.setLocalEcho(value);
     }
 
-    public boolean getLocalEcho() { return io == null ? localEcho : io.getLocalEcho(); }
+    public boolean getLocalEcho() { return localEcho; }
 }

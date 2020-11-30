@@ -11,6 +11,7 @@ import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import static java.lang.System.arraycopy;
+import static java.lang.System.setOut;
 import java.net.Socket;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import java.util.Collections;
