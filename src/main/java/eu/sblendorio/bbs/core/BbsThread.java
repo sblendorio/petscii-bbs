@@ -361,7 +361,8 @@ public abstract class BbsThread extends Thread {
     }
 
     public static char chr(int code) { return (char) code; }
-    public boolean keyPressed() throws IOException { return io.keyPressed(); }
+    public Integer keyPressed() throws IOException { return io.keyPressed(); }
+    public boolean isKeyPressed() throws IOException { return io.keyPressed() != null; }
     public void write(byte[] buf, int off, int len) { io.write(buf, off, len); }
     public void write(byte[] b) { io.write(b); }
     public void write(int b) { io.write(b); }

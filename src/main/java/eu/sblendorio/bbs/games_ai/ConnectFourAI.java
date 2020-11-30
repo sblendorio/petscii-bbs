@@ -352,6 +352,10 @@ public class ConnectFourAI {
             }
         }
 
+        public int getElement(int i, int j) {
+            return board[i][j];
+        }
+
         //Printing the board
         public void displayBoard(){
             System.out.println();
