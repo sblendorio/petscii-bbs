@@ -4,6 +4,7 @@ import com.google.common.reflect.ClassPath;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.System.currentTimeMillis;
+import java.lang.reflect.Modifier;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Timestamp;
@@ -282,7 +283,9 @@ public class BBServer {
         for (ClassPath.ClassInfo classInfo : classes) {
             try {
                 Class c = classInfo.load();
-                if (BbsThread.class.isAssignableFrom(c) && !c.isAnnotationPresent(Hidden.class))
+                if (!Modifier.isAbstract(c.getModifiers())
+                    && BbsThread.class.isAssignableFrom(c)
+                    && !c.isAnnotationPresent(Hidden.class))
                     result.add(c);
             } catch (LinkageError e) {
                 // SKIP

@@ -6,7 +6,6 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.RIGHT;
 import java.io.IOException;
 import java.net.Socket;
 
-@Hidden
 public abstract class PetsciiThread extends BbsThread {
 
     @Override

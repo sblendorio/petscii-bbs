@@ -16,6 +16,7 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import java.io.File;
 import org.apache.commons.lang3.StringUtils;
+import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class PetsciiMenu extends PetsciiThread {
 
@@ -40,6 +41,7 @@ public class PetsciiMenu extends PetsciiThread {
 
     private static final String MAXMIND_DB = System.getProperty("user.home") + File.separator + "GeoLite2-City.mmdb";
     private static final String IP_FOR_ALTERNATE_LOGO = System.getProperty("alternate.logo.ip", "none");
+    private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.ip", "-1"));
     private Reader maxmindReader;
     private JsonNode maxmindResponse;
     private GeoData geoData;
@@ -191,7 +193,8 @@ public class PetsciiMenu extends PetsciiThread {
     }
 
     private boolean alternateLogo() {
-        return IP_FOR_ALTERNATE_LOGO.equals(serverAddress.getHostAddress());
+        return IP_FOR_ALTERNATE_LOGO.equals(serverAddress.getHostAddress())
+            || serverPort == PORT_FOR_ALTERNATE_LOGO;
     }
 
     private static final byte[] LOGO_BYTES = new byte[] {
