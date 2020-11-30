@@ -558,7 +558,10 @@ public abstract class BbsThread extends Thread {
 
     public int getScreenRows() { return io.getScreenRows(); }
 
-    public void setLocalEcho(boolean value) { localEcho = value; }
+    public void setLocalEcho(boolean value) {
+        localEcho = value;
+        if (io != null) io.setLocalEcho(value);
+    }
 
-    public boolean getLocalEcho() { return localEcho; }
+    public boolean getLocalEcho() { return io == null ? localEcho : io.getLocalEcho(); }
 }
