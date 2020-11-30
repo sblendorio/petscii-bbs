@@ -41,7 +41,7 @@ public class PetsciiMenu extends PetsciiThread {
 
     private static final String MAXMIND_DB = System.getProperty("user.home") + File.separator + "GeoLite2-City.mmdb";
     private static final String IP_FOR_ALTERNATE_LOGO = System.getProperty("alternate.logo.ip", "none");
-    private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.ip", "-1"));
+    private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.port", "-1"));
     private Reader maxmindReader;
     private JsonNode maxmindResponse;
     private GeoData geoData;
@@ -193,6 +193,8 @@ public class PetsciiMenu extends PetsciiThread {
     }
 
     private boolean alternateLogo() {
+        System.out.println(">> serverPort="+serverPort);
+        System.out.println(">> IPFORALTER="+PORT_FOR_ALTERNATE_LOGO);
         return IP_FOR_ALTERNATE_LOGO.equals(serverAddress.getHostAddress())
             || serverPort == PORT_FOR_ALTERNATE_LOGO;
     }
