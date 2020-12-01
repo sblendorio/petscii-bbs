@@ -45,10 +45,12 @@ import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.substring;
 import static org.apache.commons.lang3.StringUtils.trim;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.WordUtils;
 
 @Hidden
 public class TelevideoRaiPetscii extends PetsciiThread {
+    static final long TIMEOUT = NumberUtils.toLong(System.getProperty("televideo_petscii_timeout", "20000"));
     static final String HR_TOP = StringUtils.repeat(chr(163), 39);
 
     static final String PREFIX = "http://www.servizitelevideo.rai.it/televideo/pub/";
@@ -187,27 +189,32 @@ public class TelevideoRaiPetscii extends PetsciiThread {
             return;
         }
 
-        cls();
-        waitOn();
-        List<NewsFeed> feeds = getFeeds(section.url);
-        String text = EMPTY;
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        for (NewsFeed feed: feeds) {
-            String post = EMPTY;
-            post += feed.title + "<br>" + HR_TOP + "<br>";
-            post += dateFormat.format(feed.publishedDate) + " " + feed.description + "<br>";
-            int lineFeeds = (screenRows - (wordWrap(post).length % screenRows)) % screenRows;
+        boolean interruptByUser;
+        do {
+            cls();
+            waitOn();
+            List<NewsFeed> feeds = getFeeds(section.url);
+            String text = EMPTY;
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            for (NewsFeed feed : feeds) {
+                String post = EMPTY;
+                post += feed.title + "<br>" + HR_TOP + "<br>";
+                post += dateFormat.format(feed.publishedDate) + " " + feed.description + "<br>";
+                int lineFeeds = (screenRows - (wordWrap(post).length % screenRows)) % screenRows;
 
-            post += StringUtils.repeat("&c64nbsp;<br>", lineFeeds);
-            text += post;
-        }
-        waitOff();
+                post += StringUtils.repeat("&c64nbsp;<br>", lineFeeds);
+                text += post;
+            }
+            waitOff();
 
-        boolean interruptByUser = displayText(text, screenRows, section.logo);
-        if (!interruptByUser) {
-            gotoXY(0, 24); write(WHITE); print(" ENTER = MAIN MENU                    ");
-            flush(); resetInput(); readKey();
-        }
+            interruptByUser = displayText(text, screenRows, section.logo);
+            if (!interruptByUser) {
+                gotoXY(0, 24); write(WHITE); print(" ENTER = MAIN MENU                    ");
+                flush(); resetInput();
+                Integer finalKey = keyPressed(TIMEOUT);
+                interruptByUser = finalKey != null;
+            }
+        } while (!interruptByUser);
     }
 
     protected boolean displayText(String text, int screenRows, byte[] logo) throws IOException {
@@ -226,7 +233,10 @@ public class TelevideoRaiPetscii extends PetsciiThread {
                 print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT");
                 write(GREY3);
 
-                resetInput(); int ch = readKey();
+                resetInput();
+                Integer ch = keyPressed(TIMEOUT);
+                if (ch == null) ch = -1;
+
                 if (ch == '.') {
                     return true;
                 }

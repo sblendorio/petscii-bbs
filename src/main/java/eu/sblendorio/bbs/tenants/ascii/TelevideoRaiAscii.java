@@ -106,24 +106,15 @@ public class TelevideoRaiAscii extends AsciiThread {
             if (odd < keys.size()) {
                 key = keys.get(odd);
                 value = sections.get(key);
-                write(' ');
-                print(key);
-                write(' ', ' ');
-                print(value.title);
+                write(' '); print(key); write(' ', ' '); print(value.title);
             } else {
-                write(' ');
-                print(" . ");
-                write(' ', ' ');
-                print("Fine");
+                write(' '); print(" . "); write(' ', ' '); print("Fine");
             }
             newline();
             newline();
 
         }
-        write(' ');
-        print(" . ");
-        write(' ', ' ');
-        print("Fine");
+        write(' '); print(" . "); write(' ', ' '); print("Fine");
         newline();
         newline();
         flush();
@@ -175,25 +166,30 @@ public class TelevideoRaiAscii extends AsciiThread {
             return;
         }
 
-        cls();
-        List<NewsFeed> feeds = getFeeds(section.url);
-        String text = EMPTY;
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        for (NewsFeed feed: feeds) {
-            String post = EMPTY;
-            post += feed.title + "<br>" + HR_TOP + "<br>";
-            post += dateFormat.format(feed.publishedDate) + " " + feed.description + "<br>";
-            int lineFeeds = (screenRows - (wordWrap(post).length % screenRows)) % screenRows;
+        boolean interruptByUser;
+        do {
+            cls();
+            List<NewsFeed> feeds = getFeeds(section.url);
+            String text = EMPTY;
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            for (NewsFeed feed : feeds) {
+                String post = EMPTY;
+                post += feed.title + "<br>" + HR_TOP + "<br>";
+                post += dateFormat.format(feed.publishedDate) + " " + feed.description + "<br>";
+                int lineFeeds = (screenRows - (wordWrap(post).length % screenRows)) % screenRows;
 
-            post += StringUtils.repeat("&c64nbsp;<br>", lineFeeds);
-            text += post;
-        }
+                post += StringUtils.repeat("&c64nbsp;<br>", lineFeeds);
+                text += post;
+            }
 
-        boolean interruptByUser = displayText(text, screenRows, section.logo);
-        if (!interruptByUser) {
-            println(); print(" ENTER = MAIN MENU                    ");
-            flush(); resetInput(); readKey();
-        }
+            interruptByUser = displayText(text, screenRows, section.logo);
+            if (!interruptByUser) {
+                println(); print(" ENTER = MAIN MENU                    ");
+                flush(); resetInput();
+                Integer finalKey = keyPressed(TIMEOUT);
+                interruptByUser = finalKey != null;
+            }
+        } while (!interruptByUser);
     }
 
     protected boolean displayText(String text, int screenRows, byte[] logo) throws IOException {
@@ -211,21 +207,9 @@ public class TelevideoRaiAscii extends AsciiThread {
                 println();
                 print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT");
 
-                // CICCIO-------------------------------------
-                resetInput();
-                Integer ch = null;
-                long INTERVAL = 100L;
-                long a = System.currentTimeMillis();
-                while ((ch = keyPressed()) == null && System.currentTimeMillis() -a < TIMEOUT ) {
-                    try {
-                        Thread.sleep(INTERVAL);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                // ----------------------------------------------
-
+                Integer ch = keyPressed(TIMEOUT);
                 if (ch == null) ch = 1;
+
                 resetInput();
                 if (ch == '.') {
                     return true;

@@ -566,4 +566,19 @@ public abstract class BbsThread extends Thread {
     public abstract int getScreenColumns();
     public abstract int getScreenRows();
 
+    public Integer keyPressed(long timeout) throws IOException {
+        long INTERVAL = 100L;
+        resetInput();
+        Integer ch;
+        long a = System.currentTimeMillis();
+        while ((ch = keyPressed()) == null && System.currentTimeMillis() -a < timeout) {
+            try {
+                Thread.sleep(INTERVAL);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return ch;
+    }
+
 }

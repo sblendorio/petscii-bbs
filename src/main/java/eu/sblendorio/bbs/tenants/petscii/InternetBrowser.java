@@ -84,10 +84,7 @@ public class InternetBrowser extends PetsciiThread {
         }
     }
 
-
     protected Map<Integer, Entry> links = emptyMap();
-
-    public static void main(String[] args) throws Exception {}
 
     @Override
     public void doLoop() throws Exception {
