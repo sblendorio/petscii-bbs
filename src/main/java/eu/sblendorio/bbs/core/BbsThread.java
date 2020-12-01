@@ -532,6 +532,8 @@ public abstract class BbsThread extends Thread {
 
     public Object getCustomObject() { return customObject; }
 
+    public BbsInputOutput getIo() { return io; }
+
     public void setCustomObject(Object obj) { this.customObject = obj; }
 
     public boolean isPrintableChar(int c) {
