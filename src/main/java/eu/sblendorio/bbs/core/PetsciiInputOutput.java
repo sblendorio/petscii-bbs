@@ -65,6 +65,11 @@ public class PetsciiInputOutput extends BbsInputOutput {
     }
 
     @Override
+    public void writeBackspace() {
+        write(PetsciiKeys.LEFT, PetsciiKeys.SPACE_CHAR, PetsciiKeys.LEFT);
+    }
+
+    @Override
     public int convertToAscii(int ch) {
         if (ch >= 'a' && ch <= 'z')
             return Character.toUpperCase(ch);
@@ -82,16 +87,6 @@ public class PetsciiInputOutput extends BbsInputOutput {
     @Override
     public boolean quoteMode() {
         return out.quoteMode();
-    }
-
-    @Override
-    public int getScreenColumns() {
-        return 40;
-    }
-
-    @Override
-    public int getScreenRows() {
-        return 25;
     }
 
 }

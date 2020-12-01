@@ -99,7 +99,7 @@ public abstract class BbsInputOutput extends Reader {
             if (isBackspace(ch)) {
                 if (readBuffer.length() > 0) {
                     if (localEcho) {
-                        write(backspace());
+                        writeBackspace();
                         flush();
                     }
                     readBuffer = readBuffer.substring(0, readBuffer.length()-1);
@@ -296,6 +296,7 @@ public abstract class BbsInputOutput extends Reader {
     public abstract byte[] newlineBytes();
     public abstract void cls();
     public abstract int backspace();
+    public void writeBackspace() { write(backspace()); }
     public abstract boolean isNewline(int ch);
     public abstract boolean isBackspace(int ch);
     public abstract void writeDoublequotes();
@@ -331,7 +332,4 @@ public abstract class BbsInputOutput extends Reader {
     public void setLocalEcho(boolean value) { this.localEcho = value; }
     public boolean getLocalEcho() { return localEcho; }
 
-    public abstract int getScreenColumns();
-
-    public abstract int getScreenRows();
 }

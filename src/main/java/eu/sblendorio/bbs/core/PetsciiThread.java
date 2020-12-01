@@ -19,4 +19,15 @@ public abstract class PetsciiThread extends BbsThread {
         for (int i=0; i<x; ++i) write(RIGHT);
     }
 
+
+    @Override
+    public int getScreenColumns() {
+        return 40;
+    }
+
+    @Override
+    public int getScreenRows() {
+        return 25;
+    }
+
 }

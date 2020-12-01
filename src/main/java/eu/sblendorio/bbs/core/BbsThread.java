@@ -385,7 +385,7 @@ public abstract class BbsThread extends Thread {
     public String readLineBuffer() { return io.readLineBuffer(); }
     public int convertToAscii(int ch) { return io.convertToAscii(ch); }
 
-        public String readLine() throws IOException {
+    public String readLine() throws IOException {
         keepAliveThread.restartKeepAlive();
         final String result = io.readLine();
         keepAliveThread.restartKeepAlive();
@@ -554,14 +554,14 @@ public abstract class BbsThread extends Thread {
         return filterPrintable(defaultString(s)).length();
     }
 
-    public int getScreenColumns() { return io.getScreenColumns(); }
-
-    public int getScreenRows() { return io.getScreenRows(); }
-
     public void setLocalEcho(boolean value) {
         localEcho = value;
         if (io != null) io.setLocalEcho(value);
     }
 
     public boolean getLocalEcho() { return localEcho; }
+
+    public abstract int getScreenColumns();
+    public abstract int getScreenRows();
+
 }

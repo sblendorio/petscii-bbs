@@ -57,15 +57,4 @@ public class AsciiInputOutput extends BbsInputOutput {
         return false;
     }
 
-    @Override
-    public int getScreenColumns() {
-        return 40;
-    }
-
-    @Override
-    public int getScreenRows() {
-        return 24;
-    }
-
-
 }

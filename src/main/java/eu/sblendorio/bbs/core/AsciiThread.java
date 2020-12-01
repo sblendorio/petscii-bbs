@@ -10,4 +10,14 @@ public abstract class AsciiThread extends BbsThread {
         return new AsciiInputOutput(socket);
     }
 
+    @Override
+    public int getScreenColumns() {
+        return 40;
+    }
+
+    @Override
+    public int getScreenRows() {
+        return 24;
+    }
+
 }
