@@ -124,6 +124,7 @@ You can study the sample BBSes (all classes that extend **PetsciiThread**) in th
  
 ## Credits
 Thanks to:
+- [**Antonino Porcino**](https://github.com/nippur72/c64-emu) for his browser-based PETSCII BBS Client emulator
 - [**Brian W. Howell**](https://github.com/bigbhowell/tic-tac-toe) for the **tic-tac-toe** AI
 - [**Felice Pagano**](https://github.com/felicepagano/) for code optimizations
 - [**Henrik Wetterström**](http://droid64.sourceforge.net/) for **droid64** project, used to read and open D64 files
