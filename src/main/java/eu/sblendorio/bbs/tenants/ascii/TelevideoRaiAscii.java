@@ -36,7 +36,7 @@ public class TelevideoRaiAscii extends AsciiThread {
         setLocalEcho(false);
     }
 
-    static final long TIMEOUT = NumberUtils.toLong(System.getProperty("televideo_a1_timeout", "5000"));
+    static final long TIMEOUT = NumberUtils.toLong(System.getProperty("televideo_a1_timeout", "20000"));
     static final String HR_TOP = StringUtils.repeat('-', 39);
 
     static final String PREFIX = "http://www.servizitelevideo.rai.it/televideo/pub/";

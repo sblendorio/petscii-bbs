@@ -11,6 +11,7 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
 import static eu.sblendorio.bbs.core.PetsciiKeys.UPPERCASE;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 import static org.apache.commons.lang3.ObjectUtils.notEqual;
 import static org.apache.commons.lang3.StringUtils.*;
@@ -29,6 +30,7 @@ import java.util.*;
 import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -39,6 +41,7 @@ public class PetsciiArtGallery extends PetsciiThread {
 
     private static final String ROOT_PATH = "petscii-art-gallery";
     private static final ClassLoader NULL_CLASSLOADER = null;
+    private static final long TIMEOUT = NumberUtils.toLong(System.getProperty("petscii_art_timeout", "15000"));
 
     public List<Path> getDirContent(String path) throws URISyntaxException, IOException {
         List<Path> result = new ArrayList<>();
@@ -123,7 +126,7 @@ public class PetsciiArtGallery extends PetsciiThread {
             }
             flush();
             resetInput();
-            int key = readKey();
+            int key = ofNullable(keyPressed(TIMEOUT)).orElse(-1);
             if (key == '.')
                 break;
             else if (key == 'x' || key == 'X')
@@ -132,6 +135,10 @@ public class PetsciiArtGallery extends PetsciiThread {
                 --i;
             else
                 ++i;
+            if (i >= size) {
+                i = 0;
+                if (randomize) Collections.shuffle(drawings);
+            }
         }
         write(CLR, RETURN, CLR, LOWERCASE, REVOFF);
     }
