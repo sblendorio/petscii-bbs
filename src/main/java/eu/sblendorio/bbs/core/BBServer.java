@@ -61,6 +61,7 @@ public class BBServer {
         // args = new String[] {"-b", "MainMenu", "-p", "6510"};
         readParameters(args);
 
+        Thread.currentThread().setName("BBSMain-" + Thread.currentThread().getId());
         logger.info("{} The BBS {} is running: timeout = {} millis" + (servicePort != 0 ? ", serviceport = {}" : ""),
                     new Timestamp(currentTimeMillis()),
                     endPoints.toString(),
@@ -69,6 +70,7 @@ public class BBServer {
 
         for (EndPoint endPoint: endPoints) {
             new Thread(() -> {
+                Thread.currentThread().setName("BBS Dispatcher-" + Thread.currentThread().getId());
                 try (ServerSocket listener = new ServerSocket(endPoint.port)) {
                     listener.setSoTimeout(0);
                     while (true) {
@@ -92,14 +94,22 @@ public class BBServer {
 
         if (servicePort != 0)
             new Thread(() -> {
+                Thread.currentThread().setName("Diagnostic Dispatcher-" + Thread.currentThread().getId());
                 try (ServerSocket listener = new ServerSocket(servicePort)) {
                     listener.setSoTimeout(0);
                     while (true) {
                         Socket socket = listener.accept();
-                        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                        out.println(getConfigAsString());
-                        socket.shutdownOutput();
-                        socket.close();
+                        new Thread(() -> {
+                            Thread.currentThread().setName("Diagnostic-" + Thread.currentThread().getId());
+                            try {
+                                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                                out.println(getConfigAsString());
+                                socket.shutdownOutput();
+                                socket.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }).start();
                     }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
