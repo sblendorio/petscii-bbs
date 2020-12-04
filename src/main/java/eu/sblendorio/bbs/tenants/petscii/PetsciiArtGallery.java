@@ -1,7 +1,23 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
 import eu.sblendorio.bbs.core.Hidden;
-import static eu.sblendorio.bbs.core.PetsciiColors.*;
+import static eu.sblendorio.bbs.core.PetsciiColors.BLACK;
+import static eu.sblendorio.bbs.core.PetsciiColors.BLUE;
+import static eu.sblendorio.bbs.core.PetsciiColors.BROWN;
+import static eu.sblendorio.bbs.core.PetsciiColors.CYAN;
+import static eu.sblendorio.bbs.core.PetsciiColors.GREEN;
+import static eu.sblendorio.bbs.core.PetsciiColors.GREY1;
+import static eu.sblendorio.bbs.core.PetsciiColors.GREY2;
+import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
+import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_BLUE;
+import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_GREEN;
+import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_RED;
+import static eu.sblendorio.bbs.core.PetsciiColors.ORANGE;
+import static eu.sblendorio.bbs.core.PetsciiColors.PURPLE;
+import static eu.sblendorio.bbs.core.PetsciiColors.RED;
+import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
+import static eu.sblendorio.bbs.core.PetsciiColors.YELLOW;
+import eu.sblendorio.bbs.core.PetsciiKeys;
 import static eu.sblendorio.bbs.core.PetsciiKeys.CASE_LOCK;
 import static eu.sblendorio.bbs.core.PetsciiKeys.CLR;
 import static eu.sblendorio.bbs.core.PetsciiKeys.HOME;
@@ -10,26 +26,27 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.RETURN;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
 import static eu.sblendorio.bbs.core.PetsciiKeys.UPPERCASE;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.Optional.ofNullable;
-import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
-import static org.apache.commons.lang3.ObjectUtils.notEqual;
-import static org.apache.commons.lang3.StringUtils.*;
-
+import eu.sblendorio.bbs.core.PetsciiThread;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
-
-import eu.sblendorio.bbs.core.PetsciiKeys;
-import eu.sblendorio.bbs.core.PetsciiThread;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
+import static org.apache.commons.lang3.ObjectUtils.notEqual;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.lowerCase;
+import static org.apache.commons.lang3.StringUtils.startsWith;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -63,6 +80,7 @@ public class PetsciiArtGallery extends PetsciiThread {
     public void doLoop() throws Exception {
         List<Path> authors = getDirContent(ROOT_PATH);
         boolean randomize = false;
+        boolean slideshow = false;
         int key;
         int choice;
         do {
@@ -73,8 +91,11 @@ public class PetsciiArtGallery extends PetsciiThread {
             print("Press "); write(REVON); print(" R "); write(REVOFF); print(" to toggle randomize (now ");
             write(WHITE); print(randomize ? "ON" : "OFF"); write(GREY3);
             println(")" + (randomize ? " " : ""));
+            print("Press "); write(REVON); print(" S "); write(REVOFF); print(" to toggle slideshow (now ");
+            write(WHITE); print(slideshow ? "ON" : "OFF"); write(GREY3);
+            println(")" + (slideshow ? " " : ""));
             newline();
-            println("During slideshow, use:");
+            println("During show, use:");
             print("  key "); write(REVON); print(" . "); write(REVOFF); println(" to STOP");
             print("  use "); write(REVON); print(" - "); write(REVOFF); println(" to go to previous picture,");
             print("  and "); write(REVON); print(" X "); write(REVOFF); println(" to toggle statusline.");
@@ -94,15 +115,18 @@ public class PetsciiArtGallery extends PetsciiThread {
             do {
                 flush(); resetInput(); key = readKey();
                 choice = 0;
+                if (key == 's' || key == 'S') slideshow = !slideshow;
                 if (key == 'r' || key == 'R') randomize = !randomize;
                 if (key >= '1' && key <= '9') choice = key - '0';
                 if (choice > authors.size()) choice = 0;
-            } while (choice == 0 && key != '.' && key != 'r' && key != 'R');
-            if (choice > 0) displayAuthor(authors.get(choice - 1), randomize);
+            } while (choice == 0 && key != '.' && key != 'r' && key != 'R' && key != 's' && key != 'S');
+            if (choice > 0) displayAuthor(authors.get(choice - 1), randomize, slideshow);
         } while (key != '.');
     }
 
-    private void displayAuthor(Path p, boolean randomize) throws IOException, URISyntaxException, ParseException {
+    private void displayAuthor(Path p, boolean randomize, boolean slideshow)
+            throws IOException, URISyntaxException, ParseException {
+        long timeout = slideshow ? TIMEOUT : -1;
         boolean statusLine = false;
         cls();
         List<Path> drawings = getDirContent(p.toString());
@@ -126,7 +150,7 @@ public class PetsciiArtGallery extends PetsciiThread {
             }
             flush();
             resetInput();
-            int key = ofNullable(keyPressed(TIMEOUT)).orElse(-1);
+            int key = keyPressed(timeout);
             if (key == '.')
                 break;
             else if (key == 'x' || key == 'X')

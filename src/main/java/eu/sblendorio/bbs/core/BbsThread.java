@@ -363,8 +363,8 @@ public abstract class BbsThread extends Thread {
     }
 
     public static char chr(int code) { return (char) code; }
-    public Integer keyPressed() throws IOException { return io.keyPressed(); }
-    public boolean isKeyPressed() throws IOException { return io.keyPressed() != null; }
+    public int keyPressed() throws IOException { return io.keyPressed(); }
+    public boolean isKeyPressed() throws IOException { return io.keyPressed() != -1; }
     public void write(byte[] buf, int off, int len) { io.write(buf, off, len); }
     public void write(byte[] b) { io.write(b); }
     public void write(int b) { io.write(b); }
@@ -566,12 +566,15 @@ public abstract class BbsThread extends Thread {
     public abstract int getScreenColumns();
     public abstract int getScreenRows();
 
-    public Integer keyPressed(long timeout) throws IOException {
+    public int keyPressed(long timeout) throws IOException {
         long INTERVAL = 100L;
         resetInput();
-        Integer ch;
+        if (timeout < 0)
+            return readKey();
+
+        int ch;
         long a = System.currentTimeMillis();
-        while ((ch = keyPressed()) == null && System.currentTimeMillis() -a < timeout) {
+        while ((ch = keyPressed()) == -1 && System.currentTimeMillis() - a < timeout) {
             try {
                 Thread.sleep(INTERVAL);
             } catch (InterruptedException e) {

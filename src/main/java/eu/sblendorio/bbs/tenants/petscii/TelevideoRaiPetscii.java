@@ -211,8 +211,8 @@ public class TelevideoRaiPetscii extends PetsciiThread {
             if (!interruptByUser) {
                 gotoXY(0, 24); write(WHITE); print(" ENTER = MAIN MENU                    ");
                 flush(); resetInput();
-                Integer finalKey = keyPressed(TIMEOUT);
-                interruptByUser = finalKey != null;
+                int finalKey = keyPressed(TIMEOUT);
+                interruptByUser = finalKey != -1;
             }
         } while (!interruptByUser);
     }
@@ -234,8 +234,7 @@ public class TelevideoRaiPetscii extends PetsciiThread {
                 write(GREY3);
 
                 resetInput();
-                Integer ch = keyPressed(TIMEOUT);
-                if (ch == null) ch = -1;
+                int ch = keyPressed(TIMEOUT);
 
                 if (ch == '.') {
                     return true;

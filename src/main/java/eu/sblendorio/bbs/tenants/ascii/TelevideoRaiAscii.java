@@ -36,7 +36,7 @@ public class TelevideoRaiAscii extends AsciiThread {
         setLocalEcho(false);
     }
 
-    static final long TIMEOUT = NumberUtils.toLong(System.getProperty("televideo_a1_timeout", "20000"));
+    static final long TIMEOUT = NumberUtils.toLong(System.getProperty("televideo_a1_timeout", "40000"));
     static final String HR_TOP = StringUtils.repeat('-', 39);
 
     static final String PREFIX = "http://www.servizitelevideo.rai.it/televideo/pub/";
@@ -186,8 +186,8 @@ public class TelevideoRaiAscii extends AsciiThread {
             if (!interruptByUser) {
                 println(); print(" ENTER = MAIN MENU                    ");
                 flush(); resetInput();
-                Integer finalKey = keyPressed(TIMEOUT);
-                interruptByUser = finalKey != null;
+                int finalKey = keyPressed(TIMEOUT);
+                interruptByUser = finalKey != -1;
             }
         } while (!interruptByUser);
     }
@@ -207,8 +207,7 @@ public class TelevideoRaiAscii extends AsciiThread {
                 println();
                 print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT");
 
-                Integer ch = keyPressed(TIMEOUT);
-                if (ch == null) ch = 1;
+                int ch = keyPressed(TIMEOUT);
 
                 resetInput();
                 if (ch == '.') {

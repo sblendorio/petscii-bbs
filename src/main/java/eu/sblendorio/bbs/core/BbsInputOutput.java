@@ -226,14 +226,14 @@ public abstract class BbsInputOutput extends Reader {
         }
     }
 
-    public Integer keyPressed() throws IOException {
+    public int keyPressed() throws IOException {
         boolean pressed = false;
         Integer key = null;
         while (in.ready()) {
             pressed = true;
             key = readKey();
         }
-        return pressed ? key : null;
+        return pressed ? key : -1;
     }
 
     public void write(byte[] buf, int off, int len) { out.write(buf, off, len); }
