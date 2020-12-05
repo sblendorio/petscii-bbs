@@ -3,7 +3,6 @@ package eu.sblendorio.bbs.tenants.ascii;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Hidden;
-import eu.sblendorio.bbs.tenants.petscii.Chat64;
 import eu.sblendorio.bbs.tenants.petscii.Chat64.ChatMessage;
 import eu.sblendorio.bbs.tenants.petscii.Chat64.Row;
 import java.io.IOException;
