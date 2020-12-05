@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.lowerCase;
 
 @Hidden
 public class ChatA1 extends AsciiThread {
@@ -40,6 +41,7 @@ public class ChatA1 extends AsciiThread {
                 print("Enter your name: ");
                 flush(); resetInput();
                 String name = readLine();
+                name = lowerCase(name);
                 if (isBlank(name) || ".".equalsIgnoreCase(name)) {
                     return;
                 }
@@ -63,6 +65,7 @@ public class ChatA1 extends AsciiThread {
                 resetInput();
                 rawCommand = readLine();
                 rawCommand = defaultString(rawCommand).trim();
+                rawCommand = lowerCase(rawCommand);
                 final String command =  rawCommand;
                 if (isBlank(command)) {
                     redraw();

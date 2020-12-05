@@ -567,7 +567,7 @@ public abstract class BbsThread extends Thread {
     public abstract int getScreenRows();
 
     public int keyPressed(long timeout) throws IOException {
-        long INTERVAL = 100L;
+        long INTERVAL = 150L;
         resetInput();
         if (timeout < 0)
             return readKey();
@@ -577,6 +577,7 @@ public abstract class BbsThread extends Thread {
         while ((ch = keyPressed()) == -1 && System.currentTimeMillis() - a < timeout) {
             try {
                 Thread.sleep(INTERVAL);
+                write(keepAliveChar);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

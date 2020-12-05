@@ -119,7 +119,9 @@ public abstract class BbsInputOutput extends Reader {
                 readBuffer += (char) convertToAscii(ch);
             }
         } while (!isNewline(ch));
-        newline();
+        if (localEcho) {
+            newline();
+        }
         final String result = readBuffer;
         readBuffer = EMPTY;
         return result;
