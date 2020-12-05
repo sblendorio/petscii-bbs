@@ -1,14 +1,11 @@
-package eu.sblendorio.bbs.tenants.petscii;
+package eu.sblendorio.bbs.tenants.ascii;
 
+import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Hidden;
-import eu.sblendorio.bbs.core.PetsciiColors;
-import static eu.sblendorio.bbs.core.PetsciiColors.CYAN;
-import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
-import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_BLUE;
-import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
-import eu.sblendorio.bbs.core.PetsciiKeys;
-import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.tenants.petscii.Chat64;
+import eu.sblendorio.bbs.tenants.petscii.Chat64.ChatMessage;
+import eu.sblendorio.bbs.tenants.petscii.Chat64.Row;
 import java.io.IOException;
 import java.util.List;
 import static java.util.Optional.ofNullable;
@@ -23,49 +20,25 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Hidden
-public class Chat extends PetsciiThread {
+public class ChatA1 extends AsciiThread {
 
-    private static final int INPUT_COLOR = GREY3;
-
-    public static class ChatMessage {
-        final long receiverId;
-        final String text;
-
-        ChatMessage(long receiverId, String text) {
-            this.receiverId = receiverId;
-            this.text = text;
-        }
-
-        @Override
-        public String toString() {
-            return "ChatMessage{" + "receiverId=" + receiverId + ", text='" + text + '\'' + '}';
-        }
-    }
-    public static class Row {
-        final long recipientId;
-        final ChatMessage message;
-
-        Row(long recipientId, ChatMessage message) {
-            this.recipientId = recipientId;
-            this.message = message;
-        }
-    }
-
-    private Long recipient = null;
     private boolean canRedraw = false;
 
-    private ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<Row>();
+    private ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<>();
 
-    public Chat() {
+    public ChatA1() {
+        setLocalEcho(false);
+        this.keepAlive = false; // CICCIO CICCIO TO REMOVE
     }
 
     @Override
     public void doLoop() throws Exception {
         try {
             canRedraw = false;
-            write(PetsciiColors.GREY3, PetsciiKeys.CLR, PetsciiKeys.LOWERCASE, PetsciiKeys.CASE_LOCK, PetsciiKeys.HOME);
             int status;
             do {
+                newline();
+                newline();
                 print("Enter your name: ");
                 flush(); resetInput();
                 String name = readLine();
@@ -79,7 +52,6 @@ public class Chat extends PetsciiThread {
             } while (status != 0);
 
             cls();
-            write(PetsciiColors.YELLOW);
             println("              BBS Chat 2.0");
             newline();
             showUsers(false);
@@ -90,19 +62,17 @@ public class Chat extends PetsciiThread {
             String rawCommand = null;
             redraw();
             do {
-                write(INPUT_COLOR);
+                resetInput();
                 rawCommand = readLine();
                 rawCommand = defaultString(rawCommand).trim();
                 final String command =  rawCommand;
                 if (isBlank(command)) {
-                    write(145);
                     redraw();
                 } else if (command.matches("(?is)^/to [\\.a-zA-Z0-9-]+(\\s+.*)?$")) {
                     String text = defaultString(command.replaceAll("(?is)^/to [\\.a-zA-Z0-9-]+(\\s+.*)?$", "$1")).trim();
-                    Long candidateRecipient =
+                    Long recipient =
                             getClientIdByName(command.replaceAll("(?is)^/to ([\\.a-zA-Z0-9-]+)(\\s+.*)?$", "$1"));
-                    if (candidateRecipient != null && candidateRecipient != getClientId()) {
-                        recipient = candidateRecipient;
+                    if (recipient != null && recipient != getClientId()) {
                         if (isNotBlank(text)) {
                             send(recipient, new ChatMessage(recipient, text));
                             redraw();
@@ -110,15 +80,6 @@ public class Chat extends PetsciiThread {
                     }
                     if (isBlank(text))
                         redraw();
-                } else if (command.matches("(?is)^/all(\\s+.*)?$")) {
-                    recipient = null;
-                    String text = defaultString(command.replaceAll("(?is)^/all(\\s+.*)?$", "$1")).trim();
-                    if (isNotBlank(text)) {
-                        sendToAll(new ChatMessage(-3, "<"+getClientName()+"@all>" + text));
-                        redraw();
-                    } else {
-                        redraw();
-                    }
                 } else if (command.matches("(?is)/nick [\\.a-zA-Z0-9-]+")) {
                     String newName = command.replaceAll("\\s+", " ").substring(6);
                     int res = changeClientName(newName);
@@ -141,10 +102,6 @@ public class Chat extends PetsciiThread {
                     redraw();
                 } else if (".".equals(command)) {
                     log("Exiting chat.");
-                } else if (recipient != null) {
-                    send(recipient, new ChatMessage(recipient, command));
-                    redraw();
-                    //send(getClientId(), new ChatMessage(recipient, command));
                 } else if (StringUtils.isNotBlank(command)) {
                     sendToAll(new ChatMessage(-3, "<"+getClientName()+"@all>"+ command));
                     redraw();
@@ -161,7 +118,9 @@ public class Chat extends PetsciiThread {
     private synchronized void sendToAll(ChatMessage chatMessage) {
         getClients().keySet().stream()
                 .filter(id -> getClients().get(id) != null)
-                .filter(id -> id != getClientId() && getClientClass().equals(getClients().get(id).getClientClass()))
+                .filter(id -> id != getClientId()
+                    && getClients().get(id).getClientClass().getSimpleName().startsWith("Chat")
+                )
                 .forEach(id -> send(id, chatMessage));
     }
 
@@ -176,109 +135,53 @@ public class Chat extends PetsciiThread {
     }
 
     private synchronized void displayHelp() {
-        write(PetsciiColors.BLUE);
         println("Commands");
-
-        write(PetsciiColors.LIGHT_BLUE);
-        print("/users");
-        write(PetsciiColors.GREY2);
-        print(" or ");
-        write(PetsciiColors.LIGHT_BLUE);
-        print("/u");
-        write(PetsciiColors.GREY2);
-        println("   to list users");
-
-        write(PetsciiColors.LIGHT_BLUE);
-        print("/to <person>");
-        write(PetsciiColors.GREY2);
-        println("   to talk with someone");
-
-        write(PetsciiColors.LIGHT_BLUE);
-        print("/all");
-        write(PetsciiColors.GREY2);
-        println("           to talk with all");
-
-        write(PetsciiColors.LIGHT_BLUE);
-        print("/nick <name>");
-        write(PetsciiColors.GREY2);
-        println("   to change nick");
-
-        write(PetsciiColors.LIGHT_BLUE);
-        print("/help");
-        write(PetsciiColors.GREY2);
-        print(" or ");
-        write(PetsciiColors.LIGHT_BLUE);
-        print("/h");
-        write(PetsciiColors.GREY2);
-        println("    to get this help");
-
-        write(PetsciiColors.WHITE);
-        print(".           ");
-        write(PetsciiColors.GREY2);
-        println("   to exit chat");
-
+        println("/users or /u     to list users");
+        println("/to <user> msg   to talk with someone");
+        println("/nick <name>     to change nick");
+        println("/help or /h      to get this help");
+        println(".                to exit chat");
         println();
     }
 
     private synchronized void redraw() {
         canRedraw = false;
         displayMessages();
-        write(PetsciiColors.GREY1);
-
-        if (recipient != null
-            && getClients().get(recipient) != null
-            && getClients().get(recipient).getClientName().matches("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
-            recipient = null;
-            println();
-        }
-
-        if (recipient != null) {
-             ofNullable(getClients().get(recipient)).ifPresent(client -> print("[to "+client.getClientName()));
-        }
-
-        write(PetsciiColors.GREY1);
-        print("]");
+        print(":");
         canRedraw = true;
     }
 
     private void showUsers(boolean showIfNoUserConnected) throws IOException {
-        write(GREY3);
         List<BbsThread> users = getConnectedUsers();
         if (isNotEmpty(users)) {
             println("Connected users:");
             int i = 0;
             for (BbsThread u : users) {
                 ++i;
-                write(CYAN);
                 println(u.getClientName());
-                write(GREY3);
-                if (i % 22 == 0 && i < users.size()) {
+                if (i % 21 == 0 && i < users.size()) {
                     newline();
-                    write(WHITE);
                     print("ANY KEY FOR NEXT PAGE, '.' TO GO BACK ");
-                    write(GREY3);
                     flush();
                     resetInput();
                     int ch = readKey();
                     resetInput();
                     if (ch == '.') return;
-                    write(GREY3);
                 }
             }
             newline();
         } else if (showIfNoUserConnected) {
-            write(PetsciiColors.RED);
             println("NO OTHER USER CONNECTED.");
             newline();
         }
-        write(GREY3); print("Your username: ");
-        write(WHITE); println(defaultString(getClientName()));
+        print("Your username: ");
+        println(defaultString(getClientName()));
     }
 
     private List<BbsThread> getConnectedUsers() {
         return getClients().values()
                 .stream()
-                .filter(x -> x.getClientClass().getSimpleName().matches("^Chat.*$")
+                .filter(x -> x.getClientClass().getSimpleName().startsWith("Chat")
                           && x.getClientId() != this.getClientId()
                           && !x.getClientName().matches("(?i)^client[0-9]+$")
                           && !x.getClientName().matches("(?i)^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"))
@@ -289,25 +192,15 @@ public class Chat extends PetsciiThread {
         if (isEmpty(rows))
             return;
 
-        write(13, 145);
-        println(StringUtils.repeat(' ', 39));
-        write(145);
-
-        write(PetsciiColors.GREY2);
-        write(PetsciiColors.GREY3);
         Row row;
         while ((row = rows.poll()) != null) {
             if (row.message.receiverId == -1) {
-                write(PetsciiColors.GREEN);
                 println(row.message.text);
             } else if (row.message.receiverId == -2) {
-                write(PetsciiColors.RED);
                 println(row.message.text);
             } else if (row.message.receiverId == -3) {
                 int index = row.message.text.indexOf(">");
-                write(LIGHT_BLUE);
                 print(row.message.text.substring(0, index+1));
-                write(CYAN);
                 println(row.message.text.substring(index+1));
             } else {
                 String from = ofNullable(getClients().get(row.recipientId)).map(BbsThread::getClientName).orElse(null);
@@ -317,9 +210,7 @@ public class Chat extends PetsciiThread {
                 if (from == null || to == null)
                     continue;
 
-                write(PetsciiColors.BROWN);
                 print("<" + from + ">");
-                write(PetsciiColors.YELLOW);
                 println(text);
             }
         }
@@ -331,7 +222,6 @@ public class Chat extends PetsciiThread {
         rows.addLast(new Row(senderId, chatMessage));
         if (canRedraw && (/* chatMessage.receiverId > 0 || */ readLineBuffer().length() == 0)) {
             redraw();
-            write(INPUT_COLOR);
             if (senderId != this.clientId) {
                 write(7);
             }

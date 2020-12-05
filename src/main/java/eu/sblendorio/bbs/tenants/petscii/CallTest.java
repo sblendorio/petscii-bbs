@@ -14,6 +14,6 @@ public class CallTest extends PetsciiThread {
         readKey();
         resetInput();
         //throw new BbsIOException();
-        launch(new PetsciiMenu());
+        launch(new MenuPetscii());
     }
 }

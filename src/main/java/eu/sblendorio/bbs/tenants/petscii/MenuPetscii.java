@@ -18,7 +18,7 @@ import java.io.File;
 import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
-public class PetsciiMenu extends PetsciiThread {
+public class MenuPetscii extends PetsciiThread {
 
     public static class GeoData {
         public final String city;
@@ -172,7 +172,7 @@ public class PetsciiMenu extends PetsciiThread {
                 else if (key == 'd') launch(new CsdbReleases());
                 else if (key == 'a') launch(new ArnoldC64());
                 else if (key == 'i') launch(new InternetBrowser());
-                else if (key == 'h') launch(new Chat());
+                else if (key == 'h') launch(new Chat64());
                 else if (key == 'k') launch(new CsdbReleasesSD2IEC());
                 else if (key == 'x') launch(new ZorkMachine("zmpp/zork1.z3"));
                 else if (key == 'y') launch(new ZorkMachine("zmpp/zork2.z3"));

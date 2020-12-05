@@ -6,9 +6,9 @@ import eu.sblendorio.bbs.core.AsciiThread;
 import java.io.File;
 import java.io.IOException;
 
-public class Apple1Menu extends AsciiThread {
+public class MenuApple1 extends AsciiThread {
 
-    public Apple1Menu() {
+    public MenuApple1() {
         setLocalEcho(false);
     }
 
@@ -71,27 +71,24 @@ public class Apple1Menu extends AsciiThread {
             println();
             println();
             println();
+            println();
             println("BBS for Apple I - by F. Sblendorio 2020");
             println();
-            println("Blog/News              Game Room");
+            println("Blog/News (ITA)        Game Room");
             println("-----------------      ---------------");
-            println("A - Televideo RAI      R - TIC TAC TOE");
-            println("B - Wired Italia       S - CONNECT FOUR");
-            println("C - Disinformatico     T - ZORK 1");
-            println("D - Next Quotidiano    U - ZORK 2");
-            println("E - Medbunker          V - ZORK 3");
-            println("F - Sportal            Z - Hitchhiker's");
-            println("G - Il Post            . - Logout");
-            println("H - Fatto Quotidiano");
-            println("I - Sys 64738");
-            println("J - Retrocampus");
-            println("K - Retroacademy");
-            println("L - Butac.it");
-            println("M - Pro-Test Italia");
-            println("N - Facta.news");
-            println("O - Indie Retro News");
-            println("P - Dottore, ma e' vero che...");
-            println("Q - Vintage Computer Federation");
+            println("A - Televideo RAI      K - TIC TAC TOE");
+            println("B - Wired Italia       L - CONNECT FOUR");
+            println("C - Disinformatico     M - ZORK 1");
+            println("D - Il Post            N - ZORK 2");
+            println("E - Fatto Quotidiano   O - ZORK 3");
+            println("F - Retrocampus        P - Hitchhiker's");
+            println("G - Butac.it");
+            println("H - Facta.news");
+            println("");
+            println("Blog/News (ENG)        Services");
+            println("--------------------   --------");
+            println("I - Indie Retro News   Q - Chat");
+            println("J - VCF News           . - Logout");
  /*
             gotoXY(24, delta + 13); write(REVON); print(" X "); write(REVOFF); print(" TIC-TAC-TOE");
             gotoXY(24, delta + 14); write(REVON); print(" C "); write(REVOFF); print(" CONNECT-4");
@@ -120,26 +117,20 @@ public class Apple1Menu extends AsciiThread {
                 else if (key == 'a') launch(new TelevideoRaiAscii());
                 else if (key == 'b') launch(new WiredItaliaAscii());
                 else if (key == 'c') launch(new DisinformaticoAscii());
-                else if (key == 'd') launch(new NextQuotidianoAscii());
-                else if (key == 'e') launch(new MedbunkerAscii());
-                else if (key == 'f') launch(new SportalAscii());
-                else if (key == 'g') launch(new IlPostAscii());
-                else if (key == 'h') launch(new IlFattoQuotidianoAscii());
-                else if (key == 'i') launch(new Sys64738Ascii());
-                else if (key == 'j') launch(new RetroCampusAscii());
-                else if (key == 'k') launch(new RetroAcademyAscii());
-                else if (key == 'l') launch(new ButacAscii());
-                else if (key == 'm') launch(new ProTestItaliaAscii());
-                else if (key == 'n') launch(new FactaNewsAscii());
-                else if (key == 'o') launch(new IndieRetroNewsAscii());
-                else if (key == 'p') launch(new DottoreMaEVeroCheAscii());
-                else if (key == 'q') launch(new VcfedAscii());
-                else if (key == 'r') launch(new TicTacToeAscii());
-                else if (key == 's') launch(new Connect4Ascii());
-                else if (key == 't') launch(new ZorkMachineAscii("zmpp/zork1.z3"));
-                else if (key == 'u') launch(new ZorkMachineAscii("zmpp/zork2.z3"));
-                else if (key == 'v') launch(new ZorkMachineAscii("zmpp/zork3.z3"));
-                else if (key == 'z') launch(new ZorkMachineAscii("zmpp/hitchhiker-r60.z3"));
+                else if (key == 'd') launch(new IlPostAscii());
+                else if (key == 'e') launch(new IlFattoQuotidianoAscii());
+                else if (key == 'f') launch(new RetroCampusAscii());
+                else if (key == 'g') launch(new ButacAscii());
+                else if (key == 'h') launch(new FactaNewsAscii());
+                else if (key == 'i') launch(new IndieRetroNewsAscii());
+                else if (key == 'j') launch(new VcfedAscii());
+                else if (key == 'k') launch(new TicTacToeAscii());
+                else if (key == 'l') launch(new Connect4Ascii());
+                else if (key == 'm') launch(new ZorkMachineAscii("zmpp/zork1.z3"));
+                else if (key == 'n') launch(new ZorkMachineAscii("zmpp/zork2.z3"));
+                else if (key == 'o') launch(new ZorkMachineAscii("zmpp/zork3.z3"));
+                else if (key == 'p') launch(new ZorkMachineAscii("zmpp/hitchhiker-r60.z3"));
+                else if (key == 'q') launch(new ChatA1());
                 else validKey = false;
             } while (!validKey);
         }

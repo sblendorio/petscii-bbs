@@ -23,7 +23,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Hidden
-public class ChatOld extends PetsciiThread {
+public class ChatOld64 extends PetsciiThread {
 
     private static final int INPUT_COLOR = GREY3;
 
