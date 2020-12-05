@@ -28,7 +28,6 @@ public class ChatA1 extends AsciiThread {
 
     public ChatA1() {
         setLocalEcho(false);
-        this.keepAlive = false; // CICCIO CICCIO TO REMOVE
     }
 
     @Override
