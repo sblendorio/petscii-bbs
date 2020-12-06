@@ -8,10 +8,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.Reader;
-import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import static java.lang.System.arraycopy;
-import static java.lang.System.setOut;
 import java.net.Socket;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import java.util.Collections;
@@ -238,15 +236,28 @@ public abstract class BbsInputOutput extends Reader {
         return pressed ? key : -1;
     }
 
-    public void write(byte[] buf, int off, int len) { out.write(buf, off, len); }
-    public void write(byte[] b) {
-        try {
-            out.write(b);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+    public void write(byte[] buf, int off, int len) {
+        int size = buf == null ? 0 : buf.length;
+        for (int i = off; i < off+len; ++i) {
+            if (i < size) {
+                write(buf[i]);
+            }
         }
     }
-    public void write(int b) { out.write(b); }
+
+    public void write(byte[] b) {
+        if (b == null) return;
+        for (byte ch: b) {
+            write(ch);
+        }
+    }
+
+    public void write(int b) {
+        out.write(b);
+        if (out.checkError()) {
+            throw new RuntimeException("Broken TCP connection");
+        }
+    }
     public void write(int... b) { for (int c: b) out.write(c); }
     public void flush() { out.flush(); }
 
@@ -334,4 +345,20 @@ public abstract class BbsInputOutput extends Reader {
     public void setLocalEcho(boolean value) { this.localEcho = value; }
     public boolean getLocalEcho() { return localEcho; }
 
+    public void shutdown() {
+        try {
+            if (in != null) in.close();
+        } catch (Exception e) {
+            in = null;
+            out = null;
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (out != null) out.close();
+            } catch (Exception e) {
+                in = null;
+                out = null;
+            }
+        }
+    }
 }

@@ -95,10 +95,16 @@ public abstract class BbsThread extends Thread {
                 try {
                     Thread.sleep(keepAliveInterval);
                     if (keepAlive
-                        && System.currentTimeMillis() - startTimestamp < (keepAliveTimeout <= 0 ? ONE_HOUR : keepAliveTimeout)
-                        && !BbsThread.this.quoteMode()
-                        && running.get())
-                        io.write(keepAliveChar);
+                            && System.currentTimeMillis() - startTimestamp < (keepAliveTimeout <= 0 ? ONE_HOUR : keepAliveTimeout)
+                            && !BbsThread.this.quoteMode()
+                            && running.get()) {
+                        try {
+                            io.write(keepAliveChar);
+                        } catch (Exception e) {
+                            io.shutdown();
+                            BbsThread.this.getRoot().io.shutdown();
+                        }
+                    }
                 } catch (InterruptedException e) {
                     // Thread interrupted
                 }
@@ -532,8 +538,6 @@ public abstract class BbsThread extends Thread {
 
     public Object getCustomObject() { return customObject; }
 
-    public BbsInputOutput getIo() { return io; }
-
     public void setCustomObject(Object obj) { this.customObject = obj; }
 
     public boolean isPrintableChar(int c) {
@@ -577,12 +581,10 @@ public abstract class BbsThread extends Thread {
         while ((ch = keyPressed()) == -1 && System.currentTimeMillis() - a < timeout) {
             try {
                 Thread.sleep(INTERVAL);
-                write(keepAliveChar);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
         return ch;
     }
-
 }
