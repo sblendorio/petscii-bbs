@@ -40,12 +40,14 @@ public class ChatA1 extends AsciiThread {
                 newline();
                 print("Enter your name: ");
                 flush(); resetInput();
-                String name = readLine();
-                name = lowerCase(name);
+                String candidateNname = readLine();
+                final String name = lowerCase(candidateNname);
                 if (isBlank(name) || ".".equalsIgnoreCase(name)) {
                     return;
                 }
-                status = changeClientName(name);
+                boolean alreadyPresent =
+                    clients.values().stream().map(BbsThread::getClientName).anyMatch(x -> x.equalsIgnoreCase(name));
+                status = alreadyPresent ? -1 : changeClientName(name);
                 if (status != 0) {
                     println("Error: name already used.");
                 }
@@ -71,8 +73,8 @@ public class ChatA1 extends AsciiThread {
                     redraw();
                 } else if (command.matches("(?is)^/to [\\.a-zA-Z0-9-]+(\\s+.*)?$")) {
                     String text = defaultString(command.replaceAll("(?is)^/to [\\.a-zA-Z0-9-]+(\\s+.*)?$", "$1")).trim();
-                    Long recipient =
-                            getClientIdByName(command.replaceAll("(?is)^/to ([\\.a-zA-Z0-9-]+)(\\s+.*)?$", "$1"));
+                    final String recipientName = command.replaceAll("(?is)^/to ([\\.a-zA-Z0-9-]+)(\\s+.*)?$", "$1");
+                    Long recipient = getClientIdByName(recipientName, String::compareToIgnoreCase);
                     if (recipient != null && recipient != getClientId()) {
                         if (isNotBlank(text)) {
                             send(recipient, new ChatMessage(recipient, text));
@@ -82,11 +84,13 @@ public class ChatA1 extends AsciiThread {
                     if (isBlank(text))
                         redraw();
                 } else if (command.matches("(?is)/nick [\\.a-zA-Z0-9-]+")) {
-                    String newName = command.replaceAll("\\s+", " ").substring(6);
-                    int res = changeClientName(newName);
+                    String candidateName = command.replaceAll("\\s+", " ").substring(6);
+                    final String newName = lowerCase(candidateName);
+                    boolean alreadyPresent =
+                        clients.values().stream().map(BbsThread::getClientName).anyMatch(x -> x.equalsIgnoreCase(newName));
+                    int res = alreadyPresent ? -1 : changeClientName(newName);
                     if (res != 0) {
-                        println("Error: name already used. Press any key.");
-                        readKey();
+                        println("Error: name already used..");
                     }
                     redraw();
                 } else if (command.equalsIgnoreCase("/users") ||
@@ -101,7 +105,7 @@ public class ChatA1 extends AsciiThread {
                     canRedraw = false;
                     displayHelp();
                     redraw();
-                } else if (".".equals(command)) {
+                } else if (".".equals(command) || "/q".equalsIgnoreCase(command) || "/quit".equalsIgnoreCase(command)) {
                     log("Exiting chat.");
                 } else if (StringUtils.isNotBlank(command)) {
                     sendToAll(new ChatMessage(-3, "<"+getClientName()+"@all>"+ command));
@@ -109,7 +113,7 @@ public class ChatA1 extends AsciiThread {
                 } else {
                     redraw();
                 }
-            } while (!".".equals(rawCommand));
+            } while (!".".equals(rawCommand) && !"/q".equalsIgnoreCase(rawCommand) && !"/quit".equalsIgnoreCase(rawCommand));
         } finally {
             notifyExitingUser();
             changeClientName(UUID.randomUUID().toString());
@@ -137,11 +141,11 @@ public class ChatA1 extends AsciiThread {
 
     private synchronized void displayHelp() {
         println("Commands");
-        println("/users or /u     to list users");
-        println("/to <user> msg   to talk with someone");
-        println("/nick <name>     to change nick");
-        println("/help or /h      to get this help");
-        println(".                to exit chat");
+        println("/users or /u      to list users");
+        println("/to <user> msg    to talk with someone");
+        println("/nick <name>      to change nick");
+        println("/help or /h       to get this help");
+        println("/quit or /q or .  to exit chat");
         println();
     }
 

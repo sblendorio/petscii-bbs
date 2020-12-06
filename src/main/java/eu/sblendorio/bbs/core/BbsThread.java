@@ -1,5 +1,6 @@
 package eu.sblendorio.bbs.core;
 
+import com.google.common.collect.Comparators;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import java.sql.Timestamp;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Supplier;
 import org.apache.commons.io.IOUtils;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
@@ -195,12 +198,16 @@ public abstract class BbsThread extends Thread {
 
     public long getClientId() { return clientId; }
 
-    public Long getClientIdByName(String name) {
+    public Long getClientIdByName(String name, Comparator<String> comparator) {
         return clients.entrySet().stream()
-            .filter(x -> x.getValue().getClientName().equals(name))
+            .filter(x -> comparator.compare(x.getValue().getClientName(), name) == 0)
             .findAny()
             .map(thread -> thread.getKey())
             .orElse(null);
+    }
+
+    public Long getClientIdByName(String name) {
+        return getClientIdByName(name, String::compareTo);
     }
 
     public Class getClientClass() { return clientClass; }

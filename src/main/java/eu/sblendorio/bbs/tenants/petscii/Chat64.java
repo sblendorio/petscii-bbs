@@ -41,6 +41,7 @@ public class Chat64 extends PetsciiThread {
             return "ChatMessage{" + "receiverId=" + receiverId + ", text='" + text + '\'' + '}';
         }
     }
+
     public static class Row {
         public final long recipientId;
         public final ChatMessage message;
@@ -54,7 +55,7 @@ public class Chat64 extends PetsciiThread {
     private Long recipient = null;
     private boolean canRedraw = false;
 
-    private ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<Row>();
+    private ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<>();
 
     public Chat64() {
     }
@@ -68,11 +69,13 @@ public class Chat64 extends PetsciiThread {
             do {
                 print("Enter your name: ");
                 flush(); resetInput();
-                String name = readLine();
+                final String name = readLine();
                 if (isBlank(name) || ".".equalsIgnoreCase(name)) {
                     return;
                 }
-                status = changeClientName(name);
+                boolean alreadyPresent =
+                    clients.values().stream().map(BbsThread::getClientName).anyMatch(x -> x.equalsIgnoreCase(name));
+                status = alreadyPresent ? -1 : changeClientName(name);
                 if (status != 0) {
                     println("Error: name already used.");
                 }
@@ -100,8 +103,8 @@ public class Chat64 extends PetsciiThread {
                     redraw();
                 } else if (command.matches("(?is)^/to [\\.a-zA-Z0-9-]+(\\s+.*)?$")) {
                     String text = defaultString(command.replaceAll("(?is)^/to [\\.a-zA-Z0-9-]+(\\s+.*)?$", "$1")).trim();
-                    Long candidateRecipient =
-                            getClientIdByName(command.replaceAll("(?is)^/to ([\\.a-zA-Z0-9-]+)(\\s+.*)?$", "$1"));
+                    final String recipientName = command.replaceAll("(?is)^/to ([\\.a-zA-Z0-9-]+)(\\s+.*)?$", "$1");
+                    Long candidateRecipient = getClientIdByName(recipientName, String::compareToIgnoreCase);
                     if (candidateRecipient != null && candidateRecipient != getClientId()) {
                         recipient = candidateRecipient;
                         if (isNotBlank(text)) {
@@ -121,11 +124,12 @@ public class Chat64 extends PetsciiThread {
                         redraw();
                     }
                 } else if (command.matches("(?is)/nick [\\.a-zA-Z0-9-]+")) {
-                    String newName = command.replaceAll("\\s+", " ").substring(6);
-                    int res = changeClientName(newName);
+                    final String newName = command.replaceAll("\\s+", " ").substring(6);
+                    boolean alreadyPresent =
+                        clients.values().stream().map(BbsThread::getClientName).anyMatch(x -> x.equalsIgnoreCase(newName));
+                    int res = alreadyPresent ? -1 : changeClientName(newName);
                     if (res != 0) {
-                        println("Error: name already used. Press any key.");
-                        readKey();
+                        println("Error: name already used.");
                     }
                     redraw();
                 } else if (command.equalsIgnoreCase("/users") ||
@@ -140,7 +144,7 @@ public class Chat64 extends PetsciiThread {
                     canRedraw = false;
                     displayHelp();
                     redraw();
-                } else if (".".equals(command)) {
+                } else if (".".equals(command) || "/q".equalsIgnoreCase(command) || "/quit".equalsIgnoreCase(command)) {
                     log("Exiting chat.");
                 } else if (recipient != null) {
                     send(recipient, new ChatMessage(recipient, command));
@@ -152,7 +156,7 @@ public class Chat64 extends PetsciiThread {
                 } else {
                     redraw();
                 }
-            } while (!".".equals(rawCommand));
+            } while (!".".equals(rawCommand) && !"/q".equalsIgnoreCase(rawCommand) && !"/quit".equalsIgnoreCase(rawCommand));
         } finally {
             notifyExitingUser();
             changeClientName(UUID.randomUUID().toString());
@@ -189,22 +193,22 @@ public class Chat64 extends PetsciiThread {
         write(PetsciiColors.LIGHT_BLUE);
         print("/u");
         write(PetsciiColors.GREY2);
-        println("   to list users");
+        println("     to list users");
 
         write(PetsciiColors.LIGHT_BLUE);
         print("/to <person>");
         write(PetsciiColors.GREY2);
-        println("   to talk with someone");
+        println("     to talk with someone");
 
         write(PetsciiColors.LIGHT_BLUE);
         print("/all");
         write(PetsciiColors.GREY2);
-        println("           to talk with all");
+        println("             to talk with all");
 
         write(PetsciiColors.LIGHT_BLUE);
         print("/nick <name>");
         write(PetsciiColors.GREY2);
-        println("   to change nick");
+        println("     to change nick");
 
         write(PetsciiColors.LIGHT_BLUE);
         print("/help");
@@ -213,12 +217,20 @@ public class Chat64 extends PetsciiThread {
         write(PetsciiColors.LIGHT_BLUE);
         print("/h");
         write(PetsciiColors.GREY2);
-        println("    to get this help");
+        println("      to get this help");
 
-        write(PetsciiColors.WHITE);
-        print(".           ");
+        write(PetsciiColors.LIGHT_BLUE);
+        print("/quit");
         write(PetsciiColors.GREY2);
-        println("   to exit chat");
+        print(" or ");
+        write(PetsciiColors.LIGHT_BLUE);
+        print("/q");
+        write(PetsciiColors.GREY2);
+        print(" or ");
+        write(PetsciiColors.LIGHT_BLUE);
+        print(".");
+        write(PetsciiColors.GREY2);
+        println(" to exit chat");
 
         println();
     }
