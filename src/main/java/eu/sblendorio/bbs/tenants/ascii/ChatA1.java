@@ -62,7 +62,7 @@ public class ChatA1 extends AsciiThread {
 
             notifyEnteringUser();
             String rawCommand = null;
-            redraw();
+            redraw(false);
             do {
                 resetInput();
                 rawCommand = readLine();
@@ -70,7 +70,7 @@ public class ChatA1 extends AsciiThread {
                 rawCommand = lowerCase(rawCommand);
                 final String command =  rawCommand;
                 if (isBlank(command)) {
-                    redraw();
+                    redraw(false);
                 } else if (command.matches("(?is)^/to [\\.a-zA-Z0-9-]+(\\s+.*)?$")) {
                     String text = defaultString(command.replaceAll("(?is)^/to [\\.a-zA-Z0-9-]+(\\s+.*)?$", "$1")).trim();
                     final String recipientName = command.replaceAll("(?is)^/to ([\\.a-zA-Z0-9-]+)(\\s+.*)?$", "$1");
@@ -78,11 +78,11 @@ public class ChatA1 extends AsciiThread {
                     if (recipient != null && recipient != getClientId()) {
                         if (isNotBlank(text)) {
                             send(recipient, new ChatMessage(recipient, text));
-                            redraw();
+                            redraw(false);
                         }
                     }
                     if (isBlank(text))
-                        redraw();
+                        redraw(false);
                 } else if (command.matches("(?is)/nick [\\.a-zA-Z0-9-]+")) {
                     String candidateName = command.replaceAll("\\s+", " ").substring(6);
                     final String newName = lowerCase(candidateName);
@@ -92,26 +92,26 @@ public class ChatA1 extends AsciiThread {
                     if (res != 0) {
                         println("Error: name already used..");
                     }
-                    redraw();
+                    redraw(false);
                 } else if (command.equalsIgnoreCase("/users") ||
                     command.equalsIgnoreCase("/user")  ||
                     command.equalsIgnoreCase("/u")) {
                     canRedraw = false;
                     showUsers(true);
-                    redraw();
+                    redraw(false);
                 } else if (command.equalsIgnoreCase("/help") ||
                     command.equalsIgnoreCase("/?") ||
                     command.equalsIgnoreCase("/h")) {
                     canRedraw = false;
                     displayHelp();
-                    redraw();
+                    redraw(false);
                 } else if (".".equals(command) || "/q".equalsIgnoreCase(command) || "/quit".equalsIgnoreCase(command)) {
                     log("Exiting chat.");
                 } else if (StringUtils.isNotBlank(command)) {
                     sendToAll(new ChatMessage(-3, "<"+getClientName()+"@all>"+ command));
-                    redraw();
+                    redraw(false);
                 } else {
-                    redraw();
+                    redraw(false);
                 }
             } while (!".".equals(rawCommand) && !"/q".equalsIgnoreCase(rawCommand) && !"/quit".equalsIgnoreCase(rawCommand));
         } finally {
@@ -149,9 +149,9 @@ public class ChatA1 extends AsciiThread {
         println();
     }
 
-    private synchronized void redraw() {
+    private synchronized void redraw(boolean duringWait) {
         canRedraw = false;
-        displayMessages();
+        displayMessages(duringWait);
         print(":");
         canRedraw = true;
     }
@@ -193,12 +193,14 @@ public class ChatA1 extends AsciiThread {
                 .collect(Collectors.toList());
     }
 
-    private void displayMessages() {
+    private void displayMessages(boolean duringWait) {
         if (isEmpty(rows))
             return;
 
         Row row;
+        boolean isFirstRow = true;
         while ((row = rows.poll()) != null) {
+            if (!isFirstRow || !duringWait) print(":");
             if (row.message.receiverId == -1) {
                 println(row.message.text);
             } else if (row.message.receiverId == -2) {
@@ -218,6 +220,7 @@ public class ChatA1 extends AsciiThread {
                 print("<" + from + ">");
                 println(text);
             }
+            isFirstRow = false;
         }
     }
 
@@ -226,7 +229,7 @@ public class ChatA1 extends AsciiThread {
         ChatMessage chatMessage = (ChatMessage) message;
         rows.addLast(new Row(senderId, chatMessage));
         if (canRedraw && (/* chatMessage.receiverId > 0 || */ readLineBuffer().length() == 0)) {
-            redraw();
+            redraw(true);
             if (senderId != this.clientId) {
                 write(7);
             }

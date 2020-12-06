@@ -193,22 +193,22 @@ public class Chat64 extends PetsciiThread {
         write(PetsciiColors.LIGHT_BLUE);
         print("/u");
         write(PetsciiColors.GREY2);
-        println("     to list users");
+        println("      to list users");
 
         write(PetsciiColors.LIGHT_BLUE);
         print("/to <person>");
         write(PetsciiColors.GREY2);
-        println("     to talk with someone");
+        println("      to talk with someone");
 
         write(PetsciiColors.LIGHT_BLUE);
         print("/all");
         write(PetsciiColors.GREY2);
-        println("             to talk with all");
+        println("              to talk with all");
 
         write(PetsciiColors.LIGHT_BLUE);
         print("/nick <name>");
         write(PetsciiColors.GREY2);
-        println("     to change nick");
+        println("      to change nick");
 
         write(PetsciiColors.LIGHT_BLUE);
         print("/help");
@@ -217,7 +217,7 @@ public class Chat64 extends PetsciiThread {
         write(PetsciiColors.LIGHT_BLUE);
         print("/h");
         write(PetsciiColors.GREY2);
-        println("      to get this help");
+        println("       to get this help");
 
         write(PetsciiColors.LIGHT_BLUE);
         print("/quit");
@@ -230,7 +230,7 @@ public class Chat64 extends PetsciiThread {
         write(PetsciiColors.LIGHT_BLUE);
         print(".");
         write(PetsciiColors.GREY2);
-        println(" to exit chat");
+        println("  to exit chat");
 
         println();
     }
