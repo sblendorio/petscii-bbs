@@ -76,7 +76,10 @@ public abstract class RssAscii extends AsciiThread {
 
     private void printChannelList() {
         List<String> keys = new LinkedList<>(sections().keySet());
-        for (int i=0; i<8; ++i) {
+        int size = sections().size() / 2;
+        if (size * 2 < sections().size())
+            ++size;
+        for (int i=0; i<size; ++i) {
             int even = i;
             if (even >= keys.size()) break;
             String key = keys.get(even);
@@ -87,7 +90,7 @@ public abstract class RssAscii extends AsciiThread {
             print(title);
             print(" ");
 
-            int odd = even+8;
+            int odd = even+(sections().size() / 2);
             if (odd < keys.size()) {
                 key = keys.get(odd);
                 value = sections().get(key);
@@ -95,7 +98,7 @@ public abstract class RssAscii extends AsciiThread {
             } else {
                 write(' '); print(" . "); write(' ', ' '); print("Go back");
             }
-            newline();
+            //newline();
             newline();
 
         }

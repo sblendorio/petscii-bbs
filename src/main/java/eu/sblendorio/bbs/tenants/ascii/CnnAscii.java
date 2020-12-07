@@ -39,7 +39,7 @@ public class CnnAscii extends RssAscii {
         result.put("107", new NewsSection("Middle East", prefix() + "edition_meast.rss", bytes("CNN - Middle East")));
         result.put("108", new NewsSection("U.S.A.", prefix() + "edition_us.rss", bytes("CNN - U.S.A.")));
         result.put("109", new NewsSection("Technology", prefix() + "edition_technology.rss", bytes("CNN - Technology")));
-        result.put("110", new NewsSection("Science & Space", prefix() + "edition_space.rss", bytes("CNN - Science & Space")));
+        result.put("110", new NewsSection("Science-Space", prefix() + "edition_space.rss", bytes("CNN - Science & Space")));
         result.put("111", new NewsSection("Entertainment", prefix() + "edition_entertainment.rss", bytes("CNN - Entertainment")));
         result.put("112", new NewsSection("Money", prefix() + "money_news_international.rss", bytes("CNN - Money")));
         result.put("113", new NewsSection("World Sport", prefix() + "edition_sport.rss", bytes("CNN - World Sport")));

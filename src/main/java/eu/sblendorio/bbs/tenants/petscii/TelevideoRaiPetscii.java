@@ -107,6 +107,9 @@ public class TelevideoRaiPetscii extends PetsciiThread {
         gotoXY(0, 5);
         List<String> keys = new LinkedList<>(sections.keySet());
         Collections.sort(keys);
+        int size = sections.size() / 2;
+        if (size * 2 < sections.size())
+            ++size;
         for (int i=0; i<8; ++i) {
             int even = i;
             if (even >= keys.size()) break;
@@ -118,7 +121,7 @@ public class TelevideoRaiPetscii extends PetsciiThread {
             print(title);
             print(" ");
 
-            int odd = even+8;
+            int odd = even + (sections.size() / 2);
             if (odd < keys.size()) {
                 key = keys.get(odd);
                 value = sections.get(key);
