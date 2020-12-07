@@ -163,11 +163,11 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     public void print(short zsciiChar, boolean isInput) {
         if (isInput) {
             if (zsciiChar == ZsciiEncoding.NEWLINE || zsciiChar == ZsciiEncoding.NEWLINE_10) {
-                bbsThread.newline();
+                if (bbsThread.getLocalEcho()) bbsThread.newline();
                 bbsThread.flush();
-            } else if (zsciiChar != ZsciiEncoding.INSTDEL && zsciiChar != -1) {
+            } else if (zsciiChar != ZsciiEncoding.INSTDEL && zsciiChar != ZsciiEncoding.DELETE && zsciiChar != -1) {
                 char c = machine.getGameData().getZsciiEncoding().getUnicodeChar(zsciiChar);
-                bbsThread.print("" + c);
+                if (bbsThread.getLocalEcho()) bbsThread.print("" + c);
                 bbsThread.flush();
             }
         } else {

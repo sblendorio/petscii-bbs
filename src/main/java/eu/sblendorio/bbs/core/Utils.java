@@ -1,5 +1,7 @@
 package eu.sblendorio.bbs.core;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,6 +33,15 @@ public class Utils {
     public static String normalizeDomain(String s) {
         return lowerCase(trim(s)).replaceAll("https?:(//)?", EMPTY).replace("www.", EMPTY).replaceAll("/+?$", EMPTY);
     }
+
+    public static byte[] bytes(String s, Charset charset) {
+        return s == null ? new byte[] {} : s.getBytes(charset);
+    }
+
+    public static byte[] bytes(String s) {
+        return bytes(s, StandardCharsets.ISO_8859_1);
+    }
+
 
     private Utils() {
         throw new IllegalStateException("Utility class");

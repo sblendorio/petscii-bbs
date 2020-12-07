@@ -43,6 +43,7 @@ import java.util.Map;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.substring;
 import static org.apache.commons.lang3.StringUtils.trim;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -112,7 +113,7 @@ public class TelevideoRaiPetscii extends PetsciiThread {
             String key = keys.get(even);
             NewsSection value = sections.get(key);
             write(RIGHT, value.color, REVON, SPACE_CHAR);
-            print(key); write(SPACE_CHAR, REVOFF, SPACE_CHAR);
+            print(String.format("%3s", key)); write(SPACE_CHAR, REVOFF, SPACE_CHAR);
             String title = substring(value.title + "                    ", 0, 12);
             print(title);
             print(" ");
@@ -122,7 +123,7 @@ public class TelevideoRaiPetscii extends PetsciiThread {
                 key = keys.get(odd);
                 value = sections.get(key);
                 write(value.color, REVON, SPACE_CHAR);
-                print(key);
+                print(String.format("%3s", key));
                 write(SPACE_CHAR, REVOFF, SPACE_CHAR);
                 print(value.title);
             } else {
@@ -197,9 +198,13 @@ public class TelevideoRaiPetscii extends PetsciiThread {
             String text = EMPTY;
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             for (NewsFeed feed : feeds) {
+                String description = HtmlUtils.htmlClean(feed.description).trim();
+                description = StringUtils.isBlank(description) ? "&c64nbsp;" : description;
+
                 String post = EMPTY;
                 post += feed.title + "<br>" + HR_TOP + "<br>";
-                post += dateFormat.format(feed.publishedDate) + " " + feed.description + "<br>";
+                post += feed.publishedDate == null ? "" : (dateFormat.format(feed.publishedDate) + " ");
+                post += description + "<br>";
                 int lineFeeds = (screenRows - (wordWrap(post).length % screenRows)) % screenRows;
 
                 post += StringUtils.repeat("&c64nbsp;<br>", lineFeeds);

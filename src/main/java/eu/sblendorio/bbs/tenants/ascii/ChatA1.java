@@ -130,13 +130,13 @@ public class ChatA1 extends AsciiThread {
     }
 
     private void notifyEnteringUser() {
-        sendToAll(new ChatMessage(-1, getClientName() + " has entered"));
+        sendToAll(new ChatMessage(-1, "* " +getClientName() + " has entered"));
     }
 
     private void notifyExitingUser() {
         if (!getClientName().matches("^client[0-9]+$")
          && !getClientName().matches("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
-            sendToAll(new ChatMessage(-2, getClientName() + " just left"));
+            sendToAll(new ChatMessage(-2, "* " +getClientName() + " just left"));
     }
 
     private synchronized void displayHelp() {
