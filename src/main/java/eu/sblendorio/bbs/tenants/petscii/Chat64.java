@@ -25,6 +25,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 @Hidden
 public class Chat64 extends PetsciiThread {
 
+    private static final String CUSTOM_KEY = "CHAT";
     private static final int INPUT_COLOR = GREY3;
 
     public static class ChatMessage {
@@ -66,7 +67,13 @@ public class Chat64 extends PetsciiThread {
             canRedraw = false;
             write(PetsciiColors.GREY3, PetsciiKeys.CLR, PetsciiKeys.LOWERCASE, PetsciiKeys.CASE_LOCK, PetsciiKeys.HOME);
             int status;
-            do {
+            String previousName = (String) getRoot().getCustomObject(CUSTOM_KEY);
+
+            boolean invalid = previousName == null ||
+                clients.values().stream().map(BbsThread::getClientName).anyMatch(x -> x.equalsIgnoreCase(previousName));
+            status = invalid ? -1 : changeClientName(previousName);
+
+            while (status != 0) {
                 print("Enter your name: ");
                 flush(); resetInput();
                 final String name = readLine();
@@ -79,8 +86,9 @@ public class Chat64 extends PetsciiThread {
                 if (status != 0) {
                     println("Error: name already used.");
                 }
-            } while (status != 0);
+            };
 
+            getRoot().setCustomObject(CUSTOM_KEY, getClientName());
             cls();
             write(PetsciiColors.YELLOW);
             println("              BBS Chat 2.0");

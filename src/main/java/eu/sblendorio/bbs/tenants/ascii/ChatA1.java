@@ -22,6 +22,7 @@ import static org.apache.commons.lang3.StringUtils.lowerCase;
 @Hidden
 public class ChatA1 extends AsciiThread {
 
+    private static final String CUSTOM_KEY = "CHAT";
     private boolean canRedraw = false;
 
     private ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<>();
@@ -35,7 +36,13 @@ public class ChatA1 extends AsciiThread {
         try {
             canRedraw = false;
             int status;
-            do {
+            String previousName = (String) getRoot().getCustomObject(CUSTOM_KEY);
+
+            boolean invalid = previousName == null ||
+                clients.values().stream().map(BbsThread::getClientName).anyMatch(x -> x.equalsIgnoreCase(previousName));
+            status = invalid ? -1 : changeClientName(previousName);
+
+            while (status != 0) {
                 newline();
                 newline();
                 print("Enter your name: ");
@@ -51,8 +58,9 @@ public class ChatA1 extends AsciiThread {
                 if (status != 0) {
                     println("Error: name already used.");
                 }
-            } while (status != 0);
+            };
 
+            getRoot().setCustomObject(CUSTOM_KEY, getClientName());
             cls();
             println("              BBS Chat 2.0");
             newline();
@@ -130,13 +138,13 @@ public class ChatA1 extends AsciiThread {
     }
 
     private void notifyEnteringUser() {
-        sendToAll(new ChatMessage(-1, "* " +getClientName() + " has entered"));
+        sendToAll(new ChatMessage(-1, getClientName() + " has entered"));
     }
 
     private void notifyExitingUser() {
         if (!getClientName().matches("^client[0-9]+$")
          && !getClientName().matches("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
-            sendToAll(new ChatMessage(-2, "* " +getClientName() + " just left"));
+            sendToAll(new ChatMessage(-2, getClientName() + " just left"));
     }
 
     private synchronized void displayHelp() {
@@ -202,9 +210,9 @@ public class ChatA1 extends AsciiThread {
         while ((row = rows.poll()) != null) {
             if (!isFirstRow || !duringWait) print(":");
             if (row.message.receiverId == -1) {
-                println(row.message.text);
+                println("* " + row.message.text);
             } else if (row.message.receiverId == -2) {
-                println(row.message.text);
+                println("* " + row.message.text);
             } else if (row.message.receiverId == -3) {
                 int index = row.message.text.indexOf(">");
                 print(row.message.text.substring(0, index+1));

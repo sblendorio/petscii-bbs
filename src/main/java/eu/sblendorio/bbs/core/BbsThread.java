@@ -18,6 +18,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import java.sql.Timestamp;
 import java.util.Comparator;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -65,7 +66,7 @@ public abstract class BbsThread extends Thread {
     protected Class clientClass;
     protected Socket socket = null;
     protected BbsInputOutput io;
-    protected Object customObject = null;
+    protected Map<String, Object> customObject = new HashMap<>();
 
     protected BbsThread child = null;
     protected BbsThread parent = null;
@@ -285,7 +286,7 @@ public abstract class BbsThread extends Thread {
 
     private Deque<BbsStatus> bbsStack = new ConcurrentLinkedDeque<>();
 
-    private BbsThread getRoot() {
+    public BbsThread getRoot() {
         BbsThread root = this;
         while (root.parent != null) {
             root = root.parent;
@@ -543,9 +544,9 @@ public abstract class BbsThread extends Thread {
         return clients;
     }
 
-    public Object getCustomObject() { return customObject; }
+    public Object getCustomObject(String key) { return customObject.get(key); }
 
-    public void setCustomObject(Object obj) { this.customObject = obj; }
+    public void setCustomObject(String key, Object obj) { customObject.put(key, obj); }
 
     public boolean isPrintableChar(int c) {
         return io.isPrintableChar(c);

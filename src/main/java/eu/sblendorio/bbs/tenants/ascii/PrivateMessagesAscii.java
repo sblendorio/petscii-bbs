@@ -1,32 +1,8 @@
-package eu.sblendorio.bbs.tenants.petscii;
+package eu.sblendorio.bbs.tenants.ascii;
 
-import eu.sblendorio.bbs.core.Hidden;
-import static eu.sblendorio.bbs.core.PetsciiColors.CYAN;
-import static eu.sblendorio.bbs.core.PetsciiColors.GREEN;
-import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
-import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_GREEN;
-import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_RED;
-import static eu.sblendorio.bbs.core.PetsciiColors.RED;
-import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
-import static eu.sblendorio.bbs.core.PetsciiKeys.CASE_LOCK;
-import static eu.sblendorio.bbs.core.PetsciiKeys.LOWERCASE;
-import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
-import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
-import static java.util.Arrays.asList;
-import static org.apache.commons.codec.CharEncoding.UTF_8;
-import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.defaultString;
-import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.isNumeric;
-import static org.apache.commons.lang3.StringUtils.lowerCase;
-import static org.apache.commons.lang3.StringUtils.repeat;
-import static org.apache.commons.lang3.StringUtils.trim;
-import static org.apache.commons.lang3.math.NumberUtils.toInt;
-
+import eu.sblendorio.bbs.core.AsciiThread;
+import eu.sblendorio.bbs.core.Utils;
+import eu.sblendorio.bbs.tenants.petscii.UserLogon;
 import java.io.File;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -38,19 +14,33 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import static java.util.Arrays.asList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
-
+import static org.apache.commons.codec.CharEncoding.UTF_8;
+import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import org.apache.commons.lang3.StringUtils;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.isNumeric;
+import static org.apache.commons.lang3.StringUtils.lowerCase;
+import static org.apache.commons.lang3.StringUtils.repeat;
+import static org.apache.commons.lang3.StringUtils.trim;
+import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import org.apache.commons.text.WordUtils;
 
-import eu.sblendorio.bbs.core.PetsciiThread;
+public class PrivateMessagesAscii extends AsciiThread {
 
-@Hidden
-public class UserLogon extends PetsciiThread {
+    public PrivateMessagesAscii() {
+        setLocalEcho(false);
+    }
 
     protected static final String CUSTOM_KEY = "PRIVATE_MESSAGES";
     protected static final String DB_FILE = System.getProperty("user.home") + "/bbs-data.db";
@@ -64,7 +54,7 @@ public class UserLogon extends PetsciiThread {
     }
 
     private Connection conn = null;
-    private User user;
+    private UserLogon.User user;
 
     public static class User {
         public final Long id;
@@ -85,7 +75,7 @@ public class UserLogon extends PetsciiThread {
         public final String userFrom;
         public final String userTo;
         public final Date dateTime;
-        public boolean isRead;
+        private boolean isRead;
         public final String subject;
         public final String message;
         public final boolean receiverExists;
@@ -120,7 +110,7 @@ public class UserLogon extends PetsciiThread {
         }
         user = null;
         try {
-            user = (User) getRoot().getCustomObject(CUSTOM_KEY);
+            user = (UserLogon.User) getRoot().getCustomObject(CUSTOM_KEY);
         } catch (NullPointerException | ClassCastException e) {
             log("User not logged " + e.getClass().getName() + " " + e.getMessage() );
         }
@@ -134,9 +124,7 @@ public class UserLogon extends PetsciiThread {
         String password;
         if (user == null) {
             cls();
-            write(CASE_LOCK, LOWERCASE);
             write(LOGO_BYTES);
-            write(GREY3);
             newline();
             println("Enter 'P' for privacy policy");
             newline();
@@ -146,23 +134,21 @@ public class UserLogon extends PetsciiThread {
                 print("USERID or 'NEW': ");
                 flush(); resetInput();
                 username = readLine();
+                username = lowerCase(username);
                 if (isBlank(username) || ".".equals(username)) return;
                 if (equalsIgnoreCase(username, "p")) {
                     showPrivacyPolicy();
                     cls();
-                    write(CASE_LOCK, LOWERCASE);
                     write(LOGO_BYTES);
-                    write(GREY3);
                     newline();
                     println("Enter 'P' as USERID for privacy policy");
                     newline();
                 } else if (equalsIgnoreCase(username, "new")) {
                     if (createNewUser()) {
-                        write(GREEN); println("User created successfully.");
+                        println("User created successfully.");
                     } else {
-                        write(RED); println("Operation aborted.");
+                        println("Operation aborted.");
                     }
-                    write(GREY3);
                     newline();
                 }
             } while (equalsIgnoreCase(username, "new") || equalsIgnoreCase(username, "p"));
@@ -170,11 +156,9 @@ public class UserLogon extends PetsciiThread {
             flush(); resetInput(); password = readPassword();
             user = getUser(username, password);
             if (user == null) {
-                write(RED);
                 newline();
-                write(REVON); println("Wrong username or password"); write(REVOFF);
+                println("Wrong username or password");
                 newline();
-                write(GREY3);
             }
         }
         try {
@@ -188,30 +172,26 @@ public class UserLogon extends PetsciiThread {
     public void listUsers() throws Exception {
         cls();
         write(LOGO_BYTES);
-        write(GREY3);
-        List<User> users = getUsers();
+        List<UserLogon.User> users = getUsers();
         int i = 0;
-        for (User u: users) {
+        for (UserLogon.User u: users) {
             ++i;
-            write(CYAN);
             print(u.nick);
-            write(GREY3);
             String realname = u.realname;
             if (isNotBlank(realname) && (u.nick + realname).length() > 36)
                 realname = realname.substring(0, 33 - u.nick.length()) + "...";
             println(isBlank(realname) ? EMPTY : " (" + realname + ")");
-            if (i % 19 == 0 && i < users.size()) {
+            if (i % 18 == 0 && i < users.size()) {
                 newline();
-                write(WHITE); print("ANY KEY FOR NEXT PAGE, '.' TO GO BACK "); write(GREY3);
+                print("ANY KEY FOR NEXT PAGE, '.' TO GO BACK ");
                 flush(); resetInput(); int ch = readKey(); resetInput();
                 if (ch == '.') return;
                 cls();
                 write(LOGO_BYTES);
-                write(GREY3);
             }
         }
         newline();
-        write(WHITE); print("PRESS ANY KEY TO GO BACK "); write(GREY3);
+        print("PRESS ANY KEY TO GO BACK ");
         flush(); resetInput(); readKey(); resetInput();
     }
 
@@ -234,6 +214,7 @@ public class UserLogon extends PetsciiThread {
             do {
                 print("send to (? for user list): ");
                 flush(); resetInput(); receipt = readLine();
+                receipt = lowerCase(receipt);
                 if (isBlank(receipt)) return;
                 ok = existsUser(receipt);
                 if (!ok && !"?".equals(receipt)) println("WARN: not existing user");
@@ -246,6 +227,7 @@ public class UserLogon extends PetsciiThread {
 
             print("subject: ");
             flush(); resetInput(); subject = readLine();
+            subject = lowerCase(subject);
             if (isBlank(subject)) return;
         }
         newline();
@@ -256,14 +238,14 @@ public class UserLogon extends PetsciiThread {
         do {
             flush(); resetInput();
             line = readLine();
+            line = lowerCase(line);
             if (isNotBlank(line))
                 message += line + "\n";
         } while (isNotBlank(line));
 
         sendMessage(user.nick, receipt, subject, message);
-        newline(); write(WHITE);
+        newline();
         print("MESSAGE SENT - PRESS ANY KEY ");
-        write(GREY3);
         flush(); resetInput(); readKey(); resetInput();
     }
 
@@ -280,7 +262,7 @@ public class UserLogon extends PetsciiThread {
     }
 
     public void listMessages(boolean onlyUnread) throws Exception {
-        List<Message> messages = getMessages(user.nick, onlyUnread);
+        List<UserLogon.Message> messages = getMessages(user.nick, onlyUnread);
 
         int pagesize = 12;
         int offset = 0;
@@ -294,48 +276,45 @@ public class UserLogon extends PetsciiThread {
             }
             long unread = countUnreadMessages(user.nick);
             cls();
-            write(CASE_LOCK, LOWERCASE);
             write(LOGO_BYTES);
-            write(GREY3);
             println("Got " + size  + (onlyUnread ? " unread" : EMPTY) + " message" + (size != 1 ? "s" : EMPTY) + (onlyUnread || unread == 0 ? EMPTY : " (" + unread + " unread)") + ".");
             newline();
             for (int i=offset; i<Math.min(offset+pagesize, size); ++i) {
                 int i1=i+1;
-                Message m = messages.get(i);
+                UserLogon.Message m = messages.get(i);
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                 DateFormat tf = new SimpleDateFormat("hh:mm:ssa");
                 String nowString= df.format(new Date(System.currentTimeMillis()));
                 String date = df.format(m.dateTime);
                 if (date.equals(nowString)) date = tf.format(m.dateTime);
                 String subject = isNotBlank(m.subject) ? m.subject : defaultString(m.message).replaceAll("[\r\n]", " ");
-                if (isNotBlank(subject) && (1+(""+i1).length()+1+10+1+m.userFrom.length()+1+m.subject.length() )>(getScreenColumns() - 1))
+                if (isNotBlank(subject) && (1+(""+i1).length()+1+10+1+m.userFrom.length()+1+m.subject.length() )> (getScreenColumns() - 1))
                     subject = subject.substring(0,(getScreenColumns() - 1)-(1+(""+i1).length()+1+10+1+m.userFrom.length()+1));
-                write(LIGHT_RED); print((m.isRead ? " " : "*"));
-                write(WHITE); print(i1 + " ");
-                write(GREY3); print(date + " ");
-                write(m.receiverExists ? CYAN : RED); print(m.userFrom);
+                print((m.isRead ? " " : "*"));
+                print(i1 + " ");
+                print(date + " ");
+                print(m.receiverExists ? "" : "*(err)"); print(m.userFrom);
                 print(" ");
-                write(WHITE); print(subject);
+                print(subject);
                 newline();
             }
-            write(GREY3);
-            write(WHITE);println(repeat('_', getScreenColumns() - 1));write(GREY3);
+            println(repeat('-', getScreenColumns() - 1));
 
-            write(REVON); print(" U "); write(REVOFF); print(" List users ");
-            write(REVON); print(" M "); write(REVOFF); print(" New message ");
-            write(REVON); print(" . "); write(REVOFF); println(" Exit");
+            print(" U "); print(" List users ");
+            print(" M "); print(" New message ");
+            print(" . "); println(" Exit");
 
-            write(REVON); print(" A "); write(REVOFF); print(" All messag ");
-            write(REVON); print(" R "); write(REVOFF); println(" Only unread messages");
+            print(" A "); print(" All messag ");
+            print(" R "); println(" Only unread messages");
 
-            write(REVON); print(" # "); write(REVOFF); print(" Read message number  ");
-            write(REVON); print(" K "); write(REVOFF); println(" User prefs");
+            print(" # "); print(" Read message number  ");
+            print(" K "); println(" User prefs");
 
-            write(REVON); print(" N "); write(REVOFF); print(" Next page ");
-            write(REVON); print(" - "); write(REVOFF); print(" Prev page ");
-            write(REVON); print(" P "); write(REVOFF); println(" Privacy");
+            print(" N "); print(" Next page ");
+            print(" - "); print(" Prev page ");
+            print(" P "); println(" Privacy");
 
-            write(WHITE);println(StringUtils.repeat(chr(163), getScreenColumns() - 1));write(GREY3);
+            println(StringUtils.repeat('-', getScreenColumns() - 1));
             print("> ");
             flush(); resetInput(); cmd = readLine();
             cmd = defaultString(trim(lowerCase(cmd)));
@@ -364,16 +343,15 @@ public class UserLogon extends PetsciiThread {
 
     }
 
-    public void displayMessage(Message m) throws Exception {
+    public void displayMessage(UserLogon.Message m) throws Exception {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         cls();
         write(LOGO_BYTES);
-        write(GREY3);
         println("From: "+ m.userFrom);
         println("To:   "+ m.userTo);
         println("Date: "+ df.format(m.dateTime));
         println("Subj: "+ m.subject);
-        println(StringUtils.repeat(chr(163),getScreenColumns() - 1));
+        println(StringUtils.repeat('-',(getScreenColumns() - 1)));
         String[] lines = defaultString(m.message).split("\n");
         List<String> rows = new LinkedList<>();
         for (String line: lines) {
@@ -393,7 +371,7 @@ public class UserLogon extends PetsciiThread {
         }
         markAsRead(m);
         newline();
-        print("press "); write(WHITE); print("'R'"); write(GREY3); print(" to REPLY, any key to go back.");
+        print("press "); print("'R'"); print(" to REPLY, any key to go back.");
         flush();
         resetInput(); int ch = readKey();
         if (ch == 'r' || ch == 'R') {
@@ -403,7 +381,7 @@ public class UserLogon extends PetsciiThread {
         }
     }
 
-    void markAsRead(Message m) throws Exception {
+    void markAsRead(UserLogon.Message m) throws Exception {
         m.setIsRead(true);
         try (PreparedStatement ps = conn.prepareStatement("update messages set is_read=1 where rowid=?")) {
             ps.setLong(1, m.rowId);
@@ -411,38 +389,38 @@ public class UserLogon extends PetsciiThread {
         }
     }
 
-    public List<User> getUsers() throws Exception {
-        List<User> result = new LinkedList<>();
+    public List<UserLogon.User> getUsers() throws Exception {
+        List<UserLogon.User> result = new LinkedList<>();
         try (Statement s = conn.createStatement();
-                ResultSet r = s.executeQuery("select id, nick, realname, email from users order by nick")) {
+             ResultSet r = s.executeQuery("select id, nick, realname, email from users order by nick")) {
             while (r.next())
-                result.add(new User(
+                result.add(new UserLogon.User(
                     r.getLong("id"),
                     r.getString("nick"),
                     r.getString("realname"),
                     r.getString("email")
-            ));
+                ));
         }
         return result;
     }
 
-    public List<Message> getMessages(String userTo, boolean onlyUnread) throws Exception {
-        List<Message> result = new ArrayList<>();
+    public List<UserLogon.Message> getMessages(String userTo, boolean onlyUnread) throws Exception {
+        List<UserLogon.Message> result = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement("" +
-                "SELECT messages.rowid, user_from, user_to, datetime, is_read, subject, message, id FROM messages LEFT JOIN users ON user_from=nick WHERE user_to=? "+
-                (onlyUnread ? " AND is_read = 0 " : EMPTY) + " collate nocase ORDER BY datetime DESC") ) {
+            "SELECT messages.rowid, user_from, user_to, datetime, is_read, subject, message, id FROM messages LEFT JOIN users ON user_from=nick WHERE user_to=? "+
+            (onlyUnread ? " AND is_read = 0 " : EMPTY) + " collate nocase ORDER BY datetime DESC") ) {
             ps.setString(1, userTo);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next())
-                    result.add(new Message(
-                            rs.getLong("rowid"),
-                            rs.getString("user_from"),
-                            rs.getString("user_to"),
-                            new Date(rs.getLong("datetime")),
-                            rs.getLong("is_read") != 0,
-                            rs.getString("subject"),
-                            rs.getString("message"),
-                            rs.getString("id") != null
+                    result.add(new UserLogon.Message(
+                        rs.getLong("rowid"),
+                        rs.getString("user_from"),
+                        rs.getString("user_to"),
+                        new Date(rs.getLong("datetime")),
+                        rs.getLong("is_read") != 0,
+                        rs.getString("subject"),
+                        rs.getString("message"),
+                        rs.getString("id") != null
                     ));
             }
         }
@@ -454,13 +432,12 @@ public class UserLogon extends PetsciiThread {
         do {
             cls();
             write(LOGO_BYTES);
-            write(GREY3);
             println("User preferences [" + user.nick + "]");
             newline();
-            write(REVON); print(" 1 "); write(REVOFF); println(" Change password");
-            write(REVON); print(" 2 "); write(REVOFF); println(" Change realname");
-            write(REVON); print(" 3 "); write(REVOFF); println(" Erase user");
-            write(REVON); print(" . "); write(REVOFF); println(" Back to messages");
+            print(" 1 "); println(" Change password");
+            print(" 2 "); println(" Change realname");
+            print(" 3 "); println(" Erase user");
+            print(" . "); println(" Back to messages");
             newline();
             flush(); resetInput();
             ch = readKey();
@@ -475,15 +452,14 @@ public class UserLogon extends PetsciiThread {
                 if (isNotBlank(newName)) {
                     user = changeUserName(user, newName);
                     newline();
-                    write(LIGHT_GREEN); println("Real name change successfully"); write(GREY3);
+                    println("Real name change successfully");
                     flush();
                     resetInput(); readKey();
                 }
             } else if (ch == '3') {
-                write(RED);
-                write(REVON); println("         ");
-                write(REVON); println(" WARNING ");
-                write(REVON); println("         "); write(REVOFF);
+                println("         ");
+                println(" WARNING ");
+                println("         ");
                 newline();
                 println("This choice will erase your account");
                 print("Are you sure? (Y/N) ");
@@ -493,13 +469,13 @@ public class UserLogon extends PetsciiThread {
                     newline();
                     newline();
                     killUser(user.nick);
-                    write(REVON); println("                      ");
-                    write(REVON); println(" USER FINALLY DELETED ");
-                    write(REVON); println("                      "); write(REVOFF);
-                    write(GREY3); newline();
+                    println("                      ");
+                    println(" USER FINALLY DELETED ");
+                    println("                      ");
+                    newline();
                     println("PRESS ANY KEY TO EXIT");
                     readKey();
-                    throw new UserRemovedException();
+                    throw new UserLogon.UserRemovedException();
                 }
             }
         } while (ch != '.');
@@ -512,10 +488,8 @@ public class UserLogon extends PetsciiThread {
         String email;
         boolean notValid;
         newline();
-        write(WHITE);
         println("ADDING NEW USER");
-        println(StringUtils.repeat(chr(163), 15));
-        write(GREY3);
+        println(StringUtils.repeat('-', 15));
         do {
             print("Username: ");
             flush(); resetInput(); username = readLine();
@@ -529,7 +503,7 @@ public class UserLogon extends PetsciiThread {
             print("Password: ");
             flush(); resetInput(); password = readPassword();
         } while (isBlank(password));
-        write(LIGHT_RED); print("Do you confirm creation? (Y/N)"); write(GREY3);
+        print("Do you confirm creation? (Y/N)");
         flush(); resetInput(); int key = readKey(); resetInput();
         newline();
         return (key=='Y' || key=='y') ? addUser(username, realname, email, password) : false;
@@ -541,7 +515,7 @@ public class UserLogon extends PetsciiThread {
         }
 
         try (PreparedStatement ps = conn.prepareStatement(
-                "insert into users (nick, realname, email, salt, password) values (?,?,?,?,?)")) {
+            "insert into users (nick, realname, email, salt, password) values (?,?,?,?,?)")) {
             String salt = generateId();
             String hash = sha256Hex(salt + password);
             ps.setString(1, nick);
@@ -571,17 +545,17 @@ public class UserLogon extends PetsciiThread {
         }
     }
 
-    public User getUserById(Long id) throws Exception {
+    public UserLogon.User getUserById(Long id) throws Exception {
         try (PreparedStatement ps = conn.prepareStatement("select id, nick, realname, email, salt, password from users where id=?")) {
             ps.setLong(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 rs.next();
-                return new User(rs.getLong("id"), rs.getString("nick"), rs.getString("realname"), rs.getString("email"));
+                return new UserLogon.User(rs.getLong("id"), rs.getString("nick"), rs.getString("realname"), rs.getString("email"));
             }
         }
     }
 
-    public User changeUserName(User user, String newName) throws Exception {
+    public UserLogon.User changeUserName(UserLogon.User user, String newName) throws Exception {
         try (PreparedStatement ps = conn.prepareStatement("update users set realname=? where id=?")) {
             ps.setString(1, newName);
             ps.setLong(2, user.id);
@@ -609,7 +583,7 @@ public class UserLogon extends PetsciiThread {
         }
     }
 
-    public User getUser(String nick, String givenPassword) throws Exception {
+    public UserLogon.User getUser(String nick, String givenPassword) throws Exception {
         try (PreparedStatement ps = conn.prepareStatement("select id, realname, email, salt, password from users where nick=? collate nocase");) {
             ps.setString(1, nick);
             try (ResultSet rs = ps.executeQuery()) {
@@ -621,7 +595,7 @@ public class UserLogon extends PetsciiThread {
                 Long id = rs.getLong("id");
                 String realname = rs.getString("realname");
                 String email = rs.getString("email");
-                return new User(id, nick, realname, email);
+                return new UserLogon.User(id, nick, realname, email);
             }
         }
     }
@@ -648,12 +622,12 @@ public class UserLogon extends PetsciiThread {
 
             try (Statement s = conn.createStatement()) {
                 s.executeUpdate(
-                        "CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, nick TEXT, realname TEXT, email TEXT, salt text, password TEXT)");
+                    "CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, nick TEXT, realname TEXT, email TEXT, salt text, password TEXT)");
             }
 
             try (Statement s = conn.createStatement()) {
                 s.executeUpdate(
-                        "CREATE TABLE messages (user_from TEXT, user_to TEXT, datetime INTEGER, is_read INTEGER, subject TEXT, message TEXT)");
+                    "CREATE TABLE messages (user_from TEXT, user_to TEXT, datetime INTEGER, is_read INTEGER, subject TEXT, message TEXT)");
             }
 
             try (Statement s = conn.createStatement()) {
@@ -662,21 +636,7 @@ public class UserLogon extends PetsciiThread {
         }
     }
 
-    private static final byte[] LOGO_BYTES = new byte[] {
-        18, -97, 32, -94, -68, -102, -95, -84, -69, -110, -69, 18, 31, -66, -94, -68,
-        -110, 13, 18, -97, 32, -110, -94, 18, -84, -102, -95, -68, -66, -110, -66, 18,
-        31, -69, -110, -94, -69, 32, 32, 18, -101, 32, -94, -68, -95, -84, -69, -110,
-        -69, 18, 32, -95, -110, -95, 18, -95, -110, -95, -84, 18, 32, -110, -69, 18,
-        -94, 32, -94, -95, -84, -94, -110, 13, 18, -97, 32, -110, 32, 18, 32, -102,
-        -95, -110, -95, 18, -95, -110, -95, 31, -94, 32, 18, 32, -110, 32, 32, 18,
-        -101, 32, -94, -110, -66, 18, -95, -84, -69, -110, -69, 18, 32, -110, -68, 18,
-        -68, -66, -110, -66, 18, 32, -110, -94, 18, 32, -110, 32, 18, 32, -110, 32,
-        18, -95, -84, -110, -66, 32, -97, -51, -63, -55, -52, 13, 18, -94, -94, -110,
-        -66, -102, -68, 18, -94, -94, -110, 32, 31, -68, 18, -94, -110, -66, 32, 32,
-        18, -101, -94, -110, 32, 32, -68, -66, -68, -66, 18, -94, -110, 32, -68, -66,
-        32, 18, -94, -110, 32, 18, -94, -110, 32, 18, -94, -110, 32, -68, 18, -94,
-        -94, -110, 32, -97, -93, -93, -93, -93, 13
-    };
+    private static final byte[] LOGO_BYTES = Utils.bytes("BBS Private Messages\r\n--------------------\r\n\r\n");
 
     public String generateId() {
         if (random == null) return UUID.randomUUID().toString();
@@ -703,19 +663,18 @@ public class UserLogon extends PetsciiThread {
         do {
             cls();
             write(LOGO_BYTES);
-            write(GREY3);
             newline();
             for (int i = offset; i < Math.min(offset + pagesize, size); ++i) {
                 println(text.get(i));
 
             }
             println();
-            write(WHITE); print("SPACE");
-            write(GREY3); print("=Next page [");
-            write(WHITE); print("-");
-            write(GREY3); print("]=Prev page [");
-            write(WHITE); print(".");
-            write(GREY3); print("]=EXIT");
+            print("SPACE");
+            print("=Next page [");
+            print("-");
+            print("]=Prev page [");
+            print(".");
+            print("]=EXIT");
             flush();
             resetInput();
             cmd = readKey();
@@ -730,4 +689,5 @@ public class UserLogon extends PetsciiThread {
     }
 
     public static class UserRemovedException extends RuntimeException {}
+
 }
