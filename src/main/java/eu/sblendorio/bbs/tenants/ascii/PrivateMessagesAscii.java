@@ -400,7 +400,7 @@ public class PrivateMessagesAscii extends AsciiThread {
     public List<UserLogon.Message> getMessages(String userTo, boolean onlyUnread) throws Exception {
         List<UserLogon.Message> result = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement("" +
-            "SELECT messages.rowid, user_from, user_to, datetime, is_read, subject, message, id FROM messages LEFT JOIN users ON user_from=nick WHERE user_to=? "+
+            "SELECT messages.rowid, user_from, user_to, datetime, is_read, subject, message, id FROM messages LEFT JOIN users ON user_from=nick WHERE user_to=?  collate nocase "+
             (onlyUnread ? " AND is_read = 0 " : EMPTY) + " ORDER BY datetime DESC") ) {
             ps.setString(1, userTo);
             try (ResultSet rs = ps.executeQuery()) {
@@ -443,6 +443,7 @@ public class PrivateMessagesAscii extends AsciiThread {
                 flush(); resetInput();
                 String newName = readLine();
                 if (isNotBlank(newName)) {
+                    newName = lowerCase(newName);
                     user = changeUserName(user, newName);
                     newline();
                     println("Real name change successfully");
@@ -487,11 +488,12 @@ public class PrivateMessagesAscii extends AsciiThread {
             print("Username: ");
             flush(); resetInput(); username = readLine();
             if (isBlank(username)) return false;
+            username = lowerCase(username);
             notValid = existsUser(username) || userInVault(username) || "?".equals(username) || "p".equalsIgnoreCase(username);
             if (notValid) println("WARN: Username not available");
         } while (notValid);
-        print("Real name: "); flush(); resetInput(); realname = readLine();
-        print("Email: "); flush(); resetInput(); email = readLine();
+        print("Real name: "); flush(); resetInput(); realname = readLine(); realname = lowerCase(realname);
+        print("Email: "); flush(); resetInput(); email = readLine(); email = lowerCase(email);
         do {
             print("Password: ");
             flush(); resetInput(); password = readPassword();

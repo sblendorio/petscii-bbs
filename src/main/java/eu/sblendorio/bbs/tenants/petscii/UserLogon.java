@@ -430,7 +430,7 @@ public class UserLogon extends PetsciiThread {
     public List<Message> getMessages(String userTo, boolean onlyUnread) throws Exception {
         List<Message> result = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement("" +
-                "SELECT messages.rowid, user_from, user_to, datetime, is_read, subject, message, id FROM messages LEFT JOIN users ON user_from=nick WHERE user_to=? "+
+                "SELECT messages.rowid, user_from, user_to, datetime, is_read, subject, message, id FROM messages LEFT JOIN users ON user_from=nick WHERE user_to=? collate nocase "+
                 (onlyUnread ? " AND is_read = 0 " : EMPTY) + " ORDER BY datetime DESC") ) {
             ps.setString(1, userTo);
             try (ResultSet rs = ps.executeQuery()) {
