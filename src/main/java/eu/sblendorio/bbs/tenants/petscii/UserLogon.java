@@ -415,7 +415,7 @@ public class UserLogon extends PetsciiThread {
     public List<User> getUsers() throws Exception {
         List<User> result = new LinkedList<>();
         try (Statement s = conn.createStatement();
-                ResultSet r = s.executeQuery("select id, nick, realname, email from users order by nick")) {
+                ResultSet r = s.executeQuery("select id, nick, realname, email from users order by nick collate nocase")) {
             while (r.next())
                 result.add(new User(
                     r.getLong("id"),
@@ -431,7 +431,7 @@ public class UserLogon extends PetsciiThread {
         List<Message> result = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement("" +
                 "SELECT messages.rowid, user_from, user_to, datetime, is_read, subject, message, id FROM messages LEFT JOIN users ON user_from=nick WHERE user_to=? "+
-                (onlyUnread ? " AND is_read = 0 " : EMPTY) + " collate nocase ORDER BY datetime DESC") ) {
+                (onlyUnread ? " AND is_read = 0 " : EMPTY) + " ORDER BY datetime DESC") ) {
             ps.setString(1, userTo);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next())

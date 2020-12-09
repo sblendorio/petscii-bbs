@@ -300,19 +300,10 @@ public class PrivateMessagesAscii extends AsciiThread {
             }
             println(repeat('-', getScreenColumns() - 1));
 
-            print(" U "); print(" List users ");
-            print(" M "); print(" New message ");
-            print(" . "); println(" Exit");
-
-            print(" A "); print(" All messag ");
-            print(" R "); println(" Only unread messages");
-
-            print(" # "); print(" Read message number  ");
-            print(" K "); println(" User prefs");
-
-            print(" N "); print(" Next page ");
-            print(" - "); print(" Prev page ");
-            print(" P "); println(" Privacy");
+            println("U=List users     M=New message   .=Exit");
+            println("A=All messages   R=Only unread messages");
+            println("#=Read message number      K=User prefs");
+            println("N=Next page      -=Prev page  P=Privacy");
 
             println(StringUtils.repeat('-', getScreenColumns() - 1));
             print("> ");
@@ -393,7 +384,7 @@ public class PrivateMessagesAscii extends AsciiThread {
     public List<UserLogon.User> getUsers() throws Exception {
         List<UserLogon.User> result = new LinkedList<>();
         try (Statement s = conn.createStatement();
-             ResultSet r = s.executeQuery("select id, nick, realname, email from users order by nick")) {
+             ResultSet r = s.executeQuery("select id, nick, realname, email from users order by nick collate nocase")) {
             while (r.next())
                 result.add(new UserLogon.User(
                     r.getLong("id"),
@@ -409,7 +400,7 @@ public class PrivateMessagesAscii extends AsciiThread {
         List<UserLogon.Message> result = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement("" +
             "SELECT messages.rowid, user_from, user_to, datetime, is_read, subject, message, id FROM messages LEFT JOIN users ON user_from=nick WHERE user_to=? "+
-            (onlyUnread ? " AND is_read = 0 " : EMPTY) + " collate nocase ORDER BY datetime DESC") ) {
+            (onlyUnread ? " AND is_read = 0 " : EMPTY) + " ORDER BY datetime DESC") ) {
             ps.setString(1, userTo);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next())
