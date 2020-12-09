@@ -386,6 +386,7 @@ public class UserLogon extends PetsciiThread {
             if (linecount % 23 == 0) {
                 println();
                 print("-- More --");
+                resetInput();
                 readKey();
                 newline();
                 newline();

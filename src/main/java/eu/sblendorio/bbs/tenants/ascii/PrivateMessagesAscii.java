@@ -361,9 +361,10 @@ public class PrivateMessagesAscii extends AsciiThread {
         for (String row: rows) {
             ++linecount;
             println(row);
-            if (linecount % 23 == 0) {
+            if (linecount % 22 == 0) {
                 println();
                 print("-- More --");
+                resetInput();
                 readKey();
                 newline();
                 newline();
