@@ -130,6 +130,7 @@ public class MenuPetscii extends PetsciiThread {
                 log("Menu. Waiting for key pressed.");
                 resetInput();
                 int key = readKey();
+                resetInput();
                 if (key >= 193 && key <= 218) {
                     key -= 96;
                 }

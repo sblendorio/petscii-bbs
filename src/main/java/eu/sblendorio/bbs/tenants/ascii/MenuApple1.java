@@ -106,6 +106,7 @@ public class MenuApple1 extends AsciiThread {
                 println();
                 print("> ");
                 resetInput(); int key = readKey();
+                resetInput();
                 key = Character.toLowerCase(key);
                 log("Menu. Pressed: '" + (key == 13 || key == 10 ? "chr("+key+")" : ((char) key)) + "' (code=" + key + ")");
                 if (key == '.') {

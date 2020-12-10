@@ -240,10 +240,8 @@ public class TelevideoRaiPetscii extends PetsciiThread {
                 write(WHITE);
                 print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT");
                 write(GREY3);
-
                 resetInput();
                 int ch = keyPressed(TIMEOUT);
-
                 if (ch == '.') {
                     return true;
                 }

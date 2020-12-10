@@ -170,8 +170,8 @@ public class PrivateMessagesAscii extends AsciiThread {
     }
 
     public void listUsers() throws Exception {
-        cls();
-        write(LOGO_BYTES);
+        newline();
+        newline();
         List<UserLogon.User> users = getUsers();
         int i = 0;
         for (UserLogon.User u: users) {
@@ -299,14 +299,15 @@ public class PrivateMessagesAscii extends AsciiThread {
                 print(subject);
                 newline();
             }
-            println(repeat('-', getScreenColumns() - 1));
+            println(repeat('-', 30));
 
-            println("U=List users     M=New message   .=Exit");
-            println("A=All messages   R=Only unread messages");
-            println("#=Read message number      K=User prefs");
-            println("N=Next page      -=Prev page  P=Privacy");
+            println("U=List users     M=New message");
+            println("A=All messages   R=Only unread");
+            println("#=Read message   K=User prefs.");
+            println("N=Next page      -=Prev. page");
+            println("P=Privacy        .=Exit");
 
-            println(StringUtils.repeat('-', getScreenColumns() - 1));
+            println(StringUtils.repeat('-', 30));
             print("> ");
             flush(); resetInput(); cmd = readLine();
             cmd = defaultString(trim(lowerCase(cmd)));
@@ -337,8 +338,9 @@ public class PrivateMessagesAscii extends AsciiThread {
 
     public void displayMessage(UserLogon.Message m) throws Exception {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        cls();
-        write(LOGO_BYTES);
+        newline();
+        newline();
+        newline();
         println("From: "+ m.userFrom);
         println("To:   "+ m.userTo);
         println("Date: "+ df.format(m.dateTime));
@@ -400,7 +402,8 @@ public class PrivateMessagesAscii extends AsciiThread {
     public List<UserLogon.Message> getMessages(String userTo, boolean onlyUnread) throws Exception {
         List<UserLogon.Message> result = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement("" +
-            "SELECT messages.rowid, user_from, user_to, datetime, is_read, subject, message, id FROM messages LEFT JOIN users ON user_from=nick WHERE user_to=?  collate nocase "+
+            "SELECT messages.rowid, user_from, user_to, datetime, is_read, subject, message, id FROM messages LEFT JOIN users ON user_from=nick " +
+            "collate nocase WHERE user_to=? collate nocase "+
             (onlyUnread ? " AND is_read = 0 " : EMPTY) + " ORDER BY datetime DESC") ) {
             ps.setString(1, userTo);
             try (ResultSet rs = ps.executeQuery()) {
@@ -423,8 +426,8 @@ public class PrivateMessagesAscii extends AsciiThread {
     public void userPreferences() throws Exception {
         int ch;
         do {
-            cls();
-            write(LOGO_BYTES);
+            newline();
+            newline();
             println("User preferences [" + user.nick + "]");
             newline();
             print(" 1 "); println(" Change password");
@@ -468,6 +471,7 @@ public class PrivateMessagesAscii extends AsciiThread {
                     println("                      ");
                     newline();
                     println("PRESS ANY KEY TO EXIT");
+                    flush(); resetInput();
                     readKey();
                     throw new UserLogon.UserRemovedException();
                 }
@@ -656,8 +660,6 @@ public class PrivateMessagesAscii extends AsciiThread {
         int offset = 0;
         int cmd = 0;
         do {
-            cls();
-            write(LOGO_BYTES);
             newline();
             for (int i = offset; i < Math.min(offset + pagesize, size); ++i) {
                 println(text.get(i));

@@ -204,10 +204,9 @@ public abstract class RssAscii extends AsciiThread {
             if (j>0 && j % screenRows == 0 && forward) {
                 println();
                 print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT");
-
-                int ch = keyPressed(timeout);
-
                 resetInput();
+                int ch = keyPressed(timeout);
+                System.out.println();
                 if (ch == '.') {
                     return true;
                 }
