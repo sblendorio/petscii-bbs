@@ -53,7 +53,7 @@ public class WordpressProxy extends PetsciiThread {
     protected String domain = "https://wordpress.org/news";
     protected byte[] logo = LOGO_WORDPRESS;
     protected int pageSize = 10;
-    protected int screenRows = 19;
+    protected int screenLines = 19;
     protected boolean showAuthor = false;
     protected String httpUserAgent = null;
 
@@ -267,7 +267,7 @@ public class WordpressProxy extends PetsciiThread {
         int j = 0;
         boolean forward = true;
         while (j < rows.size()) {
-            if (j>0 && j % screenRows == 0 && forward) {
+            if (j>0 && j % screenLines == 0 && forward) {
                 println();
                 write(WHITE);
                 print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT");
@@ -279,7 +279,7 @@ public class WordpressProxy extends PetsciiThread {
                     return;
                 }
                 if (ch == '-' && page > 1) {
-                    j -= (screenRows *2);
+                    j -= (screenLines *2);
                     --page;
                     forward = false;
                     cls();

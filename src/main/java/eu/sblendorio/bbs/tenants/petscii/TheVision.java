@@ -10,7 +10,7 @@ public class TheVision extends WordpressProxy {
         this.logo = LOGO_BYTES;
         this.domain = "https://thevision.com";
         this.pageSize = 5;
-        this.screenRows = 19;
+        this.screenLines = 19;
         this.showAuthor = true;
     }
 

@@ -10,7 +10,7 @@ public class PuntoInformatico extends WordpressProxy {
         this.logo = LOGO_BYTES;
         this.domain = "https://www.punto-informatico.it";
         this.pageSize = 9;
-        this.screenRows = 19;
+        this.screenLines = 19;
         this.showAuthor = true;
     }
 

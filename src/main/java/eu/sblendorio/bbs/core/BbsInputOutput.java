@@ -55,7 +55,7 @@ public abstract class BbsInputOutput extends Reader {
 
     protected Reader in;
     protected QuotedPrintStream out;
-    protected boolean localEcho = true;
+    protected Boolean localEcho = true;
 
     protected static int defaultCharBufferSize = 8192;
 
@@ -96,28 +96,28 @@ public abstract class BbsInputOutput extends Reader {
             ch = readKey();
             if (isBackspace(ch)) {
                 if (readBuffer.length() > 0) {
-                    if (localEcho) {
+                    if (getLocalEcho()) {
                         writeBackspace();
                         flush();
                     }
                     readBuffer = readBuffer.substring(0, readBuffer.length()-1);
                 }
             } else if (ch == 34 && (maxLength == 0 || readBuffer.length() < maxLength)) {
-                if (localEcho) {
+                if (getLocalEcho()) {
                     if (mask) write('*');
                     else writeDoublequotes();
                     flush();
                 }
                 readBuffer += "\"";
             } else if (isPrintableChar(ch) && (maxLength == 0 || readBuffer.length() < maxLength)) {
-                if (localEcho) {
+                if (getLocalEcho()) {
                     write(mask ? '*' : ch);
                     flush();
                 }
                 readBuffer += (char) convertToAscii(ch);
             }
         } while (!isNewline(ch));
-        if (localEcho) {
+        if (getLocalEcho()) {
             newline();
         }
         final String result = readBuffer;
@@ -344,7 +344,8 @@ public abstract class BbsInputOutput extends Reader {
     }
 
     public void setLocalEcho(boolean value) { this.localEcho = value; }
-    public boolean getLocalEcho() { return localEcho; }
+
+    public boolean getLocalEcho() { return localEcho == null ? true : localEcho; }
 
     public void shutdown() {
         try {

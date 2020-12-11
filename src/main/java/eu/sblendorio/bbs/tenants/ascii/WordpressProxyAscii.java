@@ -1,6 +1,5 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
-import eu.sblendorio.bbs.core.AsciiKeys;
 import eu.sblendorio.bbs.core.BbsThread;
 import static eu.sblendorio.bbs.core.Utils.equalsDomain;
 import static eu.sblendorio.bbs.core.Utils.normalizeDomain;
@@ -54,7 +53,7 @@ public class WordpressProxyAscii extends AsciiThread {
     protected String domain = "https://wordpress.org/news";
     protected byte[] logo = LOGO_WORDPRESS;
     protected int pageSize = 8;
-    protected int screenRows = 19;
+    protected int screenLines = 19;
     protected boolean showAuthor = false;
 
     protected Map<Integer, Post> posts = emptyMap();
@@ -63,7 +62,6 @@ public class WordpressProxyAscii extends AsciiThread {
     private String originalDomain;
 
     public WordpressProxyAscii() {
-        setLocalEcho(false);
     }
 
     public WordpressProxyAscii(String domain) {
@@ -264,7 +262,7 @@ public class WordpressProxyAscii extends AsciiThread {
         int j = 0;
         boolean forward = true;
         while (j < rows.size()) {
-            if (j>0 && j % screenRows == 0 && forward) {
+            if (j>0 && j % screenLines == 0 && forward) {
                 println();
                 print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT");
 
@@ -274,7 +272,7 @@ public class WordpressProxyAscii extends AsciiThread {
                     return;
                 }
                 if (ch == '-' && page > 1) {
-                    j -= (screenRows *2);
+                    j -= (screenLines *2);
                     --page;
                     forward = false;
                     cls();

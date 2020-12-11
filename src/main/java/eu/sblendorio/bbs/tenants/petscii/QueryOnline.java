@@ -10,7 +10,7 @@ public class QueryOnline extends WordpressProxy {
         this.logo = LOGO_BYTES;
         this.domain = "https://www.queryonline.it";
         this.pageSize = 10;
-        this.screenRows = 18;
+        this.screenLines = 18;
         this.showAuthor = false;
     }
 

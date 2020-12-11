@@ -10,7 +10,7 @@ public class Sportal extends WordpressProxy {
         this.logo = LOGO_BYTES;
         this.domain = "http://www.sportal.it";
         this.pageSize = 11;
-        this.screenRows = 19;
+        this.screenLines = 19;
     }
 
     private static final byte[] LOGO_BYTES = new byte[] {

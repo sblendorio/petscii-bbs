@@ -10,7 +10,7 @@ public class Sys64738 extends WordpressProxy {
         this.logo = LOGO_BYTES;
         this.domain = "https://sys64738.org";
         this.pageSize = 10;
-        this.screenRows = 18;
+        this.screenLines = 18;
     }
 
     private static final byte[] LOGO_BYTES = new byte[] {

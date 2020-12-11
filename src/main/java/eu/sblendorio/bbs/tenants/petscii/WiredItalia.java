@@ -10,7 +10,7 @@ public class WiredItalia extends WordpressProxy {
         this.logo = LOGO_BYTES;
         this.domain = "https://www.wired.it";
         this.pageSize = 7;
-        this.screenRows = 19;
+        this.screenLines = 19;
     }
 
     private static final byte[] LOGO_BYTES = new byte[] {

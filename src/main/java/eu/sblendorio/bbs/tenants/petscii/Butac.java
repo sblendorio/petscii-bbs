@@ -10,7 +10,7 @@ public class Butac extends WordpressProxy {
         this.logo = LOGO_BYTES;
         this.domain = "https://www.butac.it";
         this.pageSize = 11;
-        this.screenRows = 18;
+        this.screenLines = 18;
         this.showAuthor = true;
     }
 

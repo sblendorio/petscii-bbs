@@ -10,7 +10,7 @@ public class Linkiesta extends WordpressProxy {
         this.logo = LOGO_BYTES;
         this.domain = "https://www.linkiesta.it";
         this.pageSize = 6;
-        this.screenRows = 19;
+        this.screenLines = 19;
     }
 
     private static final byte[] LOGO_BYTES = new byte[] {

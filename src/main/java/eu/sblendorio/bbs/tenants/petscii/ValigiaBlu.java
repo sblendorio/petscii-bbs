@@ -10,7 +10,7 @@ public class ValigiaBlu extends WordpressProxy {
         this.logo = LOGO_BYTES;
         this.domain = "https://www.valigiablu.it";
         this.pageSize = 5;
-        this.screenRows = 19;
+        this.screenLines = 19;
         this.showAuthor = true;
     }
 

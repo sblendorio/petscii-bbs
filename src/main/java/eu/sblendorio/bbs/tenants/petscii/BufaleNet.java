@@ -10,7 +10,7 @@ public class BufaleNet extends WordpressProxy {
         this.logo = LOGO_BYTES;
         this.domain = "https://www.bufale.net";
         this.pageSize = 4;
-        this.screenRows = 18;
+        this.screenLines = 18;
         this.showAuthor = true;
     }
 

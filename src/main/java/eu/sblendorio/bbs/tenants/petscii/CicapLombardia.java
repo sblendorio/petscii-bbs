@@ -10,7 +10,7 @@ public class CicapLombardia extends WordpressProxy {
         this.logo = LOGO_BYTES;
         this.domain = "https://lombardia.cicap.org";
         this.pageSize = 10;
-        this.screenRows = 18;
+        this.screenLines = 18;
     }
 
     private static final byte[] LOGO_BYTES = new byte[] {

@@ -10,7 +10,7 @@ public class TheFoolBlog extends WordpressProxy {
         this.logo = LOGO_BYTES;
         this.domain = "https://thefool.it";
         this.pageSize = 7;
-        this.screenRows = 18;
+        this.screenLines = 18;
     }
 
     private static final byte[] LOGO_BYTES = new byte[] {

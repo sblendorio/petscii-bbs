@@ -18,7 +18,7 @@ import java.io.File;
 import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
-public class MenuPetscii extends PetsciiThread {
+public class Menu64 extends PetsciiThread {
 
     public static class GeoData {
         public final String city;

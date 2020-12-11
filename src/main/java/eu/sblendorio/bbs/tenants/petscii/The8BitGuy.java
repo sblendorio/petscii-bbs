@@ -10,7 +10,7 @@ public class The8BitGuy extends WordpressProxy {
         this.logo = LOGO_BYTES;
         this.domain = "http://www.the8bitguy.com";
         this.pageSize = 8;
-        this.screenRows = 15;
+        this.screenLines = 15;
     }
 
     private static final byte[] LOGO_BYTES = new byte[] {

@@ -10,7 +10,7 @@ public class ArcheologiaInformatica extends WordpressProxy {
         this.logo = LOGO_BYTES;
         this.domain = "https://www.archeologiainformatica.it/";
         this.pageSize = 6;
-        this.screenRows = 16;
+        this.screenLines = 16;
     }
 
     private static final byte[] LOGO_BYTES = new byte[] {

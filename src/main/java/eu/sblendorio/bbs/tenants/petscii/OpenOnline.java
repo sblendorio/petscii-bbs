@@ -10,7 +10,7 @@ public class OpenOnline extends WordpressProxy {
         this.logo = LOGO_BYTES;
         this.domain = "https://www.open.online";
         this.pageSize = 6;
-        this.screenRows = 18;
+        this.screenLines = 18;
         this.showAuthor = true;
     }
 

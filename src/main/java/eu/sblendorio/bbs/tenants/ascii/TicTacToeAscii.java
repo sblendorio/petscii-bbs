@@ -12,7 +12,6 @@ public class TicTacToeAscii extends AsciiThread {
     TicTacToeAI model;
 
     public TicTacToeAscii() {
-        setLocalEcho(false);
     }
 
     @Override

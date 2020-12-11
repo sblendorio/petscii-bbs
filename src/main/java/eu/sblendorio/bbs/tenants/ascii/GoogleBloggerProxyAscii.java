@@ -30,7 +30,7 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
     protected String blogUrl = "https://blogger.googleblog.com";
     protected byte[] logo = LOGO_BLOGGER;
     protected int pageSize = 8;
-    protected int screenRows = 19;
+    protected int screenLines = 19;
 
     protected static final String CRED_FILE_PATH = System.getProperty("user.home") + File.separator + "credentials.json";
 
@@ -58,16 +58,13 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
     private String originalBlogUrl;
 
     public GoogleBloggerProxyAscii() {
-        setLocalEcho(false);
     }
 
     public GoogleBloggerProxyAscii(String blogUrl) {
-        this();
         this.blogUrl = blogUrl;
     }
 
     public GoogleBloggerProxyAscii(String blogUrl, byte[] logo) {
-        this();
         this.blogUrl = blogUrl;
         this.logo = logo;
     }
@@ -274,7 +271,7 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
         int j = 0;
         boolean forward = true;
         while (j < rows.size()) {
-            if (j>0 && j % screenRows == 0 && forward) {
+            if (j>0 && j % screenLines == 0 && forward) {
                 println();
                 print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT");
 
@@ -284,7 +281,7 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
                     return;
                 }
                 if (ch == '-' && page > 1) {
-                    j -= (screenRows *2);
+                    j -= (screenLines *2);
                     --page;
                     forward = false;
                     cls();

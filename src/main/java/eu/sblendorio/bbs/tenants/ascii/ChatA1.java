@@ -28,7 +28,7 @@ public class ChatA1 extends AsciiThread {
     private ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<>();
 
     public ChatA1() {
-        setLocalEcho(false);
+        super();
     }
 
     @Override

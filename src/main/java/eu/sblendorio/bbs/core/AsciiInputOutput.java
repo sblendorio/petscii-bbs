@@ -29,7 +29,7 @@ public class AsciiInputOutput extends BbsInputOutput {
 
     @Override
     public boolean isBackspace(int ch) {
-        return ch == AsciiKeys.BACKSPACE;
+        return ch == AsciiKeys.BACKSPACE || ch == AsciiKeys.DELETE;
     }
 
     @Override
@@ -55,6 +55,11 @@ public class AsciiInputOutput extends BbsInputOutput {
     @Override
     public boolean quoteMode() {
         return false;
+    }
+
+    @Override
+    public void writeBackspace() {
+        write(AsciiKeys.BACKSPACE, ' ', AsciiKeys.BACKSPACE);
     }
 
 }

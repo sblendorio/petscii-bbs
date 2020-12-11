@@ -10,7 +10,7 @@ public class IlPost extends WordpressProxy {
         this.logo = LOGO_BYTES;
         this.domain = "https://www.ilpost.it";
         this.pageSize = 7;
-        this.screenRows = 18;
+        this.screenLines = 18;
         this.showAuthor = true;
     }
 

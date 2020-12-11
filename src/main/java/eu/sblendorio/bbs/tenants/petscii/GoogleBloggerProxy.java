@@ -52,7 +52,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
     protected String blogUrl = "https://blogger.googleblog.com";
     protected byte[] logo = LOGO_BLOGGER;
     protected int pageSize = 10;
-    protected int screenRows = 19;
+    protected int screenLines = 19;
 
     protected static final String CRED_FILE_PATH = System.getProperty("user.home") + File.separator + "credentials.json";
 
@@ -300,7 +300,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
         int j = 0;
         boolean forward = true;
         while (j < rows.size()) {
-            if (j>0 && j % screenRows == 0 && forward) {
+            if (j>0 && j % screenLines == 0 && forward) {
                 println();
                 write(WHITE);
                 print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT");
@@ -312,7 +312,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
                     return;
                 }
                 if (ch == '-' && page > 1) {
-                    j -= (screenRows *2);
+                    j -= (screenLines *2);
                     --page;
                     forward = false;
                     cls();

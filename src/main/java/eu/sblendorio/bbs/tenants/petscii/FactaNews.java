@@ -10,7 +10,7 @@ public class FactaNews extends WordpressProxy {
         this.logo = LOGO_BYTES;
         this.domain = "https://facta.news";
         this.pageSize = 5;
-        this.screenRows = 18;
+        this.screenLines = 18;
         this.showAuthor = false;
     }
 

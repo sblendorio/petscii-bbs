@@ -10,7 +10,7 @@ public class RetroCampus extends WordpressProxy {
         this.logo = LOGO_BYTES;
         this.domain = "http://www.retrocampus.com";
         this.pageSize = 9;
-        this.screenRows = 19;
+        this.screenLines = 19;
     }
 
     private static final byte[] LOGO_BYTES = new byte[] {

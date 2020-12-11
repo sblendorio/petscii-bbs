@@ -10,7 +10,7 @@ public class RetroAcademy extends WordpressProxy {
         this.logo = LOGO_BYTES;
         this.domain = "https://www.retroacademy.it";
         this.pageSize = 10;
-        this.screenRows = 19;
+        this.screenLines = 19;
         this.showAuthor = false;
     }
 

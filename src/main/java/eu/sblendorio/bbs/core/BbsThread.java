@@ -1,6 +1,5 @@
 package eu.sblendorio.bbs.core;
 
-import com.google.common.collect.Comparators;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,7 +25,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Supplier;
 import org.apache.commons.io.IOUtils;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
@@ -70,7 +68,7 @@ public abstract class BbsThread extends Thread {
 
     protected BbsThread child = null;
     protected BbsThread parent = null;
-    protected boolean localEcho = true;
+    protected Boolean localEcho = null;
 
     protected boolean keepAlive = true;
     protected long keepAliveTimeout = -1; // inherit from caller
@@ -225,6 +223,9 @@ public abstract class BbsThread extends Thread {
             serverPort = socket.getLocalPort();
             log("New connection at " + socket + ", server="+serverAddress.getHostAddress());
             Thread.sleep(200);
+            boolean qMode = io.out.quoteMode();
+            if (initializingBytes() != null) io.out.write(initializingBytes());
+            io.out.setQuoteMode(qMode);
             io.resetInput();
             setClientName("client"+getClientId());
             clients.put(getClientId(), this);
@@ -294,6 +295,10 @@ public abstract class BbsThread extends Thread {
         return root;
     }
 
+    public byte[] initializingBytes() {
+        return null;
+    }
+
     public boolean launch(BbsThread bbs) throws Exception {
         BbsThread root = getRoot();
         try {
@@ -307,6 +312,7 @@ public abstract class BbsThread extends Thread {
             bbs.keepAliveTimeout = bbs.keepAliveTimeout <= 0 ? root.keepAliveTimeout : bbs.keepAliveTimeout;
             bbs.clientId = root.clientId;
             bbs.clientName = root.clientName;
+            if (bbs.localEcho == null) bbs.setLocalEcho(this.getLocalEcho());
 
             root.bbsStack.push(new BbsStatus(
                 root.keepAlive,
@@ -333,6 +339,10 @@ public abstract class BbsThread extends Thread {
                 logger.info("Error during KeepAliveThread restart", e);
             }
             root.keepAliveThread.restartKeepAlive();
+            boolean qMode = bbs.io.out.quoteMode();
+            if (bbs.initializingBytes() != null) bbs.io.out.write(bbs.initializingBytes());
+            bbs.io.out.setQuoteMode(qMode);
+            bbs.resetInput();
             bbs.doLoop();
             return true;
         } catch (SocketException | SocketTimeoutException | BbsIOException e) {
@@ -573,9 +583,10 @@ public abstract class BbsThread extends Thread {
         if (io != null) io.setLocalEcho(value);
     }
 
-    public boolean getLocalEcho() { return localEcho; }
+    public boolean getLocalEcho() { return localEcho == null ? true : localEcho; }
 
     public abstract int getScreenColumns();
+
     public abstract int getScreenRows();
 
     public int keyPressed(long timeout) throws IOException {

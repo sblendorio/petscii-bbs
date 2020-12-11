@@ -10,7 +10,7 @@ public class IndieRetroNews extends GoogleBloggerProxy {
         this.logo = LOGO_BYTES;
         this.blogUrl = "https://www.indieretronews.com/";
         this.pageSize = 7;
-        this.screenRows = 18;
+        this.screenLines = 18;
     }
 
     private static final byte[] LOGO_BYTES = new byte[] {
