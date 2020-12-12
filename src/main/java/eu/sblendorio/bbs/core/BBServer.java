@@ -220,7 +220,7 @@ public class BBServer {
         tenants.forEach(c -> logger.info(" * {}", c.getSimpleName()));
     }
 
-    private final static String THREAD_ROW_FORMAT = "%11s %-40s %-35s %-15s %-7s %4s %-5s";
+    private final static String THREAD_ROW_FORMAT = "%20s %-40s %-35s %-15s %-7s %4s %-5s";
     private static String getConfigAsString() {
         return "HTTP/1.1 200 OK\n"
             + "Server: Dummy HTTP connection\n"
@@ -252,8 +252,8 @@ public class BBServer {
             "Id", "Class[Name]", "Client", "State", "Type", "Pri", "Alive")
             + "\n" +
               String.format(THREAD_ROW_FORMAT,
-                  "-----------", "----------------------------------------", "-----------------------------------",
-                  "---------------", "-------", "----", "-----")
+                  "--------------------", "----------------------------------------",
+                  "-----------------------------------", "---------------", "-------", "----", "-----")
             + "\n"
             + Thread.getAllStackTraces().keySet().stream().sorted(comparingLong(Thread::getId)).map(t -> {
                     String clientClass = (t instanceof BbsThread) ? ((BbsThread) t).getClientClass().getSimpleName() : null;
