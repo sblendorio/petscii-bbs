@@ -50,7 +50,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
     String HR_TOP;
 
     @Override
-    public void initBbs() {
+    public void initBbs() throws Exception {
         HR_TOP = StringUtils.repeat(chr(163), getScreenColumns() - 1);
     }
 

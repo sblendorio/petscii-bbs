@@ -1,6 +1,5 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
-import java.nio.charset.StandardCharsets;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 
 public class MenuApple1Telnet extends MenuApple1 {
@@ -8,10 +7,22 @@ public class MenuApple1Telnet extends MenuApple1 {
     public MenuApple1Telnet() {
         setLocalEcho(true);
         clsBytes = new byte[] {
-            13, 10, 13, 10
+            13, 10,
+            13, 10,
+            13, 10,
+            13, 10
         };
         screenColumns = 80;
     }
+
+    @Override
+    public void initBbs() throws Exception {
+        Thread.sleep(500L);
+        resetInput();
+    }
+
+    @Override
+    protected String banner() { return "Retrocampus BBS for UNIX Telnet - by F. Sblendorio 2020"; }
 
     @Override
     public byte[] initializingBytes() {

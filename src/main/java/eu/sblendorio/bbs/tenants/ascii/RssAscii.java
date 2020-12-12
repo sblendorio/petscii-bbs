@@ -49,7 +49,7 @@ public abstract class RssAscii extends AsciiThread {
     String HR_TOP;
 
     @Override
-    public void initBbs() {
+    public void initBbs() throws Exception {
         HR_TOP = repeat('-', this.getScreenColumns() - 1);
     }
 
@@ -94,6 +94,7 @@ public abstract class RssAscii extends AsciiThread {
             String title = substring(value.title + "                    ", 0, 12);
             print(title);
             print(" ");
+            if (getScreenColumns() > 40) print("                    ");
 
             int odd = even+(sections().size() / 2);
             if (odd < keys.size()) {

@@ -126,7 +126,7 @@ public abstract class BbsThread extends Thread {
         root.keepAliveThread.start();
     }
 
-    public void initBbs() { }
+    public void initBbs() throws Exception { }
 
     abstract public BbsInputOutput buildIO(Socket socket) throws IOException;
 
@@ -226,10 +226,12 @@ public abstract class BbsThread extends Thread {
             log("New connection at " + socket + ", server="+serverAddress.getHostAddress());
             Thread.sleep(200);
             boolean qMode = io.out.quoteMode();
-            if (initializingBytes() != null) io.out.write(initializingBytes());
+            if (initializingBytes() != null) {
+                io.out.write(initializingBytes());
+                io.resetInput();
+            }
             initBbs();
             io.out.setQuoteMode(qMode);
-            io.resetInput();
             setClientName("client"+getClientId());
             clients.put(getClientId(), this);
             keepAliveThread.start();
@@ -342,10 +344,12 @@ public abstract class BbsThread extends Thread {
             }
             root.keepAliveThread.restartKeepAlive();
             boolean qMode = bbs.io.out.quoteMode();
-            if (bbs.initializingBytes() != null) bbs.io.out.write(bbs.initializingBytes());
+            if (bbs.initializingBytes() != null) {
+                bbs.io.out.write(bbs.initializingBytes());
+                bbs.io.resetInput();
+            }
             bbs.initBbs();
             bbs.io.out.setQuoteMode(qMode);
-            bbs.resetInput();
             bbs.doLoop();
             return true;
         } catch (SocketException | SocketTimeoutException | BbsIOException e) {

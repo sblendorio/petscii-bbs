@@ -4,6 +4,7 @@ import eu.sblendorio.bbs.core.BbsThread;
 import static eu.sblendorio.bbs.core.Utils.equalsDomain;
 import static eu.sblendorio.bbs.core.Utils.normalizeDomain;
 import eu.sblendorio.bbs.tenants.petscii.WordpressProxy;
+import java.io.IOException;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyMap;
 import static org.apache.commons.collections4.MapUtils.isEmpty;
@@ -41,7 +42,7 @@ public class WordpressProxyAscii extends AsciiThread {
     String HR_TOP;
 
     @Override
-    public void initBbs() {
+    public void initBbs() throws Exception {
         HR_TOP = StringUtils.repeat('-', getScreenColumns() - 1);
     }
 

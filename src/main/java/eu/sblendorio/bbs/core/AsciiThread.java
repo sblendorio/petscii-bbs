@@ -10,7 +10,10 @@ public abstract class AsciiThread extends BbsThread {
     public int screenColumns = 40;
     public int screenRows = 24;
     public byte[] clsBytes = new byte[] {
-        13, 10, 13, 10
+        13, 10,
+        13, 10,
+        13, 10,
+        13, 10
     };
 
     public AsciiThread() {

@@ -69,9 +69,12 @@ public class MenuApple1 extends AsciiThread {
         flush();
     }
 
+    protected String banner() { return "BBS for Apple I - by F. Sblendorio 2020"; }
+
     @Override
     public void doLoop() throws Exception {
         init();
+        String sp = (getScreenColumns() > 40) ? "                    " : "";
         logo();
         while (true) {
             log("Starting Apple1 / main menu");
@@ -80,26 +83,26 @@ public class MenuApple1 extends AsciiThread {
             println();
             println();
             println();
-            println("BBS for Apple I - by F. Sblendorio 2020");
+            println(banner());
             println();
-            println("International News     Game Room");
-            println("------------------     ---------------");
-            println("A - CNN News           N - TIC TAC TOE");
-            println("B - BBC News           O - Connect Four");
-            println("C - Indie Retro News   P - Zork I");
-            println("D - VCF News           Q - Zork II");
-            println("E - The 8-Bit Guy      R - Zork III");
-            println("                       S - Hitchhiker's");
+            println("International News   "+sp+"  Game Room");
+            println("------------------   "+sp+"  ---------------");
+            println("A - CNN News         "+sp+"  N - TIC TAC TOE");
+            println("B - BBC News         "+sp+"  O - Connect Four");
+            println("C - Indie Retro News "+sp+"  P - Zork I");
+            println("D - VCF News         "+sp+"  Q - Zork II");
+            println("E - The 8-Bit Guy    "+sp+"  R - Zork III");
+            println("                     "+sp+"  S - Hitchhiker's");
             println("Italian News");
             println("-----------------");
             println("F - Televideo RAI");
             println("G - Wired Italia");
             println("H - Disinformatico");
-            println("I - Il Post             Services");
-            println("J - Fatto Quotidiano    ----------");
-            println("K - Retrocampus         T - Chat");
-            println("L - Butac.it            U - Private Msg");
-            println("M - Facta.news          . - Logout");
+            println("I - Il Post           "+sp+"  Services");
+            println("J - Fatto Quotidiano  "+sp+"  ----------");
+            println("K - Retrocampus       "+sp+"  T - Chat");
+            println("L - Butac.it          "+sp+"  U - Private Msg");
+            println("M - Facta.news        "+sp+"  . - Logout");
 
              //final String line = geoData != null ? "Connected from "+geoData.city+", "+geoData.country : EMPTY;
             final String line = "(C) F. Sblendorio in 2018, 2019";

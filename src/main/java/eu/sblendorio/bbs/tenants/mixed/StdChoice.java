@@ -28,8 +28,8 @@ public class StdChoice extends AsciiThread {
         newline();
         println("enter to exit");
         newline();
-        resetInput();
         print(">");
+        resetInput();
         ch = readKey();
         newline();
         if (ch == '1') { launch(new Menu64());

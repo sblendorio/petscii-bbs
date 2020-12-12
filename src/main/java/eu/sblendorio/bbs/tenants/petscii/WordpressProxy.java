@@ -11,6 +11,7 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.LOWERCASE;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import static eu.sblendorio.bbs.core.Utils.equalsDomain;
 import static eu.sblendorio.bbs.core.Utils.normalizeDomain;
+import java.io.IOException;
 import java.util.ArrayList;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyMap;
@@ -42,7 +43,7 @@ public class WordpressProxy extends PetsciiThread {
     String HR_TOP;
 
     @Override
-    public void initBbs() {
+    public void initBbs() throws Exception {
         HR_TOP = StringUtils.repeat(chr(163), getScreenColumns() - 1);
     }
 

@@ -7,6 +7,7 @@ import com.google.api.services.blogger.Blogger;
 import com.google.api.services.blogger.BloggerScopes;
 import com.google.api.services.blogger.model.Post;
 import com.google.api.services.blogger.model.PostList;
+import com.rometools.utils.IO;
 import eu.sblendorio.bbs.core.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
@@ -28,7 +29,7 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
     String HR_TOP;
 
     @Override
-    public void initBbs() {
+    public void initBbs() throws Exception {
         HR_TOP = StringUtils.repeat('-', getScreenColumns() - 1);
     }
 
