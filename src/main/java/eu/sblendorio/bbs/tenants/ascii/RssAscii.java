@@ -211,6 +211,7 @@ public abstract class RssAscii extends AsciiThread {
                 print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT");
                 resetInput();
                 int ch = keyPressed(timeout);
+                if (getLocalEcho() && isPrintableChar(ch)) write(ch);
                 System.out.println();
                 if (ch == '.') {
                     return true;
