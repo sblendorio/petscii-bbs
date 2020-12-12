@@ -6,6 +6,7 @@ import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import java.io.File;
 import java.io.IOException;
+import org.apache.commons.lang3.StringUtils;
 
 public class MenuApple1 extends AsciiThread {
 
@@ -110,38 +111,39 @@ public class MenuApple1 extends AsciiThread {
                 log("Menu. Waiting for key pressed.");
                 println();
                 print("> ");
-                resetInput(); int key = readKey();
                 resetInput();
-                key = Character.toLowerCase(key);
-                log("Menu. Pressed: '" + (key == 13 || key == 10 ? "chr("+key+")" : ((char) key)) + "' (code=" + key + ")");
+                String choice = readLine();
+                resetInput();
+                choice = StringUtils.lowerCase(choice);
+                log("Menu. Choice = "+ choice);
                 BbsThread subThread;
-                if (key == '.') {
+                if (".".equals(choice)) {
                     newline();
                     newline();
                     println("Disconnected.");
                     return;
                 }
-                else if (key == 'a') subThread = new CnnAscii();
-                else if (key == 'b') subThread = new BbcAscii();
-                else if (key == 'c') subThread = new IndieRetroNewsAscii();
-                else if (key == 'd') subThread = new VcfedAscii();
-                else if (key == 'e') subThread = new The8BitGuyAscii();
-                else if (key == 'f') subThread = new TelevideoRaiAscii();
-                else if (key == 'g') subThread = new WiredItaliaAscii();
-                else if (key == 'h') subThread = new DisinformaticoAscii();
-                else if (key == 'i') subThread = new IlPostAscii();
-                else if (key == 'j') subThread = new IlFattoQuotidianoAscii();
-                else if (key == 'k') subThread = new RetroCampusAscii();
-                else if (key == 'l') subThread = new ButacAscii();
-                else if (key == 'm') subThread = new FactaNewsAscii();
-                else if (key == 'n') subThread = new TicTacToeAscii();
-                else if (key == 'o') subThread = new Connect4Ascii();
-                else if (key == 'p') subThread = new ZorkMachineAscii("zmpp/zork1.z3");
-                else if (key == 'q') subThread = new ZorkMachineAscii("zmpp/zork2.z3");
-                else if (key == 'r') subThread = new ZorkMachineAscii("zmpp/zork3.z3");
-                else if (key == 's') subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
-                else if (key == 't') subThread = new ChatA1();
-                else if (key == 'u') subThread = new PrivateMessagesAscii();
+                else if ("a".equals(choice)) subThread = new CnnAscii();
+                else if ("b".equals(choice)) subThread = new BbcAscii();
+                else if ("c".equals(choice)) subThread = new IndieRetroNewsAscii();
+                else if ("d".equals(choice)) subThread = new VcfedAscii();
+                else if ("e".equals(choice)) subThread = new The8BitGuyAscii();
+                else if ("f".equals(choice)) subThread = new TelevideoRaiAscii();
+                else if ("g".equals(choice)) subThread = new WiredItaliaAscii();
+                else if ("h".equals(choice)) subThread = new DisinformaticoAscii();
+                else if ("i".equals(choice)) subThread = new IlPostAscii();
+                else if ("j".equals(choice)) subThread = new IlFattoQuotidianoAscii();
+                else if ("k".equals(choice)) subThread = new RetroCampusAscii();
+                else if ("l".equals(choice)) subThread = new ButacAscii();
+                else if ("m".equals(choice)) subThread = new FactaNewsAscii();
+                else if ("n".equals(choice)) subThread = new TicTacToeAscii();
+                else if ("o".equals(choice)) subThread = new Connect4Ascii();
+                else if ("p".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
+                else if ("q".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
+                else if ("r".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
+                else if ("s".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
+                else if ("t".equals(choice)) subThread = new ChatA1();
+                else if ("u".equals(choice)) subThread = new PrivateMessagesAscii();
                 else {
                     validKey = false;
                     subThread = null;
