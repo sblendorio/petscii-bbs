@@ -10,7 +10,11 @@ import java.io.IOException;
 public class MenuApple1 extends AsciiThread {
 
     public MenuApple1() {
-        setLocalEcho(false);
+        this(false);
+    }
+
+    public MenuApple1(boolean echo) {
+        setLocalEcho(echo);
     }
 
     public static class GeoData {
