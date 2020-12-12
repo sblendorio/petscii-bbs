@@ -38,8 +38,13 @@ import org.slf4j.LoggerFactory;
 @Hidden
 public class WordpressProxy extends PetsciiThread {
 
-    static final String HR_TOP = StringUtils.repeat(chr(163), 39);
     private static final Logger logger = LoggerFactory.getLogger(WordpressProxy.class);
+    String HR_TOP;
+
+    @Override
+    public void initBbs() {
+        HR_TOP = StringUtils.repeat(chr(163), getScreenColumns() - 1);
+    }
 
     static class Post {
         long id;
@@ -205,9 +210,10 @@ public class WordpressProxy extends PetsciiThread {
             int i = entry.getKey();
             Post post = entry.getValue();
             write(WHITE); print(i + "."); write(GREY3);
-            final int iLen = 37-String.valueOf(i).length();
+            final int nCols = getScreenColumns() - 3;
+            final int iLen = nCols-String.valueOf(i).length();
             String line = WordUtils.wrap(filterPrintable(HtmlUtils.htmlClean(post.title)), iLen, "\r", true);
-            println(line.replaceAll("\r", newlineString() + " " + repeat(" ", 37-iLen)));
+            println(line.replaceAll("\r", newlineString() + " " + repeat(" ", nCols-iLen)));
         }
         newline();
     }
@@ -217,7 +223,7 @@ public class WordpressProxy extends PetsciiThread {
         List<String> result = new ArrayList<>();
         for (String item: cleaned) {
             String[] wrappedLine = WordUtils
-                    .wrap(item, 39, "\n", true)
+                    .wrap(item, getScreenColumns() - 1, "\n", true)
                     .split("\n");
             result.addAll(asList(wrappedLine));
         }

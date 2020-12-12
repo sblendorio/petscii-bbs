@@ -7,18 +7,15 @@ public class MenuApple1Telnet extends MenuApple1 {
 
     public MenuApple1Telnet() {
         setLocalEcho(true);
+        clsBytes = new byte[] {
+            13, 10, 13, 10
+        };
+        screenColumns = 80;
     }
 
     @Override
     public byte[] initializingBytes() {
        return "\377\375\042\377\373\001".getBytes(ISO_8859_1);
-
-        //return
-        //    ("\377\375\042"      // LINEMODE
-        //    +"\377\376\020"      // LINEFEED
-        //   // +"\377\375\055"
-        //    )
-        //    .getBytes(ISO_8859_1);
     }
 
     /*

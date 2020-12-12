@@ -11,13 +11,6 @@ public class AsciiInputOutput extends BbsInputOutput {
     public static byte[] NEW_LINE_BYTES = new byte[] { 13, 10 };
 
     @Override
-    public void cls() {
-        for (int i=0; i<25; ++i) {
-            newline();
-        }
-    }
-
-    @Override
     public byte[] newlineBytes() {
         return NEW_LINE_BYTES;
     }

@@ -30,4 +30,11 @@ public abstract class PetsciiThread extends BbsThread {
         return 25;
     }
 
+
+    @Override
+    public void cls() {
+        write(147);
+    }
+
+
 }

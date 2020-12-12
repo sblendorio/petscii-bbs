@@ -11,11 +11,6 @@ public class PetsciiInputOutput extends BbsInputOutput {
     public static byte[] NEW_LINE_BYTES = new byte[] { 13 };
 
     @Override
-    public void cls() {
-        out.write(147);
-    }
-
-    @Override
     public byte[] newlineBytes() {
         return NEW_LINE_BYTES;
     }

@@ -7,8 +7,11 @@ import static java.nio.charset.StandardCharsets.ISO_8859_1;
 
 public abstract class AsciiThread extends BbsThread {
 
-    protected int screenColumns = 40;
-    protected int screenRows = 24;
+    public int screenColumns = 40;
+    public int screenRows = 24;
+    public byte[] clsBytes = new byte[] {
+        13, 10, 13, 10
+    };
 
     public AsciiThread() {
     }
@@ -26,6 +29,11 @@ public abstract class AsciiThread extends BbsThread {
     @Override
     public int getScreenRows() {
         return screenRows;
+    }
+
+    @Override
+    public void cls() {
+        write(clsBytes);
     }
 
 }

@@ -47,7 +47,12 @@ import org.apache.commons.text.WordUtils;
 @Hidden
 public class GoogleBloggerProxy extends PetsciiThread {
 
-    static final String HR_TOP = StringUtils.repeat(chr(163), 39);
+    String HR_TOP;
+
+    @Override
+    public void initBbs() {
+        HR_TOP = StringUtils.repeat(chr(163), getScreenColumns() - 1);
+    }
 
     protected String blogUrl = "https://blogger.googleblog.com";
     protected byte[] logo = LOGO_BLOGGER;
@@ -246,9 +251,10 @@ public class GoogleBloggerProxy extends PetsciiThread {
             int i = entry.getKey();
             Post post = entry.getValue();
             write(WHITE); print(i + "."); write(GREY3);
-            final int iLen = 37-String.valueOf(i).length();
+            final int nCols = getScreenColumns() - 3;
+            final int iLen = nCols-String.valueOf(i).length();
             String line = WordUtils.wrap(filterPrintable(HtmlUtils.htmlClean(post.getTitle())), iLen, "\r", true);
-            println(line.replaceAll("\r", newlineString() + " " + repeat(" ", 37-iLen)));
+            println(line.replaceAll("\r", newlineString() + " " + repeat(" ", nCols-iLen)));
         }
         newline();
     }
@@ -258,7 +264,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
         List<String> result = new ArrayList<>();
         for (String item: cleaned) {
             String[] wrappedLine = WordUtils
-                    .wrap(item, 39, "\n", true)
+                    .wrap(item, getScreenColumns() - 1, "\n", true)
                     .split("\n");
             result.addAll(asList(wrappedLine));
         }

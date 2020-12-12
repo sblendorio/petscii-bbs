@@ -126,6 +126,8 @@ public abstract class BbsThread extends Thread {
         root.keepAliveThread.start();
     }
 
+    public void initBbs() { }
+
     abstract public BbsInputOutput buildIO(Socket socket) throws IOException;
 
     protected static Map<Long, BbsThread> clients = defaultClientsMapImplementation();
@@ -225,6 +227,7 @@ public abstract class BbsThread extends Thread {
             Thread.sleep(200);
             boolean qMode = io.out.quoteMode();
             if (initializingBytes() != null) io.out.write(initializingBytes());
+            initBbs();
             io.out.setQuoteMode(qMode);
             io.resetInput();
             setClientName("client"+getClientId());
@@ -307,7 +310,6 @@ public abstract class BbsThread extends Thread {
             bbs.ipAddress = root.ipAddress;
             bbs.socket = root.socket;
             bbs.io = bbs.buildIO(socket);
-            bbs.io.setLocalEcho(bbs.getLocalEcho());
             bbs.parent = this;
             bbs.keepAliveTimeout = bbs.keepAliveTimeout <= 0 ? root.keepAliveTimeout : bbs.keepAliveTimeout;
             bbs.clientId = root.clientId;
@@ -341,6 +343,7 @@ public abstract class BbsThread extends Thread {
             root.keepAliveThread.restartKeepAlive();
             boolean qMode = bbs.io.out.quoteMode();
             if (bbs.initializingBytes() != null) bbs.io.out.write(bbs.initializingBytes());
+            bbs.initBbs();
             bbs.io.out.setQuoteMode(qMode);
             bbs.resetInput();
             bbs.doLoop();
@@ -394,7 +397,7 @@ public abstract class BbsThread extends Thread {
     public void write(int b) { io.write(b); }
     public void write(int... b) { io.write(b); }
     public void flush() { io.flush(); }
-    public void cls() { io.cls(); }
+    public abstract void cls();
     public void newline() { io.newline(); }
     public int backspace() { return io.backspace(); }
     public boolean isNewline(int ch) { return io.isNewline(ch); }

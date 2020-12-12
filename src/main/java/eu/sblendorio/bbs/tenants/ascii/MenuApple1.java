@@ -3,7 +3,7 @@ package eu.sblendorio.bbs.tenants.ascii;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.maxmind.db.Reader;
 import eu.sblendorio.bbs.core.AsciiThread;
-import eu.sblendorio.bbs.tenants.petscii.The8BitGuy;
+import eu.sblendorio.bbs.core.BbsThread;
 import java.io.File;
 import java.io.IOException;
 
@@ -109,34 +109,46 @@ public class MenuApple1 extends AsciiThread {
                 resetInput();
                 key = Character.toLowerCase(key);
                 log("Menu. Pressed: '" + (key == 13 || key == 10 ? "chr("+key+")" : ((char) key)) + "' (code=" + key + ")");
+                BbsThread subThread;
                 if (key == '.') {
                     newline();
                     newline();
                     println("Disconnected.");
                     return;
                 }
-                else if (key == 'a') launch(new CnnAscii());
-                else if (key == 'b') launch(new BbcAscii());
-                else if (key == 'c') launch(new IndieRetroNewsAscii());
-                else if (key == 'd') launch(new VcfedAscii());
-                else if (key == 'e') launch(new The8BitGuyAscii());
-                else if (key == 'f') launch(new TelevideoRaiAscii());
-                else if (key == 'g') launch(new WiredItaliaAscii());
-                else if (key == 'h') launch(new DisinformaticoAscii());
-                else if (key == 'i') launch(new IlPostAscii());
-                else if (key == 'j') launch(new IlFattoQuotidianoAscii());
-                else if (key == 'k') launch(new RetroCampusAscii());
-                else if (key == 'l') launch(new ButacAscii());
-                else if (key == 'm') launch(new FactaNewsAscii());
-                else if (key == 'n') launch(new TicTacToeAscii());
-                else if (key == 'o') launch(new Connect4Ascii());
-                else if (key == 'p') launch(new ZorkMachineAscii("zmpp/zork1.z3"));
-                else if (key == 'q') launch(new ZorkMachineAscii("zmpp/zork2.z3"));
-                else if (key == 'r') launch(new ZorkMachineAscii("zmpp/zork3.z3"));
-                else if (key == 's') launch(new ZorkMachineAscii("zmpp/hitchhiker-r60.z3"));
-                else if (key == 't') launch(new ChatA1());
-                else if (key == 'u') launch(new PrivateMessagesAscii());
-                else validKey = false;
+                else if (key == 'a') subThread = new CnnAscii();
+                else if (key == 'b') subThread = new BbcAscii();
+                else if (key == 'c') subThread = new IndieRetroNewsAscii();
+                else if (key == 'd') subThread = new VcfedAscii();
+                else if (key == 'e') subThread = new The8BitGuyAscii();
+                else if (key == 'f') subThread = new TelevideoRaiAscii();
+                else if (key == 'g') subThread = new WiredItaliaAscii();
+                else if (key == 'h') subThread = new DisinformaticoAscii();
+                else if (key == 'i') subThread = new IlPostAscii();
+                else if (key == 'j') subThread = new IlFattoQuotidianoAscii();
+                else if (key == 'k') subThread = new RetroCampusAscii();
+                else if (key == 'l') subThread = new ButacAscii();
+                else if (key == 'm') subThread = new FactaNewsAscii();
+                else if (key == 'n') subThread = new TicTacToeAscii();
+                else if (key == 'o') subThread = new Connect4Ascii();
+                else if (key == 'p') subThread = new ZorkMachineAscii("zmpp/zork1.z3");
+                else if (key == 'q') subThread = new ZorkMachineAscii("zmpp/zork2.z3");
+                else if (key == 'r') subThread = new ZorkMachineAscii("zmpp/zork3.z3");
+                else if (key == 's') subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
+                else if (key == 't') subThread = new ChatA1();
+                else if (key == 'u') subThread = new PrivateMessagesAscii();
+                else {
+                    validKey = false;
+                    subThread = null;
+                }
+                if (subThread != null) {
+                    if (subThread instanceof AsciiThread) {
+                        ((AsciiThread) subThread).clsBytes = this.clsBytes;
+                        ((AsciiThread) subThread).screenColumns = this.screenColumns;
+                        ((AsciiThread) subThread).screenRows = this.screenRows;
+                    }
+                    launch(subThread);
+                }
             } while (!validKey);
         }
     }

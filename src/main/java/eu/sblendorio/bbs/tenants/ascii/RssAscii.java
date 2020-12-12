@@ -45,7 +45,12 @@ public abstract class RssAscii extends AsciiThread {
     protected int pageRows = 19;
     protected long timeout = toLong(System.getProperty("rss.a1.timeout", "40000"));
 
-    final String HR_TOP = repeat('-', this.getScreenColumns() - 1);
+    String HR_TOP;
+
+    @Override
+    public void initBbs() {
+        HR_TOP = repeat('-', this.getScreenColumns() - 1);
+    }
 
     static class NewsSection {
         final String title;

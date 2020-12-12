@@ -137,8 +137,7 @@ public class PrivateMessagesAscii extends AsciiThread {
                 if (isBlank(username) || ".".equals(username)) return;
                 if (equalsIgnoreCase(username, "p")) {
                     showPrivacyPolicy();
-                    cls();
-                    write(LOGO_BYTES);
+                    newline();
                     newline();
                     println("Enter 'P' as USERID for privacy policy");
                     newline();
@@ -185,7 +184,6 @@ public class PrivateMessagesAscii extends AsciiThread {
                 print("ANY KEY FOR NEXT PAGE, '.' TO GO BACK ");
                 flush(); resetInput(); int ch = readKey(); resetInput();
                 if (ch == '.') return;
-                newline();
                 newline();
                 newline();
             }
@@ -275,8 +273,8 @@ public class PrivateMessagesAscii extends AsciiThread {
                 size = messages.size();
             }
             long unread = countUnreadMessages(user.nick);
-            cls();
-            write(LOGO_BYTES);
+            newline();
+            newline();
             println("Got " + size  + (onlyUnread ? " unread" : EMPTY) + " message" + (size != 1 ? "s" : EMPTY) + (onlyUnread || unread == 0 ? EMPTY : " (" + unread + " unread)") + ".");
             newline();
             for (int i=offset; i<Math.min(offset+pagesize, size); ++i) {
@@ -337,8 +335,6 @@ public class PrivateMessagesAscii extends AsciiThread {
 
     public void displayMessage(UserLogon.Message m) throws Exception {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        newline();
-        newline();
         newline();
         println("From: "+ m.userFrom);
         println("To:   "+ m.userTo);

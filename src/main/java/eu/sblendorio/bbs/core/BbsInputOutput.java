@@ -308,7 +308,6 @@ public abstract class BbsInputOutput extends Reader {
         return new String(newlineBytes(), ISO_8859_1);
     };
     public abstract byte[] newlineBytes();
-    public abstract void cls();
     public abstract int backspace();
     public void writeBackspace() { write(backspace()); }
     public abstract boolean isNewline(int ch);

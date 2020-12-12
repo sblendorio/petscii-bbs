@@ -38,7 +38,13 @@ import eu.sblendorio.bbs.core.AsciiThread;
 @Hidden
 public class WordpressProxyAscii extends AsciiThread {
 
-    static final String HR_TOP = StringUtils.repeat('-', 39);
+    String HR_TOP;
+
+    @Override
+    public void initBbs() {
+        HR_TOP = StringUtils.repeat('-', getScreenColumns() - 1);
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(WordpressProxy.class);
 
     static class Post {
@@ -202,9 +208,10 @@ public class WordpressProxyAscii extends AsciiThread {
             int i = entry.getKey();
             Post post = entry.getValue();
             print(i + ".");
-            final int iLen = 37-String.valueOf(i).length();
+            final int nCols = getScreenColumns() - 3;
+            final int iLen = nCols-String.valueOf(i).length();
             String line = WordUtils.wrap(filterPrintable(HtmlUtils.htmlClean(post.title)), iLen, "\r", true);
-            println(line.replaceAll("\r", newlineString() + " " + repeat(" ", 37-iLen)));
+            println(line.replaceAll("\r", newlineString() + " " + repeat(" ", nCols-iLen)));
         }
         newline();
     }
@@ -214,7 +221,7 @@ public class WordpressProxyAscii extends AsciiThread {
         List<String> result = new ArrayList<>();
         for (String item: cleaned) {
             String[] wrappedLine = WordUtils
-                .wrap(item, 39, "\n", true)
+                .wrap(item, getScreenColumns() - 1, "\n", true)
                 .split("\n");
             result.addAll(asList(wrappedLine));
         }
