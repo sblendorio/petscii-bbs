@@ -11,6 +11,7 @@ import java.util.Map;
 public class Connect4Ascii extends AsciiThread {
 
     public Connect4Ascii() {
+        super();
     }
 
     private Map<Integer, String> playerName = ImmutableMap.of(

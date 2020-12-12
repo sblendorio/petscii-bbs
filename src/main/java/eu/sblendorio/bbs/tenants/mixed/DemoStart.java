@@ -3,6 +3,11 @@ package eu.sblendorio.bbs.tenants.mixed;
 import eu.sblendorio.bbs.core.AsciiThread;
 
 public class DemoStart extends AsciiThread {
+
+    public DemoStart() {
+        super();
+    }
+
     @Override
     public void doLoop() throws Exception {
         int ch;

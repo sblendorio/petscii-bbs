@@ -68,6 +68,7 @@ public class WordpressProxyAscii extends AsciiThread {
     private String originalDomain;
 
     public WordpressProxyAscii() {
+        super();
     }
 
     public WordpressProxyAscii(String domain) {

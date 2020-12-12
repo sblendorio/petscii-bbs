@@ -14,19 +14,19 @@ public class StdChoice extends AsciiThread {
     @Override
     public void doLoop() throws Exception {
         int ch;
-        String banner = "Welcome to " + (alternateLogo() ? "Retroacademy" : "Retrocampus") + " BBS";
+        String banner = "welcome to " + (alternateLogo() ? "retroacademy" : "retrocampus") + " bbs";
         cls();
         println(banner);
         println(StringUtils.repeat('-', banner.length()));
         newline();
-        println("Choose your system:");
+        println("choose your system:");
         newline();
-        println("1- Commodore 64 - PETSCII      - 40x25");
-        println("2- Apple I/II/+ - ASCII noecho - 40x24");
-        println("3- Apple I/II/+ - ASCII w/echo - 40x24");
-        println("4- Telnet       - ASCII w/echo - 80x24");
+        println("1- commodore 64 - petscii      - 40x25");
+        println("2- apple 1 / ][ - ascii noecho - 40x24");
+        println("3- apple 1 / ][ - ascii w/echo - 40x24");
+        println("4- telnet       - ascii w/echo - 80x24");
         newline();
-        println("Enter to Exit");
+        println("enter to exit");
         newline();
         resetInput();
         print(">");

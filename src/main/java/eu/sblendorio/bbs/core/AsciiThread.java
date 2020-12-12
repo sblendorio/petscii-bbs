@@ -14,6 +14,7 @@ public abstract class AsciiThread extends BbsThread {
     };
 
     public AsciiThread() {
+        keepAliveChar = 0;
     }
 
     @Override

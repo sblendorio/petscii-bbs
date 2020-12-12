@@ -39,6 +39,7 @@ import org.apache.commons.text.WordUtils;
 public class PrivateMessagesAscii extends AsciiThread {
 
     public PrivateMessagesAscii() {
+        super();
     }
 
     protected static final String CUSTOM_KEY = "PRIVATE_MESSAGES";

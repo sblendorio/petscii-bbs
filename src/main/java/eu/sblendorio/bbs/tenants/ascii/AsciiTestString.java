@@ -5,6 +5,10 @@ import static org.apache.commons.lang3.StringUtils.lowerCase;
 
 public class AsciiTestString extends AsciiThread {
 
+    public AsciiTestString() {
+        super();
+    }
+
     @Override
     public void doLoop() throws Exception {
         newline();

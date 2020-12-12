@@ -34,6 +34,7 @@ import org.apache.commons.text.WordUtils;
 public abstract class RssAscii extends AsciiThread {
 
     public RssAscii() {
+        super();
     }
 
     public abstract byte[] getLogo();

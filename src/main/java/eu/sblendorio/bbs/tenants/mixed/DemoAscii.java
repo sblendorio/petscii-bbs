@@ -4,6 +4,10 @@ import eu.sblendorio.bbs.core.AsciiThread;
 
 public class DemoAscii extends AsciiThread {
 
+    public DemoAscii() {
+        super();
+    }
+
     @Override
     public void doLoop() throws Exception {
         newline();

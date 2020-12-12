@@ -12,6 +12,7 @@ public class TicTacToeAscii extends AsciiThread {
     TicTacToeAI model;
 
     public TicTacToeAscii() {
+        super();
     }
 
     @Override

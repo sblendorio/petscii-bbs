@@ -14,6 +14,7 @@ public class ZorkMachineAscii extends AsciiThread {
     }
 
     public ZorkMachineAscii(String filename) {
+        super();
         this.filename = filename;
     }
 

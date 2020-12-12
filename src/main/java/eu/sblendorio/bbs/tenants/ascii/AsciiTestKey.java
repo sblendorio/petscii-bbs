@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 public class AsciiTestKey extends AsciiThread {
 
     public AsciiTestKey() {
+        super();
     }
 
     @Override

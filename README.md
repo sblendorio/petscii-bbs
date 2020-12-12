@@ -28,7 +28,9 @@ Let's suppose to build a very simple BBS that asks your name welcomes you. The b
     public class WelcomeBBS extends PetsciiThread {
         
         // NEVER forget default (empty) constructor
-        public WelcomeBBS() {}
+        public WelcomeBBS() {
+            super(); // Recommended
+        }
         
         @Override
         public void doLoop() throws Exception {

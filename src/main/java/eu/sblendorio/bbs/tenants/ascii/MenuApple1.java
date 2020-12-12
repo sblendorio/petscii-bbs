@@ -14,6 +14,7 @@ public class MenuApple1 extends AsciiThread {
     }
 
     public MenuApple1(boolean echo) {
+        super();
         setLocalEcho(echo);
     }
 
