@@ -79,10 +79,10 @@ public class BBServer {
 
                         BbsThread thread = endPoint.bbs.getDeclaredConstructor().newInstance();
                         BbsInputOutput io = thread.buildIO(socket);
-                        io.setLocalEcho(thread.getLocalEcho());
-
                         thread.setSocket(socket);
                         thread.setBbsInputOutput(io);
+                        io.setLocalEcho(thread.getLocalEcho());
+
                         thread.keepAliveTimeout = thread.keepAliveTimeout <= 0 ? timeout : thread.keepAliveTimeout;
                         thread.start();
                     }

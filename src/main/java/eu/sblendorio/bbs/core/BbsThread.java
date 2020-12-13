@@ -312,6 +312,7 @@ public abstract class BbsThread extends Thread {
             bbs.ipAddress = root.ipAddress;
             bbs.socket = root.socket;
             bbs.io = bbs.buildIO(socket);
+            bbs.io.localEcho = bbs.localEcho;
             bbs.parent = this;
             bbs.keepAliveTimeout = bbs.keepAliveTimeout <= 0 ? root.keepAliveTimeout : bbs.keepAliveTimeout;
             bbs.clientId = root.clientId;
@@ -590,7 +591,7 @@ public abstract class BbsThread extends Thread {
         if (io != null) io.setLocalEcho(value);
     }
 
-    public boolean getLocalEcho() { return localEcho == null ? true : localEcho; }
+    public boolean getLocalEcho() { return io.getLocalEcho(); }
 
     public abstract int getScreenColumns();
 

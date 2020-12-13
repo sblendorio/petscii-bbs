@@ -55,7 +55,7 @@ public abstract class BbsInputOutput extends Reader {
 
     protected Reader in;
     protected QuotedPrintStream out;
-    protected Boolean localEcho = true;
+    protected Boolean localEcho = null;
 
     protected static int defaultCharBufferSize = 8192;
 
