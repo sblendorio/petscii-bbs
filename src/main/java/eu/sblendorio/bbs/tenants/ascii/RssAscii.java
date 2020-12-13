@@ -43,7 +43,7 @@ public abstract class RssAscii extends AsciiThread {
 
     public abstract Map<String, NewsSection> sections();
     
-    protected int pageRows = 19;
+    protected int pageRows;
     protected long timeout = toLong(System.getProperty("rss.a1.timeout", "40000"));
 
     String HR_TOP;
@@ -132,6 +132,7 @@ public abstract class RssAscii extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
+        pageRows = getScreenRows() - 4;
         log("Entered Rss-Ascii: " + this.getClass().getSimpleName());
         while (true) {
             cls();

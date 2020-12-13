@@ -2,6 +2,7 @@ package eu.sblendorio.bbs.tenants.mixed;
 
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1;
+import eu.sblendorio.bbs.tenants.ascii.MenuApple1M10;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1Telnet;
 import eu.sblendorio.bbs.tenants.petscii.Menu64;
 import org.apache.commons.lang3.StringUtils;
@@ -21,10 +22,11 @@ public class StdChoice extends AsciiThread {
         newline();
         println("CHOOSE YOUR SYSTEM:");
         newline();
-        println("1- COMMODORE PETSCII 40X25   (6510)");
-        println("2- APPLE 1/II NOECHO 40X24   (6502)");
-        println("3- APPLE 1/II W/ECHO 40X24   (6503)");
-        println("4- TELNET     W/ECHO 80X24   (8086)");
+        println("1- COMMODORE PETSCII   40X25  (6510)");
+        println("2- APPLE 1/II   NOECHO 40X24  (6502)");
+        println("3- APPLE 1/II   W/ECHO 40X24  (6503)");
+        println("4- OLIVETTI M10 W/ECHO 40X15  (8085)");
+        println("5- TELNET       W/ECHO 80X24  (8086)");
         newline();
         println("PLEASE SELECT WITH NUMBERS FROM 1 TO 4");
         println("PRESS SELECT ENTER TO CLOSE CONNECTION");
@@ -36,7 +38,8 @@ public class StdChoice extends AsciiThread {
         if (ch == '1') { launch(new Menu64());
         } else if (ch == '2') { launch(new MenuApple1(false));
         } else if (ch == '3') { launch(new MenuApple1(true));
-        } else if (ch == '4') { launch(new MenuApple1Telnet());
+        } else if (ch == '4') { launch(new MenuApple1M10());
+        } else if (ch == '5') { launch(new MenuApple1Telnet());
         }
     }
 
