@@ -14,7 +14,7 @@ public class StdChoice extends AsciiThread {
     @Override
     public void doLoop() throws Exception {
         int ch;
-        String banner = "welcome to " + (alternateLogo() ? "retroacademy" : "retrocampus") + " bbs";
+        String banner = "WELCOME TO " + (alternateLogo() ? "RETROACADEMY" : "RETROCAMPUS") + " BBS";
         cls();
         println(banner);
         println(StringUtils.repeat('-', banner.length()));
