@@ -5,6 +5,7 @@ import static java.nio.charset.StandardCharsets.ISO_8859_1;
 public class MenuApple1Telnet extends MenuApple1 {
 
     public MenuApple1Telnet() {
+        super();
         setLocalEcho(true);
         clsBytes = new byte[] {
             13, 10,
