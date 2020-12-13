@@ -24,7 +24,7 @@ public class StdChoice extends AsciiThread {
         println("1- COMMODORE PETSCII 40X25 -> PORT 6510");
         println("2- APPLE 1/II NOECHO 40X24 -> PORT 6502");
         println("2- APPLE 2/II W/ECHO 40X24 -> PORT 6503");
-        println("4- TELNET     ECHO - 80X24 -> PORT 8086");
+        println("4- TELNET     W/ECHO 80X24 -> PORT 8086");
         newline();
         println("PRESS ENTER TO CLOSE CONNECTION");
         newline();
