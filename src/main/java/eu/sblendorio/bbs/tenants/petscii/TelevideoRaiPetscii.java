@@ -121,7 +121,7 @@ public class TelevideoRaiPetscii extends PetsciiThread {
             print(title);
             print(" ");
 
-            int odd = even + (sections.size() / 2);
+            int odd = even + size;
             if (odd < keys.size()) {
                 key = keys.get(odd);
                 value = sections.get(key);
@@ -130,10 +130,10 @@ public class TelevideoRaiPetscii extends PetsciiThread {
                 write(SPACE_CHAR, REVOFF, SPACE_CHAR);
                 print(value.title);
             } else {
-                write(WHITE, REVON, SPACE_CHAR);
-                print(" . ");
-                write(SPACE_CHAR, REVOFF, SPACE_CHAR);
-                print("Fine");
+                // write(WHITE, REVON, SPACE_CHAR);
+                // print(" . ");
+                // write(SPACE_CHAR, REVOFF, SPACE_CHAR);
+                // print("Fine");
             }
             newline();
             newline();

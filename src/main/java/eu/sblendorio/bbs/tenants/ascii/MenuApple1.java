@@ -78,11 +78,7 @@ public class MenuApple1 extends AsciiThread {
         logo();
         while (true) {
             log("Starting Apple1 / main menu");
-            println();
-            println();
-            println();
-            println();
-            println();
+            cls();
             println(banner());
             println();
             println("International News   "+sp+"  Game Room");
@@ -103,6 +99,7 @@ public class MenuApple1 extends AsciiThread {
             println("K - Retrocampus       "+sp+"  T - Chat");
             println("L - Butac.it          "+sp+"  U - Private Msg");
             println("M - Facta.news        "+sp+"  . - Logout");
+            println();
 
              //final String line = geoData != null ? "Connected from "+geoData.city+", "+geoData.country : EMPTY;
             final String line = "(C) F. Sblendorio in 2018, 2019";
@@ -112,7 +109,6 @@ public class MenuApple1 extends AsciiThread {
             do {
                 validKey = true;
                 log("Menu. Waiting for key pressed.");
-                println();
                 print("> ");
                 resetInput();
                 String choice = readLine();

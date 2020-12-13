@@ -36,7 +36,7 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
     protected String blogUrl = "https://blogger.googleblog.com";
     protected byte[] logo = LOGO_BLOGGER;
     protected int pageSize = 8;
-    protected int screenLines = 19;
+    protected int screenLines;
 
     protected static final String CRED_FILE_PATH = System.getProperty("user.home") + File.separator + "credentials.json";
 
@@ -105,6 +105,7 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
+        screenLines = getScreenRows() - 4;
         init();
         log("Blogger entering (" + blogUrl + ")");
         listPosts();

@@ -60,7 +60,7 @@ public class WordpressProxyAscii extends AsciiThread {
     protected String domain = "https://wordpress.org/news";
     protected byte[] logo = LOGO_WORDPRESS;
     protected int pageSize = 8;
-    protected int screenLines = 19;
+    protected int screenLines;
     protected boolean showAuthor = false;
 
     protected Map<Integer, Post> posts = emptyMap();
@@ -87,6 +87,7 @@ public class WordpressProxyAscii extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
+        screenLines = getScreenRows() - 4;
         originalDomain = domain;
         log("Wordpress entering (" + domain + ")");
         listPosts();

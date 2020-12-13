@@ -96,19 +96,18 @@ public abstract class RssAscii extends AsciiThread {
             print(" ");
             if (getScreenColumns() > 40) print("                    ");
 
-            int odd = even+(sections().size() / 2);
+            int odd = even + size;
             if (odd < keys.size()) {
                 key = keys.get(odd);
                 value = sections().get(key);
                 write(' '); print(String.format("%3s", key)); write(' ', ' '); print(value.title);
             } else {
-                write(' '); print(" . "); write(' ', ' '); print("Go back");
+                //write(' '); print(" . "); write(' ', ' '); print("Go back");
             }
-            //newline();
             newline();
-
         }
         write(' '); print(" . "); write(' ', ' '); print("Go back");
+        for (int i=0; i<getScreenRows()-size-6; ++i) newline();
         newline();
         newline();
         flush();

@@ -21,12 +21,13 @@ public class StdChoice extends AsciiThread {
         newline();
         println("CHOOSE YOUR SYSTEM:");
         newline();
-        println("1- COMMODORE PETSCII 40X25 -> PORT 6510");
-        println("2- APPLE 1/II NOECHO 40X24 -> PORT 6502");
-        println("2- APPLE 2/II W/ECHO 40X24 -> PORT 6503");
-        println("4- TELNET     W/ECHO 80X24 -> PORT 8086");
+        println("1- COMMODORE PETSCII 40X25   (6510)");
+        println("2- APPLE 1/II NOECHO 40X24   (6502)");
+        println("3- APPLE 1/II W/ECHO 40X24   (6503)");
+        println("4- TELNET     W/ECHO 80X24   (8086)");
         newline();
-        println("PRESS ENTER TO CLOSE CONNECTION");
+        println("PLEASE SELECT WITH NUMBERS FROM 1 TO 4");
+        println("PRESS SELECT ENTER TO CLOSE CONNECTION");
         newline();
         print(">");
         resetInput();

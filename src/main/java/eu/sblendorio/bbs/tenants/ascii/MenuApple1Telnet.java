@@ -26,6 +26,9 @@ public class MenuApple1Telnet extends MenuApple1 {
     protected String banner() { return "Retrocampus BBS for UNIX Telnet - by F. Sblendorio 2020"; }
 
     @Override
+    public void logo() throws Exception {}
+
+    @Override
     public byte[] initializingBytes() {
        return "\377\375\042\377\373\001".getBytes(ISO_8859_1);
     }

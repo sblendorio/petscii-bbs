@@ -263,7 +263,7 @@ public class PrivateMessagesAscii extends AsciiThread {
     public void listMessages(boolean onlyUnread) throws Exception {
         List<UserLogon.Message> messages = getMessages(user.nick, onlyUnread);
 
-        int pagesize = 12;
+        int pagesize = getScreenRows() - 10;
         int offset = 0;
         String cmd;
         do {
@@ -351,7 +351,7 @@ public class PrivateMessagesAscii extends AsciiThread {
         for (String row: rows) {
             ++linecount;
             println(row);
-            if (linecount % 22 == 0) {
+            if (linecount % (getScreenRows() - 2) == 0) {
                 println();
                 print("-- More --");
                 resetInput();
@@ -652,7 +652,7 @@ public class PrivateMessagesAscii extends AsciiThread {
             text.addAll(asList(WordUtils.wrap(row, getScreenColumns() - 1, "\n", true).split("\n")));
         if (isEmpty(text)) return;
         int size = text.size();
-        int pagesize = 18;
+        int pagesize = getScreenRows() - 2;
         int offset = 0;
         int cmd = 0;
         do {

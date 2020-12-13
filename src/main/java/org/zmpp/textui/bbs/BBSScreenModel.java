@@ -201,7 +201,7 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     }
 
     private void checkForScreenPaging() {
-        if (nlines >= 24) {
+        if (nlines >= bbsThread.getScreenRows() - 1) {
             bbsThread.print("--- ANY KEY FOR NEXT PAGE -------------");
             try {
                 bbsThread.flush();
