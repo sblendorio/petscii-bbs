@@ -206,6 +206,7 @@ public class WordpressProxyAscii extends AsciiThread {
             posts = getPosts(currentPage, pageSize);
         }
 
+        long totalRows = 0;
         for (Map.Entry<Integer, Post> entry: posts.entrySet()) {
             int i = entry.getKey();
             Post post = entry.getValue();
@@ -213,9 +214,10 @@ public class WordpressProxyAscii extends AsciiThread {
             final int nCols = getScreenColumns() - 3;
             final int iLen = nCols-String.valueOf(i).length();
             String line = WordUtils.wrap(filterPrintable(HtmlUtils.htmlClean(post.title)), iLen, "\r", true);
+            totalRows += 1 + line.chars().filter(ch -> ch == '\r').count();
             println(line.replaceAll("\r", newlineString() + " " + repeat(" ", nCols-iLen)));
         }
-        newline();
+        for (int i = 0; i < (getScreenRows() - totalRows - 3); ++i) newline();
     }
 
     protected List<String> wordWrap(String s) {

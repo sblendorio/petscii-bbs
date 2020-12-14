@@ -139,9 +139,13 @@ public class MenuApple1 extends AsciiThread {
                     }
                     if (subThread instanceof WordpressProxyAscii && screenRows == 15) {
                         ((WordpressProxyAscii) subThread).pageSize /= 2;
-                    }
-                    if (subThread instanceof GoogleBloggerProxyAscii && screenRows == 15) {
+                    } else if (subThread instanceof GoogleBloggerProxyAscii && screenRows == 15) {
                         ((GoogleBloggerProxyAscii) subThread).pageSize /= 2;
+                    } else if (subThread instanceof WordpressProxyAscii && screenColumns == 80) {
+                        ((WordpressProxyAscii) subThread).pageSize *= 2;
+                    } else
+                    if (subThread instanceof GoogleBloggerProxyAscii && screenColumns == 80) {
+                        ((GoogleBloggerProxyAscii) subThread).pageSize *= 2;
                     }
                     launch(subThread);
                 }
