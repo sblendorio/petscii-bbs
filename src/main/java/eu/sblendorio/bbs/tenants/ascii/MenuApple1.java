@@ -74,7 +74,7 @@ public class MenuApple1 extends AsciiThread {
 
     public String rssPropertyTimeoutDefault() { return "40000"; }
 
-    protected String banner() { return "BBS for Apple I - by F. Sblendorio 2020"; }
+    protected String banner() { return "BBS for Apple-1 - by F. Sblendorio 2020"; }
 
     @Override
     public void doLoop() throws Exception {

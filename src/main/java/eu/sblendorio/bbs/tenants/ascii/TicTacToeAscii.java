@@ -26,9 +26,11 @@ public class TicTacToeAscii extends AsciiThread {
         boolean firstMove = true;
         do {
             cls();
-            if (userTurn && !firstMove && getScreenRows()!=15) println("Computers' move:"); else drawLogo();
+            if (getScreenRows() != 15) {
+                if (userTurn && !firstMove) println("Computers' move:"); else drawLogo();
+                newline();
+            }
             firstMove = false;
-            newline();
             drawBoard();
 
             log("TicTacToe, userTurn="+userTurn);
@@ -94,7 +96,7 @@ public class TicTacToeAscii extends AsciiThread {
             }
             println();
         }
-        println();
+        if (getScreenRows() != 15) println();
         flush();
     }
 

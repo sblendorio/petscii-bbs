@@ -23,8 +23,8 @@ public class StdChoice extends AsciiThread {
         println("CHOOSE YOUR SYSTEM:");
         newline();
         println("1- COMMODORE PETSCII   40X25  (6510)");
-        println("2- APPLE 1/II   NOECHO 40X24  (6502)");
-        println("3- APPLE 1/II   W/ECHO 40X24  (6503)");
+        println("2- APPLE-1/II   NOECHO 40X24  (6502)");
+        println("3- APPLE-1/II   W/ECHO 40X24  (6503)");
         println("4- TELNET       W/ECHO 80X24  (8086)");
         println("5- OLIVETTI M10 W/ECHO 40X15  (8085)");
         newline();
