@@ -426,9 +426,9 @@ public class PrivateMessagesAscii extends AsciiThread {
             newline();
             println("User preferences for " + user.nick);
             newline();
-            print(" 1 "); println(" Change password");
-            print(" 2 "); println(" Change realname");
-            print(" 3 "); println(" Erase user");
+            print("-1-"); println(" Change password");
+            print("-2-"); println(" Change realname");
+            print("-3-"); println(" Erase user");
             print(" . "); println(" Back to messages");
             newline();
             flush(); resetInput();
