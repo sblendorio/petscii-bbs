@@ -1,7 +1,6 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
 import java.io.IOException;
-import java.util.Arrays;
 import static java.util.Arrays.asList;
 import java.util.HashSet;
 import java.util.Set;
