@@ -69,39 +69,22 @@ public class MenuApple1 extends AsciiThread {
         flush();
     }
 
+    public String rssPropertyTimeout() { return "rss.a1.timeout"; }
+
+    public String rssPropertyTimeoutDefault() { return "40000"; }
+
     protected String banner() { return "BBS for Apple I - by F. Sblendorio 2020"; }
 
     @Override
     public void doLoop() throws Exception {
         init();
-        String sp = (getScreenColumns() > 40) ? "                    " : "";
         logo();
         while (true) {
             log("Starting Apple1 / main menu");
             cls();
-            println(banner());
-            println();
-            println("International News   "+sp+"  Game Room");
-            println("------------------   "+sp+"  ---------------");
-            println("A - CNN News         "+sp+"  N - TIC TAC TOE");
-            println("B - BBC News         "+sp+"  O - Connect Four");
-            println("C - Indie Retro News "+sp+"  P - Zork I");
-            println("D - VCF News         "+sp+"  Q - Zork II");
-            println("E - The 8-Bit Guy    "+sp+"  R - Zork III");
-            println("                     "+sp+"  S - Hitchhiker's");
-            println("Italian News");
-            println("-----------------");
-            println("F - Televideo RAI");
-            println("G - Wired Italia");
-            println("H - Disinformatico");
-            println("I - Il Post           "+sp+"  Services");
-            println("J - Fatto Quotidiano  "+sp+"  ----------");
-            println("K - Retrocampus       "+sp+"  T - Chat");
-            println("L - Butac.it          "+sp+"  U - Private Msg");
-            println("M - Facta.news        "+sp+"  . - Logout");
-            println();
+            displayMenu();
 
-             //final String line = geoData != null ? "Connected from "+geoData.city+", "+geoData.country : EMPTY;
+            //final String line = geoData != null ? "Connected from "+geoData.city+", "+geoData.country : EMPTY;
             final String line = "(C) F. Sblendorio in 2018, 2019";
 
             flush();
@@ -122,12 +105,12 @@ public class MenuApple1 extends AsciiThread {
                     println("Disconnected.");
                     return;
                 }
-                else if ("a".equals(choice)) subThread = new CnnAscii();
-                else if ("b".equals(choice)) subThread = new BbcAscii();
+                else if ("a".equals(choice)) subThread = new CnnAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault());
+                else if ("b".equals(choice)) subThread = new BbcAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault());
                 else if ("c".equals(choice)) subThread = new IndieRetroNewsAscii();
                 else if ("d".equals(choice)) subThread = new VcfedAscii();
                 else if ("e".equals(choice)) subThread = new The8BitGuyAscii();
-                else if ("f".equals(choice)) subThread = new TelevideoRaiAscii();
+                else if ("f".equals(choice)) subThread = new TelevideoRaiAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault());
                 else if ("g".equals(choice)) subThread = new WiredItaliaAscii();
                 else if ("h".equals(choice)) subThread = new DisinformaticoAscii();
                 else if ("i".equals(choice)) subThread = new IlPostAscii();
@@ -157,5 +140,30 @@ public class MenuApple1 extends AsciiThread {
                 }
             } while (!validKey);
         }
+    }
+
+    public void displayMenu() {
+        String sp = (getScreenColumns() > 40) ? "                    " : "";
+        println(banner());
+        println();
+        println("International News   "+ sp +"  Game Room");
+        println("------------------   "+ sp +"  ---------------");
+        println("A - CNN News         "+ sp +"  N - TIC TAC TOE");
+        println("B - BBC News         "+ sp +"  O - Connect Four");
+        println("C - Indie Retro News "+ sp +"  P - Zork I");
+        println("D - VCF News         "+ sp +"  Q - Zork II");
+        println("E - The 8-Bit Guy    "+ sp +"  R - Zork III");
+        println("                     "+ sp +"  S - Hitchhiker's");
+        println("Italian News");
+        println("-----------------");
+        println("F - Televideo RAI");
+        println("G - Wired Italia");
+        println("H - Disinformatico");
+        println("I - Il Post           "+ sp +"  Services");
+        println("J - Fatto Quotidiano  "+ sp +"  ----------");
+        println("K - Retrocampus       "+ sp +"  T - Chat");
+        println("L - Butac.it          "+ sp +"  U - Private Msg");
+        println("M - Facta.news        "+ sp +"  . - Logout");
+        println();
     }
 }

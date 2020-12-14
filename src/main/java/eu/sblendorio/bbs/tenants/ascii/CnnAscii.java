@@ -12,10 +12,13 @@ public class CnnAscii extends RssAscii {
     protected Map<String, NewsSection> sections;
 
     public CnnAscii() {
-        super();
+        this("rss.a1.timeout", "40000");
+    }
+
+    public CnnAscii(String property, String defaultValue) {
+        super(property, defaultValue);
         sections = loadSections();
-        this.pageRows = 19;
-        timeout = toLong(System.getProperty("rss.a1.timeout", "40000"));
+        timeout = toLong(System.getProperty(property, defaultValue));
     }
 
     @Override

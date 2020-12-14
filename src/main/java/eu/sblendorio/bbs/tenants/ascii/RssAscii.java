@@ -33,8 +33,18 @@ import org.apache.commons.text.WordUtils;
 @Hidden
 public abstract class RssAscii extends AsciiThread {
 
+    private String timeOutProperty = "rss.a1.timeout";
+    private String timeOutPropertyDefault = "40000";
+
     public RssAscii() {
         super();
+    }
+
+    public RssAscii(String timeOutProperty, String timeOutPropertyDefault) {
+        this();
+        this.timeOutProperty = timeOutProperty;
+        this.timeOutPropertyDefault = timeOutPropertyDefault;
+        this.timeout = toLong(System.getProperty(timeOutProperty, timeOutPropertyDefault));
     }
 
     public abstract byte[] getLogo();
@@ -44,7 +54,7 @@ public abstract class RssAscii extends AsciiThread {
     public abstract Map<String, NewsSection> sections();
     
     protected int pageRows;
-    protected long timeout = toLong(System.getProperty("rss.a1.timeout", "40000"));
+    protected long timeout;
 
     String HR_TOP;
 

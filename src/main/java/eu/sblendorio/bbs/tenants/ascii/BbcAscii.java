@@ -12,10 +12,13 @@ public class BbcAscii extends RssAscii {
     protected Map<String, NewsSection> sections;
 
     public BbcAscii() {
-        super();
+        this("rss.a1.timeout", "40000");
+    }
+
+    public BbcAscii(String property, String defaultValue) {
+        super(property, defaultValue);
         sections = loadSections();
-        this.pageRows = 19;
-        timeout = toLong(System.getProperty("rss.a1.timeout", "40000"));
+        timeout = toLong(System.getProperty(property, defaultValue));
     }
 
     @Override

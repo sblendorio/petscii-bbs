@@ -13,6 +13,12 @@ public class StdChoice extends AsciiThread {
     private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.port", "-1"));
 
     @Override
+    public void initBbs() throws Exception {
+        Thread.sleep(2000L);
+        resetInput();
+    }
+
+    @Override
     public void doLoop() throws Exception {
         int ch;
         String banner = "WELCOME TO " + (alternateLogo() ? "RETROACADEMY" : "RETROCAMPUS") + " BBS";
@@ -32,6 +38,7 @@ public class StdChoice extends AsciiThread {
         println("PRESS SELECT ENTER TO CLOSE CONNECTION");
         newline();
         print(">");
+        flush();
         resetInput();
         ch = readKey();
         newline();
