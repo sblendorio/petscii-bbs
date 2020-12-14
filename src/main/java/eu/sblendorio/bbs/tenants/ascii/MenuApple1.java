@@ -138,10 +138,10 @@ public class MenuApple1 extends AsciiThread {
                         ((AsciiThread) subThread).screenRows = this.screenRows;
                     }
                     if (subThread instanceof WordpressProxyAscii && screenRows == 15) {
-                        ((WordpressProxyAscii) subThread).pageSize = 5;
+                        ((WordpressProxyAscii) subThread).pageSize /= 2;
                     }
                     if (subThread instanceof GoogleBloggerProxyAscii && screenRows == 15) {
-                        ((WordpressProxyAscii) subThread).pageSize = 5;
+                        ((GoogleBloggerProxyAscii) subThread).pageSize /= 2;
                     }
                     launch(subThread);
                 }

@@ -23,10 +23,14 @@ public class TicTacToeAscii extends AsciiThread {
         model.startNewGame();
         model.performWinCheck();
         boolean userTurn = true;
-        cls();
-        drawLogo();
-        drawBoard();
+        boolean firstMove = true;
         do {
+            cls();
+            if (!userTurn || firstMove) drawLogo(); else println("Computers' move:");
+            firstMove = false;
+            newline();
+            drawBoard();
+
             log("TicTacToe, userTurn="+userTurn);
             if (userTurn) {
                 int row=-1, col=-1;
@@ -34,7 +38,7 @@ public class TicTacToeAscii extends AsciiThread {
                 boolean validCoords = false;
                 do {
                     log("TicTacToe, asking user move.");
-                    print("your move or \".\":   ");
+                    print("your move or \".\": ");
                     flush();
                     resetInput();
                     String coordsRaw = readLine(2);
@@ -60,14 +64,11 @@ public class TicTacToeAscii extends AsciiThread {
                 } while (!validCoords);
                 char piece = model.getPlayerToMove();
                 model.makeMoveInSquare(row, col);
-                drawBoard();
             } else {
-                println("computer's move:");
                 char piece = model.getPlayerToMove();
                 String coords = computerMove(model);
                 int row = coords.charAt(0) - '0';
                 int col = coords.charAt(1) - '0';
-                drawBoard();
             }
             userTurn = !userTurn;
         } while (!model.gameIsComplete());
@@ -77,7 +78,7 @@ public class TicTacToeAscii extends AsciiThread {
             println("the winner is '"+model.getGameWinner()+"'");
         println();
         println("  press any key to go back");
-        flush(); readKey();
+        flush(); resetInput(); readKey();
         log("Exiting TIC-TAC-TOE after match end");
         log("Going back to main menu");
     }
@@ -117,7 +118,6 @@ public class TicTacToeAscii extends AsciiThread {
 
     private void drawLogo() {
         println("TIC-TAC-TOE");
-        println();
         flush();
     }
 }
