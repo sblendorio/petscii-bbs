@@ -13,12 +13,6 @@ public class StdChoice extends AsciiThread {
     private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.port", "-1"));
 
     @Override
-    public void initBbs() throws Exception {
-        Thread.sleep(2000L);
-        resetInput();
-    }
-
-    @Override
     public void doLoop() throws Exception {
         int ch;
         String banner = "WELCOME TO " + (alternateLogo() ? "RETROACADEMY" : "RETROCAMPUS") + " BBS";
@@ -34,20 +28,25 @@ public class StdChoice extends AsciiThread {
         println("4- OLIVETTI M10 W/ECHO 40X15  (8085)");
         println("5- TELNET       W/ECHO 80X24  (8086)");
         newline();
-        println("PLEASE SELECT WITH NUMBERS FROM 1 TO 4");
+        println("PLEASE SELECT WITH NUMBERS FROM 1 TO 5");
         println("PRESS SELECT ENTER TO CLOSE CONNECTION");
         newline();
         print(">");
         flush();
         resetInput();
-        ch = readKey();
+        do {
+            ch = readKey();
+        } while (!isValidKey(ch));
         newline();
-        if (ch == '1') { launch(new Menu64());
-        } else if (ch == '2') { launch(new MenuApple1(false));
-        } else if (ch == '3') { launch(new MenuApple1(true));
-        } else if (ch == '4') { launch(new MenuApple1M10());
-        } else if (ch == '5') { launch(new MenuApple1Telnet());
-        }
+        if (ch == '1') launch(new Menu64());
+        else if (ch == '2') launch(new MenuApple1(false));
+        else if (ch == '3') launch(new MenuApple1(true));
+        else if (ch == '4') launch(new MenuApple1M10());
+        else if (ch == '5') launch(new MenuApple1Telnet());
+    }
+
+    private boolean isValidKey(int ch) {
+        return ch >= '#' && ch <= 127;
     }
 
     private boolean alternateLogo() {

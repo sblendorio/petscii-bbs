@@ -45,6 +45,7 @@ public class ChatA1 extends AsciiThread {
             while (status != 0) {
                 newline();
                 newline();
+                resetInput();
                 print("Enter your name: ");
                 flush(); resetInput();
                 String candidateNname = readLine();

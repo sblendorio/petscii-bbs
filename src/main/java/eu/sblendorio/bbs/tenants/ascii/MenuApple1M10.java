@@ -1,23 +1,21 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
+import java.io.IOException;
+import java.util.Arrays;
+import static java.util.Arrays.asList;
+import java.util.HashSet;
+import java.util.Set;
+
 public class MenuApple1M10 extends MenuApple1 {
 
     public MenuApple1M10() {
         super();
         setLocalEcho(true);
         clsBytes = new byte[] {
-            13, 10,
-            13, 10,
-            13, 10
+            12
         };
         screenColumns = 40;
         screenRows = 15;
-    }
-
-    @Override
-    public void initBbs() throws Exception {
-        Thread.sleep(2000L);
-        resetInput();
     }
 
     @Override
@@ -51,6 +49,13 @@ public class MenuApple1M10 extends MenuApple1 {
         println("K - Retrocampus         T - Chat");
         println("L - Butac.it            U - Private Msg");
         println("M - Facta.news          . - Logout");
+    }
+
+    public final static Set<Integer> forbiddenChars = new HashSet<>(asList(34, 250, 251, 252, 253, 254));
+
+    @Override
+    public String readChoice() throws IOException {
+        return readLine(forbiddenChars);
     }
 
 }

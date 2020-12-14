@@ -81,7 +81,7 @@ public class BBServer {
                         BbsInputOutput io = thread.buildIO(socket);
                         thread.setSocket(socket);
                         thread.setBbsInputOutput(io);
-                        io.setLocalEcho(thread.getLocalEcho());
+                        io.localEcho = thread.localEcho;
 
                         thread.keepAliveTimeout = thread.keepAliveTimeout <= 0 ? timeout : thread.keepAliveTimeout;
                         thread.start();

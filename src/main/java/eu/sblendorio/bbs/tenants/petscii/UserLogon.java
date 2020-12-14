@@ -495,9 +495,10 @@ public class UserLogon extends PetsciiThread {
                     newline();
                     newline();
                     killUser(user.nick);
-                    write(REVON); println("                      ");
-                    write(REVON); println(" USER FINALLY DELETED ");
-                    write(REVON); println("                      "); write(REVOFF);
+                    getRoot().setCustomObject(CUSTOM_KEY, null);
+                    write(REVON); println("                          ");
+                    write(REVON); println(" USER PERMANENTLY DELETED ");
+                    write(REVON); println("                          "); write(REVOFF);
                     write(GREY3); newline();
                     println("PRESS ANY KEY TO EXIT");
                     flush(); resetInput();

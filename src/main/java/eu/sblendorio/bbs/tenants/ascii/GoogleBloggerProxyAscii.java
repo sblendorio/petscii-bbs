@@ -111,16 +111,15 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
         listPosts();
         while (true) {
             log("Blogger waiting for input");
-            print("#");
-            print(" [");
+            print("(");
             print("N+-");
-            print("]Page [");
+            print(")Page (");
             print("H");
-            print("]elp [");
+            print(")elp (");
             print("R");
-            print("]eload [");
+            print(")eload (");
             print(".");
-            print("]");
+            print(")");
             print("Q");
             print("uit> ");
             resetInput();

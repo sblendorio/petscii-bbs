@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -431,6 +432,13 @@ public abstract class BbsThread extends Thread {
         return result;
     }
 
+    public String readLine(Set<Integer> forbiddenChars) throws IOException {
+        keepAliveThread.restartKeepAlive();
+        final String result = io.readLine(forbiddenChars);
+        keepAliveThread.restartKeepAlive();
+        return result;
+    }
+
     public String readPassword() throws IOException {
         keepAliveThread.restartKeepAlive();
         final String result = io.readPassword();
@@ -591,7 +599,11 @@ public abstract class BbsThread extends Thread {
         if (io != null) io.setLocalEcho(value);
     }
 
-    public boolean getLocalEcho() { return io.getLocalEcho(); }
+    public boolean getLocalEcho() {
+        return io == null
+            ? (localEcho == null ? true : localEcho)
+            : io.getLocalEcho();
+    }
 
     public abstract int getScreenColumns();
 

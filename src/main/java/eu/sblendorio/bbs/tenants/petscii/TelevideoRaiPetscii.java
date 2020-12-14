@@ -51,7 +51,7 @@ import org.apache.commons.text.WordUtils;
 
 @Hidden
 public class TelevideoRaiPetscii extends PetsciiThread {
-    static final long TIMEOUT = NumberUtils.toLong(System.getProperty("televideo_petscii_timeout", "25000"));
+    static final long TIMEOUT = NumberUtils.toLong(System.getProperty("televideo_petscii_timeout", "50000"));
     static final String HR_TOP = StringUtils.repeat(chr(163), 39);
 
     static final String PREFIX = "http://www.servizitelevideo.rai.it/televideo/pub/";

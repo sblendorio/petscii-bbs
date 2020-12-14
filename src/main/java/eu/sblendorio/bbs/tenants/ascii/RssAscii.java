@@ -117,8 +117,7 @@ public abstract class RssAscii extends AsciiThread {
             newline();
         }
         write(' '); print(" . "); write(' ', ' '); print("Go back");
-        for (int i=0; i<getScreenRows()-size-6; ++i) newline();
-        newline();
+        for (int i=0; i<getScreenRows()-size-5; ++i) newline();
         newline();
         flush();
     }

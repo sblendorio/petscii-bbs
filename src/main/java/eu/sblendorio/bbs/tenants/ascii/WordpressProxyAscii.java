@@ -93,16 +93,15 @@ public class WordpressProxyAscii extends AsciiThread {
         listPosts();
         while (true) {
             log("Wordpress waiting for input");
-            print("#");
-            print(" [");
+            print("(");
             print("N+-");
-            print("]Page [");
+            print(")Page (");
             print("H");
-            print("]elp [");
+            print(")elp (");
             print("R");
-            print("]eload [");
+            print(")eload (");
             print(".");
-            print("]");
+            print(")");
             print("Q");
             print("uit> ");
             resetInput();

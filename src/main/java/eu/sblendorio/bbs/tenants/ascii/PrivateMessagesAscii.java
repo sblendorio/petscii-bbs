@@ -301,7 +301,7 @@ public class PrivateMessagesAscii extends AsciiThread {
 
             println("U=List users     M=New message");
             println("A=All messages   R=Only unread");
-            println("#=Read message   K=User prefs.");
+            println("*=Read message   K=User prefs.");
             println("N=Next page      -=Prev. page");
             println("P=Privacy        .=Exit");
 
@@ -309,7 +309,7 @@ public class PrivateMessagesAscii extends AsciiThread {
             print("> ");
             flush(); resetInput(); cmd = readLine();
             cmd = defaultString(trim(lowerCase(cmd)));
-            int index = toInt(cmd.replace("#", EMPTY));
+            int index = toInt(cmd.replace("#", EMPTY).replace("*", EMPTY));
             if (("+".equals(cmd) || "n".equals(cmd)) && (offset+pagesize<size)) {
                 offset += pagesize;
             } else if ("-".equals(cmd) && offset > 0) {
@@ -326,7 +326,7 @@ public class PrivateMessagesAscii extends AsciiThread {
                 showPrivacyPolicy();
             } else if ("k".equals(cmd)) {
                 userPreferences();
-            } else if (isNumeric(cmd.replace("#", EMPTY)) && index>0 && index<=size) {
+            } else if (isNumeric(cmd.replace("#", EMPTY).replace("*", EMPTY)) && index>0 && index<=size) {
                 displayMessage(messages.get(index - 1));
             }
             messages = getMessages(user.nick, onlyUnread);
@@ -424,7 +424,7 @@ public class PrivateMessagesAscii extends AsciiThread {
         do {
             newline();
             newline();
-            println("User preferences [" + user.nick + "]");
+            println("User preferences for " + user.nick);
             newline();
             print(" 1 "); println(" Change password");
             print(" 2 "); println(" Change realname");
@@ -462,9 +462,9 @@ public class PrivateMessagesAscii extends AsciiThread {
                     newline();
                     newline();
                     killUser(user.nick);
-                    println("                      ");
-                    println(" USER FINALLY DELETED ");
-                    println("                      ");
+                    getRoot().setCustomObject(CUSTOM_KEY, null);
+                    newline();
+                    println("USER PERMANENTLY DELETED");
                     newline();
                     println("PRESS ANY KEY TO EXIT");
                     flush(); resetInput();

@@ -17,6 +17,7 @@ public class MenuApple1 extends AsciiThread {
     public MenuApple1(boolean echo) {
         super();
         setLocalEcho(echo);
+
     }
 
     public static class GeoData {
@@ -94,7 +95,7 @@ public class MenuApple1 extends AsciiThread {
                 log("Menu. Waiting for key pressed.");
                 print("> ");
                 resetInput();
-                String choice = readLine();
+                String choice = readChoice();
                 resetInput();
                 choice = StringUtils.lowerCase(choice);
                 log("Menu. Choice = "+ choice);
@@ -136,6 +137,12 @@ public class MenuApple1 extends AsciiThread {
                         ((AsciiThread) subThread).screenColumns = this.screenColumns;
                         ((AsciiThread) subThread).screenRows = this.screenRows;
                     }
+                    if (subThread instanceof WordpressProxyAscii && screenRows == 15) {
+                        ((WordpressProxyAscii) subThread).pageSize = 5;
+                    }
+                    if (subThread instanceof GoogleBloggerProxyAscii && screenRows == 15) {
+                        ((WordpressProxyAscii) subThread).pageSize = 5;
+                    }
                     launch(subThread);
                 }
             } while (!validKey);
@@ -165,5 +172,9 @@ public class MenuApple1 extends AsciiThread {
         println("L - Butac.it          "+ sp +"  U - Private Msg");
         println("M - Facta.news        "+ sp +"  . - Logout");
         println();
+    }
+
+    public String readChoice() throws IOException {
+        return readLine();
     }
 }

@@ -12,8 +12,11 @@ import java.io.UnsupportedEncodingException;
 import static java.lang.System.arraycopy;
 import java.net.Socket;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import java.util.Collection;
 import java.util.Collections;
+import static java.util.Collections.emptySet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
@@ -90,11 +93,17 @@ public abstract class BbsInputOutput extends Reader {
     }
 
     public String readLine(int maxLength, boolean mask) throws IOException {
+        return readLine(maxLength, mask, null);
+    }
+
+    public String readLine(int maxLength, boolean mask, Set<Integer> forbiddenChars) throws IOException {
         int ch;
         readBuffer = EMPTY;
         do {
             ch = readKey();
-            if (isBackspace(ch)) {
+            if (forbiddenChars != null && forbiddenChars.contains(ch)) {
+                continue;
+            } else if (isBackspace(ch)) {
                 if (readBuffer.length() > 0) {
                     if (getLocalEcho()) {
                         writeBackspace();
@@ -139,6 +148,10 @@ public abstract class BbsInputOutput extends Reader {
 
     public String readLine() throws IOException {
         return readLine(0, false);
+    }
+
+    public String readLine(Set<Integer> forbiddenChars) throws IOException {
+        return readLine(0, false, forbiddenChars);
     }
 
     @Override
