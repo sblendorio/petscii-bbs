@@ -222,7 +222,6 @@ public abstract class RssAscii extends AsciiThread {
                 resetInput();
                 int ch = keyPressed(timeout);
                 if (getLocalEcho() && isPrintableChar(ch)) write(ch);
-                System.out.println();
                 if (ch == '.') {
                     return true;
                 }
@@ -232,16 +231,14 @@ public abstract class RssAscii extends AsciiThread {
                     forward = false;
                     cls();
                     write(logo == null ? getLogo() : logo);
-                    println();
-                    println();
+                    newline(); newline();
                     continue;
                 } else {
                     ++page;
                 }
                 cls();
                 write(logo == null ? getLogo() : logo);
-                println();
-                println();
+                newline(); newline();
             }
             String row = rows[j];
             println(row.replace("&c64nbsp;", EMPTY));

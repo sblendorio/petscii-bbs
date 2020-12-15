@@ -237,9 +237,7 @@ public class TelevideoRaiPetscii extends PetsciiThread {
         while (j < rows.length) {
             if (j>0 && j % screenRows == 0 && forward) {
                 println();
-                write(WHITE);
-                print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT");
-                write(GREY3);
+                write(WHITE); print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT"); write(GREY3);
                 resetInput();
                 int ch = keyPressed(TIMEOUT);
                 if (ch == '.') {
