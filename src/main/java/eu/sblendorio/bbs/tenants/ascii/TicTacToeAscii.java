@@ -74,17 +74,22 @@ public class TicTacToeAscii extends AsciiThread {
             }
             userTurn = !userTurn;
         } while (!model.gameIsComplete());
+        cls();
+        if (getScreenRows() != 15) {
+            if (userTurn && !firstMove) println("Computers' move:"); else drawLogo(); newline();
+        }
+        drawBoard();
         if (model.getGameWinner() == ' ')
-            println("The match is draw");
+            print("The match is draw. ");
         else
-            println("The winner is '"+model.getGameWinner()+"'");
-        println();
-        println("Press any key to go back");
+            print("The winner is '"+model.getGameWinner()+"'. ");
+        if (getScreenRows() != 15) { newline(); newline(); }
+        print("Press any key.");
+        if (getScreenRows() != 15) { newline(); newline(); }
         flush(); resetInput(); readKey();
         log("Exiting TIC-TAC-TOE after match end");
         log("Going back to main menu");
     }
-
 
     public void drawBoard() {
         println(" !ABC");
