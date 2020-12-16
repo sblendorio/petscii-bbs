@@ -46,7 +46,8 @@ public class StdChoice extends AsciiThread {
     }
 
     private boolean isValidKey(int ch) {
-        return ch >= '#' && ch <= 127;
+        return (ch >= '#' && ch <= 127)
+            || ch == 13 || ch == 10;
     }
 
     private boolean alternateLogo() {
