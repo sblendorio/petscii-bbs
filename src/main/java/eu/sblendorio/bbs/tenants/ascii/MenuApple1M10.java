@@ -18,6 +18,12 @@ public class MenuApple1M10 extends MenuApple1 {
     }
 
     @Override
+    public void initBbs() throws Exception {
+        Thread.sleep(2000);
+        resetInput();
+    }
+
+    @Override
     protected String banner() { return "BBS for M10 - by F. Sblendorio 2020"; }
 
     @Override

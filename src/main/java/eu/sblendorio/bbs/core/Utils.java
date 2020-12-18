@@ -2,8 +2,10 @@ package eu.sblendorio.bbs.core;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.lowerCase;
@@ -42,6 +44,30 @@ public class Utils {
         return bytes(s, StandardCharsets.ISO_8859_1);
     }
 
+    public static byte[] toBytes(Object... objects) {
+        List<Byte> result = new ArrayList<>();
+        for (Object o: objects) {
+            if (o instanceof Integer) {
+                int i = (Integer) o;
+                result.add((byte) i);
+            } else if (o instanceof Long) {
+                long l = (Long) o;
+                result.add((byte) l);
+            } else if (o instanceof Short) {
+                short s = (Short) o;
+                result.add((byte) s);
+            } else if (o instanceof Byte) {
+                byte b = (Byte) o;
+                result.add(b);
+            } else if (o instanceof String) {
+                byte[] bytes = ((String) o).getBytes(StandardCharsets.ISO_8859_1);
+                for (byte b : bytes) result.add(b);
+            }
+        }
+        byte[] bytes = new byte[result.size()];
+        for (int i = 0; i < result.size(); ++i) bytes[i] = result.get(i);
+        return bytes;
+    }
 
     private Utils() {
         throw new IllegalStateException("Utility class");

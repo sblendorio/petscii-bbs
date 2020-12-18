@@ -13,14 +13,20 @@ public class StdChoice extends AsciiThread {
     private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.port", "-1"));
 
     @Override
+    public void initBbs() throws Exception {
+        Thread.sleep(2000);
+        resetInput();
+    }
+
+    @Override
     public void doLoop() throws Exception {
         int ch;
         String banner = "WELCOME TO " + (alternateLogo() ? "RETROACADEMY" : "RETROCAMPUS") + " BBS";
-        cls();
+        write(12);
         println(banner);
         println(StringUtils.repeat('-', banner.length()));
         newline();
-        println("CHOOSE YOUR SYSTEM:");
+        println("CHOOSE SYSTEM:");
         newline();
         println("1- COMMODORE PETSCII   40X25  (6510)");
         println("2- APPLE-1/II   NOECHO 40X24  (6502)");
