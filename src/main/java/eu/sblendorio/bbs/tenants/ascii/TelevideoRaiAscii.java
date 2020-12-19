@@ -22,6 +22,7 @@ public class TelevideoRaiAscii extends RssAscii {
         type = interfaceType;
         sections = loadSections();
         timeout = toLong(System.getProperty(property, defaultValue));
+        logoHeight = logoHeights.get(interfaceType);
     }
 
     @Override
@@ -62,6 +63,10 @@ public class TelevideoRaiAscii extends RssAscii {
 
     public Map<String, byte[]> logo = ImmutableMap.of(
       "ascii", bytes("Televideo")
+    );
+
+    public Map<String, Integer> logoHeights = ImmutableMap.of(
+      "ascii", 1
     );
 
     public Map<String, Map<String, byte[]>> logos = ImmutableMap.of(

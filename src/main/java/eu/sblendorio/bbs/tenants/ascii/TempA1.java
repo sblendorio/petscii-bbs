@@ -13,7 +13,7 @@ public class TempA1 extends AsciiThread {
     @Override
     public void doLoop() throws Exception {
         println("Hello world! ");
-        write(Utils.toBytes(27, "(0", 0x6c,0x71,0x6b,13,10,0x78,32,0x78,13,10,0x6d,0x71,0x6a,13,10,13,10,27,"(B"));
+        write(Utils.bytes(27, "(0", 0x6c,0x71,0x6b,13,10,0x78,32,0x78,13,10,0x6d,0x71,0x6a,13,10,13,10,27,"(B"));
         resetInput();
         readKey();
         println("Consciously closing the connection.");

@@ -9,7 +9,6 @@ import com.rometools.rome.io.XmlReader;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.HtmlUtils;
-import static eu.sblendorio.bbs.core.Utils.bytes;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -35,6 +34,8 @@ public abstract class RssAscii extends AsciiThread {
 
     private String timeOutProperty = "rss.a1.timeout";
     private String timeOutPropertyDefault = "40000";
+
+    protected int logoHeight = 1;
 
     public RssAscii() {
         super();
@@ -141,7 +142,7 @@ public abstract class RssAscii extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        pageRows = getScreenRows() - 4;
+        pageRows = getScreenRows() - logoHeight - 3;
         log("Entered Rss-Ascii: " + this.getClass().getSimpleName());
         while (true) {
             cls();
