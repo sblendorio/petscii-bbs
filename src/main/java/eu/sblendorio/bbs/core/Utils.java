@@ -36,15 +36,10 @@ public class Utils {
         return lowerCase(trim(s)).replaceAll("https?:(//)?", EMPTY).replace("www.", EMPTY).replaceAll("/+?$", EMPTY);
     }
 
-    public static byte[] bytes(String s, Charset charset) {
-        return s == null ? new byte[] {} : s.getBytes(charset);
-    }
+    public static byte[] bytes(Object... objects) {
+        if (objects == null)
+            return new byte[] {};
 
-    public static byte[] bytes(String s) {
-        return bytes(s, StandardCharsets.ISO_8859_1);
-    }
-
-    public static byte[] toBytes(Object... objects) {
         List<Byte> result = new ArrayList<>();
         for (Object o: objects) {
             if (o instanceof Integer) {

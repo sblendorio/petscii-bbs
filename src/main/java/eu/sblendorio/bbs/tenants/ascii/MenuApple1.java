@@ -111,7 +111,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("c".equals(choice)) subThread = new IndieRetroNewsAscii();
                 else if ("d".equals(choice)) subThread = new VcfedAscii();
                 else if ("e".equals(choice)) subThread = new The8BitGuyAscii();
-                else if ("f".equals(choice)) subThread = new TelevideoRaiAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault());
+                else if ("f".equals(choice)) subThread = new TelevideoRaiAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault(), "ascii");
                 else if ("g".equals(choice)) subThread = new WiredItaliaAscii();
                 else if ("h".equals(choice)) subThread = new DisinformaticoAscii();
                 else if ("i".equals(choice)) subThread = new IlPostAscii();
