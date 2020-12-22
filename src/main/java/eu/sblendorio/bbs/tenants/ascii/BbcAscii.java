@@ -78,7 +78,7 @@ public class BbcAscii extends RssAscii {
     );
 
     public Map<String, Integer> logoHeightsMenu = ImmutableMap.of(
-        "ascii", 2,
+        "ascii", 3,
         "ansi", 4,
         "utf8", 4
     );
@@ -94,6 +94,5 @@ public class BbcAscii extends RssAscii {
         "ansi", bytes(196),
         "utf8",  "\u2500".getBytes(UTF_8)
     );
-
 
 }

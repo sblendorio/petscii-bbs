@@ -74,7 +74,7 @@ public class CnnAscii extends RssAscii {
     );
 
     public Map<String, Integer> logoHeightsMenu = ImmutableMap.of(
-        "ascii", 2,
+        "ascii", 3,
         "ansi", 4,
         "utf8", 4
     );
