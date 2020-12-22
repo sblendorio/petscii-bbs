@@ -5,7 +5,7 @@ import eu.sblendorio.bbs.core.Utils;
 public class MenuApple1TelnetAnsi extends MenuApple1Telnet {
 
     public String getCharset() {
-        return "ascii";
+        return "ansi";
     }
 
     public MenuApple1TelnetAnsi() {
