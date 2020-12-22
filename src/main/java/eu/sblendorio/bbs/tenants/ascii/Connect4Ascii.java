@@ -34,6 +34,7 @@ public class Connect4Ascii extends AsciiThread {
         int x = 1;
         int winner = -1;
         do {
+            cls();
             drawBoard(b);
             int player = playerId.get(isHumanTurn);
             displayTurn(player);
@@ -63,6 +64,7 @@ public class Connect4Ascii extends AsciiThread {
             winner = ai.gameResult(b);
         } while (winner < 0);
         log("CONNECT-4. Winner is: "+winner);
+        cls();
         drawBoard(b);
         println();
         if (winner == 1 || winner == 2)

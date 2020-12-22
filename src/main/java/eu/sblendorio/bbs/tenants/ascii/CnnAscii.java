@@ -1,7 +1,10 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
+import com.google.common.collect.ImmutableMap;
 import eu.sblendorio.bbs.core.Hidden;
 import static eu.sblendorio.bbs.core.Utils.bytes;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
@@ -10,22 +13,27 @@ import static org.apache.commons.lang3.math.NumberUtils.toLong;
 public class CnnAscii extends RssAscii {
 
     protected Map<String, NewsSection> sections;
+    protected String type;
 
     public CnnAscii() {
-        this("rss.a1.timeout", "40000");
+        this("rss.a1.timeout", "40000", "ascii");
     }
 
-    public CnnAscii(String property, String defaultValue) {
+    public CnnAscii(String property, String defaultValue, String interfaceType) {
         super(property, defaultValue);
+        type = interfaceType;
         sections = loadSections();
         timeout = toLong(System.getProperty(property, defaultValue));
+        logoHeightMenu = logoHeightsMenu.get(interfaceType);
+        logoHeightNews = logoHeightsNews.get(interfaceType);
+        hrDash = hrDashes.get(interfaceType);
     }
 
     public static byte[] line = new byte[] {13, 10, 13, 10};
 
     @Override
     public byte[] getLogo() {
-        return bytes("CNN News\r\n--------", line);
+        return logo.get(type);
     }
 
     @Override
@@ -58,5 +66,29 @@ public class CnnAscii extends RssAscii {
     public Map<String, NewsSection> sections() {
         return sections;
     }
+
+    public Map<String, byte[]> logo = ImmutableMap.of(
+        "ascii", bytes("CNN News\r\n--------", line),
+        "ansi", readBinaryFile("ansi/CnnNews.ans"),
+        "utf8", readBinaryFile("ansi/CnnNews.utf8ans")
+    );
+
+    public Map<String, Integer> logoHeightsMenu = ImmutableMap.of(
+        "ascii", 2,
+        "ansi", 4,
+        "utf8", 4
+    );
+
+    public Map<String, Integer> logoHeightsNews = ImmutableMap.of(
+        "ascii", 2,
+        "ansi", 2,
+        "utf8", 2
+    );
+
+    public Map<String, byte[]> hrDashes = ImmutableMap.of(
+        "ascii", "-".getBytes(ISO_8859_1),
+        "ansi", bytes(196),
+        "utf8",  "\u2500".getBytes(UTF_8)
+    );
 
 }
