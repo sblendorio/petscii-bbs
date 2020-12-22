@@ -68,29 +68,29 @@ public class TelevideoRaiAscii extends RssAscii {
     );
 
     public Map<String, Integer> logoHeights = ImmutableMap.of(
-        "ascii", 1,
+        "ascii", 2,
         "ansi", 4,
         "utf8", 4
     );
 
     public Map<String, Map<String, byte[]>> logos = ImmutableMap.of(
         "ascii", ImmutableMap.<String, byte[]> builder()
-            .put("101", bytes("Televideo - Ultim'ora"))
-            .put("102", bytes("Televideo - No stop - 24 ore"))
-            .put("110", bytes("Televideo - Primo piano"))
-            .put("120", bytes("Televideo - Politica"))
-            .put("130", bytes("Televideo - Economia"))
-            .put("140", bytes("Televideo - Dall'Italia"))
-            .put("150", bytes("Televideo - Dal mondo"))
-            .put("160", bytes("Televideo - Culture"))
-            .put("170", bytes("Televideo - Cittadini"))
-            .put("180", bytes("Televideo - Speciale"))
-            .put("190", bytes("Televideo - Atlante crisi"))
-            .put("229", bytes("Televideo - Brevi calcio"))
-            .put("230", bytes("Televideo - Calcio - squadre"))
-            .put("260", bytes("Televideo - Altri sport"))
-            .put("299", bytes("Televideo - Sport - brevissime"))
-            .put("810", bytes("Televideo - Motori"))
+            .put("101", bytes("Televideo - Ultim'ora\r\n\r\n"))
+            .put("102", bytes("Televideo - No stop - 24 ore\r\n\r\n"))
+            .put("110", bytes("Televideo - Primo piano\r\n\r\n"))
+            .put("120", bytes("Televideo - Politica\r\n\r\n"))
+            .put("130", bytes("Televideo - Economia\r\n\r\n"))
+            .put("140", bytes("Televideo - Dall'Italia\r\n\r\n"))
+            .put("150", bytes("Televideo - Dal mondo\r\n\r\n"))
+            .put("160", bytes("Televideo - Culture\r\n\r\n"))
+            .put("170", bytes("Televideo - Cittadini\r\n\r\n"))
+            .put("180", bytes("Televideo - Speciale\r\n\r\n"))
+            .put("190", bytes("Televideo - Atlante crisi\r\n\r\n"))
+            .put("229", bytes("Televideo - Brevi calcio\r\n\r\n"))
+            .put("230", bytes("Televideo - Calcio - squadre\r\n\r\n"))
+            .put("260", bytes("Televideo - Altri sport\r\n\r\n"))
+            .put("299", bytes("Televideo - Sport - brevissime\r\n\r\n"))
+            .put("810", bytes("Televideo - Motori\r\n\r\n"))
             .build(),
         "ansi", ImmutableMap.<String, byte[]> builder()
             .put("101", readBinaryFile("ansi/Ultimora.ans"))

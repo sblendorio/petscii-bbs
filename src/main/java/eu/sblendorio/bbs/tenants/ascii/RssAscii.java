@@ -118,7 +118,7 @@ public abstract class RssAscii extends AsciiThread {
             newline();
         }
         write(' '); print(" . "); write(' ', ' '); print("Go back");
-        for (int i=0; i<getScreenRows()-size-5; ++i) newline();
+        for (int i=0; i<getScreenRows()-size-logoHeight-2; ++i) newline();
         newline();
         flush();
     }
@@ -142,7 +142,7 @@ public abstract class RssAscii extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        pageRows = getScreenRows() - logoHeight - 3;
+        pageRows = getScreenRows() - logoHeight - 2;
         log("Entered Rss-Ascii: " + this.getClass().getSimpleName());
         while (true) {
             cls();
@@ -209,8 +209,6 @@ public abstract class RssAscii extends AsciiThread {
     protected boolean displayText(String text, int screenRows, byte[] logo) throws IOException {
         cls();
         write(defaultIfNull(logo, getLogo()));
-        println();
-        println();
 
         String[] rows = wordWrap(text);
         int page = 1;
@@ -232,14 +230,12 @@ public abstract class RssAscii extends AsciiThread {
                     forward = false;
                     cls();
                     write(logo == null ? getLogo() : logo);
-                    newline(); newline();
                     continue;
                 } else {
                     ++page;
                 }
                 cls();
                 write(logo == null ? getLogo() : logo);
-                newline(); newline();
             }
             String row = rows[j];
             println(row.replace("&c64nbsp;", EMPTY));
