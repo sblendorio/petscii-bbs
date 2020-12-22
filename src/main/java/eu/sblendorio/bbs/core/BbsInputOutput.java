@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import static java.lang.System.arraycopy;
 import java.net.Socket;
@@ -290,12 +291,14 @@ public abstract class BbsInputOutput extends Reader {
         flush();
     }
 
-    public byte[] readBinaryFile(String filename) throws IOException {
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
+    public static byte[] readBinaryFile(String filename) {
+        try (InputStream is = BbsInputOutput.class.getClassLoader().getResourceAsStream(filename);
              ByteArrayOutputStream os = new ByteArrayOutputStream()) {
             byte[] buffer = new byte[2048];
             for (int len = is.read(buffer); len != -1; len = is.read(buffer)) os.write(buffer, 0, len);
             return os.toByteArray();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 

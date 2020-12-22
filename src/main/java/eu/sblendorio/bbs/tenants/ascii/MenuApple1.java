@@ -6,6 +6,7 @@ import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import org.apache.commons.lang3.StringUtils;
 
 public class MenuApple1 extends AsciiThread {
@@ -18,6 +19,10 @@ public class MenuApple1 extends AsciiThread {
         super();
         setLocalEcho(echo);
 
+    }
+
+    public String getCharset() {
+        return "ascii";
     }
 
     public static class GeoData {
@@ -74,7 +79,10 @@ public class MenuApple1 extends AsciiThread {
 
     public String rssPropertyTimeoutDefault() { return "40000"; }
 
-    protected String banner() { return "BBS for Apple-1 - by F. Sblendorio 2020"; }
+    protected void banner() {
+        println("BBS for Apple-1 - by F. Sblendorio 2020");
+        println();
+    }
 
     @Override
     public void doLoop() throws Exception {
@@ -106,12 +114,12 @@ public class MenuApple1 extends AsciiThread {
                     println("Disconnected.");
                     return;
                 }
-                else if ("a".equals(choice)) subThread = new CnnAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault());
-                else if ("b".equals(choice)) subThread = new BbcAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault());
+                else if ("a".equals(choice)) subThread = new CnnAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault(), getCharset());
+                else if ("b".equals(choice)) subThread = new BbcAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault(), getCharset());
                 else if ("c".equals(choice)) subThread = new IndieRetroNewsAscii();
                 else if ("d".equals(choice)) subThread = new VcfedAscii();
                 else if ("e".equals(choice)) subThread = new The8BitGuyAscii();
-                else if ("f".equals(choice)) subThread = new TelevideoRaiAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault());
+                else if ("f".equals(choice)) subThread = new TelevideoRaiAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault(), getCharset());
                 else if ("g".equals(choice)) subThread = new WiredItaliaAscii();
                 else if ("h".equals(choice)) subThread = new DisinformaticoAscii();
                 else if ("i".equals(choice)) subThread = new IlPostAscii();
@@ -155,8 +163,7 @@ public class MenuApple1 extends AsciiThread {
 
     public void displayMenu() {
         String sp = (getScreenColumns() > 40) ? "                    " : "";
-        println(banner());
-        println();
+        banner();
         println("International News   "+ sp +"  Game Room");
         println("------------------   "+ sp +"  ---------------");
         println("A - CNN News         "+ sp +"  N - TIC TAC TOE");

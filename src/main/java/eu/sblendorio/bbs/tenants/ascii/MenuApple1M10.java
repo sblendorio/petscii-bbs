@@ -24,7 +24,10 @@ public class MenuApple1M10 extends MenuApple1 {
     }
 
     @Override
-    protected String banner() { return "BBS for M10 - by F. Sblendorio 2020"; }
+    protected void banner() {
+        println("BBS for M10 - by F. Sblendorio 2020");
+        newline();
+    }
 
     @Override
     public void logo() throws Exception {}
@@ -37,8 +40,7 @@ public class MenuApple1M10 extends MenuApple1 {
 
     @Override
     public void displayMenu() {
-        println(banner());
-        println();
+        banner();
         println("International News---  Game Room-------");
         println("A - CNN News           N - TIC TAC TOE");
         println("B - BBC News           O - Connect Four");

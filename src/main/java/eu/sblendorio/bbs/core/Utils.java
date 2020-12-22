@@ -1,6 +1,5 @@
 package eu.sblendorio.bbs.core;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,15 +35,10 @@ public class Utils {
         return lowerCase(trim(s)).replaceAll("https?:(//)?", EMPTY).replace("www.", EMPTY).replaceAll("/+?$", EMPTY);
     }
 
-    public static byte[] bytes(String s, Charset charset) {
-        return s == null ? new byte[] {} : s.getBytes(charset);
-    }
+    public static byte[] bytes(Object... objects) {
+        if (objects == null)
+            return new byte[] {};
 
-    public static byte[] bytes(String s) {
-        return bytes(s, StandardCharsets.ISO_8859_1);
-    }
-
-    public static byte[] toBytes(Object... objects) {
         List<Byte> result = new ArrayList<>();
         for (Object o: objects) {
             if (o instanceof Integer) {
@@ -61,6 +55,9 @@ public class Utils {
                 result.add(b);
             } else if (o instanceof String) {
                 byte[] bytes = ((String) o).getBytes(StandardCharsets.ISO_8859_1);
+                for (byte b : bytes) result.add(b);
+            } else if (o instanceof byte[]) {
+                byte[] bytes = (byte[]) o;
                 for (byte b : bytes) result.add(b);
             }
         }

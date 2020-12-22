@@ -9,9 +9,10 @@ import com.rometools.rome.io.XmlReader;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.HtmlUtils;
-import static eu.sblendorio.bbs.core.Utils.bytes;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -36,6 +37,9 @@ public abstract class RssAscii extends AsciiThread {
     private String timeOutProperty = "rss.a1.timeout";
     private String timeOutPropertyDefault = "40000";
 
+    protected int logoHeightMenu = 3;
+    protected int logoHeightNews = 2;
+
     public RssAscii() {
         super();
     }
@@ -57,6 +61,9 @@ public abstract class RssAscii extends AsciiThread {
     protected long timeout;
 
     String HR_TOP;
+
+    public byte[] hrDash = "-".getBytes(ISO_8859_1);
+
 
     @Override
     public void initBbs() throws Exception {
@@ -117,7 +124,7 @@ public abstract class RssAscii extends AsciiThread {
             newline();
         }
         write(' '); print(" . "); write(' ', ' '); print("Go back");
-        for (int i=0; i<getScreenRows()-size-5; ++i) newline();
+        for (int i=0; i<getScreenRows()-size-logoHeightMenu-2; ++i) newline();
         newline();
         flush();
     }
@@ -141,7 +148,7 @@ public abstract class RssAscii extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        pageRows = getScreenRows() - 4;
+        pageRows = getScreenRows() - logoHeightNews - 2;
         log("Entered Rss-Ascii: " + this.getClass().getSimpleName());
         while (true) {
             cls();
@@ -208,8 +215,6 @@ public abstract class RssAscii extends AsciiThread {
     protected boolean displayText(String text, int screenRows, byte[] logo) throws IOException {
         cls();
         write(defaultIfNull(logo, getLogo()));
-        println();
-        println();
 
         String[] rows = wordWrap(text);
         int page = 1;
@@ -231,22 +236,31 @@ public abstract class RssAscii extends AsciiThread {
                     forward = false;
                     cls();
                     write(logo == null ? getLogo() : logo);
-                    newline(); newline();
                     continue;
                 } else {
                     ++page;
                 }
                 cls();
                 write(logo == null ? getLogo() : logo);
-                newline(); newline();
             }
             String row = rows[j];
-            println(row.replace("&c64nbsp;", EMPTY));
+            rssPrintln(row.replace("&c64nbsp;", EMPTY));
             forward = true;
             ++j;
         }
         println();
         return false;
+    }
+
+    void rssPrintln(String msg) {
+        msg = msg == null ? "" : msg;
+        for (byte ch: msg.getBytes(StandardCharsets.ISO_8859_1)) {
+            if (ch == '-')
+                write(hrDash);
+            else
+                write(ch);
+        }
+        newline();
     }
 
     protected String[] wordWrap(String s) {
@@ -263,9 +277,6 @@ public abstract class RssAscii extends AsciiThread {
 
     private void drawLogo() {
         write(getLogo());
-        println();
-        println(repeat("-", getLogo().length));
-        println();
     }
 
 }
