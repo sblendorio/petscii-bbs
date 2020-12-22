@@ -78,7 +78,10 @@ public class MenuApple1 extends AsciiThread {
 
     public String rssPropertyTimeoutDefault() { return "40000"; }
 
-    protected String banner() { return "BBS for Apple-1 - by F. Sblendorio 2020"; }
+    protected void banner() {
+        println("BBS for Apple-1 - by F. Sblendorio 2020");
+        println();
+    }
 
     @Override
     public void doLoop() throws Exception {
@@ -159,8 +162,7 @@ public class MenuApple1 extends AsciiThread {
 
     public void displayMenu() {
         String sp = (getScreenColumns() > 40) ? "                    " : "";
-        println(banner());
-        println();
+        banner();
         println("International News   "+ sp +"  Game Room");
         println("------------------   "+ sp +"  ---------------");
         println("A - CNN News         "+ sp +"  N - TIC TAC TOE");

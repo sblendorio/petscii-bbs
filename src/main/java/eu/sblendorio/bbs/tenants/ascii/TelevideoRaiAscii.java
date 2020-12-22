@@ -22,7 +22,8 @@ public class TelevideoRaiAscii extends RssAscii {
         type = interfaceType;
         sections = loadSections();
         timeout = toLong(System.getProperty(property, defaultValue));
-        logoHeight = logoHeights.get(interfaceType);
+        logoHeightMenu = logoHeightsMenu.get(interfaceType);
+        logoHeightNews = logoHeightsNews.get(interfaceType);
     }
 
     @Override
@@ -61,13 +62,21 @@ public class TelevideoRaiAscii extends RssAscii {
         return sections;
     }
 
+    public static byte[] line = new byte[] {13, 10, 13, 10};
+
     public Map<String, byte[]> logo = ImmutableMap.of(
-      "ascii", bytes("Televideo\r\n---------\r\n\r\n"),
+      "ascii", bytes("Televideo\r\n---------", line),
       "ansi", readBinaryFile("ansi/Televideo.ans"),
       "utf8", readBinaryFile("ansi/Televideo.utf8ans")
     );
 
-    public Map<String, Integer> logoHeights = ImmutableMap.of(
+    public Map<String, Integer> logoHeightsMenu = ImmutableMap.of(
+        "ascii", 2,
+        "ansi", 4,
+        "utf8", 4
+    );
+
+    public Map<String, Integer> logoHeightsNews = ImmutableMap.of(
         "ascii", 2,
         "ansi", 4,
         "utf8", 4
@@ -75,22 +84,22 @@ public class TelevideoRaiAscii extends RssAscii {
 
     public Map<String, Map<String, byte[]>> logos = ImmutableMap.of(
         "ascii", ImmutableMap.<String, byte[]> builder()
-            .put("101", bytes("Televideo - Ultim'ora\r\n\r\n"))
-            .put("102", bytes("Televideo - No stop - 24 ore\r\n\r\n"))
-            .put("110", bytes("Televideo - Primo piano\r\n\r\n"))
-            .put("120", bytes("Televideo - Politica\r\n\r\n"))
-            .put("130", bytes("Televideo - Economia\r\n\r\n"))
-            .put("140", bytes("Televideo - Dall'Italia\r\n\r\n"))
-            .put("150", bytes("Televideo - Dal mondo\r\n\r\n"))
-            .put("160", bytes("Televideo - Culture\r\n\r\n"))
-            .put("170", bytes("Televideo - Cittadini\r\n\r\n"))
-            .put("180", bytes("Televideo - Speciale\r\n\r\n"))
-            .put("190", bytes("Televideo - Atlante crisi\r\n\r\n"))
-            .put("229", bytes("Televideo - Brevi calcio\r\n\r\n"))
-            .put("230", bytes("Televideo - Calcio - squadre\r\n\r\n"))
-            .put("260", bytes("Televideo - Altri sport\r\n\r\n"))
-            .put("299", bytes("Televideo - Sport - brevissime\r\n\r\n"))
-            .put("810", bytes("Televideo - Motori\r\n\r\n"))
+            .put("101", bytes("Televideo - Ultim'ora", line))
+            .put("102", bytes("Televideo - No stop - 24 ore", line))
+            .put("110", bytes("Televideo - Primo piano", line))
+            .put("120", bytes("Televideo - Politica", line))
+            .put("130", bytes("Televideo - Economia", line))
+            .put("140", bytes("Televideo - Dall'Italia", line))
+            .put("150", bytes("Televideo - Dal mondo", line))
+            .put("160", bytes("Televideo - Culture", line))
+            .put("170", bytes("Televideo - Cittadini", line))
+            .put("180", bytes("Televideo - Speciale", line))
+            .put("190", bytes("Televideo - Atlante crisi", line))
+            .put("229", bytes("Televideo - Brevi calcio", line))
+            .put("230", bytes("Televideo - Calcio - squadre", line))
+            .put("260", bytes("Televideo - Altri sport", line))
+            .put("299", bytes("Televideo - Sport - brevissime", line))
+            .put("810", bytes("Televideo - Motori", line))
             .build(),
         "ansi", ImmutableMap.<String, byte[]> builder()
             .put("101", readBinaryFile("ansi/Ultimora.ans"))

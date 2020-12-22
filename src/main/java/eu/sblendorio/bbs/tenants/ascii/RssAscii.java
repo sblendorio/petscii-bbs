@@ -35,7 +35,8 @@ public abstract class RssAscii extends AsciiThread {
     private String timeOutProperty = "rss.a1.timeout";
     private String timeOutPropertyDefault = "40000";
 
-    protected int logoHeight = 1;
+    protected int logoHeightMenu = 1;
+    protected int logoHeightNews = 1;
 
     public RssAscii() {
         super();
@@ -118,7 +119,7 @@ public abstract class RssAscii extends AsciiThread {
             newline();
         }
         write(' '); print(" . "); write(' ', ' '); print("Go back");
-        for (int i=0; i<getScreenRows()-size-logoHeight-2; ++i) newline();
+        for (int i=0; i<getScreenRows()-size-logoHeightMenu-2; ++i) newline();
         newline();
         flush();
     }
@@ -142,7 +143,7 @@ public abstract class RssAscii extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        pageRows = getScreenRows() - logoHeight - 2;
+        pageRows = getScreenRows() - logoHeightNews - 2;
         log("Entered Rss-Ascii: " + this.getClass().getSimpleName());
         while (true) {
             cls();

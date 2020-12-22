@@ -56,6 +56,9 @@ public class Utils {
             } else if (o instanceof String) {
                 byte[] bytes = ((String) o).getBytes(StandardCharsets.ISO_8859_1);
                 for (byte b : bytes) result.add(b);
+            } else if (o instanceof byte[]) {
+                byte[] bytes = (byte[]) o;
+                for (byte b : bytes) result.add(b);
             }
         }
         byte[] bytes = new byte[result.size()];

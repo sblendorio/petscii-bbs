@@ -4,6 +4,12 @@ import eu.sblendorio.bbs.core.Utils;
 
 public class MenuApple1TelnetAnsi extends MenuApple1Telnet {
 
+    @Override
+    protected void banner() {
+        write(readBinaryFile("ansi/Retrocampus.ans"));
+    }
+
+    @Override
     public String getCharset() {
         return "ansi";
     }
