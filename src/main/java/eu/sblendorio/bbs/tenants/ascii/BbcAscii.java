@@ -23,7 +23,7 @@ public class BbcAscii extends RssAscii {
 
     @Override
     public byte[] getLogo() {
-        return bytes("BBC News");
+        return bytes("BBC News\r\n--------\r\n\r\n");
     }
 
     @Override

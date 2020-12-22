@@ -20,6 +20,10 @@ public class MenuApple1 extends AsciiThread {
 
     }
 
+    public String getCharset() {
+        return "ascii";
+    }
+
     public static class GeoData {
         public final String city;
         public final String cityGeonameId;
@@ -111,7 +115,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("c".equals(choice)) subThread = new IndieRetroNewsAscii();
                 else if ("d".equals(choice)) subThread = new VcfedAscii();
                 else if ("e".equals(choice)) subThread = new The8BitGuyAscii();
-                else if ("f".equals(choice)) subThread = new TelevideoRaiAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault(), "ascii");
+                else if ("f".equals(choice)) subThread = new TelevideoRaiAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault(), getCharset());
                 else if ("g".equals(choice)) subThread = new WiredItaliaAscii();
                 else if ("h".equals(choice)) subThread = new DisinformaticoAscii();
                 else if ("i".equals(choice)) subThread = new IlPostAscii();

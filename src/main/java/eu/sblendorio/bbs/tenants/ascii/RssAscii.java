@@ -264,9 +264,6 @@ public abstract class RssAscii extends AsciiThread {
 
     private void drawLogo() {
         write(getLogo());
-        println();
-        println(repeat("-", getLogo().length));
-        println();
     }
 
 }

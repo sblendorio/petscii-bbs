@@ -23,7 +23,7 @@ public class CnnAscii extends RssAscii {
 
     @Override
     public byte[] getLogo() {
-        return bytes("CNN News");
+        return bytes("CNN News\r\n--------\r\n\r\n");
     }
 
     @Override

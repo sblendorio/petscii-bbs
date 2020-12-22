@@ -62,31 +62,72 @@ public class TelevideoRaiAscii extends RssAscii {
     }
 
     public Map<String, byte[]> logo = ImmutableMap.of(
-      "ascii", bytes("Televideo")
+      "ascii", bytes("Televideo\r\n---------\r\n\r\n"),
+      "ansi", readBinaryFile("ansi/Televideo.ans"),
+      "utf8", readBinaryFile("ansi/Televideo.utf8ans")
     );
 
     public Map<String, Integer> logoHeights = ImmutableMap.of(
-      "ascii", 1
+        "ascii", 1,
+        "ansi", 4,
+        "utf8", 4
     );
 
     public Map<String, Map<String, byte[]>> logos = ImmutableMap.of(
         "ascii", ImmutableMap.<String, byte[]> builder()
-                .put("101", bytes("Televideo - Ultim'ora"))
-                .put("102", bytes("Televideo - No stop - 24 ore"))
-                .put("110", bytes("Televideo - Primo piano"))
-                .put("120", bytes("Televideo - Politica"))
-                .put("130", bytes("Televideo - Economia"))
-                .put("140", bytes("Televideo - Dall'Italia"))
-                .put("150", bytes("Televideo - Dal mondo"))
-                .put("160", bytes("Televideo - Culture"))
-                .put("170", bytes("Televideo - Cittadini"))
-                .put("180", bytes("Televideo - Speciale"))
-                .put("190", bytes("Televideo - Atlante crisi"))
-                .put("229", bytes("Televideo - Brevi calcio"))
-                .put("230", bytes("Televideo - Calcio - squadre"))
-                .put("260", bytes("Televideo - Altri sport"))
-                .put("299", bytes("Televideo - Sport - brevissime"))
-                .put("810", bytes("Televideo - Motori"))
+            .put("101", bytes("Televideo - Ultim'ora"))
+            .put("102", bytes("Televideo - No stop - 24 ore"))
+            .put("110", bytes("Televideo - Primo piano"))
+            .put("120", bytes("Televideo - Politica"))
+            .put("130", bytes("Televideo - Economia"))
+            .put("140", bytes("Televideo - Dall'Italia"))
+            .put("150", bytes("Televideo - Dal mondo"))
+            .put("160", bytes("Televideo - Culture"))
+            .put("170", bytes("Televideo - Cittadini"))
+            .put("180", bytes("Televideo - Speciale"))
+            .put("190", bytes("Televideo - Atlante crisi"))
+            .put("229", bytes("Televideo - Brevi calcio"))
+            .put("230", bytes("Televideo - Calcio - squadre"))
+            .put("260", bytes("Televideo - Altri sport"))
+            .put("299", bytes("Televideo - Sport - brevissime"))
+            .put("810", bytes("Televideo - Motori"))
+            .build(),
+        "ansi", ImmutableMap.<String, byte[]> builder()
+            .put("101", readBinaryFile("ansi/Ultimora.ans"))
+            .put("102", readBinaryFile("ansi/24hNoStop.ans"))
+            .put("110", readBinaryFile("ansi/PrimoPiano.ans"))
+            .put("120", readBinaryFile("ansi/Politica.ans"))
+            .put("130", readBinaryFile("ansi/Economia.ans"))
+            .put("140", readBinaryFile("ansi/DallItalia.ans"))
+            .put("150", readBinaryFile("ansi/DalMondo.ans"))
+            .put("160", readBinaryFile("ansi/Culture.ans"))
+            .put("170", readBinaryFile("ansi/Cittadini.ans"))
+            .put("180", readBinaryFile("ansi/Speciale.ans"))
+            .put("190", readBinaryFile("ansi/AtlanteCrisi.ans"))
+            .put("229", readBinaryFile("ansi/BreviCalcio.ans"))
+            .put("230", readBinaryFile("ansi/CalcioSquadre.ans"))
+            .put("260", readBinaryFile("ansi/AltriSport.ans"))
+            .put("299", readBinaryFile("ansi/Brevissime.ans"))
+            .put("810", readBinaryFile("ansi/Motori.ans"))
+            .build(),
+        "utf8", ImmutableMap.<String, byte[]> builder()
+            .put("101", readBinaryFile("ansi/Ultimora.utf8ans"))
+            .put("102", readBinaryFile("ansi/24hNoStop.utf8ans"))
+            .put("110", readBinaryFile("ansi/PrimoPiano.utf8ans"))
+            .put("120", readBinaryFile("ansi/Politica.utf8ans"))
+            .put("130", readBinaryFile("ansi/Economia.utf8ans"))
+            .put("140", readBinaryFile("ansi/DallItalia.utf8ans"))
+            .put("150", readBinaryFile("ansi/DalMondo.utf8ans"))
+            .put("160", readBinaryFile("ansi/Culture.utf8ans"))
+            .put("170", readBinaryFile("ansi/Cittadini.utf8ans"))
+            .put("180", readBinaryFile("ansi/Speciale.utf8ans"))
+            .put("190", readBinaryFile("ansi/AtlanteCrisi.utf8ans"))
+            .put("229", readBinaryFile("ansi/BreviCalcio.utf8ans"))
+            .put("230", readBinaryFile("ansi/CalcioSquadre.utf8ans"))
+            .put("260", readBinaryFile("ansi/AltriSport.utf8ans"))
+            .put("299", readBinaryFile("ansi/Brevissime.utf8ans"))
+            .put("810", readBinaryFile("ansi/Motori.utf8ans"))
             .build()
+
     );
 }
