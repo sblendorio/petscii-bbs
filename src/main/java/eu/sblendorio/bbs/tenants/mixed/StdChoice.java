@@ -34,8 +34,8 @@ public class StdChoice extends AsciiThread {
         println("2- APPLE-1/II   NOECHO 40X24  (6502)");
         println("3- APPLE-1/II   W/ECHO 40X24  (6503)");
         println("4- TELNET ASCII W/ECHO 80X24  (8086)");
-        println("5- TELNET ANSI  W/ECHO 80X24  (8088)");
-        println("6- TELNET UTF8  W/ECHO 80X24  (8286)");
+        println("5- TELNET CP437 W/ECHO 80X24  (8088)");
+        println("6- TELNET LINUX W/ECHO 80X24  (8286)");
         println("7- OLIVETTI M10 W/ECHO 40X15  (8085)");
         newline();
         println("PLEASE SELECT WITH NUMBERS FROM 1 TO 5");

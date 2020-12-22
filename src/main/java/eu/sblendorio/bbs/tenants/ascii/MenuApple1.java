@@ -6,6 +6,7 @@ import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import org.apache.commons.lang3.StringUtils;
 
 public class MenuApple1 extends AsciiThread {

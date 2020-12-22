@@ -2,7 +2,11 @@ package eu.sblendorio.bbs.tenants.ascii;
 
 import com.google.common.collect.ImmutableMap;
 import eu.sblendorio.bbs.core.Hidden;
+import eu.sblendorio.bbs.core.Utils;
 import static eu.sblendorio.bbs.core.Utils.bytes;
+import java.nio.charset.StandardCharsets;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
@@ -24,6 +28,7 @@ public class TelevideoRaiAscii extends RssAscii {
         timeout = toLong(System.getProperty(property, defaultValue));
         logoHeightMenu = logoHeightsMenu.get(interfaceType);
         logoHeightNews = logoHeightsNews.get(interfaceType);
+        hrDash = hrDashes.get(interfaceType);
     }
 
     @Override
@@ -82,6 +87,12 @@ public class TelevideoRaiAscii extends RssAscii {
         "utf8", 4
     );
 
+    public Map<String, byte[]> hrDashes = ImmutableMap.of(
+        "ascii", "-".getBytes(ISO_8859_1),
+        "ansi", bytes(196),
+        "utf8",  "\u2500".getBytes(UTF_8)
+    );
+
     public Map<String, Map<String, byte[]>> logos = ImmutableMap.of(
         "ascii", ImmutableMap.<String, byte[]> builder()
             .put("101", bytes("Televideo - Ultim'ora", line))
@@ -137,6 +148,5 @@ public class TelevideoRaiAscii extends RssAscii {
             .put("299", readBinaryFile("ansi/Brevissime.utf8ans"))
             .put("810", readBinaryFile("ansi/Motori.utf8ans"))
             .build()
-
     );
 }

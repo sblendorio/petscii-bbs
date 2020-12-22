@@ -21,9 +21,11 @@ public class CnnAscii extends RssAscii {
         timeout = toLong(System.getProperty(property, defaultValue));
     }
 
+    public static byte[] line = new byte[] {13, 10, 13, 10};
+
     @Override
     public byte[] getLogo() {
-        return bytes("CNN News\r\n--------\r\n\r\n");
+        return bytes("CNN News\r\n--------", line);
     }
 
     @Override
@@ -33,22 +35,22 @@ public class CnnAscii extends RssAscii {
 
     private Map<String, NewsSection> loadSections() {
         Map<String, NewsSection> result = new LinkedHashMap<>();
-        result.put("101", new NewsSection("Top Stories", prefix() + "edition.rss", bytes("CNN - Top Stories\r\n\r\n")));
-        result.put("102", new NewsSection("World", prefix() + "edition_world.rss", bytes("CNN - World\r\n\r\n")));
-        result.put("103", new NewsSection("Africa", prefix() + "edition_africa.rss", bytes("CNN - Africa\r\n\r\n")));
-        result.put("104", new NewsSection("Americas", prefix() + "edition_americas.rss", bytes("CNN - Americas\r\n\r\n")));
-        result.put("105", new NewsSection("Asia", prefix() + "edition_asia.rss", bytes("CNN - Asia\r\n\r\n")));
-        result.put("106", new NewsSection("Europe", prefix() + "edition_europe.rss", bytes("CNN - Europe\r\n\r\n")));
-        result.put("107", new NewsSection("Middle East", prefix() + "edition_meast.rss", bytes("CNN - Middle East\r\n\r\n")));
-        result.put("108", new NewsSection("U.S.A.", prefix() + "edition_us.rss", bytes("CNN - U.S.A.\r\n\r\n")));
-        result.put("109", new NewsSection("Technology", prefix() + "edition_technology.rss", bytes("CNN - Technology\r\n\r\n")));
-        result.put("110", new NewsSection("Science-Space", prefix() + "edition_space.rss", bytes("CNN - Science & Space\r\n\r\n")));
-        result.put("111", new NewsSection("Entertainment", prefix() + "edition_entertainment.rss", bytes("CNN - Entertainment\r\n\r\n")));
-        result.put("112", new NewsSection("Money", prefix() + "money_news_international.rss", bytes("CNN - Money\r\n\r\n")));
-        result.put("113", new NewsSection("World Sport", prefix() + "edition_sport.rss", bytes("CNN - World Sport\r\n\r\n")));
-        result.put("114", new NewsSection("Football", prefix() + "edition_football.rss", bytes("CNN - Football\r\n\r\n")));
-        result.put("115", new NewsSection("Travel", prefix() + "edition_travel.rss", bytes("CNN - Travel\r\n\r\n")));
-        result.put("116", new NewsSection("Most Recent", prefix() + "cnn_latest.rss", bytes("CNN - Most Recent\r\n\r\n")));
+        result.put("101", new NewsSection("Top Stories", prefix() + "edition.rss", bytes("CNN - Top Stories", line)));
+        result.put("102", new NewsSection("World", prefix() + "edition_world.rss", bytes("CNN - World", line)));
+        result.put("103", new NewsSection("Africa", prefix() + "edition_africa.rss", bytes("CNN - Africa", line)));
+        result.put("104", new NewsSection("Americas", prefix() + "edition_americas.rss", bytes("CNN - Americas", line)));
+        result.put("105", new NewsSection("Asia", prefix() + "edition_asia.rss", bytes("CNN - Asia", line)));
+        result.put("106", new NewsSection("Europe", prefix() + "edition_europe.rss", bytes("CNN - Europe", line)));
+        result.put("107", new NewsSection("Middle East", prefix() + "edition_meast.rss", bytes("CNN - Middle East", line)));
+        result.put("108", new NewsSection("U.S.A.", prefix() + "edition_us.rss", bytes("CNN - U.S.A.", line)));
+        result.put("109", new NewsSection("Technology", prefix() + "edition_technology.rss", bytes("CNN - Technology", line)));
+        result.put("110", new NewsSection("Science-Space", prefix() + "edition_space.rss", bytes("CNN - Science & Space", line)));
+        result.put("111", new NewsSection("Entertainment", prefix() + "edition_entertainment.rss", bytes("CNN - Entertainment", line)));
+        result.put("112", new NewsSection("Money", prefix() + "money_news_international.rss", bytes("CNN - Money", line)));
+        result.put("113", new NewsSection("World Sport", prefix() + "edition_sport.rss", bytes("CNN - World Sport", line)));
+        result.put("114", new NewsSection("Football", prefix() + "edition_football.rss", bytes("CNN - Football", line)));
+        result.put("115", new NewsSection("Travel", prefix() + "edition_travel.rss", bytes("CNN - Travel", line)));
+        result.put("116", new NewsSection("Most Recent", prefix() + "cnn_latest.rss", bytes("CNN - Most Recent", line)));
         return result;
     }
 
