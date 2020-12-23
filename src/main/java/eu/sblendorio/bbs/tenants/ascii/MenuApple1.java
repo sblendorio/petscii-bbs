@@ -133,7 +133,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("q".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
                 else if ("r".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
                 else if ("s".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
-                else if ("t".equals(choice)) subThread = new ChatA1();
+                else if ("t".equals(choice)) subThread = new ChatA1(getCharset());
                 else if ("u".equals(choice)) subThread = new PrivateMessagesAscii();
                 else {
                     validKey = false;

@@ -1,12 +1,17 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
+import com.google.common.collect.ImmutableMap;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Hidden;
+import eu.sblendorio.bbs.core.Utils;
+import static eu.sblendorio.bbs.core.Utils.bytes;
 import eu.sblendorio.bbs.tenants.petscii.Chat64.ChatMessage;
 import eu.sblendorio.bbs.tenants.petscii.Chat64.Row;
 import java.io.IOException;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import java.util.List;
+import java.util.Map;
 import static java.util.Optional.ofNullable;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -24,11 +29,17 @@ public class ChatA1 extends AsciiThread {
 
     private static final String CUSTOM_KEY = "CHAT";
     private boolean canRedraw = false;
+    private String interfaceType;
 
     private ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<>();
 
     public ChatA1() {
+        this("ascii");
+    }
+
+    public ChatA1(String interfaceType) {
         super();
+        this.interfaceType = interfaceType;
     }
 
     @Override
@@ -63,8 +74,7 @@ public class ChatA1 extends AsciiThread {
 
             getRoot().setCustomObject(CUSTOM_KEY, getClientName());
             cls();
-            println("              BBS Chat 2.0");
-            newline();
+            write(logos.get(interfaceType));
             showUsers(false);
             newline();
             displayHelp();
@@ -244,4 +254,11 @@ public class ChatA1 extends AsciiThread {
             }
         }
     }
+
+    public static byte[] noattr = "\033[0m".getBytes(ISO_8859_1);
+    public Map<String, byte[]> logos = ImmutableMap.of(
+        "ascii", bytes("              BBS Chat 2.0\r\n\r\n"),
+        "ansi", bytes(readBinaryFile("ansi/BbsChat20.ans"), noattr),
+        "utf8", bytes(readBinaryFile("ansi/BbsChat20.utf8ans"), noattr)
+    );
 }
