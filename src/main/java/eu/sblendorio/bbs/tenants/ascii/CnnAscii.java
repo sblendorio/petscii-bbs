@@ -30,6 +30,7 @@ public class CnnAscii extends RssAscii {
     }
 
     public static byte[] line = new byte[] {13, 10, 13, 10};
+    public static byte[] noattr = "\033[0m".getBytes(ISO_8859_1);
 
     @Override
     public byte[] getLogo() {
@@ -69,8 +70,8 @@ public class CnnAscii extends RssAscii {
 
     public Map<String, byte[]> logo = ImmutableMap.of(
         "ascii", bytes("CNN News\r\n--------", line),
-        "ansi", readBinaryFile("ansi/CnnNews.ans"),
-        "utf8", readBinaryFile("ansi/CnnNews.utf8ans")
+        "ansi", bytes(readBinaryFile("ansi/CnnNews.ans"), noattr),
+        "utf8", bytes(readBinaryFile("ansi/CnnNews.utf8ans"), noattr)
     );
 
     public Map<String, Integer> logoHeightsMenu = ImmutableMap.of(
