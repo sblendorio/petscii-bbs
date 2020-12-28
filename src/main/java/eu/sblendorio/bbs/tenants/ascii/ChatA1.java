@@ -54,10 +54,11 @@ public class ChatA1 extends AsciiThread {
             status = invalid ? -1 : changeClientName(previousName);
 
             while (status != 0) {
+                cls();
+                println("Welcome to BSS chat");
                 newline();
-                newline();
-                resetInput();
                 print("Enter your name: ");
+                resetInput();
                 flush(); resetInput();
                 String candidateNname = readLine();
                 final String name = lowerCase(candidateNname);

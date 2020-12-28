@@ -62,12 +62,12 @@ public abstract class RssAscii extends AsciiThread {
 
     String HR_TOP;
 
-    public byte[] hrDash = "-".getBytes(ISO_8859_1);
+    public byte[] hrDash = "|".getBytes(ISO_8859_1);
 
 
     @Override
     public void initBbs() throws Exception {
-        HR_TOP = repeat('-', this.getScreenColumns() - 1);
+        HR_TOP = repeat('|', this.getScreenColumns() - 1);
     }
 
     static class NewsSection {
@@ -204,7 +204,7 @@ public abstract class RssAscii extends AsciiThread {
 
             interruptByUser = displayText(text, pageRows, section.logo);
             if (!interruptByUser) {
-                println(); print(" ENTER = MAIN MENU                    ");
+                print(" ENTER = MAIN MENU                    ");
                 flush(); resetInput();
                 int finalKey = keyPressed(timeout);
                 interruptByUser = finalKey != -1;
@@ -255,7 +255,7 @@ public abstract class RssAscii extends AsciiThread {
     void rssPrintln(String msg) {
         msg = msg == null ? "" : msg;
         for (byte ch: msg.getBytes(StandardCharsets.ISO_8859_1)) {
-            if (ch == '-')
+            if (ch == '|')
                 write(hrDash);
             else
                 write(ch);
