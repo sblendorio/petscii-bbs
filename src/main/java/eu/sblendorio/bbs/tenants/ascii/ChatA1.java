@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Hidden;
-import eu.sblendorio.bbs.core.Utils;
 import static eu.sblendorio.bbs.core.Utils.bytes;
 import eu.sblendorio.bbs.tenants.petscii.Chat64.ChatMessage;
 import eu.sblendorio.bbs.tenants.petscii.Chat64.Row;
@@ -135,6 +134,7 @@ public class ChatA1 extends AsciiThread {
                 }
             } while (!".".equals(rawCommand) && !"/q".equalsIgnoreCase(rawCommand) && !"/quit".equalsIgnoreCase(rawCommand));
         } finally {
+            write(exitSeq.get(interfaceType));
             notifyExitingUser();
             changeClientName(UUID.randomUUID().toString());
         }
@@ -259,7 +259,13 @@ public class ChatA1 extends AsciiThread {
     public static byte[] noattr = "\033[0m".getBytes(ISO_8859_1);
     public Map<String, byte[]> logos = ImmutableMap.of(
         "ascii", bytes("              BBS Chat 2.0\r\n\r\n"),
-        "ansi", bytes(readBinaryFile("ansi/BbsChat20.ans"), noattr),
-        "utf8", bytes(readBinaryFile("ansi/BbsChat20.utf8ans"), noattr)
+        "ansi", bytes(readBinaryFile("ansi/BbsChat20.ans"), noattr, "\033[5r\033[?6l\033[5;1H"),
+        "utf8", bytes(readBinaryFile("ansi/BbsChat20.utf8ans"), noattr, "\033[5r\033[?6l\033[5;1H")
+    );
+
+    public Map<String, byte[]> exitSeq = ImmutableMap.of(
+        "ascii", bytes(),
+        "ansi", bytes("\0337\033[r\0338"),
+        "utf8", bytes("\0337\033[r\0338")
     );
 }

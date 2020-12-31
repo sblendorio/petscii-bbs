@@ -18,6 +18,7 @@ public class AsciiTestKey extends AsciiThread {
             print("Command> ");
             flush(); key = readKey();
             println("You wrote: "+key);
+            System.out.println("#"+clientId+" wrote: "+key);
         } while (key != 46);
     }
 
