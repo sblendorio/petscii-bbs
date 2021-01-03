@@ -19,7 +19,10 @@ public class ZorkMachineAscii extends AsciiThread {
     }
 
     public void logo() throws Exception {
-        readTextFile("apple1/intro-zork.txt").forEach(this::println);
+        cls();
+        if (getScreenColumns() >= 40) {
+            readTextFile("apple1/intro-zork.txt").forEach(this::println);
+        }
         flush();
     }
 

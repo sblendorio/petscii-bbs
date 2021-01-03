@@ -93,17 +93,10 @@ public class WordpressProxyAscii extends AsciiThread {
         listPosts();
         while (true) {
             log("Wordpress waiting for input");
-            print("(");
-            print("N+-");
-            print(")Page (");
-            print("H");
-            print(")elp (");
-            print("R");
-            print(")eload (");
-            print(".");
-            print(")");
-            print("Q");
-            print("uit> ");
+            print(getScreenColumns() >= 40
+                ? "(N+-)Page (H)elp (R)eload (.)Quit> "
+                : "(N+-)Page (.)Quit> "
+            );
             resetInput();
             flush(); String inputRaw = readLine();
             String input = lowerCase(trim(inputRaw));
@@ -275,7 +268,10 @@ public class WordpressProxyAscii extends AsciiThread {
         while (j < rows.size()) {
             if (j>0 && j % screenLines == 0 && forward) {
                 println();
-                print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT");
+                print(getScreenColumns() >= 40
+                    ? "-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT"
+                    :  "(" + page + ") SPACE -PREV .EXIT"
+                );
 
                 resetInput(); int ch = readKey();
                 if (ch == '.') {

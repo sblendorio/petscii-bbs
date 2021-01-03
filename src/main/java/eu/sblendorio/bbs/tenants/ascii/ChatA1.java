@@ -54,7 +54,7 @@ public class ChatA1 extends AsciiThread {
 
             while (status != 0) {
                 cls();
-                println("Welcome to BSS chat");
+                println("Welcome to BBS chat");
                 newline();
                 print("Enter your name: ");
                 resetInput();
@@ -161,11 +161,11 @@ public class ChatA1 extends AsciiThread {
 
     private synchronized void displayHelp() {
         println("Commands");
-        println("/users or /u      to list users");
-        println("/to <user> msg    to talk with someone");
-        println("/nick <name>      to change nick");
-        println("/help or /h       to get this help");
-        println("/quit or /q or .  to exit chat");
+        println("/users or /u      " + (getScreenColumns() < 40 ? "" : "to list users"));
+        println("/to <user> msg    " + (getScreenColumns() < 40 ? "" : "to talk with someone"));
+        println("/nick <name>      " + (getScreenColumns() < 40 ? "" : "to change nick"));
+        println("/help or /h       " + (getScreenColumns() < 40 ? "" : "to get this help"));
+        println("/quit or /q or .  " + (getScreenColumns() < 40 ? "" : "to exit chat"));
         println();
     }
 

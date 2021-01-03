@@ -111,7 +111,10 @@ public abstract class RssAscii extends AsciiThread {
             String title = substring(value.title + "                    ", 0, 12);
             print(title);
             print(" ");
-            if (getScreenColumns() > 40) print("                    ");
+            if (getScreenColumns() > 40)
+                print("                    ");
+            else if (getScreenColumns() < 40)
+                println();
 
             int odd = even + size;
             if (odd < keys.size()) {
@@ -124,7 +127,7 @@ public abstract class RssAscii extends AsciiThread {
             newline();
         }
         write(' '); print(" . "); write(' ', ' '); print("Go back");
-        for (int i=0; i<getScreenRows()-size-logoHeightMenu-2; ++i) newline();
+        for (int i=0; i<getScreenRows()-size*(getScreenColumns() < 40 ? 2 : 1)-logoHeightMenu-2; ++i) newline();
         newline();
         flush();
     }
@@ -223,7 +226,10 @@ public abstract class RssAscii extends AsciiThread {
         while (j < rows.length) {
             if (j>0 && j % screenRows == 0 && forward) {
                 println();
-                print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT");
+                print(getScreenColumns() >= 40
+                    ? "-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT"
+                    : "(" + page + ") SPACE -PREV .EXIT"
+                );
                 resetInput();
                 int ch = keyPressed(timeout);
                 if (getLocalEcho() && isPrintableChar(ch)) write(ch);

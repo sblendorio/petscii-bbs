@@ -6,7 +6,6 @@ import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import org.apache.commons.lang3.StringUtils;
 
 public class MenuApple1 extends AsciiThread {
@@ -145,9 +144,9 @@ public class MenuApple1 extends AsciiThread {
                         ((AsciiThread) subThread).screenColumns = this.screenColumns;
                         ((AsciiThread) subThread).screenRows = this.screenRows;
                     }
-                    if (subThread instanceof WordpressProxyAscii && screenRows == 15) {
+                    if (subThread instanceof WordpressProxyAscii && (screenRows == 15 || screenColumns < 40)) {
                         ((WordpressProxyAscii) subThread).pageSize /= 2;
-                    } else if (subThread instanceof GoogleBloggerProxyAscii && screenRows == 15) {
+                    } else if (subThread instanceof GoogleBloggerProxyAscii && (screenRows == 15 || screenColumns < 40)) {
                         ((GoogleBloggerProxyAscii) subThread).pageSize /= 2;
                     } else if (subThread instanceof WordpressProxyAscii && screenColumns == 80) {
                         ((WordpressProxyAscii) subThread).pageSize *= 2;
