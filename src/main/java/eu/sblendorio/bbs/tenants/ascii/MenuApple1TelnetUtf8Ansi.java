@@ -17,8 +17,8 @@ public class MenuApple1TelnetUtf8Ansi extends MenuApple1Telnet {
     @Override
     protected void banner() {
         write(readBinaryFile(alternateLogo()
-            ? "ansi/Retrocampus.utf8ans"
-            : "ansi/RetroAcademyOnlineBbs.utf8ans"
+            ? "ansi/RetroAcademyOnlineBbs.utf8ans"
+            : "ansi/Retrocampus.utf8ans"
         ));
         write(bytes("\033[0m"));
     }

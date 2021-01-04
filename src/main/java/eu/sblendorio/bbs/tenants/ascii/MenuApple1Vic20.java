@@ -14,7 +14,7 @@ public class MenuApple1Vic20 extends MenuApple1 {
 
     @Override
     public void initBbs() throws Exception {
-        Thread.sleep(2000);
+        Thread.sleep(300);
         resetInput();
     }
 
@@ -36,25 +36,25 @@ public class MenuApple1Vic20 extends MenuApple1 {
     @Override
     public void displayMenu() {
         banner();
-        println("Intl.News  Game Room");
-        println("---------  -----------");
-        println("A-CNN      N-TicTacToe");
-        println("B-BBC      O-Connect 4");
-        println("C-IRNews   P-Zork I");
-        println("D-VCFNews  Q-Zork II");
-        println("E-8bitGuy  R-Zork III");
-        println("           S-Hitchhik.");
+        println("Intl.News Game Room");
+        println("--------- -----------");
+        println("A-CNN     N-TicTacToe");
+        println("B-BBC     O-Connect 4");
+        println("C-IRNews  P-Zork I");
+        println("D-VCFNews Q-Zork II");
+        println("E-8bitGuy R-Zork III");
+        println("          S-Hitchhik");
         println();
         println("Italian News");
         println("------------");
         println("F-Televideo");
         println("G-Wired");
         println("H-Disinfor");
-        println("I-IlPost      Services");
-        println("J-F.Quot      --------");
+        println("I-IlPost      Service");
+        println("J-F.Quot      -------");
         println("K-Retrocampus T-Chat");
-        println("L-Butac       U-Msgs.");
-        println("M-Facta       .-Logout");
+        println("L-Butac       U-Msgs");
+        println("M-Facta       .-Exit");
     }
 
 }

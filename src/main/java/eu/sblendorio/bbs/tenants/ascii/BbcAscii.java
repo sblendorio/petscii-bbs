@@ -51,9 +51,9 @@ public class BbcAscii extends RssAscii {
         result.put("205", new NewsSection("Politics", prefix() + "politics/rss.xml", bytes("BBC - Politics", line)));
         result.put("206", new NewsSection("Health", prefix() + "health/rss.xml", bytes("BBC - Health", line)));
         result.put("207", new NewsSection("Education", prefix() + "education/rss.xml", bytes("BBC - Education", line)));
-        result.put("208", new NewsSection("Science", prefix() + "science_and_environment/rss.xml", bytes("BBC - Science & Environment", line)));
+        result.put("208", new NewsSection("Science", prefix() + "science_and_environment/rss.xml", bytes("BBC - Science", line)));
         result.put("209", new NewsSection("Technology", prefix() + "technology/rss.xml", bytes("BBC - Technology", line)));
-        result.put("210", new NewsSection("Entertain.", prefix() + "entertainment_and_arts/rss.xml", bytes("BBC - Entertainment & Arts", line)));
+        result.put("210", new NewsSection("Entertain.", prefix() + "entertainment_and_arts/rss.xml", bytes("BBC - Entertainment", line)));
         result.put("211", new NewsSection("Africa", prefix() + "world/africa/rss.xml", bytes("BBC - Africa", line)));
         result.put("212", new NewsSection("Asia", prefix() + "world/asia/rss.xml", bytes("BBC - Asia", line)));
         result.put("213", new NewsSection("Europe", prefix() + "world/europe/rss.xml", bytes("BBC - Europe", line)));
