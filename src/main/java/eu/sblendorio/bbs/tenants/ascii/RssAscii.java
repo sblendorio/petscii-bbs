@@ -228,7 +228,7 @@ public abstract class RssAscii extends AsciiThread {
                 println();
                 print(getScreenColumns() >= 40
                     ? "-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT"
-                    : "(" + page + ") SPACE -PREV .EXIT"
+                    : "(" + page + ") SPC -PREV .EXIT"
                 );
                 resetInput();
                 int ch = keyPressed(timeout);

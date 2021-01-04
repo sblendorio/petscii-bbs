@@ -256,13 +256,14 @@ public class BBServer {
                   "-----------------------------------", "---------------", "-------", "----", "-----")
             + "\n"
             + Thread.getAllStackTraces().keySet().stream().sorted(comparingLong(Thread::getId)).map(t -> {
-                    String clientClass = (t instanceof BbsThread) ? ((BbsThread) t).getClientClass().getSimpleName() : null;
-                    Integer serverPort = (t instanceof BbsThread) ? ((BbsThread) t).serverPort : null;
-                    Long clientId = (t instanceof BbsThread) ? ((BbsThread) t).clientId : null;
+                    final Class clientClass = (t instanceof BbsThread) ? ((BbsThread) t).getClientClass() : null;
+                    final String clientStr = clientClass == null ? null : clientClass.getSimpleName();
+                    final Integer serverPort = (t instanceof BbsThread) ? ((BbsThread) t).serverPort : null;
+                    final Long clientId = (t instanceof BbsThread) ? ((BbsThread) t).clientId : null;
                     return String.format(THREAD_ROW_FORMAT,
                         t.getId(),
                         substring(t.getClass().getSimpleName()+"[" + t.getName()+"] ", 0, 40),
-                        substring(clientClass != null ? clientClass + ":" + serverPort + " (#"+clientId+")" : "", 0, 35),
+                        substring(clientStr != null ? clientStr + ":" + serverPort + " (#"+clientId+")" : "", 0, 35),
                         t.getState(),
                         (t.isDaemon() ? "Daemon" : "Normal"),
                         t.getPriority(),

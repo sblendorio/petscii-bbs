@@ -4,7 +4,7 @@ public class MenuApple1Vic20 extends MenuApple1 {
 
     public MenuApple1Vic20() {
         super();
-        setLocalEcho(false);
+        setLocalEcho(true);
         clsBytes = new byte[] {
             12
         };
@@ -43,7 +43,7 @@ public class MenuApple1Vic20 extends MenuApple1 {
         println("C-IRNews  P-Zork I");
         println("D-VCFNews Q-Zork II");
         println("E-8bitGuy R-Zork III");
-        println("          S-Hitchhik");
+        println("          S-Hitchhikr");
         println();
         println("Italian News");
         println("------------");

@@ -6,5 +6,4 @@ public class MenuApple1WithEcho extends MenuApple1 {
         super();
         setLocalEcho(true);
     }
-
 }

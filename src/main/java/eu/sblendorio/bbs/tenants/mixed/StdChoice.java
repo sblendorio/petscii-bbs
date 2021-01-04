@@ -24,12 +24,12 @@ public class StdChoice extends AsciiThread {
     @Override
     public void doLoop() throws Exception {
         int ch;
-        String banner = "WELCOME TO " + (alternateLogo() ? "RETROACADEMY" : "RETROCAMPUS") + " BBS";
+        String banner = (alternateLogo() ? "RETROACADEMY" : "RETROCAMPUS") + " BBS";
         write(12);
         println(banner);
         println(StringUtils.repeat('-', banner.length()));
         newline();
-        println("CHOOSE SYSTEM:");
+        println("SUPPORTED SYSTEMS:");
         newline();
         println("1- CBM PETSCII  W/ECHO 40X25 (6510)");
         println("2- APPLE-1/II   NOECHO 40X24 (6502)");
@@ -37,7 +37,7 @@ public class StdChoice extends AsciiThread {
         println("4- PURE ASCII   W/ECHO 80X24 (8000)");
         println("5- DOS CP 437   W/ECHO 80X24 (8088)");
         println("6- TELNET LINUX W/ECHO 80X24 (8086)");
-        println("7- VIC20 ASCII  NOECHO 22X23 (6561)");
+        println("7- VIC-20 ASCII W/ECHO 22X23 (6561)");
         println("8- OLIVETTI M10 W/ECHO 40X15 (8085)");
         newline();
         println("PLEASE SELECT A NUMBER FROM 1 TO 8");
