@@ -7,4 +7,4 @@ FROM openjdk
 EXPOSE 6510
 WORKDIR /bbs
 COPY --from=build /bbs/target/* /bbs/
-ENTRYPOINT ["java", "-jar","petscii-bbs.jar","-b","CsdbReleases"]
+ENTRYPOINT ["java", "-jar","petscii-bbs.jar","--bbs","StdChoice:23"]
