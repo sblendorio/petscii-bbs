@@ -20,7 +20,9 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.CASE_LOCK;
 import static eu.sblendorio.bbs.core.PetsciiKeys.CLR;
 import static eu.sblendorio.bbs.core.PetsciiKeys.DEL;
 import static eu.sblendorio.bbs.core.PetsciiKeys.LOWERCASE;
+import static eu.sblendorio.bbs.core.PetsciiKeys.RETURN;
 import static eu.sblendorio.bbs.core.PetsciiKeys.SPACE_CHAR;
+import static eu.sblendorio.bbs.core.PetsciiKeys.UP;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -33,6 +35,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import org.apache.commons.lang3.StringUtils;
+import static org.apache.commons.lang3.StringUtils.CR;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 import static org.apache.commons.lang3.StringUtils.defaultString;
@@ -562,6 +565,8 @@ public class InternetBrowser extends PetsciiThread {
     private void writeFooter() throws Exception {
         gotoXY(0,21);
         write(BROWSERBOTTOM);
+        write(GREY3, UP, RETURN);
+        print("Contrib by TheOldNet.com");
         write(GREY3);
     }
 

@@ -7,6 +7,7 @@ import eu.sblendorio.bbs.tenants.ascii.MenuApple1Telnet;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1TelnetAnsi;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1TelnetUtf8Ansi;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1Vic20;
+import eu.sblendorio.bbs.tenants.ascii.MenuApple1WithEcho;
 import eu.sblendorio.bbs.tenants.petscii.Menu64;
 import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
@@ -52,7 +53,7 @@ public class StdChoice extends AsciiThread {
         newline();
         if (ch == '1') launch(new Menu64());
         else if (ch == '2') launch(new MenuApple1(false));
-        else if (ch == '3') launch(new MenuApple1(true));
+        else if (ch == '3') launch(new MenuApple1WithEcho());
         else if (ch == '4') launch(new MenuApple1Telnet());
         else if (ch == '5') launch(new MenuApple1TelnetAnsi());
         else if (ch == '6') launch(new MenuApple1TelnetUtf8Ansi());
