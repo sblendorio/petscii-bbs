@@ -5,6 +5,7 @@ import eu.sblendorio.bbs.tenants.ascii.MenuApple1;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1M10;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1Telnet;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1TelnetAnsi;
+import eu.sblendorio.bbs.tenants.ascii.MenuApple1TelnetNoEcho;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1TelnetUtf8Ansi;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1Vic20;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1WithEcho;
@@ -36,12 +37,13 @@ public class StdChoice extends AsciiThread {
         println("2- APPLE-1/II   NOECHO   40X24 (6502)");
         println("3- APPLE-1/II   W/ECHO   40X24 (6503)");
         println("4- PURE ASCII   W/ECHO   80X24 (8000)");
-        println("5- DOS CP 437   W/ECHO   80X24 (8088)");
-        println("6- TELNET LINUX W/ECHO   80X24 (8086)");
-        println("7- VIC-20 ASCII W/ECHO   22X23 (6561)");
-        println("8- OLIVETTI M10 W/ECHO   40X15 (8085)");
+        println("5- PURE ASCII   NOECHO   80X24 (8001)");
+        println("6- DOS CP 437   W/ECHO   80X24 (8088)");
+        println("7- TELNET LINUX W/ECHO   80X24 (8086)");
+        println("8- VIC-20 ASCII W/ECHO   22X23 (6561)");
+        println("9- OLIVETTI M10 W/ECHO   40X15 (8085)");
         newline();
-        println("PLEASE SELECT A NUMBER FROM 1 TO 8");
+        println("PLEASE SELECT A NUMBER FROM 1 TO 9");
         println("PRESS ENTER TO CLOSE  CONNECTION");
         newline();
         print(">");
@@ -55,10 +57,11 @@ public class StdChoice extends AsciiThread {
         else if (ch == '2') launch(new MenuApple1(false));
         else if (ch == '3') launch(new MenuApple1WithEcho());
         else if (ch == '4') launch(new MenuApple1Telnet());
-        else if (ch == '5') launch(new MenuApple1TelnetAnsi());
-        else if (ch == '6') launch(new MenuApple1TelnetUtf8Ansi());
-        else if (ch == '7') launch(new MenuApple1Vic20());
-        else if (ch == '8') launch(new MenuApple1M10());
+        else if (ch == '5') launch(new MenuApple1TelnetNoEcho());
+        else if (ch == '6') launch(new MenuApple1TelnetAnsi());
+        else if (ch == '7') launch(new MenuApple1TelnetUtf8Ansi());
+        else if (ch == '8') launch(new MenuApple1Vic20());
+        else if (ch == '9') launch(new MenuApple1M10());
     }
 
     private boolean isValidKey(int ch) {

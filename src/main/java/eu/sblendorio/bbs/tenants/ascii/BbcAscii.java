@@ -44,26 +44,26 @@ public class BbcAscii extends RssAscii {
 
     private Map<String, NewsSection> loadSections() {
         Map<String, NewsSection> result = new LinkedHashMap<>();
-        result.put("201", new NewsSection("Top Stories", prefix() + "rss.xml", bytes("BBC - Top Stories", line)));
-        result.put("202", new NewsSection("World", prefix() + "world/rss.xml", bytes("BBC - World", line)));
-        result.put("203", new NewsSection("U.K.", prefix() + "uk/rss.xml", bytes("BBC - United Kingdom", line)));
-        result.put("204", new NewsSection("Business", prefix() + "business/rss.xml", bytes("BBC - Business", line)));
-        result.put("205", new NewsSection("Politics", prefix() + "politics/rss.xml", bytes("BBC - Politics", line)));
-        result.put("206", new NewsSection("Health", prefix() + "health/rss.xml", bytes("BBC - Health", line)));
-        result.put("207", new NewsSection("Education", prefix() + "education/rss.xml", bytes("BBC - Education", line)));
-        result.put("208", new NewsSection("Science", prefix() + "science_and_environment/rss.xml", bytes("BBC - Science", line)));
-        result.put("209", new NewsSection("Technology", prefix() + "technology/rss.xml", bytes("BBC - Technology", line)));
-        result.put("210", new NewsSection("Entertain.", prefix() + "entertainment_and_arts/rss.xml", bytes("BBC - Entertainment", line)));
-        result.put("211", new NewsSection("Africa", prefix() + "world/africa/rss.xml", bytes("BBC - Africa", line)));
-        result.put("212", new NewsSection("Asia", prefix() + "world/asia/rss.xml", bytes("BBC - Asia", line)));
-        result.put("213", new NewsSection("Europe", prefix() + "world/europe/rss.xml", bytes("BBC - Europe", line)));
-        result.put("214", new NewsSection("Middle East", prefix() + "world/middle_east/rss.xml", bytes("BBC - Middle East", line)));
-        result.put("215", new NewsSection("US & Canada", prefix() + "world/us_and_canada/rss.xml", bytes("BBC - US & Canada", line)));
-        result.put("216", new NewsSection("Latin America", prefix() + "world/latin_america/rss.xml", bytes("BBC - Latin America", line)));
-        result.put("217", new NewsSection("England", prefix() + "england/rss.xml", bytes("BBC - England", line)));
-        result.put("218", new NewsSection("North. Ireland", prefix() + "northern_ireland/rss.xml", bytes("BBC - Northern Ireland", line)));
-        result.put("219", new NewsSection("Scotland", prefix() + "scotland/rss.xml", bytes("BBC - Scotland", line)));
-        result.put("220", new NewsSection("Wales", prefix() + "wales/rss.xml", bytes("BBC - Wales", line)));
+        result.put("201", new NewsSection("Top Stories", prefix() + "rss.xml", logos.get(type).get("201")));
+        result.put("202", new NewsSection("World", prefix() + "world/rss.xml", logos.get(type).get("202")));
+        result.put("203", new NewsSection("U.K.", prefix() + "uk/rss.xml", logos.get(type).get("203")));
+        result.put("204", new NewsSection("Business", prefix() + "business/rss.xml", logos.get(type).get("204")));
+        result.put("205", new NewsSection("Politics", prefix() + "politics/rss.xml", logos.get(type).get("205")));
+        result.put("206", new NewsSection("Health", prefix() + "health/rss.xml", logos.get(type).get("206")));
+        result.put("207", new NewsSection("Education", prefix() + "education/rss.xml", logos.get(type).get("207")));
+        result.put("208", new NewsSection("Science", prefix() + "science_and_environment/rss.xml", logos.get(type).get("208")));
+        result.put("209", new NewsSection("Technology", prefix() + "technology/rss.xml", logos.get(type).get("209")));
+        result.put("210", new NewsSection("Entertain.", prefix() + "entertainment_and_arts/rss.xml", logos.get(type).get("210")));
+        result.put("211", new NewsSection("Africa", prefix() + "world/africa/rss.xml", logos.get(type).get("211")));
+        result.put("212", new NewsSection("Asia", prefix() + "world/asia/rss.xml", logos.get(type).get("212")));
+        result.put("213", new NewsSection("Europe", prefix() + "world/europe/rss.xml", logos.get(type).get("213")));
+        result.put("214", new NewsSection("Middle East", prefix() + "world/middle_east/rss.xml", logos.get(type).get("214")));
+        result.put("215", new NewsSection("US & Canada", prefix() + "world/us_and_canada/rss.xml", logos.get(type).get("215")));
+        result.put("216", new NewsSection("Latin America", prefix() + "world/latin_america/rss.xml", logos.get(type).get("216")));
+        result.put("217", new NewsSection("England", prefix() + "england/rss.xml", logos.get(type).get("217")));
+        result.put("218", new NewsSection("North. Ireland", prefix() + "northern_ireland/rss.xml", logos.get(type).get("218")));
+        result.put("219", new NewsSection("Scotland", prefix() + "scotland/rss.xml", logos.get(type).get("219")));
+        result.put("220", new NewsSection("Wales", prefix() + "wales/rss.xml", logos.get(type).get("220")));
         return result;
     }
 
@@ -86,14 +86,83 @@ public class BbcAscii extends RssAscii {
 
     public Map<String, Integer> logoHeightsNews = ImmutableMap.of(
         "ascii", 2,
-        "ansi", 2,
-        "utf8", 2
+        "ansi", 4,
+        "utf8", 4
     );
 
     public Map<String, byte[]> hrDashes = ImmutableMap.of(
         "ascii", "-".getBytes(ISO_8859_1),
         "ansi", bytes(196),
         "utf8",  "\u2500".getBytes(UTF_8)
+    );
+
+    public Map<String, Map<String, byte[]>> logos = ImmutableMap.of(
+        "ascii", ImmutableMap.<String, byte[]> builder()
+            .put("201", bytes("BBC - Top Stories", line))
+            .put("202", bytes("BBC - World", line))
+            .put("203", bytes("BBC - United Kingdom", line))
+            .put("204", bytes("BBC - Business", line))
+            .put("205", bytes("BBC - Politics", line))
+            .put("206", bytes("BBC - Health", line))
+            .put("207", bytes("BBC - Education", line))
+            .put("208", bytes("BBC - Science", line))
+            .put("209", bytes("BBC - Technology", line))
+            .put("210", bytes("BBC - Entertainment", line))
+            .put("211", bytes("BBC - Africa", line))
+            .put("212", bytes("BBC - Asia", line))
+            .put("213", bytes("BBC - Europe", line))
+            .put("214", bytes("BBC - Middle East", line))
+            .put("215", bytes("BBC - US & Canada", line))
+            .put("216", bytes("BBC - Latin America", line))
+            .put("217", bytes("BBC - England", line))
+            .put("218", bytes("BBC - Northern Ireland", line))
+            .put("219", bytes("BBC - Scotland", line))
+            .put("220", bytes("BBC - Wales", line))
+            .build(),
+        "ansi", ImmutableMap.<String, byte[]> builder()
+            .put("201", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "Top Stories", "\033[5;1H"))
+            .put("202", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "World", "\033[5;1H"))
+            .put("203", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "United Kingdom", "\033[5;1H"))
+            .put("204", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "Business", "\033[5;1H"))
+            .put("205", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "Politics", "\033[5;1H"))
+            .put("206", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "Health", "\033[5;1H"))
+            .put("207", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "Education", "\033[5;1H"))
+            .put("208", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "Science", "\033[5;1H"))
+            .put("209", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "Technology", "\033[5;1H"))
+            .put("210", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "Entertainment", "\033[5;1H"))
+            .put("211", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "Africa", "\033[5;1H"))
+            .put("212", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "Asia", "\033[5;1H"))
+            .put("213", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "Europe", "\033[5;1H"))
+            .put("214", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "Middle East", "\033[5;1H"))
+            .put("215", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "US & Canada", "\033[5;1H"))
+            .put("216", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "Latin America", "\033[5;1H"))
+            .put("217", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "England", "\033[5;1H"))
+            .put("218", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "Northern Ireland", "\033[5;1H"))
+            .put("219", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "Scotland", "\033[5;1H"))
+            .put("220", bytes(readBinaryFile("ansi/Bbc.ans"), "\033[2;23H\033[0m", "Wales", "\033[5;1H"))
+            .build(),
+        "utf8", ImmutableMap.<String, byte[]> builder()
+            .put("201", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "Top Stories", "\033[5;1H"))
+            .put("202", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "World", "\033[5;1H"))
+            .put("203", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "United Kingdom", "\033[5;1H"))
+            .put("204", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "Business", "\033[5;1H"))
+            .put("205", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "Politics", "\033[5;1H"))
+            .put("206", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "Health", "\033[5;1H"))
+            .put("207", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "Education", "\033[5;1H"))
+            .put("208", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "Science", "\033[5;1H"))
+            .put("209", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "Technology", "\033[5;1H"))
+            .put("210", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "Entertainment", "\033[5;1H"))
+            .put("211", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "Africa", "\033[5;1H"))
+            .put("212", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "Asia", "\033[5;1H"))
+            .put("213", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "Europe", "\033[5;1H"))
+            .put("214", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "Middle East", "\033[5;1H"))
+            .put("215", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "US & Canada", "\033[5;1H"))
+            .put("216", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "Latin America", "\033[5;1H"))
+            .put("217", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "England", "\033[5;1H"))
+            .put("218", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "Northern Ireland", "\033[5;1H"))
+            .put("219", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "Scotland", "\033[5;1H"))
+            .put("220", bytes(readBinaryFile("ansi/Bbc.utf8ans"), "\033[2;23H\033[0m", "Wales", "\033[5;1H"))
+            .build()
     );
 
 }

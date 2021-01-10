@@ -565,8 +565,6 @@ public class InternetBrowser extends PetsciiThread {
     private void writeFooter() throws Exception {
         gotoXY(0,21);
         write(BROWSERBOTTOM);
-        write(GREY3, UP, RETURN);
-        print("Contrib by TheOldNet.com");
         write(GREY3);
     }
 
