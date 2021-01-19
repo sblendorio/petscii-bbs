@@ -1,6 +1,5 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
-import eu.sblendorio.bbs.core.Utils;
 import static eu.sblendorio.bbs.core.Utils.bytes;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 

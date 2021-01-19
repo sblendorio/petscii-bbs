@@ -259,13 +259,13 @@ public class ChatA1 extends AsciiThread {
     public static byte[] noattr = "\033[0m".getBytes(ISO_8859_1);
     public Map<String, byte[]> logos = ImmutableMap.of(
         "ascii", bytes("** BBS Chat 2.0 **\r\n\r\n"),
-        "ansi", bytes(readBinaryFile("ansi/BbsChat20.ans"), noattr, "\033[5r\033[?6l\033[5;1H"),
+        "ansi", bytes(readBinaryFile("ansi/BbsChat20.ans"), noattr, "\033[5r\033[?6l\033[5;1H\033[?7h"),
         "utf8", bytes(readBinaryFile("ansi/BbsChat20.utf8ans"), noattr, "\033[5r\033[?6l\033[5;1H")
     );
 
     public Map<String, byte[]> exitSeq = ImmutableMap.of(
         "ascii", bytes(),
-        "ansi", bytes("\0337\033[r\0338"),
+        "ansi", bytes("\0337\033[r\0338\033[?7l"),
         "utf8", bytes("\0337\033[r\0338")
     );
 }
