@@ -1,13 +1,6 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
-import com.google.common.collect.ImmutableMap;
-import com.rometools.rome.feed.synd.SyndEntry;
-import com.rometools.rome.feed.synd.SyndFeed;
-import com.rometools.rome.io.FeedException;
-import com.rometools.rome.io.SyndFeedInput;
-import com.rometools.rome.io.XmlReader;
 import eu.sblendorio.bbs.core.Hidden;
-import eu.sblendorio.bbs.core.HtmlUtils;
 import static eu.sblendorio.bbs.core.PetsciiColors.BLUE;
 import static eu.sblendorio.bbs.core.PetsciiColors.CYAN;
 import static eu.sblendorio.bbs.core.PetsciiColors.GREEN;
@@ -22,266 +15,61 @@ import static eu.sblendorio.bbs.core.PetsciiColors.RED;
 import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
 import static eu.sblendorio.bbs.core.PetsciiColors.YELLOW;
 import static eu.sblendorio.bbs.core.PetsciiKeys.DEL;
-import static eu.sblendorio.bbs.core.PetsciiKeys.RETURN;
-import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
-import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
-import static eu.sblendorio.bbs.core.PetsciiKeys.RIGHT;
-import static eu.sblendorio.bbs.core.PetsciiKeys.SPACE_CHAR;
-import static eu.sblendorio.bbs.core.PetsciiKeys.UP;
-import eu.sblendorio.bbs.core.PetsciiThread;
-import java.io.IOException;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import static java.util.Arrays.asList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
-import org.apache.commons.lang3.StringUtils;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.substring;
-import static org.apache.commons.lang3.StringUtils.trim;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.text.WordUtils;
+import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
 @Hidden
-public class TelevideoRaiPetscii extends PetsciiThread {
-    static final long TIMEOUT = NumberUtils.toLong(System.getProperty("televideo_petscii_timeout", "50000"));
-    static final String HR_TOP = StringUtils.repeat(chr(163), 39);
+public class TelevideoRaiPetscii extends RssPetscii {
 
-    static final String PREFIX = "http://www.servizitelevideo.rai.it/televideo/pub/";
-    protected int screenRows = 19;
+    protected Map<String, NewsSection> sections;
 
-    static class NewsSection {
-        final int color;
-        final String title;
-        final String url;
-        final byte[] logo;
-
-        public NewsSection(int color, String title, String url, byte[] logo) {
-            this.color = color; this.title = title; this.url = url; this.logo = logo;
-        }
+    public TelevideoRaiPetscii() {
+        this("rss.petscii.timeout", "50000");
     }
 
-    static class NewsFeed {
-        final Date publishedDate;
-        final String title;
-        final String description;
-        final String uri;
-
-        public NewsFeed(Date publishedDate, String title, String description, String uri) {
-            this.publishedDate = publishedDate; this.title = title; this.description = description; this.uri = uri;
-        }
-
-        @Override
-        public String toString() {
-            return "Title: "+title+"\nDate:"+publishedDate+"\nDescription:"+description+"\n";
-        }
-    }
-
-    static Map<String, NewsSection> sections = new ImmutableMap.Builder<String, NewsSection>()
-        .put("101", new NewsSection(WHITE, "Ultim'Ora", PREFIX + "rss101.xml", Logos.LOGO_ULTIMORA))
-        .put("102", new NewsSection(CYAN, "24h No Stop", PREFIX + "rss102.xml", Logos.LOGO_NOSTOP24H))
-        .put("110", new NewsSection(RED, "Primo Piano", PREFIX + "rss110.xml", Logos.LOGO_PRIMOPIANO))
-        .put("120", new NewsSection(GREEN, "Politica", PREFIX + "rss120.xml", Logos.LOGO_POLITICA))
-        .put("130", new NewsSection(BLUE, "Economia", PREFIX + "rss130.xml", Logos.LOGO_ECONOMIA))
-        .put("140", new NewsSection(GREY2, "Dall'Italia", PREFIX + "rss140.xml", Logos.LOGO_DALLITALIA))
-        .put("150", new NewsSection(LIGHT_BLUE, "Dal Mondo", PREFIX + "rss150.xml", Logos.LOGO_DALMONDO))
-        .put("160", new NewsSection(LIGHT_RED, "Culture", PREFIX + "rss160.xml", Logos.LOGO_CULTURE))
-        .put("170", new NewsSection(PURPLE, "Cittadini", PREFIX + "rss170.xml", Logos.LOGO_CITTADINI))
-        .put("180", new NewsSection(GREY3, "Speciale", PREFIX + "rss180.xml", Logos.LOGO_SPECIALE))
-        .put("190", new NewsSection(LIGHT_RED, "Atlante Crisi", PREFIX + "rss190.xml", Logos.LOGO_ATLANTECRISI))
-        .put("229", new NewsSection(LIGHT_GREEN, "Brevi Calcio", PREFIX + "rss229.xml", Logos.LOGO_BREVICALCIO))
-        .put("230", new NewsSection(YELLOW, "CalcioSquadre", PREFIX + "rss230.xml", Logos.LOGO_CALCIOSQUADRE))
-        .put("260", new NewsSection(GREEN, "Altri Sport", PREFIX + "rss260.xml", Logos.LOGO_ALTRISPORT))
-        .put("299", new NewsSection(GREY1, "Brevissime", PREFIX + "rss299.xml", Logos.LOGO_SPORTBREVISSIME))
-        .put("810", new NewsSection(GREY2, "Motori", PREFIX + "rss810.xml", Logos.LOGO_MOTORI))
-        .build();
-
-    private void printChannelList() {
-        gotoXY(0, 5);
-        List<String> keys = new LinkedList<>(sections.keySet());
-        Collections.sort(keys);
-        int size = sections.size() / 2;
-        if (size * 2 < sections.size())
-            ++size;
-        for (int i=0; i<8; ++i) {
-            int even = i;
-            if (even >= keys.size()) break;
-            String key = keys.get(even);
-            NewsSection value = sections.get(key);
-            write(RIGHT, value.color, REVON, SPACE_CHAR);
-            print(String.format("%3s", key)); write(SPACE_CHAR, REVOFF, SPACE_CHAR);
-            String title = substring(value.title + "                    ", 0, 12);
-            print(title);
-            print(" ");
-
-            int odd = even + size;
-            if (odd < keys.size()) {
-                key = keys.get(odd);
-                value = sections.get(key);
-                write(value.color, REVON, SPACE_CHAR);
-                print(String.format("%3s", key));
-                write(SPACE_CHAR, REVOFF, SPACE_CHAR);
-                print(value.title);
-            } else {
-                // write(WHITE, REVON, SPACE_CHAR);
-                // print(" . ");
-                // write(SPACE_CHAR, REVOFF, SPACE_CHAR);
-                // print("Fine");
-            }
-            newline();
-            newline();
-
-        }
-        write(RIGHT, WHITE, REVON, SPACE_CHAR);
-        print(" . ");
-        write(SPACE_CHAR, REVOFF, SPACE_CHAR);
-        print("Fine");
-        write(GREY3, RETURN, RETURN);
-        flush();
-    }
-
-    public static List<NewsFeed> getFeeds(String urlString) throws IOException, FeedException {
-        URL url = new URL(urlString);
-        SyndFeedInput input = new SyndFeedInput();
-        SyndFeed feed = input.build(new XmlReader(url));
-        List<NewsFeed> result = new LinkedList<>();
-        List<SyndEntry> entries = feed.getEntries();
-        for (SyndEntry e : entries)
-            result.add(new NewsFeed(e.getPublishedDate(), e.getTitle(), e.getDescription().getValue(), e.getUri()));
-        return result;
+    public TelevideoRaiPetscii(String property, String defaultValue) {
+        super(property, defaultValue);
+        sections = loadSections();
+        timeout = toLong(System.getProperty(property, defaultValue));
+        logoHeightNews = 4;
     }
 
     @Override
-    public void doLoop() throws Exception {
-        log("Entered TelevideoRai");
-        while (true) {
-            cls();
-            drawLogo();
-            printChannelList();
-            String command = null;
-            NewsSection choice;
-            boolean inputFail;
-            do {
-                print(" > ");
-                flush();
-                resetInput();
-                command = readLine(3);
-                choice = sections.get(command);
-                inputFail = (choice == null && !trim(command).equals("."));
-                if (inputFail) {
-                    write(UP); println("        "); write(UP);
-                }
-            } while (inputFail);
-            if (trim(command).equals(".")) {
-                break;
-            }
-            log("Televideo choice = " + command + " " + (choice == null ? EMPTY : choice.title));
-            view(choice);
-        }
-        log("Televideo-EXIT");
+    public Map<String, NewsSection> sections() {
+        return sections;
     }
 
-    private void view(NewsSection section) throws IOException, FeedException {
-        if (section == null) {
-            return;
-        }
 
-        boolean interruptByUser;
-        do {
-            cls();
-            waitOn();
-            List<NewsFeed> feeds = getFeeds(section.url);
-            String text = EMPTY;
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            for (NewsFeed feed : feeds) {
-                String description = HtmlUtils.htmlClean(feed.description).trim();
-                description = StringUtils.isBlank(description) ? "&c64nbsp;" : description;
-
-                String post = EMPTY;
-                post += feed.title + "<br>" + HR_TOP + "<br>";
-                post += feed.publishedDate == null ? "" : (dateFormat.format(feed.publishedDate) + " ");
-                post += description + "<br>";
-                int lineFeeds = (screenRows - (wordWrap(post).length % screenRows)) % screenRows;
-
-                post += StringUtils.repeat("&c64nbsp;<br>", lineFeeds);
-                text += post;
-            }
-            waitOff();
-
-            interruptByUser = displayText(text, screenRows, section.logo);
-            if (!interruptByUser) {
-                gotoXY(0, 24); write(WHITE); print(" ENTER = MAIN MENU                    ");
-                flush(); resetInput();
-                int finalKey = keyPressed(TIMEOUT);
-                interruptByUser = finalKey != -1;
-            }
-        } while (!interruptByUser);
+    @Override
+    public String prefix() {
+        return "http://www.servizitelevideo.rai.it/televideo/pub/";
     }
 
-    protected boolean displayText(String text, int screenRows, byte[] logo) throws IOException {
-        cls();
-        write(defaultIfNull(logo, LOGO_TELEVIDEO));
-        write(GREY3);
-
-        String[] rows = wordWrap(text);
-        int page = 1;
-        int j = 0;
-        boolean forward = true;
-        while (j < rows.length) {
-            if (j>0 && j % screenRows == 0 && forward) {
-                println();
-                write(WHITE); print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT"); write(GREY3);
-                resetInput();
-                int ch = keyPressed(TIMEOUT);
-                if (ch == '.') {
-                    return true;
-                }
-                if (ch == '-' && page > 1) {
-                    j -= (screenRows * 2);
-                    --page;
-                    forward = false;
-                    cls();
-                    write(logo == null ? LOGO_TELEVIDEO : logo);
-                    write(GREY3);
-                    continue;
-                } else {
-                    ++page;
-                }
-                cls();
-                write(logo == null ? LOGO_TELEVIDEO : logo);
-                write(GREY3);
-            }
-            String row = rows[j];
-            println(row.replace("&c64nbsp;", EMPTY));
-            forward = true;
-            ++j;
-        }
-        println();
-        return false;
+    @Override
+    public byte[] getLogo() {
+        return LOGO_TELEVIDEO;
     }
 
-    protected String[] wordWrap(String s) {
-        String[] cleaned = filterPrintableWithNewline(HtmlUtils.htmlClean(s)).replaceAll(" +", " ").split("\n");
-        List<String> result = new LinkedList<>();
-        for (String item: cleaned) {
-            String[] wrappedLine = WordUtils
-                    .wrap(item, 39, "\n", true)
-                    .split("\n");
-            result.addAll(asList(wrappedLine));
-        }
-        return Arrays.copyOf(result.toArray(), result.size(), String[].class);
-    }
-
-    private void drawLogo() {
-        write(LOGO_TELEVIDEO);
-        write(GREY3);
+    private Map<String, NewsSection> loadSections() {
+        Map<String, NewsSection> result = new LinkedHashMap<>();
+        result.put("101", new NewsSection(WHITE, "Ultim'Ora", prefix() + "rss101.xml", Logos.LOGO_ULTIMORA));
+        result.put("102", new NewsSection(CYAN, "24h No Stop", prefix() + "rss102.xml", Logos.LOGO_NOSTOP24H));
+        result.put("110", new NewsSection(RED, "Primo Piano", prefix() + "rss110.xml", Logos.LOGO_PRIMOPIANO));
+        result.put("120", new NewsSection(GREEN, "Politica", prefix() + "rss120.xml", Logos.LOGO_POLITICA));
+        result.put("130", new NewsSection(BLUE, "Economia", prefix() + "rss130.xml", Logos.LOGO_ECONOMIA));
+        result.put("140", new NewsSection(GREY2, "Dall'Italia", prefix() + "rss140.xml", Logos.LOGO_DALLITALIA));
+        result.put("150", new NewsSection(LIGHT_BLUE, "Dal Mondo", prefix() + "rss150.xml", Logos.LOGO_DALMONDO));
+        result.put("160", new NewsSection(LIGHT_RED, "Culture", prefix() + "rss160.xml", Logos.LOGO_CULTURE));
+        result.put("170", new NewsSection(PURPLE, "Cittadini", prefix() + "rss170.xml", Logos.LOGO_CITTADINI));
+        result.put("180", new NewsSection(GREY3, "Speciale", prefix() + "rss180.xml", Logos.LOGO_SPECIALE));
+        result.put("190", new NewsSection(LIGHT_RED, "Atlante Crisi", prefix() + "rss190.xml", Logos.LOGO_ATLANTECRISI));
+        result.put("229", new NewsSection(LIGHT_GREEN, "Brevi Calcio", prefix() + "rss229.xml", Logos.LOGO_BREVICALCIO));
+        result.put("230", new NewsSection(YELLOW, "CalcioSquadre", prefix() + "rss230.xml", Logos.LOGO_CALCIOSQUADRE));
+        result.put("260", new NewsSection(GREEN, "Altri Sport", prefix() + "rss260.xml", Logos.LOGO_ALTRISPORT));
+        result.put("299", new NewsSection(GREY1, "Brevissime", prefix() + "rss299.xml", Logos.LOGO_SPORTBREVISSIME));
+        result.put("810", new NewsSection(GREY2, "Motori", prefix() + "rss810.xml", Logos.LOGO_MOTORI));
+        return result;
     }
 
     private static final byte[] LOGO_TELEVIDEO = new byte[] {
@@ -300,16 +88,6 @@ public class TelevideoRaiPetscii extends PetsciiThread {
         -66, 32, 18, -94, -94, -110, 32, -68, 18, -94, -110, -68, 18, -94, -94, -94,
         -110, 32, 18, -94, -94, -94, -110, -66, -68, 18, -94, -94, -110, -66, 13
     };
-
-    protected void waitOn() {
-        print("PLEASE WAIT...");
-        flush();
-    }
-
-    protected void waitOff() {
-        for (int i=0; i<14; ++i) write(DEL);
-        flush();
-    }
 
     static class Logos {
         static final byte[] LOGO_ULTIMORA = new byte[] {

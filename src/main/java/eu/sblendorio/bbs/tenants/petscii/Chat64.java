@@ -9,6 +9,8 @@ import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_BLUE;
 import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
 import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.core.Utils;
+import static eu.sblendorio.bbs.core.Utils.bytes;
 import java.io.IOException;
 import java.util.List;
 import static java.util.Optional.ofNullable;
@@ -27,6 +29,7 @@ public class Chat64 extends PetsciiThread {
 
     private static final String CUSTOM_KEY = "CHAT";
     private static final int INPUT_COLOR = GREY3;
+    private static final byte[] LOGO_CHAT = bytes(readBinaryFile("petscii/bbschat20.seq"));
 
     public static class ChatMessage {
         public final long receiverId;
@@ -90,9 +93,10 @@ public class Chat64 extends PetsciiThread {
 
             getRoot().setCustomObject(CUSTOM_KEY, getClientName());
             cls();
-            write(PetsciiColors.YELLOW);
-            println("              BBS Chat 2.0");
-            newline();
+            // write(PetsciiColors.YELLOW);
+            // println("              BBS Chat 2.0");
+            // newline();
+            write(LOGO_CHAT);
             showUsers(false);
             newline();
             displayHelp();
