@@ -24,6 +24,8 @@ public class Utils {
             149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159
     ));
 
+    // EXTRA_CONTROL_CHARS: 0, 10, 13, 20, 141, 148
+
     public static final Set<Integer> SET_ALPHANUMERIC_WITH_PERIOD = Stream.of(
         'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
@@ -36,16 +38,23 @@ public class Utils {
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
     ).map(Integer::valueOf).collect(toSet());
 
+    public static final Set<Integer> SET_LETTERS_WITH_PERIOD = Stream.of(
+        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.'
+    ).map(Integer::valueOf).collect(toSet());
+
     public static final Set<Integer> SET_LETTERS = Stream.of(
         'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
     ).map(Integer::valueOf).collect(toSet());
 
+    public static final Set<Integer> SET_NUMBERS_WITH_PERIOD = Stream.of(
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'
+    ).map(Integer::valueOf).collect(toSet());
+
     public static final Set<Integer> SET_NUMBERS = Stream.of(
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
     ).map(Integer::valueOf).collect(toSet());
-
-    // EXTRA_CONTROL_CHARS: 0, 10, 13, 20, 141, 148
 
     public static boolean isControlChar(int c) { return PETSCII_CONTROL_CHARS.contains(c); }
     public static boolean isControlChar(char c) { return isControlChar((int) c); }
