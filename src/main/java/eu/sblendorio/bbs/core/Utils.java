@@ -6,13 +6,15 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import static java.util.stream.Collectors.toSet;
+import java.util.stream.Stream;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.lowerCase;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 public class Utils {
 
-    private static final Set<Integer> CONTROL_CHARS = new HashSet<>(Arrays.asList(
+    private static final Set<Integer> PETSCII_CONTROL_CHARS = new HashSet<>(Arrays.asList(
             1, 2, 3, 4, 5, 6, 7, 8, 9,
             11, 12,
             14, 15, 16, 17, 18, 19,
@@ -22,9 +24,30 @@ public class Utils {
             149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159
     ));
 
+    public static final Set<Integer> SET_ALPHANUMERIC_WITH_PERIOD = Stream.of(
+        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'
+    ).map(Integer::valueOf).collect(toSet());
+
+    public static final Set<Integer> SET_ALPHANUMERIC = Stream.of(
+        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+    ).map(Integer::valueOf).collect(toSet());
+
+    public static final Set<Integer> SET_LETTERS = Stream.of(
+        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+    ).map(Integer::valueOf).collect(toSet());
+
+    public static final Set<Integer> SET_NUMBERS = Stream.of(
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+    ).map(Integer::valueOf).collect(toSet());
+
     // EXTRA_CONTROL_CHARS: 0, 10, 13, 20, 141, 148
 
-    public static boolean isControlChar(int c) { return CONTROL_CHARS.contains(c); }
+    public static boolean isControlChar(int c) { return PETSCII_CONTROL_CHARS.contains(c); }
     public static boolean isControlChar(char c) { return isControlChar((int) c); }
 
     public static boolean equalsDomain(String a, String b) {

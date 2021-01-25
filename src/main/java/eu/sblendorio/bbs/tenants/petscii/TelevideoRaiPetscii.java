@@ -40,7 +40,6 @@ public class TelevideoRaiPetscii extends RssPetscii {
         return sections;
     }
 
-
     @Override
     public String prefix() {
         return "http://www.servizitelevideo.rai.it/televideo/pub/";

@@ -1,9 +1,7 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
+import eu.sblendorio.bbs.core.Utils;
 import java.io.IOException;
-import static java.util.Arrays.asList;
-import java.util.HashSet;
-import java.util.Set;
 
 public class MenuApple1M10 extends MenuApple1 {
 
@@ -58,11 +56,9 @@ public class MenuApple1M10 extends MenuApple1 {
         println("M - Facta.news          . - Logout");
     }
 
-    public final static Set<Integer> forbiddenChars = new HashSet<>(asList(34, 250, 251, 252, 253, 254));
-
     @Override
     public String readChoice() throws IOException {
-        return readLine(forbiddenChars);
+        return readLine(Utils.SET_ALPHANUMERIC_WITH_PERIOD);
     }
 
 }

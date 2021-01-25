@@ -432,9 +432,9 @@ public abstract class BbsThread extends Thread {
         return result;
     }
 
-    public String readLine(Set<Integer> forbiddenChars) throws IOException {
+    public String readLine(Set<Integer> allowedChars) throws IOException {
         keepAliveThread.restartKeepAlive();
-        final String result = io.readLine(forbiddenChars);
+        final String result = io.readLine(allowedChars);
         keepAliveThread.restartKeepAlive();
         return result;
     }

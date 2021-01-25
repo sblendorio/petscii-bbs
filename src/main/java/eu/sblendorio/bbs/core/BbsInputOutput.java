@@ -97,12 +97,12 @@ public abstract class BbsInputOutput extends Reader {
         return readLine(maxLength, mask, null);
     }
 
-    public String readLine(int maxLength, boolean mask, Set<Integer> forbiddenChars) throws IOException {
+    public String readLine(int maxLength, boolean mask, Set<Integer> allowedChars) throws IOException {
         int ch;
         readBuffer = EMPTY;
         do {
             ch = readKey();
-            if (forbiddenChars != null && forbiddenChars.contains(ch)) {
+            if (allowedChars != null && !allowedChars.contains(ch)) {
                 continue;
             } else if (isBackspace(ch)) {
                 if (readBuffer.length() > 0) {
@@ -151,8 +151,8 @@ public abstract class BbsInputOutput extends Reader {
         return readLine(0, false);
     }
 
-    public String readLine(Set<Integer> forbiddenChars) throws IOException {
-        return readLine(0, false, forbiddenChars);
+    public String readLine(Set<Integer> allowedChars) throws IOException {
+        return readLine(0, false, allowedChars);
     }
 
     @Override

@@ -4,11 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.maxmind.db.Reader;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.Utils;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import static java.util.Arrays.asList;
-import java.util.HashSet;
 import org.apache.commons.lang3.StringUtils;
 
 public class MenuApple1 extends AsciiThread {
@@ -188,6 +186,6 @@ public class MenuApple1 extends AsciiThread {
     }
 
     public String readChoice() throws IOException {
-        return readLine(new HashSet<>(asList(34, 250, 251, 252, 253, 254, 255)));
+        return readLine(Utils.SET_ALPHANUMERIC_WITH_PERIOD);
     }
 }
