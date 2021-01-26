@@ -5,6 +5,8 @@ import com.maxmind.db.Reader;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Utils;
+import static eu.sblendorio.bbs.core.Utils.STR_ALPHANUMERIC;
+import static eu.sblendorio.bbs.core.Utils.setOfChars;
 import java.io.File;
 import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
@@ -186,6 +188,6 @@ public class MenuApple1 extends AsciiThread {
     }
 
     public String readChoice() throws IOException {
-        return readLine(Utils.SET_ALPHANUMERIC_WITH_PERIOD);
+        return readLine(setOfChars(STR_ALPHANUMERIC, "."));
     }
 }

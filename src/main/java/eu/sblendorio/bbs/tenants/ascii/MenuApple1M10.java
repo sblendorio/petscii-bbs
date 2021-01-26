@@ -1,6 +1,7 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
-import eu.sblendorio.bbs.core.Utils;
+import static eu.sblendorio.bbs.core.Utils.STR_ALPHANUMERIC;
+import static eu.sblendorio.bbs.core.Utils.setOfChars;
 import java.io.IOException;
 
 public class MenuApple1M10 extends MenuApple1 {
@@ -58,7 +59,7 @@ public class MenuApple1M10 extends MenuApple1 {
 
     @Override
     public String readChoice() throws IOException {
-        return readLine(Utils.SET_ALPHANUMERIC_WITH_PERIOD);
+        return readLine(setOfChars(STR_ALPHANUMERIC, "."));
     }
 
 }

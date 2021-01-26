@@ -3,6 +3,7 @@ package eu.sblendorio.bbs.core;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,35 +27,9 @@ public class Utils {
 
     // EXTRA_CONTROL_CHARS: 0, 10, 13, 20, 141, 148
 
-    public static final Set<Integer> SET_ALPHANUMERIC_WITH_PERIOD = Stream.of(
-        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'
-    ).map(Integer::valueOf).collect(toSet());
-
-    public static final Set<Integer> SET_ALPHANUMERIC = Stream.of(
-        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
-    ).map(Integer::valueOf).collect(toSet());
-
-    public static final Set<Integer> SET_LETTERS_WITH_PERIOD = Stream.of(
-        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.'
-    ).map(Integer::valueOf).collect(toSet());
-
-    public static final Set<Integer> SET_LETTERS = Stream.of(
-        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
-    ).map(Integer::valueOf).collect(toSet());
-
-    public static final Set<Integer> SET_NUMBERS_WITH_PERIOD = Stream.of(
-        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'
-    ).map(Integer::valueOf).collect(toSet());
-
-    public static final Set<Integer> SET_NUMBERS = Stream.of(
-        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
-    ).map(Integer::valueOf).collect(toSet());
+    public static final String STR_ALPHANUMERIC = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    public static final String STR_LETTER = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    public static final String STR_NUMBERS = "0123456789";
 
     public static boolean isControlChar(int c) { return PETSCII_CONTROL_CHARS.contains(c); }
     public static boolean isControlChar(char c) { return isControlChar((int) c); }
@@ -65,6 +40,20 @@ public class Utils {
 
     public static String normalizeDomain(String s) {
         return lowerCase(trim(s)).replaceAll("https?:(//)?", EMPTY).replace("www.", EMPTY).replaceAll("/+?$", EMPTY);
+    }
+
+    public static Set<Integer> setOfChars(String... strings) {
+        if (strings == null)
+            return Collections.emptySet();
+
+        Set<Integer> result = new HashSet<>();
+        for (String str: strings) {
+            if (str == null) continue;
+            for (char ch : str.toCharArray()) {
+                result.add((int) ch);
+            }
+        }
+        return result;
     }
 
     public static byte[] bytes(Object... objects) {
