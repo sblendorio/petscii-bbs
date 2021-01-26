@@ -50,7 +50,7 @@ public class BbcPetscii extends RssPetscii {
 
     private Map<String, NewsSection> loadSections() {
         Map<String, NewsSection> result = new LinkedHashMap<>();
-        byte[] cnn = bytes(readBinaryFile("petscii/bbc.seq"),  19, 13, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, CYAN);
+        byte[] cnn = bytes(readBinaryFile("petscii/bbc.seq"),  19, 13, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, GREY2);
 
         result.put("201", new NewsSection(WHITE, "Top Stories", prefix() + "rss.xml", bytes(cnn, "tOP sTORIES\r\r\r")));
         result.put("202", new NewsSection(CYAN, "World", prefix() + "world/rss.xml", bytes(cnn, "wORLD\r\r\r")));
