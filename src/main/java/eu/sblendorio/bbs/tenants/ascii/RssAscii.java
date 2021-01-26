@@ -122,11 +122,11 @@ public abstract class RssAscii extends AsciiThread {
                 value = sections().get(key);
                 write(' '); print(String.format("%3s", key)); write(' ', ' '); print(value.title);
             } else {
-                //write(' '); print(" . "); write(' ', ' '); print("Go back");
+                //write(' '); print(" . "); write(' ', ' '); print("Exit");
             }
             newline();
         }
-        write(' '); print(" . "); write(' ', ' '); print("Go back");
+        write(' '); print(" . "); write(' ', ' '); print("Exit");
         for (int i=0; i<getScreenRows()-size*(getScreenColumns() < 40 ? 2 : 1)-logoHeightMenu-2; ++i) newline();
         newline();
         flush();

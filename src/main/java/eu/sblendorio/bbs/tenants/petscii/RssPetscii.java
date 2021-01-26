@@ -102,7 +102,7 @@ public abstract class RssPetscii extends PetsciiThread {
         int size = sections().size() / 2;
         if (size * 2 < sections().size())
             ++size;
-        for (int i=0; i<8; ++i) {
+        for (int i=0; i<size; ++i) {
             int even = i;
             if (even >= keys.size()) break;
             String key = keys.get(even);
@@ -125,7 +125,7 @@ public abstract class RssPetscii extends PetsciiThread {
                 // write(WHITE, REVON, SPACE_CHAR);
                 // print(" . ");
                 // write(SPACE_CHAR, REVOFF, SPACE_CHAR);
-                // print("Fine");
+                // print("Exit");
             }
             newline();
             if (size <= 8) newline();
@@ -134,7 +134,7 @@ public abstract class RssPetscii extends PetsciiThread {
         write(RIGHT, WHITE, REVON, SPACE_CHAR);
         print(" . ");
         write(SPACE_CHAR, REVOFF, SPACE_CHAR);
-        print("Fine");
+        print("Exit");
         write(GREY3, RETURN, RETURN);
         flush();
     }
