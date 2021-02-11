@@ -350,7 +350,7 @@ public class InputFunctions implements InputLine {
       if (zsciiChar == -1) continue;
 
       if (zsciiChar == ZsciiEncoding.DELETE) {
-        if (machine.getScreen().getLocalEcho() && inputbuffer != null && inputbuffer.size() > 0) { // CICCIO
+        if (machine.getScreen().getLocalEcho() && inputbuffer != null && inputbuffer.size() > 0) {
           machine.getOutput().printZsciiChar(machine.getScreen().backspace(), true);
         }
         newpointer = deletePreviousChar(inputbuffer, newpointer);
@@ -425,11 +425,11 @@ public class InputFunctions implements InputLine {
   public short handleTerminateChar(final short terminateChar) {
     
     if (terminateChar == ZsciiEncoding.NEWLINE) {
-      
       // Echo a newline into the streams
       // must be called with isInput == false since we are not
       // in input mode anymore when we receive NEWLINE
-      machine.getOutput().printZsciiChar(ZsciiEncoding.NEWLINE, false);      
+      if (machine.getScreen().getLocalEcho()) // CICCIO
+        machine.getOutput().printZsciiChar(ZsciiEncoding.NEWLINE, false);
     }      
     return terminateChar;
   }
