@@ -9,7 +9,7 @@ public class CicapLombardiaAscii extends WordpressProxyAscii {
     public CicapLombardiaAscii() {
         super();
         this.logo = LOGO_BYTES;
-        this.domain = "https://lombardia.cicap.org";
+        this.domain = "https://gruppi.cicap.org/lombardia";
         this.pageSize = 11;
     }
 

@@ -65,11 +65,11 @@ public class BbcPetscii extends RssPetscii {
         result.put("211", new NewsSection(LIGHT_RED, "Africa", prefix() + "world/africa/rss.xml", bytes(cnn, "aFRICA\r\r\r")));
         result.put("212", new NewsSection(LIGHT_GREEN, "Asia", prefix() + "world/asia/rss.xml", bytes(cnn, "aSIA\r\r\r")));
         result.put("213", new NewsSection(YELLOW, "Europe", prefix() + "world/europe/rss.xml", bytes(cnn, "eUROPE\r\r\r")));
-        result.put("214", new NewsSection(GREEN, "Middle East", prefix() + "world/middle_east/rss.xml", bytes(cnn, "mIDDL eAST\r\r\r")));
+        result.put("214", new NewsSection(GREEN, "Middle East", prefix() + "world/middle_east/rss.xml", bytes(cnn, "mIDDLE eAST\r\r\r")));
         result.put("215", new NewsSection(GREY2, "US & Canada", prefix() + "world/us_and_canada/rss.xml", bytes(cnn, "us & cANADA\r\r\r")));
         result.put("216", new NewsSection(WHITE, "Latin America", prefix() + "world/latin_america/rss.xml", bytes(cnn, "lATIN aMERICA\r\r\r")));
         result.put("217", new NewsSection(CYAN, "England", prefix() + "england/rss.xml", bytes(cnn, "eNGLAND\r\r\r")));
-        result.put("218", new NewsSection(RED, "North.Ireland", prefix() + "northern_ireland/rss.xml", bytes(cnn, "Northern Ireland\r\r\r")));
+        result.put("218", new NewsSection(RED, "North.Ireland", prefix() + "northern_ireland/rss.xml", bytes(cnn, "nORTHERN iRELAND\r\r\r")));
         result.put("219", new NewsSection(GREEN, "Scotland", prefix() + "scotland/rss.xml", bytes(cnn, "sCOTLAND\r\r\r")));
         result.put("220", new NewsSection(BLUE, "Wales", prefix() + "wales/rss.xml", bytes(cnn, "wALES\r\r\r")));
         return result;
