@@ -55,6 +55,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
     }
 
     protected String blogUrl = "https://blogger.googleblog.com";
+    protected String labels = null;
     protected byte[] logo = LOGO_BLOGGER;
     protected int pageSize = 10;
     protected int screenLines = 19;
@@ -225,7 +226,10 @@ public class GoogleBloggerProxy extends PetsciiThread {
     protected Map<Integer, Post> getPosts() throws IOException {
         Map<Integer, Post> result = new LinkedHashMap<>();
 
-        Blogger.Posts.List action = blogger.posts().list(blogId).setPageToken(pageTokens.curr);
+        Blogger.Posts.List action = isNotBlank(labels)
+            ? blogger.posts().list(blogId).setLabels(labels).setPageToken(pageTokens.curr)
+            : blogger.posts().list(blogId).setPageToken(pageTokens.curr);
+
         action.setFields("items(author/displayName,id,content,published,title,url),nextPageToken");
         action.setMaxResults(Long.valueOf(pageSize));
         PostList list = action.execute();

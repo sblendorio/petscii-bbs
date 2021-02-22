@@ -359,6 +359,7 @@ public abstract class BbsThread extends Thread {
         } catch (Exception e) {
             child = null;
             clientClass = getClass();
+            if (e instanceof GoBackException) return true;
             if (e instanceof RuntimeException && !(e instanceof UncheckedIOException) && e.getCause() != null) throw e;
             log(e.getClass().getSimpleName() + " during launching of " + bbs.getClass().getSimpleName() + " within " +
                 this.getClass().getSimpleName() + ". Launch interrupted. Stack trace:");

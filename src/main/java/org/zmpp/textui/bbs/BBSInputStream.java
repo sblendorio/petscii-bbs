@@ -1,6 +1,7 @@
 package org.zmpp.textui.bbs;
 
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.GoBackException;
 import eu.sblendorio.bbs.core.PetsciiKeys;
 import java.io.IOException;
 import org.zmpp.encoding.ZsciiEncoding;
@@ -48,6 +49,6 @@ public class BBSInputStream implements InputStream {
 
     @Override
     public void close() {
-        throw new RuntimeException("Exit from ZMPP game");
+        throw new GoBackException("Exit from ZMPP game");
     }
 }

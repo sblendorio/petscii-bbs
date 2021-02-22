@@ -124,197 +124,225 @@ public class Menu64 extends PetsciiThread {
     }
 
     public void menuNewsIta() throws Exception {
-        write(CLR, LOWERCASE, CASE_LOCK, HOME);
-        drawLogo();
-        write(GREY3);
-        gotoXY(4,4);
-        write(REVON, GREEN, 161, WHITE, ' ', RED, REVOFF, 161, CYAN); println("Italian News");
-        write(RIGHT, RIGHT, RIGHT, ' ', ' ', ' ', ' ', LIGHT_BLUE); println(repeat((char) 163, 12));
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161); print("Televideo        "); write(REVON, 161, 'i', REVOFF, 161); println("Attivissimo");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '2', REVOFF, 161); print("Il Post          "); write(REVON, 161, 'j', REVOFF, 161); println("Bufale.net");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '3', REVOFF, 161); print("Valigia Blu      "); write(REVON, 161, 'k', REVOFF, 161); println("Butac");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '4', REVOFF, 161); print("Linkiesta        "); write(REVON, 161, 'l', REVOFF, 161); println("Facta news");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '5', REVOFF, 161); print("Fatto Quotidiano "); write(REVON, 161, 'm', REVOFF, 161); println("David Puente");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '6', REVOFF, 161); print("Next Quotidiano  "); write(REVON, 161, 'n', REVOFF, 161); println("The Fool");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '7', REVOFF, 161); println("Wired");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '8', REVOFF, 161); println("Tpi");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '9', REVOFF, 161); println("Medbunker");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '0', REVOFF, 161); println("FNOMCeO");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'a', REVOFF, 161); println("Medical Facts");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'b', REVOFF, 161); println("Sys64738");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'c', REVOFF, 161); println("Retrocampus");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'd', REVOFF, 161); println("RetroAcademy");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'e', REVOFF, 161); println("Arch. Informatica");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'f', REVOFF, 161); println("Punto Informatico");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'g', REVOFF, 161); println("Query Online");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'h', REVOFF, 161); print("CICAP Lombardia          "); write(REVON, 161, '.', REVOFF, 161); print("Exit");
-        flush();
-        boolean validKey;
         do {
-            validKey = true;
-            resetInput();
-            int key = readKey();
-            resetInput();
-            if (key >= 193 && key <= 218) {
-                key -= 96;
-            }
-            key = Character.toLowerCase(key);
-            log("Menu-NewsITA. Pressed: '" + (key < 32 || key > 127 ? "chr(" + key + ")" : ((char) key)) + "' (code=" +
-                key + ")");
-            if (key == '.') {
-                return;
-            }
-            else if (key == '1') launch(new TelevideoRaiPetscii());
-            else if (key == '2') launch(new IlPost());
-            else if (key == '3') launch(new ValigiaBlu());
-            else if (key == '4') launch(new Linkiesta());
-            else if (key == '5') launch(new IlFattoQuotidiano());
-            else if (key == '6') launch(new NextQuotidiano());
-            else if (key == '7') launch(new WiredItalia());
-            else if (key == '8') launch(new Tpi());
-            else if (key == '9') launch(new Medbunker());
-            else if (key == '0') launch(new DottoreMaEVeroChe());
-            else if (key == 'a') launch(new MedicalFacts());
-            else if (key == 'b') launch(new Sys64738());
-            else if (key == 'c') launch(new RetroCampus());
-            else if (key == 'd') launch(new RetroAcademy());
-            else if (key == 'e') launch(new ArcheologiaInformatica());
-            else if (key == 'f') launch(new PuntoInformatico());
-            else if (key == 'g') launch(new QueryOnline());
-            else if (key == 'h') launch(new CicapLombardia());
-            else if (key == 'i') launch(new Disinformatico());
-            else if (key == 'j') launch(new BufaleNet());
-            else if (key == 'k') launch(new Butac());
-            else if (key == 'l') launch(new FactaNews());
-            else if (key == 'm') launch(new DavidPuenteBlog());
-            else if (key == 'n') launch(new TheFoolBlog());
-            else {
-                validKey = false;
-            }
-            if (validKey) return;
-        } while (!validKey);
+            write(CLR, LOWERCASE, CASE_LOCK, HOME);
+            drawLogo();
+            write(GREY3);
+            gotoXY(4,4);
+            write(REVON, GREEN, 161, WHITE, ' ', RED, REVOFF, 161, CYAN); println("Italian News");
+            write(RIGHT, RIGHT, RIGHT, ' ', ' ', ' ', ' ', LIGHT_BLUE); println(repeat((char) 163, 12));
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161); print("Televideo        "); write(REVON, 161, 'i', REVOFF, 161); println("Attivissimo");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '2', REVOFF, 161); print("Il Post          "); write(REVON, 161, 'j', REVOFF, 161); println("Bufale.net");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '3', REVOFF, 161); print("Valigia Blu      "); write(REVON, 161, 'k', REVOFF, 161); println("Butac");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '4', REVOFF, 161); print("Linkiesta        "); write(REVON, 161, 'l', REVOFF, 161); println("Facta news");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '5', REVOFF, 161); print("Fatto Quotidiano "); write(REVON, 161, 'm', REVOFF, 161); println("David Puente");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '6', REVOFF, 161); print("Next Quotidiano  "); write(REVON, 161, 'n', REVOFF, 161); println("The Fool");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '7', REVOFF, 161); print("Wired            "); write(REVON, 161, 'o', REVOFF, 161); println("Indie Campus");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '8', REVOFF, 161); println("Tpi");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '9', REVOFF, 161); println("Medbunker");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '0', REVOFF, 161); println("FNOMCeO");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'a', REVOFF, 161); println("Medical Facts");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'b', REVOFF, 161); println("Sys64738");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'c', REVOFF, 161); println("Retrocampus");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'd', REVOFF, 161); println("RetroAcademy");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'e', REVOFF, 161); println("Arch. Informatica");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'f', REVOFF, 161); println("Punto Informatico");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'g', REVOFF, 161); println("Query Online");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'h', REVOFF, 161); print("CICAP Lombardia          "); write(REVON, 161, '.', REVOFF, 161); print("Exit");
+            flush();
+            boolean validKey;
+            do {
+                validKey = true;
+                resetInput();
+                int key = readKey();
+                resetInput();
+                if (key >= 193 && key <= 218) {
+                    key -= 96;
+                }
+                key = Character.toLowerCase(key);
+                log("Menu-NewsITA. Pressed: '" + (key < 32 || key > 127 ? "chr(" + key + ")" : ((char) key)) + "' (code=" +
+                    key + ")");
+                if (key == '.') {
+                    return;
+                }
+                else if (key == '1') launch(new TelevideoRaiPetscii());
+                else if (key == '2') launch(new IlPost());
+                else if (key == '3') launch(new ValigiaBlu());
+                else if (key == '4') launch(new Linkiesta());
+                else if (key == '5') launch(new IlFattoQuotidiano());
+                else if (key == '6') launch(new NextQuotidiano());
+                else if (key == '7') launch(new WiredItalia());
+                else if (key == '8') launch(new Tpi());
+                else if (key == '9') launch(new Medbunker());
+                else if (key == '0') launch(new DottoreMaEVeroChe());
+                else if (key == 'a') launch(new MedicalFacts());
+                else if (key == 'b') launch(new Sys64738());
+                else if (key == 'c') launch(new RetroCampus());
+                else if (key == 'd') launch(new RetroAcademy());
+                else if (key == 'e') launch(new ArcheologiaInformatica());
+                else if (key == 'f') launch(new PuntoInformatico());
+                else if (key == 'g') launch(new QueryOnline());
+                else if (key == 'h') launch(new CicapLombardia());
+                else if (key == 'i') launch(new Disinformatico());
+                else if (key == 'j') launch(new BufaleNet());
+                else if (key == 'k') launch(new Butac());
+                else if (key == 'l') launch(new FactaNews());
+                else if (key == 'm') launch(new DavidPuenteBlog());
+                else if (key == 'n') launch(new TheFoolBlog());
+                else if (key == 'o') launch(new IndieCampus());
+                else {
+                    validKey = false;
+                }
+                // if (validKey) return;
+            } while (!validKey);
+        } while (true);
     }
 
     public void menuNewsEng() throws Exception {
-        write(CLR, LOWERCASE, CASE_LOCK, HOME);
-        drawLogo();
-        write(GREY3);
-        gotoXY(4,5);
-        write(32, 32, 32, BLUE); print("Eng"); write(RED); print("lish "); write(WHITE); print("News"); newline();
-        write(RIGHT, RIGHT, RIGHT, ' ', ' ', ' ', ' ', GREY3); println(repeat((char) 163, 12));
-        newline();
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161); println("CNN News");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '2', REVOFF, 161); println("BBC News");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '3', REVOFF, 161); println("Wired");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '4', REVOFF, 161); println("Vintage Computer Federation");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '5', REVOFF, 161); println("Indie Retro News");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '6', REVOFF, 161); println("The 8-Bit Guy");
-        newline();
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '.', REVOFF, 161); print("Exit ");
-        flush();
-        boolean validKey;
         do {
-            validKey = true;
-            resetInput();
-            int key = readKey();
-            resetInput();
-            if (key >= 193 && key <= 218) {
-                key -= 96;
-            }
-            key = Character.toLowerCase(key);
-            log("Menu-NewsENG. Pressed: '" + (key < 32 || key > 127 ? "chr(" + key + ")" : ((char) key)) + "' (code=" +
-                key + ")");
-            if (key == '.') {
-                return;
-            }
-            else if (key == '1') launch(new CnnPetscii());
-            else if (key == '2') launch(new BbcPetscii());
-            else if (key == '3') launch(new WiredCom());
-            else if (key == '4') launch(new Vcfed());
-            else if (key == '5') launch(new IndieRetroNews());
-            else if (key == '6') launch(new The8BitGuy());
-            else {
-                validKey = false;
-            }
-            if (validKey) return;
-        } while (!validKey);
+            write(CLR, LOWERCASE, CASE_LOCK, HOME);
+            drawLogo();
+            write(GREY3);
+            gotoXY(4, 5);
+            write(32, 32, 32, BLUE);
+            print("Eng");
+            write(RED);
+            print("lish ");
+            write(WHITE);
+            print("News");
+            newline();
+            write(RIGHT, RIGHT, RIGHT, ' ', ' ', ' ', ' ', GREY3);
+            println(repeat((char) 163, 12));
+            newline();
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161);
+            println("CNN News");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '2', REVOFF, 161);
+            println("BBC News");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '3', REVOFF, 161);
+            println("Wired");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '4', REVOFF, 161);
+            println("Vintage Computer Federation");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '5', REVOFF, 161);
+            println("Indie Retro News");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '6', REVOFF, 161);
+            println("The 8-Bit Guy");
+            newline();
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '.', REVOFF, 161);
+            print("Exit ");
+            flush();
+            boolean validKey;
+            do {
+                validKey = true;
+                resetInput();
+                int key = readKey();
+                resetInput();
+                if (key >= 193 && key <= 218) {
+                    key -= 96;
+                }
+                key = Character.toLowerCase(key);
+                log("Menu-NewsENG. Pressed: '" + (key < 32 || key > 127 ? "chr(" + key + ")" : ((char) key)) + "' (code=" +
+                    key + ")");
+                if (key == '.') {
+                    return;
+                } else if (key == '1') launch(new CnnPetscii());
+                else if (key == '2') launch(new BbcPetscii());
+                else if (key == '3') launch(new WiredCom());
+                else if (key == '4') launch(new Vcfed());
+                else if (key == '5') launch(new IndieRetroNews());
+                else if (key == '6') launch(new The8BitGuy());
+                else {
+                    validKey = false;
+                }
+                // if (validKey) return;
+            } while (!validKey);
+        } while (true);
     }
 
     public void menuGames() throws Exception {
-        write(CLR, LOWERCASE, CASE_LOCK, HOME);
-        write(readBinaryFile("petscii/games.seq"));
-        write(HOME);
-        drawLogo();
-        write(GREY3);
-        gotoXY(39,24);
-
-        flush();
-        boolean validKey;
         do {
-            validKey = true;
-            resetInput();
-            int key = readKey();
-            resetInput();
-            if (key >= 193 && key <= 218) {
-                key -= 96;
-            }
-            key = Character.toLowerCase(key);
-            log("Menu-Games. Pressed: '" + (key < 32 || key > 127 ? "chr(" + key + ")" : ((char) key)) + "' (code=" +
-                key + ")");
-            if (key == '.') {
-                return;
-            }
-            else if (key == '1') launch(new TicTacToe());
-            else if (key == '2') launch(new ConnectFour());
-            else if (key == '3') launch(new Magic15());
-            else if (key == '4') launch(new ZorkMachine("zmpp/zork1.z3"));
-            else if (key == '5') launch(new ZorkMachine("zmpp/zork2.z3"));
-            else if (key == '6') launch(new ZorkMachine("zmpp/zork3.z3"));
-            else if (key == '7') launch(new ZorkMachine("zmpp/hitchhiker-r60.z3"));
-            else {
-                validKey = false;
-            }
-            if (validKey) return;
-        } while (!validKey);
+            write(CLR, LOWERCASE, CASE_LOCK, HOME);
+            write(readBinaryFile("petscii/games.seq"));
+            write(HOME);
+            drawLogo();
+            write(GREY3);
+            gotoXY(39, 24);
+
+            flush();
+            boolean validKey;
+            do {
+                validKey = true;
+                resetInput();
+                int key = readKey();
+                resetInput();
+                if (key >= 193 && key <= 218) {
+                    key -= 96;
+                }
+                key = Character.toLowerCase(key);
+                log("Menu-Games. Pressed: '" + (key < 32 || key > 127 ? "chr(" + key + ")" : ((char) key)) + "' (code=" +
+                    key + ")");
+                if (key == '.') {
+                    return;
+                } else if (key == '1') launch(new TicTacToe());
+                else if (key == '2') launch(new ConnectFour());
+                else if (key == '3') launch(new Magic15());
+                else if (key == '4') launch(new ZorkMachine("zmpp/zork1.z3"));
+                else if (key == '5') launch(new ZorkMachine("zmpp/zork2.z3"));
+                else if (key == '6') launch(new ZorkMachine("zmpp/zork3.z3"));
+                else if (key == '7') launch(new ZorkMachine("zmpp/hitchhiker-r60.z3"));
+                else {
+                    validKey = false;
+                }
+                // if (validKey) return;
+            } while (!validKey);
+        } while (true);
     }
 
     public void menuDownloads() throws Exception {
-        write(CLR, LOWERCASE, CASE_LOCK, HOME);
-        drawLogo();
-        write(GREY3);
-        gotoXY(4,5);
-        write(32, 32, 32, LIGHT_GREEN); print("Downloads"); newline();
-        write(RIGHT, RIGHT, RIGHT, ' ', ' ', ' ', ' ', GREEN); println(repeat((char) 163, 9));
-        newline();
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161); println("CSDb (recommended)");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '2', REVOFF, 161); println("CSDb - SD2IEC (experimental)");
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '3', REVOFF, 161); println("Arnold C64");
-        newline();
-        write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '.', REVOFF, 161); print("Exit ");
-        flush();
-        boolean validKey;
         do {
-            validKey = true;
-            resetInput();
-            int key = readKey();
-            resetInput();
-            if (key >= 193 && key <= 218) {
-                key -= 96;
-            }
-            key = Character.toLowerCase(key);
-            log("Menu-Downloads. Pressed: '" + (key < 32 || key > 127 ? "chr(" + key + ")" : ((char) key)) + "' (code=" +
-                key + ")");
-            if (key == '.') {
-                return;
-            }
-            else if (key == '1') launch(new CsdbReleases());
-            else if (key == '2') launch(new CsdbReleasesSD2IEC());
-            else if (key == '3') launch(new ArnoldC64());
-            else {
-                validKey = false;
-            }
-            if (validKey) return;
-        } while (!validKey);
+            write(CLR, LOWERCASE, CASE_LOCK, HOME);
+            drawLogo();
+            write(GREY3);
+            gotoXY(4, 5);
+            write(32, 32, 32, LIGHT_GREEN);
+            print("Downloads");
+            newline();
+            write(RIGHT, RIGHT, RIGHT, ' ', ' ', ' ', ' ', GREEN);
+            println(repeat((char) 163, 9));
+            newline();
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161);
+            println("CSDb (recommended)");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '2', REVOFF, 161);
+            println("CSDb - SD2IEC (experimental)");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '3', REVOFF, 161);
+            println("Arnold C64");
+            newline();
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '.', REVOFF, 161);
+            print("Exit ");
+            flush();
+            boolean validKey;
+            do {
+                validKey = true;
+                resetInput();
+                int key = readKey();
+                resetInput();
+                if (key >= 193 && key <= 218) {
+                    key -= 96;
+                }
+                key = Character.toLowerCase(key);
+                log("Menu-Downloads. Pressed: '" + (key < 32 || key > 127 ? "chr(" + key + ")" : ((char) key)) +
+                    "' (code=" +
+                    key + ")");
+                if (key == '.') {
+                    return;
+                } else if (key == '1') launch(new CsdbReleases());
+                else if (key == '2') launch(new CsdbReleasesSD2IEC());
+                else if (key == '3') launch(new ArnoldC64());
+                else {
+                    validKey = false;
+                }
+                // if (validKey) return;
+            } while (!validKey);
+        } while (true);
     }
 
     public void about() throws Exception {
