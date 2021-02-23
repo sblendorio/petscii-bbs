@@ -52,7 +52,7 @@ public class MenuApple1Vic20 extends MenuApple1 {
         println("H-Disinfor");
         println("I-IlPost      Service");
         println("J-F.Quot      -------");
-        println("K-Retrocampus T-Chat");
+        println("K-IndieCampus T-Chat");
         println("L-Butac       U-Msgs");
         println("M-Facta       .-Exit");
     }

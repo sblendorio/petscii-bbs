@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.maxmind.db.Reader;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
-import eu.sblendorio.bbs.core.Utils;
 import static eu.sblendorio.bbs.core.Utils.STR_ALPHANUMERIC;
 import static eu.sblendorio.bbs.core.Utils.setOfChars;
 import java.io.File;
@@ -126,7 +125,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("h".equals(choice)) subThread = new DisinformaticoAscii();
                 else if ("i".equals(choice)) subThread = new IlPostAscii();
                 else if ("j".equals(choice)) subThread = new IlFattoQuotidianoAscii();
-                else if ("k".equals(choice)) subThread = new RetroCampusAscii();
+                else if ("k".equals(choice)) subThread = new IndieCampusAscii();
                 else if ("l".equals(choice)) subThread = new ButacAscii();
                 else if ("m".equals(choice)) subThread = new FactaNewsAscii();
                 else if ("n".equals(choice)) subThread = new TicTacToeAscii();
@@ -181,7 +180,7 @@ public class MenuApple1 extends AsciiThread {
         println("H - Disinformatico");
         println("I - Il Post           "+ sp +"  Services");
         println("J - Fatto Quotidiano  "+ sp +"  ---------------");
-        println("K - Retrocampus       "+ sp +"  T - Chat");
+        println("K - Indie Campus      "+ sp +"  T - Chat");
         println("L - Butac.it          "+ sp +"  U - Private Msg");
         println("M - Facta.news        "+ sp +"  . - Logout");
         println();

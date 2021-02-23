@@ -7,6 +7,7 @@ public class IndieCampus extends GoogleBloggerProxy {
         this.logo = LOGO_BYTES;
         this.blogUrl = "https://iononsoleggere.blogspot.com/";
         this.labels = "BBS";
+        this.showTimestamp = false;
         this.pageSize = 7;
         this.screenLines = 18;
     }

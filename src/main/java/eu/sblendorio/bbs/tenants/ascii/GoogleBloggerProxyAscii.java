@@ -35,6 +35,7 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
 
     protected String blogUrl = "https://blogger.googleblog.com";
     protected String labels = null;
+    protected boolean showTimestamp = true;
     protected byte[] logo = LOGO_BLOGGER;
     protected int pageSize = 8;
     protected int screenLines;
@@ -270,10 +271,10 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
             HR_TOP +
             "<br>";
         List<String> rows = wordWrap(head);
-        List<String> article = wordWrap(
-            p.getPublished().toStringRfc3339().replaceAll("^(\\d\\d\\d\\d).(\\d\\d).(\\d\\d).*","$3/$2/$1") +
-                " - " +
-                content);
+        final String timestamp = showTimestamp
+            ? p.getPublished().toStringRfc3339().replaceAll("^(\\d\\d\\d\\d).(\\d\\d).(\\d\\d).*","$3/$2/$1") + " - "
+            : "";
+        List<String> article = wordWrap(timestamp + content);
         rows.addAll(article);
 
         int page = 1;

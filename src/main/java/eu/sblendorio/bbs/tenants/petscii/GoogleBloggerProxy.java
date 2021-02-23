@@ -56,6 +56,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
 
     protected String blogUrl = "https://blogger.googleblog.com";
     protected String labels = null;
+    protected boolean showTimestamp = true;
     protected byte[] logo = LOGO_BLOGGER;
     protected int pageSize = 10;
     protected int screenLines = 19;
@@ -299,10 +300,10 @@ public class GoogleBloggerProxy extends PetsciiThread {
                 HR_TOP +
                 "<br>";
         List<String> rows = wordWrap(head);
-        List<String> article = wordWrap(
-                p.getPublished().toStringRfc3339().replaceAll("^(\\d\\d\\d\\d).(\\d\\d).(\\d\\d).*","$3/$2/$1") +
-                 " - " +
-                 content);
+        final String timestamp = showTimestamp
+            ? p.getPublished().toStringRfc3339().replaceAll("^(\\d\\d\\d\\d).(\\d\\d).(\\d\\d).*","$3/$2/$1") + " - "
+            : "";
+        List<String> article = wordWrap(timestamp + content);
         rows.addAll(article);
         waitOff();
 
