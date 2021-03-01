@@ -102,9 +102,7 @@ public abstract class BbsInputOutput extends Reader {
         readBuffer = EMPTY;
         do {
             ch = readKey();
-            if (allowedChars != null && !allowedChars.contains(ch)) {
-                continue;
-            } else if (isBackspace(ch)) {
+            if (isBackspace(ch)) {
                 if (readBuffer.length() > 0) {
                     if (getLocalEcho()) {
                         writeBackspace();
@@ -112,6 +110,8 @@ public abstract class BbsInputOutput extends Reader {
                     }
                     readBuffer = readBuffer.substring(0, readBuffer.length()-1);
                 }
+            } else if (allowedChars != null && !allowedChars.contains(ch)) {
+                continue;
             } else if (ch == 34 && (maxLength == 0 || readBuffer.length() < maxLength)) {
                 if (getLocalEcho()) {
                     if (mask) write('*');
