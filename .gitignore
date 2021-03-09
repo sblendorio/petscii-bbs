@@ -8,3 +8,4 @@ Thumbs.db
 .classpath
 .project
 .settings/
+.gradle
