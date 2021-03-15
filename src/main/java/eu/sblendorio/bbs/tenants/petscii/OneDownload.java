@@ -44,7 +44,7 @@ public class OneDownload extends PetsciiThread {
 
     List<DownloadEntry> entries;
     int currentPage = 0;
-    int pageSize = 15;
+    int pageSize = 9;
 
     private void loadEntries() {
         final String filename = System.getProperty("DOWNLOADMES", "/data/b.txt");
@@ -121,6 +121,14 @@ public class OneDownload extends PetsciiThread {
         println("Download file:");
         write(WHITE); println(entry.title);
         println();
+
+        if (file.getContent() != null) {
+            write(GREY3); print("Size: ");
+            final int blocks = (file.getContent().length + 255) / 256;
+            write(WHITE); println(file.getContent().length + " bytes (" + blocks + " blocks)");
+            println();
+        }
+
         write(GREY3); println("URL:");
         write(WHITE); println(entry.url);
         println();

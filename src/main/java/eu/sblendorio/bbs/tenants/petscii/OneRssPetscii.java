@@ -257,7 +257,6 @@ public class OneRssPetscii extends PetsciiThread {
         final String author = isBlank(trim(feed.author)) ? EMPTY : " - di " + trim(feed.author);
         final String head = trim(feed.title) + author + "<br>" + HR_TOP + "<br>";
         List<String> rows = wordWrap(head);
-        System.out.println("======================"+feed.description);
         List<String> article = wordWrap(dateFormat.format(feed.publishedDate) + " - " + feed.description.replaceAll("^[\\s\\n\\r]+|^(<(br|p|div)[^>]*>)+", EMPTY));
         rows.addAll(article);
 
@@ -295,7 +294,7 @@ public class OneRssPetscii extends PetsciiThread {
 
     private void logo(NewsSection section) throws Exception {
         cls();
-        gotoXY(23,2);
+        gotoXY(28,2);
         write(WHITE);
         print(section.title);
         write(HOME);
