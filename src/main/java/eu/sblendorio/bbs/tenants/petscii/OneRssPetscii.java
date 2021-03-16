@@ -257,7 +257,10 @@ public class OneRssPetscii extends PetsciiThread {
         final String author = isBlank(trim(feed.author)) ? EMPTY : " - di " + trim(feed.author);
         final String head = trim(feed.title) + author + "<br>" + HR_TOP + "<br>";
         List<String> rows = wordWrap(head);
-        List<String> article = wordWrap(dateFormat.format(feed.publishedDate) + " - " + feed.description.replaceAll("^[\\s\\n\\r]+|^(<(br|p|div)[^>]*>)+", EMPTY));
+        List<String> article = wordWrap(
+            (feed.publishedDate == null ? "" : dateFormat.format(feed.publishedDate) + " - ")
+                + feed.description.replaceAll("^[\\s\\n\\r]+|^(<(br|p|div)[^>]*>)+", EMPTY)
+        );
         rows.addAll(article);
 
         int page = 1;
