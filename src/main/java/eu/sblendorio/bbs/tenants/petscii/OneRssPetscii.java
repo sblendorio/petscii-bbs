@@ -55,6 +55,9 @@ public class OneRssPetscii extends PetsciiThread {
     protected int screenRows = 19;
     protected int pageSize = 10;
 
+    protected boolean showAuthor = false;
+    protected boolean newlineAfterDate = true;
+
     protected List<NewsFeed> posts = emptyList();
     protected int currentPage = 1;
 
@@ -254,11 +257,11 @@ public class OneRssPetscii extends PetsciiThread {
     private boolean displayPost(NewsFeed feed, NewsSection section) throws Exception {
         logo(section);
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        final String author = isBlank(trim(feed.author)) ? EMPTY : " - di " + trim(feed.author);
+        final String author = (!showAuthor || isBlank(trim(feed.author))) ? EMPTY : (" - by " + trim(feed.author));
         final String head = trim(feed.title) + author + "<br>" + HR_TOP + "<br>";
         List<String> rows = wordWrap(head);
         List<String> article = wordWrap(
-            (feed.publishedDate == null ? "" : dateFormat.format(feed.publishedDate) + " - ")
+            (feed.publishedDate == null ? "" : dateFormat.format(feed.publishedDate) + " - " + (newlineAfterDate ? "<br>" : ""))
                 + feed.description.replaceAll("^[\\s\\n\\r]+|^(<(br|p|div)[^>]*>)+", EMPTY)
         );
         rows.addAll(article);
