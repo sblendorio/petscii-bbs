@@ -13,8 +13,11 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.CLR;
 import static eu.sblendorio.bbs.core.PetsciiKeys.DEL;
 import static eu.sblendorio.bbs.core.PetsciiKeys.HOME;
 import static eu.sblendorio.bbs.core.PetsciiKeys.LOWERCASE;
+import static eu.sblendorio.bbs.core.PetsciiKeys.RETURN;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
+import static eu.sblendorio.bbs.core.PetsciiKeys.RIGHT;
+import static eu.sblendorio.bbs.core.PetsciiKeys.SPACE_CHAR;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,6 +27,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import static java.util.Arrays.asList;
+import java.util.Collections;
 import static java.util.Collections.emptyList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -44,6 +48,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.lowerCase;
 import static org.apache.commons.lang3.StringUtils.repeat;
+import static org.apache.commons.lang3.StringUtils.substring;
 import static org.apache.commons.lang3.StringUtils.trim;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import org.apache.commons.text.WordUtils;
@@ -57,6 +62,7 @@ public class OneRssPetscii extends PetsciiThread {
 
     protected boolean showAuthor = false;
     protected boolean newlineAfterDate = true;
+    protected boolean twoColumns = true;
 
     protected List<NewsFeed> posts = emptyList();
     protected int currentPage = 1;
@@ -117,7 +123,7 @@ public class OneRssPetscii extends PetsciiThread {
         // sections.put("4", new NewsSection("Tic Tac Toe", new TicTacToe()));
     }
 
-    private void printChannelList() {
+    private void printChannelListOneColumn() {
         gotoXY(0, 6);
         int maxLen = sections.values().stream().map(x -> x.title).map(String::length).mapToInt(v -> v+4).max().orElse(0);
         String spaces = StringUtils.repeat(" ", (getScreenColumns() - maxLen) / 2);
@@ -127,6 +133,51 @@ public class OneRssPetscii extends PetsciiThread {
             newline();
         }
         print(spaces); write(REVON); print(" . "); write(REVOFF); print(" Exit ");
+        flush();
+    }
+
+    private void printChannelListTwoColumns() {
+        gotoXY(0, 5);
+        List<String> keys = new LinkedList<>(sections.keySet());
+        Collections.sort(keys);
+        int size = sections.size() / 2;
+        if (size * 2 < sections.size())
+            ++size;
+        for (int i=0; i<size; ++i) {
+            int even = i;
+            if (even >= keys.size()) break;
+            String key = keys.get(even);
+            NewsSection value = sections.get(key);
+            write(RIGHT, GREY3, REVON, SPACE_CHAR);
+            print(key); write(SPACE_CHAR, REVOFF, SPACE_CHAR);
+            String title = substring(value.title + "                    ", 0, 12);
+            print(title);
+            print(" ");
+
+            int odd = even + size;
+            if (odd < keys.size()) {
+                key = keys.get(odd);
+                value = sections.get(key);
+                write(GREY3, REVON, SPACE_CHAR);
+                print(key);
+                write(SPACE_CHAR, REVOFF, SPACE_CHAR);
+                print(value.title);
+            }
+            if (i != size -1) {
+                newline();
+                if (size <= 8) newline();
+            } else if (sections.size() % 2 == 0) {
+                newline();
+                if (size <= 8) newline();
+            }
+
+        }
+        if (sections.size() % 2 == 0) write(RIGHT);
+        write(GREY3, REVON, SPACE_CHAR);
+        print(".");
+        write(SPACE_CHAR, REVOFF, SPACE_CHAR);
+        print("Exit");
+        write(GREY3, RETURN, RETURN);
         flush();
     }
 
@@ -163,7 +214,10 @@ public class OneRssPetscii extends PetsciiThread {
             write(GREY3);
             posts = null;
             currentPage = 1;
-            printChannelList();
+            if (twoColumns)
+                printChannelListTwoColumns();
+            else
+                printChannelListOneColumn();
             boolean isValidKey;
             int key;
             String input;
