@@ -150,7 +150,7 @@ public class OneRssPetscii extends PetsciiThread {
             NewsSection value = sections.get(key);
             write(RIGHT, GREY3, REVON, SPACE_CHAR);
             print(key); write(SPACE_CHAR, REVOFF, SPACE_CHAR);
-            String title = substring(value.title + "                    ", 0, 12);
+            String title = substring(value.title + "                    ", 0, 15);
             print(title);
             print(" ");
 
