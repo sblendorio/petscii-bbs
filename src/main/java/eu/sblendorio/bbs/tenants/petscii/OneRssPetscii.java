@@ -11,13 +11,16 @@ import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
 import static eu.sblendorio.bbs.core.PetsciiKeys.CASE_LOCK;
 import static eu.sblendorio.bbs.core.PetsciiKeys.CLR;
 import static eu.sblendorio.bbs.core.PetsciiKeys.DEL;
+import static eu.sblendorio.bbs.core.PetsciiKeys.DOWN;
 import static eu.sblendorio.bbs.core.PetsciiKeys.HOME;
+import static eu.sblendorio.bbs.core.PetsciiKeys.LEFT;
 import static eu.sblendorio.bbs.core.PetsciiKeys.LOWERCASE;
 import static eu.sblendorio.bbs.core.PetsciiKeys.RETURN;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
 import static eu.sblendorio.bbs.core.PetsciiKeys.RIGHT;
 import static eu.sblendorio.bbs.core.PetsciiKeys.SPACE_CHAR;
+import static eu.sblendorio.bbs.core.PetsciiKeys.UP;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -195,6 +198,25 @@ public class OneRssPetscii extends PetsciiThread {
                 e.getAuthor().replace("\u00a0", " ")
             ));
         return result;
+    }
+
+    public void box(int x1, int y1, int x2, int y2) {
+        write(HOME);
+        for (int i=0; i<Math.min(y1,y2); ++i) write(DOWN);
+        for (int i=0; i<Math.min(x1,x2); ++i) write(RIGHT);
+        write(176);
+        for (int i=0; i<Math.abs(x2-x1)-1; ++i) write(192);
+        write(174);
+        for (int i=0; i<Math.abs(y2-y1)-1; ++i) write(LEFT, DOWN, 221);
+        write(HOME);
+        for (int i=0; i<Math.min(y1,y2); ++i) write(DOWN);
+        for (int i=0; i<Math.min(x1,x2); ++i) write(RIGHT);
+        for (int i=0; i<Math.abs(y2-y1)-1; ++i) write(DOWN, 221, LEFT);
+        write(RETURN);
+        for (int i=0; i<Math.min(x1,x2); ++i) write(RIGHT);
+        write(173);
+        for (int i=0; i<Math.abs(x2-x1)-1; ++i) write(192);
+        write(189);
     }
 
     @Override
