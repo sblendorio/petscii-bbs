@@ -201,7 +201,7 @@ public class OneRssPetscii extends PetsciiThread {
     }
 
     public void box(int x1, int y1, int x2, int y2) {
-        write(HOME);
+        write(RETURN, HOME);
         for (int i=0; i<Math.min(y1,y2); ++i) write(DOWN);
         for (int i=0; i<Math.min(x1,x2); ++i) write(RIGHT);
         write(176);
@@ -212,8 +212,7 @@ public class OneRssPetscii extends PetsciiThread {
         for (int i=0; i<Math.min(y1,y2); ++i) write(DOWN);
         for (int i=0; i<Math.min(x1,x2); ++i) write(RIGHT);
         for (int i=0; i<Math.abs(y2-y1)-1; ++i) write(DOWN, 221, LEFT);
-        write(RETURN);
-        for (int i=0; i<Math.min(x1,x2); ++i) write(RIGHT);
+        write(DOWN);
         write(173);
         for (int i=0; i<Math.abs(x2-x1)-1; ++i) write(192);
         write(189);
@@ -221,7 +220,6 @@ public class OneRssPetscii extends PetsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        cls();
         write(GREY3);
         waitOn();
         readSections();
