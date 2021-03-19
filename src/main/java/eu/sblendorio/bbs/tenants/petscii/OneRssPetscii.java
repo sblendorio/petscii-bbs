@@ -110,7 +110,7 @@ public class OneRssPetscii extends PetsciiThread {
             .map(row -> row.replaceAll("\\s*#\\s*", "#"))
             .map(row -> row.split("#"))
             .collect(toMap(rows -> rows[0], rows -> rows[1], (a,b) -> b, LinkedHashMap::new));
-        final String commands = "1234567890abcdefghijklmnopqrstuvwxyz";
+        final String commands = "123456789abcdefghijklmnopqrstuvwxyz";
         int count = 0;
         for (Map.Entry<String, String> row : config.entrySet()) {
             ++count;
