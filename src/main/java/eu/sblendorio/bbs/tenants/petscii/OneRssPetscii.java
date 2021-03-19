@@ -131,7 +131,7 @@ public class OneRssPetscii extends PetsciiThread {
         int maxLen = sections.values().stream().map(x -> x.title).map(String::length).mapToInt(v -> v+4).max().orElse(0);
         String spaces = StringUtils.repeat(" ", (getScreenColumns() - maxLen) / 2);
         for (Map.Entry<String, NewsSection> entry: sections.entrySet()) {
-            print(spaces); write(REVON); print(" " + entry.getKey()+ " ");
+            print(spaces); write(REVON); print(" " + entry.getKey().toUpperCase() + " ");
             write(REVOFF); println(" " + entry.getValue().title);
             newline();
         }
@@ -152,7 +152,7 @@ public class OneRssPetscii extends PetsciiThread {
             String key = keys.get(even);
             NewsSection value = sections.get(key);
             write(RIGHT, GREY3, REVON, SPACE_CHAR);
-            print(key); write(SPACE_CHAR, REVOFF, SPACE_CHAR);
+            print(key.toUpperCase()); write(SPACE_CHAR, REVOFF, SPACE_CHAR);
             String title = substring(value.title + "                    ", 0, 15);
             print(title);
             print(" ");
@@ -162,7 +162,7 @@ public class OneRssPetscii extends PetsciiThread {
                 key = keys.get(odd);
                 value = sections.get(key);
                 write(GREY3, REVON, SPACE_CHAR);
-                print(key);
+                print(key.toUpperCase());
                 write(SPACE_CHAR, REVOFF, SPACE_CHAR);
                 print(value.title);
             }
@@ -244,6 +244,7 @@ public class OneRssPetscii extends PetsciiThread {
             do {
                 resetInput();
                 key = readKey();
+                if (key >= 193 && key <= 218) key -= 128;
                 input = chr(key) + "";
                 isValidKey = (sections.keySet().stream().map(String::toLowerCase).collect(toSet()).contains(input.toLowerCase())) || key == '.';
             } while (!isValidKey);
