@@ -110,7 +110,7 @@ public class OneRssPetscii extends PetsciiThread {
             .map(row -> row.replaceAll("\\s*#\\s*", "#"))
             .map(row -> row.split("#"))
             .collect(toMap(rows -> rows[0], rows -> rows[1], (a,b) -> b, LinkedHashMap::new));
-        final String commands = "123456789abcdefghijklmnopqrstuvwxyz";
+        final String commands = "1234567890abcdefghijklmnopqrstuvwxyz";
         int count = 0;
         for (Map.Entry<String, String> row : config.entrySet()) {
             ++count;
@@ -142,7 +142,6 @@ public class OneRssPetscii extends PetsciiThread {
     private void printChannelListTwoColumns() {
         gotoXY(0, 5);
         List<String> keys = new LinkedList<>(sections.keySet());
-        Collections.sort(keys);
         int size = sections.size() / 2;
         if (size * 2 < sections.size())
             ++size;
