@@ -37,6 +37,8 @@ public class HtmlUtils {
                 .replaceAll("<h[1-6]( [^>]*)?>", "\n\n")
                 .replaceAll("</h[1-6]( [^>]*)?>", "\n")
                 .replaceAll("<[^>]*>", "")
+                .replaceAll("ñ|&ntilde;?|&#xF1;?|&#241;", "n")
+                .replaceAll("Ñ|&Ntilde;?|&#xD1;?|&#209;", "N")
                 .replaceAll("[àá]|&agrave;?|&aacute;?|&#xE0;|&#xE1;", "a'")
                 .replaceAll("[ÀÁ]|&Agrave;?|&Aacute;?|&#xC0;|&#xC1;", "A'")
                 .replaceAll("[èé]|&egrave;?|&eacute;?|&#xE8;|&#xE9;", "e'")
