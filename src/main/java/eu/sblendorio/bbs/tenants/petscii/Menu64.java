@@ -139,7 +139,7 @@ public class Menu64 extends PetsciiThread {
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '6', REVOFF, 161); print("Next Quotidiano"); write(REVON, 161, 'n', REVOFF, 161); println("The Fool");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '7', REVOFF, 161); print("Wired          "); write(REVON, 161, 'o', REVOFF, 161); println("Indie Campus");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '8', REVOFF, 161); print("Tpi            "); write(REVON, 161, 'p', REVOFF, 161); println("Retrocommodore");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '9', REVOFF, 161); println("Medbunker");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '9', REVOFF, 161); print("Medbunker      "); write(REVON, 161, 'q', REVOFF, 161); println("Valoroso.IT");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '0', REVOFF, 161); println("FNOMCeO");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'a', REVOFF, 161); println("Medical Facts");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'b', REVOFF, 161); println("Sys64738");
@@ -191,6 +191,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == 'n') launch(new TheFoolBlog());
                 else if (key == 'o') launch(new IndieCampus());
                 else if (key == 'p') launch(new Retrocommodore());
+                else if (key == 'q') launch(new ValorosoIt());
                 else {
                     validKey = false;
                 }

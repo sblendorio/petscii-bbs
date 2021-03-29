@@ -11,6 +11,7 @@ import static org.apache.commons.collections4.MapUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.lowerCase;
 import static org.apache.commons.lang3.StringUtils.repeat;
@@ -58,10 +59,12 @@ public class WordpressProxyAscii extends AsciiThread {
     }
 
     protected String domain = "https://wordpress.org/news";
+    protected String categoriesId = null;
     protected byte[] logo = LOGO_WORDPRESS;
     protected int pageSize = 8;
     protected int screenLines;
     protected boolean showAuthor = false;
+    protected String httpUserAgent = null;
 
     protected Map<Integer, Post> posts = emptyMap();
     protected int currentPage = 1;
@@ -177,14 +180,19 @@ public class WordpressProxyAscii extends AsciiThread {
     protected Map<Integer, Post> getPosts(int page, int perPage) throws Exception {
         if (page < 1 || perPage < 1) return null;
         Map<Integer, Post> result = new LinkedHashMap<>();
-        JSONArray posts = (JSONArray) httpGetJson(getApi() + "posts?context=view&page="+page+"&per_page="+perPage);
+        JSONArray posts = (JSONArray) httpGetJson(getApi()
+            + "posts?context=view"
+            + (isBlank(categoriesId) ? EMPTY : "&categories=" + categoriesId)
+            + "&page=" + page
+            + "&per_page=" + perPage, httpUserAgent);
+        if (posts == null) return result;
         for (int i=0; i<posts.size(); ++i) {
             Post post = new Post();
             JSONObject postJ = (JSONObject) posts.get(i);
             post.id = (Long) postJ.get("id");
-            post.content = ((String) ((JSONObject) postJ.get("content")).get("rendered")).replaceAll("(?is)(\\[/?vc_[^]]*\\])*", EMPTY);
-            post.title = (String) ((JSONObject) postJ.get("title")).get("rendered");
-            post.date = ((String) postJ.get("date")).replace("T", SPACE).replaceAll(":\\d\\d\\s*$", EMPTY);
+            post.content = defaultString((String) ((JSONObject) postJ.get("content")).get("rendered")).replaceAll("(?is)(\\[/?vc_[^]]*\\])*", EMPTY);
+            post.title = defaultString((String) ((JSONObject) postJ.get("title")).get("rendered")).replaceAll(" +", " ");
+            post.date = defaultString((String) postJ.get("date")).replace("T", SPACE).replaceAll(":\\d\\d\\s*$", EMPTY);
             post.excerpt = (String) ((JSONObject) postJ.get("excerpt")).get("rendered");
             post.authorId = toLong(postJ.get("author").toString());
             result.put(i+1+(perPage*(page-1)), post);
@@ -243,7 +251,7 @@ public class WordpressProxyAscii extends AsciiThread {
 
         try {
             if (showAuthor) {
-                JSONObject authorJ = (JSONObject) httpGetJson(getApi() + "users/" + p.authorId);
+                JSONObject authorJ = (JSONObject) httpGetJson(getApi() + "users/" + p.authorId, httpUserAgent);
                 author = authorJ.get("name").toString();
             }
         } catch (Exception e) {

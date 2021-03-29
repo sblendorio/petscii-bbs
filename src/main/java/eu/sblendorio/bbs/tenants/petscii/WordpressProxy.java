@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.lowerCase;
 import static org.apache.commons.lang3.StringUtils.repeat;
@@ -57,6 +58,7 @@ public class WordpressProxy extends PetsciiThread {
     }
 
     protected String domain = "https://wordpress.org/news";
+    protected String categoriesId = null;
     protected byte[] logo = LOGO_WORDPRESS;
     protected int pageSize = 10;
     protected int screenLines = 19;
@@ -183,7 +185,11 @@ public class WordpressProxy extends PetsciiThread {
     protected Map<Integer, Post> getPosts(int page, int perPage) throws Exception {
         if (page < 1 || perPage < 1) return null;
         Map<Integer, Post> result = new LinkedHashMap<>();
-        JSONArray posts = (JSONArray) httpGetJson(getApi() + "posts?context=view&page="+page+"&per_page="+perPage, httpUserAgent);
+        JSONArray posts = (JSONArray) httpGetJson(getApi()
+            + "posts?context=view"
+            + (isBlank(categoriesId) ? EMPTY : "&categories=" + categoriesId)
+            + "&page=" + page
+            + "&per_page=" + perPage, httpUserAgent);
         if (posts == null) return result;
         for (int i=0; i<posts.size(); ++i) {
             Post post = new Post();
