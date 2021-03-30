@@ -44,6 +44,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
+import org.apache.commons.collections4.CollectionUtils;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
@@ -63,6 +64,7 @@ public class OneRssPetscii extends PetsciiThread {
 
     protected int screenRows = 19;
     protected int pageSize = 10;
+    protected String bottomUrl = null;
 
     protected boolean showAuthor = false;
     protected boolean newlineAfterDate = true;
@@ -132,7 +134,6 @@ public class OneRssPetscii extends PetsciiThread {
             .filter(row -> row.contains("="))
             .map(StringUtils::trim)
             .filter(row -> !row.startsWith(";"))
-            .peek(System.out::println)
             .map(row -> row.replaceAll("\\s*=\\s*", "="))
             .map(row -> row.split("="))
             .collect(toMap(row -> row[0], row -> row[1], (a, b) -> a));
@@ -140,6 +141,7 @@ public class OneRssPetscii extends PetsciiThread {
         if (conf.get("rss.pagesize") != null) {
             pageSize = NumberUtils.toInt(conf.get("rss.pagesize"));
         }
+        bottomUrl = conf.get("bottom.url");
 
     }
 
@@ -254,6 +256,7 @@ public class OneRssPetscii extends PetsciiThread {
                 printChannelListTwoColumns();
             else
                 printChannelListOneColumn();
+            printBottom();
             boolean isValidKey;
             int key;
             String input;
@@ -347,30 +350,24 @@ public class OneRssPetscii extends PetsciiThread {
 
     private boolean displayPost(NewsFeed feed, NewsSection section) throws Exception {
         logo(section);
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        final String author = (!showAuthor || isBlank(trim(feed.author))) ? EMPTY : (" - by " + trim(feed.author));
-        final String head = trim(feed.title) + author + "<br>" + HR_TOP + "<br>";
-        List<String> rows = wordWrap(head);
-        List<String> article = wordWrap(
-            (feed.publishedDate == null ? "" : dateFormat.format(feed.publishedDate) + " - " + (newlineAfterDate ? "<br>" : ""))
-                + feed.description.replaceAll("^[\\s\\n\\r]+|^(<(br|p|div)[^>]*>)+", EMPTY)
-        );
-        rows.addAll(article);
+        List<String> rows = feedToText(feed);
 
         int page = 1;
         int j = 0;
         boolean forward = true;
         while (j < rows.size()) {
-            if (j>0 && j % screenRows == 0 && forward) {
+            if (j > 0 && j % screenRows == 0 && forward) {
                 println();
                 write(WHITE);
                 print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT");
                 write(GREY3);
-                flush(); resetInput(); int ch = readKey();
+                flush();
+                resetInput();
+                int ch = readKey();
                 if (ch == '.') {
                     return true;
                 } else if (ch == '-' && page > 1) {
-                    j -= (screenRows *2);
+                    j -= (screenRows * 2);
                     --page;
                     forward = false;
                     logo(section);
@@ -387,6 +384,32 @@ public class OneRssPetscii extends PetsciiThread {
         }
         println();
         return false;
+    }
+
+    private List<String> feedToText(NewsFeed feed) {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        final String author = (!showAuthor || isBlank(trim(feed.author))) ? EMPTY : (" - by " + trim(feed.author));
+        final String head = trim(feed.title) + author + "<br>" + HR_TOP + "<br>";
+        List<String> rows = wordWrap(head);
+        List<String> article = wordWrap(
+            (feed.publishedDate == null ? "" :
+                dateFormat.format(feed.publishedDate) + " - " + (newlineAfterDate ? "<br>" : ""))
+                + feed.description.replaceAll("^[\\s\\n\\r]+|^(<(br|p|div)[^>]*>)+", EMPTY)
+        );
+        rows.addAll(article);
+        return rows;
+    }
+
+    private void printBottom() throws Exception {
+        if (isBlank(bottomUrl))
+            return;
+
+        List<NewsFeed> feeds = getFeeds(bottomUrl);
+        if (isEmpty(feeds))
+            return;
+
+        feedToText(feeds.get(0)).stream()
+            .forEach(this::println);
     }
 
     private void logo(NewsSection section) throws Exception {
