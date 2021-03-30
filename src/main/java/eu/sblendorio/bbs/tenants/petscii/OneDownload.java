@@ -21,13 +21,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.lowerCase;
 import static org.apache.commons.lang3.StringUtils.repeat;
 import static org.apache.commons.lang3.StringUtils.trim;
+import org.apache.commons.lang3.math.NumberUtils;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import org.apache.commons.text.WordUtils;
 
@@ -47,17 +50,31 @@ public class OneDownload extends PetsciiThread {
     int pageSize = 9;
 
     private void loadEntries() {
-        final String filename = System.getProperty("DOWNLOADMES", "/data/b.txt");
-        List<String> secTxt = readTxt(filename);
+        final String filenameEntries = System.getProperty("DOWNLOADMES", "/data/b.txt");
+        List<String> secTxt = readTxt(filenameEntries);
         entries = secTxt.stream()
             .filter(row -> isNotBlank(trim(row)))
             .filter(row -> row.contains("#"))
             .map(StringUtils::trim)
             .filter(row -> !row.startsWith(";"))
-            .map(row -> row.replaceAll("\\s*#\\s*", "#"))
-            .map(row -> row.split("#"))
+            .map(row -> row.replaceAll("\\s*=\\s*", "="))
+            .map(row -> row.split("="))
             .map(values -> new DownloadEntry(values[0], values[1]))
             .collect(toList());
+
+        final String filenameConfig = System.getProperty("CONFIGMES", "/data/c.txt");
+        Map<String, String> conf = readTxt(filenameConfig).stream()
+            .filter(row -> isNotBlank(trim(row)))
+            .filter(row -> row.contains("="))
+            .map(StringUtils::trim)
+            .filter(row -> !row.startsWith(";"))
+            .map(row -> row.replaceAll("\\s*=\\s*", "="))
+            .map(row -> row.split("="))
+            .collect(toMap(row -> row[0], row -> row[1], (a, b) -> a));
+
+        if (conf.get("download.pagesize") != null) {
+            pageSize = NumberUtils.toInt(conf.get("download.pagesize"));
+        }
     }
 
     @Override

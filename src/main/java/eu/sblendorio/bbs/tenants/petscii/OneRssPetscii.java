@@ -53,6 +53,7 @@ import static org.apache.commons.lang3.StringUtils.lowerCase;
 import static org.apache.commons.lang3.StringUtils.repeat;
 import static org.apache.commons.lang3.StringUtils.substring;
 import static org.apache.commons.lang3.StringUtils.trim;
+import org.apache.commons.lang3.math.NumberUtils;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import org.apache.commons.text.WordUtils;
 
@@ -124,6 +125,22 @@ public class OneRssPetscii extends PetsciiThread {
         // sections.put("2", new NewsSection("Downloads", "https://www.labaya-make-an-offer.com/download.xml"));
         // sections.put("3", new NewsSection("Tips & Tricks", "https://www.labaya-make-an-offer.com/tips%26tricks.xml"));
         // sections.put("4", new NewsSection("Tic Tac Toe", new TicTacToe()));
+
+        final String filenameConfig = System.getProperty("CONFIGMES", "/data/c.txt");
+        Map<String, String> conf = readTxt(filenameConfig).stream()
+            .filter(row -> isNotBlank(trim(row)))
+            .filter(row -> row.contains("="))
+            .map(StringUtils::trim)
+            .filter(row -> !row.startsWith(";"))
+            .peek(System.out::println)
+            .map(row -> row.replaceAll("\\s*=\\s*", "="))
+            .map(row -> row.split("="))
+            .collect(toMap(row -> row[0], row -> row[1], (a, b) -> a));
+
+        if (conf.get("rss.pagesize") != null) {
+            pageSize = NumberUtils.toInt(conf.get("rss.pagesize"));
+        }
+
     }
 
     private void printChannelListOneColumn() {
