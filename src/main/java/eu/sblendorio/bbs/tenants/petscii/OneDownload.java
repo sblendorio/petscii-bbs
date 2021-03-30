@@ -57,8 +57,8 @@ public class OneDownload extends PetsciiThread {
             .filter(row -> row.contains("#"))
             .map(StringUtils::trim)
             .filter(row -> !row.startsWith(";"))
-            .map(row -> row.replaceAll("\\s*=\\s*", "="))
-            .map(row -> row.split("="))
+            .map(row -> row.replaceAll("\\s*#\\s*", "#"))
+            .map(row -> row.split("#"))
             .map(values -> new DownloadEntry(values[0], values[1]))
             .collect(toList());
 
