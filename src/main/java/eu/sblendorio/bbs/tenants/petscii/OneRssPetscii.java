@@ -20,7 +20,6 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
 import static eu.sblendorio.bbs.core.PetsciiKeys.RIGHT;
 import static eu.sblendorio.bbs.core.PetsciiKeys.SPACE_CHAR;
-import static eu.sblendorio.bbs.core.PetsciiKeys.UP;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,21 +29,16 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import static java.util.Arrays.asList;
-import java.util.Collections;
 import static java.util.Collections.emptyList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.OptionalInt;
+import java.util.Optional;
 import java.util.Scanner;
-import java.util.function.Function;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
-import org.apache.commons.collections4.CollectionUtils;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
@@ -65,6 +59,8 @@ public class OneRssPetscii extends PetsciiThread {
     protected int screenRows = 19;
     protected int pageSize = 10;
     protected String bottomUrl = null;
+    protected String bottomLabel = null;
+    protected String bottomPrompt = null;
 
     protected boolean showAuthor = false;
     protected boolean newlineAfterDate = true;
@@ -142,7 +138,8 @@ public class OneRssPetscii extends PetsciiThread {
             pageSize = NumberUtils.toInt(conf.get("rss.pagesize"));
         }
         bottomUrl = conf.get("bottom.url");
-
+        bottomLabel = conf.get("bottom.label");
+        bottomPrompt = conf.get("bottom.prompt");
     }
 
     private void printChannelListOneColumn() {
@@ -154,7 +151,8 @@ public class OneRssPetscii extends PetsciiThread {
             write(REVOFF); println(" " + entry.getValue().title);
             newline();
         }
-        print(spaces); write(REVON); print(" . "); write(REVOFF); print(" Exit ");
+        print(spaces); write(REVON); print(" . "); write(REVOFF); println(" Exit ");
+        newline();
         flush();
     }
 
@@ -257,6 +255,14 @@ public class OneRssPetscii extends PetsciiThread {
             else
                 printChannelListOneColumn();
             printBottom();
+            write(HOME);
+            if (twoColumns) {
+                for (int i=0; i < 5 + (sections.size()+(sections.size() % 2== 0 ? 2 : 1)); ++i) write(DOWN);
+            } else {
+                for (int i=0; i < 6 + (sections.size()+1) * 2; ++i) write(DOWN);
+            }
+            print(bottomPrompt);
+            flush();
             boolean isValidKey;
             int key;
             String input;
@@ -401,15 +407,22 @@ public class OneRssPetscii extends PetsciiThread {
     }
 
     private void printBottom() throws Exception {
-        if (isBlank(bottomUrl))
-            return;
+        if (isNotBlank(bottomLabel)) {
+            //println(StringUtils.repeat(chr(163), getScreenColumns() - 1));
+            newline();
+            newline();
+            println(bottomLabel);
+        }
 
-        List<NewsFeed> feeds = getFeeds(bottomUrl);
-        if (isEmpty(feeds))
-            return;
+        if (isNotBlank(bottomUrl)) {
+            List<NewsFeed> feeds = getFeeds(bottomUrl);
+            if (isEmpty(feeds))
+                return;
 
-        feedToText(feeds.get(0)).stream()
-            .forEach(this::println);
+            feedToText(feeds.get(0)).stream()
+                .forEach(this::println);
+        }
+        flush();
     }
 
     private void logo(NewsSection section) throws Exception {
