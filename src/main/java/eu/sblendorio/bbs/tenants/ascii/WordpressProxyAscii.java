@@ -4,7 +4,6 @@ import eu.sblendorio.bbs.core.BbsThread;
 import static eu.sblendorio.bbs.core.Utils.equalsDomain;
 import static eu.sblendorio.bbs.core.Utils.normalizeDomain;
 import eu.sblendorio.bbs.tenants.petscii.WordpressProxy;
-import java.io.IOException;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyMap;
 import static org.apache.commons.collections4.MapUtils.isEmpty;
@@ -61,8 +60,11 @@ public class WordpressProxyAscii extends AsciiThread {
     protected String domain = "https://wordpress.org/news";
     protected String categoriesId = null;
     protected byte[] logo = LOGO_WORDPRESS;
+    protected byte[] secondaryLogo = null;
     protected int pageSize = 8;
     protected int screenLines;
+    protected int mainLogoSize = 1;
+    protected int secondaryLogoSize = 1;
     protected boolean showAuthor = false;
     protected String httpUserAgent = null;
 
@@ -90,7 +92,7 @@ public class WordpressProxyAscii extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        screenLines = getScreenRows() - 4;
+        screenLines = getScreenRows() - 3 - secondaryLogoSize;
         originalDomain = domain;
         log("Wordpress entering (" + domain + ")");
         listPosts();
@@ -218,7 +220,7 @@ public class WordpressProxyAscii extends AsciiThread {
             totalRows += 1 + line.chars().filter(ch -> ch == '\r').count();
             println(line.replaceAll("\r", newlineString() + " " + repeat(" ", nCols-iLen)));
         }
-        for (int i = 0; i < (getScreenRows() - totalRows - 3); ++i) newline();
+        for (int i = 0; i < (getScreenRows() - totalRows - mainLogoSize - 2); ++i) newline();
     }
 
     protected List<String> wordWrap(String s) {
@@ -244,7 +246,7 @@ public class WordpressProxyAscii extends AsciiThread {
 
     protected void displayPost(int n) throws Exception {
         cls();
-        drawLogo();
+        drawSecondaryLogo();
 
         String author = null;
         final Post p = posts.get(n);
@@ -315,6 +317,17 @@ public class WordpressProxyAscii extends AsciiThread {
             print(normDomain);
         } else {
             write(logo);
+        }
+        newline();
+        newline();
+    }
+
+    protected void drawSecondaryLogo() {
+        if (!equalsDomain(domain, originalDomain)) {
+            final String normDomain = normalizeDomain(domain);
+            print(normDomain);
+        } else {
+            write(secondaryLogo == null ? logo : secondaryLogo);
         }
         newline();
         newline();
