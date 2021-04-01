@@ -277,6 +277,7 @@ public class OneRssPetscii extends PetsciiThread {
             NewsSection section = sections.get(input.toLowerCase());
             enterSection(section);
         }
+        write(CLR);
     }
 
     private void enterSection(NewsSection section) throws Exception {
