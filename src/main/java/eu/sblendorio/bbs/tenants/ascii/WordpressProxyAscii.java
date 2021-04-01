@@ -64,7 +64,7 @@ public class WordpressProxyAscii extends AsciiThread {
     protected int pageSize = 8;
     protected int screenLines;
     protected int mainLogoSize = 1;
-    protected int secondaryLogoSize = 1;
+    protected Integer secondaryLogoSize = null;
     protected boolean showAuthor = false;
     protected String httpUserAgent = null;
 
@@ -92,7 +92,7 @@ public class WordpressProxyAscii extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        screenLines = getScreenRows() - 3 - secondaryLogoSize;
+        screenLines = getScreenRows() - 3 - (secondaryLogoSize == null ? mainLogoSize : secondaryLogoSize);
         originalDomain = domain;
         log("Wordpress entering (" + domain + ")");
         listPosts();
