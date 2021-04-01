@@ -54,7 +54,7 @@ public class MenuApple1M10 extends MenuApple1 {
         println("J - Fatto Quotidiano    ----------");
         println("K - Indie Campus        T - Chat");
         println("L - Butac.it            U - Private Msg");
-        println("M - Facta.news          . - Logout");
+        println("M - Alessandro Albano   . - Logout");
     }
 
     @Override

@@ -127,7 +127,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("j".equals(choice)) subThread = new IlFattoQuotidianoAscii();
                 else if ("k".equals(choice)) subThread = new IndieCampusAscii();
                 else if ("l".equals(choice)) subThread = new ButacAscii();
-                else if ("m".equals(choice)) subThread = new FactaNewsAscii();
+                else if ("m".equals(choice)) subThread = new AlessandroAlbanoAscii();
                 else if ("n".equals(choice)) subThread = new TicTacToeAscii();
                 else if ("o".equals(choice)) subThread = new Connect4Ascii();
                 else if ("p".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
@@ -182,7 +182,7 @@ public class MenuApple1 extends AsciiThread {
         println("J - Fatto Quotidiano  "+ sp +"  ---------------");
         println("K - Indie Campus      "+ sp +"  T - Chat");
         println("L - Butac.it          "+ sp +"  U - Private Msg");
-        println("M - Facta.news        "+ sp +"  . - Logout");
+        println("M - Alessandro Albano "+ sp +"  . - Logout");
         println();
     }
 
