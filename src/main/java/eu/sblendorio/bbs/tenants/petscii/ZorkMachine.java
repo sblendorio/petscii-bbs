@@ -12,19 +12,34 @@ import org.zmpp.textui.bbs.BBSMachineFactory;
 public class ZorkMachine extends PetsciiThread {
 
     private final String filename;
+    private final byte[] logo;
 
     public ZorkMachine() {
         this.filename = "zmpp/zork1.z3";
+        this.logo = new byte[] {};
     }
 
     public ZorkMachine(String filename) {
         this.filename = filename;
+        this.logo = new byte[] {};
+    }
+
+    public ZorkMachine(String filename, byte[] logo) {
+        this.filename = filename;
+        this.logo = logo;
     }
 
     @Override
     public void doLoop() throws Exception {
         log("Zork Machine started. Filename=" + this.filename);
-        write(PetsciiKeys.CLR, PetsciiKeys.LOWERCASE, PetsciiKeys.CASE_LOCK, PetsciiKeys.HOME, PetsciiColors.GREY3);
+        write(PetsciiKeys.CLR, PetsciiKeys.LOWERCASE, PetsciiKeys.CASE_LOCK, PetsciiKeys.HOME);
+        write(PetsciiColors.GREEN);
+        write(logo);
+        if (logo.length > 0) {
+            newline();
+            newline();
+        }
+        write(PetsciiColors.GREY3);
         write(PetsciiColors.LIGHT_GREEN); println("Based on ZMPP by Wei-ju Wu");
         write(PetsciiColors.WHITE); println("BBS version (2020) by:");
         println(StringUtils.repeat(chr(163), 22));
