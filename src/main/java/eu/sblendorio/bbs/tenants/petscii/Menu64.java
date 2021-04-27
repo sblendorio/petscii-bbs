@@ -19,8 +19,23 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
 import static eu.sblendorio.bbs.core.PetsciiKeys.RIGHT;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import static org.apache.commons.lang3.StringUtils.repeat;
+import static org.apache.commons.lang3.StringUtils.startsWith;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
+import org.zmpp.vmutil.RandomGenerator;
 
 public class Menu64 extends PetsciiThread {
 
@@ -43,6 +58,7 @@ public class Menu64 extends PetsciiThread {
         }
     }
 
+    private static final ClassLoader NULL_CLASSLOADER = null;
     private static final String MAXMIND_DB = System.getProperty("user.home") + File.separator + "GeoLite2-City.mmdb";
     private static final String IP_FOR_ALTERNATE_LOGO = System.getProperty("alternate.logo.ip", "none");
     private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.port", "-1"));
@@ -101,9 +117,7 @@ public class Menu64 extends PetsciiThread {
                 log("Menu. Pressed: '" + (key < 32 || key > 127 ? "chr(" + key + ")" : ((char) key)) + "' (code=" +
                     key + ")");
                 if (key == '.') {
-                    newline();
-                    newline();
-                    println("Disconnected.");
+                    goodbye();
                     return;
                 }
                 else if (key == '1') menuNewsIta();
@@ -287,7 +301,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == '4') launch(new ZorkMachine("zmpp/zork1.z3", readBinaryFile("petscii/zork1.seq")));
                 else if (key == '5') launch(new ZorkMachine("zmpp/zork2.z3", readBinaryFile("petscii/zork2.seq")));
                 else if (key == '6') launch(new ZorkMachine("zmpp/zork3.z3", readBinaryFile("petscii/zork3.seq")));
-                else if (key == '7') launch(new ZorkMachine("zmpp/hitchhiker-r60.z3"));
+                else if (key == '7') launch(new ZorkMachine("zmpp/hitchhiker-r60.z3", readBinaryFile("petscii/dontpanic.seq")));
                 else {
                     validKey = false;
                 }
@@ -368,6 +382,39 @@ public class Menu64 extends PetsciiThread {
         return IP_FOR_ALTERNATE_LOGO.equals(serverAddress.getHostAddress())
             || serverPort == PORT_FOR_ALTERNATE_LOGO;
     }
+
+    private void goodbye() throws Exception {
+        List<Path> files = getDirContent("petscii/goodbye");
+        if (files == null || files.size() == 0) {
+            newline();
+            newline();
+            println("GOODBYE");
+            newline();
+            return;
+        }
+        Collections.shuffle(files);
+        String filename = files.get(0).toString();
+        if (startsWith(filename,"/")) filename = filename.substring(1);
+        for (int i=0; i<25; ++i) newline();
+        writeRawFile(filename);
+    }
+
+    private List<Path> getDirContent(String path) throws URISyntaxException, IOException {
+        List<Path> result = new ArrayList<>();
+        URL jar = getClass().getProtectionDomain().getCodeSource().getLocation();
+        Path jarFile = Paths.get(jar.toURI());
+        try (FileSystem fs = FileSystems.newFileSystem(jarFile, NULL_CLASSLOADER);
+             DirectoryStream<Path> directoryStream = Files.newDirectoryStream(fs.getPath(path))) {
+            for (Path p : directoryStream) {
+                result.add(p);
+            }
+
+            result.sort((o1, o2) -> o1 == null || o2 == null ? 0 :
+                o1.getFileName().toString().compareTo(o2.getFileName().toString()));
+            return result;
+        }
+    }
+
 
     private static final byte[] LOGO_BYTES = new byte[] {
         18, 5, -84, -94, -69, -84, -94, -69, -94, -94, -69, -94, -94, 32, -94, -94,
