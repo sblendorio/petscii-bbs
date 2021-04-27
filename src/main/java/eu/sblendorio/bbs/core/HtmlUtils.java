@@ -18,6 +18,7 @@ public class HtmlUtils {
 
     public static String htmlClean(String s) {
         return replacePreTags(defaultString(s))
+                .replace("\u200b", "")
                 .replace("\r", "")
                 .replace("©","(C)")
                 .replace("\n", " ")

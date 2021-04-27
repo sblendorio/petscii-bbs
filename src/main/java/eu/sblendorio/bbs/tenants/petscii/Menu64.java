@@ -217,18 +217,13 @@ public class Menu64 extends PetsciiThread {
             write(RIGHT, RIGHT, RIGHT, ' ', ' ', ' ', ' ', GREY3);
             println(repeat((char) 163, 12));
             newline();
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161);
-            println("CNN News");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '2', REVOFF, 161);
-            println("BBC News");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '3', REVOFF, 161);
-            println("Wired");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '4', REVOFF, 161);
-            println("Vintage Computer Federation");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '5', REVOFF, 161);
-            println("Indie Retro News");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '6', REVOFF, 161);
-            println("The 8-Bit Guy");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161); println("CNN News");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '2', REVOFF, 161); println("BBC News");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '3', REVOFF, 161); println("Wired");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '4', REVOFF, 161); println("Vintage Computer Federation");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '5', REVOFF, 161); println("Indie Retro News");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '6', REVOFF, 161); println("The 8-Bit Guy");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '7', REVOFF, 161); println("Vintage is the new old");
             newline();
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '.', REVOFF, 161);
             print("Exit ");
@@ -253,6 +248,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == '4') launch(new Vcfed());
                 else if (key == '5') launch(new IndieRetroNews());
                 else if (key == '6') launch(new The8BitGuy());
+                else if (key == '7') launch(new Vitno());
                 else {
                     validKey = false;
                 }
