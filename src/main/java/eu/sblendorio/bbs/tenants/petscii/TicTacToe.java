@@ -77,7 +77,7 @@ public class TicTacToe extends PetsciiThread {
         else
             println("the winner is '"+model.getGameWinner()+"'");
         println();
-        println("Press any key to go back");
+        println("press any key to go back");
         flush(); resetInput(); readKey();
         log("Exiting TIC-TAC-TOE after match end");
         write(CLR, LOWERCASE);
