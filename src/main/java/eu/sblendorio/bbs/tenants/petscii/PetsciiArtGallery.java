@@ -27,17 +27,11 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
 import static eu.sblendorio.bbs.core.PetsciiKeys.UPPERCASE;
 import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.core.Utils;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import java.nio.file.DirectoryStream;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -57,28 +51,11 @@ import org.json.simple.parser.ParseException;
 public class PetsciiArtGallery extends PetsciiThread {
 
     private static final String ROOT_PATH = "petscii-art-gallery";
-    private static final ClassLoader NULL_CLASSLOADER = null;
     private static final long TIMEOUT = NumberUtils.toLong(System.getProperty("petscii_art_timeout", "15000"));
-
-    public List<Path> getDirContent(String path) throws URISyntaxException, IOException {
-        List<Path> result = new ArrayList<>();
-        URL jar = getClass().getProtectionDomain().getCodeSource().getLocation();
-        Path jarFile = Paths.get(jar.toURI());
-        try (FileSystem fs = FileSystems.newFileSystem(jarFile, NULL_CLASSLOADER);
-            DirectoryStream<Path> directoryStream = Files.newDirectoryStream(fs.getPath(path))) {
-            for (Path p : directoryStream) {
-                result.add(p);
-            }
-
-            result.sort((o1, o2) -> o1 == null || o2 == null ? 0 :
-                    o1.getFileName().toString().compareTo(o2.getFileName().toString()));
-            return result;
-        }
-    }
 
     @Override
     public void doLoop() throws Exception {
-        List<Path> authors = getDirContent(ROOT_PATH);
+        List<Path> authors = Utils.getDirContent(ROOT_PATH);
         boolean randomize = false;
         boolean slideshow = false;
         int key;
@@ -129,7 +106,7 @@ public class PetsciiArtGallery extends PetsciiThread {
         long timeout = slideshow ? TIMEOUT : -1;
         boolean statusLine = false;
         cls();
-        List<Path> drawings = getDirContent(p.toString());
+        List<Path> drawings = Utils.getDirContent(p.toString());
         if (randomize) Collections.shuffle(drawings);
         int size = drawings.size();
         int i = 0;

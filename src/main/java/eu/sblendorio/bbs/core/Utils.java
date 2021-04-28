@@ -1,6 +1,15 @@
 package eu.sblendorio.bbs.core;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,6 +23,8 @@ import static org.apache.commons.lang3.StringUtils.lowerCase;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 public class Utils {
+
+    private static final ClassLoader NULL_CLASSLOADER = null;
 
     private static final Set<Integer> PETSCII_CONTROL_CHARS = new HashSet<>(Arrays.asList(
             1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -87,8 +98,24 @@ public class Utils {
         return bytes;
     }
 
+
+    public static List<Path> getDirContent(String path) throws URISyntaxException, IOException {
+        List<Path> result = new ArrayList<>();
+        URL jar = Utils.class.getProtectionDomain().getCodeSource().getLocation();
+        Path jarFile = Paths.get(jar.toURI());
+        try (FileSystem fs = FileSystems.newFileSystem(jarFile, NULL_CLASSLOADER);
+             DirectoryStream<Path> directoryStream = Files.newDirectoryStream(fs.getPath(path))) {
+            for (Path p : directoryStream) {
+                result.add(p);
+            }
+
+            result.sort((o1, o2) -> o1 == null || o2 == null ? 0 :
+                o1.getFileName().toString().compareTo(o2.getFileName().toString()));
+            return result;
+        }
+    }
+
     private Utils() {
         throw new IllegalStateException("Utility class");
     }
-
 }
