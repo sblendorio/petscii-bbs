@@ -36,6 +36,9 @@ public class ZorkMachine extends PetsciiThread {
         write(PetsciiColors.GREEN);
         write(logo);
         if (logo.length > 0) {
+            flush(); resetInput();
+            readKey();
+            resetInput();
             newline();
             newline();
         }
