@@ -9,7 +9,7 @@ public class MedicalFacts extends WordpressProxy {
         super();
         this.logo = LOGO_BYTES;
         this.domain = "https://www.medicalfacts.it";
-        this.pageSize = 7;
+        this.pageSize = 6;
         this.screenLines = 19;
         this.showAuthor = true;
         this.httpUserAgent =

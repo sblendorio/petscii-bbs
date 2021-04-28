@@ -9,7 +9,7 @@ public class Disinformatico extends GoogleBloggerProxy {
         super();
         this.logo = LOGO_BYTES;
         this.blogUrl = "https://attivissimo.blogspot.com";
-        this.pageSize = 7;
+        this.pageSize = 6;
         this.screenLines = 19;
     }
 

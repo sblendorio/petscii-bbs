@@ -152,9 +152,9 @@ public class Menu64 extends PetsciiThread {
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '5', REVOFF, 161); print("Il Fatto quot. "); write(REVON, 161, 'm', REVOFF, 161); println("David Puente");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '6', REVOFF, 161); print("Next Quotidiano"); write(REVON, 161, 'n', REVOFF, 161); println("The Fool");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '7', REVOFF, 161); print("Wired          "); write(REVON, 161, 'o', REVOFF, 161); println("Indie Campus");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '8', REVOFF, 161); print("Tpi            "); write(REVON, 161, 'p', REVOFF, 161); println("Retrocommodore");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '8', REVOFF, 161); print("Sys64738       "); write(REVON, 161, 'p', REVOFF, 161); println("Retrocommodore");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '9', REVOFF, 161); print("Medbunker      "); write(REVON, 161, 'q', REVOFF, 161); println("Valoroso.IT");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '0', REVOFF, 161); print("FNOMCeO        "); write(REVON, 161, 'r', REVOFF, 161); println("Sys64738");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '0', REVOFF, 161); println("FNOMCeO");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'a', REVOFF, 161); println("Medical Facts");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'b', REVOFF, 161); println("Alessandro Albano");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'c', REVOFF, 161); println("Retrocampus");
@@ -186,7 +186,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == '5') launch(new IlFattoQuotidiano());
                 else if (key == '6') launch(new NextQuotidiano());
                 else if (key == '7') launch(new WiredItalia());
-                else if (key == '8') launch(new Tpi());
+                else if (key == '8') launch(new Sys64738());
                 else if (key == '9') launch(new Medbunker());
                 else if (key == '0') launch(new DottoreMaEVeroChe());
                 else if (key == 'a') launch(new MedicalFacts());
@@ -206,7 +206,6 @@ public class Menu64 extends PetsciiThread {
                 else if (key == 'o') launch(new IndieCampus());
                 else if (key == 'p') launch(new Retrocommodore());
                 else if (key == 'q') launch(new ValorosoIt());
-                else if (key == 'r') launch(new Sys64738());
                 else {
                     validKey = false;
                 }
