@@ -37,7 +37,7 @@ public class ZorkMachine extends PetsciiThread {
         write(logo);
         if (logo.length > 0) {
             flush(); resetInput();
-            readKey();
+            keyPressed(30000);
             resetInput();
             newline();
             newline();
