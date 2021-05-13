@@ -137,7 +137,7 @@ public class ArnoldC64 extends PetsciiThread {
             } else if ("help".equals(input) || "h".equals(input)) {
                 help();
                 listPosts(entries);
-            } else if ("+".equals(input) || "n".equals(input)) {
+            } else if ("+".equals(input) || "n".equals(input) || "n+".equals(input)) {
                 ++currentPage;
                 posts = null;
                 try {
@@ -147,7 +147,7 @@ public class ArnoldC64 extends PetsciiThread {
                     posts = null;
                     listPosts(entries);
                 }
-            } else if ("-".equals(input) && currentPage > 1) {
+            } else if (("-".equals(input) || "n-".equals(input)) && currentPage > 1) {
                 --currentPage;
                 posts = null;
                 listPosts(entries);

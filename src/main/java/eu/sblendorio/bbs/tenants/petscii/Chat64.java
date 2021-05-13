@@ -79,10 +79,11 @@ public class Chat64 extends PetsciiThread {
             while (status != 0) {
                 print("Enter your name: ");
                 flush(); resetInput();
-                final String name = readLine();
-                if (isBlank(name) || ".".equalsIgnoreCase(name)) {
+                final String candidateName = readLine();
+                if (isBlank(candidateName) || ".".equalsIgnoreCase(candidateName)) {
                     return;
                 }
+                final String name = candidateName.replace(" ", "");
                 boolean alreadyPresent =
                     clients.values().stream().map(BbsThread::getClientName).anyMatch(x -> x.equalsIgnoreCase(name));
                 status = alreadyPresent ? -1 : changeClientName(name);

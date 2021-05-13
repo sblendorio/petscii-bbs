@@ -296,7 +296,7 @@ public class OneRssPetscii extends PetsciiThread {
             String input = lowerCase(trim(inputRaw));
             if (".".equals(input) || "exit".equals(input) || "quit".equals(input) || "q".equals(input)) {
                 break;
-            } else if (("+".equals(input) || "n".equals(input)) && currentPage*pageSize<posts.size()) {
+            } else if (("+".equals(input) || "n".equals(input) || "n+".equals(input)) && currentPage*pageSize<posts.size()) {
                 ++currentPage;
                 if (alwaysRefreshFeed) posts = null;
                 try {
@@ -306,7 +306,7 @@ public class OneRssPetscii extends PetsciiThread {
                     if (alwaysRefreshFeed) posts = null;
                     listPosts(section);
                 }
-            } else if ("-".equals(input) && currentPage > 1) {
+            } else if (("-".equals(input) || "n-".equals(input)) && currentPage > 1) {
                 --currentPage;
                 if (alwaysRefreshFeed) posts = null;
                 listPosts(section);

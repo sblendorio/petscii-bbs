@@ -111,7 +111,7 @@ public class WordpressProxyAscii extends AsciiThread {
                 help();
                 listPosts();
                 continue;
-            } else if ("n".equals(input) || "N".equals(input) || "+".equals(input)) {
+            } else if ("n".equals(input) || "n+".equals(input) || "+".equals(input)) {
                 ++currentPage;
                 posts = null;
                 try {
@@ -123,7 +123,7 @@ public class WordpressProxyAscii extends AsciiThread {
                     continue;
                 }
                 continue;
-            } else if ("-".equals(input) && currentPage > 1) {
+            } else if (("-".equals(input) || "n-".equals(input)) && currentPage > 1) {
                 --currentPage;
                 posts = null;
                 listPosts();

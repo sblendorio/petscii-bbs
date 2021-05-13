@@ -114,7 +114,7 @@ public class WordpressProxy extends PetsciiThread {
                 help();
                 listPosts();
                 continue;
-            } else if ("+".equals(input) || "n".equals(input)) {
+            } else if ("+".equals(input) || "n".equals(input) || "n+".equals(input)) {
                 ++currentPage;
                 posts = null;
                 try {
@@ -126,7 +126,7 @@ public class WordpressProxy extends PetsciiThread {
                     continue;
                 }
                 continue;
-            } else if ("-".equals(input) && currentPage > 1) {
+            } else if (("-".equals(input) || "n-".equals(input)) && currentPage > 1) {
                 --currentPage;
                 posts = null;
                 listPosts();

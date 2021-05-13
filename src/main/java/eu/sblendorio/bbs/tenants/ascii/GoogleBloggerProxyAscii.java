@@ -126,7 +126,7 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
                 help();
                 listPosts();
                 continue;
-            } else if ("n".equals(input) || "N".equals(input) || "+".equals(input)) {
+            } else if ("n".equals(input) || "n+".equals(input) || "+".equals(input)) {
                 pageTokens.tokens.push(pageTokens.prev);
                 pageTokens.prev = pageTokens.curr;
                 pageTokens.curr = pageTokens.next;
@@ -135,7 +135,7 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
                 posts = null;
                 listPosts();
                 continue;
-            } else if ("-".equals(input) && pageTokens.page > 1) {
+            } else if (("-".equals(input) || "n-".equals(input)) && pageTokens.page > 1) {
                 pageTokens.next = pageTokens.curr;
                 pageTokens.curr = pageTokens.prev;
                 pageTokens.prev = pageTokens.tokens.pop();

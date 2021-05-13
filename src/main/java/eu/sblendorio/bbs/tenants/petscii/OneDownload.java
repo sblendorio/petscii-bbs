@@ -96,7 +96,7 @@ public class OneDownload extends PetsciiThread {
             String input = lowerCase(trim(inputRaw));
             if (".".equals(input) || "exit".equals(input) || "quit".equals(input) || "q".equals(input)) {
                 break;
-            } else if (("+".equals(input) || "n".equals(input)) & (currentPage+1)*pageSize < entries.size())  {
+            } else if (("+".equals(input) || "n".equals(input) || "n+".equals(input)) & (currentPage+1)*pageSize < entries.size())  {
                 ++currentPage;
                 try {
                     listPosts();
@@ -106,7 +106,7 @@ public class OneDownload extends PetsciiThread {
                     continue;
                 }
                 continue;
-            } else if ("-".equals(input) && currentPage > 0) {
+            } else if (("-".equals(input) || "n-".equals(input)) && currentPage > 0) {
                 --currentPage;
                 listPosts();
                 continue;

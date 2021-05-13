@@ -59,9 +59,9 @@ public class ChatA1 extends AsciiThread {
                 print("Enter your name: ");
                 resetInput();
                 flush(); resetInput();
-                String candidateNname = readLine();
-                final String name = lowerCase(candidateNname);
-                if (isBlank(name) || ".".equalsIgnoreCase(name)) {
+                String candidateName = readLine();
+                final String name = defaultString(lowerCase(candidateName)).replace(" ", "");
+                if (isBlank(name) || ".".equals(name)) {
                     return;
                 }
                 boolean alreadyPresent =

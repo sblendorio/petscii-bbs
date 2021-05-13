@@ -196,7 +196,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
             } else if ("help".equals(input) || "h".equals(input)) {
                 help();
                 listPosts(rssUrl);
-            } else if ("+".equals(input)) {
+            } else if ("+".equals(input) || "n".equals(input) || "n+".equals(input)) {
                 ++currentPage;
                 posts = null;
                 try {
@@ -206,7 +206,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
                     posts = null;
                     listPosts(rssUrl);
                 }
-            } else if ("-".equals(input) && currentPage > 1) {
+            } else if (("-".equals(input) || "n-".equals(input)) && currentPage > 1) {
                 --currentPage;
                 posts = null;
                 listPosts(rssUrl);

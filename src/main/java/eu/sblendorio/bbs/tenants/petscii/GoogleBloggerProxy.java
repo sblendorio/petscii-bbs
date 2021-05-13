@@ -154,7 +154,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
                 help();
                 listPosts();
                 continue;
-            } else if ("+".equals(input) || "n".equals(input)) {
+            } else if ("+".equals(input) || "n".equals(input) || "n+".equals(input)) {
                 pageTokens.tokens.push(pageTokens.prev);
                 pageTokens.prev = pageTokens.curr;
                 pageTokens.curr = pageTokens.next;
@@ -163,7 +163,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
                 posts = null;
                 listPosts();
                 continue;
-            } else if ("-".equals(input) && pageTokens.page > 1) {
+            } else if (("-".equals(input) || "n-".equals(input)) && pageTokens.page > 1) {
                 pageTokens.next = pageTokens.curr;
                 pageTokens.curr = pageTokens.prev;
                 pageTokens.prev = pageTokens.tokens.pop();
