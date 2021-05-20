@@ -9,7 +9,7 @@ public class ValorosoIt extends WordpressProxy {
         super();
         this.logo = LOGO_BYTES;
         this.domain = "http://www.valoroso.it";
-        this.pageSize = 9;
+        this.pageSize = 8;
         this.categoriesId = "148";
         this.screenLines = 19;
     }
