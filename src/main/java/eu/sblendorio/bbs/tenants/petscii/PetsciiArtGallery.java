@@ -87,7 +87,6 @@ public class PetsciiArtGallery extends PetsciiThread {
                 println(" " + authors.get(i).getFileName().toString().replace("/", EMPTY));
             }
             print(" "); write(REVON, WHITE); print(" . "); write(REVOFF, GREY3); println(" Go back");
-            newline();
             print("> ");
             do {
                 flush(); resetInput(); key = readKey();
