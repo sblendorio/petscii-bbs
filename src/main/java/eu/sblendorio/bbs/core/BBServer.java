@@ -246,7 +246,7 @@ public class BBServer {
                 )
                 .collect(Collectors.joining())
             + "\n"
-            + "Thread list: \n"
+            + "Thread list:\n"
             + "\n"
             + String.format(THREAD_ROW_FORMAT,
             "Id", "Class[Name]", "Client", "State", "Type", "Pri", "Alive")
