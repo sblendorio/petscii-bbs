@@ -96,9 +96,9 @@ public class OneRssPetscii extends PetsciiThread {
         }
     }
 
-    private Map<String, NewsSection> sections;
+    protected Map<String, NewsSection> sections;
 
-    private void readSections() throws Exception {
+    protected void readSections() throws Exception {
         final String filename = System.getProperty("MENUMES", "/data/a.txt");
         List<String> secTxt = readTxt(filename);
         sections = new LinkedHashMap<>();
@@ -332,7 +332,10 @@ public class OneRssPetscii extends PetsciiThread {
             return;
         }
         cls();
-        gotoXY(28,2); write(WHITE); print(section.title);
+        if (isNotBlank(section.title)) {
+            gotoXY(28,2);
+            write(WHITE); print(section.title);
+        }
         write(HOME); write(LOGO_SECTION);
         write(GREY3);
         if (isEmpty(posts)) {
@@ -448,9 +451,9 @@ public class OneRssPetscii extends PetsciiThread {
         return result;
     }
 
-    public final static byte[] LOGO_MENU = readBinaryFile("petscii/baya-bbs.seq");
+    public byte[] LOGO_MENU = readBinaryFile("petscii/baya-bbs.seq");
 
-    public final static byte[] LOGO_SECTION = readBinaryFile("petscii/baya.seq");
+    public byte[] LOGO_SECTION = readBinaryFile("petscii/baya.seq");
 
     protected void waitOn() {
         print("WAIT PLEASE...");

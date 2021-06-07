@@ -226,6 +226,7 @@ public class Menu64 extends PetsciiThread {
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '5', REVOFF, 161); println("Indie Retro News");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '6', REVOFF, 161); println("The 8-Bit Guy");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '7', REVOFF, 161); println("Vintage is the new old");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '8', REVOFF, 161); println("2600 News");
             newline();
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '.', REVOFF, 161);
             print("Exit ");
@@ -251,6 +252,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == '5') launch(new IndieRetroNews());
                 else if (key == '6') launch(new The8BitGuy());
                 else if (key == '7') launch(new Vitno());
+                else if (key == '8') launch(new OneRss2600Petscii());
                 else {
                     validKey = false;
                 }
