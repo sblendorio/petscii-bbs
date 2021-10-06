@@ -2,9 +2,9 @@ package eu.sblendorio.bbs.tenants.ascii;
 
 import java.nio.charset.StandardCharsets;
 
-public class AlessandroAlbanoAscii extends WordpressProxyAscii {
+public class AlessandroAlbanoTelnet extends WordpressProxyAscii {
 
-    public AlessandroAlbanoAscii() {
+    public AlessandroAlbanoTelnet() {
         super();
         this.logo = LOGO_BYTES;
         this.secondaryLogo = SECONDARY_LOGO_BYTES;
@@ -12,7 +12,9 @@ public class AlessandroAlbanoAscii extends WordpressProxyAscii {
         this.secondaryLogoSize = 1;
         this.domain = "https://www.alessandroalbano.it";
         this.showAuthor = true;
-        this.pageSize = 6;
+        this.pageSize = 12;
+        this.screenLines = 24;
+        this.screenColumns = 80;
     }
 
     private static final byte[] LOGO_BYTES = (

@@ -20,4 +20,7 @@ PORTED BY:
 - FRANCESCO SBLENDORIO
 - ROBERTO MANICARDI
 
+USE: QUIT to exit
+     SAVE to store match
+     RESTORE to resume match
 
