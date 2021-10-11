@@ -36,6 +36,7 @@ import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -417,6 +418,11 @@ public class Chat64 extends PetsciiThread {
             new InputStreamReader(inputStream, UTF_8)).lines().collect(Collectors.joining("\n"));
         inputStream.close();
         JSONObject jtext = (JSONObject) new JSONParser().parse(result);
+        int status = NumberUtils.toInt(((JSONObject) jtext.get("url")).get("status").toString());
+        if (status == 1 ||
+            status == 4 ||
+            status == 6)
+            return firstUrl;
         return ((JSONObject) jtext.get("url")).get("shortLink").toString();
     }
 
