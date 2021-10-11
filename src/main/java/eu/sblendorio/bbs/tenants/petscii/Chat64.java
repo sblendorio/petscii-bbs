@@ -1,5 +1,12 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
+import com.google.zxing.WriterException;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.google.zxing.qrcode.encoder.ByteMatrix;
+import com.google.zxing.qrcode.encoder.Encoder;
+import com.linkedin.urls.Url;
+import com.linkedin.urls.detection.UrlDetector;
+import com.linkedin.urls.detection.UrlDetectorOptions;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.PetsciiColors;
@@ -11,7 +18,13 @@ import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.Utils;
 import static eu.sblendorio.bbs.core.Utils.bytes;
-import java.io.IOException;
+import eu.sblendorio.bbs.tenants.petscii.utils.BlockGraphics;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import java.util.List;
 import static java.util.Optional.ofNullable;
 import java.util.UUID;
@@ -23,8 +36,10 @@ import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-@Hidden
 public class Chat64 extends PetsciiThread {
 
     private static final String CUSTOM_KEY = "CHAT";
@@ -109,6 +124,7 @@ public class Chat64 extends PetsciiThread {
                 write(INPUT_COLOR);
                 resetInput();
                 rawCommand = readLine();
+                displayPotentialUrl(rawCommand);
                 rawCommand = defaultString(rawCommand).trim();
                 final String command =  rawCommand;
                 if (isBlank(command)) {
@@ -324,23 +340,27 @@ public class Chat64 extends PetsciiThread {
         write(PetsciiColors.GREY2);
         write(PetsciiColors.GREY3);
         Row row;
+        String text;
         while ((row = rows.poll()) != null) {
             if (row.message.receiverId == -1) {
                 write(PetsciiColors.GREEN);
-                println(row.message.text);
+                text = row.message.text;
+                println(text);
             } else if (row.message.receiverId == -2) {
                 write(PetsciiColors.RED);
-                println(row.message.text);
+                text = row.message.text;
+                println(text);
             } else if (row.message.receiverId == -3) {
                 int index = row.message.text.indexOf(">");
                 write(LIGHT_BLUE);
                 print(row.message.text.substring(0, index+1));
                 write(CYAN);
-                println(row.message.text.substring(index+1));
+                text = row.message.text.substring(index+1);
+                println(text);
             } else {
                 String from = ofNullable(getClients().get(row.recipientId)).map(BbsThread::getClientName).orElse(null);
                 String to = ofNullable(getClients().get(row.message.receiverId)).map(BbsThread::getClientName).orElse(null);
-                String text = row.message.text;
+                text = row.message.text;
 
                 if (from == null || to == null)
                     continue;
@@ -350,6 +370,7 @@ public class Chat64 extends PetsciiThread {
                 write(PetsciiColors.YELLOW);
                 println(text);
             }
+            displayPotentialUrl(text);
         }
     }
 
@@ -365,4 +386,49 @@ public class Chat64 extends PetsciiThread {
             }
         }
     }
+
+    private void displayPotentialUrl(String text) {
+        UrlDetector parser = new UrlDetector(text, UrlDetectorOptions.Default);
+        List<Url> found = parser.detect();
+        if (found == null || found.size() == 0) return;
+
+        String firstUrl = found.get(0).getFullUrl();
+        try {
+            String shortUrl = shortenUrl(firstUrl);
+            String[] strMatrix = stringToQr(shortUrl);
+            println();
+            write(BlockGraphics.getRenderedMidres(0, strMatrix));
+        } catch (Exception e) {
+            log("Malformed URL exception in text: \"" + text + "\"");
+            e.printStackTrace();
+            return;
+        }
+
+    }
+
+    private String shortenUrl(String firstUrl) throws IOException, ParseException {
+        String token = System.getProperty("cutt_key", "DUMMY_KEY");
+        URL shortService = new URL("https://cutt.ly/api/api.php?key=" + token + "&short=" +
+            URLEncoder.encode(firstUrl, UTF_8.toString()));
+        URLConnection conn = shortService.openConnection();
+        InputStream inputStream = conn.getInputStream();
+
+        String result = new BufferedReader(
+            new InputStreamReader(inputStream, UTF_8)).lines().collect(Collectors.joining("\n"));
+        inputStream.close();
+        JSONObject jtext = (JSONObject) new JSONParser().parse(result);
+        return ((JSONObject) jtext.get("url")).get("shortLink").toString();
+    }
+
+    private String[] stringToQr(String string) throws WriterException {
+        ByteMatrix matrix = Encoder.encode(string, ErrorCorrectionLevel.H).getMatrix();
+        String[] strMatrix = new String[matrix.getHeight()];
+        for (int y=0; y < matrix.getHeight(); ++y) {
+            for (int x=0; x < matrix.getWidth(); ++x) {
+                strMatrix[y] += (matrix.get(x,y) == 1 ? "*" : ".");
+            }
+        }
+        return strMatrix;
+    }
+
 }
