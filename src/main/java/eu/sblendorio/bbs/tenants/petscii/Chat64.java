@@ -395,7 +395,7 @@ public class Chat64 extends PetsciiThread {
 
         String firstUrl = found.get(0).getFullUrl();
         try {
-            String shortUrl = firstUrl.length() <= 25 ? firstUrl : shortenUrl(firstUrl);
+            String shortUrl = firstUrl.length() <= 24 ? firstUrl : shortenUrl(firstUrl);
             String[] strMatrix = stringToQr(shortUrl);
             println();
             write(BlockGraphics.getRenderedMidres(0, strMatrix));
