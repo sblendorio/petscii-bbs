@@ -8,19 +8,13 @@ import com.linkedin.urls.Url;
 import com.linkedin.urls.detection.UrlDetector;
 import com.linkedin.urls.detection.UrlDetectorOptions;
 import eu.sblendorio.bbs.core.BbsThread;
-import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.PetsciiColors;
-import static eu.sblendorio.bbs.core.PetsciiColors.CYAN;
-import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
-import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_BLUE;
-import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
+import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
-import eu.sblendorio.bbs.core.Utils;
 import static eu.sblendorio.bbs.core.Utils.bytes;
 import eu.sblendorio.bbs.tenants.petscii.utils.BlockGraphics;
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -398,7 +392,7 @@ public class Chat64 extends PetsciiThread {
             String shortUrl = firstUrl.length() <= 24 ? firstUrl : shortenUrl(firstUrl);
             String[] strMatrix = stringToQr(shortUrl);
             println();
-            write(BlockGraphics.getRenderedMidres(0, strMatrix));
+            write(BlockGraphics.getRenderedMidres(2, strMatrix));
         } catch (Exception e) {
             log("Malformed URL exception in text: \"" + text + "\"");
             e.printStackTrace();
@@ -430,8 +424,9 @@ public class Chat64 extends PetsciiThread {
         ByteMatrix matrix = Encoder.encode(string, ErrorCorrectionLevel.H).getMatrix();
         String[] strMatrix = new String[matrix.getHeight()];
         for (int y=0; y < matrix.getHeight(); ++y) {
-            for (int x=0; x < matrix.getWidth(); ++x) {
-                strMatrix[y] += (matrix.get(x,y) == 1 ? "*" : ".");
+            strMatrix[y] = "";
+            for (int x = 0; x < matrix.getWidth(); ++x) {
+                strMatrix[y] += (matrix.get(x, y) == 1 ? "*" : ".");
             }
         }
         return strMatrix;
