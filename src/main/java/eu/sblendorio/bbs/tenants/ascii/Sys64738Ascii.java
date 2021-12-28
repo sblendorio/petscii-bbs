@@ -9,7 +9,7 @@ public class Sys64738Ascii extends WordpressProxyAscii {
     public Sys64738Ascii() {
         super();
         this.logo = LOGO_BYTES;
-        this.domain = "https://sys64738.org";
+        this.domain = "https://retroprogramming.it";
         this.pageSize = 10;
     }
 
