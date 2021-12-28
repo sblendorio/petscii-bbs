@@ -123,7 +123,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("f".equals(choice)) subThread = new TelevideoRaiAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault(), getCharset());
                 else if ("g".equals(choice)) subThread = new WiredItaliaAscii();
                 else if ("h".equals(choice)) subThread = new DisinformaticoAscii();
-                else if ("i".equals(choice)) subThread = new IlPostAscii();
+                else if ("i".equals(choice)) subThread = new NextQuotidianoAscii();
                 else if ("j".equals(choice)) subThread = new IlFattoQuotidianoAscii();
                 else if ("k".equals(choice)) subThread = new IndieCampusAscii();
                 else if ("l".equals(choice)) subThread = new ButacAscii();
@@ -178,7 +178,7 @@ public class MenuApple1 extends AsciiThread {
         println("F - Televideo RAI");
         println("G - Wired Italia");
         println("H - Disinformatico");
-        println("I - Il Post           "+ sp +"  Services");
+        println("I - Next Quotidiano   "+ sp +"  Services");
         println("J - Fatto Quotidiano  "+ sp +"  ---------------");
         println("K - Indie Campus      "+ sp +"  T - Chat");
         println("L - Butac.it          "+ sp +"  U - Private Msg");

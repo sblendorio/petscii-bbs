@@ -10,7 +10,7 @@ public class IndieCampusAscii extends GoogleBloggerProxyAscii {
         this.blogUrl = "https://iononsoleggere.blogspot.com/";
         this.labels = "BBS";
         this.showTimestamp = false;
-        this.pageSize = 7;
+        this.pageSize = 10;
         this.screenLines = 18;
     }
 

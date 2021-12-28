@@ -50,7 +50,7 @@ public class MenuApple1M10 extends MenuApple1 {
         println("F - Televideo RAI");
         println("G - Wired Italia");
         println("H - Disinformatico");
-        println("I - Il Post             Services");
+        println("I - Next Quotidiano     Services");
         println("J - Fatto Quotidiano    ----------");
         println("K - Indie Campus        T - Chat");
         println("L - Butac.it            U - Private Msg");

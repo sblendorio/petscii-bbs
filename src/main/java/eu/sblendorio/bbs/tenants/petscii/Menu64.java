@@ -135,7 +135,7 @@ public class Menu64 extends PetsciiThread {
             write(REVON, GREEN, 161, WHITE, ' ', RED, REVOFF, 161, CYAN); println("Italian News");
             write(RIGHT, RIGHT, RIGHT, ' ', ' ', ' ', ' ', LIGHT_BLUE); println(repeat((char) 163, 12));
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161); print("Televideo      "); write(REVON, 161, 'i', REVOFF, 161); println("Attivissimo");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '2', REVOFF, 161); print("Il Post        "); write(REVON, 161, 'j', REVOFF, 161); println("Bufale.net");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '2', REVOFF, 161); print("Open Online    "); write(REVON, 161, 'j', REVOFF, 161); println("Bufale.net");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '3', REVOFF, 161); print("Valigia Blu    "); write(REVON, 161, 'k', REVOFF, 161); println("Butac");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '4', REVOFF, 161); print("Linkiesta      "); write(REVON, 161, 'l', REVOFF, 161); println("Facta news");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '5', REVOFF, 161); print("Il Fatto quot. "); write(REVON, 161, 'm', REVOFF, 161); println("David Puente");
@@ -169,7 +169,7 @@ public class Menu64 extends PetsciiThread {
                     return;
                 }
                 else if (key == '1') launch(new TelevideoRaiPetscii());
-                else if (key == '2') launch(new IlPost());
+                else if (key == '2') launch(new OneRssOpenOnline());
                 else if (key == '3') launch(new ValigiaBlu());
                 else if (key == '4') launch(new Linkiesta());
                 else if (key == '5') launch(new IlFattoQuotidiano());

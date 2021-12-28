@@ -70,6 +70,7 @@ public class OneRssPetscii extends PetsciiThread {
     protected int currentPage = 1;
 
     protected boolean alwaysRefreshFeed = false;
+    protected int offsetX = 28;
 
     static class NewsSection {
         final String title;
@@ -200,7 +201,7 @@ public class OneRssPetscii extends PetsciiThread {
         flush();
     }
 
-    public static List<NewsFeed> getFeeds(String urlString) throws Exception {
+    public List<NewsFeed> getFeeds(String urlString) throws Exception {
         URL url = new URL(urlString);
         SyndFeedInput input = new SyndFeedInput();
         SyndFeed feed = input.build(new XmlReader(url));
@@ -209,11 +210,20 @@ public class OneRssPetscii extends PetsciiThread {
         for (SyndEntry e : entries)
             result.add(new NewsFeed(e.getPublishedDate(),
                 e.getTitle().replace("\u00a0", " "),
-                e.getDescription().getValue(),
+                getArticleBody(e),
                 e.getUri(),
-                e.getAuthor().replace("\u00a0", " ")
+                getAuthor(e)
             ));
         return result;
+    }
+
+
+    public String getAuthor(SyndEntry e) {
+        return e.getAuthor().replace("\u00a0", " ");
+    }
+
+    public String getArticleBody(SyndEntry e) {
+        return e.getDescription().getValue();
     }
 
     public void box(int x1, int y1, int x2, int y2) {
@@ -333,7 +343,7 @@ public class OneRssPetscii extends PetsciiThread {
         }
         cls();
         if (isNotBlank(section.title)) {
-            gotoXY(28,2);
+            gotoXY(offsetX,2);
             write(WHITE); print(section.title);
         }
         write(HOME); write(LOGO_SECTION);
@@ -398,14 +408,13 @@ public class OneRssPetscii extends PetsciiThread {
 
     private List<String> feedToText(NewsFeed feed) {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        final String author = (!showAuthor || isBlank(trim(feed.author))) ? EMPTY : (" - by " + trim(feed.author));
-        final String head = trim(feed.title) + author + "<br>" + HR_TOP + "<br>";
+        String author = (!this.showAuthor || StringUtils.isBlank(StringUtils.trim(feed.author))) ? "" : (" - by " + StringUtils.trim(feed.author));
+        String head = StringUtils.trim(feed.title) + author + "<br>" + this.HR_TOP + "<br>";
         List<String> rows = wordWrap(head);
-        List<String> article = wordWrap(
-            (feed.publishedDate == null ? "" :
-                dateFormat.format(feed.publishedDate) + " - " + (newlineAfterDate ? "<br>" : ""))
-                + feed.description.replaceAll("^[\\s\\n\\r]+|^(<(br|p|div)[^>]*>)+", EMPTY)
-        );
+        List<String> article = wordWrap((
+            (feed.publishedDate == null) ? "" : (
+                dateFormat.format(feed.publishedDate) + " - " + (this.newlineAfterDate ? "<br>" : ""))) + feed.description
+            .replaceAll("^([\\s\\n\\r]+|(<(br|p|img|div|/)[^>]*>))+", ""));
         rows.addAll(article);
         return rows;
     }
@@ -431,7 +440,7 @@ public class OneRssPetscii extends PetsciiThread {
 
     private void logo(NewsSection section) throws Exception {
         cls();
-        gotoXY(28,2);
+        gotoXY(offsetX,2);
         write(WHITE);
         print(section.title);
         write(HOME);
