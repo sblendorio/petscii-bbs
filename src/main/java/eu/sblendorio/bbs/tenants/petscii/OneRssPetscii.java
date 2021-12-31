@@ -6,8 +6,8 @@ import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.HtmlUtils;
-import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
-import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
+
+import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.CASE_LOCK;
 import static eu.sblendorio.bbs.core.PetsciiKeys.CLR;
 import static eu.sblendorio.bbs.core.PetsciiKeys.DEL;
@@ -40,6 +40,8 @@ import java.util.Scanner;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
+
+import eu.sblendorio.bbs.core.Utils;
 import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -110,13 +112,16 @@ public class OneRssPetscii extends PetsciiThread {
             .map(row -> row.replaceAll("\\s*#\\s*", "#"))
             .map(row -> row.split("#"))
             .collect(toMap(rows -> rows[0], rows -> rows[1], (a,b) -> b, LinkedHashMap::new));
-        final String commands = "1234567890abcdefghijklmnopqrstuvwxyz";
+        final String commands = "123456789abcdefghijklmnopqrstuvwxyz";
         int count = 0;
         for (Map.Entry<String, String> row : config.entrySet()) {
             ++count;
             sections.put(commands.substring(count - 1, count), new NewsSection(row.getKey(), row.getValue()));
         }
         sections.put(commands.substring(count, ++count), new NewsSection("Download", new OneDownload()));
+        sections.put(commands.substring(count, ++count), new NewsSection("Televideo", new TelevideoRaiPetscii()));
+        sections.put(commands.substring(count, ++count), new NewsSection("Chat", new Chat64(Utils.bytes(
+                LOGO_SECTION, 19, 13, 13, 157, 157, 157, 157, 157, 157, 157, 157, 157, RED, "cHAT", 13, 13, 13, 13))));
         //sections.put(commands.substring(count, ++count), new NewsSection("Connect 4", new ConnectFour()));
 
         // legacy:
@@ -424,7 +429,8 @@ public class OneRssPetscii extends PetsciiThread {
             //println(StringUtils.repeat(chr(163), getScreenColumns() - 1));
             newline();
             newline();
-            println(bottomLabel);
+            print(bottomLabel);
+            print(" ");
         }
 
         if (isNotBlank(bottomUrl)) {

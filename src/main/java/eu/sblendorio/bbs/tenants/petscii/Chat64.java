@@ -39,7 +39,14 @@ public class Chat64 extends PetsciiThread {
 
     private static final String CUSTOM_KEY = "CHAT";
     private static final int INPUT_COLOR = GREY3;
-    private static final byte[] LOGO_CHAT = bytes(readBinaryFile("petscii/bbschat20.seq"));
+    private byte[] LOGO_CHAT = bytes(readBinaryFile("petscii/bbschat20.seq"));
+
+    public Chat64() {
+    }
+
+    public Chat64(byte[] logo) {
+        LOGO_CHAT = logo;
+    }
 
     public static class ChatMessage {
         public final long receiverId;
@@ -70,9 +77,6 @@ public class Chat64 extends PetsciiThread {
     private boolean canRedraw = false;
 
     private ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<>();
-
-    public Chat64() {
-    }
 
     @Override
     public void doLoop() throws Exception {
