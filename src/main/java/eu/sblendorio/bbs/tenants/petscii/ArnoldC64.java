@@ -176,7 +176,6 @@ public class ArnoldC64 extends PetsciiThread {
         final Entry p = posts.get(n);
         final String url = p.url;
         final String title = p.name;
-        final String type = p.fileType;
         byte[] content = DiskUtilities.getPrgContentFromUrl(url);
         waitOff();
 

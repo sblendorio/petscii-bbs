@@ -159,7 +159,7 @@ public class MachineImpl implements Machine {
   
     this.gamedata = gamedata;
     this.random = new UnpredictableRandomGenerator();
-    this.undostates = new RingBuffer<PortableGameState>(NUM_UNDO);
+    this.undostates = new RingBuffer<>(NUM_UNDO);
     
     cpu = new CpuImpl(this, decoder);
     output = new OutputImpl(gamedata, cpu);

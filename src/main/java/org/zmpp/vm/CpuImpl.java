@@ -86,7 +86,7 @@ public class CpuImpl implements Cpu, Interruptable {
     final GameData gamedata = machine.getGameData();
     decoder.initialize(machine, gamedata.getMemoryAccess());
     stack = new FastShortStack(STACKSIZE);
-    routineContextStack = new ArrayList<RoutineContext>();
+    routineContextStack = new ArrayList<>();
     globalsAddress = gamedata.getStoryFileHeader().getGlobalsAddress();
     
     if (gamedata.getStoryFileHeader().getVersion() == 6) {

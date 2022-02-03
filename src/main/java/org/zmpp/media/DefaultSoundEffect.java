@@ -64,7 +64,7 @@ public class DefaultSoundEffect implements SoundEffect, LineListener {
     
     super();
     this.clip = clip;
-    listeners = new ArrayList<SoundStopListener>();
+    listeners = new ArrayList<>();
     clip.addLineListener(this);
   }
 

@@ -272,7 +272,6 @@ public class ConnectFourAI {
     }
 
     public void playAgainstAIConsole(){
-        int humanMove=-1;
         Scanner scan = new Scanner(System.in);
         System.out.println("Would you like to play first? (yes/no) ");
         String answer = scan.next().trim();

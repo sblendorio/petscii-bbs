@@ -53,7 +53,7 @@ public class DefaultInstructionDecoder implements InstructionDecoder {
    */
   public DefaultInstructionDecoder() {
   
-    instructionCache = new HashMap<Integer, Instruction>();
+    instructionCache = new HashMap<>();
   }
   
   public void initialize(final Machine machine,

@@ -67,7 +67,7 @@ public class WordWrapper {
   
   private String[] wrapBuffered(int currentX, String input) {
     
-    List<String> result =  new ArrayList<String>();    
+    List<String> result =  new ArrayList<>();    
     StringTokenizer tok = new StringTokenizer(input, " \t\n\r", true);
     String[] words = new String[tok.countTokens()];    
     int w = 0;
@@ -133,7 +133,7 @@ public class WordWrapper {
   
   private String[] wrapUnbuffered(int currentX, String input) {
 
-    List<String> result =  new ArrayList<String>();
+    List<String> result =  new ArrayList<>();
     StringBuilder linebuffer = new StringBuilder();
     int currentWidth = currentX;
     

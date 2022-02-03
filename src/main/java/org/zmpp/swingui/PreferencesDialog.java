@@ -166,8 +166,8 @@ public class PreferencesDialog extends JDialog implements ActionListener {
       
       // Transfer the settings to the user settings only, they will
       // only take effect on the next restart
-      int stdfontsize = Integer.valueOf(stdfontSpinner.getValue().toString());
-      int fixedfontsize = Integer.valueOf(fixedfontSpinner.getValue().toString());
+      int stdfontsize = Integer.parseInt(stdfontSpinner.getValue().toString());
+      int fixedfontsize = Integer.parseInt(fixedfontSpinner.getValue().toString());
       int bgcolor = ((ColorItem) backgroundCB.getSelectedItem()).color;
       int fgcolor = ((ColorItem) foregroundCB.getSelectedItem()).color;
       boolean antialias = antialiasCB.isSelected();

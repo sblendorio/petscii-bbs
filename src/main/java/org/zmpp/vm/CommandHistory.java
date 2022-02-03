@@ -52,8 +52,8 @@ public class CommandHistory {
     public List<Short> edited;
     public HistoryEntry() {
       
-      original = new ArrayList<Short>();
-      edited = new ArrayList<Short>();
+      original = new ArrayList<>();
+      edited = new ArrayList<>();
     }
     
     public String toString() {
@@ -78,7 +78,7 @@ public class CommandHistory {
   }
 
   private RingBuffer<HistoryEntry> history = 
-      new RingBuffer<HistoryEntry>(NUM_ENTRIES);
+      new RingBuffer<>(NUM_ENTRIES);
   
   private int historyIndex;
   private int historySizeAtReset;

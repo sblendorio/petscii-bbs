@@ -60,7 +60,7 @@ public abstract class BlorbMediaCollection<T> implements MediaCollection<T> {
    */
   public BlorbMediaCollection(FormChunk formchunk) {
     
-    resourceNumbers = new ArrayList<Integer>();
+    resourceNumbers = new ArrayList<>();
     this.formchunk = formchunk;
     initDatabase();
     

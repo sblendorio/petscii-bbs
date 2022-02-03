@@ -106,7 +106,7 @@ public class FileUtils {
     
     try {
       
-      final List<Byte> buffer = new ArrayList<Byte>();
+      final List<Byte> buffer = new ArrayList<>();
       
       int databyte = 0;
       do {

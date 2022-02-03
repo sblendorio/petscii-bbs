@@ -11,6 +11,7 @@ import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
 import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import java.io.IOException;
+import java.util.Deque;
 import java.util.List;
 import static java.util.Optional.ofNullable;
 import java.util.UUID;
@@ -54,7 +55,7 @@ public class ChatOld64 extends PetsciiThread {
     private Long recipient = null;
     private boolean canRedraw = false;
 
-    private ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<Row>();
+    private Deque<Row> rows = new ConcurrentLinkedDeque<>();
 
     @Override
     public void doLoop() throws Exception {

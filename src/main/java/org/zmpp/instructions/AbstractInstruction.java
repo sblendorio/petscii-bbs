@@ -149,7 +149,7 @@ public abstract class AbstractInstruction implements Instruction {
     super();
     this.opcode = opcode;
     this.machine = machine;
-    this.operands = new ArrayList<Operand>();
+    this.operands = new ArrayList<>();
     this.branchIfConditionTrue = true;
     this.storyfileVersion =
       machine.getGameData().getStoryFileHeader().getVersion();

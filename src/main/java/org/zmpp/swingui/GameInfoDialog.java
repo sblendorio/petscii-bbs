@@ -103,7 +103,7 @@ public class GameInfoDialog extends JDialog {
     infopanel.setAlignmentX(Component.LEFT_ALIGNMENT);
     infopanel.setPreferredSize(new Dimension(STD_WIDTH, 400));
     
-    List<JLabel> labels = new ArrayList<JLabel>();
+    List<JLabel> labels = new ArrayList<>();
     labels.add(new JLabel(storyinfo.getTitle()));
     
     if (storyinfo.getHeadline() != null) {

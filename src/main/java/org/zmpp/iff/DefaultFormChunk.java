@@ -84,7 +84,7 @@ public class DefaultFormChunk extends DefaultChunk implements FormChunk {
    */
   private void readSubChunks() {
     
-    subChunks = new ArrayList<Chunk>();
+    subChunks = new ArrayList<>();
     
     // skip the identifying information
     final int length = getSize();

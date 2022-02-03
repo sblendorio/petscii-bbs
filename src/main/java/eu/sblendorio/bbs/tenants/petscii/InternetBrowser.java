@@ -131,8 +131,7 @@ public class InternetBrowser extends PetsciiThread {
             return "_quit_program";
         }
 
-        String url = makeUrl(search);
-        return url;
+        return makeUrl(search);
     }
 
     void clearAddressBar(){
@@ -466,7 +465,6 @@ public class InternetBrowser extends PetsciiThread {
 
     public static List<Entry> getAllLinks(Document webpage) throws Exception {
         List<Entry> urls = new ArrayList<>(); //why
-        String title = webpage.title();
         Elements links = webpage.select("a[href]");
         Element link;
 
