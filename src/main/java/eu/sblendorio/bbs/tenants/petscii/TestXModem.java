@@ -16,7 +16,9 @@ public class TestXModem extends PetsciiThread {
         byte[] bytes = downloadFile(new URL("https://server.com/file.prg"));
         log("Size = " + bytes.length);
 
+        // Path path = Paths.get("/tmp/x1");
         XModem t = new XModem(this.io, this.io.out());
+        // t.send(Files.readAllBytes(path))
         t.send(bytes);
     }
 }
