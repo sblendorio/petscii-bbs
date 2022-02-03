@@ -131,6 +131,7 @@ Thanks to:
 - [**Felice Pagano**](https://github.com/felicepagano/) for code optimizations
 - [**Henrik Wetterström**](http://droid64.sourceforge.net/) for **droid64** project, used to read and open D64 files
 - [**Jatin Thakur**](https://github.com/jn1772/Connect4AI) for the **connect-4** AI
+- [**Matteo Baccan**](https://github.com/matteobaccan) for code optimizations
 - [**Piero Corasaniti**](https://github.com/corasaniti) for the *SD2IEC* version of CSDB tenant
 - [**Richard Bettridge**](https://github.com/ssshake/theoldnet-bbs) for "Internet Browser" tenant
 - [**Roberto Manicardi**](https://github.com/rmanicardi) for adapting ZMPP to BBS engine
