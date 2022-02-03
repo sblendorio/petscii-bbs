@@ -170,7 +170,7 @@ public class D71 extends DiskImage {
 			feedbackMessage.append("Error: Too many entries in directory (more than ").append(FILE_NUMBER_LIMIT).append(")!\n");
 		}
 		filesUsedCount = filenumber;
-		validate(new ArrayList<Integer>());
+		validate(new ArrayList<>());
 	}
 
 	/**

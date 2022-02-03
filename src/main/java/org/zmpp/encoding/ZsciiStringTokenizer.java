@@ -83,7 +83,7 @@ public class ZsciiStringTokenizer {
    */
   private void tokenize(final ZsciiString input, final ZsciiString delim) {
    
-    final List<ZsciiString> tokens = new ArrayList<ZsciiString>();
+    final List<ZsciiString> tokens = new ArrayList<>();
     int currentIndex = 0;
     final int inputlength = input.length();
     ZsciiStringBuilder currentTokenBuilder = new ZsciiStringBuilder();

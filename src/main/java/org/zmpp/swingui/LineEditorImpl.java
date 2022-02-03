@@ -47,7 +47,7 @@ MouseMotionListener {
   
     this.fileheader = fileheader;
     this.encoding = encoding;
-    editbuffer = new LinkedList<Short>();
+    editbuffer = new LinkedList<>();
   }
   
   public void setInputMode(boolean flag, boolean flushbuffer) {

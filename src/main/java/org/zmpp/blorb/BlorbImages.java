@@ -76,7 +76,7 @@ public class BlorbImages extends BlorbMediaCollection<BlorbImage> {
    */
   protected void initDatabase() {
     
-    images = new HashMap<Integer, BlorbImage>();    
+    images = new HashMap<>();    
   }
   
   /**

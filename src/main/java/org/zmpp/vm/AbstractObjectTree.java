@@ -72,7 +72,7 @@ public abstract class AbstractObjectTree implements ObjectTree {
       final ZCharDecoder decoder) {
 
     super();
-    this.objectCache = new HashMap<Integer, ZObject>();
+    this.objectCache = new HashMap<>();
     this.memaccess = memaccess;
     this.address = address;
     this.decoder = decoder;

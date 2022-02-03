@@ -221,7 +221,7 @@ public class D64 extends DiskImage {
 		} catch (ArrayIndexOutOfBoundsException e) { //NOSONAR
 			feedbackMessage.append("Error: Sector ").append(track).append("/").append(sector).append(" is outside of image.\n");
 		}
-		validate(new ArrayList<Integer>());
+		validate(new ArrayList<>());
 	}
 
 	/**

@@ -250,7 +250,7 @@ public final class DefaultZCharDecoder implements ZCharDecoder {
     //if (length > 0) System.out.println("maximum length is: " + length);
     short zword = 0;
     int currentAddr = address;
-    final List<short[]> byteList = new ArrayList<short[]>();
+    final List<short[]> byteList = new ArrayList<>();
     
     do {
       

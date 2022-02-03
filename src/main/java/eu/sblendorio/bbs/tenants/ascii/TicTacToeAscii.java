@@ -67,10 +67,7 @@ public class TicTacToeAscii extends AsciiThread {
                 char piece = model.getPlayerToMove();
                 model.makeMoveInSquare(row, col);
             } else {
-                char piece = model.getPlayerToMove();
-                String coords = computerMove(model);
-                int row = coords.charAt(0) - '0';
-                int col = coords.charAt(1) - '0';
+                computerMove(model);
             }
             userTurn = !userTurn;
         } while (!model.gameIsComplete());

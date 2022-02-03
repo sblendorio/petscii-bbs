@@ -98,7 +98,7 @@ public class DefaultDictionary extends AbstractDictionary {
    */
   private void createLookupMap() {
     
-    lookupMap = new HashMap<ZsciiString, Integer>();
+    lookupMap = new HashMap<>();
     int entryAddress;
     
     for (int i = 0, n = getNumberOfEntries(); i < n; i++) {

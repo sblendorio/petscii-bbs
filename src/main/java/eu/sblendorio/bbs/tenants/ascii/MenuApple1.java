@@ -94,9 +94,6 @@ public class MenuApple1 extends AsciiThread {
             cls();
             displayMenu();
 
-            //final String line = geoData != null ? "Connected from "+geoData.city+", "+geoData.country : EMPTY;
-            final String line = "(C) F. Sblendorio in 2018, 2019";
-
             flush();
             boolean validKey;
             do {

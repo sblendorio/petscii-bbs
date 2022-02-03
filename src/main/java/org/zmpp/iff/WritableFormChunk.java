@@ -46,7 +46,7 @@ public class WritableFormChunk implements FormChunk {
   
     super();
     this.subId = subId;
-    this.subChunks = new ArrayList<Chunk>();
+    this.subChunks = new ArrayList<>();
   }
   
   /**

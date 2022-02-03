@@ -487,7 +487,7 @@ public class InputFunctions implements InputLine {
     final List<ZsciiString> tokens = tokenize(input);
     
     final Map<ZsciiString, Integer> parsedTokens =
-      new HashMap<ZsciiString, Integer>();
+      new HashMap<>();
     
     // Write the number of tokens in byte 1 of the parse buffer
     final int maxwords = memaccess.readUnsignedByte(parsebuffer);
@@ -589,7 +589,7 @@ public class InputFunctions implements InputLine {
    */
   private List<ZsciiString> tokenize(final ZsciiString input) {
     
-    final List<ZsciiString> result = new ArrayList<ZsciiString>();
+    final List<ZsciiString> result = new ArrayList<>();
     
     // Retrieve the defined separators
     final ZsciiStringBuilder separators = new ZsciiStringBuilder();

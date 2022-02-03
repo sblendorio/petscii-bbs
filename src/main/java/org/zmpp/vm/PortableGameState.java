@@ -132,7 +132,7 @@ public class PortableGameState {
     
     super();
     serialBytes = new byte[6];
-    stackFrames = new ArrayList<StackFrame>();
+    stackFrames = new ArrayList<>();
   }
   
   // **********************************************************************
@@ -382,7 +382,7 @@ public class PortableGameState {
     final MemoryAccess chunkMem = cmemChunk.getMemoryAccess();
     int offset = Chunk.CHUNK_HEADER_LENGTH;
     final int chunksize = cmemChunk.getSize() + Chunk.CHUNK_HEADER_LENGTH;
-    final List<Byte> byteBuffer = new ArrayList<Byte>();
+    final List<Byte> byteBuffer = new ArrayList<>();
     
     byte b;
     
@@ -603,7 +603,7 @@ public class PortableGameState {
   private Chunk createStksChunk() {
     
     final byte[] id = "Stks".getBytes();
-    final List<Byte> byteBuffer = new ArrayList<Byte>();
+    final List<Byte> byteBuffer = new ArrayList<>();
     
     for (StackFrame stackFrame : stackFrames) {
      
@@ -710,7 +710,7 @@ public class PortableGameState {
     }
     
     // Stack frames
-    final List<RoutineContext> contexts = new ArrayList<RoutineContext>();
+    final List<RoutineContext> contexts = new ArrayList<>();
             
     // Dummy frame, only the stack is interesting
     if (stackFrames.size() > 0) {
@@ -809,7 +809,7 @@ public class PortableGameState {
   private int[] getArgs(final byte argspec) {
     
     int andBit;
-    final List<Integer> result = new ArrayList<Integer>();
+    final List<Integer> result = new ArrayList<>();
     
     for (int i = 0; i < 7; i++) {
       

@@ -77,7 +77,7 @@ public class MemoryOutputStream implements OutputStream {
    */
   public MemoryOutputStream(Machine machine) {
   
-    tableStack = new ArrayList<TablePosition>();
+    tableStack = new ArrayList<>();
     this.machine = machine;
   }
   

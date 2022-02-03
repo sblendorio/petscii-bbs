@@ -73,7 +73,7 @@ public class BlorbSounds extends BlorbMediaCollection<SoundEffect> {
    */
   protected void initDatabase() {
     
-    sounds = new HashMap<Integer, SoundEffect>();
+    sounds = new HashMap<>();
   }
 
   /**

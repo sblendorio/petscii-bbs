@@ -37,7 +37,7 @@ public class ZsciiStringBuilder {
   /**
    * This list holds the data.
    */
-  private List<Short> data = new ArrayList<Short>();
+  private List<Short> data = new ArrayList<>();
 
   /**
    * Adds a ZSCII character to the builder object.

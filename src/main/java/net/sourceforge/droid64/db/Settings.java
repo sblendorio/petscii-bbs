@@ -74,7 +74,7 @@ public class Settings {
 
 	private static List<String> getStringListParam(String name) {
 		Parameter param = settingTypeMap.get(name);
-		return param != null ? param.getStringListValue() : new ArrayList<String>();
+		return param != null ? param.getStringListValue() : new ArrayList<>();
 	}
 
 }
