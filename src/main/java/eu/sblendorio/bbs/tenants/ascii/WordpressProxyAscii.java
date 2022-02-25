@@ -261,10 +261,11 @@ public class WordpressProxyAscii extends AsciiThread {
             logger.error("Error during retrieving author", e);
         }
         final String content = p.content
-            .replaceAll("(?is)<style>.*</style>", EMPTY)
-            .replaceAll("(?is)<script .*</script>", EMPTY)
-            .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(</?(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
-            .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r)*)+", EMPTY);
+                .replaceAll("(?is)[\n\r ]+", " ")
+                .replaceAll("(?is)<style>.*</style>", EMPTY)
+                .replaceAll("(?is)<script .*</script>", EMPTY)
+                .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(</?(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
+                .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r)*)+", EMPTY);
         final String head = p.title + (isNotBlank(author) ? " - di " + author : EMPTY) + "<br>" + HR_TOP ;
         List<String> rows = wordWrap(head);
 

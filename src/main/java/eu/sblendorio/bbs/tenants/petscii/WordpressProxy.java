@@ -264,6 +264,7 @@ public class WordpressProxy extends PetsciiThread {
             logger.error("Error during retrieving author", e);
         }
         final String content = p.content
+                .replaceAll("(?is)[\n\r ]+", " ")
                 .replaceAll("(?is)<style>.*</style>", EMPTY)
                 .replaceAll("(?is)<script .*</script>", EMPTY)
                 .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(</?(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
