@@ -618,7 +618,7 @@ public abstract class BbsThread extends Thread {
 
         int ch;
         long a = System.currentTimeMillis();
-        while ((ch = keyPressed()) == -1 && System.currentTimeMillis() - a < timeout) {
+        while ((ch = keyPressed()) < 32 && System.currentTimeMillis() - a < timeout) {
             try {
                 Thread.sleep(INTERVAL);
             } catch (InterruptedException e) {
