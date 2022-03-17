@@ -618,7 +618,7 @@ public abstract class BbsThread extends Thread {
 
         int ch;
         long a = System.currentTimeMillis();
-        while ((ch = keyPressed()) < 32 && System.currentTimeMillis() - a < timeout) {
+        while (!pressed(ch = keyPressed()) && System.currentTimeMillis() - a < timeout) {
             try {
                 Thread.sleep(INTERVAL);
             } catch (InterruptedException e) {
@@ -626,5 +626,15 @@ public abstract class BbsThread extends Thread {
             }
         }
         return ch;
+    }
+
+    private boolean pressed(int i) {
+        return
+            i == 8  ||
+            i == 9  ||
+            i == 10 ||
+            i == 13 ||
+            i == 20 ||
+            i >= 32;
     }
 }
