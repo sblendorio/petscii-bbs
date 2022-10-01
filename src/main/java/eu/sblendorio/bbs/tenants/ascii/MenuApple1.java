@@ -81,7 +81,7 @@ public class MenuApple1 extends AsciiThread {
     public String rssPropertyTimeoutDefault() { return "40000"; }
 
     protected void banner() {
-        println("BBS for Apple-1 - by F. Sblendorio 2020");
+        println("BBS for Apple-1 - by F. Sblendorio 2022");
         println();
     }
 
