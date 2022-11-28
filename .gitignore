@@ -4,9 +4,10 @@ target/
 .DS_Store
 *.iml
 dependency-reduced-pom.xml
-petscii-bbs.log
 Thumbs.db
 .classpath
 .project
 .settings/
 .gradle
+*.log
+*.ziff
