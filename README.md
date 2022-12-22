@@ -122,7 +122,7 @@ You can study the sample BBSes (all classes that extend **PetsciiThread**) in th
 
 ## Sample online BBSes
 - **bbs.sblendorio.eu** - port **6510**
-- **bbs.retrocampus.com** - port **6510**
+- **bbs.retrocampus.com** - port **6510** (included in [**Cloanto**](https://www.cloanto.com) [**c64forever.com**](https://www.c64forever.com/)'s version of CCGMS)
  
 ## Credits
 Thanks to:
