@@ -24,7 +24,7 @@ This framework provides base classes for build your own **BBS** in PETSCII mode,
 - Knowledge of PETSCII encoding
 
 ## Getting started
-Let's suppose to build a very simple BBS that asks your name welcomes you. The basic operation is to extend **PetsciiThread** class (or **AsciiThread** for ASCII BBS) implementing **doLoop()** method, such as:
+Let's suppose to build a very simple BBS that asks your name and welcomes you. The basic operation is to extend **PetsciiThread** class (or **AsciiThread** for ASCII BBS) implementing **doLoop()** method, such as:
 
     public class WelcomeBBS extends PetsciiThread {
         
