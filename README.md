@@ -12,6 +12,7 @@ This framework provides base classes for build your own **BBS** in PETSCII mode,
 - an [Ultimate 64](https://ultimate64.com/), running [UltimateTerm](https://csdb.dk/release/?id=198112)
 - a Commodore 64 with an [Easy Flash 3](http://store.go4retro.com/easyflash-3/) (with [CCGMS-EF](https://csdb.dk/release/?id=158760)) + a PC running [EF3USB](https://csdb.dk/release/?id=144900&show=notes)
 - a common PC/Mac running [SyncTerm](https://sourceforge.net/projects/syncterm/) (*ConnectionType*=_Telnet_, *ScreenMode*=_C64_)
+- [C64 Forever](https://www.c64forever.com/), running CCGMS (included)
 
 ## System requirements
 - Java Development Kit (JDK) and JRE version 1.8+
@@ -122,7 +123,7 @@ You can study the sample BBSes (all classes that extend **PetsciiThread**) in th
 
 ## Sample online BBSes
 - **bbs.sblendorio.eu** - port **6510**
-- **bbs.retrocampus.com** - port **6510** (included in [**Cloanto**](https://www.cloanto.com) [**c64forever.com**](https://www.c64forever.com/)'s version of CCGMS)
+- **bbs.retrocampus.com** - port **6510** (included in [**C64 Forever**](https://www.c64forever.com/) version of CCGMS)
  
 ## Credits
 Thanks to:
