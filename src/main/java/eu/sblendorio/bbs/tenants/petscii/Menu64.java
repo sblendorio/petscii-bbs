@@ -143,7 +143,7 @@ public class Menu64 extends PetsciiThread {
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '7', REVOFF, 161); print("Wired          "); write(REVON, 161, 'o', REVOFF, 161); println("Indie Campus");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '8', REVOFF, 161); print("Sys64738       "); write(REVON, 161, 'p', REVOFF, 161); println("Retrocommodore");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '9', REVOFF, 161); print("Medbunker      "); write(REVON, 161, 'q', REVOFF, 161); println("Valoroso.IT");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '0', REVOFF, 161); println("FNOMCeO");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '0', REVOFF, 161); print("FNOMCeO        "); write(REVON, 161, 'r', REVOFF, 161); println("Mupin");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'a', REVOFF, 161); println("Medical Facts");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'b', REVOFF, 161); println("Alessandro Albano");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'c', REVOFF, 161); println("Retrocampus");
@@ -195,6 +195,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == 'o') launch(new IndieCampus());
                 else if (key == 'p') launch(new Retrocommodore());
                 else if (key == 'q') launch(new ValorosoIt());
+                else if (key == 'r') launch(new Mupin());
                 else {
                     validKey = false;
                 }
@@ -316,8 +317,8 @@ public class Menu64 extends PetsciiThread {
             println("CSDb (recommended)");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '2', REVOFF, 161);
             println("CSDb - SD2IEC (experimental)");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '3', REVOFF, 161);
-            println("Arnold C64");
+            /// write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '3', REVOFF, 161);
+            // println("Arnold C64");
             newline();
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '.', REVOFF, 161);
             print("Exit ");
@@ -339,7 +340,7 @@ public class Menu64 extends PetsciiThread {
                     return;
                 } else if (key == '1') launch(new CsdbReleases());
                 else if (key == '2') launch(new CsdbReleasesSD2IEC());
-                else if (key == '3') launch(new ArnoldC64());
+                // else if (key == '3') launch(new ArnoldC64());
                 else {
                     validKey = false;
                 }
