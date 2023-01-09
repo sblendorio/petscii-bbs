@@ -24,7 +24,7 @@ public class MenuApple1M10 extends MenuApple1 {
 
     @Override
     protected void banner() {
-        println("BBS for M10 - by F. Sblendorio 2022");
+        println("BBS for M10 - by F. Sblendorio 2023");
         newline();
     }
 

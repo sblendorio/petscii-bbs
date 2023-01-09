@@ -24,7 +24,7 @@ public class MenuApple1Telnet extends MenuApple1 {
 
     @Override
     protected void banner() {
-        println("Retrocampus BBS for UNIX Telnet - by F. Sblendorio 2022");
+        println("Retrocampus BBS for UNIX Telnet - by F. Sblendorio 2023");
         newline();
     }
 
