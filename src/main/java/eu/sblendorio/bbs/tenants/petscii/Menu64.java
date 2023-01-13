@@ -139,7 +139,7 @@ public class Menu64 extends PetsciiThread {
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '3', REVOFF, 161); print("Valigia Blu    "); write(REVON, 161, 'k', REVOFF, 161); println("Butac");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '4', REVOFF, 161); print("Linkiesta      "); write(REVON, 161, 'l', REVOFF, 161); println("Facta news");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '5', REVOFF, 161); print("Il Fatto quot. "); write(REVON, 161, 'm', REVOFF, 161); println("David Puente");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '6', REVOFF, 161); print("Next Quotidiano"); write(REVON, 161, 'n', REVOFF, 161); println("The Fool");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '6', REVOFF, 161); print("Tex Instruments"); write(REVON, 161, 'n', REVOFF, 161); println("The Fool");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '7', REVOFF, 161); print("Wired          "); write(REVON, 161, 'o', REVOFF, 161); println("Indie Campus");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '8', REVOFF, 161); print("Sys64738       "); write(REVON, 161, 'p', REVOFF, 161); println("Retrocommodore");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '9', REVOFF, 161); print("Medbunker      "); write(REVON, 161, 'q', REVOFF, 161); println("Valoroso.IT");
@@ -173,7 +173,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == '3') launch(new ValigiaBlu());
                 else if (key == '4') launch(new Linkiesta());
                 else if (key == '5') launch(new IlFattoQuotidiano());
-                else if (key == '6') launch(new NextQuotidiano());
+                else if (key == '6') launch(new OneTexasInstrumentItaliaPetscii());
                 else if (key == '7') launch(new WiredItalia());
                 else if (key == '8') launch(new Sys64738());
                 else if (key == '9') launch(new Medbunker());
