@@ -289,7 +289,7 @@ public class Menu64 extends PetsciiThread {
                 } else if (key == '1') launch(new TicTacToe());
                 else if (key == '2') launch(new ConnectFour());
                 else if (key == '3') launch(new Magic15());
-                else if (key == '4') launch(new ZorkMachine("zmpp/zork1.z3", readBinaryFile("petscii/zork1.seq")));
+                else if (key == '4') launch(new ZorkMachine("zmpp/zork1.z3", readBinaryFile("petscii/zork1.seq"))); // Zork-1-ITA-v7.z5
                 else if (key == '5') launch(new ZorkMachine("zmpp/zork2.z3", readBinaryFile("petscii/zork2.seq")));
                 else if (key == '6') launch(new ZorkMachine("zmpp/zork3.z3", readBinaryFile("petscii/zork3.seq")));
                 else if (key == '7') launch(new ZorkMachine("zmpp/hitchhiker-r60.z3", readBinaryFile("petscii/dontpanic.seq")));

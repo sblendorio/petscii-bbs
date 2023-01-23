@@ -73,30 +73,56 @@ public class BbcAscii extends RssAscii {
     }
 
     public Map<String, byte[]> logo = ImmutableMap.of(
+        "videotex", bytes("BBC News\r\n--------", line),
         "ascii", bytes("BBC News\r\n--------", line),
         "ansi", bytes(readBinaryFile("ansi/BbcNews.ans"), noattr),
         "utf8", bytes(readBinaryFile("ansi/BbcNews.utf8ans"), noattr)
     );
 
     public Map<String, Integer> logoHeightsMenu = ImmutableMap.of(
+        "videotex", 3,
         "ascii", 3,
         "ansi", 4,
         "utf8", 4
     );
 
     public Map<String, Integer> logoHeightsNews = ImmutableMap.of(
+        "videotex", 2,
         "ascii", 2,
         "ansi", 4,
         "utf8", 4
     );
 
     public Map<String, byte[]> hrDashes = ImmutableMap.of(
+        "videotex", "-".getBytes(ISO_8859_1),
         "ascii", "-".getBytes(ISO_8859_1),
         "ansi", bytes(196),
         "utf8",  "\u2500".getBytes(UTF_8)
     );
 
     public Map<String, Map<String, byte[]>> logos = ImmutableMap.of(
+        "videotex", ImmutableMap.<String, byte[]> builder()
+            .put("201", bytes("BBC - Top Stories", line))
+            .put("202", bytes("BBC - World", line))
+            .put("203", bytes("BBC - United Kingdom", line))
+            .put("204", bytes("BBC - Business", line))
+            .put("205", bytes("BBC - Politics", line))
+            .put("206", bytes("BBC - Health", line))
+            .put("207", bytes("BBC - Education", line))
+            .put("208", bytes("BBC - Science", line))
+            .put("209", bytes("BBC - Technology", line))
+            .put("210", bytes("BBC - Entertainment", line))
+            .put("211", bytes("BBC - Africa", line))
+            .put("212", bytes("BBC - Asia", line))
+            .put("213", bytes("BBC - Europe", line))
+            .put("214", bytes("BBC - Middle East", line))
+            .put("215", bytes("BBC - US & Canada", line))
+            .put("216", bytes("BBC - Latin America", line))
+            .put("217", bytes("BBC - England", line))
+            .put("218", bytes("BBC - Northern Ireland", line))
+            .put("219", bytes("BBC - Scotland", line))
+            .put("220", bytes("BBC - Wales", line))
+            .build(),
         "ascii", ImmutableMap.<String, byte[]> builder()
             .put("201", bytes("BBC - Top Stories", line))
             .put("202", bytes("BBC - World", line))

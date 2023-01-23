@@ -69,24 +69,28 @@ public class CnnAscii extends RssAscii {
     }
 
     public Map<String, byte[]> logo = ImmutableMap.of(
+        "videotex", readBinaryFile("videotex/cnn.vdt"),
         "ascii", bytes("CNN News\r\n--------", line),
         "ansi", bytes(readBinaryFile("ansi/CnnNews.ans"), noattr),
         "utf8", bytes(readBinaryFile("ansi/CnnNews.utf8ans"), noattr)
     );
 
     public Map<String, Integer> logoHeightsMenu = ImmutableMap.of(
+        "videotex", 3,
         "ascii", 3,
         "ansi", 4,
         "utf8", 4
     );
 
     public Map<String, Integer> logoHeightsNews = ImmutableMap.of(
+        "videotex", 2,
         "ascii", 2,
         "ansi", 4,
         "utf8", 4
     );
 
     public Map<String, byte[]> hrDashes = ImmutableMap.of(
+        "videotex", "-".getBytes(ISO_8859_1),
         "ascii", "-".getBytes(ISO_8859_1),
         "ansi", bytes(196),
         "utf8",  "\u2500".getBytes(UTF_8)
@@ -94,6 +98,24 @@ public class CnnAscii extends RssAscii {
 
 
     public Map<String, Map<String, byte[]>> logos = ImmutableMap.of(
+        "videotex", ImmutableMap.<String, byte[]> builder()
+            .put("101", bytes("CNN - Top Stories", line))
+            .put("102", bytes("CNN - World", line))
+            .put("103", bytes("CNN - Africa", line))
+            .put("104", bytes("CNN - Americas", line))
+            .put("105", bytes("CNN - Asia", line))
+            .put("106", bytes("CNN - Europe", line))
+            .put("107", bytes("CNN - Middle East", line))
+            .put("108", bytes("CNN - U.S.A.", line))
+            .put("109", bytes("CNN - Technology", line))
+            .put("110", bytes("CNN - Science & Space", line))
+            .put("111", bytes("CNN - Entertainment", line))
+            .put("112", bytes("CNN - Money", line))
+            .put("113", bytes("CNN - World Sport", line))
+            .put("114", bytes("CNN - Football", line))
+            .put("115", bytes("CNN - Travel", line))
+            .put("116", bytes("CNN - Most Recent", line))
+            .build(),
         "ascii", ImmutableMap.<String, byte[]> builder()
             .put("101", bytes("CNN - Top Stories", line))
             .put("102", bytes("CNN - World", line))
