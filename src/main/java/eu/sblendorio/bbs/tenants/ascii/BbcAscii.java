@@ -73,35 +73,35 @@ public class BbcAscii extends RssAscii {
     }
 
     public Map<String, byte[]> logo = ImmutableMap.of(
-        "videotex", bytes("BBC News\r\n--------", line),
+        "minitel", bytes("BBC News\r\n--------", line),
         "ascii", bytes("BBC News\r\n--------", line),
         "ansi", bytes(readBinaryFile("ansi/BbcNews.ans"), noattr),
         "utf8", bytes(readBinaryFile("ansi/BbcNews.utf8ans"), noattr)
     );
 
     public Map<String, Integer> logoHeightsMenu = ImmutableMap.of(
-        "videotex", 3,
+        "minitel", 3,
         "ascii", 3,
         "ansi", 4,
         "utf8", 4
     );
 
     public Map<String, Integer> logoHeightsNews = ImmutableMap.of(
-        "videotex", 2,
+        "minitel", 2,
         "ascii", 2,
         "ansi", 4,
         "utf8", 4
     );
 
     public Map<String, byte[]> hrDashes = ImmutableMap.of(
-        "videotex", "-".getBytes(ISO_8859_1),
+        "minitel", "-".getBytes(ISO_8859_1),
         "ascii", "-".getBytes(ISO_8859_1),
         "ansi", bytes(196),
         "utf8",  "\u2500".getBytes(UTF_8)
     );
 
     public Map<String, Map<String, byte[]>> logos = ImmutableMap.of(
-        "videotex", ImmutableMap.<String, byte[]> builder()
+        "minitel", ImmutableMap.<String, byte[]> builder()
             .put("201", bytes("BBC - Top Stories", line))
             .put("202", bytes("BBC - World", line))
             .put("203", bytes("BBC - United Kingdom", line))

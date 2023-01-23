@@ -1,10 +1,10 @@
-package eu.sblendorio.bbs.tenants.videotex;
+package eu.sblendorio.bbs.tenants.minitel;
 
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1;
 
-public class MenuVideotexWithEcho  extends MenuApple1 {
+public class MenuMinitelWithEcho extends MenuApple1 {
 
-    public MenuVideotexWithEcho() {
+    public MenuMinitelWithEcho() {
         super();
         setLocalEcho(true);
         clsBytes = new byte[] {
@@ -14,11 +14,11 @@ public class MenuVideotexWithEcho  extends MenuApple1 {
 
     @Override
     public String getCharset() {
-        return "videotex";
+        return "minitel";
     }
 
     protected void banner() {
-        write(readBinaryFile("videotex/retrocampus-logo.vdt"));
+        write(readBinaryFile("minitel/retrocampus-logo.vdt"));
     }
 
 }

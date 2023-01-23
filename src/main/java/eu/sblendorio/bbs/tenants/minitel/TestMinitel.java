@@ -1,8 +1,8 @@
-package eu.sblendorio.bbs.tenants.videotex;
+package eu.sblendorio.bbs.tenants.minitel;
 
 import eu.sblendorio.bbs.core.AsciiThread;
 
-public class TestVideotex extends AsciiThread {
+public class TestMinitel extends AsciiThread {
     @Override
     public void doLoop() throws Exception {
         write(12);
