@@ -13,9 +13,8 @@ import java.io.UnsupportedEncodingException;
 import static java.lang.System.arraycopy;
 import java.net.Socket;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
-import java.util.Collection;
+
 import java.util.Collections;
-import static java.util.Collections.emptySet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -87,21 +86,22 @@ public abstract class BbsInputOutput extends Reader {
         out.setQuoteMode(q);
     }
 
-    private int prevch = 0;
-    private long prev = System.currentTimeMillis();
+    private int prevCharacter = 0;
+    private long prevMilliseconds = System.currentTimeMillis();
     public int readKey() throws IOException {
         int result = in.read();
-        long delta = System.currentTimeMillis() - prev;
-        prev = System.currentTimeMillis();
+        long deltaMilliseconds = System.currentTimeMillis() - prevMilliseconds;
+        prevMilliseconds = System.currentTimeMillis();
 
-        if (delta < 9 && prevch == 19) { // Key substitution for Minitel keyboard
+        //System.out.println("result="+result+", prevCharacter="+prevCharacter+", deltaMilliseconds="+deltaMilliseconds);
+        if (deltaMilliseconds < 95 && prevCharacter == 19) { // Key substitution for Minitel keyboard
                  if (result == 65) result = 10; // NEWLINE
             else if (result == 71) result = 8;  // BACKSPACE
             else result = 0;
-            System.out.println("Double key for Minitel " + result);
+            //System.out.println("Double key for Minitel " + result);
         }
         if (result == -1) throw new BbsIOException("BbsIOException::readKey()");
-        prevch = result;
+        prevCharacter = result;
         return result;
     }
 
