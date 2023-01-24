@@ -12,6 +12,10 @@ public class MenuMinitelWithEcho extends MenuApple1 {
         };
     }
 
+    public byte[] initializingBytes() {
+        return new byte[] { 0x1B, 0x3A, 0x69, 0x43 };
+    }
+
     @Override
     public String getCharset() {
         return "minitel";
