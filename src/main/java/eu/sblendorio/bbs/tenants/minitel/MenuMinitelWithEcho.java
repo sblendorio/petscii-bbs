@@ -14,6 +14,7 @@ public class MenuMinitelWithEcho extends MenuApple1 {
 
     public byte[] initializingBytes() {
         return new byte[] { 0x1B, 0x3A, 0x69, 0x43 };
+        // return new byte[] { 0x41, 0x42, 0x43 };
     }
 
     @Override
@@ -25,4 +26,9 @@ public class MenuMinitelWithEcho extends MenuApple1 {
         write(readBinaryFile("minitel/retrocampus-logo.vdt"));
     }
 
+    @Override
+    public void initBbs() throws Exception {
+        Thread.sleep(2000);
+        resetInput();
+    }
 }
