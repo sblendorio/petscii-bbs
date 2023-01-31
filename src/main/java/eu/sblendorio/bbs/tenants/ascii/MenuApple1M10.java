@@ -48,7 +48,7 @@ public class MenuApple1M10 extends MenuApple1 {
         println("E - The 8-Bit Guy      R - Zork III");
         println("Italian News---------  S - Hitchhiker's");
         println("F - Televideo RAI");
-        println("G - Wired Italia");
+        println("G - Lercio");
         println("H - Disinformatico");
         println("I - Mupin.it            Services");
         println("J - Fatto Quotidiano    ----------");
