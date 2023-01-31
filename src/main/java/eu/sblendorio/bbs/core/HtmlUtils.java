@@ -50,6 +50,9 @@ public class HtmlUtils {
                 .replaceAll("[ÒÓ]|&Ograve;?|&Oacute;?|&#xD2;|&#xD3;", "O'")
                 .replaceAll("[ùú]|&ugrave;?|&uacute;?|&#xF9;|&#xFA;", "u'")
                 .replaceAll("[ÙÚ]|&Ugrave;?|&Uacute;?|&#xD9;|&#xDA;", "U'")
+                .replaceAll("[å]|&#xE5;|&#229|&aring;", "a")
+                .replaceAll("[Å]|&#xC5;|&#197|&Aring;|&#8491;|&#x212B;", "A")
+
                 .replaceAll("&#160;|&#xA0;|&nbsp;?", " ")
                 .replaceAll("’|‘|°|&apos;|&rsquo;|&rsquor;|&lsquo;|&lsquor;|&sbquo;|&#x2019;|&#8216;|&#8217;|&#039;|&#39;|\u0300|\u0301", "'")
                 .replaceAll("“|”|&quot;|«|»|&#8220;|&#8221;|&laquo;|&raquo;|&#xAB;|&#xBB;|&#x201C;|&#x201D;", "\"")
