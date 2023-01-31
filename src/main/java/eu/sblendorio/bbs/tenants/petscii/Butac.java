@@ -3,7 +3,7 @@ package eu.sblendorio.bbs.tenants.petscii;
 import eu.sblendorio.bbs.core.Hidden;
 
 @Hidden
-public class atButac extends WordpressProxy {
+public class Butac extends WordpressProxy {
 
     public Butac() {
         super();
