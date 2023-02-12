@@ -28,7 +28,7 @@ public class MenuMinitelWithEcho extends MenuApple1 {
 
     @Override
     public void initBbs() throws Exception {
-        Thread.sleep(2000);
+        Thread.sleep(2300);
         resetInput();
     }
 }

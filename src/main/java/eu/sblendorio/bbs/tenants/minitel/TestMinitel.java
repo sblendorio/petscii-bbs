@@ -5,9 +5,8 @@ import eu.sblendorio.bbs.core.AsciiThread;
 public class TestMinitel extends AsciiThread {
     @Override
     public void doLoop() throws Exception {
-        write(12);
-        println("Prova");
-        write(12);
+        cls();
+        println("Prova: à");
         println("Ciao");
     }
 }
