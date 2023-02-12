@@ -134,24 +134,25 @@ public class Menu64 extends PetsciiThread {
             gotoXY(4,4);
             write(REVON, GREEN, 161, WHITE, ' ', RED, REVOFF, 161, CYAN); println("Italian News");
             write(RIGHT, RIGHT, RIGHT, ' ', ' ', ' ', ' ', LIGHT_BLUE); println(repeat((char) 163, 12));
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161); print("Televideo      "); write(REVON, 161, 'i', REVOFF, 161); println("Attivissimo");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '2', REVOFF, 161); print("Open Online    "); write(REVON, 161, 'j', REVOFF, 161); println("Bufale.net");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '3', REVOFF, 161); print("Valigia Blu    "); write(REVON, 161, 'k', REVOFF, 161); println("Butac");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '4', REVOFF, 161); print("Linkiesta      "); write(REVON, 161, 'l', REVOFF, 161); println("Facta news");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '5', REVOFF, 161); print("Il Fatto quot. "); write(REVON, 161, 'm', REVOFF, 161); println("David Puente");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '6', REVOFF, 161); print("TI Watch Museum"); write(REVON, 161, 'n', REVOFF, 161); println("The Fool");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '7', REVOFF, 161); print("Lercio         "); write(REVON, 161, 'o', REVOFF, 161); println("Indie Campus");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '8', REVOFF, 161); print("Sys64738       "); write(REVON, 161, 'p', REVOFF, 161); println("Retrocommodore");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '9', REVOFF, 161); print("Medbunker      "); write(REVON, 161, 'q', REVOFF, 161); println("Valoroso.IT");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '0', REVOFF, 161); print("FNOMCeO        "); write(REVON, 161, 'r', REVOFF, 161); println("Mupin");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161); print("Televideo      "); write(REVON, 161, 'j', REVOFF, 161); println("Bufale.net");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '2', REVOFF, 161); print("Open Online    "); write(REVON, 161, 'k', REVOFF, 161); println("Butac");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '3', REVOFF, 161); print("Valigia Blu    "); write(REVON, 161, 'l', REVOFF, 161); println("Facta news");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '4', REVOFF, 161); print("Linkiesta      "); write(REVON, 161, 'm', REVOFF, 161); println("David Puente");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '5', REVOFF, 161); print("Il Fatto quot. "); write(REVON, 161, 'n', REVOFF, 161); println("The Fool");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '6', REVOFF, 161); print("TI Watch Museum"); write(REVON, 161, 'o', REVOFF, 161); println("Indie Campus");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '7', REVOFF, 161); print("Lercio         "); write(REVON, 161, 'p', REVOFF, 161); println("Retrocommodore");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '8', REVOFF, 161); print("Sys64738       "); write(REVON, 161, 'q', REVOFF, 161); println("Valoroso.IT");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '9', REVOFF, 161); print("Medbunker      "); write(REVON, 161, 'r', REVOFF, 161); println("Mupin");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '0', REVOFF, 161); print("FNOMCeO        "); write(REVON, 161, 's', REVOFF, 161); println("Query Online");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'a', REVOFF, 161); println("Medical Facts");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'b', REVOFF, 161); println("Alessandro Albano");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'c', REVOFF, 161); println("Retrocampus");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'd', REVOFF, 161); println("RetroAcademy");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'e', REVOFF, 161); println("Arch. Informatica");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'f', REVOFF, 161); println("Punto Informatico");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'g', REVOFF, 161); println("Query Online");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'h', REVOFF, 161); print("CICAP Lombardia          "); write(REVON, 161, '.', REVOFF, 161); print("Exit");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'g', REVOFF, 161); println("Apulia Retrocomputing");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'h', REVOFF, 161); println("CICAP Lombardia");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'i', REVOFF, 161); print("Attivissimo              "); write(REVON, 161, '.', REVOFF, 161); print("Exit");
             flush();
             boolean validKey;
             do {
@@ -184,7 +185,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == 'd') launch(new RetroAcademy());
                 else if (key == 'e') launch(new ArcheologiaInformatica());
                 else if (key == 'f') launch(new PuntoInformatico());
-                else if (key == 'g') launch(new QueryOnline());
+                else if (key == 'g') launch(new OneApuliaRetrocomputingPetscii());
                 else if (key == 'h') launch(new CicapLombardia());
                 else if (key == 'i') launch(new Disinformatico());
                 else if (key == 'j') launch(new BufaleNet());
@@ -196,6 +197,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == 'p') launch(new Retrocommodore());
                 else if (key == 'q') launch(new ValorosoIt());
                 else if (key == 'r') launch(new Mupin());
+                else if (key == 's') launch(new QueryOnline());
                 else {
                     validKey = false;
                 }
