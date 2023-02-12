@@ -93,7 +93,7 @@ public abstract class BbsInputOutput extends Reader {
         long deltaMilliseconds = System.currentTimeMillis() - prevMilliseconds;
         prevMilliseconds = System.currentTimeMillis();
 
-        System.out.println("result="+result+", prevCharacter="+prevCharacter+", deltaMilliseconds="+deltaMilliseconds);
+        // System.out.println("result="+result+", prevCharacter="+prevCharacter+", deltaMilliseconds="+deltaMilliseconds);
         if (deltaMilliseconds < 800 && prevCharacter == 19) { // Key substitution for Minitel keyboard
                  if (result == 65) result = 10; // NEWLINE
             else if (result == 71) result = 8;  // BACKSPACE
@@ -302,8 +302,9 @@ public abstract class BbsInputOutput extends Reader {
 
     public void print(String msg) {
         if (msg == null) return;
-        for (char c: msg.toCharArray())
+        for (char c: msg.toCharArray()) {
             out.write(c);
+        }
     }
 
     public void writeRawFile(String filename) throws IOException {

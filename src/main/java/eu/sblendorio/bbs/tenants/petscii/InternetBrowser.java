@@ -441,7 +441,7 @@ public class InternetBrowser extends PetsciiThread {
             final int iLen = 37 - String.valueOf(i).length(); //I'm guessing something to do with the row width
 
             String title = post.name;
-            String line = WordUtils.wrap(filterPrintable(HtmlUtils.htmlClean(title)), iLen, "\r", true);
+            String line = WordUtils.wrap(filterPrintable(htmlClean(title)), iLen, "\r", true);
 
             println(line.replaceAll("\r", "\r " + repeat(" ", 37-iLen)));
         }
@@ -492,7 +492,7 @@ public class InternetBrowser extends PetsciiThread {
     }
 
     protected List<String> wordWrap(String s) {
-        String[] cleaned = filterPrintableWithNewline(HtmlUtils.htmlClean(s)).split("\n");
+        String[] cleaned = filterPrintableWithNewline(htmlClean(s)).split("\n");
         List<String> result = new ArrayList<>();
         for (String item: cleaned) {
             String[] wrappedLine = WordUtils

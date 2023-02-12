@@ -13,6 +13,8 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
+
+import static eu.sblendorio.bbs.core.HtmlUtils.utilHtmlClean;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import java.sql.Timestamp;
 import java.util.Comparator;
@@ -637,4 +639,9 @@ public abstract class BbsThread extends Thread {
             i == 20 ||
             i >= 32;
     }
+
+    public String htmlClean(String s) {
+        return utilHtmlClean(s);
+    }
+
 }

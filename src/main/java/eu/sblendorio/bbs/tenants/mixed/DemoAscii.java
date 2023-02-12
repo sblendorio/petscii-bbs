@@ -12,7 +12,7 @@ public class DemoAscii extends AsciiThread {
     public void doLoop() throws Exception {
         newline();
         newline();
-        println("Esempio di ASCII Thread");
+        println("Qeusto è un esempio di ASCII Thread");
         newline();
         newline();
     }

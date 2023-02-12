@@ -3,6 +3,9 @@ package eu.sblendorio.bbs.core;
 import java.io.IOException;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+
+import static eu.sblendorio.bbs.core.HtmlUtils.utilHtmlClean;
+import static eu.sblendorio.bbs.core.HtmlUtils.utilHtmlDiacriticsToAscii;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 
 public abstract class AsciiThread extends BbsThread {
@@ -38,6 +41,11 @@ public abstract class AsciiThread extends BbsThread {
     @Override
     public void cls() {
         write(clsBytes);
+    }
+
+    @Override
+    public String htmlClean(String s) {
+        return utilHtmlDiacriticsToAscii(utilHtmlClean(s));
     }
 
 }

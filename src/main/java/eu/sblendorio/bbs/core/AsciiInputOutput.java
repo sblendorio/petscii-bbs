@@ -2,6 +2,7 @@ package eu.sblendorio.bbs.core;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class AsciiInputOutput extends BbsInputOutput {
     public AsciiInputOutput(Socket socket) throws IOException{
@@ -33,6 +34,20 @@ public class AsciiInputOutput extends BbsInputOutput {
     @Override
     public void writeDoublequotes() {
         write(34);
+    }
+
+    @Override
+    public void print(String msg) {
+        if (msg == null) return;
+        for (char c: msg.toCharArray()) {
+            if (Character.isLetter(c)) {
+                try {
+                    out.write(Character.toString(c).getBytes(StandardCharsets.UTF_8));
+                } catch (IOException e) {}
+            } else {
+                out.write(c);
+            }
+        }
     }
 
     @Override
