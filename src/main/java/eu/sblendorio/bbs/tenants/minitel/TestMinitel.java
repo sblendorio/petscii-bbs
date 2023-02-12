@@ -6,7 +6,8 @@ public class TestMinitel extends MinitelThread {
     @Override
     public void doLoop() throws Exception {
         cls();
-        println("Prova: à");
-        println("Ciao");
+        println("Prova però, perché, com'è, ü, garçon");
+        println("àáâäèéêëìíîïòóôöùúûüç");
+        println("ÀÁÂÄÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÇ");
     }
 }
