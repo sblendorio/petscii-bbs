@@ -7,6 +7,7 @@ import static org.apache.commons.lang3.StringUtils.defaultString;
 public class HtmlUtils {
 
     private static Pattern p = Pattern.compile("(?is)<pre[^>]*>(([^\n]+)\n?|\n)(.*?)</pre[^>]*>");
+
     private static String replacePreTags(String s) {
         Matcher m = p.matcher(s);
         while (m.find()) {
@@ -16,7 +17,7 @@ public class HtmlUtils {
         return s;
     }
 
-    public static String htmlClean(String s) {
+    public static String utilHtmlClean(String s) {
         return replacePreTags(defaultString(s))
                 .replace("\u200b", "")
                 .replace("\r", "")
@@ -38,20 +39,32 @@ public class HtmlUtils {
                 .replaceAll("<h[1-6]( [^>]*)?>", "\n\n")
                 .replaceAll("</h[1-6]( [^>]*)?>", "\n")
                 .replaceAll("<[^>]*>", "")
+
                 .replaceAll("ñ|&ntilde;?|&#xF1;?|&#241;", "n")
                 .replaceAll("Ñ|&Ntilde;?|&#xD1;?|&#209;", "N")
-                .replaceAll("[àá]|&agrave;?|&aacute;?|&#xE0;|&#xE1;", "a'")
-                .replaceAll("[ÀÁ]|&Agrave;?|&Aacute;?|&#xC0;|&#xC1;", "A'")
-                .replaceAll("[èé]|&egrave;?|&eacute;?|&#xE8;|&#xE9;", "e'")
-                .replaceAll("[ÈÉ]|&Egrave;?|&Eacute;?|&#xC8;|&#xC9;", "E'")
-                .replaceAll("[ìí]|&igrave;?|&iacute;?|&#xEC;|&#xED;", "i'")
-                .replaceAll("[ÌÍ]|&Igrave;?|&Iacute;?|&#xCC;|&#xCD;", "I'")
-                .replaceAll("[òó]|&ograve;?|&oacute;?|&#xF2;|&#xF3;", "o'")
-                .replaceAll("[ÒÓ]|&Ograve;?|&Oacute;?|&#xD2;|&#xD3;", "O'")
-                .replaceAll("[ùú]|&ugrave;?|&uacute;?|&#xF9;|&#xFA;", "u'")
-                .replaceAll("[ÙÚ]|&Ugrave;?|&Uacute;?|&#xD9;|&#xDA;", "U'")
                 .replaceAll("[å]|&#xE5;|&#229|&aring;", "a")
                 .replaceAll("[Å]|&#xC5;|&#197|&Aring;|&#8491;|&#x212B;", "A")
+
+                .replaceAll("&agrave;?|&#xE0;", "à")
+                .replaceAll("&aacute;?|&#xE1;", "á")
+                .replaceAll("&Agrave;?|&#xC0;", "À")
+                .replaceAll("&Aacute;?|&#xC1;", "Á")
+                .replaceAll("&egrave;?|&#xE8;", "è")
+                .replaceAll("&eacute;?|&#xE9;", "é")
+                .replaceAll("&Egrave;?|&#xC8;", "È")
+                .replaceAll("&Eacute;?|&#xC9;", "É")
+                .replaceAll("&igrave;?|&#xEC;", "ì")
+                .replaceAll("&iacute;?|&#xED;", "í")
+                .replaceAll("&Igrave;?|&#xCC;", "Ì")
+                .replaceAll("&Iacute;?|&#xCD;", "Í")
+                .replaceAll("&ograve;?|&#xF2;", "ò")
+                .replaceAll("&oacute;?|&#xF3;", "ó")
+                .replaceAll("&Ograve;?|&#xD2;", "Ò")
+                .replaceAll("&Oacute;?|&#xD3;", "Ó")
+                .replaceAll("&ugrave;?|&#xF9;", "ù")
+                .replaceAll("&uacute;?|&#xFA;", "ú")
+                .replaceAll("&Ugrave;?|&#xD9;", "Ù")
+                .replaceAll("&Uacute;?|&#xDA;", "Ú")
 
                 .replaceAll("&#160;|&#xA0;|&nbsp;?", " ")
                 .replaceAll("’|‘|°|&apos;|&rsquo;|&rsquor;|&lsquo;|&lsquor;|&sbquo;|&#x2019;|&#8216;|&#8217;|&#039;|&#39;|\u0300|\u0301", "'")
@@ -64,6 +77,21 @@ public class HtmlUtils {
                 .replaceAll("\n(\\s*\n)+", "\n\n")
                 .replaceAll("^(\n|\r|\\s)*", "")
                 ;
+    }
+
+    public static String utilHtmlDiacriticsToAscii(String s) {
+        return s
+            .replaceAll("[àá]", "a'")
+            .replaceAll("[ÀÁ]", "A'")
+            .replaceAll("[èé]", "e'")
+            .replaceAll("[ÈÉ]", "E'")
+            .replaceAll("[ìí]", "i'")
+            .replaceAll("[ÌÍ]", "I'")
+            .replaceAll("[òó]", "o'")
+            .replaceAll("[ÒÓ]", "O'")
+            .replaceAll("[ùú]", "u'")
+            .replaceAll("[ÙÚ]", "U'")
+        ;
     }
 
     private HtmlUtils() {

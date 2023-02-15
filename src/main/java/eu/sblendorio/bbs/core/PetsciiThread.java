@@ -1,5 +1,7 @@
 package eu.sblendorio.bbs.core;
 
+import static eu.sblendorio.bbs.core.HtmlUtils.utilHtmlClean;
+import static eu.sblendorio.bbs.core.HtmlUtils.utilHtmlDiacriticsToAscii;
 import static eu.sblendorio.bbs.core.PetsciiKeys.DOWN;
 import static eu.sblendorio.bbs.core.PetsciiKeys.HOME;
 import static eu.sblendorio.bbs.core.PetsciiKeys.RIGHT;
@@ -36,5 +38,9 @@ public abstract class PetsciiThread extends BbsThread {
         write(147);
     }
 
+    @Override
+    public String htmlClean(String s) {
+        return utilHtmlDiacriticsToAscii(utilHtmlClean(s));
+    }
 
 }

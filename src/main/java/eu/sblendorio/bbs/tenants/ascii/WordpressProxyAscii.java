@@ -216,7 +216,7 @@ public class WordpressProxyAscii extends AsciiThread {
             print(i + ".");
             final int nCols = getScreenColumns() - 3;
             final int iLen = nCols-String.valueOf(i).length();
-            String line = WordUtils.wrap(filterPrintable(HtmlUtils.htmlClean(post.title)), iLen, "\r", true);
+            String line = WordUtils.wrap(filterPrintable(htmlClean(post.title)), iLen, "\r", true);
             totalRows += 1 + line.chars().filter(ch -> ch == '\r').count();
             println(line.replaceAll("\r", newlineString() + " " + repeat(" ", nCols-iLen)));
         }
@@ -224,7 +224,7 @@ public class WordpressProxyAscii extends AsciiThread {
     }
 
     protected List<String> wordWrap(String s) {
-        String[] cleaned = filterPrintableWithNewline(HtmlUtils.htmlClean(s)).split("\n");
+        String[] cleaned = filterPrintableWithNewline(htmlClean(s)).split("\n");
         List<String> result = new ArrayList<>();
         for (String item: cleaned) {
             String[] wrappedLine = WordUtils

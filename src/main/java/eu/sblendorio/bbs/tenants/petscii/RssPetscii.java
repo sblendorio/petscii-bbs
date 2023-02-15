@@ -199,7 +199,7 @@ public abstract class RssPetscii extends PetsciiThread {
             String text = EMPTY;
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             for (NewsFeed feed : feeds) {
-                String description = HtmlUtils.htmlClean(feed.description).trim();
+                String description = htmlClean(feed.description).trim();
                 description = StringUtils.isBlank(description) ? "&c64nbsp;" : description;
 
                 String post = EMPTY;
@@ -266,7 +266,7 @@ public abstract class RssPetscii extends PetsciiThread {
     }
 
     protected String[] wordWrap(String s) {
-        String[] cleaned = filterPrintableWithNewline(HtmlUtils.htmlClean(s)).replaceAll(" +", " ").split("\n");
+        String[] cleaned = filterPrintableWithNewline(htmlClean(s)).replaceAll(" +", " ").split("\n");
         List<String> result = new LinkedList<>();
         for (String item: cleaned) {
             String[] wrappedLine = WordUtils

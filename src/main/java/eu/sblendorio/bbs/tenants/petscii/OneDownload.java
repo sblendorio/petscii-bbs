@@ -183,7 +183,7 @@ public class OneDownload extends PetsciiThread {
             write(WHITE); print((i+1)  + "."); write(GREY3);
             final int nCols = getScreenColumns() - 3;
             final int iLen = nCols-String.valueOf(i+1).length();
-            String line = WordUtils.wrap(filterPrintable(HtmlUtils.htmlClean(entry.title)), iLen, "\r", true);
+            String line = WordUtils.wrap(filterPrintable(htmlClean(entry.title)), iLen, "\r", true);
             println(line.replaceAll("\r", newlineString() + " " + repeat(" ", nCols-iLen)));
         }
         newline();

@@ -192,7 +192,7 @@ public abstract class RssAscii extends AsciiThread {
             String text = EMPTY;
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             for (NewsFeed feed : feeds) {
-                String description = HtmlUtils.htmlClean(feed.description).trim();
+                String description = htmlClean(feed.description).trim();
                 description = StringUtils.isBlank(description) ? "&c64nbsp;" : description;
 
                 String post = EMPTY;
@@ -260,17 +260,17 @@ public abstract class RssAscii extends AsciiThread {
 
     void rssPrintln(String msg) {
         msg = msg == null ? "" : msg;
-        for (byte ch: msg.getBytes(StandardCharsets.ISO_8859_1)) {
+        for (char ch: msg.toCharArray()) {
             if (ch == '|')
                 write(hrDash);
             else
-                write(ch);
+                print(Character.toString(ch));
         }
         newline();
     }
 
     protected String[] wordWrap(String s) {
-        String[] cleaned = filterPrintableWithNewline(HtmlUtils.htmlClean(s).trim()).replaceAll(" +", " ").split("\n");
+        String[] cleaned = filterPrintableWithNewline(htmlClean(s).trim()).replaceAll(" +", " ").split("\n");
         List<String> result = new LinkedList<>();
         for (String item: cleaned) {
             String[] wrappedLine = WordUtils

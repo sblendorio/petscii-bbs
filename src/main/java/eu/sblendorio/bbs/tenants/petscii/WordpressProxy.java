@@ -219,14 +219,14 @@ public class WordpressProxy extends PetsciiThread {
             write(WHITE); print(i + "."); write(GREY3);
             final int nCols = getScreenColumns() - 3;
             final int iLen = nCols-String.valueOf(i).length();
-            String line = WordUtils.wrap(filterPrintable(HtmlUtils.htmlClean(post.title)), iLen, "\r", true);
+            String line = WordUtils.wrap(filterPrintable(htmlClean(post.title)), iLen, "\r", true);
             println(line.replaceAll("\r", newlineString() + " " + repeat(" ", nCols-iLen)));
         }
         newline();
     }
 
     protected List<String> wordWrap(String s) {
-        String[] cleaned = filterPrintableWithNewline(HtmlUtils.htmlClean(s)).split("\n");
+        String[] cleaned = filterPrintableWithNewline(htmlClean(s)).split("\n");
         List<String> result = new ArrayList<>();
         for (String item: cleaned) {
             String[] wrappedLine = WordUtils

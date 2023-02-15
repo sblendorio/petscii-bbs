@@ -235,7 +235,7 @@ public class ArnoldC64 extends PetsciiThread {
             write(WHITE); print(i + "."); write(GREY3);
             final int iLen = 37-String.valueOf(i).length();
             String title = post.name;
-            String line = WordUtils.wrap(filterPrintable(HtmlUtils.htmlClean(title)), iLen, "\r", true);
+            String line = WordUtils.wrap(filterPrintable(htmlClean(title)), iLen, "\r", true);
             println(line.replaceAll("\r", "\r " + repeat(" ", 37-iLen)));
         }
         newline();
