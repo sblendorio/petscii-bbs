@@ -7,7 +7,7 @@ public class OneTexasInstrumentItaliaPetscii extends OneRssPetscii {
     @Override
     protected void readSections() throws Exception {
         sections = new LinkedHashMap<>();
-        sections.put("1", new NewsSection("", "http://www.facele.eu/web-history?format=feed&type=rss"));
+        sections.put("1", new NewsSection("", "https://www.facele.eu/web-history?format=feed&type=rss"));
         LOGO_SECTION = readBinaryFile("petscii/ti.seq");
     }
 }
