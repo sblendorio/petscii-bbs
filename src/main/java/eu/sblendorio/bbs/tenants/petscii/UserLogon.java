@@ -576,7 +576,7 @@ public class UserLogon extends PetsciiThread {
     }
 
     public User getUserById(Long id) throws Exception {
-        try (PreparedStatement ps = conn.prepareStatement("select id, nick, realname, email, salt, password from users where id=?")) {
+        try (PreparedStatement ps = conn.prepareStatement("select id, nick, realname, email, salt, password from users where id=? limit 1")) {
             ps.setLong(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 rs.next();
@@ -596,7 +596,7 @@ public class UserLogon extends PetsciiThread {
     }
 
     public boolean existsUser(String nick) throws Exception {
-        try (PreparedStatement ps = conn.prepareStatement("select id, realname, email, salt, password from users where nick=? collate nocase")) {
+        try (PreparedStatement ps = conn.prepareStatement("select id, realname, email, salt, password from users where nick=? collate nocase limit 1")) {
             ps.setString(1, nick);
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next();
@@ -605,7 +605,7 @@ public class UserLogon extends PetsciiThread {
     }
 
     public boolean userInVault(String nick) throws Exception {
-        try (PreparedStatement ps = conn.prepareStatement("select hash from user_vault where hash=?")) {
+        try (PreparedStatement ps = conn.prepareStatement("select hash from user_vault where hash=? limit 1")) {
             ps.setString(1, sha256Hex(nick));
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next();
@@ -614,7 +614,7 @@ public class UserLogon extends PetsciiThread {
     }
 
     public User getUser(String nick, String givenPassword) throws Exception {
-        try (PreparedStatement ps = conn.prepareStatement("select id, realname, email, salt, password from users where nick=? collate nocase");) {
+        try (PreparedStatement ps = conn.prepareStatement("select id, realname, email, salt, password from users where nick=? collate nocase limit 1");) {
             ps.setString(1, nick);
             try (ResultSet rs = ps.executeQuery()) {
                 boolean found = rs.next();
