@@ -4,7 +4,7 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=sblendorio_petscii-bbs&metric=coverage)](https://sonarcloud.io/dashboard?id=sblendorio_petscii-bbs)
 -->
 # PETSCII BBS Builder
-A Java framework for building highly customizable **PETSCII**-enabled **BBS**es, accessible from 8-bit Commodore computers
+A Java framework for building highly customizable **PETSCII** (and **ASCII**) enabled **BBS**es, accessible from 8-bit Commodore computers
 
 ## Purpose
 This framework provides base classes for build your own **BBS** in PETSCII mode, accessibile through:
