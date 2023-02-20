@@ -1,6 +1,8 @@
+<!---
 [![Build Status](https://travis-ci.org/sblendorio/petscii-bbs.svg?branch=master)](https://travis-ci.org/sblendorio/petscii-bbs) 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sblendorio_petscii-bbs&metric=alert_status)](https://sonarcloud.io/dashboard?id=sblendorio_petscii-bbs)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=sblendorio_petscii-bbs&metric=coverage)](https://sonarcloud.io/dashboard?id=sblendorio_petscii-bbs)
+-->
 # PETSCII BBS Builder
 A Java framework for building highly customizable **PETSCII**-enabled **BBS**es, accessible from 8-bit Commodore computers
 
