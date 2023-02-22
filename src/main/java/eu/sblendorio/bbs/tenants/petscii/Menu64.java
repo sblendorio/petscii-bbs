@@ -17,6 +17,8 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.LOWERCASE;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
 import static eu.sblendorio.bbs.core.PetsciiKeys.RIGHT;
+
+import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.Utils;
 import java.io.File;
@@ -390,7 +392,7 @@ public class Menu64 extends PetsciiThread {
         if (startsWith(filename,"/")) filename = filename.substring(1);
         for (int i=0; i<25; ++i) newline();
         writeRawFile(filename);
-        write(142);
+        write(PetsciiKeys.CASE_UNLOCK);
     }
 
 
