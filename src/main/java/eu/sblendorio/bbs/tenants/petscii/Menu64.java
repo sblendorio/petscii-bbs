@@ -390,6 +390,7 @@ public class Menu64 extends PetsciiThread {
         if (startsWith(filename,"/")) filename = filename.substring(1);
         for (int i=0; i<25; ++i) newline();
         writeRawFile(filename);
+        write(142);
     }
 
 
