@@ -1,11 +1,11 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
-public class InfosecNewsPetscii extends WordpressProxy {
+public class GianoNewsPetscii extends WordpressProxy {
 
-    public InfosecNewsPetscii() {
+    public GianoNewsPetscii() {
         super();
         this.logo = LOGO_BYTES;
-        this.domain = "https://www.infosec.news";
+        this.domain = "https://www.giano.news";
         this.pageSize = 8;
         this.screenLines = 19;
         this.showAuthor = true;
@@ -15,6 +15,6 @@ public class InfosecNewsPetscii extends WordpressProxy {
 
     }
 
-    private static final byte[] LOGO_BYTES = readBinaryFile("petscii/infosecnews.seq");
+    private static final byte[] LOGO_BYTES = readBinaryFile("petscii/giano.seq");
 
 }
