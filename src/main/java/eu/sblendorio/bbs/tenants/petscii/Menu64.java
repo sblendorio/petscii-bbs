@@ -146,10 +146,10 @@ public class Menu64 extends PetsciiThread {
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '8', REVOFF, 161); print("Sys64738       "); write(REVON, 161, 'q', REVOFF, 161); println("Valoroso.IT");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '9', REVOFF, 161); print("Medbunker      "); write(REVON, 161, 'r', REVOFF, 161); println("Mupin");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '0', REVOFF, 161); print("FNOMCeO        "); write(REVON, 161, 's', REVOFF, 161); println("Query Online");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'a', REVOFF, 161); println("Medical Facts");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'b', REVOFF, 161); println("Alessandro Albano");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'c', REVOFF, 161); println("Retrocampus");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'd', REVOFF, 161); println("RetroAcademy");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'a', REVOFF, 161); print("Medical Facts  "); write(REVON, 161, 't', REVOFF, 161); println("Formiche.net");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'b', REVOFF, 161); print("Retrocampus    "); write(REVON, 161, 'u', REVOFF, 161); println("Infosec News");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'c', REVOFF, 161); println("RetroAcademy");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'd', REVOFF, 161); println("Alessandro Albano");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'e', REVOFF, 161); println("Arch. Informatica");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'f', REVOFF, 161); println("Punto Informatico");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'g', REVOFF, 161); println("Apulia Retrocomputing");
@@ -182,9 +182,9 @@ public class Menu64 extends PetsciiThread {
                 else if (key == '9') launch(new Medbunker());
                 else if (key == '0') launch(new DottoreMaEVeroChe());
                 else if (key == 'a') launch(new MedicalFacts());
-                else if (key == 'b') launch(new AlessandroAlbano());
-                else if (key == 'c') launch(new RetroCampus());
-                else if (key == 'd') launch(new RetroAcademy());
+                else if (key == 'b') launch(new RetroCampus());
+                else if (key == 'c') launch(new RetroAcademy());
+                else if (key == 'd') launch(new AlessandroAlbano());
                 else if (key == 'e') launch(new ArcheologiaInformatica());
                 else if (key == 'f') launch(new PuntoInformatico());
                 else if (key == 'g') launch(new OneApuliaRetrocomputingPetscii());
@@ -200,6 +200,8 @@ public class Menu64 extends PetsciiThread {
                 else if (key == 'q') launch(new ValorosoIt());
                 else if (key == 'r') launch(new Mupin());
                 else if (key == 's') launch(new QueryOnline());
+                else if (key == 't') launch(new FormichePetscii());
+                else if (key == 'u') launch(new InfosecNewsPetscii());
                 else {
                     validKey = false;
                 }
