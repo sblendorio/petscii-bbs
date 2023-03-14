@@ -17,4 +17,12 @@ public class GianoNewsPetscii extends WordpressProxy {
 
     private static final byte[] LOGO_BYTES = readBinaryFile("petscii/giano.seq");
 
+    @Override
+    protected String downstreamTransform(String s) {
+        return s
+                .replaceAll("\">0:00</span>", "\"></span>")
+                .replaceAll("TE LO LEGGO IO", "")
+                .replaceAll("\">&#47;</span>", "\"></span>");
+    }
+
 }
