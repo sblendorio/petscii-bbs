@@ -9,7 +9,7 @@ public class Sportal extends WordpressProxy {
         super();
         this.logo = LOGO_BYTES;
         this.domain = "http://www.sportal.it";
-        this.pageSize = 11;
+        this.pageSize = 7;
         this.screenLines = 19;
     }
 
