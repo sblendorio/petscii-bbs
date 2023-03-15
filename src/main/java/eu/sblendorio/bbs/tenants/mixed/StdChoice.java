@@ -54,7 +54,7 @@ public class StdChoice extends AsciiThread {
         flush();
         resetInput();
         do {
-            ch = readKey();
+            ch = keyPressed(60_000);
         } while (!isValidKey(ch));
         newline();
         ch = ch | 32; // lowercase;
@@ -73,7 +73,7 @@ public class StdChoice extends AsciiThread {
 
     private boolean isValidKey(int ch) {
         return (ch >= '#' && ch <= 127)
-            || ch == 13 || ch == 10;
+            || ch == 13 || ch == 10 || ch == -1;
     }
 
     private boolean alternateLogo() {
