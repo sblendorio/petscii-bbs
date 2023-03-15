@@ -9,6 +9,10 @@ import java.util.stream.Collectors;
 
 public class OneApuliaRetrocomputingPetscii extends OneRssPetscii {
 
+    public OneApuliaRetrocomputingPetscii() {
+        this.newlineAfterDate = false;
+    }
+
     @Override
     protected void readSections() throws Exception {
         sections = new LinkedHashMap<>();

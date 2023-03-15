@@ -419,7 +419,13 @@ public class OneRssPetscii extends PetsciiThread {
         List<String> article = wordWrap((
             (feed.publishedDate == null) ? "" : (
                 dateFormat.format(feed.publishedDate) + " - " + (this.newlineAfterDate ? "<br>" : ""))) + feed.description
-            .replaceAll("^([\\s\\n\\r]+|(<(br|p|img|div|/)[^>]*>))+", ""));
+                // .replaceAll("^([\\s\\n\\r]+|(<(br|p|img|div|/)[^>]*>))+", "")
+                .replaceAll("(?is)[\n\r ]+", " ")
+                .replaceAll("(?is)<style>.*?</style>", EMPTY)
+                .replaceAll("(?is)<script[ >].*?</script>", EMPTY)
+                .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(</?(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
+                .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r)*)+", EMPTY)
+        );
         rows.addAll(article);
         return rows;
     }
