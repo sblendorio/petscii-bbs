@@ -66,6 +66,8 @@ public class HtmlUtils {
                 .replaceAll("&uacute;?|&#xFA;", "ú")
                 .replaceAll("&Ugrave;?|&#xD9;", "Ù")
                 .replaceAll("&Uacute;?|&#xDA;", "Ú")
+                .replaceAll("æ|&#xE6;|&aelig;", "ae")
+                .replaceAll("Æ|&#xC6;|&AElig;", "AE")
 
                 .replaceAll("&#160;|&#xA0;|&nbsp;?", " ")
                 .replaceAll("’|‘|°|&apos;|&rsquo;|&rsquor;|&lsquo;|&lsquor;|&sbquo;|&#x2019;|&#8216;|&#8217;|&#039;|&#39;|\u0300|\u0301", "'")
