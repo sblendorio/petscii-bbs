@@ -13,9 +13,19 @@ public class MenuMinitelWithEcho extends MenuApple1 {
     }
 
     public byte[] initializingBytes() {
-        return new byte[] { 0x1B, 0x3A, 0x69, 0x43 };
+        return new byte[] { 0x1B, 0x3A, 0x69, 0x43, 0x11 };
         // return new byte[] { 0x41, 0x42, 0x43 };
     }
+
+    @Override
+    public void logo() throws Exception {
+        write(0x14); // Cursor off
+        readTextFile("minitel/intro-retrocampus.vdt").forEach(this::println);
+        flush();
+        keyPressed(12_000);
+        write(0x11); // Cursor on
+    }
+
 
     @Override
     public String getCharset() {
