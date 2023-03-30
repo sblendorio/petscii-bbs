@@ -364,7 +364,7 @@ public class Menu64 extends PetsciiThread {
         write(HOME);
         drawLogo();
         write(GREY3);
-        gotoXY(22,15);
+        gotoXY(22,16);
 
         flush();
         resetInput();
