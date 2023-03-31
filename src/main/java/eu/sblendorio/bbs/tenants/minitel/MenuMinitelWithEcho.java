@@ -20,7 +20,7 @@ public class MenuMinitelWithEcho extends MenuApple1 {
     @Override
     public void logo() throws Exception {
         write(0x14); // Cursor off
-        readTextFile("minitel/intro-retrocampus.vdt").forEach(this::println);
+        write(readBinaryFile("minitel/intro-retrocampus.vdt"));
         flush();
         keyPressed(12_000);
         write(0x11); // Cursor on
