@@ -21,10 +21,16 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.RIGHT;
 import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.Utils;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
+
 import static org.apache.commons.lang3.StringUtils.repeat;
 import static org.apache.commons.lang3.StringUtils.startsWith;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
@@ -360,15 +366,35 @@ public class Menu64 extends PetsciiThread {
 
     public void about() throws Exception {
         write(CLR, LOWERCASE, CASE_LOCK, HOME);
+        write(readBinaryFile("petscii/patreon.seq"));
+        write(HOME);
+        drawLogo();
+        write(GREY3);
+        gotoXY(0, 11);
+        readTxt(System.getProperty("PATREON_FILE", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
+            .stream()
+            .filter(StringUtils::isNotBlank)
+            .sorted()
+            .forEach(name -> {
+                println();
+                for (int i=0; i<20; i++) write(RIGHT);
+                print(name);
+            });
+
+        flush();
+        resetInput();
+        readKey();
+
+        write(CLR, LOWERCASE, CASE_LOCK, HOME);
         write(readBinaryFile("petscii/about.seq"));
         write(HOME);
         drawLogo();
         write(GREY3);
         gotoXY(22,16);
-
         flush();
         resetInput();
         readKey();
+
     }
 
     public void drawLogo() {
@@ -400,6 +426,21 @@ public class Menu64 extends PetsciiThread {
         write(PetsciiKeys.CASE_UNLOCK);
     }
 
+    private List<String> readTxt(String filename) {
+        List<String> result = new LinkedList<>();
+        try {
+            File myObj = new File(filename);
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                result.add(myReader.nextLine());
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     private static final byte[] LOGO_BYTES = new byte[] {
         18, 5, -84, -94, -69, -84, -94, -69, -94, -94, -69, -94, -94, 32, -94, -94,
