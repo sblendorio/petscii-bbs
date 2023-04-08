@@ -17,6 +17,8 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.LOWERCASE;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
 import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
 import static eu.sblendorio.bbs.core.PetsciiKeys.RIGHT;
+import static eu.sblendorio.bbs.core.PetsciiKeys.LEFT;
+import static eu.sblendorio.bbs.core.PetsciiKeys.DOWN;
 
 import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
@@ -369,16 +371,16 @@ public class Menu64 extends PetsciiThread {
         write(readBinaryFile("petscii/patreon.seq"));
         write(HOME);
         drawLogo();
-        write(GREY3);
-        gotoXY(0, 11);
+        write(GREY3, REVOFF);
+        gotoXY(20, 12);
         readTxt(System.getProperty("PATREON_FILE", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
             .stream()
             .filter(StringUtils::isNotBlank)
             .sorted()
             .forEach(name -> {
-                println();
-                for (int i=0; i<20; i++) write(RIGHT);
                 print(name);
+                write(DOWN);
+                for (int i=0; i<name.length(); i++) write(LEFT);
             });
 
         flush();
