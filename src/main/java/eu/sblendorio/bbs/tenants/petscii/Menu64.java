@@ -367,25 +367,27 @@ public class Menu64 extends PetsciiThread {
     }
 
     public void about() throws Exception {
-        write(CLR, LOWERCASE, CASE_LOCK, HOME);
-        write(readBinaryFile("petscii/patreon.seq"));
-        write(HOME);
-        drawLogo();
-        write(GREY3, REVOFF);
-        gotoXY(20, 12);
-        readTxt(System.getProperty("PATREON_FILE", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
-            .stream()
-            .filter(StringUtils::isNotBlank)
-            .sorted()
-            .forEach(name -> {
-                print(name);
-                write(DOWN);
-                for (int i=0; i<name.length(); i++) write(LEFT);
-            });
+        if (!alternateLogo()) {
+            write(CLR, LOWERCASE, CASE_LOCK, HOME);
+            write(readBinaryFile("petscii/patreon.seq"));
+            write(HOME);
+            drawLogo();
+            write(GREY3, REVOFF);
+            gotoXY(20, 12);
+            readTxt(System.getProperty("PATREON_FILE", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
+                    .stream()
+                    .filter(StringUtils::isNotBlank)
+                    .sorted()
+                    .forEach(name -> {
+                        print(name);
+                        write(DOWN);
+                        for (int i = 0; i < name.length(); i++) write(LEFT);
+                    });
 
-        flush();
-        resetInput();
-        readKey();
+            flush();
+            resetInput();
+            readKey();
+        }
 
         write(CLR, LOWERCASE, CASE_LOCK, HOME);
         write(readBinaryFile("petscii/about.seq"));
