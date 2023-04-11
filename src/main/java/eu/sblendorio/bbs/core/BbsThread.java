@@ -401,10 +401,25 @@ public abstract class BbsThread extends Thread {
     public static char chr(int code) { return (char) code; }
     public int keyPressed() throws IOException { return io.keyPressed(); }
     public boolean isKeyPressed() throws IOException { return io.keyPressed() != -1; }
-    public void write(byte[] buf, int off, int len) { io.write(buf, off, len); }
-    public void write(byte[] b) { io.write(b); }
+    public void write(byte[] buf, int off, int len) {
+        boolean savedKeepAlive = getRoot().keepAlive;
+        updateKeepAlive(false);
+        io.write(buf, off, len);
+        updateKeepAlive(savedKeepAlive);
+    }
+    public void write(byte[] b) {
+        boolean savedKeepAlive = getRoot().keepAlive;
+        updateKeepAlive(false);
+        io.write(b);
+        updateKeepAlive(savedKeepAlive);
+    }
     public void write(int b) { io.write(b); }
-    public void write(int... b) { io.write(b); }
+    public void write(int... b) {
+        boolean savedKeepAlive = getRoot().keepAlive;
+        updateKeepAlive(false);
+        io.write(b);
+        updateKeepAlive(savedKeepAlive);
+    }
     public void flush() { io.flush(); }
     public abstract void cls();
     public void newline() { io.newline(); }
