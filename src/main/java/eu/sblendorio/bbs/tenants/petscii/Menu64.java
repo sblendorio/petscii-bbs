@@ -395,8 +395,7 @@ public class Menu64 extends PetsciiThread {
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
-                .map(x -> x.replaceAll("(?i) - sponsor$", ""))
-                .map(x -> x.replaceAll("(?i) \\(sponsor\\)$", ""))
+                .map(x -> x.replaceAll(" - .*$", ""))
                 .sorted()
                 .forEach(name -> {
                     print(name);
