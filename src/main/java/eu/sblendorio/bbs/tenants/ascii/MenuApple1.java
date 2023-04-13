@@ -6,8 +6,15 @@ import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import static eu.sblendorio.bbs.core.Utils.STR_ALPHANUMERIC;
 import static eu.sblendorio.bbs.core.Utils.setOfChars;
+import static java.util.stream.Collectors.toList;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+
 import org.apache.commons.lang3.StringUtils;
 
 public class MenuApple1 extends AsciiThread {
@@ -133,6 +140,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("s".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
                 else if ("t".equals(choice)) subThread = new ChatA1(getCharset());
                 else if ("u".equals(choice)) subThread = new PrivateMessagesAscii();
+                else if ("v".equals(choice)) { showPatrons(); subThread = null; }
                 else {
                     validKey = false;
                     subThread = null;
@@ -174,11 +182,11 @@ public class MenuApple1 extends AsciiThread {
         println("-----------------");
         println("F - Televideo RAI");
         println("G - Lercio");
-        println("H - Disinformatico");
-        println("I - Mupin.it          "+ sp +"  Services");
-        println("J - Fatto Quotidiano  "+ sp +"  ---------------");
-        println("K - Indie Campus      "+ sp +"  T - Chat");
-        println("L - Butac.it          "+ sp +"  U - Private Msg");
+        println("H - Disinformatico    "+ sp +"  Services");
+        println("I - Mupin.it          "+ sp +"  ---------------");
+        println("J - Fatto Quotidiano  "+ sp +"  T - Chat");
+        println("K - Indie Campus      "+ sp +"  U - Private Msg");
+        println("L - Butac.it          "+ sp +"  V - Patrons list");
         println("M - Alessandro Albano "+ sp +"  . - Logout");
         println();
     }
@@ -186,4 +194,40 @@ public class MenuApple1 extends AsciiThread {
     public String readChoice() throws IOException {
         return readLine(setOfChars(STR_ALPHANUMERIC, "."));
     }
+
+    public void showPatrons() throws Exception {
+        List<String> patrons = readTxt(System.getProperty("PATREON_FILE", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
+                .stream()
+                .filter(StringUtils::isNotBlank)
+                .map(StringUtils::trim)
+                .sorted()
+                .collect(toList());
+
+        cls();
+        banner();
+        println("Patrons of this BBS");
+        println("-------------------");
+        println();
+        patrons.forEach(this::println);
+        println();
+        print("Press any key.");
+        flush(); resetInput(); readKey();
+    }
+
+    private List<String> readTxt(String filename) {
+        List<String> result = new LinkedList<>();
+        try {
+            File myObj = new File(filename);
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                result.add(myReader.nextLine());
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }

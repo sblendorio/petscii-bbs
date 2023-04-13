@@ -49,11 +49,11 @@ public class MenuApple1M10 extends MenuApple1 {
         println("Italian News---------  S - Hitchhiker's");
         println("F - Televideo RAI");
         println("G - Lercio");
-        println("H - Disinformatico");
-        println("I - Mupin.it            Services");
-        println("J - Fatto Quotidiano    ----------");
-        println("K - Indie Campus        T - Chat");
-        println("L - Butac.it            U - Private Msg");
+        println("H - Disinformatico      Services");
+        println("I - Mupin.it            ----------");
+        println("J - Fatto Quotidiano    T - Chat");
+        println("K - Indie Campus        U - Private Msg");
+        println("L - Butac.it            V - Patron list");
         println("M - Alessandro Albano   . - Logout");
     }
 

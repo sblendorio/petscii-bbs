@@ -195,6 +195,11 @@
             <artifactId>url-detector</artifactId>
             <version>0.1.23</version>
         </dependency>
+        <dependency>
+            <groupId>com.theokanning.openai-gpt3-java</groupId>
+            <artifactId>service</artifactId>
+            <version>0.12.0</version>
+        </dependency>
 
     </dependencies>
 

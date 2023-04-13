@@ -49,11 +49,11 @@ public class MenuApple1Vic20 extends MenuApple1 {
         println("------------");
         println("F-Televideo");
         println("G-Wired");
-        println("H-Disinfor");
-        println("I-IlPost      Service");
-        println("J-F.Quot      -------");
-        println("K-IndieCampus T-Chat");
-        println("L-Butac       U-Msgs");
+        println("H-Disinfor    Service");
+        println("I-IlPost      -------");
+        println("J-F.Quot      T-Chat");
+        println("K-IndieCampus U-Msgs");
+        println("L-Butac       V-Patre");
         println("M-A.Albano    .-Exit");
     }
 

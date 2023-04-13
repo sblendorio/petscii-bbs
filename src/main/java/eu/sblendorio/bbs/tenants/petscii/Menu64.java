@@ -94,11 +94,14 @@ public class Menu64 extends PetsciiThread {
         while (true) {
             write(CLR, LOWERCASE, CASE_LOCK, HOME);
             log("Starting Main Menu BBS");
-            write(readBinaryFile("petscii/bbs-menu-main.seq"));
+            write(readBinaryFile(
+                    alternateLogo()
+                    ? "petscii/bbs-menu-main-alternate.seq"
+                    : "petscii/bbs-menu-main.seq"));
             write(HOME);
             drawLogo();
             write(GREY3);
-            gotoXY(39,23);
+            gotoXY(39,24);
 
             //final String line = geoData != null ? "Connected from "+geoData.city+", "+geoData.country : EMPTY;
             flush();
@@ -126,9 +129,11 @@ public class Menu64 extends PetsciiThread {
                 else if (key == '5') launch(new Chat64());
                 else if (key == '6') launch(new UserLogon());
                 else if (key == '7') launch(new InternetBrowser());
-                else if (key == '8') launch(new PetsciiArtGallery());
-                else if (key == '9') launch(new Ossa());
-                else if (key == '0') about();
+                else if (key == '9') launch(new PetsciiArtGallery());
+                else if (key == '0') launch(new Ossa());
+                else if (key == 'x') about();
+                else if (key == 'a' && !alternateLogo()) patrons();
+                else if (key == 'b' && !alternateLogo()) patronsLogo();
                 else {
                     validKey = false;
                 }
@@ -367,28 +372,6 @@ public class Menu64 extends PetsciiThread {
     }
 
     public void about() throws Exception {
-        if (!alternateLogo()) {
-            write(CLR, LOWERCASE, CASE_LOCK, HOME);
-            write(readBinaryFile("petscii/patreon.seq"));
-            write(HOME);
-            drawLogo();
-            write(GREY3, REVOFF);
-            gotoXY(20, 12);
-            readTxt(System.getProperty("PATREON_FILE", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
-                    .stream()
-                    .filter(StringUtils::isNotBlank)
-                    .sorted()
-                    .forEach(name -> {
-                        print(name);
-                        write(DOWN);
-                        for (int i = 0; i < name.length(); i++) write(LEFT);
-                    });
-
-            flush();
-            resetInput();
-            readKey();
-        }
-
         write(CLR, LOWERCASE, CASE_LOCK, HOME);
         write(readBinaryFile("petscii/about.seq"));
         write(HOME);
@@ -399,6 +382,42 @@ public class Menu64 extends PetsciiThread {
         resetInput();
         readKey();
 
+    }
+
+    public void patrons() throws Exception {
+        write(CLR, LOWERCASE, CASE_LOCK, HOME);
+        write(readBinaryFile("petscii/patreon.seq"));
+        write(HOME);
+        drawLogo();
+        write(GREY3, REVOFF);
+        gotoXY(20, 12);
+        readTxt(System.getProperty("PATREON_FILE", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
+                .stream()
+                .filter(StringUtils::isNotBlank)
+                .map(StringUtils::trim)
+                .map(x -> x.replaceAll("(?i) - sponsor$", ""))
+                .map(x -> x.replaceAll("(?i) \\(sponsor\\)$", ""))
+                .sorted()
+                .forEach(name -> {
+                    print(name);
+                    write(DOWN);
+                    for (int i = 0; i < name.length(); i++) write(LEFT);
+                });
+
+        flush();
+        resetInput();
+        readKey();
+    }
+
+    public void patronsLogo() throws Exception {
+        write(CLR, LOWERCASE, CASE_LOCK, HOME);
+        write(readBinaryFile("petscii/patreon-sponsor.seq"));
+        write(HOME);
+        drawLogo();
+        write(GREY3, REVOFF);
+        flush();
+        resetInput();
+        readKey();
     }
 
     public void drawLogo() {
