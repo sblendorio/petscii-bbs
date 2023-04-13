@@ -101,7 +101,7 @@ public class Menu64 extends PetsciiThread {
             write(HOME);
             drawLogo();
             write(GREY3);
-            gotoXY(39,24);
+            gotoXY(39, alternateLogo() ? 23 : 24);
 
             //final String line = geoData != null ? "Connected from "+geoData.city+", "+geoData.country : EMPTY;
             flush();
