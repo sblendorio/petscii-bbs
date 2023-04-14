@@ -180,7 +180,9 @@ public class OpenAiPetscii extends PetsciiThread {
     private boolean authenticate() throws IOException {
         displayLogo();
         println();
+        println();
         write(readBinaryFile("petscii/patreon-access.seq"));
+        println();
         println();
         write(PetsciiColors.GREY3);
         println("Enter your Patreon email:");
