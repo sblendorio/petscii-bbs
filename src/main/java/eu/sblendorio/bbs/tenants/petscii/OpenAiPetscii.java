@@ -4,14 +4,14 @@ import com.theokanning.openai.completion.chat.ChatCompletionChoice;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.service.OpenAiService;
-import eu.sblendorio.bbs.core.Hidden;
+import eu.sblendorio.bbs.core.HtmlUtils;
+import eu.sblendorio.bbs.core.PetsciiColors;
 import eu.sblendorio.bbs.core.PetsciiThread;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.jsoup.internal.StringUtil;
+import org.davidmoten.text.utils.WordWrap;
 
+import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,12 +21,16 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.DEL;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
 import static org.apache.commons.collections4.CollectionUtils.size;
-import static org.apache.commons.lang3.StringUtils.defaultString;
-import static org.apache.commons.lang3.StringUtils.trimToEmpty;
+import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
-@Hidden
+
 public class OpenAiPetscii extends PetsciiThread {
+
+    private static int USER_COLOR = PetsciiColors.WHITE;
+    private static int ASSISTANT_COLOR = PetsciiColors.LIGHT_BLUE;
+    private static int WAIT_COLOR = PetsciiColors.GREY2;
+    private static int MORE_COLOR = PetsciiColors.GREY2;
 
     private OpenAiService openAiService = null;
 
@@ -51,10 +55,13 @@ public class OpenAiPetscii extends PetsciiThread {
         String input;
         do {
             flush(); resetInput();
-            print(">");
+            write(USER_COLOR);
+            print("You> ");
             input = readLine();
             input = trimToEmpty(input);
             if (".".equalsIgnoreCase(input)) break;
+            if (isBlank(input)) continue;
+            input = asciiToUtf8(input);
 
             conversation.add(new ChatMessage("user", input));
 
@@ -68,17 +75,90 @@ public class OpenAiPetscii extends PetsciiThread {
             waitOff();
             if (size(choices) == 0) continue;
 
-            String answer = choices.get(0).getMessage().getContent();
-            conversation.add(new ChatMessage("assistant", answer));
+            final ChatCompletionChoice completion = choices.get(0);
+            final ChatMessage message = completion.getMessage();
+            conversation.add(message);
 
-            println(answer);
+            System.out.println("------------------------------------------------------------");
+            System.out.println(completion);
 
+            final String answer = "ChatGPT> " + message.getContent();
+            println();
+            printPagedText(answer);
         } while (true);
     }
 
+    private void printPagedText(String answerContent) throws IOException {
+        final String formattedContent = formatContent(answerContent);
+        final List<String> lines = wordWrap(formattedContent);
+        lines.add(EMPTY);
+        int count = 0;
+
+        write(ASSISTANT_COLOR);
+        for (String line: lines) {
+            println(line);
+            count++;
+            if (count % (this.getScreenRows() - 1) == 0) {
+                write(MORE_COLOR);
+                print("-- More --");
+                write(ASSISTANT_COLOR);
+                flush(); resetInput();
+                int key = readKey();
+                println();
+            }
+        }
+    }
+
+    private String formatContent(String input) {
+        String result =  input
+                .replaceAll("\r\n", "\n")
+                .replaceAll("\r", "\n")
+                .replaceAll("```", "---")
+                .replaceAll("`", "")
+                .replaceAll("\n", "\r\n")
+                ;
+
+        result = HtmlUtils.utilHtmlDiacriticsToAscii(result);
+
+        return result;
+    }
+
+    private String asciiToUtf8(String input) {
+        {
+            return input
+                    .replaceAll( "a'", "à")
+                    .replaceAll( "A'", "À")
+                    .replaceAll( "e'", "è")
+                    .replaceAll( "E'", "È")
+                    .replaceAll( "i'", "ì")
+                    .replaceAll( "I'", "Ì")
+                    .replaceAll( "o'", "ò")
+                    .replaceAll( "O'", "Ò")
+                    .replaceAll( "u'", "ù")
+                    .replaceAll( "U'", "Ù")
+                    ;
+        }
+    }
+
+    protected List<String> wordWrap(String s) {
+        String[] cleaned = s.split("\n");
+        List<String> result = new ArrayList<>();
+        for (String item: cleaned) {
+            String[] wrappedLine = WordWrap
+                    .from(item)
+                    .maxWidth(this.getScreenColumns() - 1)
+                    .newLine("\n")
+                    .breakWords(false)
+                    .wrap()
+                    .split("\n");
+            result.addAll(Arrays.asList(wrappedLine));
+        }
+        return result;
+    }
 
     protected void waitOn() {
-        print("PLEASE WAIT...");
+        write(WAIT_COLOR);
+        print("Please wait...");
         flush();
     }
 
