@@ -4,9 +4,8 @@ import com.theokanning.openai.completion.chat.ChatCompletionChoice;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.service.OpenAiService;
-import eu.sblendorio.bbs.core.HtmlUtils;
-import eu.sblendorio.bbs.core.PetsciiColors;
-import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.core.*;
+import org.apache.commons.lang3.StringUtils;
 import org.davidmoten.text.utils.WordWrap;
 
 import java.io.IOException;
@@ -20,6 +19,7 @@ import static com.theokanning.openai.completion.chat.ChatCompletionRequest.build
 import static eu.sblendorio.bbs.core.PetsciiKeys.DEL;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
+import static org.apache.commons.collections4.CollectionUtils.isFull;
 import static org.apache.commons.collections4.CollectionUtils.size;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
@@ -51,6 +51,11 @@ public class OpenAiPetscii extends PetsciiThread {
 
     @Override
     public void doLoop() throws Exception {
+        boolean keepGoing = authenticate();
+        if (!keepGoing)
+            return;
+
+        displayLogo();
         List<ChatMessage> conversation = new LinkedList<>();
         String input;
         do {
@@ -156,14 +161,36 @@ public class OpenAiPetscii extends PetsciiThread {
         return result;
     }
 
-    protected void waitOn() {
+    private void waitOn() {
         write(WAIT_COLOR);
         print("Please wait...");
         flush();
     }
 
-    protected void waitOff() {
+    private void waitOff() {
         for (int i = 0; i < 14; ++i) write(DEL);
         flush();
     }
+
+    private void displayLogo() {
+        cls();
+        write(readBinaryFile("petscii/gpt.seq"));
+    }
+
+    private boolean authenticate() throws IOException {
+        displayLogo();
+        println();
+        write(readBinaryFile("petscii/patreon-access.seq"));
+        println();
+        write(PetsciiColors.GREY3);
+        println("Enter your Patreon email:");
+        println();
+        println(StringUtils.repeat(chr(163), 39));
+        write(PetsciiKeys.UP, PetsciiKeys.UP);
+        flush(); resetInput();
+        String email = readLine();
+
+        return true;
+    }
+
 }
