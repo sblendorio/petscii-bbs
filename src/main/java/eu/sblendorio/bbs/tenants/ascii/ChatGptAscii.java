@@ -36,7 +36,7 @@ public class ChatGptAscii extends AsciiThread {
     private static Logger logger = LogManager.getLogger(ChatGptPetscii.class);
     private static int CODE_LENGTH = 6;
 
-    protected static final String CUSTOM_KEY = "CHATGPT_ASCII";
+    protected static final String CUSTOM_KEY = "PATREON_USER";
     private static final String WAIT_MESSAGE = "...";
     private static final long TIMEOUT = 300_000;
     private String user = null;

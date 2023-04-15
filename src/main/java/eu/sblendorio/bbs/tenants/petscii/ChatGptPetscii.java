@@ -37,7 +37,7 @@ public class ChatGptPetscii extends PetsciiThread {
     private static int CODE_LENGTH = 6;
 
     private static final String WAIT_MESSAGE = "Please wait...";
-    protected static final String CUSTOM_KEY = "CHATGPT_PETSCII";
+    protected static final String CUSTOM_KEY = "PATREON_USER";
     private static final long TIMEOUT = 300_000;
     private String user = null;
 
