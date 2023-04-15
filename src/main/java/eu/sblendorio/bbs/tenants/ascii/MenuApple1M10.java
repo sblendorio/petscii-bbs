@@ -48,12 +48,12 @@ public class MenuApple1M10 extends MenuApple1 {
         println("E - The 8-Bit Guy      R - Zork III");
         println("Italian News---------  S - Hitchhiker's");
         println("F - Televideo RAI");
-        println("G - Lercio");
-        println("H - Disinformatico      Services");
-        println("I - Mupin.it            ----------");
-        println("J - Fatto Quotidiano    T - Chat");
-        println("K - Indie Campus        U - Private Msg");
-        println("L - Butac.it            V - Patron list");
+        println("G - Lercio              Services");
+        println("H - Disinformatico      ----------");
+        println("I - Mupin.it            T - Chat");
+        println("J - Fatto Quotidiano    U - Private Msg");
+        println("K - Indie Campus        V - ChatGPT");
+        println("L - Butac.it            W - Patron list");
         println("M - Alessandro Albano   . - Logout");
     }
 

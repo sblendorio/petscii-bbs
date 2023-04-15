@@ -1,4 +1,4 @@
-package eu.sblendorio.bbs.tenants.petscii;
+package eu.sblendorio.bbs.tenants.ascii;
 
 import com.theokanning.openai.completion.chat.ChatCompletionChoice;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
@@ -20,7 +20,6 @@ import java.time.Duration;
 import java.util.*;
 
 import static com.theokanning.openai.completion.chat.ChatCompletionRequest.builder;
-import static eu.sblendorio.bbs.core.PetsciiKeys.*;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
 import static java.util.stream.Collectors.joining;
@@ -28,10 +27,9 @@ import static org.apache.commons.collections4.CollectionUtils.size;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
-
-public class ChatGptPetscii extends PetsciiThread {
-    private static final String WAIT_MESSAGE = "Please wait...";
-    protected static final String CUSTOM_KEY = "CHATGPT_PETSCII";
+public class ChatGptAscii extends AsciiThread {
+    protected static final String CUSTOM_KEY = "CHATGPT_ASCII";
+    private static final String WAIT_MESSAGE = "...";
     private static final long TIMEOUT = 300_000;
     private String user = null;
 
@@ -45,10 +43,10 @@ public class ChatGptPetscii extends PetsciiThread {
         }
     }
 
-    private static int USER_COLOR = PetsciiColors.WHITE;
-    private static int ASSISTANT_COLOR = PetsciiColors.LIGHT_BLUE;
-    private static int WAIT_COLOR = PetsciiColors.GREY2;
-    private static int MORE_COLOR = PetsciiColors.GREY2;
+    private static byte[] USER_COLOR = new byte[] {};
+    private static byte[] ASSISTANT_COLOR = new byte[] {};
+    private static byte[] WAIT_COLOR = new byte[] {};
+    private static byte[] MORE_COLOR = new byte[] {};
 
     private OpenAiService openAiService = null;
 
@@ -74,7 +72,8 @@ public class ChatGptPetscii extends PetsciiThread {
             return;
 
         cls();
-        write(readBinaryFile("petscii/gpt-biglogo.seq"));
+        println("Chat GPT - Classic Client");
+        println("-------------------------");
         println();
         List<ChatMessage> conversation = new LinkedList<>();
         String input;
@@ -85,10 +84,8 @@ public class ChatGptPetscii extends PetsciiThread {
             input = readLine();
             input = trimToEmpty(input);
             if (".".equalsIgnoreCase(input)) break;
-            if (isBlank(input)) {
-                write(PetsciiKeys.UP);
-                continue;
-            }
+            if (isBlank(input)) continue;
+
             input = asciiToUtf8(input);
 
             conversation.add(new ChatMessage("user", input));
@@ -191,7 +188,7 @@ public class ChatGptPetscii extends PetsciiThread {
     }
 
     private void waitOff() {
-        for (int i = 0; i < WAIT_MESSAGE.length(); ++i) write(DEL);
+        for (int i = 0; i < WAIT_MESSAGE.length(); ++i) write(AsciiKeys.BACKSPACE);
         flush();
     }
 
@@ -205,19 +202,15 @@ public class ChatGptPetscii extends PetsciiThread {
             return true;
 
         cls();
-        write(readBinaryFile("petscii/gpt.seq"));
+        println("ChatGPT - Classic Client");
+        println("------------------------");
         println();
         println();
-        write(readBinaryFile("petscii/patreon-access.seq"));
+        println("Functionality reserved to Patrons");
         println();
-        println();
-        write(PetsciiColors.GREY3);
         println("Enter your Patreon email:");
-        println();
-        println(StringUtils.repeat(chr(163), 39));
-        write(PetsciiKeys.UP, PetsciiKeys.UP);
+        print(">");
         flush(); resetInput();
-        write(PetsciiColors.LIGHT_BLUE);
         String tempEmail = readLine();
         final String userEmail = trimToEmpty(tempEmail);
         if (isBlank(userEmail))
@@ -233,64 +226,51 @@ public class ChatGptPetscii extends PetsciiThread {
 
         if (isBlank(email)) {
             println();
-            println();
-            write(PetsciiColors.RED);
-            print("         "); write(PetsciiKeys.REVON); println("                       ");
-            print("         "); write(PetsciiKeys.REVON); println(" Not subscriber's mail ");
-            print("         "); write(PetsciiKeys.REVON); println(" Press any key to exit ");
-            print("         "); write(PetsciiKeys.REVON); println("                       ");
+            println("Not subscriber's mail");
+            println("Press any key to exit");
             flush(); resetInput();
             readKey();
             return false;
         }
 
-        String secretCode = generateSecretCode(6);
-        println();
         waitOn();
+        String secretCode = generateSecretCode(6);
         boolean success = sendSecretCode(email, secretCode);
+        waitOff();
         if (!success) {
             println();
-            write(PetsciiColors.RED);
-            print("         "); write(PetsciiKeys.REVON); println("                       ");
-            print("         "); write(PetsciiKeys.REVON); println("   Mail server error   ");
-            print("         "); write(PetsciiKeys.REVON); println(" Press any key to exit ");
-            print("         "); write(PetsciiKeys.REVON); println("                       ");
+            println("Mail server error");
+            println("Press any key to exit ");
             flush(); resetInput();
             readKey();
             return false;
         }
-        waitOff();
         long startMillis = System.currentTimeMillis();
-        write(PetsciiColors.GREY3);
         println();
         println("Please enter 6-digit code just sent");
         print("to your email: ");
-        write(PetsciiColors.LIGHT_BLUE);
         flush(); resetInput();
         String userCode = readLine();
         userCode = trimToEmpty(userCode);
         long endMillis = System.currentTimeMillis();
         if (endMillis-startMillis > TIMEOUT) {
-            write(UP, UP, PetsciiColors.RED);
-            print("         "); write(PetsciiKeys.REVON); print("                       "); write(REVOFF); println("   ");
-            print("         "); write(PetsciiKeys.REVON); println(" Timeout, try it again ");
-            print("         "); write(PetsciiKeys.REVON); println(" Press any key to exit ");
-            print("         "); write(PetsciiKeys.REVON); println("                       ");
+            println();
+            println("Timeout, try it again ");
+            println("Press any key to exit ");
             flush(); resetInput();
             readKey();
             return false;
         }
 
         if (!userCode.equalsIgnoreCase(secretCode)) {
-            write(UP, UP, PetsciiColors.RED);
-            print("         "); write(PetsciiKeys.REVON); print("                       "); write(REVOFF); println("   ");
-            print("         "); write(PetsciiKeys.REVON); println(" It was the wrong code ");
-            print("         "); write(PetsciiKeys.REVON); println(" Press any key to exit ");
-            print("         "); write(PetsciiKeys.REVON); println("                       ");
+            println();
+            println("It was the wrong code ");
+            println("Press any key to exit ");
             flush(); resetInput();
             readKey();
             return false;
         }
+
 
         getRoot().setCustomObject(CUSTOM_KEY, email);
         user = email;
@@ -338,11 +318,11 @@ public class ChatGptPetscii extends PetsciiThread {
     }
 
     private String generateSecretCode(int length) {
-         return random
-                 .ints(0, 10)
-                 .limit(length)
-                 .mapToObj(String::valueOf)
-                 .collect(joining());
+        return random
+                .ints(0, 10)
+                .limit(length)
+                .mapToObj(String::valueOf)
+                .collect(joining());
     }
 
     private List<String> readTxt(String filename) {
