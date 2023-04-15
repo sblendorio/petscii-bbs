@@ -13,11 +13,14 @@ import org.davidmoten.text.utils.WordWrap;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,6 +31,7 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.*;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections4.CollectionUtils.size;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
@@ -78,6 +82,8 @@ public class ChatGptPetscii extends PetsciiThread {
         boolean keepGoing = authenticate();
         if (!keepGoing)
             return;
+
+        registerFirstAccess(user);
 
         cls();
         write(readBinaryFile("petscii/gpt-biglogo.seq"));
@@ -242,7 +248,7 @@ public class ChatGptPetscii extends PetsciiThread {
         write(readBinaryFile("petscii/patreon-access.seq"));
         println();
         write(GREY3);
-        println("Enter your Patreon email:");
+        print("Enter Patreon email. \""); write(WHITE); print("-"); write(GREY3); println("\" for underscore");
         println();
         println(StringUtils.repeat(chr(163), 39));
         write(PetsciiKeys.UP, PetsciiKeys.UP);
@@ -257,7 +263,8 @@ public class ChatGptPetscii extends PetsciiThread {
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
-                .filter(row -> row.equalsIgnoreCase(userEmail))
+                .filter(row -> !row.startsWith(";"))
+                .filter(row -> row.replace("_", "-").equalsIgnoreCase(userEmail.replace("_", "-")))
                 .findFirst()
                 .orElse("");
 
@@ -324,6 +331,25 @@ public class ChatGptPetscii extends PetsciiThread {
         getRoot().setCustomObject(CUSTOM_KEY, email);
         user = email;
         return true;
+    }
+
+    private void registerFirstAccess(String user) throws IOException {
+        final String filename = getProperty("PATREON_EMAILS", getProperty("user.home") + File.separator + "consent_emails.txt");
+        List<String> rows = readTxt(filename);
+        boolean yetConnected = rows
+                .stream()
+                .filter(StringUtils::isNotBlank)
+                .map(StringUtils::trimToEmpty)
+                .map(row -> row.split(":")[0])
+                .collect(toList())
+                .contains(user);
+
+        if (!yetConnected) {
+            rows.add(user + ":" + Instant.now().toString());
+            FileWriter writer = new FileWriter(filename);
+            for(String str: rows) writer.write(str + System.lineSeparator());
+            writer.close();
+        }
     }
 
     private boolean sendSecretCode(String email, String secretCode) {
