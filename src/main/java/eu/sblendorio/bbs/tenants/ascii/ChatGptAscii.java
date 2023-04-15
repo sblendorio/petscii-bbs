@@ -105,7 +105,7 @@ public class ChatGptAscii extends AsciiThread {
             logger.info("IP: '{}', email: '{}', role: 'user', message: {}",
                     ipAddress.getHostAddress(),
                     user,
-                    input.replaceAll("\n", "\\n"));
+                    input.replaceAll("\n", "\\\\n"));
 
             ChatCompletionRequest request = builder()
                     .model("gpt-3.5-turbo")
@@ -140,7 +140,7 @@ public class ChatGptAscii extends AsciiThread {
                     ipAddress.getHostAddress(),
                     user,
                     message.getRole(),
-                    message.getContent().replaceAll("\n", "\\n"));
+                    message.getContent().replaceAll("\n", "\\\\n"));
 
             final String answer = "ChatGPT> " + message.getContent();
             println();
