@@ -98,8 +98,9 @@ public class ChatGptPetscii extends PetsciiThread {
             input = asciiToUtf8(input);
 
             conversation.add(new ChatMessage("user", input));
-            logger.info("IP: '{}', role: 'user', message: {}",
+            logger.info("IP: '{}', email: '{}', role: 'user', message: {}",
                     ipAddress.getHostAddress(),
+                    user,
                     input.replaceAll("\n", "\\n"));
 
             ChatCompletionRequest request = builder()
@@ -116,8 +117,9 @@ public class ChatGptPetscii extends PetsciiThread {
             final ChatMessage message = completion.getMessage();
             conversation.add(message);
 
-            logger.info("IP: '{}', role: '{}', message: {}",
+            logger.info("IP: '{}', email: '{}', role: '{}', message: {}",
                     ipAddress.getHostAddress(),
+                    user,
                     message.getRole(),
                     message.getContent().replaceAll("\n", "\\n"));
 
@@ -220,7 +222,7 @@ public class ChatGptPetscii extends PetsciiThread {
         println();
         write(GREY2);
         println("For security reasons, will be logged:");
-        write(WHITE); print("IP address"); write(GREY2); print(" and "); write(WHITE); print("Messages"); write(GREY2); println(" (no username)");
+        write(WHITE); print("IP address"); write(GREY2); print(", "); write(WHITE); print("email"); write(GREY2); print(" and "); write(WHITE); print("email"); write(GREY2); println(".");
         println("If you go on, you will accept this.");
         println();
         write(readBinaryFile("petscii/patreon-access.seq"));
