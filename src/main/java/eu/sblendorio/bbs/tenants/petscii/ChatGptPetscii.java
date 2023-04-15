@@ -20,8 +20,7 @@ import java.time.Duration;
 import java.util.*;
 
 import static com.theokanning.openai.completion.chat.ChatCompletionRequest.builder;
-import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
-import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
+import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
@@ -49,8 +48,8 @@ public class ChatGptPetscii extends PetsciiThread {
 
     private static int USER_COLOR = WHITE;
     private static int ASSISTANT_COLOR = PetsciiColors.LIGHT_BLUE;
-    private static int WAIT_COLOR = PetsciiColors.GREY2;
-    private static int MORE_COLOR = PetsciiColors.GREY2;
+    private static int WAIT_COLOR = GREY2;
+    private static int MORE_COLOR = GREY2;
 
     private OpenAiService openAiService = null;
 
@@ -206,15 +205,15 @@ public class ChatGptPetscii extends PetsciiThread {
         if (user != null)
             return true;
 
-        if (!askForLogging())
-            return false;
-
         cls();
         write(readBinaryFile("petscii/gpt.seq"));
         println();
+        write(GREY2);
+        println("For security reasons, will be logged:");
+        write(WHITE); print("IP address"); write(GREY2); print(" and "); write(WHITE); print("Messages"); write(GREY2); println(" (no username)");
+        println("If you go on, you will accept this.");
         println();
         write(readBinaryFile("petscii/patreon-access.seq"));
-        println();
         println();
         write(GREY3);
         println("Enter your Patreon email:");
@@ -238,12 +237,11 @@ public class ChatGptPetscii extends PetsciiThread {
 
         if (isBlank(email)) {
             println();
-            println();
             write(PetsciiColors.RED);
-            print("         "); write(PetsciiKeys.REVON); println("                       ");
-            print("         "); write(PetsciiKeys.REVON); println(" Not subscriber's mail ");
-            print("         "); write(PetsciiKeys.REVON); println(" Press any key to exit ");
-            print("         "); write(PetsciiKeys.REVON); println("                       ");
+            print("         "); write(REVON); println("                       ");
+            print("         "); write(REVON); println(" Not subscriber's mail ");
+            print("         "); write(REVON); println(" Press any key to exit ");
+            print("         "); write(REVON); println("                       ");
             flush(); resetInput();
             readKey();
             return false;
@@ -256,10 +254,10 @@ public class ChatGptPetscii extends PetsciiThread {
         if (!success) {
             println();
             write(PetsciiColors.RED);
-            print("         "); write(PetsciiKeys.REVON); println("                       ");
-            print("         "); write(PetsciiKeys.REVON); println("   Mail server error   ");
-            print("         "); write(PetsciiKeys.REVON); println(" Press any key to exit ");
-            print("         "); write(PetsciiKeys.REVON); println("                       ");
+            print("         "); write(REVON); println("                       ");
+            print("         "); write(REVON); println("   Mail server error   ");
+            print("         "); write(REVON); println(" Press any key to exit ");
+            print("         "); write(REVON); print("                       "); write(REVOFF); print("  ");
             flush(); resetInput();
             readKey();
             return false;
@@ -277,10 +275,10 @@ public class ChatGptPetscii extends PetsciiThread {
         long endMillis = System.currentTimeMillis();
         if (endMillis-startMillis > TIMEOUT) {
             write(UP, UP, PetsciiColors.RED);
-            print("         "); write(PetsciiKeys.REVON); print("                       "); write(REVOFF); println("   ");
-            print("         "); write(PetsciiKeys.REVON); println(" Timeout, try it again ");
-            print("         "); write(PetsciiKeys.REVON); println(" Press any key to exit ");
-            print("         "); write(PetsciiKeys.REVON); println("                       ");
+            print("         "); write(REVON); print("                       "); write(REVOFF); println("   ");
+            print("         "); write(REVON); println(" Timeout, try it again ");
+            print("         "); write(REVON); println(" Press any key to exit ");
+            print("         "); write(REVON); print("                       "); write(REVOFF); print("  ");
             flush(); resetInput();
             readKey();
             return false;
@@ -288,10 +286,10 @@ public class ChatGptPetscii extends PetsciiThread {
 
         if (!userCode.equalsIgnoreCase(secretCode)) {
             write(UP, UP, PetsciiColors.RED);
-            print("         "); write(PetsciiKeys.REVON); print("                       "); write(REVOFF); println("   ");
-            print("         "); write(PetsciiKeys.REVON); println(" It was the wrong code ");
-            print("         "); write(PetsciiKeys.REVON); println(" Press any key to exit ");
-            print("         "); write(PetsciiKeys.REVON); println("                       ");
+            print("         "); write(REVON); print("                       "); write(REVOFF); println("   ");
+            print("         "); write(REVON); println(" It was the wrong code ");
+            print("         "); write(REVON); println(" Press any key to exit ");
+            print("         "); write(REVON); print("                       "); write(REVOFF); print("  ");
             flush(); resetInput();
             readKey();
             return false;
@@ -300,22 +298,6 @@ public class ChatGptPetscii extends PetsciiThread {
         getRoot().setCustomObject(CUSTOM_KEY, email);
         user = email;
         return true;
-    }
-
-    private boolean askForLogging() throws IOException {
-        cls();
-        write(GREY3);
-        println("For security reasons, will be logged:");
-        println("- IP address");
-        print("- Messages ("); write(WHITE); print("no"); write(GREY3); println(" username)");
-        println();
-        println("If you don't accept that, you won't");
-        println("have access to the functionality.");
-        println();
-        print("Do you accept? (Y/N) ");
-        flush(); resetInput();
-        int ch = readKey();
-        return Character.toLowerCase(ch) == 'y';
     }
 
     private boolean sendSecretCode(String email, String secretCode) {
