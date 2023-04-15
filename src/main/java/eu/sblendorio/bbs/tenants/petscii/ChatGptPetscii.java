@@ -100,7 +100,7 @@ public class ChatGptPetscii extends PetsciiThread {
             conversation.add(new ChatMessage("user", input));
             logger.info("IP: '{}', role: 'user', message: {}",
                     ipAddress.getHostAddress(),
-                    input);
+                    input.replaceAll("\n", "\\n"));
 
             ChatCompletionRequest request = builder()
                     .model("gpt-3.5-turbo")
@@ -116,9 +116,10 @@ public class ChatGptPetscii extends PetsciiThread {
             final ChatMessage message = completion.getMessage();
             conversation.add(message);
 
-            logger.info("IP: '{}', role: 'assistant', message: {}",
+            logger.info("IP: '{}', role: '{}', message: {}",
                     ipAddress.getHostAddress(),
-                    message.getContent().replaceAll("\n", " <br> "));
+                    message.getRole(),
+                    message.getContent().replaceAll("\n", "\\n"));
 
             final String answer = "ChatGPT> " + message.getContent();
             println();
