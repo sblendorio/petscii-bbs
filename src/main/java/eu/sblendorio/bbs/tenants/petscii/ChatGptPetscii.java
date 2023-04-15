@@ -40,6 +40,9 @@ public class ChatGptPetscii extends PetsciiThread {
     private static Logger logger = LogManager.getLogger(ChatGptPetscii.class);
     private static int CODE_LENGTH = 6;
 
+    private static byte[] LOGO_AUTHENTICATE = readBinaryFile("petscii/gpt.seq");
+    private static byte[] BIG_LOGO = readBinaryFile("petscii/gpt-biglogo.seq");
+
     private static final String WAIT_MESSAGE = "Please wait...";
     protected static final String CUSTOM_KEY = "PATREON_USER";
     private static final long TIMEOUT = 300_000;
@@ -49,7 +52,7 @@ public class ChatGptPetscii extends PetsciiThread {
 
     static {
         try {
-            random = SecureRandom.getInstanceStrong();
+            random = SecureRandom.getInstance("SHA1PRNG");
         } catch (NoSuchAlgorithmException e) {
             random = new Random(System.currentTimeMillis());
         }
@@ -86,7 +89,7 @@ public class ChatGptPetscii extends PetsciiThread {
         registerFirstAccess(user);
 
         cls();
-        write(readBinaryFile("petscii/gpt-biglogo.seq"));
+        write(BIG_LOGO);
         println();
         List<ChatMessage> conversation = new LinkedList<>();
         String input;
@@ -238,7 +241,7 @@ public class ChatGptPetscii extends PetsciiThread {
             return true;
 
         cls();
-        write(readBinaryFile("petscii/gpt.seq"));
+        write(LOGO_AUTHENTICATE);
         println();
         write(GREY2);
         println("For security reasons, will be logged:");
@@ -285,6 +288,7 @@ public class ChatGptPetscii extends PetsciiThread {
         waitOn();
         boolean success = sendSecretCode(email, secretCode);
         if (!success) {
+            waitOff();
             println();
             write(PetsciiColors.RED);
             print("         "); write(REVON); println("                       ");
@@ -393,11 +397,11 @@ public class ChatGptPetscii extends PetsciiThread {
     }
 
     private String generateSecretCode(int length) {
-         return random
-                 .ints(0, 10)
-                 .limit(length)
-                 .mapToObj(String::valueOf)
-                 .collect(joining());
+        return random
+            .ints(0, 10)
+            .limit(length)
+            .mapToObj(String::valueOf)
+            .collect(joining());
     }
 
     private List<String> readTxt(String filename) {
