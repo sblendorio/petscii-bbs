@@ -5,6 +5,7 @@ import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.service.OpenAiService;
 import eu.sblendorio.bbs.core.*;
+import eu.sblendorio.bbs.tenants.petscii.ChatGptPetscii;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -19,6 +20,9 @@ import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.*;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import static com.theokanning.openai.completion.chat.ChatCompletionRequest.builder;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
@@ -27,7 +31,11 @@ import static org.apache.commons.collections4.CollectionUtils.size;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
+
 public class ChatGptAscii extends AsciiThread {
+    private static Logger logger = LogManager.getLogger(ChatGptPetscii.class);
+    private static int CODE_LENGTH = 6;
+
     protected static final String CUSTOM_KEY = "CHATGPT_ASCII";
     private static final String WAIT_MESSAGE = "...";
     private static final long TIMEOUT = 300_000;
@@ -89,6 +97,9 @@ public class ChatGptAscii extends AsciiThread {
             input = asciiToUtf8(input);
 
             conversation.add(new ChatMessage("user", input));
+            logger.info("IP: '{}', role: 'user', message: {}",
+                    ipAddress.getHostAddress(),
+                    input);
 
             ChatCompletionRequest request = builder()
                     .model("gpt-3.5-turbo")
@@ -104,8 +115,9 @@ public class ChatGptAscii extends AsciiThread {
             final ChatMessage message = completion.getMessage();
             conversation.add(message);
 
-            // System.out.println("------------------------------------------------------------");
-            // System.out.println(completion);
+            logger.info("IP: '{}', role: 'assistant', message: {}",
+                    ipAddress.getHostAddress(),
+                    message.getContent().replaceAll("\n", " <br> "));
 
             final String answer = "ChatGPT> " + message.getContent();
             println();
@@ -239,7 +251,7 @@ public class ChatGptAscii extends AsciiThread {
         }
 
         waitOn();
-        String secretCode = generateSecretCode(6);
+        String secretCode = generateSecretCode(CODE_LENGTH);
         boolean success = sendSecretCode(email, secretCode);
         waitOff();
         if (!success) {
@@ -252,10 +264,10 @@ public class ChatGptAscii extends AsciiThread {
         }
         long startMillis = System.currentTimeMillis();
         println();
-        println("Please enter 6-digit code just sent");
+        println("Please enter " + CODE_LENGTH + "-digit code just sent");
         print("to your email: ");
         flush(); resetInput();
-        String userCode = readLine();
+        String userCode = readLine(CODE_LENGTH);
         userCode = trimToEmpty(userCode);
         long endMillis = System.currentTimeMillis();
         if (endMillis-startMillis > TIMEOUT) {

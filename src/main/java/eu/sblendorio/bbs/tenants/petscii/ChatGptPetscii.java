@@ -19,6 +19,9 @@ import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.*;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import static com.theokanning.openai.completion.chat.ChatCompletionRequest.builder;
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
@@ -29,8 +32,10 @@ import static org.apache.commons.collections4.CollectionUtils.size;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
-
 public class ChatGptPetscii extends PetsciiThread {
+    private static Logger logger = LogManager.getLogger(ChatGptPetscii.class);
+    private static int CODE_LENGTH = 6;
+
     private static final String WAIT_MESSAGE = "Please wait...";
     protected static final String CUSTOM_KEY = "CHATGPT_PETSCII";
     private static final long TIMEOUT = 300_000;
@@ -93,6 +98,9 @@ public class ChatGptPetscii extends PetsciiThread {
             input = asciiToUtf8(input);
 
             conversation.add(new ChatMessage("user", input));
+            logger.info("IP: '{}', role: 'user', message: {}",
+                    ipAddress.getHostAddress(),
+                    input);
 
             ChatCompletionRequest request = builder()
                     .model("gpt-3.5-turbo")
@@ -108,8 +116,9 @@ public class ChatGptPetscii extends PetsciiThread {
             final ChatMessage message = completion.getMessage();
             conversation.add(message);
 
-            // System.out.println("------------------------------------------------------------");
-            // System.out.println(completion);
+            logger.info("IP: '{}', role: 'assistant', message: {}",
+                    ipAddress.getHostAddress(),
+                    message.getContent().replaceAll("\n", " <br> "));
 
             final String answer = "ChatGPT> " + message.getContent();
             println();
@@ -247,7 +256,7 @@ public class ChatGptPetscii extends PetsciiThread {
             return false;
         }
 
-        String secretCode = generateSecretCode(6);
+        String secretCode = generateSecretCode(CODE_LENGTH);
         println();
         waitOn();
         boolean success = sendSecretCode(email, secretCode);
@@ -266,30 +275,30 @@ public class ChatGptPetscii extends PetsciiThread {
         long startMillis = System.currentTimeMillis();
         write(GREY3);
         println();
-        println("Please enter 6-digit code just sent");
+        println("Please enter " + CODE_LENGTH + "-digit code just sent");
         print("to your email: ");
         write(PetsciiColors.LIGHT_BLUE);
         flush(); resetInput();
-        String userCode = readLine();
+        String userCode = readLine(CODE_LENGTH);
         userCode = trimToEmpty(userCode);
         long endMillis = System.currentTimeMillis();
         if (endMillis-startMillis > TIMEOUT) {
-            write(UP, UP, PetsciiColors.RED);
-            print("         "); write(REVON); print("                       "); write(REVOFF); println("   ");
-            print("         "); write(REVON); println(" Timeout, try it again ");
+            write(UP, UP, UP, PetsciiColors.RED);
+            print("         "); write(REVON); println("                       ");
+            print("         "); write(REVON); print(" Timeout, try it again "); write(REVOFF); println("   ");
             print("         "); write(REVON); println(" Press any key to exit ");
-            print("         "); write(REVON); print("                       "); write(REVOFF); print("  ");
+            print("         "); write(REVON); println("                       ");
             flush(); resetInput();
             readKey();
             return false;
         }
 
         if (!userCode.equalsIgnoreCase(secretCode)) {
-            write(UP, UP, PetsciiColors.RED);
-            print("         "); write(REVON); print("                       "); write(REVOFF); println("   ");
-            print("         "); write(REVON); println(" It was the wrong code ");
+            write(UP, UP, UP, PetsciiColors.RED);
+            print("         "); write(REVON); println("                       ");
+            print("         "); write(REVON); print(" It was the wrong code "); write(REVOFF); println("   ");
             print("         "); write(REVON); println(" Press any key to exit ");
-            print("         "); write(REVON); print("                       "); write(REVOFF); print("  ");
+            print("         "); write(REVON); println("                       ");
             flush(); resetInput();
             readKey();
             return false;
