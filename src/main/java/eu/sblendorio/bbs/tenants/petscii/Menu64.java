@@ -129,8 +129,9 @@ public class Menu64 extends PetsciiThread {
                 else if (key == '5') launch(new Chat64());
                 else if (key == '6') launch(new UserLogon());
                 else if (key == '7') launch(new InternetBrowser());
-                else if (key == '9') launch(new PetsciiArtGallery());
-                else if (key == '0') launch(new Ossa());
+                else if (key == '8' && !alternateLogo()) launch(new ChatGptPetscii());
+                else if (key == 'g') launch(new PetsciiArtGallery());
+                else if (key == 'l') launch(new Ossa());
                 else if (key == 'x') about();
                 else if (key == 'a' && !alternateLogo()) patrons();
                 else if (key == 'b' && !alternateLogo()) patronsLogo();
@@ -391,7 +392,7 @@ public class Menu64 extends PetsciiThread {
         drawLogo();
         write(GREY3, REVOFF);
         gotoXY(20, 12);
-        readTxt(System.getProperty("PATREON_FILE", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
+        readTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)

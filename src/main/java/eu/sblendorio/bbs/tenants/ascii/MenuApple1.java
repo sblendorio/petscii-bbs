@@ -196,7 +196,7 @@ public class MenuApple1 extends AsciiThread {
     }
 
     public void showPatrons() throws Exception {
-        List<String> patrons = readTxt(System.getProperty("PATREON_FILE", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
+        List<String> patrons = readTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
