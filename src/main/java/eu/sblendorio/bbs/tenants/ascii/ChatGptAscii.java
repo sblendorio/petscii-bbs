@@ -48,7 +48,7 @@ public class ChatGptAscii extends AsciiThread {
 
     static {
         try {
-            random = SecureRandom.getInstanceStrong();
+            random = SecureRandom.getInstance("SHA1PRNG");
         } catch (NoSuchAlgorithmException e) {
             random = new Random(System.currentTimeMillis());
         }
