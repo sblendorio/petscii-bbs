@@ -20,6 +20,8 @@ import java.time.Duration;
 import java.util.*;
 
 import static com.theokanning.openai.completion.chat.ChatCompletionRequest.builder;
+import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
+import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
@@ -45,7 +47,7 @@ public class ChatGptPetscii extends PetsciiThread {
         }
     }
 
-    private static int USER_COLOR = PetsciiColors.WHITE;
+    private static int USER_COLOR = WHITE;
     private static int ASSISTANT_COLOR = PetsciiColors.LIGHT_BLUE;
     private static int WAIT_COLOR = PetsciiColors.GREY2;
     private static int MORE_COLOR = PetsciiColors.GREY2;
@@ -204,6 +206,9 @@ public class ChatGptPetscii extends PetsciiThread {
         if (user != null)
             return true;
 
+        if (!askForLogging())
+            return false;
+
         cls();
         write(readBinaryFile("petscii/gpt.seq"));
         println();
@@ -211,7 +216,7 @@ public class ChatGptPetscii extends PetsciiThread {
         write(readBinaryFile("petscii/patreon-access.seq"));
         println();
         println();
-        write(PetsciiColors.GREY3);
+        write(GREY3);
         println("Enter your Patreon email:");
         println();
         println(StringUtils.repeat(chr(163), 39));
@@ -261,7 +266,7 @@ public class ChatGptPetscii extends PetsciiThread {
         }
         waitOff();
         long startMillis = System.currentTimeMillis();
-        write(PetsciiColors.GREY3);
+        write(GREY3);
         println();
         println("Please enter 6-digit code just sent");
         print("to your email: ");
@@ -295,6 +300,22 @@ public class ChatGptPetscii extends PetsciiThread {
         getRoot().setCustomObject(CUSTOM_KEY, email);
         user = email;
         return true;
+    }
+
+    private boolean askForLogging() throws IOException {
+        cls();
+        write(GREY3);
+        println("For security reasons, will be logged:");
+        println("- IP address");
+        print("- Messages ("); write(WHITE); print("no"); write(GREY3); println(" username)");
+        println();
+        println("If you don't accept that, you won't");
+        println("have access to the functionality.");
+        println();
+        print("Do you accept? (Y/N) ");
+        flush(); resetInput();
+        int ch = readKey();
+        return Character.toLowerCase(ch) == 'y';
     }
 
     private boolean sendSecretCode(String email, String secretCode) {

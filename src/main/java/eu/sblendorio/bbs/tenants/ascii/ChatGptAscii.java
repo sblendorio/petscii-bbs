@@ -201,6 +201,9 @@ public class ChatGptAscii extends AsciiThread {
         if (user != null)
             return true;
 
+        if (!askForLogging())
+            return false;
+
         cls();
         println("ChatGPT - Classic Client");
         println("------------------------");
@@ -276,6 +279,22 @@ public class ChatGptAscii extends AsciiThread {
         user = email;
         return true;
     }
+
+    private boolean askForLogging() throws IOException {
+        cls();
+        println("For security reasons, will be logged:");
+        println("- IP address");
+        println("- Messages (no username)");
+        println();
+        println("If you don't accept that, you won't");
+        println("have access to the functionality.");
+        println();
+        print("Do you accept? (Y/N) ");
+        flush(); resetInput();
+        int ch = readKey();
+        return Character.toLowerCase(ch) == 'y';
+    }
+
 
     private boolean sendSecretCode(String email, String secretCode) {
         final String USERNAME = defaultString(getProperty("MAIL_FROM", getenv("MAIL_FROM")));
