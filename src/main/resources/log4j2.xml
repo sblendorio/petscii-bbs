@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <Appenders>
-        <File name="ChatGptLog" fileName="${sys:user.home}/bbs-chatgpt.log">
+        <File name="ChatGptLog" fileName="${sys:user.home}/bbs-logs/bbs-chatgpt.log">
             <PatternLayout>
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS zzz} %p %c{1} [%t] %m%n</Pattern>
             </PatternLayout>

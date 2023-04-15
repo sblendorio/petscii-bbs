@@ -24,13 +24,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import static com.theokanning.openai.completion.chat.ChatCompletionRequest.builder;
+import static eu.sblendorio.bbs.core.PetsciiColors.RED;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
 import static java.util.stream.Collectors.joining;
 import static org.apache.commons.collections4.CollectionUtils.size;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
-
 
 public class ChatGptAscii extends AsciiThread {
     private static Logger logger = LogManager.getLogger(ChatGptPetscii.class);
@@ -97,7 +97,7 @@ public class ChatGptAscii extends AsciiThread {
             input = asciiToUtf8(input);
 
             conversation.add(new ChatMessage("user", input));
-            logger.info("IP: '{}', email: '{}',  role: 'user', message: {}",
+            logger.info("IP: '{}', email: '{}', role: 'user', message: {}",
                     ipAddress.getHostAddress(),
                     user,
                     input.replaceAll("\n", "\\n"));
@@ -108,7 +108,22 @@ public class ChatGptAscii extends AsciiThread {
                     .build();
 
             waitOn();
-            List<ChatCompletionChoice> choices = service().createChatCompletion(request).getChoices();
+            final List<ChatCompletionChoice> choices;
+            try {
+                choices = service().createChatCompletion(request).getChoices();
+            } catch (Exception e) {
+                cls();
+                write(RED);
+                println("Unexpected error. Please write to sysop");
+                println("Press any key to EXIT");
+                logger.error("IP: '{}', email: '{}', exception: {}",
+                        ipAddress.getHostAddress(),
+                        user,
+                        e);
+                flush(); resetInput();
+                readKey();
+                break;
+            }
             waitOff();
             if (size(choices) == 0) continue;
 
@@ -222,9 +237,9 @@ public class ChatGptAscii extends AsciiThread {
         println();
         println("For security reasons, will be logged:");
         println("- IP address");
-        println("- Messages (no username)");
-        println("If you go on, you will accept this");
-        println();
+        println("- email");
+        println("- messages");
+        println("If you go on, you will accept this.");
         println();
         println("Functionality reserved to Patrons");
         println();

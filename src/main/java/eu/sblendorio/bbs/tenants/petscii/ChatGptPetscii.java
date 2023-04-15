@@ -109,7 +109,21 @@ public class ChatGptPetscii extends PetsciiThread {
                     .build();
 
             waitOn();
-            List<ChatCompletionChoice> choices = service().createChatCompletion(request).getChoices();
+            final List<ChatCompletionChoice> choices;
+            try {
+                choices = service().createChatCompletion(request).getChoices();
+            } catch (Exception e) {
+                cls();
+                println("Unexpected error. Please write to sysop");
+                println("Press any key to EXIT");
+                logger.error("IP: '{}', email: '{}', exception: {}",
+                        ipAddress.getHostAddress(),
+                        user,
+                        e);
+                flush(); resetInput();
+                readKey();
+                break;
+            }
             waitOff();
             if (size(choices) == 0) continue;
 
@@ -222,7 +236,7 @@ public class ChatGptPetscii extends PetsciiThread {
         println();
         write(GREY2);
         println("For security reasons, will be logged:");
-        write(WHITE); print("IP address"); write(GREY2); print(", "); write(WHITE); print("email"); write(GREY2); print(" and "); write(WHITE); print("email"); write(GREY2); println(".");
+        write(WHITE); print("IP address"); write(GREY2); print(", "); write(WHITE); print("email"); write(GREY2); print(" and "); write(WHITE); print("messages"); write(GREY2); println(".");
         println("If you go on, you will accept this.");
         println();
         write(readBinaryFile("petscii/patreon-access.seq"));
