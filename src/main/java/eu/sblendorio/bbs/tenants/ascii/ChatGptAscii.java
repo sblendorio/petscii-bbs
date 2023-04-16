@@ -88,6 +88,8 @@ public class ChatGptAscii extends AsciiThread {
         println("Chat GPT - Classic Client");
         println("-------------------------");
         println();
+        println("Enter \".\" to EXIT");
+        println();
         List<ChatMessage> conversation = new LinkedList<>();
         String input;
         do {
@@ -97,7 +99,10 @@ public class ChatGptAscii extends AsciiThread {
             input = readLine();
             input = trimToEmpty(input);
             if (".".equalsIgnoreCase(input)) break;
-            if (isBlank(input)) continue;
+            if (isBlank(input)) {
+                println("Enter \".\" to exit");
+                continue;
+            }
 
             input = asciiToUtf8(input);
 
@@ -325,12 +330,12 @@ public class ChatGptAscii extends AsciiThread {
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trimToEmpty)
-                .map(row -> row.split(":")[0])
+                .map(row -> row.split(";")[0])
                 .collect(toList())
                 .contains(user);
 
         if (!yetConnected) {
-            rows.add(user + ":" + Instant.now().toString());
+            rows.add(user + ";" + Instant.now().toString());
             FileWriter writer = new FileWriter(filename);
             for(String str: rows) writer.write(str + System.lineSeparator());
             writer.close();

@@ -44,6 +44,7 @@ public class ChatGptPetscii extends PetsciiThread {
     private static byte[] BIG_LOGO = readBinaryFile("petscii/gpt-biglogo.seq");
 
     private static final String WAIT_MESSAGE = "Please wait...";
+    private static final String EXIT_ADVICE = "Enter \".\" to EXIT";
     protected static final String CUSTOM_KEY = "PATREON_USER";
     private static final long TIMEOUT = 300_000;
     private String user = null;
@@ -93,6 +94,7 @@ public class ChatGptPetscii extends PetsciiThread {
         println();
         List<ChatMessage> conversation = new LinkedList<>();
         String input;
+        boolean exitAdvice = false;
         do {
             flush(); resetInput();
             write(USER_COLOR);
@@ -101,7 +103,10 @@ public class ChatGptPetscii extends PetsciiThread {
             input = trimToEmpty(input);
             if (".".equalsIgnoreCase(input)) break;
             if (isBlank(input)) {
-                write(PetsciiKeys.UP);
+                exitAdvice = true;
+                write(LIGHT_RED);
+                print(EXIT_ADVICE);
+                write(UP, UP, RETURN);
                 continue;
             }
             input = asciiToUtf8(input);
@@ -117,7 +122,8 @@ public class ChatGptPetscii extends PetsciiThread {
                     .messages(conversation)
                     .build();
 
-            waitOn();
+            waitOn(exitAdvice);
+            if (exitAdvice) exitAdvice = false;
             final List<ChatCompletionChoice> choices;
             try {
                 choices = service().createChatCompletion(request).getChoices();
@@ -221,8 +227,16 @@ public class ChatGptPetscii extends PetsciiThread {
     }
 
     private void waitOn() {
+        waitOn(false);
+    }
+
+    private void waitOn(boolean exitAdvice) {
         write(WAIT_COLOR);
         print(WAIT_MESSAGE);
+        if (exitAdvice && WAIT_MESSAGE.length() < EXIT_ADVICE.length()) {
+            for (int i=0; i<(EXIT_ADVICE.length() - WAIT_MESSAGE.length()); i++) write(SPACE_CHAR);
+            for (int i=0; i<(EXIT_ADVICE.length() - WAIT_MESSAGE.length()); i++) write(DEL);
+        }
         flush();
     }
 
@@ -251,10 +265,10 @@ public class ChatGptPetscii extends PetsciiThread {
         write(readBinaryFile("petscii/patreon-access.seq"));
         println();
         write(GREY3);
-        print("Enter Patreon email. \""); write(WHITE); print("-"); write(GREY3); println("\" for underscore");
+        println("Enter Patreon email. \"-\" for underscore");
         println();
         println(StringUtils.repeat(chr(163), 39));
-        write(PetsciiKeys.UP, PetsciiKeys.UP);
+        write(UP, UP);
         flush(); resetInput();
         write(PetsciiColors.LIGHT_BLUE);
         String tempEmail = readLine();
@@ -344,12 +358,12 @@ public class ChatGptPetscii extends PetsciiThread {
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trimToEmpty)
-                .map(row -> row.split(":")[0])
+                .map(row -> row.split(";")[0])
                 .collect(toList())
                 .contains(user);
 
         if (!yetConnected) {
-            rows.add(user + ":" + Instant.now().toString());
+            rows.add(user + ";" + Instant.now().toString());
             FileWriter writer = new FileWriter(filename);
             for(String str: rows) writer.write(str + System.lineSeparator());
             writer.close();

@@ -182,7 +182,7 @@ public class MenuApple1 extends AsciiThread {
         println("Italian News");
         println("-----------------");
         println("F - Televideo RAI");
-        println("G - Lercio            "+ sp + " Services");
+        println("G - Lercio            "+ sp +"  Services");
         println("H - Disinformatico    "+ sp +"  ---------------");
         println("I - Mupin.it          "+ sp +"  T - Chat");
         println("J - Fatto Quotidiano  "+ sp +"  U - Private Msg");
@@ -206,9 +206,14 @@ public class MenuApple1 extends AsciiThread {
 
         cls();
         banner();
+        println("You can support the development of this");
+        println("BBS through Patreon starting with 3$ or");
+        println("3.50eur per month:");
+        println();
+        println("https://patreon.com/FrancescoSblendorio");
+        println();
         println("Patrons of this BBS");
         println("-------------------");
-        println();
         patrons.forEach(this::println);
         println();
         print("Press any key.");
