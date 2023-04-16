@@ -88,6 +88,7 @@ public class ChatGptPetscii extends PetsciiThread {
             return;
 
         registerFirstAccess(user);
+        changeClientName(user+"/"+UUID.randomUUID());
 
         cls();
         write(BIG_LOGO);

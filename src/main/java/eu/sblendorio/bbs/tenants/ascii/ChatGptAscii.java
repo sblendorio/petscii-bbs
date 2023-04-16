@@ -83,6 +83,7 @@ public class ChatGptAscii extends AsciiThread {
             return;
 
         registerFirstAccess(user);
+        changeClientName(user+"/"+UUID.randomUUID());
 
         cls();
         println("Chat GPT - Classic Client");
