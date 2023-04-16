@@ -10,15 +10,6 @@ import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_BLUE;
 import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_GREEN;
 import static eu.sblendorio.bbs.core.PetsciiColors.RED;
 import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
-import static eu.sblendorio.bbs.core.PetsciiKeys.CASE_LOCK;
-import static eu.sblendorio.bbs.core.PetsciiKeys.CLR;
-import static eu.sblendorio.bbs.core.PetsciiKeys.HOME;
-import static eu.sblendorio.bbs.core.PetsciiKeys.LOWERCASE;
-import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
-import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
-import static eu.sblendorio.bbs.core.PetsciiKeys.RIGHT;
-import static eu.sblendorio.bbs.core.PetsciiKeys.LEFT;
-import static eu.sblendorio.bbs.core.PetsciiKeys.DOWN;
 
 import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
@@ -32,9 +23,11 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
-import static org.apache.commons.lang3.StringUtils.repeat;
-import static org.apache.commons.lang3.StringUtils.startsWith;
+import static eu.sblendorio.bbs.core.PetsciiKeys.*;
+import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class Menu64 extends PetsciiThread {
@@ -386,23 +379,47 @@ public class Menu64 extends PetsciiThread {
     }
 
     public void patrons() throws Exception {
+        int PAGING_LINES = 12;
+
         write(CLR, LOWERCASE, CASE_LOCK, HOME);
         write(readBinaryFile("petscii/patreon.seq"));
         write(HOME);
         drawLogo();
         write(GREY3, REVOFF);
         gotoXY(20, 12);
-        readTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
+        List<String> patrons =
+                readTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
+                .filter(str -> !str.startsWith(";"))
                 .map(x -> x.replaceAll(" - .*$", ""))
                 .sorted()
-                .forEach(name -> {
-                    print(name);
-                    write(DOWN);
-                    for (int i = 0; i < name.length(); i++) write(LEFT);
-                });
+                .collect(toList());
+
+        int count = 0;
+        for (String name: patrons) {
+            count++;
+
+            print(name);
+            if ((count % PAGING_LINES) +1 >1 && count % PAGING_LINES != 0) {
+                write(DOWN);
+                for (int i = 0; i < name.length(); i++) write(LEFT);
+            }
+            if (count % PAGING_LINES == 0 && count < patrons.size()) {
+                flush(); resetInput();
+                int key = readKey();
+                if (key == '.') return;
+                for (int j=0; j<patrons.get(count-1).length(); j++) write(LEFT);
+
+                for (int i = count - 1; i>= count -PAGING_LINES; i--) {
+                    for (int j=0; j<patrons.get(i).length(); j++) write(SPACE_CHAR);
+                    for (int j=0; j<patrons.get(i).length(); j++) write(LEFT);
+                    write(UP);
+                }
+                write(DOWN);
+            }
+        }
 
         flush();
         resetInput();
