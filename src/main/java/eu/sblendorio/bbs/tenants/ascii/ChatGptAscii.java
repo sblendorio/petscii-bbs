@@ -1,11 +1,11 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
+import com.theokanning.openai.OpenAiHttpException;
 import com.theokanning.openai.completion.chat.ChatCompletionChoice;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.service.OpenAiService;
 import eu.sblendorio.bbs.core.*;
-import eu.sblendorio.bbs.tenants.petscii.ChatGptPetscii;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -26,7 +26,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import static com.theokanning.openai.completion.chat.ChatCompletionRequest.builder;
-import static eu.sblendorio.bbs.core.PetsciiColors.RED;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
 import static java.util.stream.Collectors.joining;
@@ -36,7 +35,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
 public class ChatGptAscii extends AsciiThread {
-    private static Logger logger = LogManager.getLogger(ChatGptPetscii.class);
+    private static Logger logger = LogManager.getLogger(ChatGptAscii.class);
     private static int CODE_LENGTH = 6;
 
     protected static final String CUSTOM_KEY = "PATREON_USER";
@@ -123,17 +122,29 @@ public class ChatGptAscii extends AsciiThread {
             try {
                 choices = service().createChatCompletion(request).getChoices();
             } catch (Exception e) {
-                cls();
-                write(RED);
-                println("Unexpected error. Please write to sysop");
-                println("Press any key to EXIT");
-                logger.error("IP: '{}', email: '{}', exception: {}",
-                        ipAddress.getHostAddress(),
-                        user,
-                        e);
-                flush(); resetInput();
-                readKey();
-                break;
+                if (e instanceof OpenAiHttpException && e.getMessage() != null && e.getMessage().contains("maximum context length")) {
+                    cls();
+                    println("This conversation exceeded max. token");
+                    println("length.  But you can close this alert");
+                    println("pressing a key and starting a new one");
+                    println();
+                    flush(); resetInput();
+                    readKey();
+                    break;
+
+                } else {
+                    cls();
+                    println("Unexpected error. Please write to sysop");
+                    println("Press any key to EXIT");
+                    logger.error("IP: '{}', email: '{}', exception: {}",
+                            ipAddress.getHostAddress(),
+                            user,
+                            e);
+                    flush();
+                    resetInput();
+                    readKey();
+                    break;
+                }
             }
             waitOff();
             if (size(choices) == 0) continue;
@@ -246,11 +257,12 @@ public class ChatGptAscii extends AsciiThread {
         println("ChatGPT - Classic Client");
         println("------------------------");
         println();
-        println("For security reasons, will be logged:");
+        println("For security reasons:");
         println("- IP address");
         println("- email");
         println("- messages");
-        println("If you go on, you will accept this.");
+        println("will be logged. If you go on,");
+        println("you will accept this.");
         println();
         println("Functionality reserved to Patrons");
         println();
@@ -267,7 +279,8 @@ public class ChatGptAscii extends AsciiThread {
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
                 .filter(row -> !row.startsWith(";"))
-                .filter(row -> row.replace("_", "-").equalsIgnoreCase(userEmail.replace("_", "-")))
+                .filter(row -> row.replace("_", "-").replace("*", "@")
+                        .equalsIgnoreCase(userEmail.replace("_", "-").replace("*", "@")))
                 .findFirst()
                 .orElse("");
 

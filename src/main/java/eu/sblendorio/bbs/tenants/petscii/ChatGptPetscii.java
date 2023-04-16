@@ -1,5 +1,6 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
+import com.theokanning.openai.OpenAiHttpException;
 import com.theokanning.openai.completion.chat.ChatCompletionChoice;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
@@ -129,16 +130,33 @@ public class ChatGptPetscii extends PetsciiThread {
             try {
                 choices = service().createChatCompletion(request).getChoices();
             } catch (Exception e) {
-                cls();
-                println("Unexpected error. Please write to sysop");
-                println("Press any key to EXIT");
-                logger.error("IP: '{}', email: '{}', exception: {}",
-                        ipAddress.getHostAddress(),
-                        user,
-                        e);
-                flush(); resetInput();
-                readKey();
-                break;
+                if (e instanceof OpenAiHttpException && e.getMessage() != null && e.getMessage().contains("maximum context length")) {
+                    cls();
+                    write(RED);
+                    println("                                       ");
+                    println(" This conversation exceeded max. token ");
+                    println(" length.  But you can close this alert ");
+                    println(" pressing a key and starting a new one ");
+                    println("                                       ");
+                    println();
+                    write(GREY3);
+                    flush(); resetInput();
+                    readKey();
+                    break;
+                } else {
+                    cls();
+                    write(RED);
+                    println("Unexpected error. Please write to sysop");
+                    println("Press any key to EXIT");
+                    logger.error("IP: '{}', email: '{}', exception: {}",
+                            ipAddress.getHostAddress(),
+                            user,
+                            e);
+                    flush();
+                    resetInput();
+                    readKey();
+                    break;
+                }
             }
             waitOff();
             if (size(choices) == 0) continue;
@@ -259,7 +277,7 @@ public class ChatGptPetscii extends PetsciiThread {
         write(LOGO_AUTHENTICATE);
         println();
         write(GREY2);
-        println("For security reasons, will be logged:");
+        println("For security reasons, the BBS will log:");
         write(WHITE); print("IP address"); write(GREY2); print(", "); write(WHITE); print("email"); write(GREY2); print(" and "); write(WHITE); print("messages"); write(GREY2); println(".");
         println("If you go on, you will accept this.");
         println();
@@ -282,7 +300,8 @@ public class ChatGptPetscii extends PetsciiThread {
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
                 .filter(row -> !row.startsWith(";"))
-                .filter(row -> row.replace("_", "-").equalsIgnoreCase(userEmail.replace("_", "-")))
+                .filter(row -> row.replace("_", "-").replace("*", "@")
+                        .equalsIgnoreCase(userEmail.replace("_", "-").replace("*", "@")))
                 .findFirst()
                 .orElse("");
 

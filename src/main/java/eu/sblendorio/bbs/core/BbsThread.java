@@ -436,38 +436,43 @@ public abstract class BbsThread extends Thread {
     public String readLineBuffer() { return io.readLineBuffer(); }
     public int convertToAscii(int ch) { return io.convertToAscii(ch); }
 
+    public void restartKeepAlive() {
+        keepAliveThread.restartKeepAlive();
+        getRoot().keepAliveThread.restartKeepAlive();
+    }
+
     public String readLine() throws IOException {
-        keepAliveThread.restartKeepAlive();
+        restartKeepAlive();
         final String result = io.readLine();
-        keepAliveThread.restartKeepAlive();
+        restartKeepAlive();
         return result;
     }
 
     public String readLine(int maxLength) throws IOException {
-        keepAliveThread.restartKeepAlive();
+        restartKeepAlive();
         final String result = io.readLine(maxLength);
-        keepAliveThread.restartKeepAlive();
+        restartKeepAlive();
         return result;
     }
 
     public String readLine(Set<Integer> allowedChars) throws IOException {
-        keepAliveThread.restartKeepAlive();
+        restartKeepAlive();
         final String result = io.readLine(allowedChars);
-        keepAliveThread.restartKeepAlive();
+        restartKeepAlive();
         return result;
     }
 
     public String readPassword() throws IOException {
-        keepAliveThread.restartKeepAlive();
+        restartKeepAlive();
         final String result = io.readPassword();
-        keepAliveThread.restartKeepAlive();
+        restartKeepAlive();
         return result;
     }
 
     public int readKey() throws IOException {
-        keepAliveThread.restartKeepAlive();
+        restartKeepAlive();
         final int result = io.readKey();
-        keepAliveThread.restartKeepAlive();
+        restartKeepAlive();
         return result;
     }
 

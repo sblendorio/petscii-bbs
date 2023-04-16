@@ -70,6 +70,8 @@ public class PetsciiInputOutput extends BbsInputOutput {
             return Character.toUpperCase(ch);
         else if (ch >= 'A' && ch <= 'Z')
             return Character.toLowerCase(ch);
+        else if (ch == 164)
+            return '_';
         else
             return ch;
     }
