@@ -206,7 +206,7 @@ public class Chat64 extends PetsciiThread {
 
     private void notifyExitingUser() {
         if (!getClientName().matches("^client[0-9]+$")
-         && !getClientName().matches("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
+         && !getClientName().matches("^.*[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
             sendToAll(new ChatMessage(-2, getClientName() + " just left"));
     }
 
@@ -270,7 +270,7 @@ public class Chat64 extends PetsciiThread {
 
         if (recipient != null
             && getClients().get(recipient) != null
-            && getClients().get(recipient).getClientName().matches("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
+            && getClients().get(recipient).getClientName().matches("^.*[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
             recipient = null;
             println();
         }
@@ -324,7 +324,7 @@ public class Chat64 extends PetsciiThread {
                 .filter(x -> x.getClientClass().getSimpleName().startsWith("Chat")
                           && x.getClientId() != this.getClientId()
                           && !x.getClientName().matches("(?i)^client[0-9]+$")
-                          && !x.getClientName().matches("(?i)^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"))
+                          && !x.getClientName().matches("(?i)^.*[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"))
                 .collect(Collectors.toList());
     }
 

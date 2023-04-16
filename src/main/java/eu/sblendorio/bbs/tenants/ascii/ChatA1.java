@@ -155,7 +155,7 @@ public class ChatA1 extends AsciiThread {
 
     private void notifyExitingUser() {
         if (!getClientName().matches("^client[0-9]+$")
-         && !getClientName().matches("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
+         && !getClientName().matches("^.*[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
             sendToAll(new ChatMessage(-2, getClientName() + " just left"));
     }
 
@@ -209,7 +209,7 @@ public class ChatA1 extends AsciiThread {
                 .filter(x -> x.getClientClass().getSimpleName().startsWith("Chat")
                           && x.getClientId() != this.getClientId()
                           && !x.getClientName().matches("(?i)^client[0-9]+$")
-                          && !x.getClientName().matches("(?i)^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"))
+                          && !x.getClientName().matches("(?i)^.*[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"))
                 .collect(Collectors.toList());
     }
 
