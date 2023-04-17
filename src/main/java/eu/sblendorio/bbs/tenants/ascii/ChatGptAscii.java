@@ -261,10 +261,11 @@ public class ChatGptAscii extends AsciiThread {
         println("- IP address");
         println("- email");
         println("- messages");
-        println("will be logged. If you go on,");
+        println("will be logged. If you proceed,");
         println("you will accept this.");
         println();
         println("Functionality reserved to Patrons");
+        println("https://patron.com/FrancescoSblendorio");
         println();
         println("Enter Patreon email ('-' for underscore)");
         print(">");

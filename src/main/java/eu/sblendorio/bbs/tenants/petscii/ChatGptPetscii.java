@@ -279,20 +279,28 @@ public class ChatGptPetscii extends PetsciiThread {
         write(GREY2);
         println("For security reasons, the BBS will log:");
         write(WHITE); print("IP address"); write(GREY2); print(", "); write(WHITE); print("email"); write(GREY2); print(" and "); write(WHITE); print("messages"); write(GREY2); println(".");
-        println("If you go on, you will accept this.");
+        println("If you proceed, you will accept this.");
         println();
         write(readBinaryFile("petscii/patreon-access.seq"));
-        println();
         write(GREY3);
-        println("Enter Patreon email. \"-\" for underscore");
+        println("Enter Patreon email:");
         println();
-        println(StringUtils.repeat(chr(163), 39));
-        write(UP, UP);
+        println(repeat(chr(163), 39));
+        write(GREY2); print("You can use: "); write(YELLOW); print("\"-\""); write(GREY2); println(" for underscore");
+        write(YELLOW); print("             \"*\""); write(GREY2); print(" in place of "); write(YELLOW); println("\"@\"");
+        println();
+        write(GREY2); print("Example: "); write(WHITE); print("johndoe"); write(YELLOW); print("*"); write(WHITE); println("gmail.com");
+        write(/*RETURN, RETURN, RETURN, */RETURN, GREY1);
+        print("www.patreon.com/FrancescoSblendorio");
+        write(UP, UP, UP, UP, UP, RETURN);
+        write(UP, UP, UP);
         flush(); resetInput();
         write(PetsciiColors.LIGHT_BLUE);
         String tempEmail = readLine();
+        write(RETURN, RETURN, RETURN, RETURN, RETURN, RETURN, GREY1); print(repeat(' ', 39));
+        write(UP, UP, UP, UP, UP, UP, UP, RETURN);
         final String userEmail = trimToEmpty(tempEmail);
-        if (isBlank(userEmail))
+        if (isBlank(userEmail) || ".".equals(trimToEmpty(userEmail)))
             return false;
 
         String email = readTxt(getProperty("PATREON_EMAILS", getProperty("user.home") + File.separator + "patreon_emails.txt"))
@@ -319,6 +327,11 @@ public class ChatGptPetscii extends PetsciiThread {
 
         String secretCode = generateSecretCode(CODE_LENGTH);
         println();
+        println(repeat(' ',31));
+        println(repeat(' ',32));
+        println();
+        println(repeat(' ',26));
+        write(UP, UP, UP, UP);
         waitOn();
         boolean success = sendSecretCode(email, secretCode);
         if (!success) {

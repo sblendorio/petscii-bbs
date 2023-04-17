@@ -239,7 +239,7 @@ public class BBServer {
                     + (entry.getValue().keepAlive
                         ? ", idle="+showMillis(currentTimeMillis()-entry.getValue().keepAliveThread.getStartTimestamp())
                         : "")
-                    + ", clientName=" + entry.getValue().getClientName()
+                    + ", clientName=" + obfuscate(entry.getValue().getClientName())
                     + ", IP=" + entry.getValue().ipAddress
                     + ", serverIP=" + entry.getValue().serverAddress
                     + ")\n"
@@ -272,6 +272,10 @@ public class BBServer {
                     + "\n";
                 }).collect(Collectors.joining());
 
+    }
+
+    private static String obfuscate(String s) {
+        return s.replaceAll("@.*?/", "/");
     }
 
     private static String showMillis(long millis) {

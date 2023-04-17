@@ -394,6 +394,7 @@ public class Menu64 extends PetsciiThread {
                 .map(StringUtils::trim)
                 .filter(str -> !str.startsWith(";"))
                 .map(x -> x.replaceAll(" - .*$", ""))
+                .map(x -> StringUtils.substring(x, 0, 20))
                 .sorted()
                 .collect(toList());
 
