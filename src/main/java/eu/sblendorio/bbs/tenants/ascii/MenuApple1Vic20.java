@@ -52,8 +52,8 @@ public class MenuApple1Vic20 extends MenuApple1 {
         println("H-Disinfor    -------");
         println("I-IlPost      T-Chat");
         println("J-F.Quot      U-Msgs");
-        println("K-IndieCampus V-ChGPT");
-        println("L-Butac       W-Patre");
+        println("K-IndieCampus "+(alternateLogo() ? "" : "V-ChGPT"));
+        println("L-Butac       "+(alternateLogo() ? "" : "W-Patre"));
         println("M-A.Albano    .-Exit");
     }
 

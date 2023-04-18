@@ -52,8 +52,8 @@ public class MenuApple1M10 extends MenuApple1 {
         println("H - Disinformatico      ----------");
         println("I - Mupin.it            T - Chat");
         println("J - Fatto Quotidiano    U - Private Msg");
-        println("K - Indie Campus        V - ChatGPT");
-        println("L - Butac.it            W - Patron list");
+        println("K - Indie Campus        " + (alternateLogo() ? "" : "V - ChatGPT"));
+        println("L - Butac.it            " + (alternateLogo() ? "" : "W - Patron list"));
         println("M - Alessandro Albano   . - Logout");
     }
 

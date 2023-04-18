@@ -7,6 +7,7 @@ import eu.sblendorio.bbs.core.BbsThread;
 import static eu.sblendorio.bbs.core.Utils.STR_ALPHANUMERIC;
 import static eu.sblendorio.bbs.core.Utils.setOfChars;
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -54,6 +55,13 @@ public class MenuApple1 extends AsciiThread {
     private Reader maxmindReader;
     private JsonNode maxmindResponse;
     private GeoData geoData;
+
+    private static final String IP_FOR_ALTERNATE_LOGO = System.getProperty("alternate.logo.ip", "none");
+    private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.port", "-1"));
+    public boolean alternateLogo() {
+        return IP_FOR_ALTERNATE_LOGO.equals(serverAddress.getHostAddress())
+                || serverPort == PORT_FOR_ALTERNATE_LOGO;
+    }
 
     public void init() throws IOException {
         try {
@@ -140,8 +148,8 @@ public class MenuApple1 extends AsciiThread {
                 else if ("s".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
                 else if ("t".equals(choice)) subThread = new ChatA1(getCharset());
                 else if ("u".equals(choice)) subThread = new PrivateMessagesAscii();
-                else if ("v".equals(choice)) subThread = new ChatGptAscii();
-                else if ("w".equals(choice)) { showPatrons(); subThread = null; }
+                else if ("v".equals(choice) && !alternateLogo()) subThread = new ChatGptAscii();
+                else if ("w".equals(choice) && !alternateLogo()) { showPatrons(); subThread = null; }
                 else {
                     validKey = false;
                     subThread = null;
@@ -186,8 +194,8 @@ public class MenuApple1 extends AsciiThread {
         println("H - Disinformatico    "+ sp +"  ---------------");
         println("I - Mupin.it          "+ sp +"  T - Chat");
         println("J - Fatto Quotidiano  "+ sp +"  U - Private Msg");
-        println("K - Indie Campus      "+ sp +"  V - Chat GPT");
-        println("L - Butac.it          "+ sp +"  W - Patrons list");
+        println("K - Indie Campus      "+ sp + (alternateLogo() ? "" : "  V - Chat GPT"));
+        println("L - Butac.it          "+ sp + (alternateLogo() ? "" : "  W - Patrons list"));
         println("M - Alessandro Albano "+ sp +"  . - Logout");
         println();
     }
