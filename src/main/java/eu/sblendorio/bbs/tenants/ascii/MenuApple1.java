@@ -137,7 +137,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("h".equals(choice)) subThread = new DisinformaticoAscii();
                 else if ("i".equals(choice)) subThread = new MupinAscii();
                 else if ("j".equals(choice)) subThread = new IlFattoQuotidianoAscii();
-                else if ("k".equals(choice)) subThread = new IndieCampusAscii();
+                else if ("k".equals(choice)) subThread = new AmedeoValorosoAscii();
                 else if ("l".equals(choice)) subThread = new ButacAscii();
                 else if ("m".equals(choice)) subThread = new AlessandroAlbanoAscii();
                 else if ("n".equals(choice)) subThread = new TicTacToeAscii();
@@ -190,13 +190,13 @@ public class MenuApple1 extends AsciiThread {
         println("Italian News");
         println("-----------------");
         println("F - Televideo RAI");
-        println("G - Lercio            "+ sp +"  Services");
-        println("H - Disinformatico    "+ sp +"  ---------------");
-        println("I - Mupin.it          "+ sp +"  T - Chat");
-        println("J - Fatto Quotidiano  "+ sp +"  U - Private Msg");
-        println("K - Indie Campus      "+ sp + (alternateLogo() ? "" : "  V - Chat GPT"));
-        println("L - Butac.it          "+ sp + (alternateLogo() ? "" : "  W - Patrons list"));
-        println("M - Alessandro Albano "+ sp +"  . - Logout");
+        println("G - Lercio           "+ sp +"  Services");
+        println("H - Disinformatico   "+ sp +"  ---------------");
+        println("I - Mupin.it         "+ sp +"  T - Chat");
+        println("J - Fatto Quotidiano "+ sp +"  U - Private Msg");
+        println("K - Amedeo Valoroso  "+ sp + (alternateLogo() ? "" : "  V - Chat GPT"));
+        println("L - Butac.it         "+ sp + (alternateLogo() ? "" : "  W - Patrons list"));
+        println("M - Alessandro Albano"+ sp +"  . - Logout");
         println();
     }
 
