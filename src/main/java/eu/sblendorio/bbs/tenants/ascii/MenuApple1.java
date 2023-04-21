@@ -148,8 +148,9 @@ public class MenuApple1 extends AsciiThread {
                 else if ("s".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
                 else if ("t".equals(choice)) subThread = new ChatA1(getCharset());
                 else if ("u".equals(choice)) subThread = new PrivateMessagesAscii();
-                else if ("v".equals(choice) && !alternateLogo()) subThread = new ChatGptAscii();
-                else if ("w".equals(choice) && !alternateLogo()) { showPatrons(); subThread = null; }
+                else if ("v".equals(choice)) subThread = new ElizaAscii();
+                else if ("w".equals(choice) && !alternateLogo()) subThread = new ChatGptAscii();
+                else if ("x".equals(choice) && !alternateLogo()) { showPatrons(); subThread = null; }
                 else {
                     validKey = false;
                     subThread = null;
@@ -189,13 +190,13 @@ public class MenuApple1 extends AsciiThread {
         println("                     "+ sp +"  S - Hitchhiker's");
         println("Italian News");
         println("-----------------");
-        println("F - Televideo RAI");
-        println("G - Lercio           "+ sp +"  Services");
-        println("H - Disinformatico   "+ sp +"  ---------------");
-        println("I - Mupin.it         "+ sp +"  T - Chat");
-        println("J - Fatto Quotidiano "+ sp +"  U - Private Msg");
-        println("K - Amedeo Valoroso  "+ sp + (alternateLogo() ? "" : "  V - Chat GPT"));
-        println("L - Butac.it         "+ sp + (alternateLogo() ? "" : "  W - Patrons list"));
+        println("F - Televideo RAI    "+ sp +"  Services");
+        println("G - Lercio           "+ sp +"  ---------------");
+        println("H - Disinformatico   "+ sp +"  T - Chat");
+        println("I - Mupin.it         "+ sp +"  U - Private Msg");
+        println("J - Fatto Quotidiano "+ sp +"  V - Eliza");
+        println("K - Amedeo Valoroso  "+ sp + (alternateLogo() ? "" : "  W - Chat GPT"));
+        println("L - Butac.it         "+ sp + (alternateLogo() ? "" : "  X - Patrons list"));
         println("M - Alessandro Albano"+ sp +"  . - Logout");
         println();
     }

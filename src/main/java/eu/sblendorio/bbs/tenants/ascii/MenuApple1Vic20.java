@@ -47,13 +47,13 @@ public class MenuApple1Vic20 extends MenuApple1 {
         println();
         println("Italian News");
         println("------------");
-        println("F-Televideo");
-        println("G-Wired       Service");
-        println("H-Disinfor    -------");
-        println("I-IlPost      T-Chat");
-        println("J-F.Quot      U-Msgs");
-        println("K-A. Valoroso "+(alternateLogo() ? "" : "V-ChGPT"));
-        println("L-Butac       "+(alternateLogo() ? "" : "W-Patre"));
+        println("F-Televideo   Service");
+        println("G-Wired       -------");
+        println("H-Disinfor    T-Chat");
+        println("I-IlPost      U-Msgs");
+        println("J-F.Quot      U-Eliza");
+        println("K-A. Valoroso "+(alternateLogo() ? "" : "W-ChGPT"));
+        println("L-Butac       "+(alternateLogo() ? "" : "X-Patre"));
         println("M-A.Albano    .-Exit");
     }
 
