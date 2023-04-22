@@ -48,17 +48,17 @@ public class CnnAscii extends RssAscii {
         result.put("102", new NewsSection("World", prefix() + "edition_world.rss", logos.get(type).get("102")));
         result.put("103", new NewsSection("Africa", prefix() + "edition_africa.rss", logos.get(type).get("103")));
         result.put("104", new NewsSection("Americas", prefix() + "edition_americas.rss", logos.get(type).get("104")));
-        result.put("105", new NewsSection("Asia", prefix() + "edition_asia.rss", logos.get(type).get("105")));
-        result.put("106", new NewsSection("Europe", prefix() + "edition_europe.rss", logos.get(type).get("106")));
-        result.put("107", new NewsSection("Middle East", prefix() + "edition_meast.rss", logos.get(type).get("107")));
+        // result.put("105", new NewsSection("Asia", prefix() + "edition_asia.rss", logos.get(type).get("105")));
+        // result.put("106", new NewsSection("Europe", prefix() + "edition_europe.rss", logos.get(type).get("106")));
+        // result.put("107", new NewsSection("Middle East", prefix() + "edition_meast.rss", logos.get(type).get("107")));
         result.put("108", new NewsSection("U.S.A.", prefix() + "edition_us.rss", logos.get(type).get("108")));
-        result.put("109", new NewsSection("Technology", prefix() + "edition_technology.rss", logos.get(type).get("109")));
-        result.put("110", new NewsSection("Science-Space", prefix() + "edition_space.rss", logos.get(type).get("110")));
-        result.put("111", new NewsSection("Entertainment", prefix() + "edition_entertainment.rss", logos.get(type).get("111")));
-        result.put("112", new NewsSection("Money", prefix() + "money_news_international.rss", logos.get(type).get("112")));
-        result.put("113", new NewsSection("World Sport", prefix() + "edition_sport.rss", logos.get(type).get("113")));
-        result.put("114", new NewsSection("Football", prefix() + "edition_football.rss", logos.get(type).get("114")));
-        result.put("115", new NewsSection("Travel", prefix() + "edition_travel.rss", logos.get(type).get("115")));
+        // result.put("109", new NewsSection("Technology", prefix() + "edition_technology.rss", logos.get(type).get("109")));
+        // result.put("110", new NewsSection("Science-Space", prefix() + "edition_space.rss", logos.get(type).get("110")));
+        // result.put("111", new NewsSection("Entertainment", prefix() + "edition_entertainment.rss", logos.get(type).get("111")));
+        // result.put("112", new NewsSection("Money", prefix() + "money_news_international.rss", logos.get(type).get("112")));
+        // result.put("113", new NewsSection("World Sport", prefix() + "edition_sport.rss", logos.get(type).get("113")));
+        // result.put("114", new NewsSection("Football", prefix() + "edition_football.rss", logos.get(type).get("114")));
+        // result.put("115", new NewsSection("Travel", prefix() + "edition_travel.rss", logos.get(type).get("115")));
         result.put("116", new NewsSection("Most Recent", prefix() + "cnn_latest.rss", logos.get(type).get("116")));
         return result;
     }
