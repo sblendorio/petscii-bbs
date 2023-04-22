@@ -9,7 +9,7 @@ public class VcfedAscii extends WordpressProxyAscii {
     public VcfedAscii() {
         super();
         this.logo = LOGO_BYTES;
-        this.domain = "http://www.vcfed.org/wp";
+        this.domain = "http://www.vcfed.org";
     }
 
     private static final byte[] LOGO_BYTES = "Vintage Computer Federation".getBytes(StandardCharsets.ISO_8859_1);

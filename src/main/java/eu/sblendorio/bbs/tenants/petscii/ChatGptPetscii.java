@@ -285,9 +285,9 @@ public class ChatGptPetscii extends PetsciiThread {
         println();
         println(repeat(chr(163), 39));
         write(GREY2); print("You can use: "); write(YELLOW); print("\"-\""); write(GREY2); println(" for underscore");
-        write(YELLOW); print("             \"*\""); write(GREY2); print(" in place of "); write(YELLOW); println("\"@\"");
+        write(YELLOW); print("             \"!\""); write(GREY2); print(" in place of "); write(YELLOW); println("\"@\"");
         println();
-        write(GREY2); print("Example: "); write(WHITE); print("johndoe"); write(YELLOW); print("*"); write(WHITE); println("gmail.com");
+        write(GREY2); print("Example: "); write(WHITE); print("johndoe"); write(YELLOW); print("!"); write(WHITE); println("gmail.com");
         write(/*RETURN, RETURN, RETURN, */RETURN, GREY1);
         print("www.patreon.com/FrancescoSblendorio");
         write(UP, UP, UP, UP, UP, RETURN);
@@ -306,8 +306,8 @@ public class ChatGptPetscii extends PetsciiThread {
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
                 .filter(row -> !row.startsWith(";"))
-                .filter(row -> row.replace("_", "-").replace("*", "@")
-                        .equalsIgnoreCase(userEmail.replace("_", "-").replace("*", "@")))
+                .filter(row -> row.replace("_", "-").replace("*", "@").replace("!", "@")
+                        .equalsIgnoreCase(userEmail.replace("_", "-").replace("*", "@").replace("!", "@")))
                 .findFirst()
                 .orElse("");
 

@@ -278,8 +278,8 @@ public class ChatGptAscii extends AsciiThread {
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
                 .filter(row -> !row.startsWith(";"))
-                .filter(row -> row.replace("_", "-").replace("*", "@")
-                        .equalsIgnoreCase(userEmail.replace("_", "-").replace("*", "@")))
+                .filter(row -> row.replace("_", "-").replace("*", "@").replace("!", "@")
+                        .equalsIgnoreCase(userEmail.replace("_", "-").replace("*", "@").replace("!", "@")))
                 .findFirst()
                 .orElse("");
 

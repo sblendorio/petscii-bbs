@@ -95,6 +95,12 @@ public class HtmlUtils {
             .replaceAll("[ÒÓ]", "O'")
             .replaceAll("[ùú]", "u'")
             .replaceAll("[ÙÚ]", "U'")
+            .replaceAll("Ü", "U")
+            .replaceAll("ü", "u")
+            .replaceAll("Ë", "E")
+            .replaceAll("ë", "e")
+            .replaceAll("¿", "")
+            .replaceAll("¡", "")
         ;
     }
 
