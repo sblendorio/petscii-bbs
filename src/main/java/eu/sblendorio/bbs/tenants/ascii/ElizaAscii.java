@@ -26,6 +26,8 @@ public class ElizaAscii extends AsciiThread {
                 + "users an illusion of understanding on the part of the program.")
                 .forEach(this::println);
         println();
+        println("Enter \".\" to exit");
+        println();
         for (;;) {
             print("You> ");
             flush(); resetInput();

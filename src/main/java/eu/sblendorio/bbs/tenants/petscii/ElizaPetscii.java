@@ -28,7 +28,9 @@ public class ElizaPetscii extends PetsciiThread {
                 + "ELIZA simulated conversation by using a pattern matching and substitution methodology that gave "
                 + "users an illusion of understanding on the part of the program.")
                 .forEach(this::println);
-
+        println();
+        write(GREY2);
+        println("Enter \".\" to exit");
         println();
         for (;;) {
             write(WHITE);
