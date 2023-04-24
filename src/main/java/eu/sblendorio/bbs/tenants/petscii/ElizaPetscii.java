@@ -38,7 +38,7 @@ public class ElizaPetscii extends PetsciiThread {
             flush(); resetInput();
             String input = readLine();
             input = trimToEmpty(input);
-            if (".".equals(input)) break;
+            if (".".equals(input) || "quit".equalsIgnoreCase(input)) break;
             if (isBlank(input)){
                 write(GREY2);
                 println("Enter \".\" to exit");
