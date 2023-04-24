@@ -10,10 +10,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
+import static eu.sblendorio.bbs.core.PetsciiKeys.*;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 
 public class ElizaPetscii extends PetsciiThread {
+    private static final String EXIT_ADVICE = "Enter \".\" to EXIT";
 
     @Override
     public void doLoop() throws Exception {
@@ -32,6 +34,7 @@ public class ElizaPetscii extends PetsciiThread {
         write(GREY2);
         println("Enter \".\" to exit");
         println();
+        boolean exitAdvice = false;
         for (;;) {
             write(WHITE);
             print("You> ");
@@ -40,10 +43,14 @@ public class ElizaPetscii extends PetsciiThread {
             input = trimToEmpty(input);
             if (".".equals(input) || "quit".equalsIgnoreCase(input)) break;
             if (isBlank(input)){
+                exitAdvice = true;
                 write(GREY2);
-                println("Enter \".\" to exit");
+                print(EXIT_ADVICE);
+                write(UP, UP, RETURN);
                 continue;
             }
+            if (exitAdvice)
+                for (int i=0; i<EXIT_ADVICE.length(); ++i) write(SPACE_CHAR);
             println();
             String response = "Eliza> " + eliza.processInput(asciiToUtf8(input));
             final List<String> lines = wordWrap(HtmlUtils.utilHtmlDiacriticsToAscii(response));
