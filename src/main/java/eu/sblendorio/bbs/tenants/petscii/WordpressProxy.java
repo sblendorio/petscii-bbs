@@ -274,7 +274,7 @@ public class WordpressProxy extends PetsciiThread {
                     .replaceAll("(?is)<script[ >].*?</script>", EMPTY)
                     .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(</?(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
                 )
-                .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r)*)+", EMPTY)
+                .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r|\u00a0)*)+", EMPTY)
                 ;
         final String head = p.title + (isNotBlank(author) ? " - di " + author : EMPTY) + "<br>" + HR_TOP ;
         List<String> rows = wordWrap(head);

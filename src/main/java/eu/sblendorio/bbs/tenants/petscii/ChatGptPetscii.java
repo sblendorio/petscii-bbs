@@ -21,7 +21,6 @@ import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -103,7 +102,7 @@ public class ChatGptPetscii extends PetsciiThread {
             print("You> ");
             input = readLine();
             input = trimToEmpty(input);
-            if (".".equalsIgnoreCase(input)) break;
+            if (".".equalsIgnoreCase(input) || "exit".equalsIgnoreCase(input) || "quit".equalsIgnoreCase(input)) break;
             if (isBlank(input)) {
                 exitAdvice = true;
                 write(LIGHT_RED);

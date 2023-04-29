@@ -98,7 +98,7 @@ public class ChatGptAscii extends AsciiThread {
             print("You> ");
             input = readLine();
             input = trimToEmpty(input);
-            if (".".equalsIgnoreCase(input)) break;
+            if (".".equalsIgnoreCase(input) || "exit".equalsIgnoreCase(input) || "quit".equalsIgnoreCase(input)) break;
             if (isBlank(input)) {
                 println("Enter \".\" to exit");
                 continue;

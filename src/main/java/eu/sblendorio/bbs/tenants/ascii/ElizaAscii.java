@@ -33,7 +33,7 @@ public class ElizaAscii extends AsciiThread {
             flush(); resetInput();
             String input = readLine();
             input = trimToEmpty(input);
-            if (".".equals(input) || "quit".equalsIgnoreCase(input)) break;
+            if (".".equals(input) || "exit".equalsIgnoreCase(input) || "quit".equalsIgnoreCase(input)) break;
             if (isBlank(input)){
                 println("Enter \".\" to exit");
                 continue;

@@ -244,6 +244,10 @@ public class WordpressProxyAscii extends AsciiThread {
         readKey();
     }
 
+    protected String downstreamTransform(String s) {
+        return s;
+    }
+
     protected void displayPost(int n) throws Exception {
         cls();
         drawSecondaryLogo();
@@ -260,12 +264,15 @@ public class WordpressProxyAscii extends AsciiThread {
             log("Error during retrieving author");
             logger.error("Error during retrieving author", e);
         }
-        final String content = p.content
-                .replaceAll("(?is)[\n\r ]+", " ")
-                .replaceAll("(?is)<style>.*?</style>", EMPTY)
-                .replaceAll("(?is)<script[ >].*?</script>", EMPTY)
-                .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(</?(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
-                .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r)*)+", EMPTY);
+        final String content = downstreamTransform(p.content
+                    .replaceAll("(?is)[\n\r ]+", " ")
+                    .replaceAll("(?is)<style>.*?</style>", EMPTY)
+                    .replaceAll("(?is)<script[ >].*?</script>", EMPTY)
+                    .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(</?(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
+                    .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r)*)+", EMPTY)
+                )
+                .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r|\u00a0)*)+", EMPTY)
+                ;
         final String head = p.title + (isNotBlank(author) ? " - di " + author : EMPTY) + "<br>" + HR_TOP ;
         List<String> rows = wordWrap(head);
 

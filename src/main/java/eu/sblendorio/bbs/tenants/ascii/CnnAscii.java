@@ -44,7 +44,7 @@ public class CnnAscii extends RssAscii {
 
     private Map<String, NewsSection> loadSections() {
         Map<String, NewsSection> result = new LinkedHashMap<>();
-        result.put("101", new NewsSection("Top Stories", prefix() + "edition.rss", logos.get(type).get("101")));
+        result.put("101", new NewsSection("Latest News", prefix() + "cnn_latest.rss", logos.get(type).get("101")));
         result.put("102", new NewsSection("World", prefix() + "edition_world.rss", logos.get(type).get("102")));
         result.put("103", new NewsSection("Africa", prefix() + "edition_africa.rss", logos.get(type).get("103")));
         result.put("104", new NewsSection("Americas", prefix() + "edition_americas.rss", logos.get(type).get("104")));
@@ -59,7 +59,7 @@ public class CnnAscii extends RssAscii {
         // result.put("113", new NewsSection("World Sport", prefix() + "edition_sport.rss", logos.get(type).get("113")));
         // result.put("114", new NewsSection("Football", prefix() + "edition_football.rss", logos.get(type).get("114")));
         // result.put("115", new NewsSection("Travel", prefix() + "edition_travel.rss", logos.get(type).get("115")));
-        result.put("116", new NewsSection("Most Recent", prefix() + "cnn_latest.rss", logos.get(type).get("116")));
+        result.put("116", new NewsSection("General", prefix() + "edition.rss", logos.get(type).get("116")));
         return result;
     }
 

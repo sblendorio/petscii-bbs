@@ -56,7 +56,7 @@ public class CnnPetscii extends RssPetscii {
         Map<String, NewsSection> result = new LinkedHashMap<>();
         byte[] cnn = bytes(readBinaryFile("petscii/cnn.seq"),  19, 13, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, WHITE);
 
-        result.put("101", new NewsSection(WHITE, "Top Stories", prefix() + "edition.rss", bytes(cnn, "tOP sTORIES\r\r\r")));
+        result.put("101", new NewsSection(WHITE, "Latest News", prefix() + "cnn_latest.rss", bytes(cnn, "lATEST nEWS\r\r\r")));
         result.put("102", new NewsSection(CYAN, "World", prefix() + "edition_world.rss", bytes(cnn, "wORLD\r\r\r")));
         result.put("103", new NewsSection(RED, "Africa", prefix() + "edition_africa.rss", bytes(cnn, "aFRICA\r\r\r")));
         result.put("104", new NewsSection(GREEN, "Americas", prefix() + "edition_americas.rss", bytes(cnn, "aMERICAS\r\r\r")));
@@ -71,7 +71,7 @@ public class CnnPetscii extends RssPetscii {
         // result.put("113", new NewsSection(YELLOW, "World Sport", prefix() + "edition_sport.rss", bytes(cnn, "wORLD sPORT\r\r\r")));
         // result.put("114", new NewsSection(GREEN, "Football", prefix() + "edition_football.rss", bytes(cnn, "fOOTBALL\r\r\r")));
         // result.put("115", new NewsSection(GREY1, "Travel", prefix() + "edition_travel.rss", bytes(cnn, "tRAVEL\r\r\r")));
-        result.put("116", new NewsSection(GREY2, "Most Recent", prefix() + "cnn_latest.rss", bytes(cnn, "mOST rECENT\r\r\r")));
+        result.put("116", new NewsSection(GREY2, "General", prefix() + "edition.rss", bytes(cnn, "gENERAL\r\r\r")));
         return result;
     }
 
