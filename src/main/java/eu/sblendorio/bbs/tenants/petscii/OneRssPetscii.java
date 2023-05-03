@@ -252,6 +252,7 @@ public class OneRssPetscii extends PetsciiThread {
     @Override
     public void doLoop() throws Exception {
         write(GREY3);
+        cls();
         waitOn();
         readSections();
         waitOff();
@@ -424,7 +425,7 @@ public class OneRssPetscii extends PetsciiThread {
                 .replaceAll("(?is)<style>.*?</style>", EMPTY)
                 .replaceAll("(?is)<script[ >].*?</script>", EMPTY)
                 .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(</?(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
-                .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r)*)+", EMPTY)
+                .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r|\u00a0)*)+", EMPTY)
         );
         rows.addAll(article);
         return rows;

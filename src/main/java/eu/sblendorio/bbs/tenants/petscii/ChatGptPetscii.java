@@ -71,7 +71,7 @@ public class ChatGptPetscii extends PetsciiThread {
     }
 
     private Duration timeout() {
-        long seconds = toLong(defaultString(getProperty("OPENAI_TIMEOUT_SECS", getenv("OPENAI_TIMEOUT_SECS")), "60"));
+        long seconds = toLong(defaultString(getProperty("OPENAI_TIMEOUT_SECS", getenv("OPENAI_TIMEOUT_SECS")), "180"));
         return Duration.ofSeconds(seconds);
     }
 

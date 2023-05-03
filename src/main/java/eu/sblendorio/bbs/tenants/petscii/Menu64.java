@@ -156,7 +156,7 @@ public class Menu64 extends PetsciiThread {
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '0', REVOFF, 161); print("FNOMCeO        "); write(REVON, 161, 'u', REVOFF, 161); println("Infosec News");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'a', REVOFF, 161); print("Medical Facts  "); write(REVON, 161, 'v', REVOFF, 161); println("Giano News");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'b', REVOFF, 161); print("Retrocampus    "); write(REVON, 161, 'w', REVOFF, 161); println("Factanza");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'c', REVOFF, 161); print("RetroAcademy   "); write(REVON, 161, 'x', REVOFF, 161); println("Sys64738");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'c', REVOFF, 161); print("RetroAcademy   "); write(REVON, 161, 'x', REVOFF, 161); println("MCC Blog");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'd', REVOFF, 161); println("Attivissimo");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'e', REVOFF, 161); println("Chi ha paura del buio?");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'f', REVOFF, 161); println("Punto Informatico");
@@ -212,7 +212,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == 'u') launch(new InfosecNewsPetscii());
                 else if (key == 'v') launch(new GianoNewsPetscii());
                 else if (key == 'w') launch(new FactanzaPetscii());
-                else if (key == 'x') launch(new Sys64738());
+                else if (key == 'x') launch(new MccPetscii());
                 else {
                     validKey = false;
                 }
