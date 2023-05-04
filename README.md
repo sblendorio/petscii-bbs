@@ -6,6 +6,9 @@
 # PETSCII BBS Builder
 A Java framework for building highly customizable **PETSCII** (and **ASCII**) enabled **BBS**es, accessible from 8-bit Commodore computers
 
+### Patreon support page
+https://www.patreon.com/FrancescoSblendorio
+
 ## Purpose
 This framework provides base classes for build your own **BBS** in PETSCII mode, accessibile through:
 - a Commodore 64 with a [RR-NET](http://wiki.icomp.de/wiki/RR-Net) compatible card, running [KipperTerm](https://csdb.dk/release/index.php?id=174537)
