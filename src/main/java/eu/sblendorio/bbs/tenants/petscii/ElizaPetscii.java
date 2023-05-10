@@ -15,7 +15,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 
 public class ElizaPetscii extends PetsciiThread {
-    private static final String EXIT_ADVICE = "Enter \".\" to EXIT";
+    private static final String EXIT_ADVICE = "Type \".\" to EXIT";
 
     @Override
     public void doLoop() throws Exception {
@@ -32,7 +32,7 @@ public class ElizaPetscii extends PetsciiThread {
                 .forEach(this::println);
         println();
         write(GREY2);
-        println("Enter \".\" to exit");
+        println(EXIT_ADVICE);
         println();
         boolean exitAdvice = false;
         for (;;) {

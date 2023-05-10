@@ -44,7 +44,7 @@ public class ChatGptPetscii extends PetsciiThread {
     private static byte[] BIG_LOGO = readBinaryFile("petscii/gpt-biglogo.seq");
 
     private static final String WAIT_MESSAGE = "Please wait...";
-    private static final String EXIT_ADVICE = "Enter \".\" to EXIT";
+    private static final String EXIT_ADVICE = "Type \".\" to EXIT";
     protected static final String CUSTOM_KEY = "PATREON_USER";
     private static final long TIMEOUT = 300_000;
     private String user = null;
@@ -280,7 +280,7 @@ public class ChatGptPetscii extends PetsciiThread {
         println();
         write(readBinaryFile("petscii/patreon-access.seq"));
         write(GREY3);
-        println("Enter Patreon email:");
+        println("Your Patreon email:");
         println();
         println(repeat(chr(163), 39));
         write(GREY2); print("You can use: "); write(YELLOW); print("\"-\""); write(GREY2); println(" for underscore");
@@ -347,7 +347,7 @@ public class ChatGptPetscii extends PetsciiThread {
         long startMillis = System.currentTimeMillis();
         write(GREY3);
         println();
-        println("Please enter " + CODE_LENGTH + "-digit code just sent");
+        println("Please type " + CODE_LENGTH + "-digit code just sent");
         print("to your email: ");
         write(PetsciiColors.LIGHT_BLUE);
         flush(); resetInput();

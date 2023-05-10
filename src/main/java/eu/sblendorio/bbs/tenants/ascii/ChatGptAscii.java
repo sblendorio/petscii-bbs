@@ -35,6 +35,8 @@ import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
 public class ChatGptAscii extends AsciiThread {
+    private static final String EXIT_ADVICE = "Type \".\" to EXIT";
+
     private static Logger logger = LogManager.getLogger(ChatGptAscii.class);
     private static int CODE_LENGTH = 6;
 
@@ -88,7 +90,7 @@ public class ChatGptAscii extends AsciiThread {
         println("Chat GPT - Classic Client");
         println("-------------------------");
         println();
-        println("Enter \".\" to EXIT");
+        println(EXIT_ADVICE);
         println();
         List<ChatMessage> conversation = new LinkedList<>();
         String input;
@@ -100,7 +102,7 @@ public class ChatGptAscii extends AsciiThread {
             input = trimToEmpty(input);
             if (".".equalsIgnoreCase(input) || "exit".equalsIgnoreCase(input) || "quit".equalsIgnoreCase(input)) break;
             if (isBlank(input)) {
-                println("Enter \".\" to exit");
+                println(EXIT_ADVICE);
                 continue;
             }
 
@@ -265,7 +267,7 @@ public class ChatGptAscii extends AsciiThread {
         println("Functionality reserved to Patrons");
         println("https://patron.com/FrancescoSblendorio");
         println();
-        println("Enter Patreon email ('-' for underscore)");
+        println("Your Patreon email ('-' for underscore):");
         print(">");
         flush(); resetInput();
         String tempEmail = readLine();
@@ -306,7 +308,7 @@ public class ChatGptAscii extends AsciiThread {
         }
         long startMillis = System.currentTimeMillis();
         println();
-        println("Please enter " + CODE_LENGTH + "-digit code just sent");
+        println("Please type " + CODE_LENGTH + "-digit code just sent");
         print("to your email: ");
         flush(); resetInput();
         String userCode = readLine(CODE_LENGTH);

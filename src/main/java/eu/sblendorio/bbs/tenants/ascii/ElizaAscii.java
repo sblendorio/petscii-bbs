@@ -13,6 +13,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 
 public class ElizaAscii extends AsciiThread {
+    private static final String EXIT_ADVICE = "Type \".\" to EXIT";
 
     @Override
     public void doLoop() throws Exception {
@@ -26,7 +27,7 @@ public class ElizaAscii extends AsciiThread {
                 + "users an illusion of understanding on the part of the program.")
                 .forEach(this::println);
         println();
-        println("Enter \".\" to exit");
+        println(EXIT_ADVICE);
         println();
         for (;;) {
             print("You> ");
@@ -35,7 +36,7 @@ public class ElizaAscii extends AsciiThread {
             input = trimToEmpty(input);
             if (".".equals(input) || "exit".equalsIgnoreCase(input) || "quit".equalsIgnoreCase(input)) break;
             if (isBlank(input)){
-                println("Enter \".\" to exit");
+                println(EXIT_ADVICE);
                 continue;
             }
             println();
