@@ -46,15 +46,41 @@ public class MenuApple1Vic20 extends MenuApple1 {
         println("          S-Hitchhikr");
         println();
         println("Italian News");
-        println("------------");
-        println("F-Televideo   Service");
-        println("G-Wired       -------");
-        println("H-Disinfor    T-Chat");
-        println("I-IlPost      U-Msgs");
-        println("J-F.Quot      U-Eliza");
-        println("K-A. Valoroso "+(alternateLogo() ? "" : "W-ChGPT"));
-        println("L-Butac       "+(alternateLogo() ? "" : "X-Patre"));
+        println("------------  Service");
+        println("F-Televideo   -------");
+        println("G-Wired       T-Chat");
+        println("H-Disinfor    U-Msgs");
+        println("I-IlPost      U-Eliza");
+        println("J-F.Quot      "+(alternateLogo() ? "" : "W-ChGPT"));
+        println("K-A. Valoroso "+(alternateLogo() ? "" : "X-Patre"));
+        println("L-Butac       "+(alternateLogo() ? "" : "Y-Modem"));
         println("M-A.Albano    .-Exit");
+    }
+
+    @Override
+    public void wifiModem() throws Exception {
+        cls();
+        banner();
+        println("Once upon a a time,");
+        println("there where dial up");
+        println("BBSes. Nowadays we");
+        println("have Internet but we");
+        println("recreate such an");
+        println("experience.");
+        println();
+        println("www.museo-computer.it");
+        println("      /en/wifi-modem/");
+        println();
+        println("Get here your brand");
+        println("new WiFi modem, it");
+        println("uses your Internet");
+        println("connection to allow");
+        println("you to telnet BBSes");
+        println("around the world");
+        println();
+        println("Press any key");
+        println("-------------");
+        flush(); resetInput(); readKey();
     }
 
 }

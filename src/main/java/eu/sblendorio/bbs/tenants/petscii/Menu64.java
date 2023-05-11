@@ -129,7 +129,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == 'x') about();
                 else if (key == 'a' && !alternateLogo()) patrons();
                 else if (key == 'b' && !alternateLogo()) patronsLogo();
-                else if (key == 'm' && !alternateLogo()) wifiModem();
+                else if (key == 'y' && !alternateLogo()) wifiModem();
                 else {
                     validKey = false;
                 }

@@ -47,13 +47,13 @@ public class MenuApple1M10 extends MenuApple1 {
         println("D - VCF News           Q - Zork II");
         println("E - The 8-Bit Guy      R - Zork III");
         println("Italian News---------  S - Hitchhiker's");
-        println("F - Televideo RAI");
-        println("G - Lercio              Services--");
-        println("H - Disinformatico      T - Chat");
-        println("I - Mupin.it            U - Private Msg");
-        println("J - Fatto Quotidiano    V - Eliza");
-        println("K - Amedeo Valoroso     " + (alternateLogo() ? "" : "W - ChatGPT"));
-        println("L - Butac.it            " + (alternateLogo() ? "" : "X - Patron list"));
+        println("F - Televideo RAI       Services--");
+        println("G - Lercio              T - Chat");
+        println("H - Disinformatico      U - Private Msg");
+        println("I - Mupin.it            V - Eliza");
+        println("J - Fatto Quotidiano    " + (alternateLogo() ? "" : "W - ChatGPT"));
+        println("K - Amedeo Valoroso     " + (alternateLogo() ? "" : "X - Patron list"));
+        println("L - Butac.it            " + (alternateLogo() ? "" : "Y - Wifi Modem"));
         println("M - Alessandro Albano   . - Logout");
     }
 

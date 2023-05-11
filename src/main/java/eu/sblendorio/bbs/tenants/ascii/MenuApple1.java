@@ -233,11 +233,11 @@ public class MenuApple1 extends AsciiThread {
     public void wifiModem() throws Exception {
         cls();
         banner();
-        println("Once upona a time, there where dial up");
+        println("Once upon a a time, there where dial up");
         println("BBSes. Nowadays we have Internet but we");
         println("recreate such an experience.");
         println();
-        println("www.museo-computer.it/en/rs232-wifi-modem");
+        println("www.museo-computer.it/en/wifi-modem/");
         println();
         println("Get here your brand new WiFi modem, it");
         println("uses your Internet connection to allow");
