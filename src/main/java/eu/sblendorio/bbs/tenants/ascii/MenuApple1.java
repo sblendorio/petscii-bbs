@@ -151,6 +151,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("v".equals(choice)) subThread = new ElizaAscii();
                 else if ("w".equals(choice) && !alternateLogo()) subThread = new ChatGptAscii();
                 else if ("x".equals(choice) && !alternateLogo()) { showPatrons(); subThread = null; }
+                else if ("y".equals(choice) && !alternateLogo()) { wifiModem(); subThread = null; }
                 else {
                     validKey = false;
                     subThread = null;
@@ -189,14 +190,14 @@ public class MenuApple1 extends AsciiThread {
         println("E - The 8-Bit Guy    "+ sp +"  R - Zork III");
         println("                     "+ sp +"  S - Hitchhiker's");
         println("Italian News");
-        println("-----------------");
-        println("F - Televideo RAI    "+ sp +"  Services");
-        println("G - Lercio           "+ sp +"  ---------------");
-        println("H - Disinformatico   "+ sp +"  T - Chat");
-        println("I - Mupin.it         "+ sp +"  U - Private Msg");
-        println("J - Fatto Quotidiano "+ sp +"  V - Eliza");
-        println("K - Amedeo Valoroso  "+ sp + (alternateLogo() ? "" : "  W - Chat GPT"));
-        println("L - Butac.it         "+ sp + (alternateLogo() ? "" : "  X - Patrons list"));
+        println("-----------------    "+ sp +"  Services");
+        println("F - Televideo RAI    "+ sp +"  ---------------");
+        println("G - Lercio           "+ sp +"  T - Chat");
+        println("H - Disinformatico   "+ sp +"  U - Private Msg");
+        println("I - Mupin.it         "+ sp +"  V - Eliza");
+        println("J - Fatto Quotidiano "+ sp + (alternateLogo() ? "" : "  W - Chat GPT"));
+        println("K - Amedeo Valoroso  "+ sp + (alternateLogo() ? "" : "  X - Patrons list"));
+        println("L - Butac.it         "+ sp + (alternateLogo() ? "" : "  Y - Wifi Modem"));
         println("M - Alessandro Albano"+ sp +"  . - Logout");
         println();
     }
@@ -226,6 +227,24 @@ public class MenuApple1 extends AsciiThread {
         patrons.forEach(this::println);
         println();
         print("Press any key.");
+        flush(); resetInput(); readKey();
+    }
+
+    public void wifiModem() throws Exception {
+        cls();
+        banner();
+        println("Once upona a time, there where dial up");
+        println("BBSes. Nowadays we have Internet but we");
+        println("recreate such an experience.");
+        println();
+        println("www.museo-computer.it/en/rs232-wifi-modem");
+        println();
+        println("Get here your brand new WiFi modem, it");
+        println("uses your Internet connection to allow");
+        println("you to telnet BBSes around the world");
+        println();
+        println("Press a key to go back");
+        println("----------------------");
         flush(); resetInput(); readKey();
     }
 

@@ -129,6 +129,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == 'x') about();
                 else if (key == 'a' && !alternateLogo()) patrons();
                 else if (key == 'b' && !alternateLogo()) patronsLogo();
+                else if (key == 'm' && !alternateLogo()) wifiModem();
                 else {
                     validKey = false;
                 }
@@ -433,6 +434,16 @@ public class Menu64 extends PetsciiThread {
     public void patronsLogo() throws Exception {
         write(CLR, LOWERCASE, CASE_LOCK, HOME);
         write(readBinaryFile("petscii/patreon-sponsor.seq"));
+        write(HOME);
+        drawLogo();
+        write(GREY3, REVOFF);
+        flush();
+        resetInput();
+        readKey();
+    }
+    public void wifiModem() throws Exception {
+        write(CLR, LOWERCASE, CASE_LOCK, HOME);
+        write(readBinaryFile("petscii/rs232modem.seq"));
         write(HOME);
         drawLogo();
         write(GREY3, REVOFF);
