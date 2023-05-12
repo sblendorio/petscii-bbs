@@ -297,7 +297,8 @@ public class OneRssPetscii extends PetsciiThread {
     }
 
     private void enterSection(NewsSection section) throws Exception {
-        listPosts(section);
+        boolean keepGoing = listPosts(section);
+        if (!keepGoing) return;
         if (section.url instanceof BbsThread)
             return;
 
@@ -342,13 +343,13 @@ public class OneRssPetscii extends PetsciiThread {
         }
     }
 
-    protected void listPosts(NewsSection section) throws Exception {
+    protected boolean listPosts(NewsSection section) throws Exception {
         if (section.url instanceof BbsThread) {
             launch((BbsThread) section.url);
-            return;
+            return true;
         }
         cls();
-        if (isNotBlank(section.title)) {
+        if (isNotBlank(section.title) && offsetX > 0) {
             gotoXY(offsetX,2);
             write(WHITE); print(section.title);
         }
@@ -358,6 +359,10 @@ public class OneRssPetscii extends PetsciiThread {
             waitOn();
             posts = getFeeds(section.url.toString());
             waitOff();
+        }
+        if (posts != null && posts.size() == 1) {
+            displayPost(posts.get(0), section);
+            return false;
         }
 
         final int start = pageSize * (currentPage-1);
@@ -372,6 +377,7 @@ public class OneRssPetscii extends PetsciiThread {
         }
         newline();
         flush();
+        return true;
     }
 
     private boolean displayPost(NewsFeed feed, NewsSection section) throws Exception {
