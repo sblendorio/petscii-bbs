@@ -30,6 +30,7 @@ import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
+import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections4.CollectionUtils.size;
@@ -237,7 +238,7 @@ public class ChatGptPetscii extends PetsciiThread {
                     .breakWords(false)
                     .wrap()
                     .split("\n");
-            result.addAll(Arrays.asList(wrappedLine));
+            result.addAll(asList(wrappedLine));
         }
         return result;
     }
@@ -262,6 +263,11 @@ public class ChatGptPetscii extends PetsciiThread {
     }
 
     private boolean authenticate() throws IOException {
+        if (asList(getProperty("patreon.ip.whitelist", "none").split(",")).contains(serverAddress.getHostAddress())) {
+            user = serverAddress.getHostAddress();
+            return true;
+        }
+
         try {
             user = (String) getRoot().getCustomObject(CUSTOM_KEY);
         } catch (NullPointerException | ClassCastException e) {

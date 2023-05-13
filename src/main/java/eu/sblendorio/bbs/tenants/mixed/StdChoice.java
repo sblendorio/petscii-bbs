@@ -45,7 +45,7 @@ public class StdChoice extends AsciiThread {
         println("8- TELNET LINUX W/ECHO   80X24 (8086)");
         println("9- VIC-20 ASCII W/ECHO   22X23 (6561)");
         println("0- OLIVETTI M10 W/ECHO   40X15 (8085)");
-        println("M- MINITEL      W/ECHO   40X24 (8051)");
+        println("M- MINITEL      W/ECHO   40X24 (1651)");
         newline();
         println("PLEASE SELECT A SYSTEM");
         println("PRESS ENTER TO CLOSE  CONNECTION");
