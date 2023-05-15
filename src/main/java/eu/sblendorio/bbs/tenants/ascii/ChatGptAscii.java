@@ -246,8 +246,8 @@ public class ChatGptAscii extends AsciiThread {
     }
 
     private boolean authenticate() throws IOException {
-        if (asList(getProperty("patreon.ip.whitelist", "none").split(",")).contains(serverAddress.getHostAddress())) {
-            user = serverAddress.getHostAddress();
+        if (asList(getProperty("patreon.ip.whitelist", "none").split(",")).contains(ipAddress.getHostAddress())) {
+            user = ipAddress.getHostAddress();
             return true;
         }
 
