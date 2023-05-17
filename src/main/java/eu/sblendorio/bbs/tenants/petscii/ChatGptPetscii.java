@@ -263,7 +263,13 @@ public class ChatGptPetscii extends PetsciiThread {
     }
 
     private boolean authenticate() throws IOException {
-        if (asList(getProperty("patreon.ip.whitelist", "none").split(",")).contains(ipAddress.getHostAddress())) {
+        if (readTxt(getProperty("PATREON_WHITELIST_IP_FILE", getProperty("user.home") + File.separator + "patreon_whitelist_ip.txt"))
+                .stream()
+                .filter(StringUtils::isNotBlank)
+                .map(StringUtils::trim)
+                .filter(row -> !row.startsWith(";"))
+                .filter(row -> row.equalsIgnoreCase(ipAddress.getHostAddress()))
+                .findAny().isPresent()) {
             user = ipAddress.getHostAddress();
             return true;
         }
@@ -458,6 +464,7 @@ public class ChatGptPetscii extends PetsciiThread {
         List<String> result = new LinkedList<>();
         try {
             File myObj = new File(filename);
+            if (!myObj.exists()) return result;
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
                 result.add(myReader.nextLine());
