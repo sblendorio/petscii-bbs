@@ -83,6 +83,8 @@ public class Menu64 extends PetsciiThread {
 
     @Override
     public void doLoop() throws Exception {
+        if (alternateLogo()) { println();println();println("Moved to BBS.RETROCAMPUS.COM"); return; }
+
         init();
         while (true) {
             write(CLR, LOWERCASE, CASE_LOCK, HOME);

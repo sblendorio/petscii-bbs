@@ -102,6 +102,8 @@ public class MenuApple1 extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
+        if (alternateLogo()) { println();println();println("Moved to BBS.RETROCAMPUS.COM"); return; }
+
         init();
         logo();
         while (true) {
