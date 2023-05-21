@@ -27,7 +27,7 @@ public class StdChoice extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        if (alternateLogo()) { println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); return; }
+        if (alternateLogo()) { println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); keyPressed(10_000); return; }
         int ch;
         String banner = (alternateLogo() ? "RETROACADEMY" : "RETROCAMPUS") + " BBS";
         write(12);

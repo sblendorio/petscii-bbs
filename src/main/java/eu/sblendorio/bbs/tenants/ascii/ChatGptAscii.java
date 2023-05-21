@@ -279,7 +279,9 @@ public class ChatGptAscii extends AsciiThread {
         println("Functionality reserved to Patrons");
         println("https://patron.com/FrancescoSblendorio");
         println();
-        println("Your Patreon email ('-' for underscore):");
+        println("Your Patreon email ('-' for underscore)");
+        // println("   you can use ! instead of @, example:");
+        // println("                      johndoe!gmail.com");
         print(">");
         flush(); resetInput();
         String tempEmail = readLine();

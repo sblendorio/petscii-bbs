@@ -1,5 +1,7 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
+import java.util.Calendar;
+
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 
 public class MenuApple1Telnet extends MenuApple1 {
@@ -24,7 +26,7 @@ public class MenuApple1Telnet extends MenuApple1 {
 
     @Override
     protected void banner() {
-        println("Retrocampus BBS for UNIX Telnet - by F. Sblendorio 2023");
+        println("Retrocampus BBS for UNIX Telnet - by F. Sblendorio " + Calendar.getInstance().get(Calendar.YEAR));
         newline();
     }
 

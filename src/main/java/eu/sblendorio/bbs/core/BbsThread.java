@@ -399,7 +399,11 @@ public abstract class BbsThread extends Thread {
     }
 
     public static char chr(int code) { return (char) code; }
-    public int keyPressed() throws IOException { return io.keyPressed(); }
+    public int keyPressed() throws IOException {
+        int ch = io.keyPressed();
+        if (ch >= 0) restartKeepAlive();
+        return ch;
+    }
     public boolean isKeyPressed() throws IOException { return io.keyPressed() != -1; }
     public void write(byte[] buf, int off, int len) {
         boolean savedKeepAlive = getRoot().keepAlive;
@@ -647,6 +651,7 @@ public abstract class BbsThread extends Thread {
                 e.printStackTrace();
             }
         }
+        if (ch >= 0) restartKeepAlive();
         return ch;
     }
 

@@ -3,6 +3,7 @@ package eu.sblendorio.bbs.tenants.ascii;
 import static eu.sblendorio.bbs.core.Utils.STR_ALPHANUMERIC;
 import static eu.sblendorio.bbs.core.Utils.setOfChars;
 import java.io.IOException;
+import java.util.Calendar;
 
 public class MenuApple1M10 extends MenuApple1 {
 
@@ -24,7 +25,7 @@ public class MenuApple1M10 extends MenuApple1 {
 
     @Override
     protected void banner() {
-        println("BBS for M10 - by F. Sblendorio 2023");
+        println("BBS for M10 - by F. Sblendorio " + Calendar.getInstance().get(Calendar.YEAR));
         newline();
     }
 

@@ -18,11 +18,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
@@ -83,16 +81,21 @@ public class Menu64 extends PetsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        if (alternateLogo()) { println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); return; }
+        if (alternateLogo()) { write(PetsciiKeys.LOWERCASE); println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); keyPressed(10_000); return; }
 
         init();
         while (true) {
             write(CLR, LOWERCASE, CASE_LOCK, HOME);
             log("Starting Main Menu BBS");
-            write(readBinaryFile(
+            byte[] logoseq = readBinaryFile(
                     alternateLogo()
-                    ? "petscii/bbs-menu-main-alternate.seq"
-                    : "petscii/bbs-menu-main.seq"));
+                            ? "petscii/bbs-menu-main-alternate.seq"
+                            : "petscii/bbs-menu-main.seq");
+            String currentYear = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+            logoseq = new String(logoseq, StandardCharsets.ISO_8859_1)
+                    .replace("9999", currentYear)
+                    .getBytes(StandardCharsets.ISO_8859_1);
+            write(logoseq);
             write(HOME);
             drawLogo();
             write(GREY3);

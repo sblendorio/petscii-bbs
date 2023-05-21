@@ -12,9 +12,7 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -96,13 +94,13 @@ public class MenuApple1 extends AsciiThread {
     public String rssPropertyTimeoutDefault() { return "40000"; }
 
     protected void banner() {
-        println("BBS for Apple-1 - by F. Sblendorio 2023");
+        println("BBS for Apple-1 - by F. Sblendorio " + Calendar.getInstance().get(Calendar.YEAR));
         println();
     }
 
     @Override
     public void doLoop() throws Exception {
-        if (alternateLogo()) { println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); return; }
+        if (alternateLogo()) { println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); keyPressed(10_000); return; }
 
         init();
         logo();
