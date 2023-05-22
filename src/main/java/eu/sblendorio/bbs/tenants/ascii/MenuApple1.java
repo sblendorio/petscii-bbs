@@ -242,8 +242,10 @@ public class MenuApple1 extends AsciiThread {
             if (startsWith(filename,"/")) filename = filename.substring(1);
             final String content = new String(readBinaryFile(filename), UTF_8);
             cls();
+            boolean firstRow = true;
             for (String row: content.split("\n")) {
-                println();
+                if (!firstRow) println();
+                firstRow = false;
                 print(row);
             }
             flush(); resetInput();
