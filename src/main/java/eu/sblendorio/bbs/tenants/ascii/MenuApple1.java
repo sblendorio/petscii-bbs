@@ -6,14 +6,18 @@ import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import static eu.sblendorio.bbs.core.Utils.STR_ALPHANUMERIC;
 import static eu.sblendorio.bbs.core.Utils.setOfChars;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.StringUtils.startsWith;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.*;
 
+import eu.sblendorio.bbs.core.Utils;
 import org.apache.commons.lang3.StringUtils;
 
 public class MenuApple1 extends AsciiThread {
@@ -152,6 +156,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("w".equals(choice) && !alternateLogo()) subThread = new ChatGptAscii();
                 else if ("x".equals(choice) && !alternateLogo()) { showPatrons(); subThread = null; }
                 else if ("y".equals(choice) && !alternateLogo()) { wifiModem(); subThread = null; }
+                else if ("z".equals(choice) && !alternateLogo()) { apple1Demo(); subThread = null; }
                 else {
                     validKey = false;
                     subThread = null;
@@ -190,14 +195,14 @@ public class MenuApple1 extends AsciiThread {
         println("E - The 8-Bit Guy    "+ sp +"  R - Zork III");
         println("                     "+ sp +"  S - Hitchhiker's");
         println("Italian News");
-        println("-----------------    "+ sp +"  Services");
-        println("F - Televideo RAI    "+ sp +"  ---------------");
-        println("G - Lercio           "+ sp +"  T - Chat");
-        println("H - Disinformatico   "+ sp +"  U - Private Msg");
-        println("I - Mupin.it         "+ sp +"  V - Eliza");
-        println("J - Fatto Quotidiano "+ sp + (alternateLogo() ? "" : "  W - Chat GPT"));
-        println("K - Amedeo Valoroso  "+ sp + (alternateLogo() ? "" : "  X - Patrons list"));
-        println("L - Butac.it         "+ sp + (alternateLogo() ? "" : "  Y - Wifi Modem"));
+        println("-----------------    "+ sp +"  Services-------");
+        println("F - Televideo RAI    "+ sp +"  T - Chat");
+        println("G - Lercio           "+ sp +"  U - Private Msg");
+        println("H - Disinformatico   "+ sp +"  V - Eliza");
+        println("I - Mupin.it         "+ sp + (alternateLogo() ? "" : "  W - Chat GPT"));
+        println("J - Fatto Quotidiano "+ sp + (alternateLogo() ? "" : "  X - Patrons list"));
+        println("K - Amedeo Valoroso  "+ sp + (alternateLogo() ? "" : "  Y - Wifi Modem"));
+        println("L - Butac.it         "+ sp +"  Z - Apple-1 Demo");
         println("M - Alessandro Albano"+ sp +"  . - Logout");
         println();
     }
@@ -229,6 +234,24 @@ public class MenuApple1 extends AsciiThread {
         print("Press any key.");
         flush(); resetInput(); readKey();
     }
+
+    public void apple1Demo() throws Exception {
+        List<Path> drawings = Utils.getDirContent("apple1/demo30th");
+        for (Path drawing : drawings) {
+            String filename = drawing.toString();
+            if (startsWith(filename,"/")) filename = filename.substring(1);
+            final String content = new String(readBinaryFile(filename), UTF_8);
+            cls();
+            for (String row: content.split("\n")) {
+                println();
+                print(row);
+            }
+            flush(); resetInput();
+            int ch = keyPressed(60_000);
+            if (ch == '.') return;
+        }
+    }
+
 
     public void wifiModem() throws Exception {
         cls();
@@ -263,5 +286,6 @@ public class MenuApple1 extends AsciiThread {
         }
         return result;
     }
+
 
 }
