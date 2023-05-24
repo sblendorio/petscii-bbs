@@ -237,11 +237,11 @@ public class MenuApple1 extends AsciiThread {
 
     public void apple1Demo() throws Exception {
         List<Path> drawings = Utils.getDirContent("apple1/demo30th");
+        cls();
         for (Path drawing : drawings) {
             String filename = drawing.toString();
             if (startsWith(filename,"/")) filename = filename.substring(1);
             final String content = new String(readBinaryFile(filename), UTF_8);
-            cls();
             boolean firstRow = true;
             for (String row: content.split("\n")) {
                 if (!firstRow) println();
@@ -251,6 +251,7 @@ public class MenuApple1 extends AsciiThread {
             flush(); resetInput();
             int ch = keyPressed(60_000);
             if (ch == '.') return;
+            println();
             println();
         }
     }
