@@ -251,6 +251,7 @@ public class MenuApple1 extends AsciiThread {
             flush(); resetInput();
             int ch = keyPressed(60_000);
             if (ch == '.') return;
+            println();
         }
     }
 
