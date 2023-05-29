@@ -251,10 +251,11 @@ public class ChatGptAscii extends AsciiThread {
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
                 .filter(row -> !row.startsWith(";"))
-                .filter(row -> row.equalsIgnoreCase(ipAddress.getHostAddress()))
-                .findAny().isPresent()) {
-            user = ipAddress.getHostAddress();
-            return true;
+                .anyMatch(row -> row.equalsIgnoreCase(ipAddress.getHostAddress()))) {
+            if (ipAddress.getHostAddress() != null) {
+                user = ipAddress.getHostAddress();
+                return true;
+            }
         }
 
         try {
@@ -296,7 +297,7 @@ public class ChatGptAscii extends AsciiThread {
                 .filter(row -> !row.startsWith(";"))
                 .filter(row -> row.replace("_", "-").replace("*", "@").replace("!", "@")
                         .equalsIgnoreCase(userEmail.replace("_", "-").replace("*", "@").replace("!", "@")))
-                .findFirst()
+                .findAny()
                 .orElse("");
 
         if (isBlank(email)) {
