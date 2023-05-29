@@ -263,7 +263,7 @@ public class ChatGptAscii extends AsciiThread {
         } catch (NullPointerException | ClassCastException e) {
             log("User not logged " + e.getClass().getName() + " " + e.getMessage());
         }
-        if (user != null)
+        if (user != null && "null".equalsIgnoreCase(user))
             return true;
 
         cls();
