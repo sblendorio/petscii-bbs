@@ -5,12 +5,12 @@ import eu.sblendorio.bbs.core.Hidden;
 import java.nio.charset.StandardCharsets;
 
 @Hidden
-public class ChpdbAscii extends WordpressProxyAscii {
+public class DetaAscii extends WordpressProxyAscii {
 
-    public ChpdbAscii() {
+    public DetaAscii() {
         super();
         this.logo = LOGO_BYTES;
-        this.domain = "https://chpdb.it";
+        this.domain = "https://www.detarobot.it/";
         this.pageSize = 5;
         this.showAuthor = true;
         this.httpUserAgent =
@@ -18,6 +18,6 @@ public class ChpdbAscii extends WordpressProxyAscii {
                         "Chrome/85.0.4183.102 Safari/537.36";
     }
 
-    private static final byte[] LOGO_BYTES = "Chi ha paura del buio?".getBytes(StandardCharsets.ISO_8859_1);
+    private static final byte[] LOGO_BYTES = "D.E.T.A.".getBytes(StandardCharsets.ISO_8859_1);
 
 }
