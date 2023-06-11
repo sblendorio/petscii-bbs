@@ -25,8 +25,7 @@ public class MenuApple1M10 extends MenuApple1 {
 
     @Override
     protected void banner() {
-        println("BBS for M10 - by F. Sblendorio " + Calendar.getInstance().get(Calendar.YEAR));
-        newline();
+        println("BBS for M10 - by F.Sblendorio " + Calendar.getInstance().get(Calendar.YEAR));
     }
 
     @Override
@@ -43,10 +42,11 @@ public class MenuApple1M10 extends MenuApple1 {
         banner();
         println("1 - CNN News           Game Room-------");
         println("2 - BBC News           N - TIC TAC TOE");
-        println("3 - Al Jazeera         O - Connect Four");
-        println("4 - Indie Retro News   P - Zork I");
-        println("5 - VCF News           Q - Zork II");
-        println("6 - The 8-Bit Guy      R - Zork III");
+        println("3 - Politico.com       O - Connect Four");
+        println("4 - Al Jazeera         P - Zork I");
+        println("5 - Indie Retro New    Q - Zork II");
+        println("6 - VCF News           R - Zork III");
+        println("7 - The 8-Bit Guy");
         println("Italian News---------  S - Hitchhiker's");
         println("F - Televideo RAI      Services--------");
         println("G - Lercio             T - Chat");

@@ -133,10 +133,11 @@ public class MenuApple1 extends AsciiThread {
                 }
                 else if ("1".equals(choice)) subThread = new CnnAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault(), getCharset());
                 else if ("2".equals(choice)) subThread = new BbcAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault(), getCharset());
-                else if ("3".equals(choice)) subThread = new OneRssAJPlusAscii();
-                else if ("4".equals(choice)) subThread = new IndieRetroNewsAscii();
-                else if ("5".equals(choice)) subThread = new VcfedAscii();
-                else if ("6".equals(choice)) subThread = new The8BitGuyAscii();
+                else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii();
+                else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii();
+                else if ("5".equals(choice)) subThread = new IndieRetroNewsAscii();
+                else if ("6".equals(choice)) subThread = new VcfedAscii();
+                else if ("7".equals(choice)) subThread = new The8BitGuyAscii();
                 else if ("f".equals(choice)) subThread = new TelevideoRaiAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault(), getCharset());
                 else if ("g".equals(choice)) subThread = new LercioAscii();
                 else if ("h".equals(choice)) subThread = new DisinformaticoAscii();
@@ -190,14 +191,14 @@ public class MenuApple1 extends AsciiThread {
     public void displayMenu() {
         String sp = (getScreenColumns() > 40) ? "                    " : "";
         banner();
-        println("International News   "+ sp +"  Game Room");
-        println("---------------------"+ sp +"  ---------------");
-        println("1 - CNN News         "+ sp +"  N - TIC TAC TOE");
-        println("2 - BBC News         "+ sp +"  O - Connect Four");
-        println("3 - Al Jazeera       "+ sp +"  P - Zork I");
-        println("4 - Indie Retro News "+ sp +"  Q - Zork II");
-        println("5 - VCF News         "+ sp +"  R - Zork III");
-        println("6 - The 8-Bit Guy    "+ sp +"  S - Hitchhiker's");
+        println("International News---"+ sp +"  Game Room");
+        println("1 - CNN News         "+ sp +"  ---------------");
+        println("2 - BBC News         "+ sp +"  N - TIC TAC TOE");
+        println("3 - Politico.com     "+ sp +"  O - Connect Four");
+        println("4 - Al Jazeera       "+ sp +"  P - Zork I");
+        println("5 - Indie Retro News "+ sp +"  Q - Zork II");
+        println("6 - VCF News         "+ sp +"  R - Zork III");
+        println("7 - The 8-Bit Guy    "+ sp +"  S - Hitchhiker's");
         println();
         println("Italian News---------"+ sp +"  Services-------");
         println("F - Televideo RAI    "+ sp +"  T - Chat");

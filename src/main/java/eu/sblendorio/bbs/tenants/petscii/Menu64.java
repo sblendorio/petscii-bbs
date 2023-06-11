@@ -244,14 +244,15 @@ public class Menu64 extends PetsciiThread {
             newline();
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161); println("CNN News");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '2', REVOFF, 161); println("BBC News");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '3', REVOFF, 161); println("Al Jazeera");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '4', REVOFF, 161); println("Wired");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '5', REVOFF, 161); println("Vintage Computer Federation");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '6', REVOFF, 161); println("Indie Retro News");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '7', REVOFF, 161); println("The 8-Bit Guy");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '8', REVOFF, 161); println("Vintage is the new old");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '9', REVOFF, 161); println("2600 News");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '0', REVOFF, 161); println("Hackaday Blog");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '3', REVOFF, 161); println("Politico.com");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '4', REVOFF, 161); println("Al Jazeera");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '5', REVOFF, 161); println("Wired");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '6', REVOFF, 161); println("Vintage Computer Federation");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '7', REVOFF, 161); println("Indie Retro News");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '8', REVOFF, 161); println("The 8-Bit Guy");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '9', REVOFF, 161); println("Vintage is the new old");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '0', REVOFF, 161); println("2600 News");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'a', REVOFF, 161); println("Hackaday Blog");
             newline();
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '.', REVOFF, 161);
             print("Exit ");
@@ -273,14 +274,15 @@ public class Menu64 extends PetsciiThread {
                 }
                 else if (key == '1') launch(new CnnPetscii());
                 else if (key == '2') launch(new BbcPetscii());
-                else if (key == '3') launch(new OneRssAJPlusPetscii());
-                else if (key == '4') launch(new WiredCom());
-                else if (key == '5') launch(new Vcfed());
-                else if (key == '6') launch(new IndieRetroNews());
-                else if (key == '7') launch(new The8BitGuy());
-                else if (key == '8') launch(new Vitno());
-                else if (key == '9') launch(new OneRss2600Petscii());
-                else if (key == '0') launch(new HackadayPetscii());
+                else if (key == '3') launch(new OneRssPoliticoPetscii());
+                else if (key == '4') launch(new OneRssAJPlusPetscii());
+                else if (key == '5') launch(new WiredCom());
+                else if (key == '6') launch(new Vcfed());
+                else if (key == '7') launch(new IndieRetroNews());
+                else if (key == '8') launch(new The8BitGuy());
+                else if (key == '9') launch(new Vitno());
+                else if (key == '0') launch(new OneRss2600Petscii());
+                else if (key == 'a') launch(new HackadayPetscii());
                 else {
                     validKey = false;
                 }

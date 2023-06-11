@@ -40,11 +40,11 @@ public class MenuApple1Vic20 extends MenuApple1 {
         println("--------- -----------");
         println("1-CNN     N-TicTacToe");
         println("2-BBC     O-Connect 4");
-        println("3-AJPlus  P-Zork I");
-        println("4-IRNews  Q-Zork II");
-        println("5-VCFNews R-Zork III");
-        println("6-8bitGuy S-Hitchhikr");
-        println();
+        println("3-PoliticoP-Zork I");
+        println("4-AJPlus  Q-Zork II");
+        println("5-IRNews  R-Zork III");
+        println("6-VCFNews S-Hitchhikr");
+        println("7-8bitGuy");
         println("Italian News");
         println("------------  Service");
         println("F-Televideo   -------");

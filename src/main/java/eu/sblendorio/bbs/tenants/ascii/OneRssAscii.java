@@ -329,7 +329,9 @@ public class OneRssAscii extends AsciiThread {
         while (j < rows.size()) {
             if (j > 0 && j % screenRows == 0 && forward) {
                 println();
-                print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT");
+                print(getScreenColumns() >= 40
+                        ? "-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT"
+                        : "(" + page + ") SPC -PREV .EXIT");
                 flush();
                 resetInput();
                 int ch = readKey();

@@ -12,12 +12,10 @@ import java.util.stream.Collectors;
 public class OneRssAJPlusAscii extends OneRssAscii {
 
     public OneRssAJPlusAscii() {
-        this.pageSize = 5;
+        this.pageSize = 8;
         this.showAuthor = true;
         this.newlineAfterDate = false;
         this.twoColumns = false;
-        this.LOGO_MENU = "Al Jazeera".getBytes(StandardCharsets.ISO_8859_1);
-        this.LOGO_SECTION = "Al Jazeera".getBytes(StandardCharsets.ISO_8859_1);
     }
 
     protected void readSections() throws Exception {
