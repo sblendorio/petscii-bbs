@@ -8,6 +8,7 @@ public class OneRss2600Petscii extends OneRssPetscii {
     protected void readSections() throws Exception {
         sections = new LinkedHashMap<>();
         sections.put("1", new NewsSection("", "https://2600.com/rss.xml"));
+        newlineAfterDate = false;
         LOGO_SECTION = readBinaryFile("petscii/news2600.seq");
     }
 }
