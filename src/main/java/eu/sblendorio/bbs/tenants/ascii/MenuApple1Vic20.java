@@ -38,12 +38,12 @@ public class MenuApple1Vic20 extends MenuApple1 {
         banner();
         println("Intl.News Game Room");
         println("--------- -----------");
-        println("A-CNN     N-TicTacToe");
-        println("B-BBC     O-Connect 4");
-        println("C-IRNews  P-Zork I");
-        println("D-VCFNews Q-Zork II");
-        println("E-8bitGuy R-Zork III");
-        println("          S-Hitchhikr");
+        println("1-CNN     N-TicTacToe");
+        println("2-BBC     O-Connect 4");
+        println("3-AJPlus  P-Zork I");
+        println("4-IRNews  Q-Zork II");
+        println("5-VCFNews R-Zork III");
+        println("6-8bitGuy S-Hitchhikr");
         println();
         println("Italian News");
         println("------------  Service");

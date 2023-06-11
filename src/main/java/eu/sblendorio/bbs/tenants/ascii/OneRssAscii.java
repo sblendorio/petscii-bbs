@@ -1,68 +1,39 @@
-package eu.sblendorio.bbs.tenants.petscii;
+package eu.sblendorio.bbs.tenants.ascii;
 
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
+import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
-import eu.sblendorio.bbs.core.HtmlUtils;
+import eu.sblendorio.bbs.core.Utils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.text.WordUtils;
 
-import static eu.sblendorio.bbs.core.PetsciiColors.*;
-import static eu.sblendorio.bbs.core.PetsciiKeys.CASE_LOCK;
-import static eu.sblendorio.bbs.core.PetsciiKeys.CLR;
-import static eu.sblendorio.bbs.core.PetsciiKeys.DEL;
-import static eu.sblendorio.bbs.core.PetsciiKeys.DOWN;
-import static eu.sblendorio.bbs.core.PetsciiKeys.HOME;
-import static eu.sblendorio.bbs.core.PetsciiKeys.LEFT;
-import static eu.sblendorio.bbs.core.PetsciiKeys.LOWERCASE;
-import static eu.sblendorio.bbs.core.PetsciiKeys.RETURN;
-import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
-import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
-import static eu.sblendorio.bbs.core.PetsciiKeys.RIGHT;
-import static eu.sblendorio.bbs.core.PetsciiKeys.SPACE_CHAR;
-import eu.sblendorio.bbs.core.PetsciiThread;
 import java.io.File;
 import java.io.FileNotFoundException;
-import static java.lang.Math.min;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.*;
+
+import static java.lang.Math.min;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Scanner;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-
-import eu.sblendorio.bbs.core.Utils;
-import org.apache.commons.lang3.StringUtils;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.lowerCase;
-import static org.apache.commons.lang3.StringUtils.repeat;
-import static org.apache.commons.lang3.StringUtils.substring;
-import static org.apache.commons.lang3.StringUtils.trim;
-import org.apache.commons.lang3.math.NumberUtils;
+import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
-import org.apache.commons.text.WordUtils;
 
-public class OneRssPetscii extends PetsciiThread {
+public class OneRssAscii extends AsciiThread {
 
-    String HR_TOP = StringUtils.repeat(chr(163), getScreenColumns() - 1);
+    String HR_TOP;
 
-    protected int screenRows = 19;
+    protected int screenRows;
     protected int pageSize = 10;
-    protected String bottomUrl = null;
-    protected String bottomLabel = null;
-    protected String bottomPrompt = null;
 
     protected boolean showAuthor = false;
     protected boolean newlineAfterDate = true;
@@ -72,8 +43,6 @@ public class OneRssPetscii extends PetsciiThread {
     protected int currentPage = 1;
 
     protected boolean alwaysRefreshFeed = false;
-    protected int offsetX = 28;
-    protected int offsetY = 2;
 
     static class NewsSection {
         final String title;
@@ -102,6 +71,12 @@ public class OneRssPetscii extends PetsciiThread {
 
     protected Map<String, NewsSection> sections;
 
+    @Override
+    public void initBbs() throws Exception {
+        HR_TOP = StringUtils.repeat('-', getScreenColumns() - 1);
+        screenRows = getScreenRows() - 4;
+    }
+
     protected void readSections() throws Exception {
         final String filename = System.getProperty("MENUMES", "/data/a.txt");
         List<String> secTxt = readTxt(filename);
@@ -119,17 +94,8 @@ public class OneRssPetscii extends PetsciiThread {
             ++count;
             sections.put(commands.substring(count - 1, count), new NewsSection(row.getKey(), row.getValue()));
         }
-        sections.put(commands.substring(count, ++count), new NewsSection("Download", new OneDownload()));
-        sections.put(commands.substring(count, ++count), new NewsSection("Televideo", new TelevideoRaiPetscii()));
-        sections.put(commands.substring(count, ++count), new NewsSection("Chat", new Chat64(Utils.bytes(
-                LOGO_SECTION, 19, 13, 13, 157, 157, 157, 157, 157, 157, 157, 157, 157, RED, "cHAT", 13, 13, 13, 13))));
+        sections.put(commands.substring(count, ++count), new NewsSection("Televideo", new TelevideoRaiAscii()));
         //sections.put(commands.substring(count, ++count), new NewsSection("Connect 4", new ConnectFour()));
-
-        // legacy:
-        // sections.put("1", new NewsSection("Articoli", "https://www.labaya-make-an-offer.com/articles.xml"));
-        // sections.put("2", new NewsSection("Downloads", "https://www.labaya-make-an-offer.com/download.xml"));
-        // sections.put("3", new NewsSection("Tips & Tricks", "https://www.labaya-make-an-offer.com/tips%26tricks.xml"));
-        // sections.put("4", new NewsSection("Tic Tac Toe", new TicTacToe()));
 
         final String filenameConfig = System.getProperty("CONFIGMES", "/data/c.txt");
         Map<String, String> conf = readTxt(filenameConfig).stream()
@@ -144,27 +110,22 @@ public class OneRssPetscii extends PetsciiThread {
         if (conf.get("rss.pagesize") != null) {
             pageSize = NumberUtils.toInt(conf.get("rss.pagesize"));
         }
-        bottomUrl = conf.get("bottom.url");
-        bottomLabel = conf.get("bottom.label");
-        bottomPrompt = conf.get("bottom.prompt");
     }
 
     private void printChannelListOneColumn() {
-        gotoXY(0, 6);
         int maxLen = sections.values().stream().map(x -> x.title).map(String::length).mapToInt(v -> v+4).max().orElse(0);
         String spaces = StringUtils.repeat(" ", (getScreenColumns() - maxLen) / 2);
         for (Map.Entry<String, NewsSection> entry: sections.entrySet()) {
-            print(spaces); write(REVON); print(" " + entry.getKey().toUpperCase() + " ");
-            write(REVOFF); println(" " + entry.getValue().title);
-            newline();
+            print(spaces); print(" " + entry.getKey().toUpperCase() + " ");
+            println(" " + entry.getValue().title);
+            if (getScreenRows() > 20) newline();
         }
-        print(spaces); write(REVON); print(" . "); write(REVOFF); println(" Exit ");
+        print(spaces); print(" . "); println(" Exit ");
         newline();
         flush();
     }
 
     private void printChannelListTwoColumns() {
-        gotoXY(0, 5);
         List<String> keys = new LinkedList<>(sections.keySet());
         int size = sections.size() / 2;
         if (size * 2 < sections.size())
@@ -174,8 +135,9 @@ public class OneRssPetscii extends PetsciiThread {
             if (even >= keys.size()) break;
             String key = keys.get(even);
             NewsSection value = sections.get(key);
-            write(RIGHT, GREY3, REVON, SPACE_CHAR);
-            print(key.toUpperCase()); write(SPACE_CHAR, REVOFF, SPACE_CHAR);
+            print("  ");
+            print(key.toUpperCase());
+            print("  ");
             String title = substring(value.title + "                    ", 0, 15);
             print(title);
             print(" ");
@@ -184,9 +146,9 @@ public class OneRssPetscii extends PetsciiThread {
             if (odd < keys.size()) {
                 key = keys.get(odd);
                 value = sections.get(key);
-                write(GREY3, REVON, SPACE_CHAR);
+                print(" ");
                 print(key.toUpperCase());
-                write(SPACE_CHAR, REVOFF, SPACE_CHAR);
+                print("  ");
                 print(value.title);
             }
             if (i != size -1) {
@@ -198,12 +160,13 @@ public class OneRssPetscii extends PetsciiThread {
             }
 
         }
-        if (sections.size() % 2 == 0) write(RIGHT);
-        write(GREY3, REVON, SPACE_CHAR);
+        if (sections.size() % 2 == 0) write(' ');
+        print(" ");
         print(".");
-        write(SPACE_CHAR, REVOFF, SPACE_CHAR);
+        print("  ");
         print("Exit");
-        write(GREY3, RETURN, RETURN);
+        println();
+        println();
         flush();
     }
 
@@ -232,53 +195,25 @@ public class OneRssPetscii extends PetsciiThread {
         return e.getDescription().getValue();
     }
 
-    public void box(int x1, int y1, int x2, int y2) {
-        write(RETURN, HOME);
-        for (int i=0; i<Math.min(y1,y2); ++i) write(DOWN);
-        for (int i=0; i<Math.min(x1,x2); ++i) write(RIGHT);
-        write(176);
-        for (int i=0; i<Math.abs(x2-x1)-1; ++i) write(192);
-        write(174);
-        for (int i=0; i<Math.abs(y2-y1)-1; ++i) write(LEFT, DOWN, 221);
-        write(HOME);
-        for (int i=0; i<Math.min(y1,y2); ++i) write(DOWN);
-        for (int i=0; i<Math.min(x1,x2); ++i) write(RIGHT);
-        for (int i=0; i<Math.abs(y2-y1)-1; ++i) write(DOWN, 221, LEFT);
-        write(DOWN);
-        write(173);
-        for (int i=0; i<Math.abs(x2-x1)-1; ++i) write(192);
-        write(189);
-    }
-
     @Override
     public void doLoop() throws Exception {
-        write(GREY3);
         cls();
-        waitOn();
         readSections();
-        waitOff();
         if (sections.size() == 1) {
             enterSection(sections.values().stream().findFirst().get());
             return;
         }
         while (true) {
-            write(WHITE, CLR, LOWERCASE, CASE_LOCK);
+            cls();
             write(LOGO_MENU);
-            write(GREY3);
+            println();
+            println();
             posts = null;
             currentPage = 1;
             if (twoColumns)
                 printChannelListTwoColumns();
             else
                 printChannelListOneColumn();
-            printBottom();
-            write(HOME);
-            if (twoColumns) {
-                for (int i=0; i < 5 + (sections.size()+(sections.size() % 2== 0 ? 2 : 1)); ++i) write(DOWN);
-            } else {
-                for (int i=0; i < 6 + (sections.size()+1) * 2; ++i) write(DOWN);
-            }
-            print(bottomPrompt);
             flush();
             boolean isValidKey;
             int key;
@@ -294,7 +229,7 @@ public class OneRssPetscii extends PetsciiThread {
             NewsSection section = sections.get(input.toLowerCase());
             enterSection(section);
         }
-        write(CLR);
+        cls();
     }
 
     private void enterSection(NewsSection section) throws Exception {
@@ -305,9 +240,10 @@ public class OneRssPetscii extends PetsciiThread {
 
         while (true) {
             log("RssReader waiting for input");
-            write(WHITE); print("#"); write(GREY3); print(", ["); write(WHITE); print("N+-"); write(GREY3); print("]Page [");
-            write(WHITE); print("R"); write(GREY3); print("]eload [");
-            write(WHITE); print("."); write(GREY3); print("]"); write(WHITE); print("Q"); write(GREY3); print("uit> ");
+            print(getScreenColumns() >= 40
+                ? "#, [N+-]Page [R]eload [.]Quit> "
+                : "(N+-)Page (.)Quit> "
+            );
             resetInput();
             flush();
             String inputRaw = readLine();
@@ -345,38 +281,40 @@ public class OneRssPetscii extends PetsciiThread {
     }
 
     protected boolean listPosts(NewsSection section) throws Exception {
+        final int mainLogoSize = 2;
         if (section.url instanceof BbsThread) {
             launch((BbsThread) section.url);
             return true;
         }
         cls();
-        if (isNotBlank(section.title) && offsetX > 0) {
-            gotoXY(offsetX, offsetY);
-            write(WHITE); print(section.title);
+        write(LOGO_SECTION);
+        if (isNotBlank(section.title)) {
+            print(" - ");
+            print(section.title);
         }
-        write(HOME); write(LOGO_SECTION);
-        write(GREY3);
+        println();
+        println();
         if (isEmpty(posts)) {
-            waitOn();
             posts = getFeeds(section.url.toString());
-            waitOff();
         }
         if (posts != null && posts.size() == 1) {
             displayPost(posts.get(0), section);
             return false;
         }
-
         final int start = pageSize * (currentPage-1);
         final int end = min(pageSize + start, posts.size());
 
+        long totalRows = 0;
         for (int i = start; i < end; ++i) {
+            System.out.println("i = "+i);
             NewsFeed post = posts.get(i);
-            write(WHITE); print((i+1) + "."); write(GREY3);
+            print((i+1) + ".");
             final int iLen = (getScreenColumns()-3)-String.valueOf(i+1).length();
             String line = WordUtils.wrap(filterPrintable(htmlClean(post.title)), iLen, "\r", true);
-            println(line.replaceAll("\r", "\r " + repeat(" ", (getScreenColumns()-3)-iLen)));
+            totalRows += 1 + line.chars().filter(ch -> ch == '\r').count();
+            println(line.replaceAll("\r", newlineString() +" " + repeat(" ", (getScreenColumns()-3)-iLen)));
         }
-        newline();
+        for (int i = 0; i <= (getScreenRows() - totalRows - mainLogoSize - 2); ++i) newline();
         flush();
         return true;
     }
@@ -391,9 +329,7 @@ public class OneRssPetscii extends PetsciiThread {
         while (j < rows.size()) {
             if (j > 0 && j % screenRows == 0 && forward) {
                 println();
-                write(WHITE);
                 print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT");
-                write(GREY3);
                 flush();
                 resetInput();
                 int ch = readKey();
@@ -438,34 +374,15 @@ public class OneRssPetscii extends PetsciiThread {
         return rows;
     }
 
-    private void printBottom() throws Exception {
-        if (isNotBlank(bottomLabel)) {
-            //println(StringUtils.repeat(chr(163), getScreenColumns() - 1));
-            newline();
-            newline();
-            print(bottomLabel);
-            print(" ");
-        }
-
-        if (isNotBlank(bottomUrl)) {
-            List<NewsFeed> feeds = getFeeds(bottomUrl);
-            if (isEmpty(feeds))
-                return;
-
-            feedToText(feeds.get(0)).stream()
-                .forEach(this::println);
-        }
-        flush();
-    }
-
     private void logo(NewsSection section) throws Exception {
         cls();
-        gotoXY(offsetX, offsetY);
-        write(WHITE);
-        print(section.title);
-        write(HOME);
         write(LOGO_SECTION);
-        write(GREY3);
+        if (isNotBlank(section.title)) {
+            print(" - ");
+            print(section.title);
+        }
+        println();
+        println();
     }
 
     protected List<String> wordWrap(String s) {
@@ -480,19 +397,9 @@ public class OneRssPetscii extends PetsciiThread {
         return result;
     }
 
-    public byte[] LOGO_MENU = readBinaryFile("petscii/baya-bbs.seq");
+    public byte[] LOGO_MENU = "LOGO_MENU".getBytes(ISO_8859_1);
 
-    public byte[] LOGO_SECTION = readBinaryFile("petscii/baya.seq");
-
-    protected void waitOn() {
-        print("WAIT PLEASE...");
-        flush();
-    }
-
-    protected void waitOff() {
-        for (int i=0; i<14; ++i) write(DEL);
-        flush();
-    }
+    public byte[] LOGO_SECTION = "LOGO_SECTION".getBytes(ISO_8859_1);
 
     private List<String> readTxt(String filename) {
         List<String> result = new LinkedList<>();

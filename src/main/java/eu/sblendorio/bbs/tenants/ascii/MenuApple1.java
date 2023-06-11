@@ -131,11 +131,12 @@ public class MenuApple1 extends AsciiThread {
                     println("Disconnected.");
                     return;
                 }
-                else if ("a".equals(choice)) subThread = new CnnAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault(), getCharset());
-                else if ("b".equals(choice)) subThread = new BbcAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault(), getCharset());
-                else if ("c".equals(choice)) subThread = new IndieRetroNewsAscii();
-                else if ("d".equals(choice)) subThread = new VcfedAscii();
-                else if ("e".equals(choice)) subThread = new The8BitGuyAscii();
+                else if ("1".equals(choice)) subThread = new CnnAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault(), getCharset());
+                else if ("2".equals(choice)) subThread = new BbcAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault(), getCharset());
+                else if ("3".equals(choice)) subThread = new OneRssAJPlusAscii();
+                else if ("4".equals(choice)) subThread = new IndieRetroNewsAscii();
+                else if ("5".equals(choice)) subThread = new VcfedAscii();
+                else if ("6".equals(choice)) subThread = new The8BitGuyAscii();
                 else if ("f".equals(choice)) subThread = new TelevideoRaiAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault(), getCharset());
                 else if ("g".equals(choice)) subThread = new LercioAscii();
                 else if ("h".equals(choice)) subThread = new DisinformaticoAscii();
@@ -161,24 +162,27 @@ public class MenuApple1 extends AsciiThread {
                     validKey = false;
                     subThread = null;
                 }
-                if (subThread != null) {
-                    if (subThread instanceof AsciiThread) {
-                        ((AsciiThread) subThread).clsBytes = this.clsBytes;
-                        ((AsciiThread) subThread).screenColumns = this.screenColumns;
-                        ((AsciiThread) subThread).screenRows = this.screenRows;
-                    }
-                    if (subThread instanceof WordpressProxyAscii && (screenRows == 15 || screenColumns < 40)) {
-                        ((WordpressProxyAscii) subThread).pageSize /= 2;
-                    } else if (subThread instanceof GoogleBloggerProxyAscii && (screenRows == 15 || screenColumns < 40)) {
-                        ((GoogleBloggerProxyAscii) subThread).pageSize /= 2;
-                    } else if (subThread instanceof WordpressProxyAscii && screenColumns == 80) {
-                        ((WordpressProxyAscii) subThread).pageSize *= 2;
-                    } else
-                    if (subThread instanceof GoogleBloggerProxyAscii && screenColumns == 80) {
-                        ((GoogleBloggerProxyAscii) subThread).pageSize *= 2;
-                    }
-                    launch(subThread);
+                if (subThread == null) continue;
+
+                if (subThread instanceof AsciiThread) {
+                    ((AsciiThread) subThread).clsBytes = this.clsBytes;
+                    ((AsciiThread) subThread).screenColumns = this.screenColumns;
+                    ((AsciiThread) subThread).screenRows = this.screenRows;
                 }
+                if (subThread instanceof WordpressProxyAscii && (screenRows == 15 || screenColumns < 40)) {
+                    ((WordpressProxyAscii) subThread).pageSize /= 2;
+                } else if (subThread instanceof GoogleBloggerProxyAscii && (screenRows == 15 || screenColumns < 40)) {
+                    ((GoogleBloggerProxyAscii) subThread).pageSize /= 2;
+                } else if (subThread instanceof OneRssAscii && (screenRows == 15 || screenColumns < 40)) {
+                    ((OneRssAscii) subThread).pageSize /= 2;
+                } else if (subThread instanceof WordpressProxyAscii && screenColumns == 80) {
+                    ((WordpressProxyAscii) subThread).pageSize *= 2;
+                } else if (subThread instanceof GoogleBloggerProxyAscii && screenColumns == 80) {
+                    ((GoogleBloggerProxyAscii) subThread).pageSize *= 2;
+                } else if (subThread instanceof OneRssAscii && screenColumns == 80) {
+                    ((OneRssAscii) subThread).pageSize *= 2;
+                }
+                launch(subThread);
             } while (!validKey);
         }
     }
@@ -187,15 +191,15 @@ public class MenuApple1 extends AsciiThread {
         String sp = (getScreenColumns() > 40) ? "                    " : "";
         banner();
         println("International News   "+ sp +"  Game Room");
-        println("------------------   "+ sp +"  ---------------");
-        println("A - CNN News         "+ sp +"  N - TIC TAC TOE");
-        println("B - BBC News         "+ sp +"  O - Connect Four");
-        println("C - Indie Retro News "+ sp +"  P - Zork I");
-        println("D - VCF News         "+ sp +"  Q - Zork II");
-        println("E - The 8-Bit Guy    "+ sp +"  R - Zork III");
-        println("                     "+ sp +"  S - Hitchhiker's");
-        println("Italian News");
-        println("-----------------    "+ sp +"  Services-------");
+        println("---------------------"+ sp +"  ---------------");
+        println("1 - CNN News         "+ sp +"  N - TIC TAC TOE");
+        println("2 - BBC News         "+ sp +"  O - Connect Four");
+        println("3 - Al Jazeera       "+ sp +"  P - Zork I");
+        println("4 - Indie Retro News "+ sp +"  Q - Zork II");
+        println("5 - VCF News         "+ sp +"  R - Zork III");
+        println("6 - The 8-Bit Guy    "+ sp +"  S - Hitchhiker's");
+        println();
+        println("Italian News---------"+ sp +"  Services-------");
         println("F - Televideo RAI    "+ sp +"  T - Chat");
         println("G - Lercio           "+ sp +"  U - Private Msg");
         println("H - Disinformatico   "+ sp +"  V - Eliza");

@@ -41,21 +41,21 @@ public class MenuApple1M10 extends MenuApple1 {
     @Override
     public void displayMenu() {
         banner();
-        println("International News---  Game Room-------");
-        println("A - CNN News           N - TIC TAC TOE");
-        println("B - BBC News           O - Connect Four");
-        println("C - Indie Retro News   P - Zork I");
-        println("D - VCF News           Q - Zork II");
-        println("E - The 8-Bit Guy      R - Zork III");
+        println("1 - CNN News           Game Room-------");
+        println("2 - BBC News           N - TIC TAC TOE");
+        println("3 - Al Jazeera         O - Connect Four");
+        println("4 - Indie Retro News   P - Zork I");
+        println("5 - VCF News           Q - Zork II");
+        println("6 - The 8-Bit Guy      R - Zork III");
         println("Italian News---------  S - Hitchhiker's");
-        println("F - Televideo RAI       Services--");
-        println("G - Lercio              T - Chat");
-        println("H - Disinformatico      U - Private Msg");
-        println("I - Mupin.it            V - Eliza");
-        println("J - Fatto Quotidiano    " + (alternateLogo() ? "" : "W - ChatGPT"));
-        println("K - Amedeo Valoroso     " + (alternateLogo() ? "" : "X - Patron list"));
-        println("L - Butac.it            " + (alternateLogo() ? "" : "Y - Wifi Modem"));
-        println("M - Alessandro Albano   . - Logout");
+        println("F - Televideo RAI      Services--------");
+        println("G - Lercio             T - Chat");
+        println("H - Disinformatico     U - Private Msg");
+        println("I - Mupin.it           V - Eliza");
+        println("J - Fatto Quotidiano   " + (alternateLogo() ? "" : "W - ChatGPT"));
+        println("K - Amedeo Valoroso    " + (alternateLogo() ? "" : "X - Patron list"));
+        println("L - Butac.it           " + (alternateLogo() ? "" : "Y - Wifi Modem"));
+        println("M - Alessandro Albano  . - Logout");
     }
 
     @Override
