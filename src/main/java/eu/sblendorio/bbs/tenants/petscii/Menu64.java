@@ -233,14 +233,14 @@ public class Menu64 extends PetsciiThread {
             write(GREY3);
             gotoXY(4, 5);
             write(32, 32, 32, BLUE);
-            print("Eng");
+            print("Interna");
             write(RED);
-            print("lish ");
+            print("tional");
             write(WHITE);
-            print("News");
+            print(" News");
             newline();
             write(RIGHT, RIGHT, RIGHT, ' ', ' ', ' ', ' ', GREY3);
-            println(repeat((char) 163, 12));
+            println(repeat((char) 163, 18));
             newline();
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161); println("CNN News");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '2', REVOFF, 161); println("BBC News");
