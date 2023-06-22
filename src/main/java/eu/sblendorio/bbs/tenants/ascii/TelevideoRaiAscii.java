@@ -72,6 +72,7 @@ public class TelevideoRaiAscii extends RssAscii {
 
     public Map<String, byte[]> logo = ImmutableMap.of(
     "minitel", bytes("Televideo\r\n---------", line),
+    "prestel", bytes("Televideo\r\n---------", line),
     "ascii", bytes("Televideo\r\n---------", line),
     "ansi", bytes(readBinaryFile("ansi/Televideo.ans"), noattr),
     "utf8", bytes(readBinaryFile("ansi/Televideo.utf8ans"), noattr)
@@ -79,6 +80,7 @@ public class TelevideoRaiAscii extends RssAscii {
 
     public Map<String, Integer> logoHeightsMenu = ImmutableMap.of(
         "minitel", 3,
+        "prestel", 3,
         "ascii", 3,
         "ansi", 4,
         "utf8", 4
@@ -86,6 +88,7 @@ public class TelevideoRaiAscii extends RssAscii {
 
     public Map<String, Integer> logoHeightsNews = ImmutableMap.of(
         "minitel", 2,
+        "prestel", 2,
         "ascii", 2,
         "ansi", 4,
         "utf8", 4
@@ -93,6 +96,7 @@ public class TelevideoRaiAscii extends RssAscii {
 
     public Map<String, byte[]> hrDashes = ImmutableMap.of(
         "minitel", "-".getBytes(ISO_8859_1),
+        "prestel", "-".getBytes(ISO_8859_1),
         "ascii", "-".getBytes(ISO_8859_1),
         "ansi", bytes(196),
         "utf8",  "\u2500".getBytes(UTF_8)
@@ -100,6 +104,24 @@ public class TelevideoRaiAscii extends RssAscii {
 
     public Map<String, Map<String, byte[]>> logos = ImmutableMap.of(
         "minitel", ImmutableMap.<String, byte[]> builder()
+            .put("101", bytes("Ultim'ora", line))
+            .put("102", bytes("24 ore", line))
+            .put("110", bytes("Primo piano", line))
+            .put("120", bytes("Politica", line))
+            .put("130", bytes("Economia", line))
+            .put("140", bytes("Dall'Italia", line))
+            .put("150", bytes("Dal mondo", line))
+            .put("160", bytes("Culture", line))
+            .put("170", bytes("Cittadini", line))
+            .put("180", bytes("Speciale", line))
+            .put("190", bytes("Atlante Crisi", line))
+            .put("229", bytes("Brevi calcio", line))
+            .put("230", bytes("Squadre", line))
+            .put("260", bytes("Altri sport", line))
+            .put("299", bytes("Brevissime", line))
+            .put("810", bytes("Motori", line))
+            .build(),
+        "prestel", ImmutableMap.<String, byte[]> builder()
             .put("101", bytes("Ultim'ora", line))
             .put("102", bytes("24 ore", line))
             .put("110", bytes("Primo piano", line))

@@ -148,17 +148,17 @@ public class MenuApple1 extends AsciiThread {
                 else if ("m".equals(choice)) subThread = new AlessandroAlbanoAscii();
                 else if ("n".equals(choice)) subThread = new TicTacToeAscii();
                 else if ("o".equals(choice)) subThread = new Connect4Ascii();
-                else if ("p".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
-                else if ("q".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
-                else if ("r".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
-                else if ("s".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
-                else if ("t".equals(choice)) subThread = new ChatA1(getCharset());
-                else if ("u".equals(choice)) subThread = new PrivateMessagesAscii();
-                else if ("v".equals(choice)) subThread = new ElizaAscii();
-                else if ("w".equals(choice) && !alternateLogo()) subThread = new ChatGptAscii();
-                else if ("x".equals(choice) && !alternateLogo()) { showPatrons(); subThread = null; }
-                else if ("y".equals(choice) && !alternateLogo()) { wifiModem(); subThread = null; }
-                else if ("z".equals(choice) && !alternateLogo()) { apple1Demo(); subThread = null; }
+                else if ("p".equals(choice) & !"prestel".equals(getCharset())) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
+                else if ("q".equals(choice) & !"prestel".equals(getCharset())) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
+                else if ("r".equals(choice) & !"prestel".equals(getCharset())) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
+                else if ("s".equals(choice) & !"prestel".equals(getCharset())) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
+                else if ("t".equals(choice) & !"prestel".equals(getCharset())) subThread = new ChatA1(getCharset());
+                else if ("u".equals(choice) & !"prestel".equals(getCharset())) subThread = new PrivateMessagesAscii();
+                else if ("v".equals(choice) & !"prestel".equals(getCharset())) subThread = new ElizaAscii();
+                else if ("w".equals(choice) & !"prestel".equals(getCharset())) subThread = new ChatGptAscii();
+                else if ("x".equals(choice)) { showPatrons(); subThread = null; }
+                else if ("y".equals(choice)) { wifiModem(); subThread = null; }
+                else if ("z".equals(choice)) { textDemo(); subThread = null; }
                 else {
                     validKey = false;
                     subThread = null;
@@ -240,7 +240,7 @@ public class MenuApple1 extends AsciiThread {
         flush(); resetInput(); readKey();
     }
 
-    public void apple1Demo() throws Exception {
+    public void textDemo() throws Exception {
         List<Path> drawings = Utils.getDirContent("apple1/demo30th");
         cls();
         for (Path drawing : drawings) {
@@ -255,7 +255,7 @@ public class MenuApple1 extends AsciiThread {
             }
             flush(); resetInput();
             int ch = keyPressed(60_000);
-            if (ch == '.') return;
+            if (ch == '.') break;
             println();
             println();
         }

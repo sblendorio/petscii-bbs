@@ -12,6 +12,7 @@ import eu.sblendorio.bbs.tenants.ascii.MenuApple1Vic20;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1WithEcho;
 import eu.sblendorio.bbs.tenants.petscii.Menu64;
 import eu.sblendorio.bbs.tenants.minitel.MenuMinitelWithEcho;
+import eu.sblendorio.bbs.tenants.prestel.MenuPrestelWithEcho;
 import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
@@ -47,6 +48,7 @@ public class StdChoice extends AsciiThread {
         println("9- VIC-20 ASCII W/ECHO   22X23 (6561)");
         println("0- OLIVETTI M10 W/ECHO   40X15 (8085)");
         println("M- MINITEL      W/ECHO   40X24 (1651)");
+        println("P- PRESTEL      W/ECHO   40X24 (6499)");
         newline();
         println("PLEASE SELECT A SYSTEM");
         println("PRESS ENTER TO CLOSE  CONNECTION");
@@ -70,6 +72,7 @@ public class StdChoice extends AsciiThread {
         else if (ch == '9') launch(new MenuApple1Vic20());
         else if (ch == '0') launch(new MenuApple1M10());
         else if (ch == 'm') launch(new MenuMinitelWithEcho());
+        else if (ch == 'p') launch(new MenuPrestelWithEcho());
     }
 
     private boolean isValidKey(int ch) {
