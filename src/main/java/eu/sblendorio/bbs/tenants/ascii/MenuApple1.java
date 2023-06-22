@@ -281,7 +281,7 @@ public class MenuApple1 extends AsciiThread {
         flush(); resetInput(); readKey();
     }
 
-    private List<String> readTxt(String filename) {
+    public List<String> readTxt(String filename) {
         List<String> result = new LinkedList<>();
         try {
             File myObj = new File(filename);

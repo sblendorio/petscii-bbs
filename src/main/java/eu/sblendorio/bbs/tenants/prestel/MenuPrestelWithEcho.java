@@ -2,7 +2,9 @@ package eu.sblendorio.bbs.tenants.prestel;
 
 import eu.sblendorio.bbs.core.Utils;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1;
+import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
@@ -92,4 +94,38 @@ public class MenuPrestelWithEcho extends MenuApple1 {
         }
         cls();
     }
+
+    @Override
+    public void showPatrons() throws Exception {
+        List<String> patrons = readTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
+                .stream()
+                .filter(StringUtils::isNotBlank)
+                .map(StringUtils::trim)
+                .sorted()
+                .collect(toList());
+
+        final int PAGESIZE = 11;
+        int pages = patrons.size() / PAGESIZE + (patrons.size() % PAGESIZE == 0 ? 0 : 1);
+
+        for (int p = 0; p < pages; ++p) {
+            cls();
+            banner();
+            println("You can support the development of this");
+            println("BBS through Patreon starting with 3$ or");
+            println("3.50eur per month:");
+            println();
+            println("https://patreon.com/FrancescoSblendorio");
+            println();
+            println("Patrons of this BBS");
+            println("-------------------");
+            for (int i=0; i<PAGESIZE; ++i) {
+                int index = (p*PAGESIZE + i);
+                if (index < patrons.size())
+                    println(patrons.get(index));
+            }
+            flush(); resetInput(); int ch = readKey();
+            if (ch == '.') break;
+        }
+    }
+
 }
