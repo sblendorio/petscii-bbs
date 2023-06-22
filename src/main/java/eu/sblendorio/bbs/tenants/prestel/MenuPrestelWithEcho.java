@@ -85,7 +85,6 @@ public class MenuPrestelWithEcho extends MenuApple1 {
             if (startsWith(filename,"/")) filename = filename.substring(1);
             byte[] content = readBinaryFile(filename);
             cls();
-            System.out.println(filename);
             write(content);
             flush(); resetInput();
             int ch = keyPressed(60_000);

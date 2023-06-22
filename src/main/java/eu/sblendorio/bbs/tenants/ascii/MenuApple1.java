@@ -7,6 +7,7 @@ import eu.sblendorio.bbs.core.BbsThread;
 import static eu.sblendorio.bbs.core.Utils.STR_ALPHANUMERIC;
 import static eu.sblendorio.bbs.core.Utils.setOfChars;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.startsWith;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
@@ -243,7 +244,7 @@ public class MenuApple1 extends AsciiThread {
     public void textDemo() throws Exception {
         List<Path> drawings = Utils.getDirContent("apple1/demo30th");
         cls();
-        for (Path drawing : drawings) {
+        for (Path drawing : drawings.stream().sorted(comparing(p -> p.toString().toLowerCase())).collect(toList())) {
             String filename = drawing.toString();
             if (startsWith(filename,"/")) filename = filename.substring(1);
             final String content = new String(readBinaryFile(filename), UTF_8);
