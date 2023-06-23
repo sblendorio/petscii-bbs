@@ -21,7 +21,7 @@ public class TelevideoRaiAscii extends RssAscii {
         this("rss.a1.timeout", "40000", "ascii");
     }
 
-    public TelevideoRaiAscii(String property, String defaultValue, String interfaceType) {
+    public TelevideoRaiAscii(String property, String defaultValue, String interfaceType, byte[] rawMenuScreen, byte[] restartInput) {
         super(property, defaultValue);
         type = interfaceType;
         sections = loadSections();
@@ -29,6 +29,16 @@ public class TelevideoRaiAscii extends RssAscii {
         logoHeightMenu = logoHeightsMenu.get(interfaceType);
         logoHeightNews = logoHeightsNews.get(interfaceType);
         hrDash = hrDashes.get(interfaceType);
+        this.rawMenuScreen = rawMenuScreen;
+        this.restartInput = restartInput;
+    }
+
+    public TelevideoRaiAscii(String property, String defaultValue, String interfaceType, byte[] rawMenuScreen) {
+        this(property, defaultValue, interfaceType, rawMenuScreen, null);
+    }
+
+    public TelevideoRaiAscii(String property, String defaultValue, String interfaceType) {
+        this(property, defaultValue, interfaceType, null, null);
     }
 
     @Override

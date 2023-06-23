@@ -39,6 +39,8 @@ public abstract class RssAscii extends AsciiThread {
 
     protected int logoHeightMenu = 3;
     protected int logoHeightNews = 2;
+    protected byte[] rawMenuScreen = null;
+    protected byte[] restartInput = null;
 
     public RssAscii() {
         super();
@@ -97,6 +99,11 @@ public abstract class RssAscii extends AsciiThread {
     }
 
     private void printChannelList() {
+        if (rawMenuScreen != null) {
+            cls();
+            write(rawMenuScreen);
+            return;
+        }
         List<String> keys = new LinkedList<>(sections().keySet());
         int size = sections().size() / 2;
         if (size * 2 < sections().size())
@@ -161,6 +168,7 @@ public abstract class RssAscii extends AsciiThread {
             NewsSection choice;
             boolean inputFail;
             do {
+                if (restartInput != null) write(restartInput);
                 print(" > ");
                 flush();
                 resetInput();

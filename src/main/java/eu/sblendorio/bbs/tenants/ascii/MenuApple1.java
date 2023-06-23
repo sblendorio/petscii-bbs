@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.maxmind.db.Reader;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
-import static eu.sblendorio.bbs.core.Utils.STR_ALPHANUMERIC;
-import static eu.sblendorio.bbs.core.Utils.setOfChars;
+
+import static eu.sblendorio.bbs.core.Utils.*;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
@@ -139,7 +139,12 @@ public class MenuApple1 extends AsciiThread {
                 else if ("5".equals(choice)) subThread = new IndieRetroNewsAscii();
                 else if ("6".equals(choice)) subThread = new VcfedAscii();
                 else if ("7".equals(choice)) subThread = new The8BitGuyAscii();
-                else if ("f".equals(choice)) subThread = new TelevideoRaiAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault(), getCharset());
+                else if ("f".equals(choice)) subThread = new TelevideoRaiAscii(
+                        rssPropertyTimeout(),
+                        rssPropertyTimeoutDefault(),
+                        getCharset(),
+                        "prestel".equals(getCharset()) ? readBinaryFile("prestel/menu-televideo.cept3") : null,
+                        "prestel".equals(getCharset()) ? bytes(30, 10, 32, 32, 32, 32, 32, 32, 30, 10) : null);
                 else if ("g".equals(choice)) subThread = new LercioAscii();
                 else if ("h".equals(choice)) subThread = new DisinformaticoAscii();
                 else if ("i".equals(choice)) subThread = new MupinAscii();
