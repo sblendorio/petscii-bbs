@@ -133,9 +133,10 @@ public class MenuApple1 extends AsciiThread {
                 log("Menu. Choice = "+ choice);
                 BbsThread subThread;
                 if (".".equals(choice)) {
-                    newline();
-                    newline();
-                    println("Disconnected.");
+                    cls();
+                    println("Goodbye! Come back soon!");
+                    println();
+                    println("* Disconnected");
                     return;
                 }
                 else if ("1".equals(choice)) subThread = new CnnAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault(), getCharset());
