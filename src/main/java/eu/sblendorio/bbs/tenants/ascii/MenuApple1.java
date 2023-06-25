@@ -150,10 +150,10 @@ public class MenuApple1 extends AsciiThread {
                         rssPropertyTimeoutDefault(),
                         getCharset(),
                             "prestel".equals(getCharset()) ? readBinaryFile("prestel/menu-televideo.cept3") :
-                            "TODO-minitel".equals(getCharset()) ? readBinaryFile("minitel/menu-televideo.vdt") : null,
+                            "minitel".equals(getCharset()) ? readBinaryFile("minitel/menu-televideo.vdt") : null,
 
                             "prestel".equals(getCharset()) ? bytes(11, 11, 13, 10, 32, 32, 32, 32, 32, 32, 13, 10, 11) :
-                            "TODO-minitel".equals(getCharset()) ? bytes(11) : null
+                            "minitel".equals(getCharset()) ? bytes(31, 64+23, 64+1, 32, 32, 32, 32, 32, 32, 31, 64+23, 64+1) : null
                 );
                 else if ("g".equals(choice)) subThread = new LercioAscii();
                 else if ("h".equals(choice)) subThread = new DisinformaticoAscii();
