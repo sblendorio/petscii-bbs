@@ -2,6 +2,8 @@ package eu.sblendorio.bbs.tenants.minitel;
 
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1;
 
+import java.io.IOException;
+
 public class MenuMinitelWithEcho extends MenuApple1 {
 
     public MenuMinitelWithEcho() {
@@ -38,8 +40,16 @@ public class MenuMinitelWithEcho extends MenuApple1 {
     @Override
     public void displayMenu() {
         write(0x1b, 0x3a, 0x6a, 0x43); // scroll off
-        write(readBinaryFile("minitel/menu-retrocampus.vdt"));
+        write(readBinaryFile("minitel/menu-retrocampus-alt.vdt"));
         write(0x1b, 0x3a, 0x69, 0x43); // scroll on
+    }
+
+    @Override
+    public int readSingleKey() throws IOException {
+        write(20); // Cursor off
+        int ch = readKey();
+        write(17); // Cursor on
+        return ch;
     }
 
     @Override

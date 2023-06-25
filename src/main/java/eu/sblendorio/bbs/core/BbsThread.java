@@ -76,7 +76,7 @@ public abstract class BbsThread extends Thread {
     protected boolean keepAlive = true;
     protected long keepAliveTimeout = -1; // inherit from caller
     protected long keepAliveInterval = 1000L * 60L * 1L; // send char every 1 minute
-    protected int keepAliveChar = 1;
+    public int keepAliveChar = 1;
     protected KeepAliveThread keepAliveThread;
 
     public class KeepAliveThread extends Thread {

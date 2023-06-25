@@ -5,12 +5,10 @@ import eu.sblendorio.bbs.tenants.ascii.MenuApple1;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.startsWith;
@@ -53,12 +51,14 @@ public class MenuPrestelWithEcho extends MenuApple1 {
     public void initBbs() throws Exception {
         Thread.sleep(2300);
         resetInput();
+        this.keepAliveChar = 20; // 20 = cursor off
     }
 
     @Override
     public void displayMenu() {
         cls();
         write(readBinaryFile("prestel/menu-retrocampus.cept3"));
+        //write(readBinaryFile("prestel/menu-retrocampus.cept3"));
         /*
             String sp = (getScreenColumns() > 40) ? "                    " : "";
             banner();
@@ -123,14 +123,23 @@ public class MenuPrestelWithEcho extends MenuApple1 {
             println();
             println("Patrons of this BBS");
             println("-------------------");
-            for (int i=0; i<PAGESIZE; ++i) {
-                int index = (p*PAGESIZE + i);
+            for (int i = 0; i < PAGESIZE; ++i) {
+                int index = (p * PAGESIZE + i);
                 if (index < patrons.size())
                     println(patrons.get(index));
             }
-            flush(); resetInput(); int ch = readKey();
+            flush();
+            resetInput();
+            int ch = readKey();
             if (ch == '.') break;
         }
     }
 
+    @Override
+    public int readSingleKey() throws IOException {
+        write(20); // Cursor off
+        int ch = readKey();
+        write(17); // Cursor on
+        return ch;
+    }
 }

@@ -122,7 +122,7 @@ public class MenuApple1 extends AsciiThread {
                 resetInput();
                 String choice;
                 if ("minitel".equals(getCharset()) || "prestel".equals(getCharset())) {
-                    int key = readKey();
+                    int key = readSingleKey();
                     choice = String.valueOf((char) key);
                 } else {
                     print("> ");
@@ -198,6 +198,12 @@ public class MenuApple1 extends AsciiThread {
                     ((GoogleBloggerProxyAscii) subThread).pageSize *= 2;
                 } else if (subThread instanceof OneRssAscii && screenColumns == 80) {
                     ((OneRssAscii) subThread).pageSize *= 2;
+                }
+                if (subThread != null && "prestel".equals(getCharset())) {
+                    subThread.keepAliveChar = 17; // 17 = cursor on
+                }
+                if (subThread != null && subThread instanceof DisinformaticoAscii && "prestel".equals(getCharset())) {
+                    ((DisinformaticoAscii) subThread).pageSize = 4;
                 }
                 launch(subThread);
             } while (!validKey);
@@ -324,5 +330,8 @@ public class MenuApple1 extends AsciiThread {
         return result;
     }
 
+    public int readSingleKey() throws IOException {
+        return readKey();
+    }
 
 }
