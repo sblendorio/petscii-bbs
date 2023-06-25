@@ -241,7 +241,7 @@ public class OneRssAscii extends AsciiThread {
         while (true) {
             log("RssReader waiting for input");
             print(getScreenColumns() >= 40
-                ? "#, [N+-]Page [R]eload [.]Quit> "
+                ? "#, (N+-)Page (R)eload (.)Quit> "
                 : "(N+-)Page (.)Quit> "
             );
             resetInput();

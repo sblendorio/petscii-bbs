@@ -55,28 +55,33 @@ public class MenuPrestelWithEcho extends MenuApple1 {
         resetInput();
     }
 
+    @Override
     public void displayMenu() {
-        String sp = (getScreenColumns() > 40) ? "                    " : "";
-        banner();
-        println("International News---"+ sp +" Game Room--------");
-        println("1 - CNN News         "+ sp +" N - TIC TAC TOE");
-        println("2 - BBC News         "+ sp +" O - Connect Four");
-        println("3 - Politico.com");
-        println("4 - Al Jazeera       "+ sp +" Services---------");
-        println("5 - Indie Retro News "+ sp +" X - Patrons list");
-        println("6 - VCF News         "+ sp +" Y - Wifi Modem");
-        println("7 - The 8-Bit Guy    "+ sp +" Z - PrestelMuseum");
-        println("                     ");
-        println("Italian News---------");
-        println("F - Televideo RAI    ");
-        println("G - Lercio           ");
-        println("H - Disinformatico   ");
-        println("I - Mupin.it         ");
-        println("J - Fatto Quotidiano ");
-        println("K - Amedeo Valoroso  ");
-        println("L - Butac.it         ");
-        println("M - Alessandro Albano"+ sp +"        . - Logout");
-        println();
+        cls();
+        write(readBinaryFile("prestel/menu-retrocampus.cept3"));
+        /*
+            String sp = (getScreenColumns() > 40) ? "                    " : "";
+            banner();
+            println("International News---"+ sp +" Game Room--------");
+            println("1 - CNN News         "+ sp +" N - TIC TAC TOE");
+            println("2 - BBC News         "+ sp +" O - Connect Four");
+            println("3 - Politico.com");
+            println("4 - Al Jazeera       "+ sp +" Services---------");
+            println("5 - Indie Retro News "+ sp +" X - Patrons list");
+            println("6 - VCF News         "+ sp +" Y - Wifi Modem");
+            println("7 - The 8-Bit Guy    "+ sp +" Z - PrestelMuseum");
+            println("                     ");
+            println("Italian News---------");
+            println("F - Televideo RAI    ");
+            println("G - Lercio           ");
+            println("H - Disinformatico   ");
+            println("I - Mupin.it         ");
+            println("J - Fatto Quotidiano ");
+            println("K - Amedeo Valoroso  ");
+            println("L - Butac.it         ");
+            println("M - Alessandro Albano"+ sp +"        . - Logout");
+            println();
+        */
     }
 
     @Override

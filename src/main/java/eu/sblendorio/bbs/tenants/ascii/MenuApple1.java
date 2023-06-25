@@ -119,9 +119,15 @@ public class MenuApple1 extends AsciiThread {
             do {
                 validKey = true;
                 log("Menu. Waiting for key pressed.");
-                print("> ");
                 resetInput();
-                String choice = readChoice();
+                String choice;
+                if ("minitel".equals(getCharset()) || "prestel".equals(getCharset())) {
+                    int key = readKey();
+                    choice = String.valueOf((char) key);
+                } else {
+                    print("> ");
+                    choice = readChoice();
+                }
                 resetInput();
                 choice = StringUtils.lowerCase(choice);
                 log("Menu. Choice = "+ choice);
@@ -143,8 +149,12 @@ public class MenuApple1 extends AsciiThread {
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getCharset(),
-                        "prestel".equals(getCharset()) ? readBinaryFile("prestel/menu-televideo.cept3") : null,
-                        "prestel".equals(getCharset()) ? bytes(30, 10, 32, 32, 32, 32, 32, 32, 30, 10) : null);
+                            "prestel".equals(getCharset()) ? readBinaryFile("prestel/menu-televideo.cept3") :
+                            "TODO-minitel".equals(getCharset()) ? readBinaryFile("minitel/menu-televideo.vdt") : null,
+
+                            "prestel".equals(getCharset()) ? bytes(11, 11, 13, 10, 32, 32, 32, 32, 32, 32, 13, 10, 11) :
+                            "TODO-minitel".equals(getCharset()) ? bytes(11) : null
+                );
                 else if ("g".equals(choice)) subThread = new LercioAscii();
                 else if ("h".equals(choice)) subThread = new DisinformaticoAscii();
                 else if ("i".equals(choice)) subThread = new MupinAscii();
@@ -240,7 +250,19 @@ public class MenuApple1 extends AsciiThread {
         println();
         println("Patrons of this BBS");
         println("-------------------");
-        patrons.forEach(this::println);
+
+        final int PAGESIZE = getScreenRows()-2;
+        int pages = patrons.size() / PAGESIZE + (patrons.size() % PAGESIZE == 0 ? 0 : 1);
+        for (int p = 0; p < pages; ++p) {
+            for (int i=0; i<PAGESIZE; ++i) {
+                int index = (p*PAGESIZE + i);
+                if (index < patrons.size())
+                    println(patrons.get(index));
+            }
+            flush(); resetInput(); int ch = readKey();
+            if (ch == '.') return;
+            println();
+        }
         println();
         print("Press any key.");
         flush(); resetInput(); readKey();

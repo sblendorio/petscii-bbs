@@ -59,6 +59,7 @@ public class StdChoice extends AsciiThread {
         do {
             ch = keyPressed(60_000);
         } while (!isValidKey(ch));
+        write(ch & 223);
         newline();
         ch = ch | 32; // lowercase;
         if (ch == '1') launch(new Menu64());
