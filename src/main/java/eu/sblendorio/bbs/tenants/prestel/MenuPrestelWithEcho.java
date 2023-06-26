@@ -57,7 +57,7 @@ public class MenuPrestelWithEcho extends MenuApple1 {
     @Override
     public void displayMenu() {
         cls();
-        write(readBinaryFile("prestel/menu-retrocampus.cept3"));
+        write(readBinaryFile("prestel/menu-retrocampus-alt.cept3"));
         //write(readBinaryFile("prestel/menu-retrocampus.cept3"));
         /*
             String sp = (getScreenColumns() > 40) ? "                    " : "";
