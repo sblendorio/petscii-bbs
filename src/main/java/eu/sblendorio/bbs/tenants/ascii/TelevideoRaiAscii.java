@@ -98,7 +98,7 @@ public class TelevideoRaiAscii extends RssAscii {
 
     public Map<String, Integer> logoHeightsNews = ImmutableMap.of(
         "minitel", 2,
-        "prestel", 2,
+        "prestel", 3,
         "ascii", 2,
         "ansi", 4,
         "utf8", 4
@@ -132,22 +132,22 @@ public class TelevideoRaiAscii extends RssAscii {
             .put("810", bytes("Motori", line))
             .build(),
         "prestel", ImmutableMap.<String, byte[]> builder()
-            .put("101", bytes("Ultim'ora", line))
-            .put("102", bytes("24 ore", line))
-            .put("110", bytes("Primo piano", line))
-            .put("120", bytes("Politica", line))
-            .put("130", bytes("Economia", line))
-            .put("140", bytes("Dall'Italia", line))
-            .put("150", bytes("Dal mondo", line))
-            .put("160", bytes("Culture", line))
-            .put("170", bytes("Cittadini", line))
-            .put("180", bytes("Speciale", line))
-            .put("190", bytes("Atlante Crisi", line))
-            .put("229", bytes("Brevi calcio", line))
-            .put("230", bytes("Squadre", line))
-            .put("260", bytes("Altri sport", line))
-            .put("299", bytes("Brevissime", line))
-            .put("810", bytes("Motori", line))
+            .put("101", bytes(readBinaryFile("prestel/televideo/ultimora.cept3"),30,10,10,10))
+            .put("102", bytes(readBinaryFile("prestel/televideo/24h.cept3"),30,10,10,10))
+            .put("110", bytes(readBinaryFile("prestel/televideo/primopiano.cept3"),30,10,10,10))
+            .put("120", bytes(readBinaryFile("prestel/televideo/politica.cept3"),30,10,10,10))
+            .put("130", bytes(readBinaryFile("prestel/televideo/economia.cept3"),30,10,10,10))
+            .put("140", bytes(readBinaryFile("prestel/televideo/dallitalia.cept3"),30,10,10,10))
+            .put("150", bytes(readBinaryFile("prestel/televideo/dalmondo.cept3"),30,10,10,10))
+            .put("160", bytes(readBinaryFile("prestel/televideo/culture.cept3"),30,10,10,10))
+            .put("170", bytes(readBinaryFile("prestel/televideo/cittadini.cept3"),30,10,10,10))
+            .put("180", bytes(readBinaryFile("prestel/televideo/speciale.cept3"),30,10,10,10))
+            .put("190", bytes(readBinaryFile("prestel/televideo/atlantecrisi.cept3"),30,10,10,10))
+            .put("229", bytes(readBinaryFile("prestel/televideo/calciobrevi.cept3"),30,10,10,10))
+            .put("230", bytes(readBinaryFile("prestel/televideo/calciosquadre.cept3"),30,10,10,10))
+            .put("260", bytes(readBinaryFile("prestel/televideo/sport.cept3"),30,10,10,10))
+            .put("299", bytes(readBinaryFile("prestel/televideo/sportb.cept3"),30,10,10,10))
+            .put("810", bytes(readBinaryFile("prestel/televideo/motori.cept3"),30,10,10,10))
             .build(),
         "ascii", ImmutableMap.<String, byte[]> builder()
             .put("101", bytes("Ultim'ora", line))

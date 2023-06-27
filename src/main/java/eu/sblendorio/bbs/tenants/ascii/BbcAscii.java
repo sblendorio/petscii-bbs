@@ -29,6 +29,19 @@ public class BbcAscii extends RssAscii {
         hrDash = hrDashes.get(interfaceType);
     }
 
+    public BbcAscii(String property, String defaultValue, String interfaceType, byte[] rawMenuScreen, byte[] restartInput) {
+        super(property, defaultValue);
+        type = interfaceType;
+        sections = loadSections();
+        timeout = toLong(System.getProperty(property, defaultValue));
+        logoHeightMenu = logoHeightsMenu.get(interfaceType);
+        logoHeightNews = logoHeightsNews.get(interfaceType);
+        hrDash = hrDashes.get(interfaceType);
+        this.rawMenuScreen = rawMenuScreen;
+        this.restartInput = restartInput;
+    }
+
+
     public static byte[] line = new byte[] {13, 10, 13, 10};
     public static byte[] noattr = "\033[0m".getBytes(ISO_8859_1);
 
@@ -90,7 +103,7 @@ public class BbcAscii extends RssAscii {
 
     public Map<String, Integer> logoHeightsNews = ImmutableMap.of(
         "minitel", 2,
-        "prestel", 2,
+        "prestel", 3,
         "ascii", 2,
         "ansi", 4,
         "utf8", 4
@@ -128,26 +141,26 @@ public class BbcAscii extends RssAscii {
             .put("220", bytes("BBC - Wales", line))
             .build(),
         "prestel", ImmutableMap.<String, byte[]> builder()
-            .put("201", bytes("BBC - Top Stories", line))
-            .put("202", bytes("BBC - World", line))
-            .put("203", bytes("BBC - United Kingdom", line))
-            .put("204", bytes("BBC - Business", line))
-            .put("205", bytes("BBC - Politics", line))
-            .put("206", bytes("BBC - Health", line))
-            .put("207", bytes("BBC - Education", line))
-            .put("208", bytes("BBC - Science", line))
-            .put("209", bytes("BBC - Technology", line))
-            .put("210", bytes("BBC - Entertainment", line))
-            .put("211", bytes("BBC - Africa", line))
-            .put("212", bytes("BBC - Asia", line))
-            .put("213", bytes("BBC - Europe", line))
-            .put("214", bytes("BBC - Middle East", line))
-            .put("215", bytes("BBC - US & Canada", line))
-            .put("216", bytes("BBC - Latin America", line))
-            .put("217", bytes("BBC - England", line))
-            .put("218", bytes("BBC - Northern Ireland", line))
-            .put("219", bytes("BBC - Scotland", line))
-            .put("220", bytes("BBC - Wales", line))
+            .put("201", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Top Stories",13,10,10))
+            .put("202", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"World",13,10,10))
+            .put("203", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"United Kingdom",13,10,10))
+            .put("204", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Business",13,10,10))
+            .put("205", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Politics",13,10,10))
+            .put("206", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Health",13,10,10))
+            .put("207", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Education",13,10,10))
+            .put("208", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Science",13,10,10))
+            .put("209", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Technology",13,10,10))
+            .put("210", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Entertainment",13,10,10))
+            .put("211", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Africa",13,10,10))
+            .put("212", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Asia",13,10,10))
+            .put("213", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Europe",13,10,10))
+            .put("214", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Middle East",13,10,10))
+            .put("215", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"US & Canada",13,10,10))
+            .put("216", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Latin America",13,10,10))
+            .put("217", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"England",13,10,10))
+            .put("218", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Northern Ireland",13,10,10))
+            .put("219", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Scotland",13,10,10))
+            .put("220", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Wales",13,10,10))
             .build(),
         "ascii", ImmutableMap.<String, byte[]> builder()
             .put("201", bytes("BBC - Top Stories", line))

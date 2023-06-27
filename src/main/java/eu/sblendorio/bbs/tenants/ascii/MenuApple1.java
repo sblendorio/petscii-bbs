@@ -139,8 +139,26 @@ public class MenuApple1 extends AsciiThread {
                     println("* Disconnected");
                     return;
                 }
-                else if ("1".equals(choice)) subThread = new CnnAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault(), getCharset());
-                else if ("2".equals(choice)) subThread = new BbcAscii(rssPropertyTimeout(), rssPropertyTimeoutDefault(), getCharset());
+                else if ("1".equals(choice)) subThread = new CnnAscii(
+                        rssPropertyTimeout(),
+                        rssPropertyTimeoutDefault(),
+                        getCharset(),
+                        "prestel".equals(getCharset()) ? bytes(readBinaryFile("prestel/cnn_home.cept3"),13,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,17) :
+                        "XXXminitel".equals(getCharset()) ? readBinaryFile("minitel/cnn_home.vdt") : null,
+
+                        "prestel".equals(getCharset()) ? bytes(11, 11, 13, 10, 32, 32, 32, 32, 32, 32, 13, 10, 11) :
+                        "XXXminitel".equals(getCharset()) ? bytes(31, 64+23, 64+1, 32, 32, 32, 32, 32, 32, 31, 64+23, 64+1) : null
+                );
+                else if ("2".equals(choice)) subThread = new BbcAscii(
+                        rssPropertyTimeout(),
+                        rssPropertyTimeoutDefault(),
+                        getCharset(),
+                        "prestel".equals(getCharset()) ? bytes(readBinaryFile("prestel/bbc_home.cept3"),13,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,17) :
+                        "XXXminitel".equals(getCharset()) ? readBinaryFile("minitel/bbc_home.vdt") : null,
+
+                        "prestel".equals(getCharset()) ? bytes(11, 11, 13, 10, 32, 32, 32, 32, 32, 32, 13, 10, 11) :
+                        "XXXminitel".equals(getCharset()) ? bytes(31, 64+23, 64+1, 32, 32, 32, 32, 32, 32, 31, 64+23, 64+1) : null
+                );
                 else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii();
                 else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii();
                 else if ("5".equals(choice)) subThread = new IndieRetroNewsAscii();

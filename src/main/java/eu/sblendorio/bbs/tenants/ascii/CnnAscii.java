@@ -29,6 +29,18 @@ public class CnnAscii extends RssAscii {
         hrDash = hrDashes.get(interfaceType);
     }
 
+    public CnnAscii(String property, String defaultValue, String interfaceType, byte[] rawMenuScreen, byte[] restartInput) {
+        super(property, defaultValue);
+        type = interfaceType;
+        sections = loadSections();
+        timeout = toLong(System.getProperty(property, defaultValue));
+        logoHeightMenu = logoHeightsMenu.get(interfaceType);
+        logoHeightNews = logoHeightsNews.get(interfaceType);
+        hrDash = hrDashes.get(interfaceType);
+        this.rawMenuScreen = rawMenuScreen;
+        this.restartInput = restartInput;
+    }
+
     public static byte[] line = new byte[] {13, 10, 13, 10};
     public static byte[] noattr = "\033[0m".getBytes(ISO_8859_1);
 
@@ -86,7 +98,7 @@ public class CnnAscii extends RssAscii {
 
     public Map<String, Integer> logoHeightsNews = ImmutableMap.of(
         "minitel", 2,
-        "prestel", 2,
+        "prestel", 3,
         "ascii", 2,
         "ansi", 4,
         "utf8", 4
@@ -121,22 +133,22 @@ public class CnnAscii extends RssAscii {
             .put("116", bytes("CNN - Most Recent", line))
             .build(),
         "prestel", ImmutableMap.<String, byte[]> builder()
-            .put("101", bytes("CNN - Top Stories", line))
-            .put("102", bytes("CNN - World", line))
-            .put("103", bytes("CNN - Africa", line))
-            .put("104", bytes("CNN - Americas", line))
-            .put("105", bytes("CNN - Asia", line))
-            .put("106", bytes("CNN - Europe", line))
-            .put("107", bytes("CNN - Middle East", line))
-            .put("108", bytes("CNN - U.S.A.", line))
-            .put("109", bytes("CNN - Technology", line))
-            .put("110", bytes("CNN - Science & Space", line))
-            .put("111", bytes("CNN - Entertainment", line))
-            .put("112", bytes("CNN - Money", line))
-            .put("113", bytes("CNN - World Sport", line))
-            .put("114", bytes("CNN - Football", line))
-            .put("115", bytes("CNN - Travel", line))
-            .put("116", bytes("CNN - Most Recent", line))
+            .put("101", bytes(readBinaryFile("prestel/cnn_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Top Stories",13,10,10))
+            .put("102", bytes(readBinaryFile("prestel/cnn_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"World",13,10,10))
+            .put("103", bytes(readBinaryFile("prestel/cnn_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Africa",13,10,10))
+            .put("104", bytes(readBinaryFile("prestel/cnn_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Americas",13,10,10))
+            .put("105", bytes(readBinaryFile("prestel/cnn_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Asia",13,10,10))
+            .put("106", bytes(readBinaryFile("prestel/cnn_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Europe",13,10,10))
+            .put("107", bytes(readBinaryFile("prestel/cnn_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Middle East",13,10,10))
+            .put("108", bytes(readBinaryFile("prestel/cnn_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"U.S.A.",13,10,10))
+            .put("109", bytes(readBinaryFile("prestel/cnn_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Technology",13,10,10))
+            .put("110", bytes(readBinaryFile("prestel/cnn_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Science & Space",13,10,10))
+            .put("111", bytes(readBinaryFile("prestel/cnn_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Entertainment",13,10,10))
+            .put("112", bytes(readBinaryFile("prestel/cnn_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Money",13,10,10))
+            .put("113", bytes(readBinaryFile("prestel/cnn_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"World Sport",13,10,10))
+            .put("114", bytes(readBinaryFile("prestel/cnn_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Football",13,10,10))
+            .put("115", bytes(readBinaryFile("prestel/cnn_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Travel",13,10,10))
+            .put("116", bytes(readBinaryFile("prestel/cnn_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Most Recent",13,10,10))
             .build(),
         "ascii", ImmutableMap.<String, byte[]> builder()
             .put("101", bytes("CNN - Top Stories", line))
