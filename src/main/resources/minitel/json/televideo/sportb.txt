@@ -1,0 +1,116 @@
+{
+    "thumbnail": "data:image/png;base64,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UIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFAQAEGWEYJEOgSUIBd+5SGAIFA4D9mUmguc698UAAAAABJRU5ErkJggg==",
+    "tree": [
+        {
+            "id": "j1_1",
+            "text": "Clear screen",
+            "icon": "./icon/miicons.svg#clear-screen",
+            "li_attr": {
+                "id": "j1_1"
+            },
+            "a_attr": {
+                "href": "#",
+                "id": "j1_1_anchor"
+            },
+            "state": {
+                "loaded": true,
+                "opened": false,
+                "selected": false,
+                "disabled": false
+            },
+            "data": {},
+            "children": [],
+            "type": "clear-screen"
+        },
+        {
+            "id": "j1_2",
+            "text": "Graphics",
+            "icon": "./icon/miicons.svg#content-graphics",
+            "li_attr": {
+                "id": "j1_2"
+            },
+            "a_attr": {
+                "href": "#",
+                "id": "j1_2_anchor"
+            },
+            "state": {
+                "loaded": true,
+                "opened": false,
+                "selected": true,
+                "disabled": false
+            },
+            "data": {
+                "miedit-value": "value=aaaaaa1a1a1a1a1aaa1a1a1a1a1aaaaaaa1a1a1a1a1a1aaaaa1a1a1a1a1a1a1aaaaa1a1a1a1a1a1a1a1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1a1a1a1a1a1aaa1a1a1a1a1a1aaa1a1a1a1a1a1a1a1aaa1a1a1a1a1a1a1a1aaa1a1a1a1a1a1a1a1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1a1aaaaaaaaaaa1a1aaaaa1a1aaa1a1a1a1a1a1a1a1aaa1a1aaaaaaa1a1aaaaa1a1a1a1a1a1a1a1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1a1a1a1aaaaa1a1a1a1a1a1aaa1a1aaaaaaaaa1a1aaa1a1a1a1a1a1aaaaaaaaaaaaa1a1aaaaaaaaaaaaaaaaaaaaaaaaa5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5baaaaaaaaaaaaaaaaaaaaaaaaaa1a1aaa1a1a1a1a1aaaaa1a1a1a1a1a1a1a1aaa1a1aaaaa1a1a1a1aaaaaaaaa1a1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1a1a1a1a1a1aaa1a1aaaaaaaaaaa1a1a1a1a1a1a1a1aaa1a1aaaaa1a1a1a1aaaaaaaaa1a1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1a1a1a1a1aaaaa1a1aaaaaaaaaaaaa1a1a1a1a1a1aaaaa1a1aaaaa1a1a1a1aaaaaaaaa1a1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&background=&x=0&y=1"
+            },
+            "children": [],
+            "type": "content-graphics"
+        },
+        {
+            "id": "j1_3",
+            "text": "Move cursor to an absolute position",
+            "icon": "./icon/miicons.svg#move-locate",
+            "li_attr": {
+                "id": "j1_3"
+            },
+            "a_attr": {
+                "href": "#",
+                "id": "j1_3_anchor"
+            },
+            "state": {
+                "loaded": true,
+                "opened": false,
+                "selected": false,
+                "disabled": false
+            },
+            "data": {
+                "miedit-value": "x=26&y=1"
+            },
+            "children": [],
+            "type": "move-locate"
+        },
+        {
+            "id": "j1_4",
+            "text": "Set foreground color to white",
+            "icon": "./icon/miicons.svg#color-fg-7",
+            "li_attr": {
+                "id": "j1_4"
+            },
+            "a_attr": {
+                "href": "#",
+                "id": "j1_4_anchor"
+            },
+            "state": {
+                "loaded": true,
+                "opened": false,
+                "selected": false,
+                "disabled": false
+            },
+            "data": {},
+            "children": [],
+            "type": "color-fg-7"
+        },
+        {
+            "id": "j1_5",
+            "text": "String",
+            "icon": "./icon/miicons.svg#content-string",
+            "li_attr": {
+                "id": "j1_5"
+            },
+            "a_attr": {
+                "href": "#",
+                "id": "j1_5_anchor"
+            },
+            "state": {
+                "loaded": true,
+                "opened": false,
+                "selected": false,
+                "disabled": false
+            },
+            "data": {
+                "miedit-value": "value=BREVISSIME"
+            },
+            "children": [],
+            "type": "content-string"
+        }
+    ]
+}
