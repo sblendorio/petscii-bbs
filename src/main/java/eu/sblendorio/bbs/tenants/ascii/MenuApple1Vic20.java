@@ -34,7 +34,7 @@ public class MenuApple1Vic20 extends MenuApple1 {
     public String rssPropertyTimeoutDefault() { return "60000"; }
 
     @Override
-    public void displayMenu() {
+    public void displayMenu() throws Exception {
         banner();
         println("Intl.News Game Room");
         println("--------- -----------");

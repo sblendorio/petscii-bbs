@@ -22,11 +22,10 @@ public class MenuMinitelWithEcho extends MenuApple1 {
     public void logo() throws Exception {
         write(0x14); // Cursor off
         write(readBinaryFile("minitel/intro-retrocampus.vdt"));
-        flush();
+        flush(); resetInput();
         keyPressed(12_000);
         write(0x11); // Cursor on
     }
-
 
     @Override
     public String getCharset() {
@@ -38,10 +37,11 @@ public class MenuMinitelWithEcho extends MenuApple1 {
     }
 
     @Override
-    public void displayMenu() {
+    public void displayMenu() throws Exception {
         write(0x1b, 0x3a, 0x6a, 0x43); // scroll off
         write(readBinaryFile("minitel/menu-retrocampus-alt.vdt"));
         write(0x1b, 0x3a, 0x69, 0x43); // scroll on
+        flush(); resetInput();
     }
 
     @Override
