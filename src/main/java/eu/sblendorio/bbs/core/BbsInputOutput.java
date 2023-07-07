@@ -89,12 +89,14 @@ public abstract class BbsInputOutput extends Reader {
     private int prevCharacter = 0;
     private long prevMilliseconds = System.currentTimeMillis();
     public int readKey() throws IOException {
+        long DELTA = 800;
+
         int result = in.read();
         long deltaMilliseconds = System.currentTimeMillis() - prevMilliseconds;
         prevMilliseconds = System.currentTimeMillis();
 
         // System.out.println("result="+result+", prevCharacter="+prevCharacter+", deltaMilliseconds="+deltaMilliseconds);
-        if (deltaMilliseconds < 800 && prevCharacter == 19) { // Key substitution for Minitel keyboard
+        if (deltaMilliseconds < DELTA && prevCharacter == 19) { // Key substitution for Minitel keyboard
                  if (result == 65) result = 10; // NEWLINE
             else if (result == 71) result = 8;  // BACKSPACE
             else result = 0;
@@ -108,8 +110,18 @@ public abstract class BbsInputOutput extends Reader {
             // INVIO = 65
             //System.out.println("Double key for Minitel " + result);
         }
+        // for Minitel with PSTN
+        if (deltaMilliseconds < DELTA && prevCharacter == 27) {
+            if (result == 58) {
+                in.read();
+                in.read();
+            }
+            result = 0;
+        }
+
         if (result == -1) throw new BbsIOException("BbsIOException::readKey()");
         prevCharacter = result;
+
         return result;
     }
 
