@@ -229,7 +229,7 @@ public class MenuApple1 extends AsciiThread {
         }
     }
 
-    public void displayMenu() {
+    public void displayMenu() throws Exception{
         String sp = (getScreenColumns() > 40) ? "                    " : "";
         banner();
         println("International News---"+ sp +"  Game Room");

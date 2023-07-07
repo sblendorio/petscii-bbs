@@ -32,7 +32,7 @@ public class MenuPrestelWithEcho extends MenuApple1 {
         // write(0x14); // Cursor off
         cls();
         write(readBinaryFile("prestel/intro-retrocampus.cept3"));
-        flush();
+        flush(); resetInput();
         keyPressed(12_000);
         // write(0x11); // Cursor on
     }
@@ -55,7 +55,7 @@ public class MenuPrestelWithEcho extends MenuApple1 {
     }
 
     @Override
-    public void displayMenu() {
+    public void displayMenu() throws Exception {
         cls();
         write(readBinaryFile("prestel/menu-retrocampus-alt.cept3"));
         //write(readBinaryFile("prestel/menu-retrocampus.cept3"));
@@ -82,6 +82,7 @@ public class MenuPrestelWithEcho extends MenuApple1 {
             println("M - Alessandro Albano"+ sp +"        . - Logout");
             println();
         */
+        flush(); resetInput();
     }
 
     @Override
