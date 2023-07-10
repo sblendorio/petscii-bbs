@@ -102,7 +102,7 @@ public class BbcAscii extends RssAscii {
     );
 
     public Map<String, Integer> logoHeightsNews = ImmutableMap.of(
-        "minitel", 2,
+        "minitel", 3,
         "prestel", 3,
         "ascii", 2,
         "ansi", 4,
@@ -119,26 +119,26 @@ public class BbcAscii extends RssAscii {
 
     public Map<String, Map<String, byte[]>> logos = ImmutableMap.of(
         "minitel", ImmutableMap.<String, byte[]> builder()
-            .put("201", bytes("BBC - Top Stories", line))
-            .put("202", bytes("BBC - World", line))
-            .put("203", bytes("BBC - United Kingdom", line))
-            .put("204", bytes("BBC - Business", line))
-            .put("205", bytes("BBC - Politics", line))
-            .put("206", bytes("BBC - Health", line))
-            .put("207", bytes("BBC - Education", line))
-            .put("208", bytes("BBC - Science", line))
-            .put("209", bytes("BBC - Technology", line))
-            .put("210", bytes("BBC - Entertainment", line))
-            .put("211", bytes("BBC - Africa", line))
-            .put("212", bytes("BBC - Asia", line))
-            .put("213", bytes("BBC - Europe", line))
-            .put("214", bytes("BBC - Middle East", line))
-            .put("215", bytes("BBC - US & Canada", line))
-            .put("216", bytes("BBC - Latin America", line))
-            .put("217", bytes("BBC - England", line))
-            .put("218", bytes("BBC - Northern Ireland", line))
-            .put("219", bytes("BBC - Scotland", line))
-            .put("220", bytes("BBC - Wales", line))
+            .put("201", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Top Stories",13,10,10))
+            .put("202", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"World", line))
+            .put("203", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"United Kingdom", line))
+            .put("204", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Business", line))
+            .put("205", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Politics", line))
+            .put("206", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Health", line))
+            .put("207", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Education", line))
+            .put("208", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Science", line))
+            .put("209", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Technology", line))
+            .put("210", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Entertainment", line))
+            .put("211", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Africa", line))
+            .put("212", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Asia", line))
+            .put("213", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Europe", line))
+            .put("214", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Middle East", line))
+            .put("215", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"US & Canada", line))
+            .put("216", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Latin America", line))
+            .put("217", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"England", line))
+            .put("218", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Northern Ireland", line))
+            .put("219", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Scotland", line))
+            .put("220", bytes(readBinaryFile("minitel/bbc_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Wales", line))
             .build(),
         "prestel", ImmutableMap.<String, byte[]> builder()
             .put("201", bytes(readBinaryFile("prestel/bbc_logo.cept3"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Top Stories",13,10,10))

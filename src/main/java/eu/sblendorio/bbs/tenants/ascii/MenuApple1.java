@@ -144,20 +144,20 @@ public class MenuApple1 extends AsciiThread {
                         rssPropertyTimeoutDefault(),
                         getCharset(),
                         "prestel".equals(getCharset()) ? bytes(readBinaryFile("prestel/cnn_home.cept3"),13,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,17) :
-                        "XXXminitel".equals(getCharset()) ? readBinaryFile("minitel/cnn_home.vdt") : null,
+                        "minitel".equals(getCharset()) ? bytes(0x1b, 0x3a, 0x6a, 0x43, 0x1e, readBinaryFile("minitel/cnn_home.vdt"), 17) : null,
 
                         "prestel".equals(getCharset()) ? bytes(11, 11, 13, 10, 32, 32, 32, 32, 32, 32, 13, 10, 11) :
-                        "XXXminitel".equals(getCharset()) ? bytes(31, 64+23, 64+1, 32, 32, 32, 32, 32, 32, 31, 64+23, 64+1) : null
+                        "minitel".equals(getCharset()) ? bytes(31, 64+15, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+15, 64+2 ,0x1b, 0x54, 0x1b, 0x47) : null
                 );
                 else if ("2".equals(choice)) subThread = new BbcAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getCharset(),
                         "prestel".equals(getCharset()) ? bytes(readBinaryFile("prestel/bbc_home.cept3"),13,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,17) :
-                        "XXXminitel".equals(getCharset()) ? readBinaryFile("minitel/bbc_home.vdt") : null,
+                        "minitel".equals(getCharset()) ? bytes(0x1b, 0x3a, 0x6a, 0x43, 0x1e, readBinaryFile("minitel/bbc_home.vdt"), 17) : null,
 
                         "prestel".equals(getCharset()) ? bytes(11, 11, 13, 10, 32, 32, 32, 32, 32, 32, 13, 10, 11) :
-                        "XXXminitel".equals(getCharset()) ? bytes(31, 64+23, 64+1, 32, 32, 32, 32, 32, 32, 31, 64+23, 64+1) : null
+                        "minitel".equals(getCharset()) ? bytes(31, 64+22, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+22, 64+2 ,0x1b, 0x54, 0x1b, 0x47) : null
                 );
                 else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii();
                 else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii();
@@ -168,11 +168,11 @@ public class MenuApple1 extends AsciiThread {
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getCharset(),
-                            "prestel".equals(getCharset()) ? readBinaryFile("prestel/menu-televideo.cept3") :
-                            "minitel".equals(getCharset()) ? readBinaryFile("minitel/menu-televideo.vdt") : null,
+                        "prestel".equals(getCharset()) ? readBinaryFile("prestel/menu-televideo.cept3") :
+                        "minitel".equals(getCharset()) ? readBinaryFile("minitel/menu-televideo.vdt") : null,
 
-                            "prestel".equals(getCharset()) ? bytes(11, 11, 13, 10, 32, 32, 32, 32, 32, 32, 13, 10, 11) :
-                            "minitel".equals(getCharset()) ? bytes(31, 64+23, 64+1, 32, 32, 32, 32, 32, 32, 31, 64+23, 64+1) : null
+                        "prestel".equals(getCharset()) ? bytes(11, 11, 13, 10, 32, 32, 32, 32, 32, 32, 13, 10, 11) :
+                        "minitel".equals(getCharset()) ? bytes(31, 64+23, 64+1, 32, 32, 32, 32, 32, 32, 31, 64+23, 64+1) : null
                 );
                 else if ("g".equals(choice)) subThread = new LercioAscii();
                 else if ("h".equals(choice)) subThread = new DisinformaticoAscii();

@@ -290,7 +290,9 @@ public abstract class RssAscii extends AsciiThread {
     }
 
     private void drawLogo() {
-        write(getLogo());
+        if (rawMenuScreen == null) {
+            write(getLogo());
+        }
     }
 
 }

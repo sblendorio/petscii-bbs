@@ -97,7 +97,7 @@ public class TelevideoRaiAscii extends RssAscii {
     );
 
     public Map<String, Integer> logoHeightsNews = ImmutableMap.of(
-        "minitel", 2,
+        "minitel", 3,
         "prestel", 3,
         "ascii", 2,
         "ansi", 4,
@@ -114,22 +114,22 @@ public class TelevideoRaiAscii extends RssAscii {
 
     public Map<String, Map<String, byte[]>> logos = ImmutableMap.of(
         "minitel", ImmutableMap.<String, byte[]> builder()
-            .put("101", bytes("Ultim'ora", line))
-            .put("102", bytes("24 ore", line))
-            .put("110", bytes("Primo piano", line))
-            .put("120", bytes("Politica", line))
-            .put("130", bytes("Economia", line))
-            .put("140", bytes("Dall'Italia", line))
-            .put("150", bytes("Dal mondo", line))
-            .put("160", bytes("Culture", line))
-            .put("170", bytes("Cittadini", line))
-            .put("180", bytes("Speciale", line))
-            .put("190", bytes("Atlante Crisi", line))
-            .put("229", bytes("Brevi calcio", line))
-            .put("230", bytes("Squadre", line))
-            .put("260", bytes("Altri sport", line))
-            .put("299", bytes("Brevissime", line))
-            .put("810", bytes("Motori", line))
+            .put("101", bytes(0x1b, 0x3a, 0x6a, 0x43, readBinaryFile("minitel/televideo/ultimora.vdt"),30,10,10,10, 0x1b, 0x3a, 0x69, 0x43))
+            .put("102", bytes(0x1b, 0x3a, 0x6a, 0x43, readBinaryFile("minitel/televideo/24h.vdt"),30,10,10,10, 0x1b, 0x3a, 0x69, 0x43))
+            .put("110", bytes(0x1b, 0x3a, 0x6a, 0x43, readBinaryFile("minitel/televideo/primo_piano.vdt"),30,10,10,10, 0x1b, 0x3a, 0x69, 0x43))
+            .put("120", bytes(0x1b, 0x3a, 0x6a, 0x43, readBinaryFile("minitel/televideo/politica.vdt"),30,10,10,10, 0x1b, 0x3a, 0x69, 0x43))
+            .put("130", bytes(0x1b, 0x3a, 0x6a, 0x43, readBinaryFile("minitel/televideo/economia.vdt"),30,10,10,10, 0x1b, 0x3a, 0x69, 0x43))
+            .put("140", bytes(0x1b, 0x3a, 0x6a, 0x43, readBinaryFile("minitel/televideo/dall_italia.vdt"),30,10,10,10, 0x1b, 0x3a, 0x69, 0x43))
+            .put("150", bytes(0x1b, 0x3a, 0x6a, 0x43, readBinaryFile("minitel/televideo/dal_mondo.vdt"),30,10,10,10, 0x1b, 0x3a, 0x69, 0x43))
+            .put("160", bytes(0x1b, 0x3a, 0x6a, 0x43, readBinaryFile("minitel/televideo/culture.vdt"),30,10,10,10, 0x1b, 0x3a, 0x69, 0x43))
+            .put("170", bytes(0x1b, 0x3a, 0x6a, 0x43, readBinaryFile("minitel/televideo/cittadini.vdt"),30,10,10,10, 0x1b, 0x3a, 0x69, 0x43))
+            .put("180", bytes(0x1b, 0x3a, 0x6a, 0x43, readBinaryFile("minitel/televideo/speciale.vdt"),30,10,10,10, 0x1b, 0x3a, 0x69, 0x43))
+            .put("190", bytes(0x1b, 0x3a, 0x6a, 0x43, readBinaryFile("minitel/televideo/atlante_crisi.vdt"),30,10,10,10, 0x1b, 0x3a, 0x69, 0x43))
+            .put("229", bytes(0x1b, 0x3a, 0x6a, 0x43, readBinaryFile("minitel/televideo/calcio_brevi.vdt"),30,10,10,10, 0x1b, 0x3a, 0x69, 0x43))
+            .put("230", bytes(0x1b, 0x3a, 0x6a, 0x43, readBinaryFile("minitel/televideo/calcio_squadre.vdt"),30,10,10,10, 0x1b, 0x3a, 0x69, 0x43))
+            .put("260", bytes(0x1b, 0x3a, 0x6a, 0x43, readBinaryFile("minitel/televideo/altri_sport.vdt"),30,10,10,10, 0x1b, 0x3a, 0x69, 0x43))
+            .put("299", bytes(0x1b, 0x3a, 0x6a, 0x43, readBinaryFile("minitel/televideo/brevissime.vdt"),30,10,10,10, 0x1b, 0x3a, 0x69, 0x43))
+            .put("810", bytes(0x1b, 0x3a, 0x6a, 0x43, readBinaryFile("minitel/televideo/motori.vdt"),30,10,10,10, 0x1b, 0x3a, 0x69, 0x43))
             .build(),
         "prestel", ImmutableMap.<String, byte[]> builder()
             .put("101", bytes(readBinaryFile("prestel/televideo/ultimora.cept3"),30,10,10,10))
