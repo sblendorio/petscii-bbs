@@ -35,6 +35,7 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections4.CollectionUtils.size;
 import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
 public class ChatGptPetscii extends PetsciiThread {
@@ -46,9 +47,11 @@ public class ChatGptPetscii extends PetsciiThread {
 
     private static final String WAIT_MESSAGE = "Please wait...";
     private static final String EXIT_ADVICE = "Type \".\" to EXIT";
-    protected static final String CUSTOM_KEY = "PATREON_USER";
+    protected static final String PATREON_USER = "PATREON_USER";
+    protected static final String PATREON_LEVEL = "PATREON_LEVEL";
     private static final long TIMEOUT = 300_000;
     private String user = null;
+    private String patreonLevel = null;
 
     private static Random random;
 
@@ -88,6 +91,8 @@ public class ChatGptPetscii extends PetsciiThread {
         if (!keepGoing)
             return;
 
+        String model = toInt(patreonLevel) > 0 ? "gpt-4" : "gpt-3.5-turbo";
+
         registerFirstAccess(user);
         changeClientName(user+"/"+UUID.randomUUID());
 
@@ -96,6 +101,11 @@ public class ChatGptPetscii extends PetsciiThread {
         println();
         List<ChatMessage> conversation = new LinkedList<>();
         String input;
+        if (toInt(patreonLevel) > 0) {
+            write(GREY3);
+            String s = "Model: " + model;
+            println(repeat(' ',Math.abs(37-s.length())) + s);
+        }
         boolean exitAdvice = false;
         do {
             flush(); resetInput();
@@ -120,7 +130,7 @@ public class ChatGptPetscii extends PetsciiThread {
                     input.replaceAll("\n", "\\\\n"));
 
             ChatCompletionRequest request = builder()
-                    .model("gpt-3.5-turbo")
+                    .model(model)
                     .messages(conversation)
                     .build();
 
@@ -263,20 +273,26 @@ public class ChatGptPetscii extends PetsciiThread {
     }
 
     private boolean authenticate() throws IOException {
-        if (readTxt(getProperty("PATREON_WHITELIST_IP_FILE", getProperty("user.home") + File.separator + "patreon_whitelist_ip.txt"))
+        final String DEFAULT = "0";
+        String hostRow;
+        if (isNotBlank(hostRow = readTxt(getProperty("PATREON_WHITELIST_IP_FILE", getProperty("user.home") + File.separator + "patreon_whitelist_ip.txt"))
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
                 .filter(row -> !row.startsWith(";"))
-                .anyMatch(row -> row.equalsIgnoreCase(ipAddress.getHostAddress()))) {
+                .filter(row -> row.replaceAll(",.*$", "").equalsIgnoreCase(ipAddress.getHostAddress()))
+                .findFirst().orElse(""))
+        ) {
             if (ipAddress.getHostAddress() != null) {
                 user = ipAddress.getHostAddress();
+                patreonLevel = !hostRow.contains(",") ? DEFAULT : hostRow.replaceAll("^.*,", "");
                 return true;
             }
         }
 
         try {
-            user = (String) getRoot().getCustomObject(CUSTOM_KEY);
+            user = (String) getRoot().getCustomObject(PATREON_USER);
+            patreonLevel = (String) getRoot().getCustomObject(PATREON_LEVEL);
         } catch (NullPointerException | ClassCastException e) {
             log("User not logged " + e.getClass().getName() + " " + e.getMessage());
         }
@@ -313,17 +329,18 @@ public class ChatGptPetscii extends PetsciiThread {
         if (isBlank(userEmail) || ".".equals(trimToEmpty(userEmail)))
             return false;
 
-        String email = readTxt(getProperty("PATREON_EMAILS", getProperty("user.home") + File.separator + "patreon_emails.txt"))
+        String emailRow = readTxt(getProperty("PATREON_EMAILS", getProperty("user.home") + File.separator + "patreon_emails.txt"))
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
                 .filter(row -> !row.startsWith(";"))
                 .filter(row -> row.replace("_", "-").replace("*", "@").replace("!", "@")
+                        .replaceAll(",.*$", "")
                         .equalsIgnoreCase(userEmail.replace("_", "-").replace("*", "@").replace("!", "@")))
                 .findAny()
                 .orElse("");
 
-        if (isBlank(email)) {
+        if (isBlank(emailRow)) {
             println();
             write(PetsciiColors.RED);
             print("         "); write(REVON); println("                       ");
@@ -334,6 +351,8 @@ public class ChatGptPetscii extends PetsciiThread {
             readKey();
             return false;
         }
+
+        String email = emailRow.replaceAll(",.*$", "");
 
         String secretCode = generateSecretCode(CODE_LENGTH);
         println();
@@ -389,8 +408,10 @@ public class ChatGptPetscii extends PetsciiThread {
             return false;
         }
 
-        getRoot().setCustomObject(CUSTOM_KEY, email);
         user = email;
+        patreonLevel = !emailRow.contains(",") ? DEFAULT : emailRow.replaceAll("^.*,", "");
+        getRoot().setCustomObject(PATREON_USER, user);
+        getRoot().setCustomObject(PATREON_LEVEL, patreonLevel);
         return true;
     }
 

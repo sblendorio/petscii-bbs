@@ -33,6 +33,7 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections4.CollectionUtils.size;
 import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
 public class ChatGptAscii extends AsciiThread {
@@ -41,10 +42,12 @@ public class ChatGptAscii extends AsciiThread {
     private static Logger logger = LogManager.getLogger(ChatGptAscii.class);
     private static int CODE_LENGTH = 6;
 
-    protected static final String CUSTOM_KEY = "PATREON_USER";
+    protected static final String PATREON_USER = "PATREON_USER";
+    protected static final String PATREON_LEVEL = "PATREON_LEVEL";
     private static final String WAIT_MESSAGE = "...";
     private static final long TIMEOUT = 300_000;
     private String user = null;
+    private String patreonLevel = null;
 
     private static Random random;
 
@@ -87,9 +90,12 @@ public class ChatGptAscii extends AsciiThread {
         registerFirstAccess(user);
         changeClientName(user+"/"+UUID.randomUUID());
 
+        String model = toInt(patreonLevel) > 0 ? "gpt-4" : "gpt-3.5-turbo";
+
         cls();
         println("Chat GPT - Classic Client");
         println("-------------------------");
+        if (toInt(patreonLevel) > 0) println("Model: " + model);
         println();
         println(EXIT_ADVICE);
         println();
@@ -116,7 +122,7 @@ public class ChatGptAscii extends AsciiThread {
                     input.replaceAll("\n", "\\\\n"));
 
             ChatCompletionRequest request = builder()
-                    .model("gpt-3.5-turbo")
+                    .model(model)
                     .messages(conversation)
                     .build();
 
@@ -246,20 +252,26 @@ public class ChatGptAscii extends AsciiThread {
     }
 
     private boolean authenticate() throws IOException {
-        if (readTxt(getProperty("PATREON_WHITELIST_IP_FILE", getProperty("user.home") + File.separator + "patreon_whitelist_ip.txt"))
+        final String DEFAULT = "0";
+        String hostRow;
+        if (isNotBlank(hostRow = readTxt(getProperty("PATREON_WHITELIST_IP_FILE", getProperty("user.home") + File.separator + "patreon_whitelist_ip.txt"))
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
                 .filter(row -> !row.startsWith(";"))
-                .anyMatch(row -> row.equalsIgnoreCase(ipAddress.getHostAddress()))) {
+                .filter(row -> row.replaceAll(",.*$", "").equalsIgnoreCase(ipAddress.getHostAddress()))
+                .findFirst().orElse(""))
+        ) {
             if (ipAddress.getHostAddress() != null) {
                 user = ipAddress.getHostAddress();
+                patreonLevel = !hostRow.contains(",") ? DEFAULT : hostRow.replaceAll("^.*,", "");
                 return true;
             }
         }
 
         try {
-            user = (String) getRoot().getCustomObject(CUSTOM_KEY);
+            user = (String) getRoot().getCustomObject(PATREON_USER);
+            patreonLevel = (String) getRoot().getCustomObject(PATREON_LEVEL);
         } catch (NullPointerException | ClassCastException e) {
             log("User not logged " + e.getClass().getName() + " " + e.getMessage());
         }
@@ -290,17 +302,18 @@ public class ChatGptAscii extends AsciiThread {
         if (isBlank(userEmail))
             return false;
 
-        String email = readTxt(getProperty("PATREON_EMAILS", getProperty("user.home") + File.separator + "patreon_emails.txt"))
+        String emailRow = readTxt(getProperty("PATREON_EMAILS", getProperty("user.home") + File.separator + "patreon_emails.txt"))
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
                 .filter(row -> !row.startsWith(";"))
                 .filter(row -> row.replace("_", "-").replace("*", "@").replace("!", "@")
+                        .replaceAll(",.*$", "")
                         .equalsIgnoreCase(userEmail.replace("_", "-").replace("*", "@").replace("!", "@")))
                 .findAny()
                 .orElse("");
 
-        if (isBlank(email)) {
+        if (isBlank(emailRow)) {
             println();
             println("Not subscriber's mail");
             println("Press any key to exit");
@@ -308,6 +321,8 @@ public class ChatGptAscii extends AsciiThread {
             readKey();
             return false;
         }
+
+        String email = emailRow.replaceAll(",.*$", "");
 
         waitOn();
         String secretCode = generateSecretCode(CODE_LENGTH);
@@ -347,9 +362,10 @@ public class ChatGptAscii extends AsciiThread {
             return false;
         }
 
-
-        getRoot().setCustomObject(CUSTOM_KEY, email);
         user = email;
+        patreonLevel = !emailRow.contains(",") ? DEFAULT : emailRow.replaceAll("^.*,", "");
+        getRoot().setCustomObject(PATREON_USER, user);
+        getRoot().setCustomObject(PATREON_LEVEL, patreonLevel);
         return true;
     }
 
