@@ -39,7 +39,7 @@ public class MenuMinitelWithEcho extends MenuApple1 {
     @Override
     public void displayMenu() throws Exception {
         write(0x1b, 0x3a, 0x6a, 0x43); // scroll off
-        write(readBinaryFile("minitel/menu-retrocampus-alt.vdt"));
+        write(readBinaryFile("minitel/menu-retrocampus.vdt"));
         write(0x1b, 0x3a, 0x69, 0x43); // scroll on
         flush(); resetInput();
     }

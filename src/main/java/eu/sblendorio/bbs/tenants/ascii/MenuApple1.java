@@ -194,6 +194,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("x".equals(choice)) { showPatrons(); subThread = null; }
                 else if ("y".equals(choice)) { wifiModem(); subThread = null; }
                 else if ("z".equals(choice)) { textDemo(); subThread = null; }
+                else if ("9".equals(choice) && "minitel".equals(getCharset())) { videotelVault(); subThread = null; }
                 else {
                     validKey = false;
                     subThread = null;
@@ -347,6 +348,23 @@ public class MenuApple1 extends AsciiThread {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public void videotelVault() throws Exception {
+        write(0x1b, 0x3a, 0x6a, 0x43); // scroll off
+        List<Path> drawings = Utils.getDirContent("minitel/slideshow");
+        for (Path drawing : drawings.stream().sorted(comparing(p -> p.toString().toLowerCase())).collect(toList())) {
+            String filename = drawing.toString();
+            if (startsWith(filename,"/")) filename = filename.substring(1);
+            byte[] content = readBinaryFile(filename);
+            cls();
+            write(content);
+            flush(); resetInput();
+            int ch = keyPressed(60_000);
+            if (ch == '.') break;
+        }
+        write(0x1b, 0x3a, 0x69, 0x43); // scroll on
+        cls();
     }
 
     public int readSingleKey() throws IOException {
