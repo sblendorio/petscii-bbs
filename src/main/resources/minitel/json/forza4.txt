@@ -1,0 +1,384 @@
+{
+        "thumbnail": "data:image/png;base64,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",
+        "tree": [
+            {
+                "id": "j1_1",
+                "text": "Clear screen",
+                "icon": "./icon/miicons.svg#clear-screen",
+                "li_attr": {
+                    "id": "j1_1"
+                },
+                "a_attr": {
+                    "href": "#",
+                    "id": "j1_1_anchor"
+                },
+                "state": {
+                    "loaded": true,
+                    "opened": false,
+                    "selected": false,
+                    "disabled": false
+                },
+                "data": {},
+                "children": [],
+                "type": "clear-screen"
+            },
+            {
+                "id": "j1_2",
+                "text": "Graphics",
+                "icon": "./icon/miicons.svg#content-graphics",
+                "li_attr": {
+                    "id": "j1_2"
+                },
+                "a_attr": {
+                    "href": "#",
+                    "id": "j1_2_anchor"
+                },
+                "state": {
+                    "loaded": true,
+                    "opened": false,
+                    "selected": true,
+                    "disabled": false
+                },
+                "data": {
+                    "miedit-value": "value=aaaaaaaaaajajajaaaaajajajaaaaajaaaaaaajaaajaaaaaaajaaajajajajaaaaajajajaaajajajajajaaaaajajajajajajaaaaajajajajajaaaaajajaaaaaaajajaaajajajajajajaaaaaaaaaaaaaaaaaaaaaaajaaaaaaaaajaaaaaaajaaajajaaaaajaaajajaaaaajaaajaaaaaaaaajaaaaaaaaaaaaajaaaaaaaaajajaaaaaaaaaaajajaaaaaaajajaaajajaaaaaaajajaaajajaaaaaaajajaaaaaaaaaaaaaaaaaaaaajaaaaaaaaajaaaaaaajaaajaaajaaajaaajaaajaaajaaajajajaaaaajaaaaaaaaaaaaajaaaaaaaaajajaaaaaaaaaaajajaaaaaaajajaaajajaaaaaaajajaaajajaaaaaaajajaaaaaaaaaaaaaaaaaaaaaebaaaaaaaaebaaaaaaebaaebaaaaebebaaebaaaaebebaaebaaaaaaaaebaaaaaaaaaaaaebaaaaaaaaebebebebaaaaaaebebaaaaaaebebaaebebaaaaaaebebaaebebaaaaaaebebaaaaaaaaaaaaaaaaaaaaaaebebebaaaaebebebaaaaebaaaaaaebaaebaaaaaaebaaebebebebaaaaebebebaaaaaaebaaaaaaaaebebaaaaaaaaaaebebaaaaaaebebaaebebaaaaaaebebaaebebebebebebaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaebebaaaaaaaaaaebebaaaaaaebebaaebebaaaaaaebebaaebebaaaaaaebebaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaajajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaebebaaaaaaaaaaebebaaaaaaebebaaebebaaaaaaebebaaebebaaaaaaebebaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaajajajajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaebebaaaaaaaaaaaaebebebebebaaaaaaebebebebebaaaaebebaaaaaaebebaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaajajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&background=&x=0&y=1"
+                },
+                "children": [],
+                "type": "content-graphics"
+            },
+            {
+                "id": "j1_6",
+                "text": "Move cursor to an absolute position",
+                "icon": "./icon/miicons.svg#move-locate",
+                "li_attr": {
+                    "id": "j1_6"
+                },
+                "a_attr": {
+                    "href": "#",
+                    "id": "j1_6_anchor"
+                },
+                "state": {
+                    "loaded": true,
+                    "opened": false,
+                    "selected": false,
+                    "disabled": false
+                },
+                "data": {
+                    "miedit-value": "x=2&y=3"
+                },
+                "children": [],
+                "type": "move-locate"
+            },
+            {
+                "id": "j1_7",
+                "text": "Set foreground color to white",
+                "icon": "./icon/miicons.svg#color-fg-7",
+                "li_attr": {
+                    "id": "j1_7"
+                },
+                "a_attr": {
+                    "href": "#",
+                    "id": "j1_7_anchor"
+                },
+                "state": {
+                    "loaded": true,
+                    "opened": false,
+                    "selected": false,
+                    "disabled": false
+                },
+                "data": {},
+                "children": [],
+                "type": "color-fg-7"
+            },
+            {
+                "id": "j1_8",
+                "text": "String",
+                "icon": "./icon/miicons.svg#content-string",
+                "li_attr": {
+                    "id": "j1_8"
+                },
+                "a_attr": {
+                    "href": "#",
+                    "id": "j1_8_anchor"
+                },
+                "state": {
+                    "loaded": true,
+                    "opened": false,
+                    "selected": false,
+                    "disabled": false
+                },
+                "data": {
+                    "miedit-value": "value=WINNER"
+                },
+                "children": [],
+                "type": "content-string"
+            },
+            {
+                "id": "j1_9",
+                "text": "Move cursor to an absolute position",
+                "icon": "./icon/miicons.svg#move-locate",
+                "li_attr": {
+                    "id": "j1_9"
+                },
+                "a_attr": {
+                    "href": "#",
+                    "id": "j1_9_anchor"
+                },
+                "state": {
+                    "loaded": true,
+                    "opened": false,
+                    "selected": false,
+                    "disabled": false
+                },
+                "data": {
+                    "miedit-value": "x=12&y=3"
+                },
+                "children": [],
+                "type": "move-locate"
+            },
+            {
+                "id": "j1_10",
+                "text": "Set foreground color to white",
+                "icon": "./icon/miicons.svg#color-fg-7",
+                "li_attr": {
+                    "id": "j1_10"
+                },
+                "a_attr": {
+                    "href": "#",
+                    "id": "j1_10_anchor"
+                },
+                "state": {
+                    "loaded": true,
+                    "opened": false,
+                    "selected": false,
+                    "disabled": false
+                },
+                "data": {},
+                "children": [],
+                "type": "color-fg-7"
+            },
+            {
+                "id": "j1_11",
+                "text": "String",
+                "icon": "./icon/miicons.svg#content-string",
+                "li_attr": {
+                    "id": "j1_11"
+                },
+                "a_attr": {
+                    "href": "#",
+                    "id": "j1_11_anchor"
+                },
+                "state": {
+                    "loaded": true,
+                    "opened": false,
+                    "selected": false,
+                    "disabled": false
+                },
+                "data": {
+                    "miedit-value": "value=ROBOT"
+                },
+                "children": [],
+                "type": "content-string"
+            },
+            {
+                "id": "j1_12",
+                "text": "Move cursor to an absolute position",
+                "icon": "./icon/miicons.svg#move-locate",
+                "li_attr": {
+                    "id": "j1_12"
+                },
+                "a_attr": {
+                    "href": "#",
+                    "id": "j1_12_anchor"
+                },
+                "state": {
+                    "loaded": true,
+                    "opened": false,
+                    "selected": false,
+                    "disabled": false
+                },
+                "data": {
+                    "miedit-value": "x=4&y=4"
+                },
+                "children": [],
+                "type": "move-locate"
+            },
+            {
+                "id": "j1_13",
+                "text": "Set foreground color to white",
+                "icon": "./icon/miicons.svg#color-fg-7",
+                "li_attr": {
+                    "id": "j1_13"
+                },
+                "a_attr": {
+                    "href": "#",
+                    "id": "j1_13_anchor"
+                },
+                "state": {
+                    "loaded": true,
+                    "opened": false,
+                    "selected": false,
+                    "disabled": false
+                },
+                "data": {},
+                "children": [],
+                "type": "color-fg-7"
+            },
+            {
+                "id": "j1_14",
+                "text": "String",
+                "icon": "./icon/miicons.svg#content-string",
+                "li_attr": {
+                    "id": "j1_14"
+                },
+                "a_attr": {
+                    "href": "#",
+                    "id": "j1_14_anchor"
+                },
+                "state": {
+                    "loaded": true,
+                    "opened": false,
+                    "selected": false,
+                    "disabled": false
+                },
+                "data": {
+                    "miedit-value": "value=PRESS+ENTER"
+                },
+                "children": [],
+                "type": "content-string"
+            },
+            {
+                "id": "j1_15",
+                "text": "Move cursor to an absolute position",
+                "icon": "./icon/miicons.svg#move-locate",
+                "li_attr": {
+                    "id": "j1_15"
+                },
+                "a_attr": {
+                    "href": "#",
+                    "id": "j1_15_anchor"
+                },
+                "state": {
+                    "loaded": true,
+                    "opened": false,
+                    "selected": false,
+                    "disabled": false
+                },
+                "data": {
+                    "miedit-value": "x=32&y=4"
+                },
+                "children": [],
+                "type": "move-locate"
+            },
+            {
+                "id": "j1_16",
+                "text": "Set foreground color to white",
+                "icon": "./icon/miicons.svg#color-fg-7",
+                "li_attr": {
+                    "id": "j1_16"
+                },
+                "a_attr": {
+                    "href": "#",
+                    "id": "j1_16_anchor"
+                },
+                "state": {
+                    "loaded": true,
+                    "opened": false,
+                    "selected": false,
+                    "disabled": false
+                },
+                "data": {},
+                "children": [],
+                "type": "color-fg-7"
+            },
+            {
+                "id": "j1_17",
+                "text": "String",
+                "icon": "./icon/miicons.svg#content-string",
+                "li_attr": {
+                    "id": "j1_17"
+                },
+                "a_attr": {
+                    "href": "#",
+                    "id": "j1_17_anchor"
+                },
+                "state": {
+                    "loaded": true,
+                    "opened": false,
+                    "selected": false,
+                    "disabled": false
+                },
+                "data": {
+                    "miedit-value": "value=.%3DEXIT"
+                },
+                "children": [],
+                "type": "content-string"
+            },
+            {
+                "id": "j1_3",
+                "text": "Move cursor to an absolute position",
+                "icon": "./icon/miicons.svg#move-locate",
+                "li_attr": {
+                    "id": "j1_3"
+                },
+                "a_attr": {
+                    "href": "#",
+                    "id": "j1_3_anchor"
+                },
+                "state": {
+                    "loaded": true,
+                    "opened": false,
+                    "selected": false,
+                    "disabled": false
+                },
+                "data": {
+                    "miedit-value": "x=4&y=24"
+                },
+                "children": [],
+                "type": "move-locate"
+            },
+            {
+                "id": "j1_4",
+                "text": "Set foreground color to white",
+                "icon": "./icon/miicons.svg#color-fg-7",
+                "li_attr": {
+                    "id": "j1_4"
+                },
+                "a_attr": {
+                    "href": "#",
+                    "id": "j1_4_anchor"
+                },
+                "state": {
+                    "loaded": true,
+                    "opened": false,
+                    "selected": false,
+                    "disabled": false
+                },
+                "data": {},
+                "children": [],
+                "type": "color-fg-7"
+            },
+            {
+                "id": "j1_5",
+                "text": "String",
+                "icon": "./icon/miicons.svg#content-string",
+                "li_attr": {
+                    "id": "j1_5"
+                },
+                "a_attr": {
+                    "href": "#",
+                    "id": "j1_5_anchor"
+                },
+                "state": {
+                    "loaded": true,
+                    "opened": false,
+                    "selected": false,
+                    "disabled": false
+                },
+                "data": {
+                    "miedit-value": "value=1++++2++++3++++4++++5++++6++++7"
+                },
+                "children": [],
+                "type": "content-string"
+            }
+        ]
+}

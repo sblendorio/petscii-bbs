@@ -1,0 +1,24 @@
+DE,
+PS,8000
+PN,8FF00
+SC,0000
+RE,0
+OL,3, G   A     B     C    Tppppppppppppppp  
+OL,4, W73###37#ss3#73###35 T Ql<            
+OL,5, W5"d`& 56  "45"d`& 5 T Qj5S~##        
+OL,6,1W5 8)0 55   55 8)0 5 T #QzuS          
+OL,7, W5&  "$5",,& 5&  "$5       S+,,,,,,,,,|
+OL,8, W73###37#ss3#73###35 V##            S
+OL,9, W5"d`& 56  "45"d`& 5 V U~#}Rx,,     S
+OL,10,2W5 8)0 55   55 8)0 5 V /U,R       S
+OL,11, W5&  "$5",,& 5&  "$5    U /Ropp     Sj
+OL,12, W7#ss3#73###37#ss3#5    U           Sj
+OL,13, W56  "45"d`& 56  "45    UT##       Sj
+OL,14,3W55   55 8)0 55   55    UT Q~#}    Sj
+OL,15, W5",,& 5&  "$5",,& 5    UT Q W##Sj
+OL,16, W##################!    UT Q+,'W# Sj
+OL,17,                         U7T     W/,,Sj
+OL,18,  MOVE OR ".": C2        U5T k        Sj
+OL,19,                         U5T j        Sj
+OL,20,  THE MATCH IS DRAW                     
+OL,21,  PRESS ANY KEY TO GO BACK              
