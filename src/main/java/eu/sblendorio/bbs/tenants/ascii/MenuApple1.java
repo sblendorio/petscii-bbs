@@ -263,7 +263,8 @@ public class MenuApple1 extends AsciiThread {
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
-                .sorted()
+                .filter(str -> !str.startsWith(";"))
+                .sorted(comparing(String::toLowerCase))
                 .collect(toList());
 
         cls();

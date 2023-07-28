@@ -107,7 +107,8 @@ public class MenuPrestelWithEcho extends MenuApple1 {
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
-                .sorted()
+                .filter(str -> !str.startsWith(";"))
+                .sorted(comparing(String::toLowerCase))
                 .collect(toList());
 
         final int PAGESIZE = 11;

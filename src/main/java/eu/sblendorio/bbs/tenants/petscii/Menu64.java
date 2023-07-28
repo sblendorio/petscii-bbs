@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
+import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
@@ -408,7 +409,7 @@ public class Menu64 extends PetsciiThread {
                 .filter(str -> !str.startsWith(";"))
                 .map(x -> x.replaceAll(" - .*$", ""))
                 .map(x -> StringUtils.substring(x, 0, 20))
-                .sorted()
+                .sorted(comparing(String::toLowerCase))
                 .collect(toList());
 
         int count = 0;
