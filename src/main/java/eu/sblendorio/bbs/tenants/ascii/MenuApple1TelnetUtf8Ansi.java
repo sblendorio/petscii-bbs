@@ -16,7 +16,7 @@ public class MenuApple1TelnetUtf8Ansi extends MenuApple1Telnet {
     }
 
     @Override
-    public String getCharset() {
+    public String getTerminalType() {
         return "utf8";
     }
 

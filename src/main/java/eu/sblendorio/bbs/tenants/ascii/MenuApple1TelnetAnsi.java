@@ -15,7 +15,7 @@ public class MenuApple1TelnetAnsi extends MenuApple1Telnet {
     }
 
     @Override
-    public String getCharset() {
+    public String getTerminalType() {
         return "ansi";
     }
 

@@ -24,6 +24,11 @@ public abstract class AsciiThread extends BbsThread {
     }
 
     @Override
+    public String getTerminalType() {
+        return "ascii";
+    }
+
+    @Override
     public BbsInputOutput buildIO(Socket socket) throws IOException {
         return new AsciiInputOutput(socket);
     }

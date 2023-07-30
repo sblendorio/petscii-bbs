@@ -15,6 +15,11 @@ public abstract class PetsciiThread extends BbsThread {
         return new PetsciiInputOutput(socket);
     }
 
+    @Override
+    public String getTerminalType() {
+        return "petscii";
+    }
+
     public void gotoXY(int x, int y) {
         write(HOME);
         for (int i=0; i<y; ++i) write(DOWN);

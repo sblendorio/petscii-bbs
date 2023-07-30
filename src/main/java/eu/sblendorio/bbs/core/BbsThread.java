@@ -79,6 +79,8 @@ public abstract class BbsThread extends Thread {
     public int keepAliveChar = 1;
     protected KeepAliveThread keepAliveThread;
 
+    public abstract String getTerminalType();
+
     public class KeepAliveThread extends Thread {
         private final static long ONE_HOUR = 1000L * 60L * 60L;
         private long startTimestamp = System.currentTimeMillis();

@@ -16,11 +16,16 @@ public abstract class MinitelThread extends BbsThread {
     }
 
     @Override
-    public void cls() {
-        write(12);
+    public String getTerminalType() {
+        return "minitel";
     }
 
     @Override
+    public void cls() {
+        write(12);
+    }
+    @Override
+
     public int getScreenColumns() {
         return 40;
     }

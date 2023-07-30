@@ -28,7 +28,7 @@ public class MenuMinitelWithEcho extends MenuApple1 {
     }
 
     @Override
-    public String getCharset() {
+    public String getTerminalType() {
         return "minitel";
     }
 

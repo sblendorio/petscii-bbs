@@ -16,6 +16,11 @@ public abstract class PrestelThread extends BbsThread {
     }
 
     @Override
+    public String getTerminalType() {
+        return "prestel";
+    }
+
+    @Override
     public void cls() {
         write(12);
     }

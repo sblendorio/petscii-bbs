@@ -39,7 +39,7 @@ public class MenuPrestelWithEcho extends MenuApple1 {
 
 
     @Override
-    public String getCharset() {
+    public String getTerminalType() {
         return "prestel";
     }
 
