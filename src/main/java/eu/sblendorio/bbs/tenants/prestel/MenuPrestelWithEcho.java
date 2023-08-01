@@ -91,6 +91,7 @@ public class MenuPrestelWithEcho extends MenuApple1 {
         for (Path drawing : drawings.stream().sorted(comparing(p -> p.toString().toLowerCase())).collect(toList())) {
             String filename = drawing.toString();
             if (startsWith(filename,"/")) filename = filename.substring(1);
+            log("Viewing Prestel file: " + filename);
             byte[] content = readBinaryFile(filename);
             cls();
             write(content);
