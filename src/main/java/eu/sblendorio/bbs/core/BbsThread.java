@@ -514,7 +514,13 @@ public abstract class BbsThread extends Thread {
         conn.setRequestMethod("GET");
 
         final StringBuilder sb;
-        int responseCode = conn.getResponseCode();
+        int responseCode = -1;
+        try {
+            responseCode = conn.getResponseCode();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
         if (responseCode >= 301 && responseCode <= 399) {
             final String newLocation = conn.getHeaderField("Location");
             return httpGet(newLocation, userAgent);

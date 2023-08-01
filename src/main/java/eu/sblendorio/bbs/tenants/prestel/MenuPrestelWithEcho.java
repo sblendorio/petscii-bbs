@@ -96,7 +96,7 @@ public class MenuPrestelWithEcho extends MenuApple1 {
             write(content);
             flush(); resetInput();
             int ch = keyPressed(60_000);
-            if (ch == '.') break;
+            if (ch == '.' || ch == 27) break;
         }
         cls();
     }
@@ -133,7 +133,7 @@ public class MenuPrestelWithEcho extends MenuApple1 {
             flush();
             resetInput();
             int ch = readKey();
-            if (ch == '.') break;
+            if (ch == '.' || ch == 27) break;
         }
     }
 

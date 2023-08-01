@@ -288,7 +288,7 @@ public class MenuApple1 extends AsciiThread {
                     println(patrons.get(index));
             }
             flush(); resetInput(); int ch = readKey();
-            if (ch == '.') return;
+            if (ch == '.' || ch == 27) return;
             println();
         }
         println();
@@ -311,7 +311,7 @@ public class MenuApple1 extends AsciiThread {
             }
             flush(); resetInput();
             int ch = keyPressed(60_000);
-            if (ch == '.') break;
+            if (ch == '.' || ch == 27) break;
             println();
             println();
         }
@@ -363,7 +363,7 @@ public class MenuApple1 extends AsciiThread {
             write(content);
             flush(); resetInput();
             int ch = keyPressed(60_000);
-            if (ch == '.') break;
+            if (ch == '.' || ch == 27) break;
         }
         write(0x1b, 0x3a, 0x69, 0x43); // scroll on
         cls();
