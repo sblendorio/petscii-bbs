@@ -97,18 +97,20 @@ public abstract class BbsInputOutput extends Reader {
 
         // System.out.println("result="+result+", prevCharacter="+prevCharacter+", deltaMilliseconds="+deltaMilliseconds);
         if (deltaMilliseconds < DELTA && prevCharacter == 19) { // Key substitution for Minitel keyboard
-                 if (result == 65) result = 10; // NEWLINE
-            else if (result == 71) result = 8;  // BACKSPACE
-            else result = 0;
-            // INDICE = 70
-            // ANNULLA = 69
-            // PRECEDENTE = 68
-            // RIPETIZ = 67
-            // GUIDA = 68
-            // CORREZIONE = 71
-            // SEGUENTE = 72
-            // INVIO = 65
-            //System.out.println("Double key for Minitel " + result);
+                  if (result == 65) result = 10;  // INVIO = NEWLINE
+             else if (result == 71) result = 8;   // CORREZIONE = BACKSPACE
+             else if (result == 68) result = '-'; // PRECEDENTE = '-'
+             else if (result == 72) result = ' '; // SEGUENTE = ' ' (space)
+             else result = 0;
+             // INDICE = 70
+             // ANNULLA = 69
+             // PRECEDENTE = 68
+             // RIPETIZ = 67
+             // GUIDA = 68
+             // CORREZIONE = 71
+             // SEGUENTE = 72
+             // INVIO = 65
+             //System.out.println("Double key for Minitel " + result);
         }
         // for Minitel with PSTN
         if (deltaMilliseconds < DELTA && prevCharacter == 27) {
