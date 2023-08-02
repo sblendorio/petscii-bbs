@@ -112,7 +112,6 @@ public class CnnAscii extends RssAscii {
         "utf8",  "\u2500".getBytes(UTF_8)
     );
 
-
     public Map<String, Map<String, byte[]>> logos = ImmutableMap.of(
         "minitel", ImmutableMap.<String, byte[]> builder()
             .put("101", bytes(20, readBinaryFile("minitel/cnn_logo.vdt"), 30, 10,9,9,9,9,9,9,9,9,9,9,9,0x1b,0x47,"Top Stories",13,10,10,17))
