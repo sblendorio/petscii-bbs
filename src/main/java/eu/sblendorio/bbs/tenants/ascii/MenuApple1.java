@@ -297,11 +297,17 @@ public class MenuApple1 extends AsciiThread {
     }
 
     public void textDemo() throws Exception {
-        List<Path> drawings = Utils.getDirContent("apple1/demo30th");
+        List<String> drawings = Utils.getDirContent("apple1/demo30th")
+                .stream()
+                .map(Path::toString)
+                .map(x -> x.startsWith("/") ? x.substring(1) : x)
+                .sorted(comparing(String::toLowerCase))
+                .collect(toList());
         cls();
-        for (Path drawing : drawings.stream().sorted(comparing(p -> p.toString().toLowerCase())).collect(toList())) {
-            String filename = drawing.toString();
-            if (startsWith(filename,"/")) filename = filename.substring(1);
+        int i = 0;
+        while (i < drawings.size()) {
+            String filename = drawings.get(i);
+            log("Viewing text file: " + filename);
             final String content = new String(readBinaryFile(filename), UTF_8);
             boolean firstRow = true;
             for (String row: content.split("\n")) {
@@ -311,9 +317,16 @@ public class MenuApple1 extends AsciiThread {
             }
             flush(); resetInput();
             int ch = keyPressed(60_000);
+            if (ch == '-' && i > 0) {
+                i--;
+                println();
+                println();
+                continue;
+            }
             if (ch == '.' || ch == 27) break;
             println();
             println();
+            i++;
         }
     }
 
@@ -354,16 +367,27 @@ public class MenuApple1 extends AsciiThread {
 
     public void videotelVault() throws Exception {
         write(0x1b, 0x3a, 0x6a, 0x43); // scroll off
-        List<Path> drawings = Utils.getDirContent("minitel/slideshow");
-        for (Path drawing : drawings.stream().sorted(comparing(p -> p.toString().toLowerCase())).collect(toList())) {
-            String filename = drawing.toString();
-            if (startsWith(filename,"/")) filename = filename.substring(1);
+        List<String> drawings = Utils.getDirContent("minitel/slideshow")
+                .stream()
+                .map(Path::toString)
+                .map(x -> x.startsWith("/") ? x.substring(1) : x)
+                .sorted(comparing(String::toLowerCase))
+                .collect(toList());
+        int i = 0;
+        while (i < drawings.size()) {
+            String filename = drawings.get(i);
+            log("Viewing Minitel file: " + filename);
             byte[] content = readBinaryFile(filename);
             cls();
             write(content);
             flush(); resetInput();
             int ch = keyPressed(60_000);
+            if (ch == '-') {
+                i--;
+                continue;
+            }
             if (ch == '.' || ch == 27) break;
+            i++;
         }
         write(0x1b, 0x3a, 0x69, 0x43); // scroll on
         cls();

@@ -87,17 +87,27 @@ public class MenuPrestelWithEcho extends MenuApple1 {
 
     @Override
     public void textDemo() throws Exception {
-        List<Path> drawings = Utils.getDirContent("prestel/slideshow");
-        for (Path drawing : drawings.stream().sorted(comparing(p -> p.toString().toLowerCase())).collect(toList())) {
-            String filename = drawing.toString();
-            if (startsWith(filename,"/")) filename = filename.substring(1);
+        List<String> drawings = Utils.getDirContent("prestel/slideshow")
+                .stream()
+                .map(Path::toString)
+                .map(x -> x.startsWith("/") ? x.substring(1) : x)
+                .sorted(comparing(String::toLowerCase))
+                .collect(toList());
+        int i = 0;
+        while (i < drawings.size()) {
+            String filename = drawings.get(i);
             log("Viewing Prestel file: " + filename);
             byte[] content = readBinaryFile(filename);
             cls();
             write(content);
             flush(); resetInput();
             int ch = keyPressed(60_000);
+            if (ch == '-' && i > 0) {
+                i--;
+                continue;
+            }
             if (ch == '.' || ch == 27) break;
+            i++;
         }
         cls();
     }
