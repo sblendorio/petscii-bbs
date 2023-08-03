@@ -266,7 +266,6 @@ public class MenuPrestelWithEcho extends PrestelThread {
         cls();
     }
 
-
     public String readChoice() throws IOException {
         return readLine(setOfChars(STR_ALPHANUMERIC, "."));
     }
@@ -312,7 +311,6 @@ public class MenuPrestelWithEcho extends PrestelThread {
         write(17); // Cursor on
         return ch;
     }
-
 
     public void wifiModem() throws Exception {
         cls();
