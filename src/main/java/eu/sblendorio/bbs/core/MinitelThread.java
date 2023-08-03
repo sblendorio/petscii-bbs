@@ -10,6 +10,10 @@ public abstract class MinitelThread extends BbsThread {
 
     private byte currentSize = TEXTSIZE_NORMAL;
 
+    public MinitelThread() {
+        setLocalEcho(true);
+    }
+
     @Override
     public BbsInputOutput buildIO(Socket socket) throws IOException {
         return new MinitelInputOutput(socket);
@@ -83,11 +87,4 @@ public abstract class MinitelThread extends BbsThread {
         }
     }
 
-    public void gotoXY(int x, int y) {  // Voir p.95
-        write(bytes(CSI));   // 0x1B 0x5B
-        writeBytesP(y);   // Pr : Voir section Private ci-dessous
-        write(0x3B);
-        writeBytesP(x);   // Pc : Voir section Private ci-dessous
-        write(0x48);
-    }
 }

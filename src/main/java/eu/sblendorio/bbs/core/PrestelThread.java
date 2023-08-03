@@ -12,6 +12,7 @@ public abstract class PrestelThread extends BbsThread {
 
     public PrestelThread() {
         keepAliveChar = 17;
+        setLocalEcho(true);
     }
 
     @Override

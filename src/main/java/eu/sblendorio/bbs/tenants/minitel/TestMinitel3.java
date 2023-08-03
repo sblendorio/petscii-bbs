@@ -8,7 +8,7 @@ public class TestMinitel3 extends MinitelThread {
     public void doLoop() throws Exception {
         cls();
 
-        gotoXY(0,2);
+        // gotoXY(0,2);
         attributes(TEXTSIZE_DOUBLE_ALL);
         print("GotoXY");
     }

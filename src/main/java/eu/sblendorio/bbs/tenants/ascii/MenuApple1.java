@@ -116,13 +116,8 @@ public class MenuApple1 extends AsciiThread {
                 log("Menu. Waiting for key pressed.");
                 resetInput();
                 String choice;
-                if ("minitel".equals(getTerminalType()) || "prestel".equals(getTerminalType())) {
-                    int key = readSingleKey();
-                    choice = String.valueOf((char) key);
-                } else {
-                    print("> ");
-                    choice = readChoice();
-                }
+                print("> ");
+                choice = readChoice();
                 resetInput();
                 choice = StringUtils.lowerCase(choice);
                 log("Menu. Choice = "+ choice);
@@ -138,21 +133,15 @@ public class MenuApple1 extends AsciiThread {
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getTerminalType(),
-                        "prestel".equals(getTerminalType()) ? bytes(readBinaryFile("prestel/cnn_home.cept3"),13,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,17) :
-                        "minitel".equals(getTerminalType()) ? bytes(0x1b, 0x3a, 0x6a, 0x43, 0x1e, readBinaryFile("minitel/cnn_home.vdt"), 17) : null,
-
-                        "prestel".equals(getTerminalType()) ? bytes(11, 11, 13, 10, 32, 32, 32, 32, 32, 32, 13, 10, 11) :
-                        "minitel".equals(getTerminalType()) ? bytes(31, 64+15, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+15, 64+2 ,0x1b, 0x54, 0x1b, 0x47) : null
+                        null,
+                        null
                 );
                 else if ("2".equals(choice)) subThread = new BbcAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getTerminalType(),
-                        "prestel".equals(getTerminalType()) ? bytes(readBinaryFile("prestel/bbc_home.cept3"),13,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,17) :
-                        "minitel".equals(getTerminalType()) ? bytes(0x1b, 0x3a, 0x6a, 0x43, 0x1e, readBinaryFile("minitel/bbc_home.vdt"), 17) : null,
-
-                        "prestel".equals(getTerminalType()) ? bytes(11, 11, 13, 10, 32, 32, 32, 32, 32, 32, 13, 10, 11) :
-                        "minitel".equals(getTerminalType()) ? bytes(31, 64+22, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+22, 64+2 ,0x1b, 0x54, 0x1b, 0x47) : null
+                        null,
+                        null
                 );
                 else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii();
                 else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii();
@@ -163,11 +152,8 @@ public class MenuApple1 extends AsciiThread {
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getTerminalType(),
-                        "prestel".equals(getTerminalType()) ? bytes(20, readBinaryFile("prestel/menu-televideo.cept3")) :
-                        "minitel".equals(getTerminalType()) ? bytes(readBinaryFile("minitel/menu-televideo.vdt")) : null,
-
-                        "prestel".equals(getTerminalType()) ? bytes(11, 11, 13, 10, 32, 32, 32, 32, 32, 32, 13, 10, 11, 17) :
-                        "minitel".equals(getTerminalType()) ? bytes(31, 64+23, 64+1, 32, 32, 32, 32, 32, 32, 31, 64+23, 64+1) : null
+                        null,
+                        null
                 );
                 else if ("g".equals(choice)) subThread = new LercioAscii();
                 else if ("h".equals(choice)) subThread = new DisinformaticoAscii();
@@ -178,18 +164,17 @@ public class MenuApple1 extends AsciiThread {
                 else if ("m".equals(choice)) subThread = new AlessandroAlbanoAscii();
                 else if ("n".equals(choice)) subThread = new TicTacToeAscii();
                 else if ("o".equals(choice)) subThread = new Connect4Ascii();
-                else if ("p".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
-                else if ("q".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
-                else if ("r".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
-                else if ("s".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
-                else if ("t".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new ChatA1(getTerminalType());
-                else if ("u".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new PrivateMessagesAscii();
-                else if ("v".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new ElizaAscii();
-                else if ("w".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new ChatGptAscii();
+                else if ("p".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
+                else if ("q".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
+                else if ("r".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
+                else if ("s".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
+                else if ("t".equals(choice)) subThread = new ChatA1(getTerminalType());
+                else if ("u".equals(choice)) subThread = new PrivateMessagesAscii();
+                else if ("v".equals(choice)) subThread = new ElizaAscii();
+                else if ("w".equals(choice)) subThread = new ChatGptAscii();
                 else if ("x".equals(choice)) { showPatrons(); subThread = null; }
                 else if ("y".equals(choice)) { wifiModem(); subThread = null; }
                 else if ("z".equals(choice)) { textDemo(); subThread = null; }
-                else if ("9".equals(choice) && "minitel".equals(getTerminalType())) { videotelVault(); subThread = null; }
                 else {
                     validKey = false;
                     subThread = null;
@@ -213,12 +198,6 @@ public class MenuApple1 extends AsciiThread {
                     ((GoogleBloggerProxyAscii) subThread).pageSize *= 2;
                 } else if (subThread instanceof OneRssAscii && screenColumns == 80) {
                     ((OneRssAscii) subThread).pageSize *= 2;
-                }
-                if (subThread != null && "prestel".equals(getTerminalType())) {
-                    subThread.keepAliveChar = 17; // 17 = cursor on
-                }
-                if (subThread != null && subThread instanceof DisinformaticoAscii && "prestel".equals(getTerminalType())) {
-                    ((DisinformaticoAscii) subThread).pageSize = 4;
                 }
                 launch(subThread);
             } while (!validKey);
@@ -357,34 +336,6 @@ public class MenuApple1 extends AsciiThread {
             e.printStackTrace();
         }
         return result;
-    }
-
-    public void videotelVault() throws Exception {
-        write(0x1b, 0x3a, 0x6a, 0x43); // scroll off
-        List<String> drawings = Utils.getDirContent("minitel/slideshow")
-                .stream()
-                .map(Path::toString)
-                .map(x -> x.startsWith("/") ? x.substring(1) : x)
-                .sorted(comparing(String::toLowerCase))
-                .collect(toList());
-        int i = 0;
-        while (i < drawings.size()) {
-            String filename = drawings.get(i);
-            log("Viewing Minitel file: " + filename);
-            byte[] content = readBinaryFile(filename);
-            cls();
-            write(content);
-            flush(); resetInput();
-            int ch = keyPressed(60_000);
-            if (ch == '-') {
-                i--;
-                continue;
-            }
-            if (ch == '.' || ch == 27) break;
-            i++;
-        }
-        write(0x1b, 0x3a, 0x69, 0x43); // scroll on
-        cls();
     }
 
     public int readSingleKey() throws IOException {

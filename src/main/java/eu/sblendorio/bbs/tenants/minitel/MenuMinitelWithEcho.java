@@ -1,8 +1,26 @@
 package eu.sblendorio.bbs.tenants.minitel;
 
-import eu.sblendorio.bbs.tenants.ascii.MenuApple1;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.maxmind.db.Reader;
+import eu.sblendorio.bbs.core.AsciiThread;
+import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.Utils;
+import eu.sblendorio.bbs.tenants.ascii.*;
+import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+
+import static eu.sblendorio.bbs.core.Utils.*;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class MenuMinitelWithEcho extends MenuApple1 {
 
@@ -16,6 +34,162 @@ public class MenuMinitelWithEcho extends MenuApple1 {
 
     public byte[] initializingBytes() {
         return new byte[] { 0x1B, 0x3A, 0x69, 0x43, 0x11 };
+    }
+
+
+    public static class GeoData {
+        public final String city;
+        public final String cityGeonameId;
+        public final String country;
+        public final Double latitude;
+        public final Double longitude;
+        public final String timeZone;
+        public GeoData(final String city, final String cityGeonameId, final String country, final Double latitude, final Double longitude, final String timeZone) {
+            this.city = city;
+            this.cityGeonameId = cityGeonameId;
+            this.country = country;
+            this.latitude = latitude;
+            this.longitude = longitude;
+            this.timeZone = timeZone;
+        }
+    }
+
+    private static final String MAXMIND_DB = System.getProperty("user.home") + File.separator + "GeoLite2-City.mmdb";
+    private Reader maxmindReader;
+    private JsonNode maxmindResponse;
+    private MenuApple1.GeoData geoData;
+
+    private static final String IP_FOR_ALTERNATE_LOGO = System.getProperty("alternate.logo.ip", "none");
+    private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.port", "-1"));
+    public boolean alternateLogo() {
+        return IP_FOR_ALTERNATE_LOGO.equals(serverAddress.getHostAddress())
+                || serverPort == PORT_FOR_ALTERNATE_LOGO;
+    }
+
+    public void init() throws IOException {
+        try {
+            File maxmindDb = new File(MAXMIND_DB);
+            maxmindReader = new Reader(maxmindDb);
+            maxmindResponse = maxmindReader.get(socket.getInetAddress());
+            maxmindReader.close();
+
+            geoData = new MenuApple1.GeoData(
+                    maxmindResponse.get("city").get("names").get("en").asText(),
+                    maxmindResponse.get("city").get("geoname_id").asText(),
+                    maxmindResponse.get("country").get("names").get("en").asText(),
+                    maxmindResponse.get("location").get("latitude").asDouble(),
+                    maxmindResponse.get("location").get("longitude").asDouble(),
+                    maxmindResponse.get("location").get("time_zone").asText()
+            );
+            log("Location: " + geoData.city + ", " + geoData.country);
+        } catch (Exception e) {
+            maxmindResponse = null;
+            geoData = null;
+            log("Error retrieving GeoIP data: " + e.getClass().getName());
+        }
+    }
+
+    public String rssPropertyTimeout() { return "rss.a1.timeout"; }
+
+    public String rssPropertyTimeoutDefault() { return "40000"; }
+
+
+    @Override
+    public void doLoop() throws Exception {
+        if (alternateLogo()) { println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); keyPressed(10_000); return; }
+
+        init();
+        logo();
+        while (true) {
+            log("Starting Minitel / main menu");
+            cls();
+            displayMenu();
+
+            flush();
+            boolean validKey;
+            do {
+                validKey = true;
+                log("Menu. Waiting for key pressed.");
+                resetInput();
+                String choice;
+                int key = readSingleKey();
+                choice = String.valueOf((char) key);
+                resetInput();
+                choice = StringUtils.lowerCase(choice);
+                log("Menu. Choice = "+ choice);
+                BbsThread subThread;
+                if (".".equals(choice)) {
+                    cls();
+                    println("Goodbye! Come back soon!");
+                    println();
+                    println("* Disconnected");
+                    return;
+                }
+                else if ("1".equals(choice)) subThread = new CnnAscii(
+                        rssPropertyTimeout(),
+                        rssPropertyTimeoutDefault(),
+                        getTerminalType(),
+                        bytes(0x1b, 0x3a, 0x6a, 0x43, 0x1e, readBinaryFile("minitel/cnn_home.vdt"), 17),
+                        bytes(31, 64+15, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+15, 64+2 ,0x1b, 0x54, 0x1b, 0x47)
+                );
+                else if ("2".equals(choice)) subThread = new BbcAscii(
+                        rssPropertyTimeout(),
+                        rssPropertyTimeoutDefault(),
+                        getTerminalType(),
+                        bytes(0x1b, 0x3a, 0x6a, 0x43, 0x1e, readBinaryFile("minitel/bbc_home.vdt"), 17),
+                        bytes(31, 64+22, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+22, 64+2 ,0x1b, 0x54, 0x1b, 0x47)
+                );
+                else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii();
+                else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii();
+                else if ("5".equals(choice)) subThread = new IndieRetroNewsAscii();
+                else if ("6".equals(choice)) subThread = new VcfedAscii();
+                else if ("7".equals(choice)) subThread = new The8BitGuyAscii();
+                else if ("f".equals(choice)) subThread = new TelevideoRaiAscii(
+                        rssPropertyTimeout(),
+                        rssPropertyTimeoutDefault(),
+                        getTerminalType(),
+                        bytes(readBinaryFile("minitel/menu-televideo.vdt")),
+                        bytes(31, 64+23, 64+1, 32, 32, 32, 32, 32, 32, 31, 64+23, 64+1)
+                );
+                else if ("g".equals(choice)) subThread = new LercioAscii();
+                else if ("h".equals(choice)) subThread = new DisinformaticoAscii();
+                else if ("i".equals(choice)) subThread = new MupinAscii();
+                else if ("j".equals(choice)) subThread = new IlFattoQuotidianoAscii();
+                else if ("k".equals(choice)) subThread = new AmedeoValorosoAscii();
+                else if ("l".equals(choice)) subThread = new ButacAscii();
+                else if ("m".equals(choice)) subThread = new AlessandroAlbanoAscii();
+                else if ("n".equals(choice)) subThread = new TicTacToeAscii();
+                else if ("o".equals(choice)) subThread = new Connect4Ascii();
+                else if ("p".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
+                else if ("q".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
+                else if ("r".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
+                else if ("s".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
+                else if ("t".equals(choice)) subThread = new ChatA1(getTerminalType());
+                else if ("u".equals(choice)) subThread = new PrivateMessagesAscii();
+                else if ("v".equals(choice)) subThread = new ElizaAscii();
+                else if ("w".equals(choice)) subThread = new ChatGptAscii();
+                else if ("x".equals(choice)) { showPatrons(); subThread = null; }
+                else if ("y".equals(choice)) { wifiModem(); subThread = null; }
+                else if ("z".equals(choice)) { textDemo(); subThread = null; }
+                else if ("9".equals(choice)) { videotelVault(); subThread = null; }
+                else {
+                    validKey = false;
+                    subThread = null;
+                }
+                if (subThread == null) continue;
+
+                if (subThread instanceof AsciiThread) {
+                    ((AsciiThread) subThread).clsBytes = this.clsBytes;
+                    ((AsciiThread) subThread).screenColumns = this.screenColumns;
+                    ((AsciiThread) subThread).screenRows = this.screenRows;
+                }
+                launch(subThread);
+            } while (!validKey);
+        }
+    }
+
+    public String readChoice() throws IOException {
+        return readLine(setOfChars(STR_ALPHANUMERIC, "."));
     }
 
     @Override
@@ -57,4 +231,140 @@ public class MenuMinitelWithEcho extends MenuApple1 {
         Thread.sleep(2300);
         resetInput();
     }
+
+
+    public void showPatrons() throws Exception {
+        List<String> patrons = readTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
+                .stream()
+                .filter(StringUtils::isNotBlank)
+                .map(StringUtils::trim)
+                .filter(str -> !str.startsWith(";"))
+                .sorted(comparing(String::toLowerCase))
+                .collect(toList());
+
+        cls();
+        banner();
+        println("You can support the development of this");
+        println("BBS through Patreon starting with 3$ or");
+        println("3.50eur per month:");
+        println();
+        println("https://patreon.com/FrancescoSblendorio");
+        println();
+        println("Patrons of this BBS");
+        println("-------------------");
+
+        final int PAGESIZE = getScreenRows()-2;
+        int pages = patrons.size() / PAGESIZE + (patrons.size() % PAGESIZE == 0 ? 0 : 1);
+        for (int p = 0; p < pages; ++p) {
+            for (int i=0; i<PAGESIZE; ++i) {
+                int index = (p*PAGESIZE + i);
+                if (index < patrons.size())
+                    println(patrons.get(index));
+            }
+            flush(); resetInput(); int ch = readKey();
+            if (ch == '.' || ch == 27) return;
+            println();
+        }
+        println();
+        print("Press any key.");
+        flush(); resetInput(); readKey();
+    }
+
+    public void textDemo() throws Exception {
+        List<String> drawings = Utils.getDirContent("apple1/demo30th")
+                .stream()
+                .map(Path::toString)
+                .map(x -> x.startsWith("/") ? x.substring(1) : x)
+                .sorted(comparing(String::toLowerCase))
+                .collect(toList());
+        cls();
+        int i = 0;
+        while (i < drawings.size()) {
+            String filename = drawings.get(i);
+            log("Viewing text file: " + filename);
+            final String content = new String(readBinaryFile(filename), UTF_8);
+            boolean firstRow = true;
+            for (String row: content.split("\n")) {
+                if (!firstRow) println();
+                firstRow = false;
+                print(row);
+            }
+            flush(); resetInput();
+            int ch = keyPressed(60_000);
+            if (ch == '-' && i > 0) {
+                i--;
+                println();
+                println();
+                continue;
+            }
+            if (ch == '.' || ch == 27) break;
+            println();
+            println();
+            i++;
+        }
+    }
+
+
+    public void wifiModem() throws Exception {
+        cls();
+        banner();
+        println("Once upon a a time, there where dial up");
+        println("BBSes. Nowadays we have Internet but we");
+        println("recreate such an experience.");
+        println();
+        println("www.museo-computer.it/en/wifi-modem/");
+        println();
+        println("Get here your brand new WiFi modem, it");
+        println("uses your Internet connection to allow");
+        println("you to telnet BBSes around the world");
+        println();
+        println("Press a key to go back");
+        println("----------------------");
+        flush(); resetInput(); readKey();
+    }
+
+    public List<String> readTxt(String filename) {
+        List<String> result = new LinkedList<>();
+        try {
+            File myObj = new File(filename);
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                result.add(myReader.nextLine());
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public void videotelVault() throws Exception {
+        write(0x1b, 0x3a, 0x6a, 0x43); // scroll off
+        List<String> drawings = Utils.getDirContent("minitel/slideshow")
+                .stream()
+                .map(Path::toString)
+                .map(x -> x.startsWith("/") ? x.substring(1) : x)
+                .sorted(comparing(String::toLowerCase))
+                .collect(toList());
+        int i = 0;
+        while (i < drawings.size()) {
+            String filename = drawings.get(i);
+            log("Viewing Minitel file: " + filename);
+            byte[] content = readBinaryFile(filename);
+            cls();
+            write(content);
+            flush(); resetInput();
+            int ch = keyPressed(60_000);
+            if (ch == '-') {
+                i--;
+                continue;
+            }
+            if (ch == '.' || ch == 27) break;
+            i++;
+        }
+        write(0x1b, 0x3a, 0x69, 0x43); // scroll on
+        cls();
+    }
+
 }
