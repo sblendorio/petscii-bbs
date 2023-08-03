@@ -179,6 +179,13 @@ public class WordpressProxyAscii extends AsciiThread {
         flush();
     }
 
+    public int getPageSize() {
+        return this.pageSize;
+    }
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
     protected Map<Integer, Post> getPosts(int page, int perPage) throws Exception {
         if (page < 1 || perPage < 1) return null;
         Map<Integer, Post> result = new LinkedHashMap<>();

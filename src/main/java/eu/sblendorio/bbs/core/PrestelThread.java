@@ -10,6 +10,10 @@ public abstract class PrestelThread extends BbsThread {
 
     private byte currentSize = TEXTSIZE_NORMAL;
 
+    public PrestelThread() {
+        keepAliveChar = 17;
+    }
+
     @Override
     public BbsInputOutput buildIO(Socket socket) throws IOException {
         return new PrestelInputOutput(socket);

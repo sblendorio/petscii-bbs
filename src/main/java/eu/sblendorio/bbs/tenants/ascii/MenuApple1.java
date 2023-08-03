@@ -30,12 +30,6 @@ public class MenuApple1 extends AsciiThread {
     public MenuApple1(boolean echo) {
         super();
         setLocalEcho(echo);
-
-    }
-
-    @Override
-    public String getTerminalType() {
-        return "ascii";
     }
 
     public static class GeoData {

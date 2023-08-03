@@ -105,6 +105,13 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
         blogId = blogger.blogs().getByUrl(blogUrl).execute().getId();
     }
 
+    public int getPageSize() {
+        return this.pageSize;
+    }
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
     @Override
     public void doLoop() throws Exception {
         screenLines = getScreenRows() - 4;

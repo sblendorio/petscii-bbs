@@ -77,6 +77,13 @@ public class OneRssAscii extends AsciiThread {
         screenRows = getScreenRows() - 4;
     }
 
+    public int getPageSize() {
+        return this.pageSize;
+    }
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
     protected void readSections() throws Exception {
         final String filename = System.getProperty("MENUMES", "/data/a.txt");
         List<String> secTxt = readTxt(filename);
