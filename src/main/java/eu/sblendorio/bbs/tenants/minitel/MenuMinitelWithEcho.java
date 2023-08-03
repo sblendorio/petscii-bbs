@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.maxmind.db.Reader;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.MinitelThread;
 import eu.sblendorio.bbs.core.Utils;
 import eu.sblendorio.bbs.tenants.ascii.*;
 import org.apache.commons.lang3.StringUtils;
@@ -22,14 +23,13 @@ import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
-public class MenuMinitelWithEcho extends MenuApple1 {
+public class MenuMinitelWithEcho extends MinitelThread {
+
+    private byte[] clsBytes = new byte[] { 12 };
 
     public MenuMinitelWithEcho() {
         super();
         setLocalEcho(true);
-        clsBytes = new byte[] {
-                12
-        };
     }
 
     public byte[] initializingBytes() {
@@ -180,8 +180,8 @@ public class MenuMinitelWithEcho extends MenuApple1 {
 
                 if (subThread instanceof AsciiThread) {
                     ((AsciiThread) subThread).clsBytes = this.clsBytes;
-                    ((AsciiThread) subThread).screenColumns = this.screenColumns;
-                    ((AsciiThread) subThread).screenRows = this.screenRows;
+                    ((AsciiThread) subThread).screenColumns = this.getScreenColumns();
+                    ((AsciiThread) subThread).screenRows = this.getScreenRows();
                 }
                 launch(subThread);
             } while (!validKey);
@@ -192,7 +192,6 @@ public class MenuMinitelWithEcho extends MenuApple1 {
         return readLine(setOfChars(STR_ALPHANUMERIC, "."));
     }
 
-    @Override
     public void logo() throws Exception {
         write(0x14); // Cursor off
         write(readBinaryFile("minitel/intro-retrocampus.vdt"));
@@ -201,7 +200,6 @@ public class MenuMinitelWithEcho extends MenuApple1 {
         write(0x11); // Cursor on
     }
 
-    @Override
     public String getTerminalType() {
         return "minitel";
     }
@@ -210,7 +208,6 @@ public class MenuMinitelWithEcho extends MenuApple1 {
         write(readBinaryFile("minitel/retrocampus-logo.vdt"));
     }
 
-    @Override
     public void displayMenu() throws Exception {
         write(0x1b, 0x3a, 0x6a, 0x43); // scroll off
         write(readBinaryFile("minitel/menu-retrocampus.vdt"));
@@ -218,7 +215,6 @@ public class MenuMinitelWithEcho extends MenuApple1 {
         flush(); resetInput();
     }
 
-    @Override
     public int readSingleKey() throws IOException {
         write(20); // Cursor off
         int ch = readKey();
