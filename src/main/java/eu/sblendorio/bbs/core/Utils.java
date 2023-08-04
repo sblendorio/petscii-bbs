@@ -14,8 +14,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-import static java.util.stream.Collectors.toSet;
-import java.util.stream.Stream;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.lowerCase;
 import static org.apache.commons.lang3.StringUtils.trim;
@@ -113,7 +111,7 @@ public class Utils {
         }
     }
 
-    public static List<String> readTxt(String filename) {
+    public static List<String> readExternalTxt(String filename) {
         List<String> result = new LinkedList<>();
         try {
             File myObj = new File(filename);

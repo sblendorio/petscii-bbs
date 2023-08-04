@@ -263,7 +263,7 @@ public class MenuPrestelWithEcho extends PrestelThread {
     }
 
     public void showPatrons() throws Exception {
-        List<String> patrons = readTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
+        List<String> patrons = readExternalTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)

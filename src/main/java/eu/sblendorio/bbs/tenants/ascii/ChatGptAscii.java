@@ -26,7 +26,7 @@ import java.time.Instant;
 import java.util.*;
 
 import static com.theokanning.openai.completion.chat.ChatCompletionRequest.builder;
-import static eu.sblendorio.bbs.core.Utils.readTxt;
+import static eu.sblendorio.bbs.core.Utils.readExternalTxt;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
 import static java.util.Arrays.asList;
@@ -255,7 +255,7 @@ public class ChatGptAscii extends AsciiThread {
     private boolean authenticate() throws IOException {
         final String DEFAULT = "0";
         String hostRow;
-        if (isNotBlank(hostRow = readTxt(getProperty("PATREON_WHITELIST_IP_FILE", getProperty("user.home") + File.separator + "patreon_whitelist_ip.txt"))
+        if (isNotBlank(hostRow = readExternalTxt(getProperty("PATREON_WHITELIST_IP_FILE", getProperty("user.home") + File.separator + "patreon_whitelist_ip.txt"))
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
@@ -303,7 +303,7 @@ public class ChatGptAscii extends AsciiThread {
         if (isBlank(userEmail))
             return false;
 
-        String emailRow = readTxt(getProperty("PATREON_EMAILS", getProperty("user.home") + File.separator + "patreon_emails.txt"))
+        String emailRow = readExternalTxt(getProperty("PATREON_EMAILS", getProperty("user.home") + File.separator + "patreon_emails.txt"))
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
@@ -372,7 +372,7 @@ public class ChatGptAscii extends AsciiThread {
 
     private void registerFirstAccess(String user) throws IOException {
         final String filename = getProperty("PATREON_EMAILS", getProperty("user.home") + File.separator + "consent_emails.txt");
-        List<String> rows = readTxt(filename);
+        List<String> rows = readExternalTxt(filename);
         boolean yetConnected = rows
                 .stream()
                 .filter(StringUtils::isNotBlank)

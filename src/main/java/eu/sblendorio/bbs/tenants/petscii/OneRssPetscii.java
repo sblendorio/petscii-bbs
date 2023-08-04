@@ -18,7 +18,7 @@ import java.util.*;
 
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
-import static eu.sblendorio.bbs.core.Utils.readTxt;
+import static eu.sblendorio.bbs.core.Utils.readExternalTxt;
 import static java.lang.Math.min;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -78,7 +78,7 @@ public class OneRssPetscii extends PetsciiThread {
 
     protected void readSections() throws Exception {
         final String filename = System.getProperty("MENUMES", "/data/a.txt");
-        List<String> secTxt = readTxt(filename);
+        List<String> secTxt = readExternalTxt(filename);
         sections = new LinkedHashMap<>();
         Map<String, String> config = secTxt.stream()
             .filter(row -> isNotBlank(trim(row)))
@@ -106,7 +106,7 @@ public class OneRssPetscii extends PetsciiThread {
         // sections.put("4", new NewsSection("Tic Tac Toe", new TicTacToe()));
 
         final String filenameConfig = System.getProperty("CONFIGMES", "/data/c.txt");
-        Map<String, String> conf = readTxt(filenameConfig).stream()
+        Map<String, String> conf = readExternalTxt(filenameConfig).stream()
             .filter(row -> isNotBlank(trim(row)))
             .filter(row -> row.contains("="))
             .map(StringUtils::trim)

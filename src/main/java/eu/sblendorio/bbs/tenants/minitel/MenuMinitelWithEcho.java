@@ -10,12 +10,9 @@ import eu.sblendorio.bbs.tenants.ascii.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 
 import static eu.sblendorio.bbs.core.Utils.*;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -226,7 +223,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
 
 
     public void showPatrons() throws Exception {
-        List<String> patrons = readTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
+        List<String> patrons = readExternalTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
@@ -295,7 +292,6 @@ public class MenuMinitelWithEcho extends MinitelThread {
             i++;
         }
     }
-
 
     public void wifiModem() throws Exception {
         cls();

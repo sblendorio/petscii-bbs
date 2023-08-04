@@ -13,7 +13,7 @@ import java.util.Map;
 
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
-import static eu.sblendorio.bbs.core.Utils.readTxt;
+import static eu.sblendorio.bbs.core.Utils.readExternalTxt;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static org.apache.commons.lang3.StringUtils.*;
@@ -36,7 +36,7 @@ public class OneDownload extends PetsciiThread {
 
     private void loadEntries() {
         final String filenameEntries = System.getProperty("DOWNLOADMES", "/data/b.txt");
-        List<String> secTxt = readTxt(filenameEntries);
+        List<String> secTxt = readExternalTxt(filenameEntries);
         entries = secTxt.stream()
             .filter(row -> isNotBlank(trim(row)))
             .filter(row -> row.contains("#"))
@@ -48,7 +48,7 @@ public class OneDownload extends PetsciiThread {
             .collect(toList());
 
         final String filenameConfig = System.getProperty("CONFIGMES", "/data/c.txt");
-        Map<String, String> conf = readTxt(filenameConfig).stream()
+        Map<String, String> conf = readExternalTxt(filenameConfig).stream()
             .filter(row -> isNotBlank(trim(row)))
             .filter(row -> row.contains("="))
             .map(StringUtils::trim)

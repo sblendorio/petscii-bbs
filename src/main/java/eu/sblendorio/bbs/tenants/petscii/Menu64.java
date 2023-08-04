@@ -16,7 +16,7 @@ import java.util.List;
 
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
-import static eu.sblendorio.bbs.core.Utils.readTxt;
+import static eu.sblendorio.bbs.core.Utils.readExternalTxt;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.repeat;
@@ -397,7 +397,7 @@ public class Menu64 extends PetsciiThread {
         write(GREY3, REVOFF);
         gotoXY(20, 12);
         List<String> patrons =
-                readTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
+                readExternalTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)

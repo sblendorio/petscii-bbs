@@ -15,7 +15,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static eu.sblendorio.bbs.core.Utils.readTxt;
+import static eu.sblendorio.bbs.core.Utils.readExternalTxt;
 import static java.lang.Math.min;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.util.Arrays.asList;
@@ -84,7 +84,7 @@ public class OneRssAscii extends AsciiThread {
 
     protected void readSections() throws Exception {
         final String filename = System.getProperty("MENUMES", "/data/a.txt");
-        List<String> secTxt = readTxt(filename);
+        List<String> secTxt = readExternalTxt(filename);
         sections = new LinkedHashMap<>();
         Map<String, String> config = secTxt.stream()
             .filter(row -> isNotBlank(trim(row)))
@@ -103,7 +103,7 @@ public class OneRssAscii extends AsciiThread {
         //sections.put(commands.substring(count, ++count), new NewsSection("Connect 4", new ConnectFour()));
 
         final String filenameConfig = System.getProperty("CONFIGMES", "/data/c.txt");
-        Map<String, String> conf = readTxt(filenameConfig).stream()
+        Map<String, String> conf = readExternalTxt(filenameConfig).stream()
             .filter(row -> isNotBlank(trim(row)))
             .filter(row -> row.contains("="))
             .map(StringUtils::trim)
