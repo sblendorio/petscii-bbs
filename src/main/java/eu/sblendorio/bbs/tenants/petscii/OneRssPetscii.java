@@ -5,54 +5,28 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import eu.sblendorio.bbs.core.BbsThread;
-import eu.sblendorio.bbs.core.HtmlUtils;
-
-import static eu.sblendorio.bbs.core.PetsciiColors.*;
-import static eu.sblendorio.bbs.core.PetsciiKeys.CASE_LOCK;
-import static eu.sblendorio.bbs.core.PetsciiKeys.CLR;
-import static eu.sblendorio.bbs.core.PetsciiKeys.DEL;
-import static eu.sblendorio.bbs.core.PetsciiKeys.DOWN;
-import static eu.sblendorio.bbs.core.PetsciiKeys.HOME;
-import static eu.sblendorio.bbs.core.PetsciiKeys.LEFT;
-import static eu.sblendorio.bbs.core.PetsciiKeys.LOWERCASE;
-import static eu.sblendorio.bbs.core.PetsciiKeys.RETURN;
-import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
-import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
-import static eu.sblendorio.bbs.core.PetsciiKeys.RIGHT;
-import static eu.sblendorio.bbs.core.PetsciiKeys.SPACE_CHAR;
 import eu.sblendorio.bbs.core.PetsciiThread;
-import java.io.File;
-import java.io.FileNotFoundException;
-import static java.lang.Math.min;
+import eu.sblendorio.bbs.core.Utils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.text.WordUtils;
+
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.*;
+
+import static eu.sblendorio.bbs.core.PetsciiColors.*;
+import static eu.sblendorio.bbs.core.PetsciiKeys.*;
+import static eu.sblendorio.bbs.core.Utils.readTxt;
+import static java.lang.Math.min;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Scanner;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-
-import eu.sblendorio.bbs.core.Utils;
-import org.apache.commons.lang3.StringUtils;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.lowerCase;
-import static org.apache.commons.lang3.StringUtils.repeat;
-import static org.apache.commons.lang3.StringUtils.substring;
-import static org.apache.commons.lang3.StringUtils.trim;
-import org.apache.commons.lang3.math.NumberUtils;
+import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
-import org.apache.commons.text.WordUtils;
 
 public class OneRssPetscii extends PetsciiThread {
 
@@ -492,22 +466,6 @@ public class OneRssPetscii extends PetsciiThread {
     protected void waitOff() {
         for (int i=0; i<14; ++i) write(DEL);
         flush();
-    }
-
-    private List<String> readTxt(String filename) {
-        List<String> result = new LinkedList<>();
-        try {
-            File myObj = new File(filename);
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                result.add(myReader.nextLine());
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-        return result;
     }
 
 }

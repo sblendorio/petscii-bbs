@@ -1,38 +1,23 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
-import eu.sblendorio.bbs.core.HtmlUtils;
-import static eu.sblendorio.bbs.core.PetsciiColors.CYAN;
-import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
-import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_GREEN;
-import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
-import static eu.sblendorio.bbs.core.PetsciiKeys.CASE_LOCK;
-import static eu.sblendorio.bbs.core.PetsciiKeys.DEL;
-import static eu.sblendorio.bbs.core.PetsciiKeys.HOME;
-import static eu.sblendorio.bbs.core.PetsciiKeys.LOWERCASE;
-import static eu.sblendorio.bbs.core.PetsciiKeys.REVOFF;
-import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.XModem;
-import java.io.File;
-import java.io.FileNotFoundException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.text.WordUtils;
+
 import java.io.IOException;
-import java.net.SocketException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
+
+import static eu.sblendorio.bbs.core.PetsciiColors.*;
+import static eu.sblendorio.bbs.core.PetsciiKeys.*;
+import static eu.sblendorio.bbs.core.Utils.readTxt;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
-import org.apache.commons.lang3.StringUtils;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.lowerCase;
-import static org.apache.commons.lang3.StringUtils.repeat;
-import static org.apache.commons.lang3.StringUtils.trim;
-import org.apache.commons.lang3.math.NumberUtils;
+import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
-import org.apache.commons.text.WordUtils;
 
 public class OneDownload extends PetsciiThread {
 
@@ -197,22 +182,6 @@ public class OneDownload extends PetsciiThread {
     }
 
     public final static byte[] LOGO_SECTION = readBinaryFile("petscii/baya.seq");
-
-    private List<String> readTxt(String filename) {
-        List<String> result = new LinkedList<>();
-        try {
-            File myObj = new File(filename);
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                result.add(myReader.nextLine());
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-        return result;
-    }
 
     private void waitOn() {
         print("PLEASE WAIT...");

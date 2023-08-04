@@ -6,18 +6,16 @@ import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
-import eu.sblendorio.bbs.core.Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.WordUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static eu.sblendorio.bbs.core.Utils.readTxt;
 import static java.lang.Math.min;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.util.Arrays.asList;
@@ -409,21 +407,5 @@ public class OneRssAscii extends AsciiThread {
     public byte[] LOGO_MENU = "LOGO_MENU".getBytes(ISO_8859_1);
 
     public byte[] LOGO_SECTION = "LOGO_SECTION".getBytes(ISO_8859_1);
-
-    private List<String> readTxt(String filename) {
-        List<String> result = new LinkedList<>();
-        try {
-            File myObj = new File(filename);
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                result.add(myReader.nextLine());
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-        return result;
-    }
 
 }

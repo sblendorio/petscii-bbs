@@ -2,30 +2,25 @@ package eu.sblendorio.bbs.tenants.petscii;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.maxmind.db.Reader;
-import static eu.sblendorio.bbs.core.PetsciiColors.BLUE;
-import static eu.sblendorio.bbs.core.PetsciiColors.CYAN;
-import static eu.sblendorio.bbs.core.PetsciiColors.GREEN;
-import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
-import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_BLUE;
-import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_GREEN;
-import static eu.sblendorio.bbs.core.PetsciiColors.RED;
-import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
-
 import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.Utils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
+import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
+import static eu.sblendorio.bbs.core.Utils.readTxt;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.StringUtils.repeat;
+import static org.apache.commons.lang3.StringUtils.startsWith;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class Menu64 extends PetsciiThread {
@@ -489,22 +484,6 @@ public class Menu64 extends PetsciiThread {
         for (int i=0; i<25; ++i) newline();
         writeRawFile(filename);
         write(PetsciiKeys.CASE_UNLOCK);
-    }
-
-    private List<String> readTxt(String filename) {
-        List<String> result = new LinkedList<>();
-        try {
-            File myObj = new File(filename);
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                result.add(myReader.nextLine());
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-        return result;
     }
 
     private static final byte[] LOGO_BYTES = new byte[] {

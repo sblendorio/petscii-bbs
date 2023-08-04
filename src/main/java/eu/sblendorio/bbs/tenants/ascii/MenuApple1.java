@@ -303,7 +303,6 @@ public class MenuApple1 extends AsciiThread {
         }
     }
 
-
     public void wifiModem() throws Exception {
         cls();
         banner();
@@ -320,22 +319,6 @@ public class MenuApple1 extends AsciiThread {
         println("Press a key to go back");
         println("----------------------");
         flush(); resetInput(); readKey();
-    }
-
-    public List<String> readTxt(String filename) {
-        List<String> result = new LinkedList<>();
-        try {
-            File myObj = new File(filename);
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                result.add(myReader.nextLine());
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-        return result;
     }
 
     public int readSingleKey() throws IOException {

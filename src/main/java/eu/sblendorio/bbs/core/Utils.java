@@ -1,5 +1,7 @@
 package eu.sblendorio.bbs.core;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -10,12 +12,8 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 import static java.util.stream.Collectors.toSet;
 import java.util.stream.Stream;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
@@ -114,6 +112,23 @@ public class Utils {
             return result;
         }
     }
+
+    public static List<String> readTxt(String filename) {
+        List<String> result = new LinkedList<>();
+        try {
+            File myObj = new File(filename);
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                result.add(myReader.nextLine());
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 
     private Utils() {
         throw new IllegalStateException("Utility class");

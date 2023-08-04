@@ -5,15 +5,18 @@ import com.theokanning.openai.completion.chat.ChatCompletionChoice;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.service.OpenAiService;
-import eu.sblendorio.bbs.core.*;
+import eu.sblendorio.bbs.core.HtmlUtils;
+import eu.sblendorio.bbs.core.PetsciiColors;
+import eu.sblendorio.bbs.core.PetsciiThread;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.davidmoten.text.utils.WordWrap;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -22,12 +25,10 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import static com.theokanning.openai.completion.chat.ChatCompletionRequest.builder;
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
+import static eu.sblendorio.bbs.core.Utils.readTxt;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
 import static java.util.Arrays.asList;
@@ -480,23 +481,6 @@ public class ChatGptPetscii extends PetsciiThread {
             .limit(length)
             .mapToObj(String::valueOf)
             .collect(joining());
-    }
-
-    private List<String> readTxt(String filename) {
-        List<String> result = new LinkedList<>();
-        try {
-            File myObj = new File(filename);
-            if (!myObj.exists()) return result;
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                result.add(myReader.nextLine());
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-        return result;
     }
 
 }

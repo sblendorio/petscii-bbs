@@ -10,17 +10,13 @@ import eu.sblendorio.bbs.tenants.ascii.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 
 import static eu.sblendorio.bbs.core.Utils.*;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang3.StringUtils.startsWith;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class MenuPrestelWithEcho extends PrestelThread {
@@ -266,10 +262,6 @@ public class MenuPrestelWithEcho extends PrestelThread {
         cls();
     }
 
-    public String readChoice() throws IOException {
-        return readLine(setOfChars(STR_ALPHANUMERIC, "."));
-    }
-
     public void showPatrons() throws Exception {
         List<String> patrons = readTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
                 .stream()
@@ -330,20 +322,5 @@ public class MenuPrestelWithEcho extends PrestelThread {
         flush(); resetInput(); readKey();
     }
 
-    public List<String> readTxt(String filename) {
-        List<String> result = new LinkedList<>();
-        try {
-            File myObj = new File(filename);
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                result.add(myReader.nextLine());
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-        return result;
-    }
 
 }

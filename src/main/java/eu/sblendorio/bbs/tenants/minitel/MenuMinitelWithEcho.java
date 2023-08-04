@@ -188,10 +188,6 @@ public class MenuMinitelWithEcho extends MinitelThread {
         }
     }
 
-    public String readChoice() throws IOException {
-        return readLine(setOfChars(STR_ALPHANUMERIC, "."));
-    }
-
     public void logo() throws Exception {
         write(0x14); // Cursor off
         write(readBinaryFile("minitel/intro-retrocampus.vdt"));
@@ -317,22 +313,6 @@ public class MenuMinitelWithEcho extends MinitelThread {
         println("Press a key to go back");
         println("----------------------");
         flush(); resetInput(); readKey();
-    }
-
-    public List<String> readTxt(String filename) {
-        List<String> result = new LinkedList<>();
-        try {
-            File myObj = new File(filename);
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                result.add(myReader.nextLine());
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-        return result;
     }
 
     public void videotelVault() throws Exception {
