@@ -106,7 +106,7 @@ public class Utils {
             }
 
             result.sort((o1, o2) -> o1 == null || o2 == null ? 0 :
-                o1.getFileName().toString().compareTo(o2.getFileName().toString()));
+                o1.getFileName().toString().toLowerCase().compareTo(o2.getFileName().toString().toLowerCase()));
             return result;
         }
     }
