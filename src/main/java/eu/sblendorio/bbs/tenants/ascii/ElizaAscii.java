@@ -3,6 +3,7 @@ package eu.sblendorio.bbs.tenants.ascii;
 import eu.sblendorio.bbs.core.AsciiThread;
 import codeanticode.eliza.*;
 import eu.sblendorio.bbs.core.HtmlUtils;
+import eu.sblendorio.bbs.core.PrestelInputOutput;
 import org.davidmoten.text.utils.WordWrap;
 
 import java.util.ArrayList;
@@ -13,10 +14,24 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 
 public class ElizaAscii extends AsciiThread {
+    private String interfaceType = "";
     private static final String EXIT_ADVICE = "Type \".\" to EXIT";
+
+    public ElizaAscii(String interfaceType) {
+        super();
+        this.interfaceType = interfaceType;
+    }
+
+    public ElizaAscii() {
+        this(null);
+    }
 
     @Override
     public void doLoop() throws Exception {
+        if ("prestel".equals(interfaceType)) {
+            this.setBbsInputOutput(new PrestelInputOutput(this.socket));
+        }
+
         Eliza eliza = new Eliza();
         cls();
         println("ELIZA - First chatbot ever (1966)");
@@ -40,6 +55,7 @@ public class ElizaAscii extends AsciiThread {
                 continue;
             }
             println();
+            optionalCls();
             String response = "Eliza> " + eliza.processInput(asciiToUtf8(input));
             final List<String> lines = wordWrap(HtmlUtils.utilHtmlDiacriticsToAscii(response));
             lines.forEach(this::println);

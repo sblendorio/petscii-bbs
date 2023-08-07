@@ -8,6 +8,7 @@ import com.theokanning.openai.service.OpenAiService;
 import eu.sblendorio.bbs.core.AsciiKeys;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.HtmlUtils;
+import eu.sblendorio.bbs.core.PrestelInputOutput;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -38,6 +39,7 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
 public class ChatGptAscii extends AsciiThread {
+    private String interfaceType = "";
     private static final String EXIT_ADVICE = "Type \".\" to EXIT";
 
     private static Logger logger = LogManager.getLogger(ChatGptAscii.class);
@@ -76,6 +78,15 @@ public class ChatGptAscii extends AsciiThread {
         return Duration.ofSeconds(seconds);
     }
 
+    public ChatGptAscii(String interfaceType) {
+        super();
+        this.interfaceType = interfaceType;
+    }
+
+    public ChatGptAscii() {
+        this(null);
+    }
+
     private OpenAiService service() {
         if (openAiService == null)
             openAiService = new OpenAiService(apiKey(), timeout());
@@ -84,6 +95,10 @@ public class ChatGptAscii extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
+        if ("prestel".equals(interfaceType)) {
+            this.setBbsInputOutput(new PrestelInputOutput(this.socket));
+        }
+
         boolean keepGoing = authenticate();
         if (!keepGoing)
             return;
@@ -157,6 +172,7 @@ public class ChatGptAscii extends AsciiThread {
                 }
             }
             waitOff();
+            optionalCls();
             if (size(choices) == 0) continue;
 
             final ChatCompletionChoice completion = choices.get(0);
@@ -192,6 +208,7 @@ public class ChatGptAscii extends AsciiThread {
                 flush(); resetInput();
                 int key = readKey();
                 println();
+                optionalCls();
             }
         }
     }
