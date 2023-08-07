@@ -5,6 +5,8 @@ import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Hidden;
 import static eu.sblendorio.bbs.core.Utils.bytes;
+
+import eu.sblendorio.bbs.core.PrestelInputOutput;
 import eu.sblendorio.bbs.tenants.petscii.Chat64.ChatMessage;
 import eu.sblendorio.bbs.tenants.petscii.Chat64.Row;
 import java.io.IOException;
@@ -43,6 +45,9 @@ public class ChatA1 extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
+        if ("prestel".equals(interfaceType)) {
+            this.setBbsInputOutput(new PrestelInputOutput(this.socket));
+        }
         try {
             canRedraw = false;
             int status;
@@ -172,7 +177,9 @@ public class ChatA1 extends AsciiThread {
     private synchronized void redraw(boolean duringWait) {
         canRedraw = false;
         displayMessages(duringWait);
+        checkBelowLine();
         print(":");
+        afterReadLineChar();
         canRedraw = true;
     }
 

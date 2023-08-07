@@ -17,7 +17,12 @@ public class AsciiInputOutput extends BbsInputOutput {
     }
 
     @Override
-    public int backspace() {
+    public byte[] backspace() {
+        return new byte[] { AsciiKeys.BACKSPACE };
+    }
+
+    @Override
+    public int backspaceKey() {
         return AsciiKeys.BACKSPACE;
     }
 

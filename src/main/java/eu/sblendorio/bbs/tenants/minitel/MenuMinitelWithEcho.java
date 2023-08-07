@@ -2,10 +2,7 @@ package eu.sblendorio.bbs.tenants.minitel;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.maxmind.db.Reader;
-import eu.sblendorio.bbs.core.AsciiThread;
-import eu.sblendorio.bbs.core.BbsThread;
-import eu.sblendorio.bbs.core.MinitelThread;
-import eu.sblendorio.bbs.core.Utils;
+import eu.sblendorio.bbs.core.*;
 import eu.sblendorio.bbs.tenants.ascii.*;
 import org.apache.commons.lang3.StringUtils;
 
@@ -14,7 +11,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
-import static eu.sblendorio.bbs.core.Utils.*;
+import static eu.sblendorio.bbs.core.MinitelControls.*;
+import static eu.sblendorio.bbs.core.Utils.bytes;
+import static eu.sblendorio.bbs.core.Utils.readExternalTxt;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
@@ -157,10 +156,10 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("m".equals(choice)) subThread = new AlessandroAlbanoAscii();
                 else if ("n".equals(choice)) subThread = new TicTacToeAscii();
                 else if ("o".equals(choice)) subThread = new Connect4Ascii();
-                else if ("p".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
-                else if ("q".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
-                else if ("r".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
-                else if ("s".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
+                else if ("p".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork1.z3");
+                else if ("q".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork2.z3");
+                else if ("r".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork3.z3");
+                else if ("s".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/hitchhiker-r60.z3");
                 else if ("t".equals(choice)) subThread = new ChatA1(getTerminalType());
                 else if ("u".equals(choice)) subThread = new PrivateMessagesAscii();
                 else if ("v".equals(choice)) subThread = new ElizaAscii();
@@ -186,11 +185,11 @@ public class MenuMinitelWithEcho extends MinitelThread {
     }
 
     public void logo() throws Exception {
-        write(0x14); // Cursor off
+        write(CURSOR_OFF);
         write(readBinaryFile("minitel/intro-retrocampus.vdt"));
         flush(); resetInput();
         keyPressed(12_000);
-        write(0x11); // Cursor on
+        write(CURSOR_ON);
     }
 
     public String getTerminalType() {
@@ -202,16 +201,16 @@ public class MenuMinitelWithEcho extends MinitelThread {
     }
 
     public void displayMenu() throws Exception {
-        write(0x1b, 0x3a, 0x6a, 0x43); // scroll off
+        write(SCROLL_OFF);
         write(readBinaryFile("minitel/menu-retrocampus.vdt"));
-        write(0x1b, 0x3a, 0x69, 0x43); // scroll on
+        write(SCROLL_ON);
         flush(); resetInput();
     }
 
     public int readSingleKey() throws IOException {
-        write(20); // Cursor off
+        write(CURSOR_OFF);
         int ch = readKey();
-        write(17); // Cursor on
+        write(CURSOR_ON);
         return ch;
     }
 

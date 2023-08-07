@@ -42,6 +42,18 @@ public class MinitelControls {
 
     public static final byte[] CSI = { 0x1b, 0x5b };
 
+    public static final byte BACKSPACE_KEY = 0x08;
+    public static final byte CURSOR_LEFT = 0x08;
+    public static final byte CURSOR_RIGHT = 0x09;
+    public static final byte CURSOR_UP = 0x0b;
+    public static final byte CURSOR_DOWN = 0x0a;
+
+    public static final byte CURSOR_ON = 0x11;
+    public static final byte CURSOR_OFF = 0x14;
+
+    public static final byte[] SCROLL_ON = new byte[] { 0x1b, 0x3a, 0x69, 0x43 };
+    public static final byte[] SCROLL_OFF = new byte[] { 0x1b, 0x3a, 0x6a, 0x43 };
+
 
     private MinitelControls() {
         throw new IllegalStateException("Utility class");

@@ -88,10 +88,15 @@ public abstract class BbsInputOutput extends Reader {
 
     private int prevCharacter = 0;
     private long prevMilliseconds = System.currentTimeMillis();
+
+    public int returnAlias() {
+        return 10;
+    }
     public int readKey() throws IOException {
         long DELTA = 800;
 
         int result = in.read();
+        if (result == returnAlias()) result = 10;
         long deltaMilliseconds = System.currentTimeMillis() - prevMilliseconds;
         prevMilliseconds = System.currentTimeMillis();
 
@@ -132,6 +137,12 @@ public abstract class BbsInputOutput extends Reader {
         return readLine(maxLength, mask, null);
     }
 
+    public void afterReadLineChar() {
+    }
+
+    public void checkBelowLine() {
+    }
+
     public String readLine(int maxLength, boolean mask, Set<Integer> allowedChars) throws IOException {
         int ch;
         readBuffer = EMPTY;
@@ -141,6 +152,7 @@ public abstract class BbsInputOutput extends Reader {
                 if (readBuffer.length() > 0) {
                     if (getLocalEcho()) {
                         writeBackspace();
+                        afterReadLineChar();
                         flush();
                     }
                     readBuffer = readBuffer.substring(0, readBuffer.length()-1);
@@ -151,12 +163,14 @@ public abstract class BbsInputOutput extends Reader {
                 if (getLocalEcho()) {
                     if (mask) write('*');
                     else writeDoublequotes();
+                    afterReadLineChar();
                     flush();
                 }
                 readBuffer += "\"";
             } else if (isPrintableChar(ch) && (maxLength == 0 || readBuffer.length() < maxLength)) {
                 if (getLocalEcho()) {
                     write(mask ? '*' : ch);
+                    afterReadLineChar();
                     flush();
                 }
                 readBuffer += (char) convertToAscii(ch);
@@ -360,7 +374,8 @@ public abstract class BbsInputOutput extends Reader {
         return new String(newlineBytes(), ISO_8859_1);
     };
     public abstract byte[] newlineBytes();
-    public abstract int backspace();
+    public abstract int backspaceKey();
+    public abstract byte[] backspace();
     public void writeBackspace() { write(backspace()); }
     public abstract boolean isNewline(int ch);
     public abstract boolean isBackspace(int ch);

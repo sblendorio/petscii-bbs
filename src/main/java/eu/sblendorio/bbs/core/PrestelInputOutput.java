@@ -4,10 +4,20 @@ import java.io.IOException;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
+import static eu.sblendorio.bbs.core.PrestelControls.*;
+import static org.apache.commons.lang3.StringUtils.length;
+
 public class PrestelInputOutput extends BbsInputOutput {
 
-    public PrestelInputOutput(Socket socket) throws IOException {
+    protected boolean autoconceal;
+
+    public PrestelInputOutput(Socket socket, boolean autoconceal) throws IOException {
         super(socket);
+        this.autoconceal = autoconceal;
+    }
+
+    public PrestelInputOutput(Socket socket) throws IOException {
+        this(socket, false);
     }
 
     @Override
@@ -16,8 +26,18 @@ public class PrestelInputOutput extends BbsInputOutput {
     }
 
     @Override
-    public int backspace() {
-        return AsciiKeys.BACKSPACE;
+    public byte[] backspace() {
+        return new byte[] {CURSOR_LEFT, ' ', CURSOR_LEFT};
+    }
+
+    @Override
+    public int backspaceKey() {
+        return BACKSPACE_KEY;
+    }
+
+    @Override
+    public int returnAlias() {
+        return 95;
     }
 
     @Override
@@ -47,7 +67,21 @@ public class PrestelInputOutput extends BbsInputOutput {
 
     @Override
     public void writeBackspace() {
-        write(AsciiKeys.BACKSPACE, ' ', AsciiKeys.BACKSPACE);
+        write(CURSOR_LEFT, ' ', CURSOR_LEFT);
+    }
+
+    @Override
+    public void afterReadLineChar() {
+        if (!autoconceal) return;
+        write(CONCEAL);
+        write(CURSOR_LEFT);
+    }
+
+    @Override
+    public void checkBelowLine() {
+        if (!autoconceal) return;
+        newline();
+        write(CURSOR_UP);
     }
 
 
@@ -65,6 +99,28 @@ public class PrestelInputOutput extends BbsInputOutput {
                 }
             } catch (IOException e) {}
         }
+    }
+
+    //@Override
+    public void println(String msg) {
+        print(msg);
+        if (!autoconceal) {
+            newline();
+            return;
+        }
+        if (length(msg) < 40) {
+            write(CONCEAL);
+            write(CURSOR_LEFT);
+            if (length(msg) < 39)
+                newline();
+        }
+    }
+
+    public void newline() {
+        write(newlineBytes());
+        if (!autoconceal) return;
+        write(CONCEAL);
+        write(CURSOR_LEFT);
     }
 
     private void printDiacritic(char ch) {

@@ -2,10 +2,7 @@ package eu.sblendorio.bbs.tenants.prestel;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.maxmind.db.Reader;
-import eu.sblendorio.bbs.core.AsciiThread;
-import eu.sblendorio.bbs.core.BbsThread;
-import eu.sblendorio.bbs.core.PrestelThread;
-import eu.sblendorio.bbs.core.Utils;
+import eu.sblendorio.bbs.core.*;
 import eu.sblendorio.bbs.tenants.ascii.*;
 import org.apache.commons.lang3.StringUtils;
 
@@ -164,11 +161,11 @@ public class MenuPrestelWithEcho extends PrestelThread {
                 else if ("m".equals(choice)) subThread = new AlessandroAlbanoAscii();
                 else if ("n".equals(choice)) subThread = new TicTacToeAscii();
                 else if ("o".equals(choice)) subThread = new Connect4Ascii();
-                else if ("p".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
-                else if ("q".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
-                else if ("r".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
-                else if ("s".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
-                else if ("t".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new ChatA1(getTerminalType());
+                else if ("p".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/zork1.z3");
+                else if ("q".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/zork2.z3");
+                else if ("r".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/zork3.z3");
+                else if ("s".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/hitchhiker-r60.z3");
+                else if ("t".equals(choice)) subThread = new ChatA1(getTerminalType());
                 else if ("u".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new PrivateMessagesAscii();
                 else if ("v".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new ElizaAscii();
                 else if ("w".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new ChatGptAscii();

@@ -419,7 +419,7 @@ public abstract class BbsThread extends Thread {
         io.write(b);
         updateKeepAlive(savedKeepAlive);
     }
-    public void write(int b) { io.write(b); }
+    public void write(byte b) { io.write(b); }
     public void write(int... b) {
         boolean savedKeepAlive = getRoot().keepAlive;
         updateKeepAlive(false);
@@ -429,7 +429,8 @@ public abstract class BbsThread extends Thread {
     public void flush() { io.flush(); }
     public abstract void cls();
     public void newline() { io.newline(); }
-    public int backspace() { return io.backspace(); }
+    public byte[] backspace() { return io.backspace(); }
+    public int backspaceKey() { return io.backspaceKey(); }
     public boolean isNewline(int ch) { return io.isNewline(ch); }
     public boolean isBackspace(int ch) { return io.isBackspace(ch); }
     public byte[] newlineBytes() { return io.newlineBytes(); }
@@ -441,6 +442,8 @@ public abstract class BbsThread extends Thread {
     public void println() { println(EMPTY); }
     public String readLineBuffer() { return io.readLineBuffer(); }
     public int convertToAscii(int ch) { return io.convertToAscii(ch); }
+    public void afterReadLineChar() { io.afterReadLineChar(); }
+    public void checkBelowLine() { io.checkBelowLine(); }
 
     public void restartKeepAlive() {
         keepAliveThread.restartKeepAlive();

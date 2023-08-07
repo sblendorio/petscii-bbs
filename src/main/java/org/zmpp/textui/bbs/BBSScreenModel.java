@@ -167,7 +167,10 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
                 bbsThread.flush();
             } else if (zsciiChar != ZsciiEncoding.INSTDEL && zsciiChar != ZsciiEncoding.DELETE && zsciiChar != -1) {
                 char c = machine.getGameData().getZsciiEncoding().getUnicodeChar(zsciiChar);
-                if (bbsThread.getLocalEcho()) bbsThread.print("" + c);
+                if (bbsThread.getLocalEcho())  {
+                    bbsThread.print("" + c);
+                    bbsThread.afterReadLineChar();
+                }
                 bbsThread.flush();
             }
         } else {
@@ -175,6 +178,7 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
                 wordWrap(buffer.toString()).forEach(s -> {
                     nlines++;
                     bbsThread.println(s);
+                    bbsThread.checkBelowLine();
                     checkForScreenPaging();
                 });
                 bbsThread.flush();
@@ -184,10 +188,12 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
                 List<String> lines = wordWrap(buffer.toString());
                 for (int i=0; i<lines.size(); ++i) {
                     nlines++;
-                    bbsThread.print(lines.get(i));
                     if (i != lines.size()-1) {
-                        bbsThread.newline();
+                        bbsThread.println(lines.get(i));
                         checkForScreenPaging();
+                    } else {
+                        bbsThread.print(lines.get(i));
+                        bbsThread.afterReadLineChar();
                     }
                 }
                 bbsThread.flush();
@@ -242,7 +248,7 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
     @Override
     public short backspace() {
-        return (short) bbsThread.backspace();
+        return (short) (bbsThread.backspaceKey());
     }
 
     @Override

@@ -40,9 +40,15 @@ public class PetsciiInputOutput extends BbsInputOutput {
     }
 
     @Override
-    public int backspace() {
+    public byte[] backspace() {
+        return new byte[] { PetsciiKeys.DEL };
+    }
+
+    @Override
+    public int backspaceKey() {
         return PetsciiKeys.DEL;
     }
+
 
     @Override
     public boolean isBackspace(int ch) {

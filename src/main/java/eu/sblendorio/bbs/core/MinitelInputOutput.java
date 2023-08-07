@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
+import static eu.sblendorio.bbs.core.MinitelControls.CURSOR_LEFT;
+
 public class MinitelInputOutput extends BbsInputOutput {
 
     private final static byte SS2 = 0x19;
@@ -25,8 +27,13 @@ public class MinitelInputOutput extends BbsInputOutput {
     }
 
     @Override
-    public int backspace() {
-        return AsciiKeys.BACKSPACE;
+    public byte[] backspace() {
+        return new byte[] {CURSOR_LEFT, ' ', CURSOR_LEFT};
+    }
+
+    @Override
+    public int backspaceKey() {
+        return MinitelControls.BACKSPACE_KEY;
     }
 
     @Override

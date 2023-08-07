@@ -3,12 +3,11 @@ package eu.sblendorio.bbs.core;
 import java.io.IOException;
 import java.net.Socket;
 
-import static eu.sblendorio.bbs.core.MinitelControls.*;
-import static eu.sblendorio.bbs.core.Utils.bytes;
+import static eu.sblendorio.bbs.core.PrestelControls.*;
 
 public abstract class PrestelThread extends BbsThread {
 
-    private byte currentSize = TEXTSIZE_NORMAL;
+    protected boolean autoConceal = false;
 
     public PrestelThread() {
         keepAliveChar = 17;
@@ -17,7 +16,7 @@ public abstract class PrestelThread extends BbsThread {
 
     @Override
     public BbsInputOutput buildIO(Socket socket) throws IOException {
-        return new PrestelInputOutput(socket);
+        return new PrestelInputOutput(socket, autoConceal);
     }
 
     @Override
@@ -40,5 +39,10 @@ public abstract class PrestelThread extends BbsThread {
         return 24;
     }
 
+    public void gotoXY(int x, int y) {
+        write(HOME);
+        for (int i=0; i<y; ++i) write(CURSOR_DOWN);
+        for (int i=0; i<x; ++i) write(CURSOR_RIGHT);
+    }
 
 }
