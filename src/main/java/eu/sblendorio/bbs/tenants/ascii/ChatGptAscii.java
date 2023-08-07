@@ -187,6 +187,7 @@ public class ChatGptAscii extends AsciiThread {
 
             final String answer = "ChatGPT> " + message.getContent();
             println();
+            optionalCls();
             printPagedText(answer);
         } while (true);
     }

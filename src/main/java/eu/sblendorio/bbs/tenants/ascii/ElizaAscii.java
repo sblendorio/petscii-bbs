@@ -51,6 +51,7 @@ public class ElizaAscii extends AsciiThread {
             input = trimToEmpty(input);
             if (".".equals(input) || "exit".equalsIgnoreCase(input) || "quit".equalsIgnoreCase(input)) break;
             if (isBlank(input)){
+                optionalCls();
                 println(EXIT_ADVICE);
                 continue;
             }
