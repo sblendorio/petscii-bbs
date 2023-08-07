@@ -489,6 +489,7 @@ public abstract class BbsThread extends Thread {
     public void setQuoteMode(boolean q) { this.io.setQuoteMode(q); }
     public void resetInput() throws IOException { io.resetInput(); }
     public void writeRawFile(String filename) throws IOException { io.writeRawFile(filename); }
+    public void optionalCls() { io.optionalCls(); }
     public static byte[] readBinaryFile(String filename) { return BbsInputOutput.readBinaryFile(filename); }
 
     public List<String> readTextFile(String filename) throws IOException {

@@ -215,6 +215,7 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
                 bbsThread.readKey();
                 bbsThread.println();
                 bbsThread.println();
+                bbsThread.optionalCls();
                 nlines = 0;
             } catch (IOException e) {
                 throw new RuntimeException(e);

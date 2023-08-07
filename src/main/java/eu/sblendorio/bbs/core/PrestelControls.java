@@ -1,6 +1,7 @@
 package eu.sblendorio.bbs.core;
 
 public class PrestelControls {
+    public static byte CLS = 12;
     public static byte BACKSPACE_KEY = 8;
     public static byte CURSOR_LEFT = 8;
     public static byte CURSOR_RIGHT = 9;

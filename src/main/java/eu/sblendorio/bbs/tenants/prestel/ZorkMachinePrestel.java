@@ -1,6 +1,5 @@
 package eu.sblendorio.bbs.tenants.prestel;
 
-import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.PrestelThread;
 import org.zmpp.textui.VirtualConsole;
 import org.zmpp.textui.bbs.BBSMachineFactory;
@@ -21,9 +20,6 @@ public class ZorkMachinePrestel extends PrestelThread {
 
     public void logo() throws Exception {
         cls();
-        if (getScreenColumns() >= 40) {
-            readTextFile("prestel/intro-zork.txt").forEach(this::println);
-        }
         flush();
     }
 

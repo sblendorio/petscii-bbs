@@ -101,7 +101,12 @@ public class PrestelInputOutput extends BbsInputOutput {
         }
     }
 
-    //@Override
+    @Override
+    public void optionalCls() {
+        write(CLS);
+    }
+
+    @Override
     public void println(String msg) {
         print(msg);
         if (!autoconceal) {

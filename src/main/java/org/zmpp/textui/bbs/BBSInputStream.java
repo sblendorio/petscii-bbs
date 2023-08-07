@@ -31,6 +31,7 @@ public class BBSInputStream implements InputStream {
             if (bbsThread.isNewline(key)) {
                 bbsThread.resetInput();
                 translatedChar = ZsciiEncoding.NEWLINE;
+                bbsThread.optionalCls();
             } else if (bbsThread.isBackspace(key)) {
                 translatedChar = ZsciiEncoding.DELETE;
             } else {

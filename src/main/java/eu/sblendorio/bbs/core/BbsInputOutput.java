@@ -89,6 +89,9 @@ public abstract class BbsInputOutput extends Reader {
     private int prevCharacter = 0;
     private long prevMilliseconds = System.currentTimeMillis();
 
+    public void optionalCls() {
+    }
+
     public int returnAlias() {
         return 10;
     }
