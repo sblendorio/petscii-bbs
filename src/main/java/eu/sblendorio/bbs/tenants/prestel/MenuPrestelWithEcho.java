@@ -165,7 +165,7 @@ public class MenuPrestelWithEcho extends PrestelThread {
                 else if ("q".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/zork2.z3");
                 else if ("r".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/zork3.z3");
                 else if ("s".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/hitchhiker-r60.z3");
-                else if ("t".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new ChatA1(io);
+                else if ("t".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new ChatA1(io, getTerminalType());
                 else if ("u".equals(choice)) subThread = new PrivateMessagesAscii(io);
                 else if ("v".equals(choice)) subThread = new ElizaAscii(io);
                 else if ("w".equals(choice)) subThread = new ChatGptAscii(io);

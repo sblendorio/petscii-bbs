@@ -28,17 +28,23 @@ public class ChatA1 extends AsciiThread {
 
     private static final String CUSTOM_KEY = "CHAT";
     private boolean canRedraw = false;
+    private String termType;
     private BbsInputOutput interfaceType;
 
     private ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<>();
 
     public ChatA1() {
-        super();
+        this(null, "ascii");
     }
 
-    public ChatA1(BbsInputOutput interfaceType) {
+    public ChatA1(String termType) {
+        this(null, termType);
+    }
+
+    public ChatA1(BbsInputOutput interfaceType, String termType) {
         super();
         this.interfaceType = interfaceType;
+        this.termType = termType;
     }
 
     @Override
@@ -77,7 +83,7 @@ public class ChatA1 extends AsciiThread {
 
             getRoot().setCustomObject(CUSTOM_KEY, getClientName());
             cls();
-            write(logos.get(interfaceType));
+            write(logos.get(termType));
             showUsers(false);
             newline();
             displayHelp();
@@ -137,7 +143,7 @@ public class ChatA1 extends AsciiThread {
                 }
             } while (!".".equals(rawCommand) && !"/q".equalsIgnoreCase(rawCommand) && !"/quit".equalsIgnoreCase(rawCommand));
         } finally {
-            write(exitSeq.get(interfaceType));
+            write(exitSeq.get(termType));
             notifyExitingUser();
             changeClientName(UUID.randomUUID().toString());
         }
