@@ -182,9 +182,7 @@ public class PrivateMessagesAscii extends AsciiThread {
     }
 
     public void listUsers() throws Exception {
-        newline();
-        newline();
-        optionalCls();
+        cls();
         List<UserLogon.User> users = getUsers();
         int i = 0;
         for (UserLogon.User u: users) {
@@ -199,9 +197,7 @@ public class PrivateMessagesAscii extends AsciiThread {
                 print("ANY KEY FOR NEXT PAGE, '.' TO GO BACK ");
                 flush(); resetInput(); int ch = readKey(); resetInput();
                 if (ch == '.') return;
-                newline();
-                newline();
-                optionalCls();
+                cls();
             }
         }
         newline();
@@ -219,15 +215,14 @@ public class PrivateMessagesAscii extends AsciiThread {
         boolean ok = false;
 
         if (toUser != null) {
-            optionalCls();
+            cls();
             receipt = toUser;
             subject = defaultString(toSubject);
             print("send to: "); println(receipt);
             print("subject: "); println(subject);
-        }
-        else {
+        } else {
             do {
-                optionalCls();
+                cls();
                 print("send to (? for user list): ");
                 flush(); resetInput(); receipt = readLine();
                 receipt = lowerCase(receipt);
@@ -291,9 +286,7 @@ public class PrivateMessagesAscii extends AsciiThread {
                 size = messages.size();
             }
             long unread = countUnreadMessages(user.nick);
-            newline();
-            newline();
-            optionalCls();
+            cls();
 
             println("Got " + size  + (onlyUnread ? " unread" : EMPTY) + " message" + (size != 1 ? "s" : EMPTY) + (onlyUnread || unread == 0 ? EMPTY : " (" + unread + " unread)") + ".");
             newline();
@@ -355,8 +348,7 @@ public class PrivateMessagesAscii extends AsciiThread {
 
     public void displayMessage(UserLogon.Message m) throws Exception {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        newline();
-        optionalCls();
+        cls();
         println("From: "+ m.userFrom);
         println("To:   "+ m.userTo);
         println("Date: "+ df.format(m.dateTime));
@@ -376,9 +368,7 @@ public class PrivateMessagesAscii extends AsciiThread {
                 print("-- More --");
                 resetInput();
                 readKey();
-                newline();
-                newline();
-                optionalCls();
+                cls();
             }
         }
         markAsRead(m);
@@ -443,9 +433,7 @@ public class PrivateMessagesAscii extends AsciiThread {
     public void userPreferences() throws Exception {
         int ch;
         do {
-            newline();
-            newline();
-            optionalCls();
+            cls();
             println("User preferences for " + user.nick);
             newline();
             print("-1-"); println(" Change password");
@@ -678,8 +666,7 @@ public class PrivateMessagesAscii extends AsciiThread {
         int offset = 0;
         int cmd = 0;
         do {
-            newline();
-            optionalCls();
+            cls();
             for (int i = offset; i < Math.min(offset + pagesize, size); ++i) {
                 println(text.get(i));
 
