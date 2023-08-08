@@ -191,4 +191,8 @@ public interface ScreenModel {
   }
 
   default boolean getLocalEcho() { return true; }
+
+  default void optionalCls() {
+  }
+
 }

@@ -104,6 +104,7 @@ public class PrestelInputOutput extends BbsInputOutput {
     @Override
     public void optionalCls() {
         write(CLS);
+        write(CURSOR_ON);
     }
 
     @Override

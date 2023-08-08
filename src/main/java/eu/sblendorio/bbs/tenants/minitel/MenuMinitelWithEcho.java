@@ -160,10 +160,10 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("q".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork2.z3");
                 else if ("r".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork3.z3");
                 else if ("s".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/hitchhiker-r60.z3");
-                else if ("t".equals(choice)) subThread = new ChatA1(getTerminalType());
-                else if ("u".equals(choice)) subThread = new PrivateMessagesAscii();
-                else if ("v".equals(choice)) subThread = new ElizaAscii();
-                else if ("w".equals(choice)) subThread = new ChatGptAscii();
+                else if ("t".equals(choice)) subThread = new ChatA1(io);
+                else if ("u".equals(choice)) subThread = new PrivateMessagesAscii(io);
+                else if ("v".equals(choice)) subThread = new ElizaAscii(io);
+                else if ("w".equals(choice)) subThread = new ChatGptAscii(io);
                 else if ("x".equals(choice)) { showPatrons(); subThread = null; }
                 else if ("y".equals(choice)) { wifiModem(); subThread = null; }
                 else if ("z".equals(choice)) { textDemo(); subThread = null; }

@@ -256,4 +256,9 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
     public boolean getLocalEcho() {
         return bbsThread.getLocalEcho();
     }
+
+    @Override
+    public void optionalCls() {
+        bbsThread.optionalCls();
+    }
 }

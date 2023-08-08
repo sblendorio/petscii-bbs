@@ -5,10 +5,7 @@ import com.theokanning.openai.completion.chat.ChatCompletionChoice;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.service.OpenAiService;
-import eu.sblendorio.bbs.core.AsciiKeys;
-import eu.sblendorio.bbs.core.AsciiThread;
-import eu.sblendorio.bbs.core.HtmlUtils;
-import eu.sblendorio.bbs.core.PrestelInputOutput;
+import eu.sblendorio.bbs.core.*;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -39,7 +36,7 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
 public class ChatGptAscii extends AsciiThread {
-    private String interfaceType = "";
+    private BbsInputOutput interfaceType = null;
     private static final String EXIT_ADVICE = "Type \".\" to EXIT";
 
     private static Logger logger = LogManager.getLogger(ChatGptAscii.class);
@@ -78,7 +75,7 @@ public class ChatGptAscii extends AsciiThread {
         return Duration.ofSeconds(seconds);
     }
 
-    public ChatGptAscii(String interfaceType) {
+    public ChatGptAscii(BbsInputOutput interfaceType) {
         super();
         this.interfaceType = interfaceType;
     }
@@ -95,8 +92,8 @@ public class ChatGptAscii extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        if ("prestel".equals(interfaceType)) {
-            this.setBbsInputOutput(new PrestelInputOutput(this.socket));
+        if (interfaceType != null) {
+            this.setBbsInputOutput(io);
         }
 
         boolean keepGoing = authenticate();

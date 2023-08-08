@@ -1,12 +1,10 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
 import com.google.common.collect.ImmutableMap;
-import eu.sblendorio.bbs.core.AsciiThread;
-import eu.sblendorio.bbs.core.BbsThread;
-import eu.sblendorio.bbs.core.Hidden;
+import eu.sblendorio.bbs.core.*;
+
 import static eu.sblendorio.bbs.core.Utils.bytes;
 
-import eu.sblendorio.bbs.core.PrestelInputOutput;
 import eu.sblendorio.bbs.tenants.petscii.Chat64.ChatMessage;
 import eu.sblendorio.bbs.tenants.petscii.Chat64.Row;
 import java.io.IOException;
@@ -30,23 +28,23 @@ public class ChatA1 extends AsciiThread {
 
     private static final String CUSTOM_KEY = "CHAT";
     private boolean canRedraw = false;
-    private String interfaceType;
+    private BbsInputOutput interfaceType;
 
     private ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<>();
 
     public ChatA1() {
-        this("ascii");
+        super();
     }
 
-    public ChatA1(String interfaceType) {
+    public ChatA1(BbsInputOutput interfaceType) {
         super();
         this.interfaceType = interfaceType;
     }
 
     @Override
     public void doLoop() throws Exception {
-        if ("prestel".equals(interfaceType)) {
-            this.setBbsInputOutput(new PrestelInputOutput(this.socket));
+        if (interfaceType != null) {
+            this.setBbsInputOutput(interfaceType);
         }
         try {
             canRedraw = false;

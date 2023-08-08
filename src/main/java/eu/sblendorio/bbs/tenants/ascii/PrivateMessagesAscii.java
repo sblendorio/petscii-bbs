@@ -1,6 +1,7 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
 import eu.sblendorio.bbs.core.AsciiThread;
+import eu.sblendorio.bbs.core.BbsInputOutput;
 import eu.sblendorio.bbs.core.Utils;
 import eu.sblendorio.bbs.tenants.petscii.UserLogon;
 import java.io.File;
@@ -38,8 +39,15 @@ import org.apache.commons.text.WordUtils;
 
 public class PrivateMessagesAscii extends AsciiThread {
 
+    private BbsInputOutput interfaceType = null;
+
     public PrivateMessagesAscii() {
         super();
+    }
+
+    public PrivateMessagesAscii(BbsInputOutput interfaceType) {
+        super();
+        this.interfaceType = interfaceType;
     }
 
     protected static final String CUSTOM_KEY = "PRIVATE_MESSAGES";
@@ -119,6 +127,10 @@ public class PrivateMessagesAscii extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
+        if (interfaceType != null) {
+            setBbsInputOutput(interfaceType);
+        }
+
         init();
         String username;
         String password;
@@ -160,6 +172,7 @@ public class PrivateMessagesAscii extends AsciiThread {
                 newline();
             }
         }
+
         try {
             getRoot().setCustomObject(CUSTOM_KEY, user);
         } catch (NullPointerException e) {
@@ -171,6 +184,7 @@ public class PrivateMessagesAscii extends AsciiThread {
     public void listUsers() throws Exception {
         newline();
         newline();
+        optionalCls();
         List<UserLogon.User> users = getUsers();
         int i = 0;
         for (UserLogon.User u: users) {
@@ -204,6 +218,7 @@ public class PrivateMessagesAscii extends AsciiThread {
         boolean ok = false;
 
         if (toUser != null) {
+            optionalCls();
             receipt = toUser;
             subject = defaultString(toSubject);
             print("send to: "); println(receipt);
@@ -211,6 +226,7 @@ public class PrivateMessagesAscii extends AsciiThread {
         }
         else {
             do {
+                optionalCls();
                 print("send to (? for user list): ");
                 flush(); resetInput(); receipt = readLine();
                 receipt = lowerCase(receipt);
@@ -267,6 +283,7 @@ public class PrivateMessagesAscii extends AsciiThread {
         int offset = 0;
         String cmd;
         do {
+            optionalCls();
             int size = messages.size();
             if (onlyUnread && size == 0) {
                 onlyUnread = false;
@@ -337,6 +354,7 @@ public class PrivateMessagesAscii extends AsciiThread {
     public void displayMessage(UserLogon.Message m) throws Exception {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         newline();
+        optionalCls();
         println("From: "+ m.userFrom);
         println("To:   "+ m.userTo);
         println("Date: "+ df.format(m.dateTime));
@@ -351,13 +369,14 @@ public class PrivateMessagesAscii extends AsciiThread {
         for (String row: rows) {
             ++linecount;
             println(row);
-            if (linecount % (getScreenRows() - 2) == 0) {
+            if (linecount % (getScreenRows() - 5) == 0) {
                 println();
                 print("-- More --");
                 resetInput();
                 readKey();
                 newline();
                 newline();
+                optionalCls();
             }
         }
         markAsRead(m);
@@ -424,6 +443,7 @@ public class PrivateMessagesAscii extends AsciiThread {
         do {
             newline();
             newline();
+            optionalCls();
             println("User preferences for " + user.nick);
             newline();
             print("-1-"); println(" Change password");
@@ -657,6 +677,7 @@ public class PrivateMessagesAscii extends AsciiThread {
         int cmd = 0;
         do {
             newline();
+            optionalCls();
             for (int i = offset; i < Math.min(offset + pagesize, size); ++i) {
                 println(text.get(i));
 

@@ -430,6 +430,8 @@ public class InputFunctions implements InputLine {
       // in input mode anymore when we receive NEWLINE
       if (machine.getScreen().getLocalEcho()) // CICCIO
         machine.getOutput().printZsciiChar(ZsciiEncoding.NEWLINE, false);
+
+      machine.getScreen().optionalCls();
     }      
     return terminateChar;
   }

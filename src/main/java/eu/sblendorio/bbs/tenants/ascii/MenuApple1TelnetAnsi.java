@@ -1,7 +1,6 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
 import static eu.sblendorio.bbs.core.Utils.bytes;
-import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class MenuApple1TelnetAnsi extends MenuApple1Telnet {
 

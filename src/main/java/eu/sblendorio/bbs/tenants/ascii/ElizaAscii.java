@@ -2,6 +2,7 @@ package eu.sblendorio.bbs.tenants.ascii;
 
 import eu.sblendorio.bbs.core.AsciiThread;
 import codeanticode.eliza.*;
+import eu.sblendorio.bbs.core.BbsInputOutput;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PrestelInputOutput;
 import org.davidmoten.text.utils.WordWrap;
@@ -14,22 +15,22 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 
 public class ElizaAscii extends AsciiThread {
-    private String interfaceType = "";
+    private BbsInputOutput interfaceType = null;
     private static final String EXIT_ADVICE = "Type \".\" to EXIT";
 
-    public ElizaAscii(String interfaceType) {
+    public ElizaAscii(BbsInputOutput interfaceType) {
         super();
         this.interfaceType = interfaceType;
     }
 
     public ElizaAscii() {
-        this(null);
+        super();
     }
 
     @Override
     public void doLoop() throws Exception {
-        if ("prestel".equals(interfaceType)) {
-            this.setBbsInputOutput(new PrestelInputOutput(this.socket));
+        if (interfaceType != null) {
+            this.setBbsInputOutput(interfaceType);
         }
 
         Eliza eliza = new Eliza();
