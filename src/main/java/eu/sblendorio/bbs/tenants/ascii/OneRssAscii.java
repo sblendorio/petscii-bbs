@@ -294,7 +294,7 @@ public class OneRssAscii extends AsciiThread {
         cls();
         write(LOGO_SECTION);
         if (isNotBlank(section.title)) {
-            print(" - ");
+            if (LOGO_SECTION != null && LOGO_SECTION.length != 0) print(" - ");
             print(section.title);
         }
         println();
@@ -385,7 +385,7 @@ public class OneRssAscii extends AsciiThread {
         cls();
         write(LOGO_SECTION);
         if (isNotBlank(section.title)) {
-            print(" - ");
+            if (LOGO_SECTION != null && LOGO_SECTION.length != 0) print(" - ");
             print(section.title);
         }
         println();

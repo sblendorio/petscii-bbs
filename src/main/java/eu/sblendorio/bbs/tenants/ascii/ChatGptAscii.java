@@ -93,7 +93,7 @@ public class ChatGptAscii extends AsciiThread {
     @Override
     public void doLoop() throws Exception {
         if (interfaceType != null) {
-            this.setBbsInputOutput(io);
+            this.setBbsInputOutput(interfaceType);
         }
 
         boolean keepGoing = authenticate();
