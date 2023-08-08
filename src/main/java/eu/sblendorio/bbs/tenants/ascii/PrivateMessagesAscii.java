@@ -194,7 +194,7 @@ public class PrivateMessagesAscii extends AsciiThread {
             if (isNotBlank(realname) && (u.nick + realname).length() > 36)
                 realname = realname.substring(0, 33 - u.nick.length()) + "...";
             println(isBlank(realname) ? EMPTY : " (" + realname + ")");
-            if (i % 20 == 0 && i < users.size()) {
+            if (i % (getScreenRows()-2) == 0 && i < users.size()) {
                 newline();
                 print("ANY KEY FOR NEXT PAGE, '.' TO GO BACK ");
                 flush(); resetInput(); int ch = readKey(); resetInput();
