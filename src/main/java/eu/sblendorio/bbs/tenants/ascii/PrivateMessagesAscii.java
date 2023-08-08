@@ -201,6 +201,7 @@ public class PrivateMessagesAscii extends AsciiThread {
                 if (ch == '.') return;
                 newline();
                 newline();
+                optionalCls();
             }
         }
         newline();
@@ -283,7 +284,6 @@ public class PrivateMessagesAscii extends AsciiThread {
         int offset = 0;
         String cmd;
         do {
-            optionalCls();
             int size = messages.size();
             if (onlyUnread && size == 0) {
                 onlyUnread = false;
@@ -293,6 +293,8 @@ public class PrivateMessagesAscii extends AsciiThread {
             long unread = countUnreadMessages(user.nick);
             newline();
             newline();
+            optionalCls();
+
             println("Got " + size  + (onlyUnread ? " unread" : EMPTY) + " message" + (size != 1 ? "s" : EMPTY) + (onlyUnread || unread == 0 ? EMPTY : " (" + unread + " unread)") + ".");
             newline();
             for (int i=offset; i<Math.min(offset+pagesize, size); ++i) {
