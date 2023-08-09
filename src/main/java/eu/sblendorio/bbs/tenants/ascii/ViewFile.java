@@ -23,7 +23,7 @@ public class ViewFile extends AsciiThread {
         List<String> rows = readTextFile(filename);
         for (String row : rows) {
             print(row);
-            if (row.length() < 40)
+            if (row.length() != getScreenColumns())
                 println();
         }
         flush(); resetInput();
