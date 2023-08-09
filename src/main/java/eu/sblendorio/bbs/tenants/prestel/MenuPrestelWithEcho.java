@@ -205,7 +205,7 @@ public class MenuPrestelWithEcho extends PrestelThread {
 
     public void displayMenu() throws Exception {
         cls();
-        write(readBinaryFile("prestel/menu-retrocampus-alt.cept3"));
+        write(readBinaryFile("prestel/menu-retrocampus.cept3"));
         //write(readBinaryFile("prestel/menu-retrocampus.cept3"));
         /*
             String sp = (getScreenColumns() > 40) ? "                    " : "";
