@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -437,14 +438,20 @@ public class Menu64 extends PetsciiThread {
     }
 
     public void patronsLogo() throws Exception {
-        write(CLR, LOWERCASE, CASE_LOCK, HOME);
-        write(readBinaryFile("petscii/patreon-sponsor.seq"));
-        write(HOME);
-        drawLogo();
-        write(GREY3, REVOFF);
-        flush();
-        resetInput();
-        readKey();
+        List<String> files = Arrays.asList(
+            "petscii/patreon-sponsor-01.seq",
+            "petscii/patreon-sponsor-02.seq"
+        );
+        for (String file: files) {
+            write(CLR, LOWERCASE, CASE_LOCK, HOME);
+            write(readBinaryFile(file));
+            write(HOME);
+            drawLogo();
+            write(GREY3, REVOFF);
+            flush();
+            resetInput();
+            readKey();
+        }
     }
     public void wifiModem() throws Exception {
         write(CLR, LOWERCASE, CASE_LOCK, HOME);
