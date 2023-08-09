@@ -2,6 +2,8 @@ package eu.sblendorio.bbs.tenants.ascii;
 
 import com.google.common.collect.ImmutableMap;
 import eu.sblendorio.bbs.core.Hidden;
+import eu.sblendorio.bbs.core.PrestelInputOutput;
+
 import static eu.sblendorio.bbs.core.Utils.bytes;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -41,6 +43,11 @@ public class BbcAscii extends RssAscii {
         this.restartInput = restartInput;
     }
 
+    @Override
+    public void initBbs() throws Exception {
+        super.initBbs();
+        if ("prestel".equals(type)) setBbsInputOutput(new PrestelInputOutput(socket));
+    }
 
     public static byte[] line = new byte[] {13, 10, 13, 10};
     public static byte[] noattr = "\033[0m".getBytes(ISO_8859_1);

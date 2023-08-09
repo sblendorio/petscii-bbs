@@ -2,6 +2,7 @@ package eu.sblendorio.bbs.tenants.ascii;
 
 import com.google.common.collect.ImmutableMap;
 import eu.sblendorio.bbs.core.Hidden;
+import eu.sblendorio.bbs.core.PrestelInputOutput;
 import eu.sblendorio.bbs.core.Utils;
 import static eu.sblendorio.bbs.core.Utils.bytes;
 import java.nio.charset.StandardCharsets;
@@ -39,6 +40,12 @@ public class TelevideoRaiAscii extends RssAscii {
 
     public TelevideoRaiAscii(String property, String defaultValue, String interfaceType) {
         this(property, defaultValue, interfaceType, null, null);
+    }
+
+    @Override
+    public void initBbs() throws Exception {
+        super.initBbs();
+        if ("prestel".equals(type)) setBbsInputOutput(new PrestelInputOutput(socket));
     }
 
     @Override

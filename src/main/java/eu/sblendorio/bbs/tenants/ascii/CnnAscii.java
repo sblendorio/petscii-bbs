@@ -2,9 +2,13 @@ package eu.sblendorio.bbs.tenants.ascii;
 
 import com.google.common.collect.ImmutableMap;
 import eu.sblendorio.bbs.core.Hidden;
+import eu.sblendorio.bbs.core.PrestelInputOutput;
+
 import static eu.sblendorio.bbs.core.Utils.bytes;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.nio.charset.StandardCharsets.UTF_8;
+
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
@@ -73,6 +77,12 @@ public class CnnAscii extends RssAscii {
         // result.put("115", new NewsSection("Travel", prefix() + "edition_travel.rss", logos.get(type).get("115")));
         result.put("116", new NewsSection("General", prefix() + "edition.rss", logos.get(type).get("116")));
         return result;
+    }
+
+    @Override
+    public void initBbs() throws Exception {
+        super.initBbs();
+        if ("prestel".equals(type)) setBbsInputOutput(new PrestelInputOutput(socket));
     }
 
     @Override

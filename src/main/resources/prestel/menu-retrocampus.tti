@@ -1,8 +1,12 @@
 DE,
-PS,8300
-PN,8FF00
+DS,inserter
+SP,C:\Users\n.avanzi\Desktop\home.tti
+PN,8ff00
 SC,0000
+PS,8300
+CT,8,T
 RE,0
+OL,0,        wxTED New page          %H:%M.%S
 OL,2,T,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,$
 OL,3,R/5w!//%/5#5Wnoo$R/%/5moj?oj5jj/ 
 OL,4,Rj4}| 5jj4|5Wjjj Rp0#5 jj7#*}>h| 
@@ -16,12 +20,13 @@ OL,11,V]DVCF News..........6 Hitchhiker's...S
 OL,12,V]DThe 8-Bit Guy.....7                  
 OL,13,T}ppppppppppppppppppppppppppppppppppppx5
 OL,14,U]GTelevideo RAI.....F Private msg....U 
-OL,15,U]GDisinformatico....H Eliza..........V 
-OL,16,U]GAmedeo Valoroso...K Chat GPT.......W 
-OL,17,U]GButac.it..........L Patron list....X 
-OL,18,U]GAlessandro Albano.M WIFI modem.....Y 
-OL,19,U]GLercio............G Prestel Museum.Z 
-OL,20,U]GMupin.it..........I Logout.......(.) 
-OL,21,T}ppppppppppppppppppppppppppppppppppppx5
-OL,22,S]DMFOLLOW US ON FB.COM/RETROCAMPUS.BBS 
-OL,23,]                                      T
+OL,15,U]GLercio............G Eliza..........V 
+OL,16,U]GDisinformatico....H Chat GPT.......W 
+OL,17,U]GMupin.it..........I Patron list....X 
+OL,18,U]GFatto Quotidiano..J WIFI modem.....Y 
+OL,19,U]GAmedeo Valoroso...K Prestel Museum.Z 
+OL,20,U]GButac.it..........L                  
+OL,21,U]GAlessandro Albano.M Logout........(.)
+OL,22,T}ppppppppppppppppppppppppppppppppppppx5
+OL,23,S]DMFOLLOW US ON FB.COM/RETROCAMPUS.BBS 
+OL,24,]                                      T

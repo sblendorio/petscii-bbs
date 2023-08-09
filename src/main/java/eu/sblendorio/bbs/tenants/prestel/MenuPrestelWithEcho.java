@@ -140,11 +140,11 @@ public class MenuPrestelWithEcho extends PrestelThread {
                         bytes(readBinaryFile("prestel/bbc_home.cept3"),13,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,17),
                         bytes(11, 11, 13, 10, 32, 32, 32, 32, 32, 32, 13, 10, 11)
                 );
-                else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii();
-                else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii();
-                else if ("5".equals(choice)) subThread = new IndieRetroNewsAscii();
-                else if ("6".equals(choice)) subThread = new VcfedAscii();
-                else if ("7".equals(choice)) subThread = new The8BitGuyAscii();
+                else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii(io);
+                else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii(io);
+                else if ("5".equals(choice)) subThread = new IndieRetroNewsAscii(io);
+                else if ("6".equals(choice)) subThread = new VcfedAscii(io);
+                else if ("7".equals(choice)) subThread = new The8BitGuyAscii(io);
                 else if ("f".equals(choice)) subThread = new TelevideoRaiAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
@@ -152,14 +152,14 @@ public class MenuPrestelWithEcho extends PrestelThread {
                         bytes(20, readBinaryFile("prestel/menu-televideo.cept3")),
                         bytes(11, 11, 13, 10, 32, 32, 32, 32, 32, 32, 13, 10, 11, 17)
                 );
-                else if ("g".equals(choice)) subThread = new LercioAscii();
-                else if ("h".equals(choice)) subThread = new DisinformaticoAscii();
-                else if ("i".equals(choice)) subThread = new MupinAscii();
-                else if ("j".equals(choice)) subThread = new IlFattoQuotidianoAscii();
-                else if ("k".equals(choice)) subThread = new AmedeoValorosoAscii();
-                else if ("l".equals(choice)) subThread = new ButacAscii();
-                else if ("m".equals(choice)) subThread = new AlessandroAlbanoAscii();
-                else if ("n".equals(choice)) subThread = new TicTacToeAscii();
+                else if ("g".equals(choice)) subThread = new LercioAscii(io);
+                else if ("h".equals(choice)) subThread = new DisinformaticoAscii(io);
+                else if ("i".equals(choice)) subThread = new MupinAscii(io);
+                else if ("j".equals(choice)) subThread = new IlFattoQuotidianoAscii(io);
+                else if ("k".equals(choice)) subThread = new AmedeoValorosoAscii(io);
+                else if ("l".equals(choice)) subThread = new ButacAscii(io);
+                else if ("m".equals(choice)) subThread = new AlessandroAlbanoAscii(io);
+                else if ("n".equals(choice)) subThread = new TicTacToeAscii(io);
                 else if ("o".equals(choice)) subThread = new Connect4Ascii();
                 else if ("p".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/zork1.z3");
                 else if ("q".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/zork2.z3");

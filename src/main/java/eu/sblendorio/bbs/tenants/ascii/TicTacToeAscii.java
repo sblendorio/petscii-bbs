@@ -1,6 +1,7 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
 import eu.sblendorio.bbs.core.AsciiThread;
+import eu.sblendorio.bbs.core.BbsInputOutput;
 import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.games_ai.TicTacToeAI;
 
@@ -11,8 +12,21 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 public class TicTacToeAscii extends AsciiThread {
     TicTacToeAI model;
 
+    private BbsInputOutput inputOutput;
+
     public TicTacToeAscii() {
         super();
+    }
+
+    public TicTacToeAscii(BbsInputOutput x) {
+        this();
+        this.inputOutput = x;
+    }
+
+    @Override
+    public void initBbs() throws Exception {
+        super.initBbs();
+        if (inputOutput != null) setBbsInputOutput(inputOutput);
     }
 
     @Override

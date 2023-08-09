@@ -2,6 +2,8 @@ package eu.sblendorio.bbs.tenants.ascii;
 
 import com.rometools.rome.feed.synd.SyndContent;
 import com.rometools.rome.feed.synd.SyndEntry;
+import eu.sblendorio.bbs.core.BbsInputOutput;
+import eu.sblendorio.bbs.core.PrestelInputOutput;
 import eu.sblendorio.bbs.tenants.petscii.OneRssPetscii;
 import org.apache.commons.lang3.StringUtils;
 
@@ -11,7 +13,10 @@ import java.util.stream.Collectors;
 
 public class OneRssPoliticoAscii extends OneRssAscii {
 
+    private BbsInputOutput inputOutput = null;
+
     public OneRssPoliticoAscii() {
+        super();
         this.pageSize = 8;
         this.showAuthor = true;
         this.newlineAfterDate = false;
@@ -35,4 +40,14 @@ public class OneRssPoliticoAscii extends OneRssAscii {
             .collect(Collectors.joining("<br>"));
     }
 
+    public OneRssPoliticoAscii(BbsInputOutput x) {
+        this();
+        inputOutput = x;
+    }
+
+    @Override
+    public void initBbs() throws Exception {
+        super.initBbs();
+        if (inputOutput != null) setBbsInputOutput(inputOutput);
+    }
 }
