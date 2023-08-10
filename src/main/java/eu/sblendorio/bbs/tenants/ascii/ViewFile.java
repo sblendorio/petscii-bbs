@@ -21,9 +21,10 @@ public class ViewFile extends AsciiThread {
     public void doLoop() throws Exception {
         cls();
         List<String> rows = readTextFile(filename);
-        for (String row : rows) {
+        for (int i=0; i<rows.size(); i++) {
+            String row = rows.get(i);
             print(row);
-            if (row.length() != getScreenColumns())
+            if (row.length() != getScreenColumns() && i < rows.size()-1)
                 println();
         }
         flush(); resetInput();
