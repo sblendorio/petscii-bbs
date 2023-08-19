@@ -133,6 +133,9 @@ public class Chat64 extends PetsciiThread {
                     String text = defaultString(command.replaceAll("(?is)^/to [\\.a-zA-Z0-9-]+(\\s+.*)?$", "$1")).trim();
                     final String recipientName = command.replaceAll("(?is)^/to ([\\.a-zA-Z0-9-]+)(\\s+.*)?$", "$1");
                     Long candidateRecipient = getClientIdByName(recipientName, String::compareToIgnoreCase);
+                    if (recipientName.matches("^client[0-9]+$")) candidateRecipient = null;
+                    if (recipientName.matches("^.*[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) candidateRecipient = null;
+
                     if (candidateRecipient != null && candidateRecipient != getClientId()) {
                         recipient = candidateRecipient;
                         if (isNotBlank(text)) {

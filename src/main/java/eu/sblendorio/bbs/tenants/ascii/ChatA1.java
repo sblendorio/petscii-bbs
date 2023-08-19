@@ -103,6 +103,9 @@ public class ChatA1 extends AsciiThread {
                     String text = defaultString(command.replaceAll("(?is)^/to [\\.a-zA-Z0-9-]+(\\s+.*)?$", "$1")).trim();
                     final String recipientName = command.replaceAll("(?is)^/to ([\\.a-zA-Z0-9-]+)(\\s+.*)?$", "$1");
                     Long recipient = getClientIdByName(recipientName, String::compareToIgnoreCase);
+                    if (recipientName.matches("^client[0-9]+$")) recipient = null;
+                    if (recipientName.matches("^.*[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) recipient = null;
+
                     if (recipient != null && recipient != getClientId()) {
                         if (isNotBlank(text)) {
                             send(recipient, new ChatMessage(recipient, text));

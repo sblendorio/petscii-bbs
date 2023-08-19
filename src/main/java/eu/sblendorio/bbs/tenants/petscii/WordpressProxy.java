@@ -40,6 +40,9 @@ import org.slf4j.LoggerFactory;
 @Hidden
 public class WordpressProxy extends PetsciiThread {
 
+    public static String CHROME_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36";
+
+
     private static final Logger logger = LoggerFactory.getLogger(WordpressProxy.class);
     String HR_TOP;
 
