@@ -195,16 +195,20 @@ public class Chat64 extends PetsciiThread {
     }
 
     private synchronized void sendToAll(ChatMessage chatMessage) {
+        log("START sendToAll, clientName="+getClientName());
         getClients().keySet().stream()
                 .filter(id -> getClients().get(id) != null)
                 .filter(id -> id != getClientId()
                     && getClients().get(id).getClientClass().getSimpleName().startsWith("Chat")
                 )
                 .forEach(id -> send(id, chatMessage));
+        log("END sendToAll, clientName="+getClientName());
     }
 
     private void notifyEnteringUser() {
+        log("START notifyEnteringUser, clientName="+getClientName());
         sendToAll(new ChatMessage(-1, getClientName() + " has entered"));
+        log("END notifyEnteringUser, clientName="+getClientName());
     }
 
     private void notifyExitingUser() {
@@ -378,8 +382,12 @@ public class Chat64 extends PetsciiThread {
 
     @Override
     public synchronized void receive(long senderId, Object message) {
+        log("START receive, clientName="+getClientName()+", canRedraw="+canRedraw+", ...");
+        log("... rows.size()="+rows.size());
         ChatMessage chatMessage = (ChatMessage) message;
+        log("... adding message");
         rows.addLast(new Row(senderId, chatMessage));
+        log("... added message. canRedraw="+canRedraw+", readLineBuffer().length()="+readLineBuffer().length());
         if (canRedraw && (/* chatMessage.receiverId > 0 || */ readLineBuffer().length() == 0)) {
             redraw();
             write(INPUT_COLOR);
@@ -387,6 +395,7 @@ public class Chat64 extends PetsciiThread {
                 write(7);
             }
         }
+        log("END receive, clientName="+getClientName()+", canRedraw="+canRedraw+", rows.size()="+rows.size());
     }
 
     private void displayPotentialUrl(String text) {

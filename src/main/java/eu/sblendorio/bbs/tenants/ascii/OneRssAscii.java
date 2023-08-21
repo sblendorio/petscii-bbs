@@ -311,7 +311,6 @@ public class OneRssAscii extends AsciiThread {
 
         long totalRows = 0;
         for (int i = start; i < end; ++i) {
-            System.out.println("i = "+i);
             NewsFeed post = posts.get(i);
             print((i+1) + ".");
             final int iLen = (getScreenColumns()-3)-String.valueOf(i+1).length();

@@ -8,8 +8,8 @@ public class Linkiesta extends WordpressProxy {
     public Linkiesta() {
         super();
         this.logo = LOGO_BYTES;
-        this.domain = "https://www.linkiesta.it";
-        this.pageSize = 9;
+        this.domain = "https://www.sblendorio.eu/ba-simple-proxy.php?mode=native&url=https://www.linkiesta.it";
+        this.pageSize = 7;
         this.screenLines = 19;
     }
 
