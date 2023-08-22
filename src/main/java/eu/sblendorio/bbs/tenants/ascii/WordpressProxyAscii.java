@@ -191,11 +191,15 @@ public class WordpressProxyAscii extends AsciiThread {
     protected Map<Integer, Post> getPosts(int page, int perPage) throws Exception {
         if (page < 1 || perPage < 1) return null;
         Map<Integer, Post> result = new LinkedHashMap<>();
-        JSONArray posts = (JSONArray) httpGetJson(getApi()
-            + "posts?context=view"
-            + (isBlank(categoriesId) ? EMPTY : "&categories=" + categoriesId)
-            + "&page=" + page
-            + "&per_page=" + perPage, httpUserAgent);
+        String uri = "posts?context=view"
+                + (isBlank(categoriesId) ? EMPTY : "&categories=" + categoriesId)
+                + "&page=" + page
+                + "&per_page=" + perPage;
+        if (domain.contains("?")) {
+            uri = uri.replace("?", "%3F").replace("&", "%26");
+        }
+        log("getPosts. uri="+getApi()+uri);
+        JSONArray posts = (JSONArray) httpGetJson(getApi()+uri, httpUserAgent);
         if (posts == null) return result;
         for (int i=0; i<posts.size(); ++i) {
             Post post = new Post();
