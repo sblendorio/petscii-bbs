@@ -75,7 +75,8 @@ public class ChatA1 extends AsciiThread {
                 }
                 boolean alreadyPresent =
                     clients.values().stream().map(BbsThread::getClientName).anyMatch(x -> x.equalsIgnoreCase(name));
-                status = alreadyPresent ? -1 : changeClientName(name);
+                boolean notValid = name.matches("^client[0-9]+$") || name.matches("^.*[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
+                status = (alreadyPresent || notValid) ? -1 : changeClientName(name);
                 if (status != 0) {
                     println("Error: name already used.");
                 }
