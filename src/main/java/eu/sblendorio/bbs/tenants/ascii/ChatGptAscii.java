@@ -220,7 +220,7 @@ public class ChatGptAscii extends AsciiThread {
                 .replaceAll("\n", "\r\n")
                 ;
 
-        result = HtmlUtils.utilHtmlDiacriticsToAscii(result);
+        if (!(io instanceof MinitelInputOutput)) result = HtmlUtils.utilHtmlDiacriticsToAscii(result);
 
         return result;
     }

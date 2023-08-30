@@ -9,6 +9,6 @@ public class TestMinitel extends MinitelThread {
         println("Prova però, perché, com'è, ü, garçon");
         println("àáâäèéêëìíîïòóôöùúûüç");
         println("ÀÁÂÄÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÇ");
-        write(readBinaryFile("minitel/undefined.vdt"));
+        // write(readBinaryFile("minitel/undefined.vdt"));
     }
 }

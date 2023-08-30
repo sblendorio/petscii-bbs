@@ -46,6 +46,12 @@ public class HtmlUtils {
                 .replaceAll("[å]|&#xE5;|&#229|&aring;", "a")
                 .replaceAll("[Å]|&#xC5;|&#197|&Aring;|&#8491;|&#x212B;", "A")
 
+                .replaceAll("œ|&oelig;|&#339;|&#x153;", "oe")
+                .replaceAll("Œ|&OElig;|&#338;|&#x152;", "OE")
+
+                .replaceAll("&ccedil;|&#231;|&#xE7;", "ç")
+                .replaceAll("&Ccedil;|&#199;|&#xC7;", "Ç")
+
                 .replaceAll("&agrave;?|&#xE0;", "à")
                 .replaceAll("&aacute;?|&#xE1;", "á")
                 .replaceAll("&Agrave;?|&#xC0;", "À")
@@ -99,6 +105,8 @@ public class HtmlUtils {
             .replaceAll("ü", "u")
             .replaceAll("Ë", "E")
             .replaceAll("ë", "e")
+            .replaceAll("ç", "c")
+            .replaceAll("Ç", "C")
             .replaceAll("¿", "")
             .replaceAll("¡", "")
         ;
