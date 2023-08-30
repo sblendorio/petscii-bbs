@@ -13,9 +13,9 @@ import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
-public class MenuApple1Vic20 extends AsciiThread {
+public class MenuVic20 extends AsciiThread {
 
-    public MenuApple1Vic20() {
+    public MenuVic20() {
         super();
         setLocalEcho(true);
         clsBytes = new byte[] {

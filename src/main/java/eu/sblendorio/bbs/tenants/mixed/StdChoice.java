@@ -2,13 +2,13 @@ package eu.sblendorio.bbs.tenants.mixed;
 
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1;
-import eu.sblendorio.bbs.tenants.ascii.MenuApple1M10;
+import eu.sblendorio.bbs.tenants.ascii.MenuM10;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1Telnet;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1TelnetAnsi;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1TelnetAnsiNoEcho;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1TelnetNoEcho;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1TelnetUtf8Ansi;
-import eu.sblendorio.bbs.tenants.ascii.MenuApple1Vic20;
+import eu.sblendorio.bbs.tenants.ascii.MenuVic20;
 import eu.sblendorio.bbs.tenants.ascii.MenuApple1WithEcho;
 import eu.sblendorio.bbs.tenants.petscii.Menu64;
 import eu.sblendorio.bbs.tenants.minitel.MenuMinitelWithEcho;
@@ -70,8 +70,8 @@ public class StdChoice extends AsciiThread {
         else if (ch == '6') launch(new MenuApple1TelnetAnsi());
         else if (ch == '7') launch(new MenuApple1TelnetAnsiNoEcho());
         else if (ch == '8') launch(new MenuApple1TelnetUtf8Ansi());
-        else if (ch == '9') launch(new MenuApple1Vic20());
-        else if (ch == '0') launch(new MenuApple1M10());
+        else if (ch == '9') launch(new MenuVic20());
+        else if (ch == '0') launch(new MenuM10());
         else if (ch == 'm') launch(new MenuMinitelWithEcho());
         else if (ch == 'p') launch(new MenuPrestelWithEcho());
     }
