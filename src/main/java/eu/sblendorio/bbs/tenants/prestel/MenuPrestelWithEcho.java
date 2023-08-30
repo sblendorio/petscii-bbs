@@ -25,56 +25,12 @@ public class MenuPrestelWithEcho extends PrestelThread {
         setLocalEcho(true);
     }
 
-    public static class GeoData {
-        public final String city;
-        public final String cityGeonameId;
-        public final String country;
-        public final Double latitude;
-        public final Double longitude;
-        public final String timeZone;
-        public GeoData(final String city, final String cityGeonameId, final String country, final Double latitude, final Double longitude, final String timeZone) {
-            this.city = city;
-            this.cityGeonameId = cityGeonameId;
-            this.country = country;
-            this.latitude = latitude;
-            this.longitude = longitude;
-            this.timeZone = timeZone;
-        }
-    }
-
-    private static final String MAXMIND_DB = System.getProperty("user.home") + File.separator + "GeoLite2-City.mmdb";
-    private Reader maxmindReader;
-    private JsonNode maxmindResponse;
-    private MenuApple1.GeoData geoData;
 
     private static final String IP_FOR_ALTERNATE_LOGO = System.getProperty("alternate.logo.ip", "none");
     private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.port", "-1"));
     public boolean alternateLogo() {
         return IP_FOR_ALTERNATE_LOGO.equals(serverAddress.getHostAddress())
                 || serverPort == PORT_FOR_ALTERNATE_LOGO;
-    }
-
-    public void init() throws IOException {
-        try {
-            File maxmindDb = new File(MAXMIND_DB);
-            maxmindReader = new Reader(maxmindDb);
-            maxmindResponse = maxmindReader.get(socket.getInetAddress());
-            maxmindReader.close();
-
-            geoData = new MenuApple1.GeoData(
-                    maxmindResponse.get("city").get("names").get("en").asText(),
-                    maxmindResponse.get("city").get("geoname_id").asText(),
-                    maxmindResponse.get("country").get("names").get("en").asText(),
-                    maxmindResponse.get("location").get("latitude").asDouble(),
-                    maxmindResponse.get("location").get("longitude").asDouble(),
-                    maxmindResponse.get("location").get("time_zone").asText()
-            );
-            log("Location: " + geoData.city + ", " + geoData.country);
-        } catch (Exception e) {
-            maxmindResponse = null;
-            geoData = null;
-            log("Error retrieving GeoIP data: " + e.getClass().getName());
-        }
     }
 
     public byte[] initializingBytes() {
@@ -99,7 +55,6 @@ public class MenuPrestelWithEcho extends PrestelThread {
     public void doLoop() throws Exception {
         if (alternateLogo()) { println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); keyPressed(10_000); return; }
 
-        init();
         logo();
         while (true) {
             log("Starting Prestel / main menu");
