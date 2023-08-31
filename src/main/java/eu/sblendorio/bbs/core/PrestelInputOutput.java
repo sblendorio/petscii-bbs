@@ -41,6 +41,12 @@ public class PrestelInputOutput extends BbsInputOutput {
     }
 
     @Override
+    public int backspaceAlias() {
+        return 20;
+    }
+
+
+    @Override
     public boolean isNewline(int ch) {
         return ch == AsciiKeys.CR || ch == AsciiKeys.LF;
     }

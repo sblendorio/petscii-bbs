@@ -95,11 +95,16 @@ public abstract class BbsInputOutput extends Reader {
     public int returnAlias() {
         return 10;
     }
+
+    public int backspaceAlias() {
+        return 8;
+    }
     public int readKey() throws IOException {
         long DELTA = 800;
 
         int result = in.read();
         if (result == returnAlias()) result = 10;
+        if (result == backspaceAlias()) result = backspaceKey();
         long deltaMilliseconds = System.currentTimeMillis() - prevMilliseconds;
         prevMilliseconds = System.currentTimeMillis();
 
