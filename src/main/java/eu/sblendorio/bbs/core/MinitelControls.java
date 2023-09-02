@@ -53,6 +53,8 @@ public class MinitelControls {
 
     public static final byte[] SCROLL_ON = new byte[] { 0x1b, 0x3a, 0x69, 0x43 };
     public static final byte[] SCROLL_OFF = new byte[] { 0x1b, 0x3a, 0x6a, 0x43 };
+    public static final byte[] CAPSLOCK_ON = new byte[] { 0x1b, 0x3a, 0x6a, 0x45 };
+    public static final byte[] CAPSLOCK_OFF = new byte[] { 0x1b, 0x3a, 0x69, 0x45 };
 
 
     private MinitelControls() {

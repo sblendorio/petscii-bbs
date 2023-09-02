@@ -164,4 +164,5 @@ public class MinitelInputOutput extends BbsInputOutput {
     private boolean isDiacritic(char ch) {
         return "àáâäèéêëìíîïòóôöùúûüçÀÁÂÄÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÇ".indexOf(ch) != -1;
     }
+
 }

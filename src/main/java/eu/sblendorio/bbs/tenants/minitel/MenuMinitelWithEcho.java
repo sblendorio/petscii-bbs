@@ -30,7 +30,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
     }
 
     public byte[] initializingBytes() {
-        return new byte[] { 0x1B, 0x3A, 0x69, 0x43, 0x11 };
+        return bytes(CAPSLOCK_OFF, SCROLL_ON, CURSOR_ON);
     }
 
     private static final String IP_FOR_ALTERNATE_LOGO = System.getProperty("alternate.logo.ip", "none");
@@ -48,7 +48,6 @@ public class MenuMinitelWithEcho extends MinitelThread {
     @Override
     public void doLoop() throws Exception {
         if (alternateLogo()) { println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); keyPressed(10_000); return; }
-
         logo();
         while (true) {
             log("Starting Minitel / main menu");
