@@ -165,4 +165,10 @@ public class MinitelInputOutput extends BbsInputOutput {
         return "àáâäèéêëìíîïòóôöùúûüçÀÁÂÄÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÇ".indexOf(ch) != -1;
     }
 
-}
+    @Override
+    public int readKey() throws IOException {
+        int ch;
+        while ((ch = super.readKey()) == 19);
+        return ch;
+    }
+    }

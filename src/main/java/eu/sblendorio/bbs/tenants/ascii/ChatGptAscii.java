@@ -204,7 +204,7 @@ public class ChatGptAscii extends AsciiThread {
                 print("-- More --");
                 write(ASSISTANT_COLOR);
                 flush(); resetInput();
-                int key = readKey();
+                readKey();
                 println();
                 optionalCls();
             }

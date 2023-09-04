@@ -112,13 +112,13 @@ public abstract class BbsInputOutput extends Reader {
         if (deltaMilliseconds < DELTA && prevCharacter == 19) { // Key substitution for Minitel keyboard
                 if (result == 65) result = 10;  // INVIO = NEWLINE
            else if (result == 71) result = 8;   // CORREZIONE = BACKSPACE
-           else if (result == 68) result = '-'; // PRECEDENTE = '-'
+           else if (result == 66) result = '-'; // PRECEDENTE = '-'
            else if (result == 72) result = ' '; // SEGUENTE = ' ' (space)
            else if (result == 70) result = '.'; // INDICE = '.'
            else result = 0;
            // INDICE = 70
            // ANNULLA = 69
-           // PRECEDENTE = 68
+           // PRECEDENTE = 66
            // RIPETIZ = 67
            // GUIDA = 68
            // CORREZIONE = 71
