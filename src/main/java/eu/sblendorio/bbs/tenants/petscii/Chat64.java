@@ -400,6 +400,7 @@ public class Chat64 extends PetsciiThread {
     }
 
     private void displayPotentialUrl(String text) {
+        if (text == null || text.contains("@")) return;
         UrlDetector parser = new UrlDetector(text, UrlDetectorOptions.Default);
         List<Url> found = parser.detect();
         if (found == null || found.size() == 0) return;
