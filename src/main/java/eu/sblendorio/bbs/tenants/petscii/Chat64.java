@@ -203,6 +203,7 @@ public class Chat64 extends PetsciiThread {
                     && getClients().get(id).getClientClass().getSimpleName().startsWith("Chat")
                 )
                 .forEach(id -> send(id, chatMessage));
+        // FIXME: never gets here
         log("END sendToAll, clientName="+getClientName());
     }
 
