@@ -130,9 +130,9 @@ public class Chat64 extends PetsciiThread {
                 if (isBlank(command)) {
                     write(145);
                     redraw();
-                } else if (command.matches("(?is)^/to [\\.a-zA-Z0-9-]+(\\s+.*)?$")) {
-                    String text = defaultString(command.replaceAll("(?is)^/to [\\.a-zA-Z0-9-]+(\\s+.*)?$", "$1")).trim();
-                    final String recipientName = command.replaceAll("(?is)^/to ([\\.a-zA-Z0-9-]+)(\\s+.*)?$", "$1");
+                } else if (command.matches("(?is)^/to +[\\.a-zA-Z0-9-]+(\\s+.*)?$")) {
+                    String text = defaultString(command.replaceAll("(?is)^/to +[\\.a-zA-Z0-9-]+(\\s+.*)?$", "$1")).trim();
+                    final String recipientName = command.replaceAll("(?is)^/to +([\\.a-zA-Z0-9-]+)(\\s+.*)?$", "$1");
                     Long candidateRecipient = getClientIdByName(recipientName, String::compareToIgnoreCase);
                     if (recipientName.matches("^client[0-9]+$")) candidateRecipient = null;
                     if (recipientName.matches("^.*[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) candidateRecipient = null;
@@ -155,7 +155,7 @@ public class Chat64 extends PetsciiThread {
                     } else {
                         redraw();
                     }
-                } else if (command.matches("(?is)/nick [\\.a-zA-Z0-9-]+")) {
+                } else if (command.matches("(?is)/nick +[\\.a-zA-Z0-9-]+")) {
                     final String newName = command.replaceAll("\\s+", " ").substring(6);
                     boolean alreadyPresent =
                         clients.values().stream().map(BbsThread::getClientName).anyMatch(x -> x.equalsIgnoreCase(newName));
@@ -196,7 +196,7 @@ public class Chat64 extends PetsciiThread {
     }
 
     private synchronized void sendToAll(ChatMessage chatMessage) {
-        log("START sendToAll, clientName="+getClientName());
+        log("START sendToAll, clientName="+getClientName()+", getClients().keySet()="+getClients().keySet());
         getClients().keySet().stream()
                 .filter(id -> getClients().get(id) != null)
                 .filter(id -> id != getClientId()
@@ -384,7 +384,7 @@ public class Chat64 extends PetsciiThread {
     }
 
     @Override
-    public synchronized void receive(long senderId, Object message) {
+    public /*synchronized*/ void receive(long senderId, Object message) {
         log("START receive, clientName="+getClientName()+", canRedraw="+canRedraw+", ...");
         log("... rows.size()="+rows.size());
         ChatMessage chatMessage = (ChatMessage) message;

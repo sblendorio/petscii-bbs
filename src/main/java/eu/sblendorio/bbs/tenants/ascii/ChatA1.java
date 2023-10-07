@@ -100,9 +100,9 @@ public class ChatA1 extends AsciiThread {
                 final String command =  rawCommand;
                 if (isBlank(command)) {
                     redraw(false);
-                } else if (command.matches("(?is)^/to [\\.a-zA-Z0-9-]+(\\s+.*)?$")) {
-                    String text = defaultString(command.replaceAll("(?is)^/to [\\.a-zA-Z0-9-]+(\\s+.*)?$", "$1")).trim();
-                    final String recipientName = command.replaceAll("(?is)^/to ([\\.a-zA-Z0-9-]+)(\\s+.*)?$", "$1");
+                } else if (command.matches("(?is)^/to +[\\.a-zA-Z0-9-]+(\\s+.*)?$")) {
+                    String text = defaultString(command.replaceAll("(?is)^/to +[\\.a-zA-Z0-9-]+(\\s+.*)?$", "$1")).trim();
+                    final String recipientName = command.replaceAll("(?is)^/to +([\\.a-zA-Z0-9-]+)(\\s+.*)?$", "$1");
                     Long recipient = getClientIdByName(recipientName, String::compareToIgnoreCase);
                     if (recipientName.matches("^client[0-9]+$")) recipient = null;
                     if (recipientName.matches("^.*[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) recipient = null;
@@ -115,7 +115,7 @@ public class ChatA1 extends AsciiThread {
                     }
                     if (isBlank(text))
                         redraw(false);
-                } else if (command.matches("(?is)/nick [\\.a-zA-Z0-9-]+")) {
+                } else if (command.matches("(?is)/nick +[\\.a-zA-Z0-9-]+")) {
                     String candidateName = command.replaceAll("\\s+", " ").substring(6);
                     final String newName = lowerCase(candidateName);
                     boolean alreadyPresent =
@@ -261,7 +261,7 @@ public class ChatA1 extends AsciiThread {
     }
 
     @Override
-    public synchronized void receive(long senderId, Object message) {
+    public /*synchronized*/ void receive(long senderId, Object message) {
         ChatMessage chatMessage = (ChatMessage) message;
         rows.addLast(new Row(senderId, chatMessage));
         if (canRedraw && (/* chatMessage.receiverId > 0 || */ readLineBuffer().length() == 0)) {
