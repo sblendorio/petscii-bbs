@@ -20,10 +20,10 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="eu.sblendorio.bbs.tenants.petscii.ChatGptPetscii" level="debug" additivity="false">
+        <Logger name="eu.sblendorio.bbs.tenants.petscii.ClientChatGptPetscii" level="debug" additivity="false">
             <AppenderRef ref="ChatGptLog"/>
         </Logger>
-        <Logger name="eu.sblendorio.bbs.tenants.ascii.ChatGptAscii" level="debug" additivity="false">
+        <Logger name="eu.sblendorio.bbs.tenants.ascii.ClientChatGptAscii" level="debug" additivity="false">
             <AppenderRef ref="ChatGptLog"/>
         </Logger>
         <Root level="debug">

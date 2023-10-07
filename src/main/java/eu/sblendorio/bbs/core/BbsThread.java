@@ -156,7 +156,7 @@ public abstract class BbsThread extends Thread {
         // FIXME here is potential hangup for chat
         log("START. class="+this.getClass().getSimpleName()+"/"+this.getClientName()+", send(receiverId="+receiverId+", message="+message);
         BbsThread receiver = getClients().get(receiverId);
-        log("INLINE. receiver="+receiver);
+        log("INLINE. receiver="+receiver+", receiver.class="+receiver.getClass().getSimpleName());
         if (receiver == null) return 1;
         log("INLINE. BEFORE call receiver.receive(clientId="+getClientId()+", message="+message);
         receiver.receive(getClientId(), message);

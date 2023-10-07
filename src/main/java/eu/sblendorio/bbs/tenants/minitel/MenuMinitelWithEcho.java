@@ -116,7 +116,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("t".equals(choice)) subThread = new ChatA1(io, getTerminalType());
                 else if ("u".equals(choice)) subThread = new PrivateMessagesAscii(io);
                 else if ("v".equals(choice)) subThread = new ElizaAscii(io);
-                else if ("w".equals(choice)) subThread = new ChatGptAscii(io);
+                else if ("w".equals(choice)) subThread = new ClientChatGptAscii(io);
                 else if ("x".equals(choice)) { showPatrons(); subThread = null; }
                 else if ("y".equals(choice)) { wifiModem(); subThread = null; }
                 else if ("z".equals(choice)) { textDemo(); subThread = null; }

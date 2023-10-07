@@ -1,7 +1,5 @@
 package eu.sblendorio.bbs.tenants.prestel;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.maxmind.db.Reader;
 import eu.sblendorio.bbs.core.*;
 import eu.sblendorio.bbs.tenants.ascii.*;
 import org.apache.commons.lang3.StringUtils;
@@ -123,7 +121,7 @@ public class MenuPrestelWithEcho extends PrestelThread {
                 else if ("t".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new ChatA1(io, getTerminalType());
                 else if ("u".equals(choice)) subThread = new PrivateMessagesAscii(io);
                 else if ("v".equals(choice)) subThread = new ElizaAscii(io);
-                else if ("w".equals(choice)) subThread = new ChatGptAscii(io);
+                else if ("w".equals(choice)) subThread = new ClientChatGptAscii(io);
                 else if ("x".equals(choice)) { showPatrons(); subThread = null; }
                 else if ("y".equals(choice)) { wifiModem(); subThread = null; }
                 else if ("z".equals(choice)) { textDemo(); subThread = null; }

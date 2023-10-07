@@ -148,7 +148,7 @@ public class MenuM10 extends AsciiThread {
                 else if ("t".equals(choice)) subThread = new ChatA1(getTerminalType());
                 else if ("u".equals(choice)) subThread = new PrivateMessagesAscii();
                 else if ("v".equals(choice)) subThread = new ElizaAscii();
-                else if ("w".equals(choice)) subThread = new ChatGptAscii();
+                else if ("w".equals(choice)) subThread = new ClientChatGptAscii();
                 else if ("x".equals(choice)) { showPatrons(); subThread = null; }
                 else if ("y".equals(choice)) { wifiModem(); subThread = null; }
                 else {
