@@ -200,7 +200,8 @@ public class Chat64 extends PetsciiThread {
         getClients().keySet().stream()
                 .filter(id -> getClients().get(id) != null)
                 .filter(id -> id != getClientId()
-                    && getClients().get(id).getClientClass().getSimpleName().startsWith("Chat")
+                        && getClients().get(id).getClientClass() != null
+                        && getClients().get(id).getClientClass().getSimpleName().startsWith("Chat")
                 )
                 .forEach(id -> send(id, chatMessage));
         // FIXME: never gets here
