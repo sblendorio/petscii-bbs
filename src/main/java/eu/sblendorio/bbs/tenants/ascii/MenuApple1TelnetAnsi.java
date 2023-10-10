@@ -6,10 +6,7 @@ public class MenuApple1TelnetAnsi extends MenuApple1Telnet {
 
     @Override
     protected void banner() {
-        write(readBinaryFile(alternateLogo()
-            ? "ansi/RetroAcademyOnlineBbs.ans"
-            : "ansi/Retrocampus.ans"
-        ));
+        write(readBinaryFile("ansi/Retrocampus.ans"));
         write(bytes("\033[0m"));
     }
 

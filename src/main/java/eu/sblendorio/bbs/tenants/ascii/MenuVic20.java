@@ -11,7 +11,6 @@ import java.util.List;
 import static eu.sblendorio.bbs.core.Utils.*;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class MenuVic20 extends AsciiThread {
 
@@ -34,15 +33,6 @@ public class MenuVic20 extends AsciiThread {
     protected void banner() {
         println("RetrocampusBBS - Vic20");
         newline();
-    }
-
-
-
-    private static final String IP_FOR_ALTERNATE_LOGO = System.getProperty("alternate.logo.ip", "none");
-    private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.port", "-1"));
-    public boolean alternateLogo() {
-        return IP_FOR_ALTERNATE_LOGO.equals(serverAddress.getHostAddress())
-                || serverPort == PORT_FOR_ALTERNATE_LOGO;
     }
 
     public void logo() throws Exception {}
@@ -68,9 +58,9 @@ public class MenuVic20 extends AsciiThread {
         println("G-Wired       T-Chat");
         println("H-Disinfor    U-Msgs");
         println("I-IlPost      U-Eliza");
-        println("J-F.Quot      "+(alternateLogo() ? "" : "W-ChGPT"));
-        println("K-A. Valoroso "+(alternateLogo() ? "" : "X-Patre"));
-        println("L-Butac       "+(alternateLogo() ? "" : "Y-Modem"));
+        println("J-F.Quot      W-ChGPT");
+        println("K-A. Valoroso X-Patre");
+        println("L-Butac       Y-Modem");
         println("M-A.Albano    .-Exit");
     }
 
@@ -104,8 +94,6 @@ public class MenuVic20 extends AsciiThread {
     }
 
     public void doLoop() throws Exception {
-        if (alternateLogo()) { println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); keyPressed(10_000); return; }
-
         logo();
         while (true) {
             log("Starting Apple1 / main menu");
@@ -237,5 +225,4 @@ public class MenuVic20 extends AsciiThread {
         print("Press any key.");
         flush(); resetInput(); readKey();
     }
-
 }

@@ -1,23 +1,20 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.maxmind.db.Reader;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.Utils;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Calendar;
+import java.util.List;
 
 import static eu.sblendorio.bbs.core.Utils.*;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang3.math.NumberUtils.toInt;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.*;
-
-import eu.sblendorio.bbs.core.Utils;
-import org.apache.commons.lang3.StringUtils;
 
 public class MenuApple1 extends AsciiThread {
 
@@ -28,58 +25,6 @@ public class MenuApple1 extends AsciiThread {
     public MenuApple1(boolean echo) {
         super();
         setLocalEcho(echo);
-    }
-
-    public static class GeoData {
-        public final String city;
-        public final String cityGeonameId;
-        public final String country;
-        public final Double latitude;
-        public final Double longitude;
-        public final String timeZone;
-        public GeoData(final String city, final String cityGeonameId, final String country, final Double latitude, final Double longitude, final String timeZone) {
-            this.city = city;
-            this.cityGeonameId = cityGeonameId;
-            this.country = country;
-            this.latitude = latitude;
-            this.longitude = longitude;
-            this.timeZone = timeZone;
-        }
-    }
-
-    private static final String MAXMIND_DB = System.getProperty("user.home") + File.separator + "GeoLite2-City.mmdb";
-    private Reader maxmindReader;
-    private JsonNode maxmindResponse;
-    private GeoData geoData;
-
-    private static final String IP_FOR_ALTERNATE_LOGO = System.getProperty("alternate.logo.ip", "none");
-    private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.port", "-1"));
-    public boolean alternateLogo() {
-        return IP_FOR_ALTERNATE_LOGO.equals(serverAddress.getHostAddress())
-                || serverPort == PORT_FOR_ALTERNATE_LOGO;
-    }
-
-    public void init() throws IOException {
-        try {
-            File maxmindDb = new File(MAXMIND_DB);
-            maxmindReader = new Reader(maxmindDb);
-            maxmindResponse = maxmindReader.get(socket.getInetAddress());
-            maxmindReader.close();
-
-            geoData = new GeoData(
-                maxmindResponse.get("city").get("names").get("en").asText(),
-                maxmindResponse.get("city").get("geoname_id").asText(),
-                maxmindResponse.get("country").get("names").get("en").asText(),
-                maxmindResponse.get("location").get("latitude").asDouble(),
-                maxmindResponse.get("location").get("longitude").asDouble(),
-                maxmindResponse.get("location").get("time_zone").asText()
-            );
-            log("Location: " + geoData.city + ", " + geoData.country);
-        } catch (Exception e) {
-            maxmindResponse = null;
-            geoData = null;
-            log("Error retrieving GeoIP data: " + e.getClass().getName());
-        }
     }
 
     public void logo() throws Exception {
@@ -98,9 +43,6 @@ public class MenuApple1 extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        if (alternateLogo()) { println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); keyPressed(10_000); return; }
-
-        init();
         logo();
         while (true) {
             log("Starting Apple1 / main menu");
@@ -184,13 +126,7 @@ public class MenuApple1 extends AsciiThread {
                     ((AsciiThread) subThread).screenColumns = this.screenColumns;
                     ((AsciiThread) subThread).screenRows = this.screenRows;
                 }
-                if (subThread instanceof WordpressProxyAscii && (screenRows == 15 || screenColumns < 40)) {
-                    ((WordpressProxyAscii) subThread).pageSize /= 2;
-                } else if (subThread instanceof GoogleBloggerProxyAscii && (screenRows == 15 || screenColumns < 40)) {
-                    ((GoogleBloggerProxyAscii) subThread).pageSize /= 2;
-                } else if (subThread instanceof OneRssAscii && (screenRows == 15 || screenColumns < 40)) {
-                    ((OneRssAscii) subThread).pageSize /= 2;
-                } else if (subThread instanceof WordpressProxyAscii && screenColumns == 80) {
+                if (subThread instanceof WordpressProxyAscii && screenColumns == 80) {
                     ((WordpressProxyAscii) subThread).pageSize *= 2;
                 } else if (subThread instanceof GoogleBloggerProxyAscii && screenColumns == 80) {
                     ((GoogleBloggerProxyAscii) subThread).pageSize *= 2;
@@ -202,7 +138,7 @@ public class MenuApple1 extends AsciiThread {
         }
     }
 
-    public void displayMenu() throws Exception{
+    public void displayMenu() throws Exception {
         String sp = (getScreenColumns() > 40) ? "                    " : "";
         banner();
         println("International News---"+ sp +"  Game Room");
@@ -218,9 +154,9 @@ public class MenuApple1 extends AsciiThread {
         println("F - Televideo RAI    "+ sp +"  T - Chat");
         println("G - Lercio           "+ sp +"  U - Private Msg");
         println("H - Disinformatico   "+ sp +"  V - Eliza");
-        println("I - Mupin.it         "+ sp + (alternateLogo() ? "" : "  W - Chat GPT"));
-        println("J - Fatto Quotidiano "+ sp + (alternateLogo() ? "" : "  X - Patrons list"));
-        println("K - Amedeo Valoroso  "+ sp + (alternateLogo() ? "" : "  Y - Wifi Modem"));
+        println("I - Mupin.it         "+ sp +"  W - Chat GPT");
+        println("J - Fatto Quotidiano "+ sp +"  X - Patrons list");
+        println("K - Amedeo Valoroso  "+ sp +"  Y - Wifi Modem");
         println("L - Butac.it         "+ sp +"  Z - Apple-1 Demo");
         println("M - Alessandro Albano"+ sp +"  . - Logout");
         println();

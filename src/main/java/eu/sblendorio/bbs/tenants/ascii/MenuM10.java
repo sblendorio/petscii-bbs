@@ -4,15 +4,14 @@ import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import org.apache.commons.lang3.StringUtils;
 
-import static eu.sblendorio.bbs.core.Utils.*;
-import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang3.math.NumberUtils.toInt;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
+
+import static eu.sblendorio.bbs.core.Utils.*;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
 
 public class MenuM10 extends AsciiThread {
 
@@ -31,15 +30,6 @@ public class MenuM10 extends AsciiThread {
         Thread.sleep(2000);
         resetInput();
     }
-
-
-    private static final String IP_FOR_ALTERNATE_LOGO = System.getProperty("alternate.logo.ip", "none");
-    private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.port", "-1"));
-    public boolean alternateLogo() {
-        return IP_FOR_ALTERNATE_LOGO.equals(serverAddress.getHostAddress())
-                || serverPort == PORT_FOR_ALTERNATE_LOGO;
-    }
-
 
     protected void banner() {
         println("BBS for M10 - by F.Sblendorio " + Calendar.getInstance().get(Calendar.YEAR));
@@ -78,8 +68,6 @@ public class MenuM10 extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        if (alternateLogo()) { println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); keyPressed(10_000); return; }
-
         logo();
         while (true) {
             log("Starting Apple1 / main menu");
@@ -230,5 +218,4 @@ public class MenuM10 extends AsciiThread {
         println("----------------------");
         flush(); resetInput(); readKey();
     }
-
 }
