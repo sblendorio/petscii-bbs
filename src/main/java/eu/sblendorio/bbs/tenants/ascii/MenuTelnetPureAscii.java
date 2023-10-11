@@ -210,7 +210,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
         do {
             cls();
             bannerPatronsPublishers();
-            println("1 - SyncroWeb (Fulvio Ieva)");
+            println("1 - Syncroweb (Fulvio Ieva)");
             println(". - Back");
             println();
             resetInput();

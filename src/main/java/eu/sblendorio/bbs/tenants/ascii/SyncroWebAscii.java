@@ -14,6 +14,6 @@ public class SyncroWebAscii extends WordpressProxyAscii {
         this.screenLines = 19;
     }
 
-    private static final byte[] LOGO_BYTES = "SyncroWeb".getBytes(StandardCharsets.ISO_8859_1);
+    private static final byte[] LOGO_BYTES = "Syncroweb".getBytes(StandardCharsets.ISO_8859_1);
 
 }
