@@ -79,6 +79,7 @@ public class PetsciiArtGallery extends PetsciiThread {
             newline();
             println("Select your favourite artist:");
             newline();
+            print(" "); write(REVON, WHITE); print(" 0 "); write(REVOFF, GREY3); println(" Le Ossa - Mantrasoft");
             for (int i = 0; i < authors.size(); ++i) {
                 print(" ");
                 write(REVON, WHITE);
@@ -90,13 +91,14 @@ public class PetsciiArtGallery extends PetsciiThread {
             print("> ");
             do {
                 flush(); resetInput(); key = readKey();
-                choice = 0;
+                choice = -1;
                 if (key == 's' || key == 'S') slideshow = !slideshow;
                 if (key == 'r' || key == 'R') randomize = !randomize;
-                if (key >= '1' && key <= '9') choice = key - '0';
-                if (choice > authors.size()) choice = 0;
-            } while (choice == 0 && key != '.' && key != 'r' && key != 'R' && key != 's' && key != 'S');
-            if (choice > 0) displayAuthor(authors.get(choice - 1), randomize, slideshow);
+                if (key >= '0' && key <= '9') choice = key - '0';
+                if (choice > authors.size()) choice = -1;
+            } while (choice == -1 && key != '.' && key != 'r' && key != 'R' && key != 's' && key != 'S');
+            if (choice == 0) launch(new Ossa());
+            else if (choice > 0) displayAuthor(authors.get(choice - 1), randomize, slideshow);
         } while (key != '.');
     }
 

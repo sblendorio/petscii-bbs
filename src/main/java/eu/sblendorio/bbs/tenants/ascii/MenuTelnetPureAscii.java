@@ -12,39 +12,74 @@ import java.util.Calendar;
 import java.util.List;
 
 import static eu.sblendorio.bbs.core.Utils.*;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
-public class MenuApple1 extends AsciiThread {
+public class MenuTelnetPureAscii extends AsciiThread {
 
-    public MenuApple1() {
-        this(false);
-    }
-
-    public MenuApple1(boolean echo) {
+    public MenuTelnetPureAscii() {
         super();
-        setLocalEcho(echo);
+        setLocalEcho(true);
+        clsBytes = new byte[] {
+            13, 10,
+            13, 10,
+            13, 10,
+            13, 10
+        };
+        screenColumns = 80;
     }
 
-    public void logo() throws Exception {
-        readTextFile("apple1/intro-menu.txt").forEach(this::println);
-        flush();
+    @Override
+    public void initBbs() throws Exception {
+        Thread.sleep(500L);
+        resetInput();
     }
-
-    public String rssPropertyTimeout() { return "rss.a1.timeout"; }
-
-    public String rssPropertyTimeoutDefault() { return "40000"; }
 
     protected void banner() {
-        println("BBS for Apple-1 - by F. Sblendorio " + Calendar.getInstance().get(Calendar.YEAR));
-        println();
+        println("Retrocampus BBS for UNIX Telnet - by F. Sblendorio " + Calendar.getInstance().get(Calendar.YEAR));
+        newline();
     }
 
     protected void bannerPatronsPublishers() {
         println("Patrons - Publisher subscribers");
         println();
     }
+
+    public void logo() throws Exception {}
+
+    @Override
+    public byte[] initializingBytes() {
+       return "\377\375\042\377\373\001".getBytes(ISO_8859_1);
+    }
+
+    /*
+       IAC  = 255 = \377 https://tools.ietf.org/html/rfc854#page-14
+
+      WILL (option code)  251    Indicates the desire to begin
+                         \373    performing, or confirmation that
+                                 you are now performing, the
+                                 indicated option.
+      WON'T (option code) 252    Indicates the refusal to perform,
+                         \374    or continue performing, the
+                                 indicated option.
+      DO (option code)    253    Indicates the request that the
+                         \375    other party perform, or
+                                 confirmation that you are expecting
+                                 the other party to perform, the
+                                 indicated option.
+      DON'T (option code) 254    Indicates the demand that the
+                         \376    other party stop performing,
+                                 or confirmation that you are no
+                                 longer expecting the other party
+                                 to perform, the indicated option.
+      IAC                 255    Data Byte 255.
+     */
+
+    public String rssPropertyTimeout() { return "rss.a1.timeout"; }
+
+    public String rssPropertyTimeoutDefault() { return "40000"; }
 
     @Override
     public void doLoop() throws Exception {
@@ -132,6 +167,13 @@ public class MenuApple1 extends AsciiThread {
                     ((AsciiThread) subThread).screenColumns = this.screenColumns;
                     ((AsciiThread) subThread).screenRows = this.screenRows;
                 }
+                if (subThread instanceof WordpressProxyAscii) {
+                    ((WordpressProxyAscii) subThread).pageSize *= 2;
+                } else if (subThread instanceof GoogleBloggerProxyAscii) {
+                    ((GoogleBloggerProxyAscii) subThread).pageSize *= 2;
+                } else if (subThread instanceof OneRssAscii) {
+                    ((OneRssAscii) subThread).pageSize *= 2;
+                }
                 launch(subThread);
             } while (!validKey);
         }
@@ -139,24 +181,24 @@ public class MenuApple1 extends AsciiThread {
 
     public void displayMenu() throws Exception {
         banner();
-        println("International News---  Game Room------");
-        println("1 - CNN News           I - TIC TAC TOE");
-        println("2 - BBC News           J - Connect Four");
-        println("3 - Politico.com       K - Zork I");
-        println("4 - Al Jazeera         L - Zork II");
-        println("5 - Indie Retro News   M - Zork III");
-        println("6 - VCF News           N - Hitchhiker's");
-        println("7 - The 8-Bit Guy      ");
-        println("                       Services-------");
-        println("Italian News---------  O - Chat");
-        println("A - Televideo RAI      P - Private Msg");
-        println("B - Lercio             Q - Eliza");
-        println("C - Disinformatico     R - Chat GPT");
-        println("D - Mupin.it           S - Patrons list");
-        println("E - Fatto Quotidiano   T - Publishers");
-        println("F - Amedeo Valoroso    U - Wifi Modem");
-        println("G - Butac.it           W - Apple-1 Demo");
-        println("H - Alessandro Albano  . - Logout");
+        println("International News-----------------------  Game Room ------");
+        println("1 - CNN News                               I - TIC TAC TOE");
+        println("2 - BBC News                               J - Connect Four");
+        println("3 - Politico.com                           K - Zork I");
+        println("4 - Al Jazeera                             L - Zork II");
+        println("5 - Indie Retro News                       M - Zork III");
+        println("6 - VCF News                               N - Hitchhiker's");
+        println("7 - The 8-Bit Guy");
+        println("                                           Services-------");
+        println("Italian News-----------------------------  O - Chat");
+        println("A - Televideo RAI                          P - Private Msg");
+        println("B - Lercio                                 Q - Eliza");
+        println("C - Disinformatico                         R - Chat GPT");
+        println("D - Mupin.it                               S - Patrons list");
+        println("E - Fatto Quotidiano                       T - Patrons Publishers");
+        println("F - Amedeo Valoroso                        U - Wifi Modem");
+        println("G - Butac.it                               W - Apple-1 Demo");
+        println("H - Alessandro Albano                      . - Logout");
         println();
     }
 
@@ -187,6 +229,15 @@ public class MenuApple1 extends AsciiThread {
                 ((AsciiThread) subThread).screenColumns = this.screenColumns;
                 ((AsciiThread) subThread).screenRows = this.screenRows;
             }
+
+            if (subThread instanceof WordpressProxyAscii) {
+                ((WordpressProxyAscii) subThread).pageSize *= 2;
+            } else if (subThread instanceof GoogleBloggerProxyAscii) {
+                ((GoogleBloggerProxyAscii) subThread).pageSize *= 2;
+            } else if (subThread instanceof OneRssAscii) {
+                ((OneRssAscii) subThread).pageSize *= 2;
+            }
+
             launch(subThread);
         } while (true);
     }

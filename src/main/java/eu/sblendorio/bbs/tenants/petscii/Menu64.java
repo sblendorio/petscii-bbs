@@ -126,10 +126,11 @@ public class Menu64 extends PetsciiThread {
                 else if (key == '8') launch(new ElizaPetscii());
                 else if (key == '9' && !alternateLogo()) launch(new ClientChatGptPetscii());
                 else if (key == 'g') launch(new PetsciiArtGallery());
-                else if (key == 'l') launch(new Ossa());
+                // else if (key == 'l') launch(new Ossa());
                 else if (key == 'x') about();
                 else if (key == 'a' && !alternateLogo()) patrons();
                 else if (key == 'b' && !alternateLogo()) patronsLogo();
+                else if (key == 'c' && !alternateLogo()) patronsPublishers();
                 else if (key == 'y' && !alternateLogo()) wifiModem();
                 else {
                     validKey = false;
@@ -265,7 +266,7 @@ public class Menu64 extends PetsciiThread {
                 }
                 key = Character.toLowerCase(key);
                 log("Menu-NewsENG. Pressed: '" + (key < 32 || key > 127 ? "chr(" + key + ")" : ((char) key)) + "' (code=" +
-                    key + ")");
+                        key + ")");
                 if (key == '.') {
                     return;
                 }
@@ -280,6 +281,47 @@ public class Menu64 extends PetsciiThread {
                 else if (key == '9') launch(new Vitno());
                 else if (key == '0') launch(new OneRss2600Petscii());
                 else if (key == 'a') launch(new HackadayPetscii());
+                else {
+                    validKey = false;
+                }
+                // if (validKey) return;
+            } while (!validKey);
+        } while (true);
+    }
+
+    public void patronsPublishers() throws Exception {
+        do {
+            write(CLR, LOWERCASE, CASE_LOCK, HOME);
+            drawLogo();
+            write(GREY3);
+            gotoXY(4, 5);
+            write(32, 32, 32, WHITE);
+            print("Patrons - Publishers");
+            newline();
+            write(RIGHT, RIGHT, RIGHT, ' ', ' ', ' ', ' ', GREY3);
+            println(repeat((char) 163, 20));
+            newline();
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161); println("SyncroWeb - Fulvio Ieva");
+            newline();
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '.', REVOFF, 161);
+            print("Exit ");
+            flush();
+            boolean validKey;
+            do {
+                validKey = true;
+                resetInput();
+                int key = readKey();
+                resetInput();
+                if (key >= 193 && key <= 218) {
+                    key -= 96;
+                }
+                key = Character.toLowerCase(key);
+                log("Patrons-Publishers. Pressed: '" + (key < 32 || key > 127 ? "chr(" + key + ")" : ((char) key)) + "' (code=" +
+                        key + ")");
+                if (key == '.') {
+                    return;
+                }
+                else if (key == '1') launch(new SyncroWebPetscii());
                 else {
                     validKey = false;
                 }
