@@ -120,7 +120,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("s".equals(choice)) { showPatrons(); subThread = null; }
                 else if ("t".equals(choice)) { patronsPublishers(); subThread = null; }
                 else if ("u".equals(choice)) { wifiModem(); subThread = null; }
-                else if ("w".equals(choice)) { textDemo(); subThread = null; }
+                else if ("v".equals(choice)) { textDemo(); subThread = null; }
                 else {
                     validKey = false;
                     subThread = null;
@@ -155,7 +155,7 @@ public class MenuApple1 extends AsciiThread {
         println("D - Mupin.it           S - Patrons list");
         println("E - Fatto Quotidiano   T - Publishers");
         println("F - Amedeo Valoroso    U - Wifi Modem");
-        println("G - Butac.it           W - Apple-1 Demo");
+        println("G - Butac.it           V - Apple-1 Demo");
         println("H - Alessandro Albano  . - Logout");
         println();
     }
