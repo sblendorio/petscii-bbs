@@ -37,6 +37,7 @@ import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
 public class ClientChatGptAscii extends AsciiThread {
     private BbsInputOutput interfaceType = null;
+    private byte[] mainLogo = null;
     private static final String EXIT_ADVICE = "Type \".\" to EXIT";
 
     private static Logger logger = LogManager.getLogger(ClientChatGptAscii.class);
@@ -75,13 +76,18 @@ public class ClientChatGptAscii extends AsciiThread {
         return Duration.ofSeconds(seconds);
     }
 
-    public ClientChatGptAscii(BbsInputOutput interfaceType) {
+    public ClientChatGptAscii(BbsInputOutput interfaceType, byte[] mainLogo) {
         super();
         this.interfaceType = interfaceType;
+        this.mainLogo = mainLogo;
+    }
+
+    public ClientChatGptAscii(BbsInputOutput interfaceType) {
+        this(interfaceType, null);
     }
 
     public ClientChatGptAscii() {
-        this(null);
+        this(null, null);
     }
 
     private OpenAiService service() {
@@ -106,12 +112,16 @@ public class ClientChatGptAscii extends AsciiThread {
         String model = toInt(patreonLevel) > 0 ? "gpt-4" : "gpt-3.5-turbo";
 
         cls();
-        println("Chat GPT - Classic Client");
-        println("-------------------------");
-        if (toInt(patreonLevel) > 0) println("Model: " + model);
-        println();
-        println(EXIT_ADVICE);
-        println();
+        if (mainLogo == null) {
+            println("Chat GPT - Classic Client");
+            println("-------------------------");
+            if (toInt(patreonLevel) > 0) println("Model: " + model);
+            println();
+            println(EXIT_ADVICE);
+            println();
+        } else {
+            write(mainLogo);
+        }
         List<ChatMessage> conversation = new LinkedList<>();
         String input;
         do {
@@ -309,8 +319,8 @@ public class ClientChatGptAscii extends AsciiThread {
         println("https://patreon.com/FrancescoSblendorio");
         println();
         println("Your Patreon email ('-' for underscore)");
-        // println("   you can use ! instead of @, example:");
-        // println("                      johndoe!gmail.com");
+        println("   you can use ! instead of @, example:");
+        println("                      johndoe!gmail.com");
         print(">");
         flush(); resetInput();
         String tempEmail = readLine();
