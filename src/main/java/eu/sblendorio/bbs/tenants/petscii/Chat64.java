@@ -18,6 +18,9 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+
+import static java.lang.System.getProperty;
+import static java.lang.System.getenv;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import java.util.List;
 import static java.util.Optional.ofNullable;
@@ -422,7 +425,7 @@ public class Chat64 extends PetsciiThread {
     }
 
     private String shortenUrl(String firstUrl) throws IOException, ParseException {
-        String token = System.getProperty("cutt_key", "DUMMY_KEY");
+        String token = defaultString(getProperty("cutt_key", getenv("cutt_key")), "DUMMY");
         URL shortService = new URL("https://cutt.ly/api/api.php?key=" + token + "&short=" +
             URLEncoder.encode(firstUrl, UTF_8.toString()));
         URLConnection conn = shortService.openConnection();
