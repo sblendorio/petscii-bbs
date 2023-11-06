@@ -265,7 +265,7 @@ public class MenuApple1 extends AsciiThread {
     public void wifiModem() throws Exception {
         cls();
         banner();
-        println("Once upon a a time, there where dial up");
+        println("Once upon a a time,  there were dial up");
         println("BBSes. Nowadays we have Internet but we");
         println("recreate such an experience.");
         println();

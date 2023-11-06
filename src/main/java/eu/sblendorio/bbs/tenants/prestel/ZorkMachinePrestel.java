@@ -22,6 +22,7 @@ public class ZorkMachinePrestel extends PrestelThread {
     public void logo() throws Exception {
         cls();
         flush();
+
     }
 
     @Override

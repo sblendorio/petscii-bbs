@@ -125,9 +125,13 @@ public class ChatA1 extends AsciiThread {
                         println("Error: name already used..");
                     }
                     redraw(false);
+                } else if (command.equalsIgnoreCase("/cls")) {
+                    canRedraw = false;
+                    cls();
+                    redraw(false);
                 } else if (command.equalsIgnoreCase("/users") ||
-                    command.equalsIgnoreCase("/user")  ||
-                    command.equalsIgnoreCase("/u")) {
+                        command.equalsIgnoreCase("/user")  ||
+                        command.equalsIgnoreCase("/u")) {
                     canRedraw = false;
                     showUsers(true);
                     redraw(false);
@@ -153,7 +157,7 @@ public class ChatA1 extends AsciiThread {
         }
     }
 
-    private synchronized void sendToAll(ChatMessage chatMessage) {
+    private /*synchronized*/ void sendToAll(ChatMessage chatMessage) {
         getClients().keySet().stream()
                 .filter(id -> getClients().get(id) != null)
                 .filter(id -> id != getClientId()
@@ -175,6 +179,7 @@ public class ChatA1 extends AsciiThread {
 
     private synchronized void displayHelp() {
         println("Commands");
+        println("/cls              " + (getScreenColumns() < 40 ? "" : "to clear screen"));
         println("/users or /u      " + (getScreenColumns() < 40 ? "" : "to list users"));
         println("/to <user> msg    " + (getScreenColumns() < 40 ? "" : "to talk with someone"));
         println("/nick <name>      " + (getScreenColumns() < 40 ? "" : "to change nick"));

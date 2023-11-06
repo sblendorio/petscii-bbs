@@ -101,7 +101,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
         try {
             originalBlogUrl = blogUrl;
             cls();
-            write(GREY3);
+            write(GREY3, LOWERCASE);
             waitOn();
 
             this.credential = GoogleCredential

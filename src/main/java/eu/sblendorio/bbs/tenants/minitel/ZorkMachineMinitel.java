@@ -23,6 +23,7 @@ public class ZorkMachineMinitel extends MinitelThread {
             readTextFile("apple1/intro-zork.txt").forEach(this::println);
         }
         flush();
+
     }
 
     @Override

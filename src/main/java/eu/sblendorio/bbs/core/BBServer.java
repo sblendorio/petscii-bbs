@@ -8,15 +8,13 @@ import java.lang.reflect.Modifier;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.*;
+
 import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparingLong;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
 import java.util.stream.Collectors;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -49,7 +47,7 @@ public class BBServer {
     private static int servicePort;
     private static int timeout;
     private static List<EndPoint> endPoints = new ArrayList<>();
-    private static List<Class<? extends BbsThread>> tenants = filterBBSThread();
+    private static Map<String, Class<? extends BbsThread>> tenantMap = filterBBSThreadMap();
     private static final int DEFAULT_TIMEOUT_IN_MILLIS = 3600000;
     private static final long DEFAULT_SERVICE_PORT = 0;
     private static Set<Integer> usedPorts = new HashSet<>();
@@ -181,7 +179,7 @@ public class BBServer {
                 validList = false;
                 break;
             }}
-            Class<? extends BbsThread> bbs = findTenant(bbsName);
+            Class<? extends BbsThread> bbs = tenantMap.get(bbsName.toLowerCase());
             if (bbs == null) {
                 logger.error("BBS \"{}\" not recognized", bbsName);
                 validList = false;
@@ -201,23 +199,11 @@ public class BBServer {
         }
     }
 
-    private static Class<? extends BbsThread> findTenant(final String bbsName) {
-        return findTenant(tenants, bbsName);
-    }
-
-    static Class<? extends BbsThread> findTenant(final List<Class<? extends BbsThread>> tenants,
-                                                 final String bbsName) {
-        return tenants.stream()
-            .filter(c -> c.getSimpleName().equalsIgnoreCase(bbsName))
-            .findFirst()
-            .orElse(null);
-    }
-
     private static void displayHelp(Options options) {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp(System.getProperty("sun.java.command"), options);
-        logger.info("List of available BBS:");
-        tenants.forEach(c -> logger.info(" * {}", c.getSimpleName()));
+        System.out.println("List of available BBS:");
+        tenantMap.values().stream().map(Class::getSimpleName).sorted().forEach(c -> System.out.println(" * " + c));
     }
 
     private final static String THREAD_ROW_FORMAT = "%20s %-40s %-35s %-15s %-7s %4s %-5s";
@@ -301,8 +287,8 @@ public class BBServer {
             try {
                 Class c = classInfo.load();
                 if (!Modifier.isAbstract(c.getModifiers())
-                    && BbsThread.class.isAssignableFrom(c)
-                    && !c.isAnnotationPresent(Hidden.class))
+                        && BbsThread.class.isAssignableFrom(c)
+                        && !c.isAnnotationPresent(Hidden.class))
                     result.add(c);
             } catch (LinkageError e) {
                 // SKIP
@@ -310,5 +296,28 @@ public class BBServer {
         }
         result.sort(comparing(Class::getSimpleName));
         return result;
+    }
+
+    private static Map<String, Class<? extends BbsThread>> filterBBSThreadMap() {
+        Map<String, Class<? extends BbsThread>> map = new HashMap<>();
+        final ClassLoader classLoader = BBServer.class.getClassLoader();
+        final Set<ClassPath.ClassInfo> classes;
+        try {
+            classes = ClassPath.from(classLoader).getTopLevelClasses();
+        } catch (IOException ioe) {
+            return emptyMap();
+        }
+        for (ClassPath.ClassInfo classInfo : classes) {
+            try {
+                Class c = classInfo.load();
+                if (!Modifier.isAbstract(c.getModifiers())
+                        && BbsThread.class.isAssignableFrom(c)
+                        && !c.isAnnotationPresent(Hidden.class))
+                    map.put(c.getSimpleName().toLowerCase(), c);
+            } catch (LinkageError e) {
+                // SKIP
+            }
+        }
+        return map;
     }
 }

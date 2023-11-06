@@ -166,8 +166,8 @@ public class MenuM10 extends AsciiThread {
     public void showPatrons() throws Exception {
         List<String> patrons = readExternalTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
                 .stream()
-                .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
+                .filter(StringUtils::isNotBlank)
                 .filter(str -> !str.startsWith(";"))
                 .sorted(comparing(String::toLowerCase))
                 .collect(toList());
@@ -204,7 +204,7 @@ public class MenuM10 extends AsciiThread {
     public void wifiModem() throws Exception {
         cls();
         banner();
-        println("Once upon a a time, there where dial up");
+        println("Once upon a a time,  there were dial up");
         println("BBSes. Nowadays we have Internet but we");
         println("recreate such an experience.");
         println();

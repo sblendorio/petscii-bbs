@@ -167,9 +167,13 @@ public class Chat64 extends PetsciiThread {
                         println("Error: name already used.");
                     }
                     redraw();
+                } else if (command.equalsIgnoreCase("/cls")) {
+                    canRedraw = false;
+                    cls();
+                    redraw();
                 } else if (command.equalsIgnoreCase("/users") ||
-                    command.equalsIgnoreCase("/user")  ||
-                    command.equalsIgnoreCase("/u")) {
+                        command.equalsIgnoreCase("/user")  ||
+                        command.equalsIgnoreCase("/u")) {
                     canRedraw = false;
                     showUsers(true);
                     redraw();
@@ -198,7 +202,7 @@ public class Chat64 extends PetsciiThread {
         }
     }
 
-    private synchronized void sendToAll(ChatMessage chatMessage) {
+    private /*synchronized*/ void sendToAll(ChatMessage chatMessage) {
         log("START sendToAll, clientName="+getClientName()+", getClients().keySet()="+getClients().keySet());
         getClients().keySet().stream()
                 .filter(id -> getClients().get(id) != null)
@@ -226,6 +230,11 @@ public class Chat64 extends PetsciiThread {
     private synchronized void displayHelp() {
         write(PetsciiColors.BLUE);
         println("Commands");
+
+        write(PetsciiColors.LIGHT_BLUE);
+        print("/cls");
+        write(PetsciiColors.GREY2);
+        println("              to clear screen");
 
         write(PetsciiColors.LIGHT_BLUE);
         print("/users");

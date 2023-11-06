@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
+import eu.sblendorio.bbs.core.PetsciiColors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
@@ -130,6 +131,7 @@ public class UserLogon extends PetsciiThread {
     @Override
     public void doLoop() throws Exception {
         init();
+
         String username;
         String password;
         if (user == null) {
@@ -137,6 +139,7 @@ public class UserLogon extends PetsciiThread {
             write(CASE_LOCK, LOWERCASE);
             write(LOGO_BYTES);
             write(GREY3);
+
             newline();
             println("Enter 'P' for privacy policy");
             newline();
@@ -146,6 +149,7 @@ public class UserLogon extends PetsciiThread {
                 print("USERID or 'NEW': ");
                 flush(); resetInput();
                 username = readLine();
+                username = lowerCase(username);
                 if (isBlank(username) || ".".equals(username)) return;
                 if (equalsIgnoreCase(username, "p")) {
                     showPrivacyPolicy();
@@ -167,7 +171,7 @@ public class UserLogon extends PetsciiThread {
                 }
             } while (equalsIgnoreCase(username, "new") || equalsIgnoreCase(username, "p"));
             print("PASSWORD: ");
-            flush(); resetInput(); password = readPassword();
+            flush(); resetInput(); password = readPassword(); password = lowerCase(password);
             user = getUser(username, password);
             if (user == null) {
                 write(RED);
@@ -234,6 +238,7 @@ public class UserLogon extends PetsciiThread {
             do {
                 print("send to (? for user list): ");
                 flush(); resetInput(); receipt = readLine();
+                receipt = lowerCase(receipt);
                 if (isBlank(receipt)) return;
                 ok = existsUser(receipt);
                 if (!ok && !"?".equals(receipt)) println("WARN: not existing user");
@@ -268,6 +273,8 @@ public class UserLogon extends PetsciiThread {
     }
 
     public void sendMessage(String from, String to, String subject, String message) throws Exception {
+        from = lowerCase(from);
+        to = lowerCase(to);
         try (PreparedStatement ps = conn.prepareStatement("INSERT INTO messages (user_from, user_to, datetime, is_read, subject, message) values (?,?,?,?,?,?)")) {
             ps.setString(1, from);
             ps.setString(2, to);
@@ -523,15 +530,17 @@ public class UserLogon extends PetsciiThread {
         do {
             print("Username: ");
             flush(); resetInput(); username = readLine();
+            username = lowerCase(username);
             if (isBlank(username)) return false;
             notValid = existsUser(username) || userInVault(username) || "?".equals(username) || "p".equalsIgnoreCase(username);
             if (notValid) println("WARN: Username not available");
         } while (notValid);
         print("Real name: "); flush(); resetInput(); realname = readLine();
-        print("Email: "); flush(); resetInput(); email = readLine();
+        print("Email: "); flush(); resetInput(); email = readLine(); email=lowerCase(email);
         do {
             print("Password: ");
             flush(); resetInput(); password = readPassword();
+            password = lowerCase(password);
         } while (isBlank(password));
         write(LIGHT_RED); print("Do you confirm creation? (Y/N)"); write(GREY3);
         flush(); resetInput(); int key = readKey(); resetInput();

@@ -137,6 +137,7 @@ public class PrivateMessagesAscii extends AsciiThread {
         if (user == null) {
             cls();
             write(LOGO_BYTES);
+
             newline();
             println("Enter 'P' for privacy policy");
             newline();
@@ -164,7 +165,7 @@ public class PrivateMessagesAscii extends AsciiThread {
                 }
             } while (equalsIgnoreCase(username, "new") || equalsIgnoreCase(username, "p"));
             print("PASSWORD: ");
-            flush(); resetInput(); password = readPassword();
+            flush(); resetInput(); password = readPassword(); password = lowerCase(password);
             user = getUser(username, password);
             if (user == null) {
                 newline();
@@ -261,6 +262,8 @@ public class PrivateMessagesAscii extends AsciiThread {
     }
 
     public void sendMessage(String from, String to, String subject, String message) throws Exception {
+        from = lowerCase(from);
+        to = lowerCase(to);
         try (PreparedStatement ps = conn.prepareStatement("INSERT INTO messages (user_from, user_to, datetime, is_read, subject, message) values (?,?,?,?,?,?)")) {
             ps.setString(1, from);
             ps.setString(2, to);
@@ -506,7 +509,7 @@ public class PrivateMessagesAscii extends AsciiThread {
         print("Email: "); flush(); resetInput(); email = readLine(); email = lowerCase(email);
         do {
             print("Password: ");
-            flush(); resetInput(); password = readPassword();
+            flush(); resetInput(); password = readPassword(); password = lowerCase(password);
         } while (isBlank(password));
         print("Do you confirm creation? (Y/N)");
         flush(); resetInput(); int key = readKey(); resetInput();

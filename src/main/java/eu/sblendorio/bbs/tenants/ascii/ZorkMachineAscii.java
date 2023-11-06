@@ -24,6 +24,7 @@ public class ZorkMachineAscii extends AsciiThread {
             readTextFile("apple1/intro-zork.txt").forEach(this::println);
         }
         flush();
+
     }
 
     @Override

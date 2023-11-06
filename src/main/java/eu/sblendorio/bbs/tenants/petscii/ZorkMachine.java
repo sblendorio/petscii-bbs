@@ -34,6 +34,7 @@ public class ZorkMachine extends PetsciiThread {
         log("Zork Machine started. Filename=" + this.filename);
         write(PetsciiKeys.CLR, PetsciiKeys.LOWERCASE, PetsciiKeys.CASE_LOCK, PetsciiKeys.HOME);
         write(PetsciiColors.GREEN);
+
         write(logo);
         if (logo.length > 0) {
             flush(); resetInput();
@@ -42,6 +43,7 @@ public class ZorkMachine extends PetsciiThread {
             newline();
             newline();
         }
+
         write(PetsciiColors.GREY3);
         write(PetsciiColors.LIGHT_GREEN); println("Based on ZMPP by Wei-ju Wu");
         write(PetsciiColors.WHITE); println("BBS version (2020) by:");

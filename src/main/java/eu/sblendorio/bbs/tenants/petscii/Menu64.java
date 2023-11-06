@@ -187,7 +187,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == '3') launch(new ValigiaBlu());
                 else if (key == '4') launch(new Linkiesta());
                 else if (key == '5') launch(new IlFattoQuotidiano());
-                else if (key == '6') launch(new OneTexasInstrumentItaliaPetscii());
+                else if (key == '6') launch(new OneTexasInstrumentsItaliaPetscii());
                 else if (key == '7') launch(new Lercio());
                 else if (key == '8') launch(new CicapLombardia());
                 else if (key == '9') launch(new Medbunker());
@@ -442,8 +442,8 @@ public class Menu64 extends PetsciiThread {
         List<String> patrons =
                 readExternalTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
                 .stream()
-                .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
+                .filter(StringUtils::isNotBlank)
                 .filter(str -> !str.startsWith(";"))
                 .map(x -> x.replaceAll(" - .*$", ""))
                 .map(x -> StringUtils.substring(x, 0, 20))
