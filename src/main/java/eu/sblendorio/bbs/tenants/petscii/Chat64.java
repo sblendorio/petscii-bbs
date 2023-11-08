@@ -78,6 +78,7 @@ public class Chat64 extends PetsciiThread {
 
     private Long recipient = null;
     private boolean canRedraw = false;
+    private boolean beep = true;
 
     private ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<>();
 
@@ -171,6 +172,11 @@ public class Chat64 extends PetsciiThread {
                     canRedraw = false;
                     cls();
                     redraw();
+                } else if (command.equalsIgnoreCase("/beep")) {
+                    beep = !beep;
+                    write(beep ? PetsciiColors.GREEN : PetsciiColors.RED);
+                    println("* beep " + (beep ? "on" : "off"));
+                    redraw();
                 } else if (command.equalsIgnoreCase("/users") ||
                         command.equalsIgnoreCase("/user")  ||
                         command.equalsIgnoreCase("/u")) {
@@ -235,6 +241,11 @@ public class Chat64 extends PetsciiThread {
         print("/cls");
         write(PetsciiColors.GREY2);
         println("              to clear screen");
+
+        write(PetsciiColors.LIGHT_BLUE);
+        print("/beep");
+        write(PetsciiColors.GREY2);
+        println("             to toggle beep");
 
         write(PetsciiColors.LIGHT_BLUE);
         print("/users");
@@ -406,7 +417,7 @@ public class Chat64 extends PetsciiThread {
         if (canRedraw && (/* chatMessage.receiverId > 0 || */ readLineBuffer().length() == 0)) {
             redraw();
             write(INPUT_COLOR);
-            if (senderId != this.clientId) {
+            if (beep && senderId != this.clientId) {
                 write(7);
             }
         }

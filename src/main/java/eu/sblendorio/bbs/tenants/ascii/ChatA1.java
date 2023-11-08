@@ -28,6 +28,7 @@ public class ChatA1 extends AsciiThread {
 
     private static final String CUSTOM_KEY = "CHAT";
     private boolean canRedraw = false;
+    private boolean beep = true;
     private String termType;
     private BbsInputOutput interfaceType;
 
@@ -129,6 +130,10 @@ public class ChatA1 extends AsciiThread {
                     canRedraw = false;
                     cls();
                     redraw(false);
+                } else if (command.equalsIgnoreCase("/beep")) {
+                    beep = !beep;
+                    println("* beep " + (beep ? "on" : "off"));
+                    redraw(false);
                 } else if (command.equalsIgnoreCase("/users") ||
                         command.equalsIgnoreCase("/user")  ||
                         command.equalsIgnoreCase("/u")) {
@@ -180,6 +185,7 @@ public class ChatA1 extends AsciiThread {
     private synchronized void displayHelp() {
         println("Commands");
         println("/cls              " + (getScreenColumns() < 40 ? "" : "to clear screen"));
+        println("/beep             " + (getScreenColumns() < 40 ? "" : "to toggle beep"));
         println("/users or /u      " + (getScreenColumns() < 40 ? "" : "to list users"));
         println("/to <user> msg    " + (getScreenColumns() < 40 ? "" : "to talk with someone"));
         println("/nick <name>      " + (getScreenColumns() < 40 ? "" : "to change nick"));
@@ -271,7 +277,7 @@ public class ChatA1 extends AsciiThread {
         rows.addLast(new Row(senderId, chatMessage));
         if (canRedraw && (/* chatMessage.receiverId > 0 || */ readLineBuffer().length() == 0)) {
             redraw(true);
-            if (senderId != this.clientId) {
+            if (beep && senderId != this.clientId) {
                 write(7);
             }
         }

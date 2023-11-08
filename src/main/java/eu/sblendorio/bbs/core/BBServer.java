@@ -67,6 +67,7 @@ public class BBServer {
                     servicePort);
 
         for (EndPoint endPoint: endPoints) {
+            logger.info("Starting {}:{}", endPoint.bbs.getSimpleName(), endPoint.port);
             new Thread(() -> {
                 Thread.currentThread().setName("BBS Dispatcher-" + Thread.currentThread().getId());
                 try (ServerSocket listener = new ServerSocket(endPoint.port)) {
