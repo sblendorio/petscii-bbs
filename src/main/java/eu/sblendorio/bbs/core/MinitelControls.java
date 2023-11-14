@@ -21,7 +21,7 @@ public class MinitelControls {
     public static final byte BACKGROUND_BLUE = 0x54;
     public static final byte BACKGROUND_MAGENTA = 0x55;
     public static final byte BACKGROUND_CYAN = 0x56;
-    public static final byte BACKGROUND_WHUTE = 0x57;
+    public static final byte BACKGROUND_WHITE = 0x57;
 
     public static final byte TEXTSIZE_NORMAL = 0x4c;
     public static final byte TEXTSIZE_DOUBLE_HEIGHT = 0x4d;
@@ -50,6 +50,9 @@ public class MinitelControls {
 
     public static final byte CURSOR_ON = 0x11;
     public static final byte CURSOR_OFF = 0x14;
+
+    public static final byte MOVEXY = 0x1f;
+    public static final byte BEEP = 0x07;
 
     public static final byte[] SCROLL_ON = new byte[] { 0x1b, 0x3a, 0x69, 0x43 };
     public static final byte[] SCROLL_OFF = new byte[] { 0x1b, 0x3a, 0x6a, 0x43 };
