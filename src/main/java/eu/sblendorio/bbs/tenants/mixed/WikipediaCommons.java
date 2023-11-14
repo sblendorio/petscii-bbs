@@ -17,6 +17,8 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
 public class WikipediaCommons {
+
+    private static final int LIMIT_SEARCH = 100;
     private static final String URL_GET_BY_PAGEID = "https://${LANG}.wikipedia.org/w/api.php?format=json&action=parse&prop=text&pageid=${PAGEID}";
     private static final String URL_SEARCH_BY_KEYWORDS = "https://${LANG}.wikipedia.org/w/api.php?format=json&action=query&list=search&srsearch=${KEYWORDS}&sroffset=${OFFSET}&srlimit=${LIMIT}";
 
@@ -85,6 +87,7 @@ public class WikipediaCommons {
         List<WikipediaItem> result = new LinkedList<>();
         if (StringUtils.isBlank(keywords))
             return result;
+        int count = 0;
         JSONObject continues;
         do {
             String url = getSearchUrl(lang, keywords, offset, limit);
@@ -92,8 +95,8 @@ public class WikipediaCommons {
             continues = (JSONObject) root.get("continue");
             JSONObject query = (JSONObject) root.get("query");
             JSONArray search = (JSONArray) query.get("search");
-            for (int i = 0; i < search.size(); i++) {
-                JSONObject itemJ = (JSONObject) search.get(i);
+            for (Object obj : search) {
+                JSONObject itemJ = (JSONObject) obj;
                 WikipediaItem item = new WikipediaItem();
                 item.lang = defaultString(lang).replace("[^a-zA-Z0-9]", "").toLowerCase();
                 item.ns = itemJ.get("ns") == null ? -1 : (Long) (itemJ.get("ns"));
@@ -104,12 +107,13 @@ public class WikipediaCommons {
                 item.snippet = defaultString((String) (itemJ.get("snippet")));
                 item.timestamp = defaultString((String) (itemJ.get("timestamp")));
                 result.add(item);
+                count++;
+                if (LIMIT_SEARCH > 0 && count >= LIMIT_SEARCH) break;
             }
             if (continues != null) {
                 offset = (Long) (continues.get("sroffset"));
-            } else {
             }
-        } while (continues != null && !onlyFirst);
+        } while ((count < LIMIT_SEARCH || LIMIT_SEARCH == 0) && continues != null && !onlyFirst);
         return result;
     }
 

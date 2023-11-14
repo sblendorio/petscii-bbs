@@ -73,12 +73,16 @@ public class MinitelInputOutput extends BbsInputOutput {
             try {
                 if (isDiacritic(c)) {
                     printDiacritic(c);
-                } else if (Character.isLetter(c)) {
-                    out.write(Character.toString(c).getBytes(StandardCharsets.UTF_8));
-                } else {
+                // } else if (Character.isLetter(c) && Character.is) {
+                //     out.write(Character.toString(c).getBytes(StandardCharsets.UTF_8));
+                } else if (c >= 32 && c <= 127) {
                     out.write(c);
+                } else {
+                    out.write('*');
                 }
-            } catch (IOException e) {}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
