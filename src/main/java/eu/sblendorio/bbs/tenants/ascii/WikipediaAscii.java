@@ -1,6 +1,7 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
 import eu.sblendorio.bbs.core.AsciiThread;
+import eu.sblendorio.bbs.core.BbsInputOutput;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.tenants.mixed.WikipediaCommons;
 import org.apache.commons.lang3.StringUtils;
@@ -9,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.lowerCase;
@@ -17,6 +17,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class WikipediaAscii extends AsciiThread {
+    private BbsInputOutput interfaceType = null;
     protected static final String DEFAULT_WIKIPEDIA_LANG = "DEFAULT_WIKIPEDIA_LANG";
     private static Logger logger = LogManager.getLogger(WikipediaAscii.class);
     private String lang;
@@ -31,10 +32,19 @@ public class WikipediaAscii extends AsciiThread {
     }
 
     public WikipediaAscii() {
+        super();
+    }
+
+    public WikipediaAscii(BbsInputOutput interfaceType) {
+        this.interfaceType = interfaceType;
     }
 
     @Override
     public void doLoop() throws Exception {
+        if (interfaceType != null) {
+            this.setBbsInputOutput(interfaceType);
+        }
+
         try {
             lang = (String) getRoot().getCustomObject(DEFAULT_WIKIPEDIA_LANG);
         } catch (NullPointerException | ClassCastException e) {

@@ -98,33 +98,35 @@ public class MenuPrestelWithEcho extends PrestelThread {
                 else if ("5".equals(choice)) subThread = new IndieRetroNewsAscii(io);
                 else if ("6".equals(choice)) subThread = new VcfedAscii(io);
                 else if ("7".equals(choice)) subThread = new The8BitGuyAscii(io);
-                else if ("f".equals(choice)) subThread = new TelevideoRaiAscii(
+                else if ("a".equals(choice)) subThread = new TelevideoRaiAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getTerminalType(),
                         bytes(20, readBinaryFile("prestel/menu-televideo.cept3")),
                         bytes(11, 11, 13, 10, 32, 32, 32, 32, 32, 32, 13, 10, 11, 17)
                 );
-                else if ("g".equals(choice)) subThread = new LercioAscii(io);
-                else if ("h".equals(choice)) subThread = new DisinformaticoAscii(io);
-                else if ("i".equals(choice)) subThread = new MupinAscii(io);
-                else if ("j".equals(choice)) subThread = new IlFattoQuotidianoAscii(io);
-                else if ("k".equals(choice)) subThread = new AmedeoValorosoAscii(io);
-                else if ("l".equals(choice)) subThread = new ButacAscii(io);
-                else if ("m".equals(choice)) subThread = new AlessandroAlbanoAscii(io);
-                else if ("n".equals(choice)) subThread = new TicTacToeAscii(io);
-                else if ("o".equals(choice)) subThread = new Connect4Ascii();
-                else if ("p".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/zork1.z3");
-                else if ("q".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/zork2.z3");
-                else if ("r".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/zork3.z3");
-                else if ("s".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/hitchhiker-r60.z3");
-                else if ("t".equals(choice) & !"prestel".equals(getTerminalType())) subThread = new ChatA1(io, getTerminalType());
-                else if ("u".equals(choice)) subThread = new PrivateMessagesAscii(io);
-                else if ("v".equals(choice)) subThread = new ElizaAscii(io);
-                else if ("w".equals(choice)) subThread = new ClientChatGptAscii(io);
-                else if ("x".equals(choice)) { showPatrons(); subThread = null; }
-                else if ("y".equals(choice)) { wifiModem(); subThread = null; }
-                else if ("z".equals(choice)) { textDemo(); subThread = null; }
+                else if ("b".equals(choice)) subThread = new LercioAscii(io);
+                else if ("c".equals(choice)) subThread = new DisinformaticoAscii(io);
+                else if ("d".equals(choice)) subThread = new MupinAscii(io);
+                else if ("e".equals(choice)) subThread = new IlFattoQuotidianoAscii(io);
+                else if ("f".equals(choice)) subThread = new AmedeoValorosoAscii(io);
+                else if ("g".equals(choice)) subThread = new ButacAscii(io);
+                else if ("h".equals(choice)) subThread = new AlessandroAlbanoAscii(io);
+                else if ("i".equals(choice)) subThread = new TicTacToeAscii(io);
+                else if ("j".equals(choice)) subThread = new Connect4Ascii();
+                else if ("k".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/zork1.z3");
+                else if ("l".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/zork2.z3");
+                else if ("m".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/zork3.z3");
+                else if ("n".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/hitchhiker-r60.z3");
+                // else if ("o".equals(choice)) subThread = new ChatA1(io, getTerminalType());
+                else if ("p".equals(choice)) subThread = new PrivateMessagesAscii(io);
+                else if ("q".equals(choice)) subThread = new ElizaAscii(io);
+                else if ("r".equals(choice)) subThread = new ClientChatGptAscii(io);
+                else if ("s".equals(choice)) { showPatrons(); subThread = null; }
+                else if ("t".equals(choice)) { patronsPublishers(); subThread = null; }
+                // else if ("u".equals(choice)) { wifiModem(); subThread = null; }
+                else if ("w".equals(choice)) subThread = new WikipediaAscii(io);
+                else if ("x".equals(choice)) { textDemo(); subThread = null; }
                 else {
                     validKey = false;
                     subThread = null;
@@ -159,29 +161,6 @@ public class MenuPrestelWithEcho extends PrestelThread {
     public void displayMenu() throws Exception {
         cls();
         write(readBinaryFile("prestel/menu-retrocampus.cept3"));
-        /*
-            String sp = (getScreenColumns() > 40) ? "                    " : "";
-            banner();
-            println("International News---"+ sp +" Game Room--------");
-            println("1 - CNN News         "+ sp +" N - TIC TAC TOE");
-            println("2 - BBC News         "+ sp +" O - Connect Four");
-            println("3 - Politico.com");
-            println("4 - Al Jazeera       "+ sp +" Services---------");
-            println("5 - Indie Retro News "+ sp +" X - Patrons list");
-            println("6 - VCF News         "+ sp +" Y - Wifi Modem");
-            println("7 - The 8-Bit Guy    "+ sp +" Z - PrestelMuseum");
-            println("                     ");
-            println("Italian News---------");
-            println("F - Televideo RAI    ");
-            println("G - Lercio           ");
-            println("H - Disinformatico   ");
-            println("I - Mupin.it         ");
-            println("J - Fatto Quotidiano ");
-            println("K - Amedeo Valoroso  ");
-            println("L - Butac.it         ");
-            println("M - Alessandro Albano"+ sp +"        . - Logout");
-            println();
-        */
         flush(); resetInput();
     }
 

@@ -93,34 +93,36 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("5".equals(choice)) subThread = new IndieRetroNewsAscii();
                 else if ("6".equals(choice)) subThread = new VcfedAscii();
                 else if ("7".equals(choice)) subThread = new The8BitGuyAscii();
-                else if ("f".equals(choice)) subThread = new TelevideoRaiAscii(
+                else if ("a".equals(choice)) subThread = new TelevideoRaiAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getTerminalType(),
                         bytes(readBinaryFile("minitel/menu-televideo.vdt")),
                         bytes(31, 64+23, 64+1, 32, 32, 32, 32, 32, 32, 31, 64+23, 64+1)
                 );
-                else if ("g".equals(choice)) subThread = new LercioAscii();
-                else if ("h".equals(choice)) subThread = new DisinformaticoAscii();
-                else if ("i".equals(choice)) subThread = new MupinAscii();
-                else if ("j".equals(choice)) subThread = new IlFattoQuotidianoAscii();
-                else if ("k".equals(choice)) subThread = new AmedeoValorosoAscii();
-                else if ("l".equals(choice)) subThread = new ButacAscii();
-                else if ("m".equals(choice)) subThread = new AlessandroAlbanoAscii();
-                else if ("n".equals(choice)) subThread = new TicTacToeAscii();
-                else if ("o".equals(choice)) subThread = new Connect4Ascii();
-                else if ("p".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork1.z3");
-                else if ("q".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork2.z3");
-                else if ("r".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork3.z3");
-                else if ("s".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/hitchhiker-r60.z3");
-                else if ("t".equals(choice)) subThread = new ChatA1(io, getTerminalType());
-                else if ("u".equals(choice)) subThread = new PrivateMessagesAscii(io);
-                else if ("v".equals(choice)) subThread = new ElizaAscii(io);
-                else if ("w".equals(choice)) subThread = new ClientChatGptAscii(io, readBinaryFile("minitel/chatgpt-mainlogo.vdt"));
-                else if ("x".equals(choice)) { showPatrons(); subThread = null; }
-                else if ("y".equals(choice)) { wifiModem(); subThread = null; }
-                else if ("z".equals(choice)) { textDemo(); subThread = null; }
-                else if ("9".equals(choice)) { videotelVault(); subThread = null; }
+                else if ("b".equals(choice)) subThread = new LercioAscii();
+                else if ("c".equals(choice)) subThread = new DisinformaticoAscii();
+                else if ("d".equals(choice)) subThread = new MupinAscii();
+                else if ("e".equals(choice)) subThread = new IlFattoQuotidianoAscii();
+                else if ("f".equals(choice)) subThread = new AmedeoValorosoAscii();
+                else if ("g".equals(choice)) subThread = new ButacAscii();
+                else if ("h".equals(choice)) subThread = new AlessandroAlbanoAscii();
+                else if ("i".equals(choice)) subThread = new TicTacToeAscii();
+                else if ("j".equals(choice)) subThread = new Connect4Ascii();
+                else if ("k".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork1.z3");
+                else if ("l".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork2.z3");
+                else if ("m".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork3.z3");
+                else if ("n".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/hitchhiker-r60.z3");
+                else if ("o".equals(choice)) subThread = new ChatA1(io, getTerminalType());
+                else if ("p".equals(choice)) subThread = new PrivateMessagesAscii(io);
+                else if ("q".equals(choice)) subThread = new ElizaAscii(io);
+                else if ("r".equals(choice)) subThread = new ClientChatGptAscii(io, readBinaryFile("minitel/chatgpt-mainlogo.vdt"));
+                else if ("s".equals(choice)) { showPatrons(); subThread = null; }
+                else if ("t".equals(choice)) { patronsPublishers(); subThread = null; }
+                else if ("u".equals(choice)) { wifiModem(); subThread = null; }
+                else if ("v".equals(choice)) { textDemo(); subThread = null; }
+                else if ("w".equals(choice)) subThread = new WikipediaMinitel();
+                else if ("x".equals(choice)) { videotelVault(); subThread = null; }
                 else {
                     validKey = false;
                     subThread = null;

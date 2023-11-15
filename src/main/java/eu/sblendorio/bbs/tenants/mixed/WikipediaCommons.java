@@ -80,6 +80,7 @@ public class WikipediaCommons {
         doc.select(".catlinks").remove();
         doc.select(".noprint").remove();
         doc.select(".metadata").remove();
+        doc.select(".toc").remove();
         doc.select("style").remove();
         doc.select("script").remove();
         doc.select("figure").remove();
@@ -158,6 +159,7 @@ https://it.wikipedia.org/w/api.php?format=json&action=parse&prop=text&page=Macci
         doc.select(".hatnote").remove();
         doc.select(".catlinks").remove();
         doc.select(".noprint").remove();
+        doc.select(".toc").remove();
         doc.select("style").remove();
         doc.select("figure").remove();
         doc.select("*[style*=display:none]").remove();
