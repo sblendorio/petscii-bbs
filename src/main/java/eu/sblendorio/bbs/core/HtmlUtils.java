@@ -59,7 +59,9 @@ public class HtmlUtils {
                 .replaceAll("&ccedil;|&#231;|&#xE7;", "ç")
                 .replaceAll("&Ccedil;|&#199;|&#xC7;", "Ç")
 
-                .replaceAll("€|&euro;?|&#x20AC|&#x20ac|&#8364;;", " euro ")
+                .replaceAll("([0-9])(€|&euro;?|&#x20AC|&#x20ac|&#8364;)", "$1 euro")
+                .replaceAll("(€|&euro;?|&#x20AC|&#x20ac|&#8364;)([0-9])", "euro $2")
+                .replaceAll("€|&euro;?|&#x20AC|&#x20ac|&#8364;", "euro")
                 .replaceAll("Ł|&Lstrok;?|&#x0141;|&#321;", "L")
                 .replaceAll("ł|&lstrok;?|&#x0142;|&#322;", "l")
                 .replaceAll("Ą|&Aogon;?|&#x0104;|&#260;", "A")
