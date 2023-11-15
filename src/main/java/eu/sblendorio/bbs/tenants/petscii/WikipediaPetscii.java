@@ -33,8 +33,8 @@ public class WikipediaPetscii extends PetsciiThread {
     }
 
     public WikipediaPetscii() {
-        mainLogo = readBinaryFile("minitel/wikipedia-title.vdt");
-        headLogo = readBinaryFile("minitel/wikipedia-header.vdt");
+        mainLogo = readBinaryFile("petscii/wikipedia-title.vdt");
+        headLogo = readBinaryFile("petscii/wikipedia-header.vdt");
     }
 
     @Override
@@ -52,8 +52,8 @@ public class WikipediaPetscii extends PetsciiThread {
             List<WikipediaCommons.WikipediaItem> items;
             cls();
             write(mainLogo);
-            gotoXY(24, 7);
-            write(WHITE, REVON);
+            gotoXY(24, 8);
+            write(GREY3, REVON);
             print(" "+StringUtils.upperCase(lang));
             flush();
             resetInput();
@@ -63,12 +63,13 @@ public class WikipediaPetscii extends PetsciiThread {
                 if (ch == '.') {
                     return;
                 } else if (ch == '1') {
-                    gotoXY(1,18);
+                    write(REVON, BLUE);
+                    gotoXY(1,19);
                     print("                                     ");
-                    gotoXY(24,7);
+                    gotoXY(24,8);
                     write(REVOFF, WHITE);
                     print("        ");
-                    gotoXY(25,7);
+                    gotoXY(25,8);
                     flush(); resetInput();
                     String newLang;
                     newLang = readLine(6);
@@ -81,37 +82,39 @@ public class WikipediaPetscii extends PetsciiThread {
                     lang = newLang;
                     getRoot().setCustomObject(DEFAULT_WIKIPEDIA_LANG, lang);
 
-                    gotoXY(24,7);
-                    write(REVON, BLUE);
+                    gotoXY(24,8);
+                    write(REVON, GREY3);
                     print("        ");
-                    gotoXY(24,7);
-                    write(REVON, BLUE);
+                    gotoXY(24,8);
+                    write(REVON, GREY3);
                     print(" "+StringUtils.upperCase(lang));
                     continue;
                 } else if (ch == '2') {
-                    gotoXY(7,9);
+                    gotoXY(6,10);
                     write(REVON, RED);
                     print(" 2. Search               ");
                 } else if (ch == '3') {
-                    gotoXY(7, 11);
+                    gotoXY(6, 12);
                     write(REVON, RED);
                     print(" 3. I feel lucky         ");
                 } else {
                     continue;
                 }
 
-                gotoXY(1,18);
+                write(BLUE, REVON);
+                gotoXY(1,19);
                 print("                                     ");
-                gotoXY(1,18);
-                print("Query> ");
+                gotoXY(1,19);
+                print(" Query> ");
                 flush(); resetInput();
                 String keywords = readLine();
 
                 if (StringUtils.isNotBlank(keywords)) {
-                    gotoXY(1,18);
+                    write(BLUE, REVON);
+                    gotoXY(1,19);
                     print("                                     ");
-                    gotoXY(1,18);
-                    print("PLEASE WAIT...");
+                    gotoXY(1,19);
+                    print(" PLEASE WAIT...");
                 }
 
                 items = (ch == '2')
@@ -120,24 +123,26 @@ public class WikipediaPetscii extends PetsciiThread {
                 ;
 
                 flush(); resetInput();
-                gotoXY(1,18);
+                write(REVON, BLUE);
+                gotoXY(1,19);
                 print("                                     ");
 
                 if (items.size() == 0) {
                     if (ch == '2') {
-                        gotoXY(7,9);
-                        write(REVON, BLUE);
+                        gotoXY(6,10);
+                        write(REVON, GREY3);
                         print(" 2. Search               ");
                     } else if (ch == '3') {
-                        gotoXY(7,11);
-                        write(REVON, BLUE);
+                        gotoXY(6,12);
+                        write(REVON, GREY3);
                         print(" 3. I feel lucky         ");
                     }
 
-                    gotoXY(1,18);
+                    write(REVON, BLUE);
+                    gotoXY(1,19);
                     print("                                     ");
-                    gotoXY(1,18);
-                    if (StringUtils.isNotBlank(keywords)) print("NO RESULT");
+                    gotoXY(1,19);
+                    if (StringUtils.isNotBlank(keywords)) print(" NO RESULT");
                     continue;
                 }
 

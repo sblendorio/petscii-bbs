@@ -18,8 +18,6 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 public class WikipediaAscii extends AsciiThread {
     protected static final String DEFAULT_WIKIPEDIA_LANG = "DEFAULT_WIKIPEDIA_LANG";
     private static Logger logger = LogManager.getLogger(WikipediaAscii.class);
-    private byte[] mainLogo;
-    private byte[] headLogo;
     private String lang;
 
     String HR_TOP;
@@ -32,8 +30,6 @@ public class WikipediaAscii extends AsciiThread {
     }
 
     public WikipediaAscii() {
-        mainLogo = "Wikipedia\n".getBytes(StandardCharsets.ISO_8859_1);
-        headLogo = "Wikipedia\n".getBytes(StandardCharsets.ISO_8859_1);
     }
 
     @Override
