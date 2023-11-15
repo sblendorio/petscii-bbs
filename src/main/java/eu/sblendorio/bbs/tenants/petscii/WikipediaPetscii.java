@@ -66,7 +66,7 @@ public class WikipediaPetscii extends PetsciiThread {
                 } else if (ch == '1') {
                     write(REVON, BLUE);
                     gotoXY(1,19);
-                    print("                                     ");
+                    print("                                      ");
                     gotoXY(24,8);
                     write(REVOFF, WHITE);
                     print("        ");
@@ -117,7 +117,7 @@ public class WikipediaPetscii extends PetsciiThread {
                 if (StringUtils.isNotBlank(keywords)) {
                     write(BLUE, REVON);
                     gotoXY(1,19);
-                    print("                                     ");
+                    print("                                      ");
                     gotoXY(1,19);
                     print(" PLEASE WAIT...");
                 }
@@ -130,7 +130,7 @@ public class WikipediaPetscii extends PetsciiThread {
                 flush(); resetInput();
                 write(REVON, BLUE);
                 gotoXY(1,19);
-                print("                                     ");
+                print("                                      ");
 
                 if (items.size() == 0) {
                     if (ch == '2') {
@@ -145,7 +145,7 @@ public class WikipediaPetscii extends PetsciiThread {
 
                     write(REVON, BLUE);
                     gotoXY(1,19);
-                    print("                                     ");
+                    print("                                      ");
                     gotoXY(1,19);
                     if (StringUtils.isNotBlank(keywords)) {
                         write(BLUE);
