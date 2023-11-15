@@ -63,7 +63,7 @@ public class WikipediaMinitel extends MinitelThread {
                     return;
                 } else if (ch == '1') {
                     write(MOVEXY, 0x40+19, 0x40+2);
-                    print("                                     ");
+                    print("                                      ");
                     write(MOVEXY, 0x40 + 8, 0x40 + 25);
                     write(ESC, BACKGROUND_BLACK, ESC, CHAR_WHITE);
                     print("        ");
@@ -102,7 +102,7 @@ public class WikipediaMinitel extends MinitelThread {
                 }
 
                 write(MOVEXY, 0x40+19, 0x40+2);
-                print("                                     ");
+                print("                                      ");
                 write(MOVEXY, 0x40+19, 0x40+2);
                 print("Query> ");
                 flush(); resetInput();
@@ -112,7 +112,7 @@ public class WikipediaMinitel extends MinitelThread {
 
                 if (StringUtils.isNotBlank(keywords)) {
                     write(MOVEXY, 0x40 + 19, 0x40 + 2);
-                    print("                                     ");
+                    print("                                      ");
                     write(MOVEXY, 0x40 + 19, 0x40 + 2);
                     print("PLEASE WAIT...");
                     write(CURSOR_ON);
@@ -126,7 +126,7 @@ public class WikipediaMinitel extends MinitelThread {
                 flush(); resetInput();
                 write(CURSOR_OFF);
                 write(MOVEXY, 0x40+19, 0x40+2);
-                print("                                     ");
+                print("                                      ");
 
                 if (items.size() == 0) {
                     if (ch == '2') {
@@ -140,7 +140,7 @@ public class WikipediaMinitel extends MinitelThread {
                     }
 
                     write(MOVEXY, 0x40+19, 0x40+2);
-                    print("                                     ");
+                    print("                                      ");
                     write(MOVEXY, 0x40+19, 0x40+2);
                     if (StringUtils.isNotBlank(keywords)) print("NO RESULT");
                     continue;
