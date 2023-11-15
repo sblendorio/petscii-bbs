@@ -1,6 +1,7 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
 import eu.sblendorio.bbs.core.AsciiThread;
+import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.tenants.mixed.WikipediaCommons;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -136,6 +137,7 @@ public class WikipediaAscii extends AsciiThread {
         cls();
         println("Wikipedia: "+StringUtils.substring(item.title,0,getScreenColumns()-13));
         String wikiText = WikipediaCommons.getTextContent(item);
+        wikiText = HtmlUtils.utilHtmlDiacriticsToAscii(wikiText);
         final String head = item.title + "\n" + HR_TOP;
         List<String> rows = WikipediaCommons.wordWrap(head, this);
         List<String> article = WikipediaCommons.wordWrap(wikiText, this);

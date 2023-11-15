@@ -1,5 +1,6 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
+import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.tenants.mixed.WikipediaCommons;
 import org.apache.commons.io.input.ReversedLinesFileReader;
@@ -181,6 +182,7 @@ public class WikipediaPetscii extends PetsciiThread {
         displayHeader();
         waitOn();
         String wikiText = WikipediaCommons.getTextContent(item);
+        wikiText = HtmlUtils.utilHtmlDiacriticsToAscii(wikiText);
         final String head = item.title + "\n" + HR_TOP;
         List<String> rows = WikipediaCommons.wordWrap(head, this);
         List<String> article = WikipediaCommons.wordWrap(wikiText, this);
