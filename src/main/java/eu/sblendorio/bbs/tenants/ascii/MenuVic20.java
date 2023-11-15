@@ -52,15 +52,15 @@ public class MenuVic20 extends AsciiThread {
         println("5-IRNews  R-Zork III");
         println("6-VCFNews S-Hitchhikr");
         println("7-8bitGuy");
-        println("Italian News");
-        println("------------  Service");
-        println("F-Televideo   -------");
-        println("G-Wired       T-Chat");
-        println("H-Disinfor    U-Msgs");
-        println("I-IlPost      U-Eliza");
-        println("J-F.Quot      W-ChGPT");
-        println("K-A. Valoroso X-Patre");
-        println("L-Butac       Y-Modem");
+        println("Italian News  Service");
+        println("------------  -------");
+        println("F-Televideo   T-Chat");
+        println("G-Wired       U-Msgs");
+        println("H-Disinfor    U-Eliza");
+        println("I-IlPost      W-ChGPT");
+        println("J-F.Quot      X-Patre");
+        println("K-A. Valoroso Y-Modem");
+        println("L-Butac       Z-WikiP");
         println("M-A.Albano    .-Exit");
     }
 
@@ -165,6 +165,7 @@ public class MenuVic20 extends AsciiThread {
                 else if ("w".equals(choice)) subThread = new ClientChatGptAscii();
                 else if ("x".equals(choice)) { showPatrons(); subThread = null; }
                 else if ("y".equals(choice)) { wifiModem(); subThread = null; }
+                else if ("z".equals(choice)) subThread = new WikipediaAscii();
                 else {
                     validKey = false;
                     subThread = null;
