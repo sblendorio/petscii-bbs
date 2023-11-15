@@ -271,5 +271,40 @@ public class MenuPrestelWithEcho extends PrestelThread {
         flush(); resetInput(); readKey();
     }
 
+    protected void bannerPatronsPublishers() {
+        println("Patrons - Publisher subscribers");
+        println();
+    }
+
+    public String readChoice() throws IOException {
+        return readLine(setOfChars(STR_ALPHANUMERIC, "."));
+    }
+
+    public void patronsPublishers() throws Exception {
+        do {
+            cls();
+            bannerPatronsPublishers();
+            println("1 - Syncroweb (Fulvio Ieva)");
+            println(". - Back");
+            println();
+            resetInput();
+            String choice;
+            print("> ");
+            choice = readChoice();
+            resetInput();
+            choice = StringUtils.lowerCase(choice);
+            if (".".equals(choice)) break;
+            BbsThread subThread = null;
+            if ("1".equals(choice)) subThread = new SyncroWebAscii();
+            if (subThread == null) continue;
+
+            if (subThread instanceof AsciiThread) {
+                ((AsciiThread) subThread).clsBytes = this.clsBytes;
+            }
+
+            launch(subThread);
+        } while (true);
+    }
+
 
 }

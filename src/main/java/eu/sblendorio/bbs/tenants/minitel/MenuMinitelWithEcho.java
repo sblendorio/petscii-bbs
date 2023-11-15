@@ -13,8 +13,8 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static eu.sblendorio.bbs.core.MinitelControls.*;
-import static eu.sblendorio.bbs.core.Utils.bytes;
-import static eu.sblendorio.bbs.core.Utils.readExternalTxt;
+import static eu.sblendorio.bbs.core.Utils.*;
+import static eu.sblendorio.bbs.core.Utils.STR_ALPHANUMERIC;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
@@ -289,6 +289,41 @@ public class MenuMinitelWithEcho extends MinitelThread {
         }
         write(0x1b, 0x3a, 0x69, 0x43); // scroll on
         cls();
+    }
+
+    protected void bannerPatronsPublishers() {
+        println("Patrons - Publisher subscribers");
+        println();
+    }
+
+    public String readChoice() throws IOException {
+        return readLine(setOfChars(STR_ALPHANUMERIC, "."));
+    }
+
+    public void patronsPublishers() throws Exception {
+        do {
+            cls();
+            bannerPatronsPublishers();
+            println("1 - Syncroweb (Fulvio Ieva)");
+            println(". - Back");
+            println();
+            resetInput();
+            String choice;
+            print("> ");
+            choice = readChoice();
+            resetInput();
+            choice = StringUtils.lowerCase(choice);
+            if (".".equals(choice)) break;
+            BbsThread subThread = null;
+            if ("1".equals(choice)) subThread = new SyncroWebAscii();
+            if (subThread == null) continue;
+
+            if (subThread instanceof AsciiThread) {
+                ((AsciiThread) subThread).clsBytes = this.clsBytes;
+            }
+
+            launch(subThread);
+        } while (true);
     }
 
 }
