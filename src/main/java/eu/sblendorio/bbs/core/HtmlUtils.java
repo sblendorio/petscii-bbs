@@ -29,6 +29,7 @@ public class HtmlUtils {
                 .replace("&#x20;", " ")
                 .replace("&#91;", "[")
                 .replace("&#93;", "]")
+                .replace("º", "'")
                 .replaceAll("<script(\\s|>).*?</script\\s*>", "")
                 .replace((char) 160, ' ')
                 .replaceAll("(?is)<script(\\s|>).*?</script\\s*>", "")

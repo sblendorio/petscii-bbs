@@ -70,7 +70,7 @@ public class WikipediaPetscii extends PetsciiThread {
                     gotoXY(24,8);
                     write(REVOFF, WHITE);
                     print("        ");
-                    gotoXY(25,8);
+                    write(LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT);
                     flush(); resetInput();
                     String newLang;
                     newLang = readLine(6);
@@ -85,10 +85,11 @@ public class WikipediaPetscii extends PetsciiThread {
 
                     gotoXY(24,8);
                     write(REVON, GREY3);
-                    print("        ");
+                    write(LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT);
                     gotoXY(24,8);
-                    write(REVON, GREY3);
                     print(" "+StringUtils.upperCase(lang));
+                    for (int i=0; i<7-lang.length(); i++) write(' ');
+                    write(LEFT);
                     continue;
                 } else if (ch == '2') {
                     gotoXY(6,10);
@@ -104,11 +105,14 @@ public class WikipediaPetscii extends PetsciiThread {
 
                 write(BLUE, REVON);
                 gotoXY(1,19);
-                print("                                     ");
-                gotoXY(1,19);
+                println("                                     ");
+                write(UP, RIGHT, REVON);
                 print(" Query> ");
+                write(REVOFF, WHITE);
+                println("                             ");
+                write(UP, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT);
                 flush(); resetInput();
-                String keywords = readLine();
+                String keywords = readLine(29);
 
                 if (StringUtils.isNotBlank(keywords)) {
                     write(BLUE, REVON);
