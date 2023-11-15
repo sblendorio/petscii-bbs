@@ -92,11 +92,11 @@ public class WikipediaPetscii extends PetsciiThread {
                 } else if (ch == '2') {
                     gotoXY(6,10);
                     write(REVON, RED);
-                    print(" 2. Search               ");
+                    print(" 2. Search                ");
                 } else if (ch == '3') {
                     gotoXY(6, 12);
                     write(REVON, RED);
-                    print(" 3. I feel lucky         ");
+                    print(" 3. I feel lucky          ");
                 } else {
                     continue;
                 }
@@ -131,18 +131,23 @@ public class WikipediaPetscii extends PetsciiThread {
                     if (ch == '2') {
                         gotoXY(6,10);
                         write(REVON, GREY3);
-                        print(" 2. Search               ");
+                        print(" 2. Search                ");
                     } else if (ch == '3') {
                         gotoXY(6,12);
                         write(REVON, GREY3);
-                        print(" 3. I feel lucky         ");
+                        print(" 3. I feel lucky          ");
                     }
 
                     write(REVON, BLUE);
                     gotoXY(1,19);
                     print("                                     ");
                     gotoXY(1,19);
-                    if (StringUtils.isNotBlank(keywords)) print(" NO RESULT");
+                    if (StringUtils.isNotBlank(keywords)) {
+                        write(BLUE);
+                        print(" ");
+                        write(RED);
+                        print(" NO RESULT ");
+                    }
                     continue;
                 }
 
@@ -163,6 +168,7 @@ public class WikipediaPetscii extends PetsciiThread {
     }
 
     public void waitOn() {
+        write(GREY3);
         print("PLEASE WAIT...");
     }
 
@@ -180,6 +186,7 @@ public class WikipediaPetscii extends PetsciiThread {
         List<String> article = WikipediaCommons.wordWrap(wikiText, this);
         rows.addAll(article);
         waitOff();
+        write(GREY3);
 
         rows.addAll(article);
         int page = 1;
@@ -224,6 +231,8 @@ public class WikipediaPetscii extends PetsciiThread {
         do {
             cls();
             displayHeader();
+            write(GREY3);
+
             println("Select search result:");
             println(HR_TOP);
             for (int i = offset; i < offset + limit; i++) {
