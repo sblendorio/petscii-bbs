@@ -107,7 +107,7 @@ public class WikipediaMinitel extends MinitelThread {
                 print("Query> ");
                 flush(); resetInput();
                 write(CURSOR_ON);
-                String keywords = readLine();
+                String keywords = readLine(31);
                 write(CURSOR_OFF);
 
                 if (StringUtils.isNotBlank(keywords)) {
