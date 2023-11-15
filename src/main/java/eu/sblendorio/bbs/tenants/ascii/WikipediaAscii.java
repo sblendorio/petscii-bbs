@@ -23,11 +23,12 @@ public class WikipediaAscii extends AsciiThread {
     private String lang;
 
     String HR_TOP;
-    int screenLines = 20;
+    int screenLines;
 
     @Override
     public void initBbs() throws Exception {
         HR_TOP = StringUtils.repeat('-', getScreenColumns() - 1);
+        screenLines = getScreenRows()-4;
     }
 
     public WikipediaAscii() {

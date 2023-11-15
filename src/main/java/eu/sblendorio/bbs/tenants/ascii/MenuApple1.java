@@ -121,6 +121,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("t".equals(choice)) { patronsPublishers(); subThread = null; }
                 else if ("u".equals(choice)) { wifiModem(); subThread = null; }
                 else if ("v".equals(choice)) { textDemo(); subThread = null; }
+                else if ("w".equals(choice)) subThread = new WikipediaAscii();
                 else {
                     validKey = false;
                     subThread = null;
@@ -146,16 +147,16 @@ public class MenuApple1 extends AsciiThread {
         println("4 - Al Jazeera         L - Zork II");
         println("5 - Indie Retro News   M - Zork III");
         println("6 - VCF News           N - Hitchhiker's");
-        println("7 - The 8-Bit Guy      ");
-        println("                       Services-------");
-        println("Italian News---------  O - Chat");
-        println("A - Televideo RAI      P - Private Msg");
-        println("B - Lercio             Q - Eliza");
-        println("C - Disinformatico     R - Chat GPT");
-        println("D - Mupin.it           S - Patrons list");
-        println("E - Fatto Quotidiano   T - Publishers");
-        println("F - Amedeo Valoroso    U - Wifi Modem");
-        println("G - Butac.it           V - Apple-1 Demo");
+        println("7 - The 8-Bit Guy      --------Services");
+        println("                       O - Chat");
+        println("Italian News---------  P - Private Msg");
+        println("A - Televideo RAI      Q - Eliza");
+        println("B - Lercio             R - Chat GPT");
+        println("C - Disinformatico     S - Patrons list");
+        println("D - Mupin.it           T - Publishers");
+        println("E - Fatto Quotidiano   U - Wifi Modem");
+        println("F - Amedeo Valoroso    V - Apple-1 Demo");
+        println("G - Butac.it           W - Wikipedia");
         println("H - Alessandro Albano  . - Logout");
         println();
     }

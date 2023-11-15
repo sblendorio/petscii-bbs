@@ -49,15 +49,15 @@ public class MenuM10 extends AsciiThread {
         println("4 - Al Jazeera         P - Zork I");
         println("5 - Indie Retro New    Q - Zork II");
         println("6 - VCF News           R - Zork III");
-        println("7 - The 8-Bit Guy");
-        println("Italian News---------  S - Hitchhiker's");
-        println("F - Televideo RAI      Services--------");
-        println("G - Lercio             T - Chat");
-        println("H - Disinformatico     U - Private Msg");
-        println("I - Mupin.it           V - Eliza");
-        println("J - Fatto Quotidiano   W - ChatGPT");
-        println("K - Amedeo Valoroso    X - Patron list");
-        println("L - Butac.it           Y - Wifi Modem");
+        println("7 - The 8-Bit Guy      S - Hitchhiker's");
+        println("Italian News---------  Services--------");
+        println("F - Televideo RAI      T - Chat");
+        println("G - Lercio             U - Private Msg");
+        println("H - Disinformatico     V - Eliza");
+        println("I - Mupin.it           W - ChatGPT");
+        println("J - Fatto Quotidiano   X - Patron list");
+        println("K - Amedeo Valoroso    Y - Wifi Modem");
+        println("L - Butac.it           Z - Wikipedia");
         println("M - Alessandro Albano  . - Logout");
     }
 
@@ -139,6 +139,7 @@ public class MenuM10 extends AsciiThread {
                 else if ("w".equals(choice)) subThread = new ClientChatGptAscii();
                 else if ("x".equals(choice)) { showPatrons(); subThread = null; }
                 else if ("y".equals(choice)) { wifiModem(); subThread = null; }
+                else if ("z".equals(choice)) subThread = new WikipediaAscii();
                 else {
                     validKey = false;
                     subThread = null;
