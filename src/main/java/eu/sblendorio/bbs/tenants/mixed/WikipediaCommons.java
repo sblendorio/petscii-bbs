@@ -3,6 +3,7 @@ package eu.sblendorio.bbs.tenants.mixed;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.WordUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -15,6 +16,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
 
+import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
@@ -75,6 +77,9 @@ public class WikipediaCommons {
         doc.select(".infobox").remove();
         doc.select(".mw-editsection").remove();
         doc.select(".hatnote").remove();
+        doc.select(".catlinks").remove();
+        doc.select(".noprint").remove();
+        doc.select(".metadata").remove();
         doc.select("style").remove();
         doc.select("script").remove();
         doc.select("figure").remove();
@@ -95,7 +100,7 @@ public class WikipediaCommons {
     public static List<WikipediaItem> search(String lang, String keywords, boolean onlyFirst) throws IOException, ParseException {
         Long offset = 0L;
         Long limit = onlyFirst ? 1L : 50L;
-        List<WikipediaItem> result = new LinkedList<>();
+        List<WikipediaItem> result = new ArrayList<>();
         if (StringUtils.isBlank(keywords))
             return result;
         int count = 0;
@@ -144,18 +149,20 @@ https://it.wikipedia.org/w/api.php?format=json&action=parse&prop=text&page=Macci
     public static void main(String[] args) throws IOException, ParseException {
         System.out.println("INIZIO");
         WikipediaItem item = new WikipediaItem();
-        item.pageid = 26826L;
-        item.lang = "en";
+        item.pageid = 87191L;
+        item.lang = "it";
         String text = getHtmlContent(item);
         Document doc = Jsoup.parse(text);
         doc.select(".infobox").remove();
         doc.select(".mw-editsection").remove();
         doc.select(".hatnote").remove();
+        doc.select(".catlinks").remove();
+        doc.select(".noprint").remove();
         doc.select("style").remove();
         doc.select("figure").remove();
         doc.select("*[style*=display:none]").remove();
         removeComments(doc);
-        System.out.println( doc.body().html());
+        System.out.println(doc.body().html());
     }
 
     private static void removeComments(Node node) {
@@ -163,6 +170,17 @@ https://it.wikipedia.org/w/api.php?format=json&action=parse&prop=text&page=Macci
         node.childNodes().forEach(WikipediaCommons::removeComments);
     }
 
+    public static List<String> wordWrap(String s, BbsThread bbsThread) {
+        String[] cleaned = bbsThread.filterPrintableWithNewline(s).split("\n");
+        List<String> result = new ArrayList<>();
+        for (String item: cleaned) {
+            String[] wrappedLine = WordUtils
+                    .wrap(item, bbsThread.getScreenColumns() - 1, "\n", true)
+                    .split("\n");
+            result.addAll(asList(wrappedLine));
+        }
+        return result;
+    }
 
     public static Set<String> LATIN_ALPHAPET_LANGS = new HashSet<>(Arrays.asList(
             "en", "de", "fr", "es", "pt", "it", "pl", "nl", "id", "tr", "cs", "sv", "vi", "fi", "hu", "ca", "simple",

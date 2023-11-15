@@ -1,29 +1,25 @@
 package eu.sblendorio.bbs.tenants.minitel;
 
-
-import static eu.sblendorio.bbs.core.MinitelControls.*;
-import static java.util.Arrays.asList;
-import static org.apache.commons.lang3.StringUtils.*;
-import static org.apache.commons.lang3.StringUtils.trim;
-import static org.apache.commons.lang3.math.NumberUtils.toInt;
-
 import eu.sblendorio.bbs.core.MinitelThread;
 import eu.sblendorio.bbs.tenants.mixed.WikipediaCommons;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+
+import static eu.sblendorio.bbs.core.MinitelControls.*;
+import static org.apache.commons.lang3.StringUtils.lowerCase;
+import static org.apache.commons.lang3.StringUtils.trim;
+import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class WikipediaMinitel extends MinitelThread {
     protected static final String DEFAULT_WIKIPEDIA_LANG = "DEFAULT_WIKIPEDIA_LANG";
     private static Logger logger = LogManager.getLogger(WikipediaMinitel.class);
     private byte[] mainLogo;
-    private byte[] headLogo = null;
+    private byte[] headLogo;
     private String lang;
 
     String HR_TOP;
@@ -36,6 +32,7 @@ public class WikipediaMinitel extends MinitelThread {
 
     public WikipediaMinitel() {
         mainLogo = readBinaryFile("minitel/wikipedia-title.vdt");
+        headLogo = readBinaryFile("minitel/wikipedia-header.vdt");
     }
 
     @Override
@@ -123,7 +120,7 @@ public class WikipediaMinitel extends MinitelThread {
 
                 items = (ch == '2')
                     ? WikipediaCommons.search(lang, keywords)
-                    : WikipediaCommons.searchFirst (lang, keywords)
+                    : WikipediaCommons.searchFirst(lang, keywords)
                 ;
 
                 flush(); resetInput();
@@ -161,7 +158,7 @@ public class WikipediaMinitel extends MinitelThread {
     }
 
     public void displayHeader() {
-        write(readBinaryFile("minitel/wikipedia-header.vdt"));
+        write(headLogo);
         write(MOVEXY, 0x40+5, 0x40+1);
     }
 
@@ -181,8 +178,8 @@ public class WikipediaMinitel extends MinitelThread {
         waitOn();
         String wikiText = WikipediaCommons.getTextContent(item);
         final String head = item.title + "\n" + HR_TOP;
-        List<String> rows = wordWrap(head);
-        List<String> article = wordWrap(wikiText);
+        List<String> rows = WikipediaCommons.wordWrap(head, this);
+        List<String> article = WikipediaCommons.wordWrap(wikiText, this);
         rows.addAll(article);
         waitOff();
 
@@ -232,11 +229,14 @@ public class WikipediaMinitel extends MinitelThread {
             println("Select search result:");
             println(HR_TOP);
             for (int i = offset; i < offset + limit; i++) {
-                if (i < items.size()) println( (i+1) + ". " + StringUtils.substring(items.get(i).title,0,35));
+                int numLen = String.valueOf(offset+limit+1).length();
+                if (i < items.size()) println(
+                        String.format("%"+numLen+"d", (i+1)) +
+                        ". " +
+                        StringUtils.substring(items.get(i).title,0, getScreenColumns()-numLen-3));
             }
-            write(MOVEXY, 24, 1);
-            println();
-            print("#, (N+-)Page (R)eload (.)Quit> ");
+            write(MOVEXY, 0x40+24, 0x40+1);
+            print("#, (N+)Next (-)Prev (.)Quit> ");
             write(CURSOR_ON);
             resetInput();
             flush();
@@ -256,17 +256,5 @@ public class WikipediaMinitel extends MinitelThread {
                 showSingleResult(items.get(toInt(input)-1));
             }
         } while (true);
-    }
-
-    protected List<String> wordWrap(String s) {
-        String[] cleaned = filterPrintableWithNewline(s).split("\n");
-        List<String> result = new ArrayList<>();
-        for (String item: cleaned) {
-            String[] wrappedLine = WordUtils
-                    .wrap(item, getScreenColumns() - 1, "\n", true)
-                    .split("\n");
-            result.addAll(asList(wrappedLine));
-        }
-        return result;
     }
 }
