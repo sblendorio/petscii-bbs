@@ -6,12 +6,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Node;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
@@ -50,11 +52,8 @@ public class WikipediaCommons {
     }
 
     public static String getTextContent(String lang, Long pageid) throws IOException, ParseException {
-        String html = getHtmlContent(lang, pageid)
-                .replaceAll("<span class=\"mw-editsection\">.*?</span></span>", "");
+        String html = getHtmlContent(lang, pageid);
         String step1 = HtmlUtils.utilHtmlClean(html).replaceAll("(?is) +", " ")
-                .replaceAll("(?is)<style>.*?</style>", EMPTY)
-                .replaceAll("(?is)<script[ >].*?</script>", EMPTY)
                 .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(</?(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
                 .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r|\u00a0)*)+", EMPTY)
                 .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r|\u00a0)*)+", EMPTY);
@@ -70,7 +69,19 @@ public class WikipediaCommons {
         JSONObject root = (JSONObject) BbsThread.httpGetJson(url);
         JSONObject parse = (JSONObject) root.get("parse");
         JSONObject text = (JSONObject) parse.get("text");
-        return (String) text.get("*");
+        String result = (String) text.get("*");
+
+        Document doc = Jsoup.parse(result);
+        doc.select(".infobox").remove();
+        doc.select(".mw-editsection").remove();
+        doc.select(".hatnote").remove();
+        doc.select("style").remove();
+        doc.select("script").remove();
+        doc.select("figure").remove();
+        doc.select("*[style*=display:none]").remove();
+        removeComments(doc);
+
+        return doc.html();
     }
 
     public static List<WikipediaItem> search(String lang, String keywords) throws IOException, ParseException {
@@ -132,16 +143,28 @@ https://it.wikipedia.org/w/api.php?format=json&action=parse&prop=text&page=Macci
 
     public static void main(String[] args) throws IOException, ParseException {
         System.out.println("INIZIO");
-        List<WikipediaItem> items = searchFirst("it", "Maccio  capatonda");
-        System.out.println(items.size());
-        items.forEach(item -> System.out.println(item.title));
-        System.out.println("***********************");
-        System.out.println("***********************");
-        System.out.println("***********************");
-        System.out.println(getTextContent(items.get(0)));
+        WikipediaItem item = new WikipediaItem();
+        item.pageid = 26826L;
+        item.lang = "en";
+        String text = getHtmlContent(item);
+        Document doc = Jsoup.parse(text);
+        doc.select(".infobox").remove();
+        doc.select(".mw-editsection").remove();
+        doc.select(".hatnote").remove();
+        doc.select("style").remove();
+        doc.select("figure").remove();
+        doc.select("*[style*=display:none]").remove();
+        removeComments(doc);
+        System.out.println( doc.body().html());
     }
 
-    public static Set<String> langs = new HashSet<>(Arrays.asList(
+    private static void removeComments(Node node) {
+        node.childNodes().stream().filter(n -> "#comment".equals(n.nodeName())).forEach(Node::remove);
+        node.childNodes().forEach(WikipediaCommons::removeComments);
+    }
+
+
+    public static Set<String> LATIN_ALPHAPET_LANGS = new HashSet<>(Arrays.asList(
             "en", "de", "fr", "es", "pt", "it", "pl", "nl", "id", "tr", "cs", "sv", "vi", "fi", "hu", "ca", "simple",
             "no", "ro", "da", "eu", "az", "ms", "sk", "et", "hr", "sl", "lt", "lv", "eo", "gl", "sq", "ha", "af", "sh",
             "bs", "nn", "is", "ig", "ceb", "tl", "sw", "la", "cy", "ast", "jv", "als", "ht", "br", "oc", "zh-min-nan",

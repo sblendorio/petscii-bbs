@@ -78,7 +78,7 @@ public class WikipediaMinitel extends MinitelThread {
                     write(CURSOR_OFF);
                     if ("".equals(newLang)) newLang = lang;
                     newLang = StringUtils.lowerCase(newLang);
-                    if (!WikipediaCommons.langs.contains(newLang)) {
+                    if (!WikipediaCommons.LATIN_ALPHAPET_LANGS.contains(newLang)) {
                         write(BEEP);
                         newLang = lang;
                     }
@@ -152,7 +152,6 @@ public class WikipediaMinitel extends MinitelThread {
                 break;
             } while (true);
 
-            System.out.println("items.size="+items.size());
             if (items.size() == 1) {
                 showSingleResult(items.get(0));
             } else {
@@ -233,9 +232,10 @@ public class WikipediaMinitel extends MinitelThread {
             println("Select search result:");
             println(HR_TOP);
             for (int i = offset; i < offset + limit; i++) {
-                if (i < items.size()) println( (i+1) + ". " + items.get(i).title);
+                if (i < items.size()) println( (i+1) + ". " + StringUtils.substring(items.get(i).title,0,35));
             }
             write(MOVEXY, 24, 1);
+            println();
             print("#, (N+-)Page (R)eload (.)Quit> ");
             write(CURSOR_ON);
             resetInput();
