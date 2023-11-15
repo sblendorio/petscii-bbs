@@ -132,6 +132,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == 'b') patronsLogo();
                 else if (key == 'c') patronsPublishers();
                 else if (key == 'y') wifiModem();
+                else if (key == 'w') launch(new WikipediaPetscii());
                 else {
                     validKey = false;
                 }
