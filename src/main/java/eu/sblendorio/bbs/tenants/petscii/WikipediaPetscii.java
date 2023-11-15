@@ -166,6 +166,7 @@ public class WikipediaPetscii extends PetsciiThread {
     public void displayHeader() {
         write(headLogo);
         println();
+        write(GREY3);
     }
 
     public void waitOn() {
@@ -183,7 +184,7 @@ public class WikipediaPetscii extends PetsciiThread {
         waitOn();
         String wikiText = WikipediaCommons.getTextContent(item);
         wikiText = HtmlUtils.utilHtmlDiacriticsToAscii(wikiText);
-        final String head = item.title + "\n" + HR_TOP;
+        final String head = HtmlUtils.utilHtmlDiacriticsToAscii(item.title) + "\n" + HR_TOP;
         List<String> rows = WikipediaCommons.wordWrap(head, this);
         List<String> article = WikipediaCommons.wordWrap(wikiText, this);
         rows.addAll(article);
@@ -239,10 +240,13 @@ public class WikipediaPetscii extends PetsciiThread {
             println(HR_TOP);
             for (int i = offset; i < offset + limit; i++) {
                 int numLen = String.valueOf(offset+limit+1).length();
-                if (i < items.size()) println(
+                if (i < items.size()) {
+                    String title = HtmlUtils.utilHtmlDiacriticsToAscii(items.get(i).title);
+                    println(
                         String.format("%"+numLen+"d", (i+1)) +
                         ". " +
-                        StringUtils.substring(items.get(i).title,0, getScreenColumns()-numLen-3));
+                        StringUtils.substring(title,0, getScreenColumns()-numLen-3));
+                }
             }
             println();
             print("#, (N+)Next (-)Prev (.)Quit> ");

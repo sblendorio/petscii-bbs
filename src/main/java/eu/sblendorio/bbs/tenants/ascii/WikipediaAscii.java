@@ -135,10 +135,10 @@ public class WikipediaAscii extends AsciiThread {
 
     public void showSingleResult(WikipediaCommons.WikipediaItem item) throws IOException, ParseException {
         cls();
-        println("Wikipedia: "+StringUtils.substring(item.title,0,getScreenColumns()-13));
+        println("Wikipedia: "+StringUtils.substring(HtmlUtils.utilHtmlDiacriticsToAscii(item.title),0,getScreenColumns()-13));
         String wikiText = WikipediaCommons.getTextContent(item);
         wikiText = HtmlUtils.utilHtmlDiacriticsToAscii(wikiText);
-        final String head = item.title + "\n" + HR_TOP;
+        final String head = HtmlUtils.utilHtmlDiacriticsToAscii(item.title) + "\n" + HR_TOP;
         List<String> rows = WikipediaCommons.wordWrap(head, this);
         List<String> article = WikipediaCommons.wordWrap(wikiText, this);
         rows.addAll(article);
@@ -165,14 +165,14 @@ public class WikipediaAscii extends AsciiThread {
                     --page;
                     forward = false;
                     cls();
-                    println("Wikipedia: "+StringUtils.substring(item.title,0,getScreenColumns()-13));
+                    println("Wikipedia: "+StringUtils.substring(HtmlUtils.utilHtmlDiacriticsToAscii(item.title),0,getScreenColumns()-13));
                     println();
                     continue;
                 } else {
                     ++page;
                 }
                 cls();
-                println("Wikipedia: "+StringUtils.substring(item.title,0,getScreenColumns()-13));
+                println("Wikipedia: "+StringUtils.substring(HtmlUtils.utilHtmlDiacriticsToAscii(item.title),0,getScreenColumns()-13));
                 println();
             }
             String row = rows.get(j);
@@ -194,10 +194,13 @@ public class WikipediaAscii extends AsciiThread {
             println(HR_TOP);
             for (int i = offset; i < offset + limit; i++) {
                 int numLen = String.valueOf(offset+limit+1).length();
-                if (i < items.size()) println(
-                    String.format("%"+numLen+"d", (i+1)) +
-                    ". " +
-                    StringUtils.substring(items.get(i).title,0, getScreenColumns()-numLen-3));
+                if (i < items.size()) {
+                    String title = HtmlUtils.utilHtmlDiacriticsToAscii(items.get(i).title);
+                    println(
+                        String.format("%"+numLen+"d", (i+1)) +
+                        ". " +
+                        StringUtils.substring(title,0, getScreenColumns()-numLen-3));
+                }
             }
             println();
             print("#, (N+)Next (-)Prev (.)Quit> ");
