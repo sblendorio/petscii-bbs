@@ -9,6 +9,7 @@ public class TestClientVideotex extends MinitelThread {
         cls();
         System.out.println("START");
         write(0x1b, 0x39, 0x7b);
+        flush();
         Thread.sleep(1000L);
         byte[] r = resetInput();
         cls();
