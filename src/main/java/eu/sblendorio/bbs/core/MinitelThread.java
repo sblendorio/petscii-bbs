@@ -87,4 +87,9 @@ public abstract class MinitelThread extends BbsThread {
         }
     }
 
+    public void gotoXY(int x, int y) {
+        // origin (0,0)
+        write(MOVEXY, 0x41+y, 0x41+x);
+
+    }
 }

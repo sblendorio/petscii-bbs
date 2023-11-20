@@ -27,6 +27,8 @@ import org.slf4j.LoggerFactory;
 /* This class is a modified version of original BufferedReader from original java IO library */
 public abstract class BbsInputOutput extends Reader {
 
+    private static byte[] EMPTY_ARRAY = new byte[] {};
+
     public static class QuotedPrintStream extends PrintStream {
         private boolean isQuoteMode = false;
 
@@ -246,7 +248,7 @@ public abstract class BbsInputOutput extends Reader {
             buffer[count++] = (byte) key;
             if (key == -1) throw new BbsIOException("BbsIOException::resetInput()");
         }
-        if (count == 0) return null;
+        if (count == 0) return EMPTY_ARRAY;
 
         byte[] excludedInput = new byte[count];
         arraycopy(buffer, 0, excludedInput, 0, count);

@@ -51,7 +51,7 @@ public class WikipediaMinitel extends MinitelThread {
             write(CURSOR_OFF);
             cls();
             write(mainLogo);
-            write(MOVEXY, 0x40 + 8, 0x40 + 25);
+            gotoXY(24, 7);
             write(ESC, BACKGROUND_WHITE, ESC, CHAR_BLUE);
             print(" "+StringUtils.upperCase(lang));
             flush();
@@ -62,12 +62,12 @@ public class WikipediaMinitel extends MinitelThread {
                 if (ch == '.') {
                     return;
                 } else if (ch == '1') {
-                    write(MOVEXY, 0x40+19, 0x40+2);
+                    gotoXY(1, 18);
                     print("                                      ");
-                    write(MOVEXY, 0x40 + 8, 0x40 + 25);
+                    gotoXY(24, 7);
                     write(ESC, BACKGROUND_BLACK, ESC, CHAR_WHITE);
                     print("        ");
-                    write(MOVEXY, 0x40 + 8, 0x40 + 26);
+                    gotoXY(25, 7);
                     flush(); resetInput();
                     String newLang;
                     write(CURSOR_ON);
@@ -82,28 +82,28 @@ public class WikipediaMinitel extends MinitelThread {
                     lang = newLang;
                     getRoot().setCustomObject(DEFAULT_WIKIPEDIA_LANG, lang);
 
-                    write(MOVEXY, 0x40 + 8, 0x40 + 25);
+                    gotoXY(24,7);
                     write(ESC, BACKGROUND_WHITE, ESC, CHAR_BLUE);
                     print("        ");
-                    write(MOVEXY, 0x40 + 8, 0x40 + 25);
+                    gotoXY(24,7);
                     write(ESC, BACKGROUND_WHITE, ESC, CHAR_BLUE);
                     print(" "+StringUtils.upperCase(lang));
                     continue;
                 } else if (ch == '2') {
-                    write(MOVEXY, 0x40 + 10, 0x40 + 8);
+                    gotoXY(7, 9);
                     write(ESC, BACKGROUND_RED, ESC, CHAR_WHITE);
                     print(" 2. Search               ");
                 } else if (ch == '3') {
-                    write(MOVEXY, 0x40 + 12, 0x40 + 8);
+                    gotoXY(7, 11);
                     write(ESC, BACKGROUND_RED, ESC, CHAR_WHITE);
                     print(" 3. I feel lucky         ");
                 } else {
                     continue;
                 }
 
-                write(MOVEXY, 0x40+19, 0x40+2);
+                gotoXY(1, 18);
                 print("                                      ");
-                write(MOVEXY, 0x40+19, 0x40+2);
+                gotoXY(1, 18);
                 print("Query> ");
                 flush(); resetInput();
                 write(CURSOR_ON);
@@ -111,9 +111,9 @@ public class WikipediaMinitel extends MinitelThread {
                 write(CURSOR_OFF);
 
                 if (StringUtils.isNotBlank(keywords)) {
-                    write(MOVEXY, 0x40 + 19, 0x40 + 2);
+                    gotoXY(1, 18);
                     print("                                      ");
-                    write(MOVEXY, 0x40 + 19, 0x40 + 2);
+                    gotoXY(1, 18);
                     print("PLEASE WAIT...");
                     write(CURSOR_ON);
                 }
@@ -125,23 +125,23 @@ public class WikipediaMinitel extends MinitelThread {
 
                 flush(); resetInput();
                 write(CURSOR_OFF);
-                write(MOVEXY, 0x40+19, 0x40+2);
+                gotoXY(1, 18);
                 print("                                      ");
 
                 if (items.size() == 0) {
                     if (ch == '2') {
-                        write(MOVEXY, 0x40 + 10, 0x40 + 8);
+                        gotoXY(7, 9);
                         write(ESC, BACKGROUND_WHITE, ESC, CHAR_BLUE);
                         print(" 2. Search               ");
                     } else if (ch == '3') {
-                        write(MOVEXY, 0x40 + 12, 0x40 + 8);
+                        gotoXY(7, 11);
                         write(ESC, BACKGROUND_WHITE, ESC, CHAR_BLUE);
                         print(" 3. I feel lucky         ");
                     }
 
-                    write(MOVEXY, 0x40+19, 0x40+2);
+                    gotoXY(1, 18);
                     print("                                      ");
-                    write(MOVEXY, 0x40+19, 0x40+2);
+                    gotoXY(1, 18);
                     if (StringUtils.isNotBlank(keywords)) print("NO RESULT");
                     continue;
                 }
@@ -159,7 +159,7 @@ public class WikipediaMinitel extends MinitelThread {
 
     public void displayHeader() {
         write(headLogo);
-        write(MOVEXY, 0x40+5, 0x40+1);
+        gotoXY(0, 4);
     }
 
     public void waitOn() {
@@ -235,7 +235,7 @@ public class WikipediaMinitel extends MinitelThread {
                         ". " +
                         StringUtils.substring(items.get(i).title,0, getScreenColumns()-numLen-3));
             }
-            write(MOVEXY, 0x40+24, 0x40+1);
+            gotoXY(0, 23);
             print("#, (N+)Next (-)Prev (.)Quit> ");
             write(CURSOR_ON);
             resetInput();
