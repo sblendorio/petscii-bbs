@@ -30,7 +30,7 @@ public class WikipediaPetscii extends PetsciiThread {
 
     @Override
     public void initBbs() throws Exception {
-        HR_TOP = StringUtils.repeat('-', getScreenColumns() - 1);
+        HR_TOP = StringUtils.repeat(chr(163), getScreenColumns() - 1);
     }
 
     public WikipediaPetscii() {
