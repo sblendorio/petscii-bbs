@@ -17,13 +17,7 @@ import java.net.URLConnection;
 import static eu.sblendorio.bbs.core.HtmlUtils.utilHtmlClean;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import java.sql.Timestamp;
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -86,6 +80,15 @@ public abstract class BbsThread extends Thread {
         private long startTimestamp = System.currentTimeMillis();
         private AtomicBoolean running = new AtomicBoolean(true);
 
+        public KeepAliveThread() {
+            super();
+        }
+
+        public KeepAliveThread(String name) {
+            this();
+            this.setName(name + "-" + UUID.randomUUID());
+        }
+
         @Override
         public void interrupt() {
             running.set(false);
@@ -127,7 +130,7 @@ public abstract class BbsThread extends Thread {
         BbsThread root = getRoot();
         root.keepAlive = keepAlive;
         root.keepAliveThread.interrupt();
-        root.keepAliveThread = root.new KeepAliveThread();
+        root.keepAliveThread = root.new KeepAliveThread(this.getClass().getSimpleName());
         root.keepAliveThread.start();
     }
 
@@ -231,7 +234,7 @@ public abstract class BbsThread extends Thread {
     public void run() {
         this.startTimestamp = System.currentTimeMillis();
         try {
-            keepAliveThread = new KeepAliveThread();
+            keepAliveThread = new KeepAliveThread(this.getClass().getSimpleName());
             setClientId(clientCount.incrementAndGet());
             clientClass = getClass();
             ipAddress = socket.getInetAddress();
@@ -352,7 +355,7 @@ public abstract class BbsThread extends Thread {
             child = bbs;
             try {
                 root.keepAliveThread.interrupt();
-                root.keepAliveThread = root.new KeepAliveThread();
+                root.keepAliveThread = root.new KeepAliveThread(bbs.getClass().getSimpleName());
                 bbs.keepAliveThread = root.keepAliveThread;
                 root.keepAliveThread.start();
             } catch (Exception e) {
@@ -387,7 +390,7 @@ public abstract class BbsThread extends Thread {
             root.keepAliveChar = bbsStatus.keepAliveChar;
             try {
                 root.keepAliveThread.interrupt();
-                root.keepAliveThread = root.new KeepAliveThread();
+                root.keepAliveThread = root.new KeepAliveThread(this.getClass().getSimpleName()) ;
                 root.keepAliveThread.start();
             } catch (Exception e) {
                 logger.info("Error during KeepAliveThread restart", e);

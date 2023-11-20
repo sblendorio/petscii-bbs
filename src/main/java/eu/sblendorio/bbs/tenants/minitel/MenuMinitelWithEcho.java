@@ -5,6 +5,7 @@ import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.MinitelThread;
 import eu.sblendorio.bbs.core.Utils;
 import eu.sblendorio.bbs.tenants.ascii.*;
+import eu.sblendorio.bbs.tenants.mixed.TestClientVideotex;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -123,6 +124,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("v".equals(choice)) { textDemo(); subThread = null; }
                 else if ("w".equals(choice)) subThread = new WikipediaMinitel();
                 else if ("x".equals(choice)) { videotelVault(); subThread = null; }
+                else if ("z".equals(choice)) subThread = new TestClientVideotex();
                 else {
                     validKey = false;
                     subThread = null;

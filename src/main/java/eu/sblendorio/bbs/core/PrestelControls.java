@@ -14,5 +14,25 @@ public class PrestelControls {
     public static byte CURSOR_ON = 17;
     public static byte CURSOR_OFF = 20;
     public static byte HOME = 30;
+    public static byte BEEP = 7;
+    public static byte ESC = 27;
     public static byte[] CONCEAL = new byte[] {0x1b, 0x58};
+
+    public static final byte[] CHAR_RED = new byte[] {0x1b, 0x41};
+    public static final byte[] CHAR_GREEN = new byte[] {0x1b, 0x42};
+    public static final byte[] CHAR_YELLOW = new byte[] {0x1b, 0x43};
+    public static final byte[] CHAR_BLUE = new byte[] {0x1b, 0x44};
+    public static final byte[] CHAR_MAGENTA = new byte[] {0x1b, 0x45};
+    public static final byte[] CHAR_CYAN = new byte[] {0x1b, 0x46};
+    public static final byte[] CHAR_WHITE = new byte[] {0x1b, 0x47};
+
+    public static final byte[] BACKGROUND_BLACK = new byte[] {92};
+    public static final byte[] BACKGROUND_RED = new byte[] {0x1b, 0x41, 92};
+    public static final byte[] BACKGROUND_GREEN = new byte[] {0x1b, 0x42, 92};
+    public static final byte[] BACKGROUND_YELLOW = new byte[] {0x1b, 0x43, 92};
+    public static final byte[] BACKGROUND_BLUE = new byte[] {0x1b, 0x44, 92};
+    public static final byte[] BACKGROUND_MAGENTA = new byte[] {0x1b, 0x45, 92};
+    public static final byte[] BACKGROUND_CYAN = new byte[] {0x1b, 0x46, 92};
+    public static final byte[] BACKGROUND_WHITE = new byte[] {0x1b, 0x47, 92};
+
 }

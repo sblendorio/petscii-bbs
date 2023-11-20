@@ -5,6 +5,7 @@ import java.net.Socket;
 
 import static eu.sblendorio.bbs.core.PrestelControls.*;
 
+@Hidden
 public abstract class PrestelThread extends BbsThread {
 
     protected boolean autoConceal = false;
