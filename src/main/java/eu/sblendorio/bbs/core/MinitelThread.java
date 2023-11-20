@@ -115,7 +115,8 @@ public abstract class MinitelThread extends BbsThread {
             return minitelType;
 
         try {
-            minitelType = NumberUtils.toInt((String) getRoot().getCustomObject(MINITEL_TYPE_DETECTION));
+            String value = (String) getRoot().getCustomObject(MINITEL_TYPE_DETECTION);
+            minitelType = value == null ? null : NumberUtils.toInt(value);
         } catch (NullPointerException | ClassCastException e) {
             minitelType = null;
         }
@@ -154,7 +155,8 @@ public abstract class MinitelThread extends BbsThread {
             return isDrcsSupported;
 
         try {
-            isDrcsSupported = BooleanUtils.toBoolean((String) getRoot().getCustomObject(MINITEL_IS_DRCS_SUPPORTED));
+            String value = (String) getRoot().getCustomObject(MINITEL_IS_DRCS_SUPPORTED);
+            isDrcsSupported = value == null ? null : BooleanUtils.toBoolean(value);
         } catch (NullPointerException | ClassCastException e) {
             isDrcsSupported = null;
         }

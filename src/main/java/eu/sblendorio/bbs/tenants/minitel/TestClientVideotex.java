@@ -7,6 +7,7 @@ public class TestClientVideotex extends MinitelThread {
     @Override
     public void doLoop() throws Exception {
         cls();
+        println("DRCS="+drcsEnabled());
         System.out.println("START");
         write(0x1b, 0x39, 0x7b);
         flush();
