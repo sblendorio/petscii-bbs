@@ -98,7 +98,7 @@ public abstract class BbsThread extends Thread {
 
         @Override
         public void run() {
-            while (running.get()) {
+            while (!Thread.interrupted() && running.get()) {
                 try {
                     Thread.sleep(keepAliveInterval);
                     if (keepAlive
@@ -277,8 +277,9 @@ public abstract class BbsThread extends Thread {
             } catch (IOException e) {
                 log("Couldn't close a socket, what's going on?");
             }
-            keepAliveThread.interrupt();
+            if (keepAliveThread != null) keepAliveThread.interrupt();
             clients.remove(clientId);
+            if (getRoot() != null && getRoot().keepAliveThread != null) getRoot().keepAliveThread.interrupt();
             log("STOP. Connection CLOSED.");
         }
     }

@@ -236,7 +236,7 @@ public abstract class BbsInputOutput extends Reader {
         }
     }
 
-    public void resetInput() throws IOException {
+    public byte[] resetInput() throws IOException {
         final int THRESHOLD = 192;
         byte[] buffer = new byte[THRESHOLD];
 
@@ -246,7 +246,7 @@ public abstract class BbsInputOutput extends Reader {
             buffer[count++] = (byte) key;
             if (key == -1) throw new BbsIOException("BbsIOException::resetInput()");
         }
-        if (count == 0) return;
+        if (count == 0) return null;
 
         byte[] excludedInput = new byte[count];
         arraycopy(buffer, 0, excludedInput, 0, count);
@@ -295,6 +295,7 @@ public abstract class BbsInputOutput extends Reader {
             this.close();
             throw new BbsIOException("SEVERE. BbsIOException::resetInput, potential DoS detected.");
         }
+        return excludedInput;
     }
 
     public int keyPressed() throws IOException {
