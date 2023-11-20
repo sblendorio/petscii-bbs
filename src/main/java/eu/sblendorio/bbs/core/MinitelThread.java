@@ -1,14 +1,19 @@
 package eu.sblendorio.bbs.core;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import static eu.sblendorio.bbs.core.MinitelConstants.*;
 import static eu.sblendorio.bbs.core.MinitelControls.*;
 import static eu.sblendorio.bbs.core.Utils.bytes;
 import static eu.sblendorio.bbs.core.Utils.hex;
+import static java.util.Arrays.asList;
 
 public abstract class MinitelThread extends BbsThread {
 
@@ -102,6 +107,7 @@ public abstract class MinitelThread extends BbsThread {
     }
 
     private Integer minitelType = null;
+    private Boolean isDrcsSupported = null;
     private static final String MINITEL_TYPE_DETECTION = "MINITEL_TYPE_DETECTION";
 
     public int getMinitelType() throws IOException, InterruptedException {
@@ -111,9 +117,7 @@ public abstract class MinitelThread extends BbsThread {
         try {
             minitelType = NumberUtils.toInt((String) getRoot().getCustomObject(MINITEL_TYPE_DETECTION));
         } catch (NullPointerException | ClassCastException e) {
-            minitelType = detectMinitelType();
-            getRoot().setCustomObject(MINITEL_TYPE_DETECTION, minitelType);
-            return minitelType;
+            minitelType = null;
         }
         if (minitelType != null && minitelType != 0)
             return minitelType;
@@ -125,6 +129,7 @@ public abstract class MinitelThread extends BbsThread {
 
     private int detectMinitelType() throws InterruptedException, IOException {
         write(0x1b, 0x39, 0x7b);
+        flush();
         Thread.sleep(1000L);
         byte[] out = resetInput();
         String outString = hex(out);
@@ -136,7 +141,30 @@ public abstract class MinitelThread extends BbsThread {
             return TYPE_2;
         else if (outString.contains(STRING_12))
             return TYPE_12;
+        else if (outString.isEmpty())
+            return TYPE_EMULATOR;
         else
             return TYPE_UNKNOWN;
+    }
+
+    private static final String MINITEL_IS_DRCS_SUPPORTED = "MINITEL_IS_DRCS_SUPPORTED";
+
+    public boolean drcsEnabled() throws IOException, InterruptedException {
+        if (isDrcsSupported != null)
+            return isDrcsSupported;
+
+        try {
+            isDrcsSupported = BooleanUtils.toBoolean((String) getRoot().getCustomObject(MINITEL_IS_DRCS_SUPPORTED));
+        } catch (NullPointerException | ClassCastException e) {
+            isDrcsSupported = null;
+        }
+
+        if (isDrcsSupported != null)
+            return isDrcsSupported;
+
+        minitelType = getMinitelType();
+        isDrcsSupported = DRCS_SUPPORTING_TERMINALS.contains(minitelType);
+        getRoot().setCustomObject(MINITEL_IS_DRCS_SUPPORTED, isDrcsSupported.toString());
+        return isDrcsSupported;
     }
 }

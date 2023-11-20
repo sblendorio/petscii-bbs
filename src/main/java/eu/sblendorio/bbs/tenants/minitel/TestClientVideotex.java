@@ -1,4 +1,4 @@
-package eu.sblendorio.bbs.tenants.mixed;
+package eu.sblendorio.bbs.tenants.minitel;
 
 import eu.sblendorio.bbs.core.MinitelThread;
 import eu.sblendorio.bbs.core.Utils;
@@ -14,8 +14,10 @@ public class TestClientVideotex extends MinitelThread {
         cls();
         print("Result = ");
         println(Utils.hex(r));
+        println("len="+r.length);
         println("-----------------");
         System.out.println(Utils.hex(r));
+        System.out.println("len="+r.length);
         System.out.println("END");
         readKey();
         // FRENCH MINITEL 1B: 1,67,117,60,4 = 0x01, 0x43, 0x75, 0x3c, 0x04

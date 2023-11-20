@@ -45,6 +45,14 @@ public class WikipediaMinitel extends MinitelThread {
         }
         if (lang == null) lang = "en";
 
+        if (drcsEnabled())
+            doLoopNoDrcs();
+        else
+            doLoopNoDrcs();
+    }
+
+
+    public void doLoopNoDrcs() throws Exception {
         int ch;
         do {
             List<WikipediaCommons.WikipediaItem> items;
@@ -52,7 +60,7 @@ public class WikipediaMinitel extends MinitelThread {
             cls();
             write(mainLogo);
             gotoXY(24, 7);
-            write(ESC, BACKGROUND_WHITE, ESC, CHAR_BLUE);
+            attributes(BACKGROUND_WHITE, CHAR_BLUE);
             print(" "+StringUtils.upperCase(lang));
             flush();
             resetInput();
@@ -65,7 +73,7 @@ public class WikipediaMinitel extends MinitelThread {
                     gotoXY(1, 18);
                     print("                                      ");
                     gotoXY(24, 7);
-                    write(ESC, BACKGROUND_BLACK, ESC, CHAR_WHITE);
+                    attributes(BACKGROUND_BLACK, CHAR_WHITE);
                     print("        ");
                     gotoXY(25, 7);
                     flush(); resetInput();
@@ -83,19 +91,19 @@ public class WikipediaMinitel extends MinitelThread {
                     getRoot().setCustomObject(DEFAULT_WIKIPEDIA_LANG, lang);
 
                     gotoXY(24,7);
-                    write(ESC, BACKGROUND_WHITE, ESC, CHAR_BLUE);
+                    attributes(BACKGROUND_WHITE, CHAR_BLUE);
                     print("        ");
                     gotoXY(24,7);
-                    write(ESC, BACKGROUND_WHITE, ESC, CHAR_BLUE);
+                    attributes(BACKGROUND_WHITE, CHAR_BLUE);
                     print(" "+StringUtils.upperCase(lang));
                     continue;
                 } else if (ch == '2') {
                     gotoXY(7, 9);
-                    write(ESC, BACKGROUND_RED, ESC, CHAR_WHITE);
+                    attributes(BACKGROUND_RED, CHAR_WHITE);
                     print(" 2. Search               ");
                 } else if (ch == '3') {
                     gotoXY(7, 11);
-                    write(ESC, BACKGROUND_RED, ESC, CHAR_WHITE);
+                    attributes(BACKGROUND_RED, CHAR_WHITE);
                     print(" 3. I feel lucky         ");
                 } else {
                     continue;
@@ -131,11 +139,11 @@ public class WikipediaMinitel extends MinitelThread {
                 if (items.size() == 0) {
                     if (ch == '2') {
                         gotoXY(7, 9);
-                        write(ESC, BACKGROUND_WHITE, ESC, CHAR_BLUE);
+                        attributes(BACKGROUND_WHITE, CHAR_BLUE);
                         print(" 2. Search               ");
                     } else if (ch == '3') {
                         gotoXY(7, 11);
-                        write(ESC, BACKGROUND_WHITE, ESC, CHAR_BLUE);
+                        attributes(BACKGROUND_WHITE, CHAR_BLUE);
                         print(" 3. I feel lucky         ");
                     }
 

@@ -5,7 +5,6 @@ import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.MinitelThread;
 import eu.sblendorio.bbs.core.Utils;
 import eu.sblendorio.bbs.tenants.ascii.*;
-import eu.sblendorio.bbs.tenants.mixed.TestClientVideotex;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -53,6 +52,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
         while (true) {
             log("Starting Minitel / main menu");
             cls();
+            drcsEnabled();
             displayMenu();
 
             flush();
