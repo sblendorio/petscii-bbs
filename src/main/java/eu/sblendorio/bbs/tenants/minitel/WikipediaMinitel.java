@@ -18,8 +18,9 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 public class WikipediaMinitel extends MinitelThread {
     protected static final String DEFAULT_WIKIPEDIA_LANG = "DEFAULT_WIKIPEDIA_LANG";
     private static Logger logger = LogManager.getLogger(WikipediaMinitel.class);
-    private byte[] mainLogo;
-    private byte[] headLogo;
+    private static byte[] mainLogo = readBinaryFile("minitel/wikipedia-title.vdt");
+    private static byte[] headLogo  = readBinaryFile("minitel/wikipedia-header.vdt");
+    private static byte[] drcsLogo = readBinaryFile("minitel/wikipedia-drcs-complete.vdt");
     private String lang;
 
     String HR_TOP;
@@ -31,8 +32,7 @@ public class WikipediaMinitel extends MinitelThread {
     }
 
     public WikipediaMinitel() {
-        mainLogo = readBinaryFile("minitel/wikipedia-title.vdt");
-        headLogo = readBinaryFile("minitel/wikipedia-header.vdt");
+        super();
     }
 
     @Override
@@ -46,11 +46,128 @@ public class WikipediaMinitel extends MinitelThread {
         if (lang == null) lang = "en";
 
         if (drcsEnabled())
-            doLoopNoDrcs();
+            doLoopDrcs();
         else
             doLoopNoDrcs();
     }
 
+
+    public void doLoopDrcs() throws Exception {
+        int ch;
+        do {
+            List<WikipediaCommons.WikipediaItem> items;
+            write(CURSOR_OFF);
+            cls();
+            write(drcsLogo);
+            gotoXY(28, 6);
+            attributes(BACKGROUND_WHITE, CHAR_BLUE);
+            print(" "+StringUtils.upperCase(lang));
+            flush();
+            resetInput();
+            do {
+                ch = readKey();
+
+                if (ch == '.') {
+                    return;
+                } else if (ch == '1') {
+                    gotoXY(0, 17);
+                    print("                                        ");
+                    gotoXY(28, 6);
+                    attributes(BACKGROUND_RED, CHAR_WHITE);
+                    print("        ");
+                    gotoXY(29, 6);
+                    flush(); resetInput();
+                    String newLang;
+                    write(CURSOR_ON);
+                    newLang = readLine(6);
+                    write(CURSOR_OFF);
+                    if ("".equals(newLang)) newLang = lang;
+                    newLang = StringUtils.lowerCase(newLang);
+                    if (!WikipediaCommons.LATIN_ALPHAPET_LANGS.contains(newLang)) {
+                        write(BEEP);
+                        newLang = lang;
+                    }
+                    lang = newLang;
+                    getRoot().setCustomObject(DEFAULT_WIKIPEDIA_LANG, lang);
+
+                    gotoXY(28,6);
+                    attributes(BACKGROUND_WHITE, CHAR_BLUE);
+                    print("        ");
+                    gotoXY(28,6);
+                    attributes(BACKGROUND_WHITE, CHAR_BLUE);
+                    print(" "+StringUtils.upperCase(lang));
+                    continue;
+                } else if (ch == '2') {
+                    gotoXY(14, 8);
+                    attributes(BACKGROUND_RED, CHAR_WHITE);
+                    print(" 2. Search              ");
+                } else if (ch == '3') {
+                    gotoXY(14, 10);
+                    attributes(BACKGROUND_RED, CHAR_WHITE);
+                    print(" 3. I feel lucky        ");
+                } else {
+                    continue;
+                }
+
+                gotoXY(0, 17);
+                print("                                        ");
+                gotoXY(0, 17);
+                print(" Query> ");
+                flush(); resetInput();
+                write(CURSOR_ON);
+                String keywords = readLine(31);
+                write(CURSOR_OFF);
+
+                if (StringUtils.isNotBlank(keywords)) {
+                    gotoXY(0, 17);
+                    print("                                        ");
+                    gotoXY(0, 17);
+                    print(" PLEASE WAIT...");
+                    write(CURSOR_ON);
+                }
+
+                items = (ch == '2')
+                        ? WikipediaCommons.search(lang, keywords)
+                        : WikipediaCommons.searchFirst(lang, keywords)
+                ;
+
+                flush(); resetInput();
+                write(CURSOR_OFF);
+                gotoXY(0, 17);
+                print("                                        ");
+
+                if (items.size() == 0) {
+                    if (ch == '2') {
+                        gotoXY(14, 8);
+                        attributes(BACKGROUND_WHITE, CHAR_BLUE);
+                        print(" 2. Search              ");
+                    } else if (ch == '3') {
+                        gotoXY(14, 10);
+                        attributes(BACKGROUND_WHITE, CHAR_BLUE);
+                        print(" 3. I feel lucky        ");
+                    }
+
+                    gotoXY(0, 17);
+                    print("                                        ");
+                    gotoXY(0, 17);
+                    if (StringUtils.isNotBlank(keywords)) {
+                        attributes(BACKGROUND_RED, CHAR_WHITE, FLASH_ON);
+                        print(" NO RESULT ");
+                        attributes(FLASH_OFF);
+                    }
+                    continue;
+                }
+
+                break;
+            } while (true);
+
+            if (items.size() == 1) {
+                showSingleResult(items.get(0));
+            } else {
+                chooseItem(items);
+            }
+        } while (true);
+    }
 
     public void doLoopNoDrcs() throws Exception {
         int ch;
@@ -127,8 +244,8 @@ public class WikipediaMinitel extends MinitelThread {
                 }
 
                 items = (ch == '2')
-                    ? WikipediaCommons.search(lang, keywords)
-                    : WikipediaCommons.searchFirst(lang, keywords)
+                        ? WikipediaCommons.search(lang, keywords)
+                        : WikipediaCommons.searchFirst(lang, keywords)
                 ;
 
                 flush(); resetInput();

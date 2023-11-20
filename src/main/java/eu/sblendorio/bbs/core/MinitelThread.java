@@ -129,11 +129,13 @@ public abstract class MinitelThread extends BbsThread {
     }
 
     private int detectMinitelType() throws InterruptedException, IOException {
+        flush(); resetInput();
         write(0x1b, 0x39, 0x7b);
         flush();
         Thread.sleep(1000L);
         byte[] out = resetInput();
         String outString = hex(out);
+        log("Minitel Detection: \""+outString+"\"");
         if (outString.contains(STRING_1B))
             return TYPE_1B;
         else if (outString.contains(STRING_1B_OLD))
@@ -142,7 +144,9 @@ public abstract class MinitelThread extends BbsThread {
             return TYPE_2;
         else if (outString.contains(STRING_12))
             return TYPE_12;
-        else if (outString.isEmpty())
+        else if (outString.contains(STRING_ADF))
+            return TYPE_ADF;
+        else if (!outString.contains("01"))
             return TYPE_EMULATOR;
         else
             return TYPE_UNKNOWN;

@@ -9,6 +9,7 @@ public class TestClientVideotex extends MinitelThread {
         cls();
         println("DRCS="+drcsEnabled());
         System.out.println("START");
+        flush(); resetInput();
         write(0x1b, 0x39, 0x7b);
         flush();
         Thread.sleep(1000L);
