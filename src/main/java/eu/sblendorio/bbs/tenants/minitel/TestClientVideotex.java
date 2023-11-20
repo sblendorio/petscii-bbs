@@ -13,7 +13,6 @@ public class TestClientVideotex extends MinitelThread {
         flush();
         Thread.sleep(1000L);
         byte[] r = resetInput();
-        cls();
         print("Result = ");
         println(Utils.hex(r));
         println("len="+r.length);
