@@ -146,6 +146,8 @@ public abstract class MinitelThread extends BbsThread {
             return TYPE_12;
         else if (outString.contains(STRING_ADF))
             return TYPE_ADF;
+        else if (outString.contains(STRING_AMITEX))
+            return TYPE_AMITEX;
         else if (!outString.contains("01"))
             return TYPE_EMULATOR;
         else
