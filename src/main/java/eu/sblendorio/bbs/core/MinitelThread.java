@@ -5,15 +5,11 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 import static eu.sblendorio.bbs.core.MinitelConstants.*;
 import static eu.sblendorio.bbs.core.MinitelControls.*;
 import static eu.sblendorio.bbs.core.Utils.bytes;
 import static eu.sblendorio.bbs.core.Utils.hex;
-import static java.util.Arrays.asList;
 
 public abstract class MinitelThread extends BbsThread {
 
@@ -146,8 +142,8 @@ public abstract class MinitelThread extends BbsThread {
             return TYPE_12;
         else if (outString.contains(STRING_ADF))
             return TYPE_ADF;
-        else if (outString.contains(STRING_AMITEX))
-            return TYPE_AMITEX;
+        else if (outString.contains(STRING_AMITEL))
+            return TYPE_AMITEL;
         else if (!outString.contains("01"))
             return TYPE_EMULATOR;
         else
