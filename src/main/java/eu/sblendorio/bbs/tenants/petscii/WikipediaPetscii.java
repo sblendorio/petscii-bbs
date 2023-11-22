@@ -65,7 +65,7 @@ public class WikipediaPetscii extends PetsciiThread {
                     return;
                 } else if (ch == '1') {
                     write(REVON, BLUE);
-                    gotoXY(1,19);
+                    gotoXY(1,20);
                     print("                                     ");
                     gotoXY(24,8);
                     write(REVOFF, WHITE);
@@ -99,37 +99,45 @@ public class WikipediaPetscii extends PetsciiThread {
                     gotoXY(6, 12);
                     write(REVON, RED);
                     print(" 3. I feel lucky          ");
+                } else if (ch == '4') {
+                    gotoXY(6, 14);
+                    write(REVON, RED);
+                    print(" 4. Pick a random page    ");
                 } else {
                     continue;
                 }
 
-                write(BLUE, REVON);
-                gotoXY(1,19);
-                println("                                     ");
-                write(UP, RIGHT, REVON);
-                print(" Query> ");
-                write(REVOFF, WHITE);
-                println("                             ");
-                write(UP, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT);
-                flush(); resetInput();
-                String keywords = readLine(29);
-
+                String keywords = "dummy";
+                if (ch != '4') {
+                    write(BLUE, REVON);
+                    gotoXY(1, 20);
+                    println("                                     ");
+                    write(UP, RIGHT, REVON);
+                    print(" Query> ");
+                    write(REVOFF, WHITE);
+                    println("                             ");
+                    write(UP, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT);
+                    flush();
+                    resetInput();
+                    keywords = readLine(29);
+                }
                 if (StringUtils.isNotBlank(keywords)) {
                     write(BLUE, REVON);
-                    gotoXY(1,19);
+                    gotoXY(1,20);
                     print("                                     ");
-                    gotoXY(1,19);
+                    gotoXY(1,20);
                     print(" PLEASE WAIT...");
                 }
 
-                items = (ch == '2')
-                    ? WikipediaCommons.search(lang, keywords)
-                    : WikipediaCommons.searchFirst(lang, keywords)
-                ;
+                switch (ch) {
+                    case '2': items = WikipediaCommons.search(lang, keywords); break;
+                    case '3': items = WikipediaCommons.searchFirst(lang, keywords); break;
+                    default:  items = WikipediaCommons.pickRandomPage(lang);
+                }
 
                 flush(); resetInput();
                 write(REVON, BLUE);
-                gotoXY(1,19);
+                gotoXY(1,20);
                 print("                                     ");
 
                 if (items.size() == 0) {
@@ -144,9 +152,9 @@ public class WikipediaPetscii extends PetsciiThread {
                     }
 
                     write(REVON, BLUE);
-                    gotoXY(1,19);
+                    gotoXY(1,20);
                     print("                                     ");
-                    gotoXY(1,19);
+                    gotoXY(1,20);
                     if (StringUtils.isNotBlank(keywords)) {
                         write(BLUE);
                         print(" ");

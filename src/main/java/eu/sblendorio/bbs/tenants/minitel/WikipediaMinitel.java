@@ -70,7 +70,7 @@ public class WikipediaMinitel extends MinitelThread {
                 if (ch == '.') {
                     return;
                 } else if (ch == '1') {
-                    gotoXY(0, 17);
+                    gotoXY(0, 18);
                     print("                                        ");
                     gotoXY(28, 6);
                     attributes(BACKGROUND_RED, CHAR_WHITE);
@@ -105,35 +105,44 @@ public class WikipediaMinitel extends MinitelThread {
                     gotoXY(14, 10);
                     attributes(BACKGROUND_RED, CHAR_WHITE);
                     print(" 3. I feel lucky        ");
+                } else if (ch == '4') {
+                    gotoXY(14, 12);
+                    attributes(BACKGROUND_RED, CHAR_WHITE);
+                    print(" 4. Pick a random page  ");
                 } else {
                     continue;
                 }
 
-                gotoXY(0, 17);
-                print("                                        ");
-                gotoXY(0, 17);
-                print(" Query> ");
-                flush(); resetInput();
-                write(CURSOR_ON);
-                String keywords = readLine(31);
-                write(CURSOR_OFF);
+                String keywords = "dummy";
+                if (ch != '4') {
+                    gotoXY(0, 18);
+                    print("                                        ");
+                    gotoXY(0, 18);
+                    print(" Query> ");
+                    flush();
+                    resetInput();
+                    write(CURSOR_ON);
+                    keywords = readLine(31);
+                    write(CURSOR_OFF);
+                }
 
                 if (StringUtils.isNotBlank(keywords)) {
-                    gotoXY(0, 17);
+                    gotoXY(0, 18);
                     print("                                        ");
-                    gotoXY(0, 17);
+                    gotoXY(0, 18);
                     print(" PLEASE WAIT...");
                     write(CURSOR_ON);
                 }
 
-                items = (ch == '2')
-                        ? WikipediaCommons.search(lang, keywords)
-                        : WikipediaCommons.searchFirst(lang, keywords)
-                ;
+                switch (ch) {
+                    case '2': items = WikipediaCommons.search(lang, keywords); break;
+                    case '3': items = WikipediaCommons.searchFirst(lang, keywords); break;
+                    default:  items = WikipediaCommons.pickRandomPage(lang);
+                }
 
                 flush(); resetInput();
                 write(CURSOR_OFF);
-                gotoXY(0, 17);
+                gotoXY(0, 18);
                 print("                                        ");
 
                 if (items.size() == 0) {
@@ -147,9 +156,9 @@ public class WikipediaMinitel extends MinitelThread {
                         print(" 3. I feel lucky        ");
                     }
 
-                    gotoXY(0, 17);
+                    gotoXY(0, 18);
                     print("                                        ");
-                    gotoXY(0, 17);
+                    gotoXY(0, 18);
                     if (StringUtils.isNotBlank(keywords)) {
                         attributes(BACKGROUND_RED, CHAR_WHITE, FLASH_ON);
                         print(" NO RESULT ");
@@ -187,7 +196,7 @@ public class WikipediaMinitel extends MinitelThread {
                 if (ch == '.') {
                     return;
                 } else if (ch == '1') {
-                    gotoXY(1, 18);
+                    gotoXY(1, 19);
                     print("                                      ");
                     gotoXY(24, 7);
                     attributes(BACKGROUND_BLACK, CHAR_WHITE);
@@ -222,35 +231,44 @@ public class WikipediaMinitel extends MinitelThread {
                     gotoXY(7, 11);
                     attributes(BACKGROUND_RED, CHAR_WHITE);
                     print(" 3. I feel lucky         ");
+                } else if (ch == '4') {
+                    gotoXY(7, 13);
+                    attributes(BACKGROUND_RED, CHAR_WHITE);
+                    print(" 4. Pick a random page   ");
                 } else {
                     continue;
                 }
 
-                gotoXY(1, 18);
-                print("                                      ");
-                gotoXY(1, 18);
-                print("Query> ");
-                flush(); resetInput();
-                write(CURSOR_ON);
-                String keywords = readLine(31);
-                write(CURSOR_OFF);
+                String keywords = "dummy";
+                if (ch != '4') {
+                    gotoXY(1, 19);
+                    print("                                      ");
+                    gotoXY(1, 19);
+                    print("Query> ");
+                    flush();
+                    resetInput();
+                    write(CURSOR_ON);
+                    keywords = readLine(31);
+                    write(CURSOR_OFF);
+                }
 
                 if (StringUtils.isNotBlank(keywords)) {
-                    gotoXY(1, 18);
+                    gotoXY(1, 19);
                     print("                                      ");
-                    gotoXY(1, 18);
+                    gotoXY(1, 19);
                     print("PLEASE WAIT...");
                     write(CURSOR_ON);
                 }
 
-                items = (ch == '2')
-                        ? WikipediaCommons.search(lang, keywords)
-                        : WikipediaCommons.searchFirst(lang, keywords)
-                ;
+                switch (ch) {
+                    case '2': items = WikipediaCommons.search(lang, keywords); break;
+                    case '3': items = WikipediaCommons.searchFirst(lang, keywords); break;
+                    default:  items = WikipediaCommons.pickRandomPage(lang);
+                }
 
                 flush(); resetInput();
                 write(CURSOR_OFF);
-                gotoXY(1, 18);
+                gotoXY(1, 19);
                 print("                                      ");
 
                 if (items.size() == 0) {
@@ -264,9 +282,9 @@ public class WikipediaMinitel extends MinitelThread {
                         print(" 3. I feel lucky         ");
                     }
 
-                    gotoXY(1, 18);
+                    gotoXY(1, 19);
                     print("                                      ");
-                    gotoXY(1, 18);
+                    gotoXY(1, 19);
                     if (StringUtils.isNotBlank(keywords)) print("NO RESULT");
                     continue;
                 }

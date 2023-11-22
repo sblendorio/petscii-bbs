@@ -23,9 +23,9 @@ public class MinitelConstants {
     public static final String STRING_AMITEL = "0143763b04";
 
     public static final Set<Integer> DRCS_SUPPORTING_TERMINALS = new HashSet<>(asList(
-            TYPE_EMULATOR,
+            //TYPE_EMULATOR,
             //TYPE_ADF,
-            TYPE_AMITEL,
+            //TYPE_AMITEL,
             TYPE_2,
             TYPE_12
     ));

@@ -25,6 +25,7 @@ public class WikipediaCommons {
     private static final int LIMIT_SEARCH = 100;
     private static final String URL_GET_BY_PAGEID = "https://${LANG}.wikipedia.org/w/api.php?format=json&action=parse&prop=text&pageid=${PAGEID}";
     private static final String URL_SEARCH_BY_KEYWORDS = "https://${LANG}.wikipedia.org/w/api.php?format=json&action=query&list=search&srsearch=${KEYWORDS}&sroffset=${OFFSET}&srlimit=${LIMIT}";
+    private static final String URL_PICK_RANDOM = "https://${LANG}.wikipedia.org/w/api.php?action=query&format=json&list=random&rnnamespace=0";
 
     public static String getSearchUrl(String lang, String keywords, Long offset, Long limit) {
         try {
@@ -36,6 +37,10 @@ public class WikipediaCommons {
 
     public static String getPageIdUrl(String lang, Long pageId) {
         return URL_GET_BY_PAGEID.replace("${LANG}", lang.replaceAll("[^a-zA-Z0-9]", "").toLowerCase()).replace("${PAGEID}", String.valueOf(pageId));
+    }
+
+    public static String getRandomUrl(String lang) {
+        return URL_PICK_RANDOM.replace("${LANG}", lang.replaceAll("[^a-zA-Z0-9]", "").toLowerCase());
     }
 
     public static class WikipediaItem {
@@ -98,6 +103,20 @@ public class WikipediaCommons {
         return search(lang, keywords, true);
     }
 
+    public static List<WikipediaItem> pickRandomPage(String lang) throws IOException, ParseException {
+        String url = getRandomUrl(lang);
+        JSONObject root = (JSONObject) BbsThread.httpGetJson(url);
+        JSONObject query = (JSONObject) root.get("query");
+        JSONArray random = (JSONArray) query.get("random");
+        JSONObject first = (JSONObject) random.get(0);
+        Long pageid = (Long) first.get("id");
+        String title = (String) first.get("title");
+        WikipediaItem item = new WikipediaItem();
+        item.lang = lang;
+        item.pageid = pageid;
+        item.title = title;
+        return asList(item);
+    }
     public static List<WikipediaItem> search(String lang, String keywords, boolean onlyFirst) throws IOException, ParseException {
         Long offset = 0L;
         Long limit = onlyFirst ? 1L : 50L;

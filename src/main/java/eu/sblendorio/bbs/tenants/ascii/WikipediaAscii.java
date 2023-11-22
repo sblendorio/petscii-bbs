@@ -82,25 +82,31 @@ public class WikipediaAscii extends AsciiThread {
                     println("2: SEARCH");
                 } else if (ch == '3') {
                     println("3: I FEEL LUCKY");
+                } else if (ch == '4') {
+                    println("4: PICK A RANDOM PAGE");
                 } else {
                     continue;
                 }
                 println();
-                print("Query> ");
-                flush(); resetInput();
-                String keywords = readLine();
+                String keywords = null;
+                if (ch != '4') {
+                    print("Query> ");
+                    flush();
+                    resetInput();
+                    keywords = readLine();
 
-                if (StringUtils.isBlank(keywords)) {
-                    displayHeader();
-                    continue;
+                    if (StringUtils.isBlank(keywords)) {
+                        displayHeader();
+                        continue;
+                    }
                 }
-
                 print("Searching...");
 
-                items = (ch == '2')
-                        ? WikipediaCommons.search(lang, keywords)
-                        : WikipediaCommons.searchFirst(lang, keywords)
-                ;
+                switch (ch) {
+                    case '2': items = WikipediaCommons.search(lang, keywords); break;
+                    case '3': items = WikipediaCommons.searchFirst(lang, keywords); break;
+                    default:  items = WikipediaCommons.pickRandomPage(lang);
+                }
 
                 println();
 
@@ -127,6 +133,7 @@ public class WikipediaAscii extends AsciiThread {
         println("1- Set language. Current: " + StringUtils.upperCase(lang));
         println("2- Search");
         println("3- I feel lucky");
+        println("4- Pick a random page");
         println();
         println("Type '.' to go back");
         println();
