@@ -463,6 +463,13 @@ public abstract class BbsThread extends Thread {
         getRoot().keepAliveThread.restartKeepAlive();
     }
 
+    public String readLineNoCr() throws IOException {
+        restartKeepAlive();
+        final String result = io.readLineNoCr();
+        restartKeepAlive();
+        return result;
+    }
+
     public String readLine() throws IOException {
         restartKeepAlive();
         final String result = io.readLine();
@@ -480,6 +487,13 @@ public abstract class BbsThread extends Thread {
     public String readLine(Set<Integer> allowedChars) throws IOException {
         restartKeepAlive();
         final String result = io.readLine(allowedChars);
+        restartKeepAlive();
+        return result;
+    }
+
+    public String readLineNoCr(Set<Integer> allowedChars) throws IOException {
+        restartKeepAlive();
+        final String result = io.readLineNoCr(allowedChars);
         restartKeepAlive();
         return result;
     }

@@ -45,10 +45,11 @@ public class WikipediaMinitel extends MinitelThread {
         }
         if (lang == null) lang = "en";
 
-        if (drcsEnabled())
-            doLoopDrcs();
-        else
-            doLoopNoDrcs();
+        write(CURSOR_OFF);
+        write(readBinaryFile("minitel/wikipedia-big-logo.vdt"));
+        flush(); resetInput();
+        keyPressed(20000L);
+        doLoopNoDrcs();
     }
 
 

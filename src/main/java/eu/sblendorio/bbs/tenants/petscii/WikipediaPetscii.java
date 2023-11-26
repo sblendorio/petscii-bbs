@@ -3,7 +3,7 @@ package eu.sblendorio.bbs.tenants.petscii;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.tenants.mixed.WikipediaCommons;
-import org.apache.commons.io.input.ReversedLinesFileReader;
+import eu.sblendorio.bbs.tenants.petscii.utils.BlockGraphics;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,6 +14,7 @@ import java.util.List;
 
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
+import static eu.sblendorio.bbs.tenants.petscii.utils.BlockGraphics.getRenderedMidres;
 import static org.apache.commons.lang3.StringUtils.lowerCase;
 import static org.apache.commons.lang3.StringUtils.trim;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
@@ -21,8 +22,8 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 public class WikipediaPetscii extends PetsciiThread {
     protected static final String DEFAULT_WIKIPEDIA_LANG = "DEFAULT_WIKIPEDIA_LANG";
     private static Logger logger = LogManager.getLogger(WikipediaPetscii.class);
-    private byte[] mainLogo;
-    private byte[] headLogo;
+    private static byte[] mainLogo = readBinaryFile("petscii/wikipedia-title.vdt");
+    private static byte[] headLogo = readBinaryFile("petscii/wikipedia-header.vdt");;
     private String lang;
 
     String HR_TOP;
@@ -34,8 +35,6 @@ public class WikipediaPetscii extends PetsciiThread {
     }
 
     public WikipediaPetscii() {
-        mainLogo = readBinaryFile("petscii/wikipedia-title.vdt");
-        headLogo = readBinaryFile("petscii/wikipedia-header.vdt");
     }
 
     @Override
@@ -47,6 +46,20 @@ public class WikipediaPetscii extends PetsciiThread {
             logger.debug("Using default language: {}", lang);
         }
         if (lang == null) lang = "en";
+        cls();
+        write(19, WHITE, DOWN);
+        write(getRenderedMidres(14, WikipediaCommons.WIKILOGO, false, false));
+
+        write(19, GREY2);
+        write(getRenderedMidres(0,WikipediaCommons.WIKILOGO_2, false, false));
+
+        write(19, LIGHT_BLUE, DOWN, DOWN, DOWN, DOWN);
+        write(getRenderedMidres(5, WikipediaCommons.WIKI_VERTICAL_2, true, true));
+
+        write(GREY3, RIGHT);
+        print("Press any key ");
+        flush();resetInput();
+        keyPressed(200000L);
 
         int ch;
         do {
@@ -210,6 +223,7 @@ public class WikipediaPetscii extends PetsciiThread {
         while (j < rows.size()) {
             if (j>0 && j % screenLines == 0 && forward) {
                 println();
+                write(WHITE);
                 print(getScreenColumns() >= 40
                         ? "-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT"
                         :  "(" + page + ") SPC -PREV .EXIT"
@@ -225,12 +239,14 @@ public class WikipediaPetscii extends PetsciiThread {
                     forward = false;
                     cls();
                     displayHeader();
+                    write(GREY3);
                     continue;
                 } else {
                     ++page;
                 }
                 cls();
                 displayHeader();
+                write(GREY3);
             }
             String row = rows.get(j);
             println(row);
@@ -264,7 +280,7 @@ public class WikipediaPetscii extends PetsciiThread {
             print("#, (N+)Next (-)Prev (.)Quit> ");
             resetInput();
             flush();
-            String inputRaw = readLine();
+            String inputRaw = readLineNoCr();
             String input = lowerCase(trim(inputRaw));
 
             if (".".equals(input) || "exit".equals(input) || "quit".equals(input) || "q".equals(input)) {
@@ -277,6 +293,8 @@ public class WikipediaPetscii extends PetsciiThread {
                 offset = 0;
             } else if (toInt(input) >= 1 && toInt(input) <= items.size()) {
                 showSingleResult(items.get(toInt(input)-1));
+            } else {
+                newline();
             }
         } while (true);
     }

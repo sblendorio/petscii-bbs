@@ -52,7 +52,6 @@ public class MenuMinitelWithEcho extends MinitelThread {
         while (true) {
             log("Starting Minitel / main menu");
             cls();
-            drcsEnabled();
             displayMenu();
 
             flush();

@@ -154,6 +154,10 @@ public abstract class BbsInputOutput extends Reader {
     }
 
     public String readLine(int maxLength, boolean mask, Set<Integer> allowedChars) throws IOException {
+        return readLineParametric(maxLength, mask, allowedChars, true);
+    }
+
+    public String readLineParametric(int maxLength, boolean mask, Set<Integer> allowedChars, boolean sendCr) throws IOException {
         int ch;
         readBuffer = EMPTY;
         do {
@@ -186,7 +190,7 @@ public abstract class BbsInputOutput extends Reader {
                 readBuffer += (char) convertToAscii(ch);
             }
         } while (!isNewline(ch));
-        if (getLocalEcho()) {
+        if (getLocalEcho() && sendCr) {
             newline();
         }
         final String result = readBuffer;
@@ -206,8 +210,16 @@ public abstract class BbsInputOutput extends Reader {
         return readLine(maxLength, false);
     }
 
+    public String readLineNoCr() throws IOException {
+        return readLineParametric(0, false, null, false);
+    }
+
     public String readLine() throws IOException {
         return readLine(0, false);
+    }
+
+    public String readLineNoCr(Set<Integer> allowedChars) throws IOException {
+        return readLineParametric(0, false, allowedChars, false);
     }
 
     public String readLine(Set<Integer> allowedChars) throws IOException {

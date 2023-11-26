@@ -10,11 +10,15 @@ public class BlockGraphics {
     }
 
     public static int[] getRenderedMidres(int htab, String[]matrix) throws Exception {
+        return getRenderedMidres(htab, matrix, true, false);
+    }
+
+    public static int[] getRenderedMidres(int htab, String[]matrix, boolean finalCR, boolean transparent) throws Exception {
         int[][] output = new int[roundUp(matrix.length, 2)][roundUp(matrix[0].length(), 2)];
         for (int y=0; y<matrix.length; ++y)
             for (int x=0; x<matrix[y].length(); ++x)
-                if (matrix[y].charAt(x) == '*') plotMidres(output, x, y);
-        return renderMidres(htab, output);
+                if (matrix[y].charAt(x) == '*' || matrix[y].charAt(x) == '1') plotMidres(output, x, y);
+        return renderMidres(htab, output, finalCR, transparent);
     }
 
     private static void plotMidres(int[][] output, int x, int y) {
@@ -26,14 +30,13 @@ public class BlockGraphics {
         output[macroy][macrox] |= pow[microx + 2*microy];
     }
 
-    private static int[] decode = {
-        32, 172, 187, 162,
-        188, -161, -191, -190,
-        190, 191, 161, -188,
-        -162, -187, -172, -32
-    };
-
-    private static int[] renderMidres(int htab, int[][] output) {
+    private static int[] renderMidres(int htab, int[][] output, boolean finalCR, boolean transparent) {
+        int[] decode = {
+                transparent ? 29 : 32, 172, 187, 162,
+                                    188, -161, -191, -190,
+                                    190, 191, 161, -188,
+                                    -162, -187, -172, -32
+        };
         List<Integer> result = new ArrayList<>();
         boolean reverse = false;
         for (int y=0; y<output.length; ++y) {
@@ -50,7 +53,7 @@ public class BlockGraphics {
                     result.add(chr);
                 }
             }
-            result.add(13);
+            if (y < output.length-1 || finalCR) result.add(13);
             reverse = false;
         }
         return result.stream().mapToInt(i -> i).toArray();
