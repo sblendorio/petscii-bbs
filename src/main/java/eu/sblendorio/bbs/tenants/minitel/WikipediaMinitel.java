@@ -57,7 +57,7 @@ public class WikipediaMinitel extends MinitelThread {
         write(BlockGraphicsMinitel.getRenderedMidres(0, WikipediaCommons.WIKILOGO_2));
         gotoXY(0,5);
         write(GRAPHICS_MODE);
-        attributes(CHAR_BLUE);
+        attributes(CHAR_RED);
         write(BlockGraphicsMinitel.getRenderedMidres(0, WikipediaCommons.WIKI_VERTICAL_3));
         flush(); resetInput();
         write(TEXT_MODE);
