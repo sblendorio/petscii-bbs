@@ -124,6 +124,8 @@ public class ChatA1 extends AsciiThread {
                     int res = alreadyPresent ? -1 : changeClientName(newName);
                     if (res != 0) {
                         println("Error: name already used..");
+                    } else {
+                        getRoot().setCustomObject(CUSTOM_KEY, getClientName());
                     }
                     redraw(false);
                 } else if (command.equalsIgnoreCase("/cls")) {

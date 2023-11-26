@@ -166,6 +166,8 @@ public class Chat64 extends PetsciiThread {
                     int res = alreadyPresent ? -1 : changeClientName(newName);
                     if (res != 0) {
                         println("Error: name already used.");
+                    } else {
+                        getRoot().setCustomObject(CUSTOM_KEY, getClientName());
                     }
                     redraw();
                 } else if (command.equalsIgnoreCase("/cls")) {
