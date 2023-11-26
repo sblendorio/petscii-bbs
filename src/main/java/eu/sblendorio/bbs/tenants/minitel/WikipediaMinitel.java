@@ -1,5 +1,6 @@
 package eu.sblendorio.bbs.tenants.minitel;
 
+import eu.sblendorio.bbs.core.BlockGraphicsMinitel;
 import eu.sblendorio.bbs.core.MinitelThread;
 import eu.sblendorio.bbs.tenants.mixed.WikipediaCommons;
 import org.apache.commons.lang3.StringUtils;
@@ -46,10 +47,28 @@ public class WikipediaMinitel extends MinitelThread {
         if (lang == null) lang = "en";
 
         write(CURSOR_OFF);
+        cls();
+        write(SCROLL_OFF);
+        write(GRAPHICS_MODE);
         write(readBinaryFile("minitel/wikipedia-big-logo.vdt"));
+        gotoXY(0,0);
+        write(GRAPHICS_MODE);
+        attributes(CHAR_CYAN);
+        write(BlockGraphicsMinitel.getRenderedMidres(0, WikipediaCommons.WIKILOGO_2));
+        gotoXY(0,5);
+        write(GRAPHICS_MODE);
+        attributes(CHAR_BLUE);
+        write(BlockGraphicsMinitel.getRenderedMidres(0, WikipediaCommons.WIKI_VERTICAL_3));
         flush(); resetInput();
-        keyPressed(20000L);
+        write(TEXT_MODE);
+        attributes(CHAR_WHITE);
+        gotoXY(4,23);
+        print("Press a key ");
+        write(CURSOR_ON);
+        write(SCROLL_ON);
+        keyPressed(30000L);
         doLoopNoDrcs();
+
     }
 
 
@@ -384,7 +403,7 @@ public class WikipediaMinitel extends MinitelThread {
             write(CURSOR_ON);
             resetInput();
             flush();
-            String inputRaw = readLine();
+            String inputRaw = readLineNoCr();
             String input = lowerCase(trim(inputRaw));
             write(CURSOR_OFF);
 

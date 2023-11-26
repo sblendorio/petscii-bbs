@@ -292,8 +292,6 @@ public class WikipediaPetscii extends PetsciiThread {
                 offset = 0;
             } else if (toInt(input) >= 1 && toInt(input) <= items.size()) {
                 showSingleResult(items.get(toInt(input)-1));
-            } else {
-                newline();
             }
         } while (true);
     }

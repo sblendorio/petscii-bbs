@@ -60,6 +60,11 @@ public class MinitelControls {
     public static final byte[] CAPSLOCK_OFF = new byte[] { 0x1b, 0x3a, 0x69, 0x45 };
 
 
+    public static final byte GRAPHICS_MODE = 0x0e;
+    public static final byte TEXT_MODE = 0x0f;
+
+
+
     private MinitelControls() {
         throw new IllegalStateException("Utility class");
     }

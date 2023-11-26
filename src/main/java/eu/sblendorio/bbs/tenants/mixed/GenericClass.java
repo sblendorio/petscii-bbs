@@ -12,7 +12,7 @@ import static java.lang.System.getProperty;
 public class GenericClass {
 
     public static void main(String[] args) throws IOException {
-        File img = new File(getProperty("user.home") + File.separator+"Dropbox"+File.separator+"bbs"+File.separator+"wi2.png");
+        File img = new File(getProperty("user.home") + File.separator+"Dropbox"+File.separator+"bbs"+File.separator+"wi0.png");
         BufferedImage in = ImageIO.read(img);
         int[][] result = get2DPixelArraySlow(in);
         Set<Integer> m = new HashSet<>();
