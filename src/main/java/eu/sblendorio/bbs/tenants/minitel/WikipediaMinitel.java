@@ -54,19 +54,20 @@ public class WikipediaMinitel extends MinitelThread {
         gotoXY(0,0);
         write(GRAPHICS_MODE);
         attributes(CHAR_CYAN);
-        write(BlockGraphicsMinitel.getRenderedMidres(0, WikipediaCommons.WIKILOGO_2));
-        gotoXY(0,5);
-        write(GRAPHICS_MODE);
-        attributes(CHAR_RED);
-        write(BlockGraphicsMinitel.getRenderedMidres(0, WikipediaCommons.WIKI_VERTICAL_3));
+        write(BlockGraphicsMinitel.getRenderedMidres(0, WikipediaCommons.WIKILOGO_3, false, true));
+        //gotoXY(0,5);
+        //write(GRAPHICS_MODE);
+        //attributes(CHAR_RED);
+        //write(BlockGraphicsMinitel.getRenderedMidres(0, WikipediaCommons.WIKI_VERTICAL_3));
         flush(); resetInput();
         write(TEXT_MODE);
         attributes(CHAR_WHITE);
-        gotoXY(4,23);
-        print("Press a key ");
-        write(CURSOR_ON);
+        //gotoXY(16,0);
+        //attributes(FLASH_ON);
+        //print("Press a key");
+        //attributes(FLASH_OFF);
         write(SCROLL_ON);
-        keyPressed(30000L);
+        keyPressed(3000000L);
         doLoopNoDrcs();
 
     }
