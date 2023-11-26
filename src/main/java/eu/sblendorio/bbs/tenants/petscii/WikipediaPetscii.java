@@ -58,7 +58,7 @@ public class WikipediaPetscii extends PetsciiThread {
         write(GREY3, RIGHT);
         print("Press any key ");
         flush();resetInput();
-        keyPressed(30_000L);
+        keyPressed(40_000L);
 
         int ch;
         do {

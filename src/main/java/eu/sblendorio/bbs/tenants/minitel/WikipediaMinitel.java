@@ -67,7 +67,7 @@ public class WikipediaMinitel extends MinitelThread {
         //print("Press a key");
         //attributes(FLASH_OFF);
         write(SCROLL_ON);
-        keyPressed(3000000L);
+        keyPressed(40_000L);
         doLoopNoDrcs();
 
     }
