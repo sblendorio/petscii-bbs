@@ -13,7 +13,7 @@ import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import static eu.sblendorio.bbs.core.Utils.bytes;
-import eu.sblendorio.bbs.tenants.petscii.utils.BlockGraphics;
+import eu.sblendorio.bbs.core.BlockGraphicsPetscii;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -435,7 +435,7 @@ public class Chat64 extends PetsciiThread {
             String shortUrl = firstUrl.length() <= 24 ? firstUrl : shortenUrl(firstUrl);
             String[] strMatrix = stringToQr(shortUrl);
             println();
-            write(BlockGraphics.getRenderedMidres(2, strMatrix));
+            write(BlockGraphicsPetscii.getRenderedMidres(2, strMatrix));
         } catch (Exception e) {
             log("Malformed URL exception in text: \"" + text + "\"");
             e.printStackTrace();

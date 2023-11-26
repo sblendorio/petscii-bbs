@@ -1,9 +1,9 @@
-package eu.sblendorio.bbs.tenants.petscii.utils;
+package eu.sblendorio.bbs.core;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockGraphics {
+public class BlockGraphicsPetscii {
 
     private static int roundUp(int num, int divisor) {
         return (num + divisor - 1) / divisor;

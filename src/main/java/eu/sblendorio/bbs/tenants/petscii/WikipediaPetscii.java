@@ -3,7 +3,6 @@ package eu.sblendorio.bbs.tenants.petscii;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.tenants.mixed.WikipediaCommons;
-import eu.sblendorio.bbs.tenants.petscii.utils.BlockGraphics;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +13,7 @@ import java.util.List;
 
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
-import static eu.sblendorio.bbs.tenants.petscii.utils.BlockGraphics.getRenderedMidres;
+import static eu.sblendorio.bbs.core.BlockGraphicsPetscii.getRenderedMidres;
 import static org.apache.commons.lang3.StringUtils.lowerCase;
 import static org.apache.commons.lang3.StringUtils.trim;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
