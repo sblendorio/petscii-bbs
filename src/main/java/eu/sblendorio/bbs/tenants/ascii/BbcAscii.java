@@ -117,7 +117,7 @@ public class BbcAscii extends RssAscii {
     );
 
     public Map<String, byte[]> hrDashes = ImmutableMap.of(
-        "minitel", "-".getBytes(ISO_8859_1),
+        "minitel", "`".getBytes(ISO_8859_1),
         "prestel", "-".getBytes(ISO_8859_1),
         "ascii", "-".getBytes(ISO_8859_1),
         "ansi", bytes(196),

@@ -29,7 +29,7 @@ public class WikipediaMinitel extends MinitelThread {
 
     @Override
     public void initBbs() throws Exception {
-        HR_TOP = StringUtils.repeat('-', getScreenColumns() - 1);
+        HR_TOP = StringUtils.repeat('`', getScreenColumns() - 1);
     }
 
     public WikipediaMinitel() {
