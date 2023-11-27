@@ -65,10 +65,12 @@ public class WikipediaMinitel extends MinitelThread {
         flush(); resetInput();
         write(TEXT_MODE);
         attributes(CHAR_WHITE);
+
         //gotoXY(16,0);
         //attributes(FLASH_ON);
         //print("Press a key");
         //attributes(FLASH_OFF);
+
         write(SCROLL_ON);
         keyPressed(40_000L);
         doLoopNoDrcs();
