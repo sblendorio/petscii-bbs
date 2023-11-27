@@ -288,7 +288,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 continue;
             }
             if (ch == '.' || ch == 27) break;
-            i++;
+            i = (i+1) % drawings.size();
         }
         write(0x1b, 0x3a, 0x69, 0x43); // scroll on
         cls();

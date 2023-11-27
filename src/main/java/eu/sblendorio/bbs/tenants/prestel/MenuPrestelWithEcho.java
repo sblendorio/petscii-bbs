@@ -185,7 +185,7 @@ public class MenuPrestelWithEcho extends PrestelThread {
                 continue;
             }
             if (ch == '.' || ch == 27) break;
-            i++;
+            i = (i+1) % drawings.size();
         }
         cls();
     }
