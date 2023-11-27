@@ -51,14 +51,17 @@ public class WikipediaMinitel extends MinitelThread {
         write(SCROLL_OFF);
         write(GRAPHICS_MODE);
         write(readBinaryFile("minitel/wikipedia-big-logo.vdt"));
+
         gotoXY(0,0);
         write(GRAPHICS_MODE);
         attributes(CHAR_CYAN);
         write(BlockGraphicsMinitel.getRenderedMidres(0, WikipediaCommons.WIKILOGO_3, false, true));
+
         //gotoXY(0,5);
         //write(GRAPHICS_MODE);
         //attributes(CHAR_RED);
         //write(BlockGraphicsMinitel.getRenderedMidres(0, WikipediaCommons.WIKI_VERTICAL_3));
+
         flush(); resetInput();
         write(TEXT_MODE);
         attributes(CHAR_WHITE);
