@@ -6,12 +6,13 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
-import eu.sblendorio.bbs.core.AsciiThread;
-import eu.sblendorio.bbs.core.Hidden;
-import eu.sblendorio.bbs.core.HtmlUtils;
+import eu.sblendorio.bbs.core.*;
+
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+
+import static eu.sblendorio.bbs.core.HtmlUtils.utilHtmlClean;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -33,6 +34,7 @@ import org.apache.commons.text.WordUtils;
 
 @Hidden
 public abstract class RssAscii extends AsciiThread {
+    protected BbsInputOutput inout = null;
 
     private String timeOutProperty = "rss.a1.timeout";
     private String timeOutPropertyDefault = "40000";
@@ -158,6 +160,10 @@ public abstract class RssAscii extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
+        if (inout != null) {
+            this.setBbsInputOutput(inout);
+        }
+
         pageRows = getScreenRows() - logoHeightNews - 2;
         log("Entered Rss-Ascii: " + this.getClass().getSimpleName());
         while (true) {
@@ -200,7 +206,8 @@ public abstract class RssAscii extends AsciiThread {
             String text = EMPTY;
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             for (NewsFeed feed : feeds) {
-                String description = htmlClean(feed.description).trim();
+                String temp = (io instanceof MinitelInputOutput) ? utilHtmlClean(feed.description) : htmlClean(feed.description);
+                String description = temp.trim();
                 description = StringUtils.isBlank(description) ? "&c64nbsp;" : description;
 
                 String post = EMPTY;
@@ -278,7 +285,8 @@ public abstract class RssAscii extends AsciiThread {
     }
 
     protected String[] wordWrap(String s) {
-        String[] cleaned = filterPrintableWithNewline(htmlClean(s).trim()).replaceAll(" +", " ").split("\n");
+        String temp = (io instanceof MinitelInputOutput ? utilHtmlClean(s) : htmlClean(s));
+        String[] cleaned = filterPrintableWithNewline(temp.trim()).replaceAll(" +", " ").split("\n");
         List<String> result = new LinkedList<>();
         for (String item: cleaned) {
             String[] wrappedLine = WordUtils

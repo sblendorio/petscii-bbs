@@ -1,6 +1,7 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
 import com.google.common.collect.ImmutableMap;
+import eu.sblendorio.bbs.core.BbsInputOutput;
 import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.PrestelInputOutput;
 import eu.sblendorio.bbs.core.Utils;
@@ -14,7 +15,6 @@ import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
 @Hidden
 public class TelevideoRaiAscii extends RssAscii {
-
     protected Map<String, NewsSection> sections;
     protected String type;
 
@@ -22,11 +22,15 @@ public class TelevideoRaiAscii extends RssAscii {
         this("rss.a1.timeout", "40000", "ascii");
     }
 
-    public TelevideoRaiAscii(String property, String defaultValue, String interfaceType, byte[] rawMenuScreen, byte[] restartInput) {
-        super(property, defaultValue);
+    public TelevideoRaiAscii(String timeoutProperty, String defaultValue, String interfaceType, byte[] rawMenuScreen, byte[] restartInput) {
+        this(null, timeoutProperty, defaultValue, interfaceType, rawMenuScreen, restartInput);
+    }
+    public TelevideoRaiAscii(BbsInputOutput inout, String timeoutProperty, String defaultValue, String interfaceType, byte[] rawMenuScreen, byte[] restartInput) {
+        super(timeoutProperty, defaultValue);
+        this.inout = inout;
         type = interfaceType;
         sections = loadSections();
-        timeout = toLong(System.getProperty(property, defaultValue));
+        timeout = toLong(System.getProperty(timeoutProperty, defaultValue));
         logoHeightMenu = logoHeightsMenu.get(interfaceType);
         logoHeightNews = logoHeightsNews.get(interfaceType);
         hrDash = hrDashes.get(interfaceType);

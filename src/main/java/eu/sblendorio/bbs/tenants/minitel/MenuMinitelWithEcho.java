@@ -75,6 +75,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                     return;
                 }
                 else if ("1".equals(choice)) subThread = new CnnAscii(
+                        io,
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getTerminalType(),
@@ -82,6 +83,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                         bytes(31, 64+15, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+15, 64+2 ,0x1b, 0x54, 0x1b, 0x47)
                 );
                 else if ("2".equals(choice)) subThread = new BbcAscii(
+                        io,
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getTerminalType(),
@@ -94,6 +96,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("6".equals(choice)) subThread = new VcfedAscii();
                 else if ("7".equals(choice)) subThread = new The8BitGuyAscii();
                 else if ("a".equals(choice)) subThread = new TelevideoRaiAscii(
+                        io,
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getTerminalType(),

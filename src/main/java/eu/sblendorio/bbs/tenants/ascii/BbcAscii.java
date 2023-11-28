@@ -1,6 +1,7 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
 import com.google.common.collect.ImmutableMap;
+import eu.sblendorio.bbs.core.BbsInputOutput;
 import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.PrestelInputOutput;
 
@@ -32,7 +33,12 @@ public class BbcAscii extends RssAscii {
     }
 
     public BbcAscii(String property, String defaultValue, String interfaceType, byte[] rawMenuScreen, byte[] restartInput) {
+        this(null, property, defaultValue, interfaceType, rawMenuScreen, restartInput);
+    }
+
+    public BbcAscii(BbsInputOutput inout, String property, String defaultValue, String interfaceType, byte[] rawMenuScreen, byte[] restartInput) {
         super(property, defaultValue);
+        this.inout = inout;
         type = interfaceType;
         sections = loadSections();
         timeout = toLong(System.getProperty(property, defaultValue));
