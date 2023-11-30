@@ -48,6 +48,8 @@ public class WikipediaPetscii extends PetsciiThread {
         cls();
         write(19, WHITE, DOWN);
         write(getRenderedMidres(14, WikipediaCommons.WIKILOGO, false, false));
+        write(19, GREY1, DOWN, DOWN, DOWN, DOWN);
+        write(getRenderedMidres(14, WikipediaCommons.WIKILOGO_SHADOW, false, true));
 
         write(19, GREY2);
         write(getRenderedMidres(0,WikipediaCommons.WIKILOGO_2, false, false));
