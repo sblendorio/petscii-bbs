@@ -16,6 +16,8 @@ import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparingLong;
 
 import java.util.stream.Collectors;
+
+import eu.sblendorio.bbs.tenants.ascii.ClientChatGptAscii;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -26,9 +28,10 @@ import org.apache.commons.cli.ParseException;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.substring;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class BBServer {
     static class EndPoint {
@@ -53,15 +56,14 @@ public class BBServer {
     private static Set<Integer> usedPorts = new HashSet<>();
 
 
-    private static final Logger logger = LoggerFactory.getLogger(BBServer.class);
+    private static Logger logger = LogManager.getLogger(BBServer.class);
 
     public static void main(String[] args) throws Exception {
         // args = new String[] {"-b", "MainMenu", "-p", "6510"};
         readParameters(args);
 
         Thread.currentThread().setName("BBSMain-" + Thread.currentThread().getId());
-        logger.info("{} The BBS {} is running: timeout = {} millis" + (servicePort != 0 ? ", serviceport = {}" : ""),
-                    new Timestamp(currentTimeMillis()),
+        logger.info("The BBS {} is running: timeout = {} millis" + (servicePort != 0 ? ", serviceport = {}" : ""),
                     endPoints.toString(),
                     timeout,
                     servicePort);

@@ -1,28 +1,18 @@
 package eu.sblendorio.bbs.core;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.Reader;
-import java.io.UncheckedIOException;
-import java.io.UnsupportedEncodingException;
-import static java.lang.System.arraycopy;
-import java.net.Socket;
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.io.*;
+import java.net.Socket;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.defaultString;
-import static org.apache.commons.lang3.StringUtils.substring;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import static java.lang.System.arraycopy;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static org.apache.commons.lang3.StringUtils.*;
 
 /* This class is a modified version of original BufferedReader from original java IO library */
 public abstract class BbsInputOutput extends Reader {
@@ -55,7 +45,7 @@ public abstract class BbsInputOutput extends Reader {
         }
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(BbsInputOutput.class);
+    private static Logger logger = LogManager.getLogger(BbsInputOutput.class);
     private String readBuffer = EMPTY;
 
     protected Reader in;

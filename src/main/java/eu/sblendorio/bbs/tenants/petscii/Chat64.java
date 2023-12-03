@@ -29,10 +29,9 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.*;
+
 import org.apache.commons.lang3.StringUtils;
-import static org.apache.commons.lang3.StringUtils.defaultString;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -163,11 +162,13 @@ public class Chat64 extends PetsciiThread {
                     final String newName = command.replaceAll("\\s+", " ").substring(6);
                     boolean alreadyPresent =
                         clients.values().stream().map(BbsThread::getClientName).anyMatch(x -> x.equalsIgnoreCase(newName));
+                    final String oldName = getClientName();
                     int res = alreadyPresent ? -1 : changeClientName(newName);
                     if (res != 0) {
                         println("Error: name already used.");
                     } else {
                         getRoot().setCustomObject(CUSTOM_KEY, getClientName());
+                        sendToAll(new ChatMessage(-4, oldName + " is now known as " + getClientName()));
                     }
                     redraw();
                 } else if (command.equalsIgnoreCase("/cls")) {
@@ -384,6 +385,10 @@ public class Chat64 extends PetsciiThread {
                 write(PetsciiColors.RED);
                 text = row.message.text;
                 println(text);
+            } else if (row.message.receiverId == -4) {
+                write(ORANGE);
+                text = row.message.text;
+                println(text);
             } else if (row.message.receiverId == -3) {
                 int index = row.message.text.indexOf(">");
                 write(LIGHT_BLUE);
@@ -427,7 +432,11 @@ public class Chat64 extends PetsciiThread {
     }
 
     private void displayPotentialUrl(String text) {
-        if (text == null || text.contains("@")) return;
+        if (
+                text == null
+                || text.contains("@")
+                || (countMatches(text, '.') == 1 && countMatches(text, '/') == 0)
+        ) return;
         UrlDetector parser = new UrlDetector(text, UrlDetectorOptions.Default);
         List<Url> found = parser.detect();
         if (found == null || found.size() == 0) return;

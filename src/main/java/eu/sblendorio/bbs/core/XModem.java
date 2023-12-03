@@ -1,15 +1,11 @@
 package eu.sblendorio.bbs.core;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.Reader;
-import java.io.UncheckedIOException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.*;
 import java.util.Arrays;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * a tiny version of Ward Christensen's MODEM program for UNIX.
@@ -45,7 +41,7 @@ import org.slf4j.LoggerFactory;
  */
 public class XModem {
 
-    private static final Logger logger = LoggerFactory.getLogger(XModem.class);
+    private static Logger logger = LogManager.getLogger(XModem.class);
 
     protected static final byte CPMEOF = 26;       /* control/z */
     protected static final int MAXERRORS = 10;     /* max times to retry one block */

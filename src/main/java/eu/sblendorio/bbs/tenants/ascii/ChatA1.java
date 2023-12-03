@@ -121,11 +121,13 @@ public class ChatA1 extends AsciiThread {
                     final String newName = lowerCase(candidateName);
                     boolean alreadyPresent =
                         clients.values().stream().map(BbsThread::getClientName).anyMatch(x -> x.equalsIgnoreCase(newName));
+                    final String oldName = getClientName();
                     int res = alreadyPresent ? -1 : changeClientName(newName);
                     if (res != 0) {
                         println("Error: name already used..");
                     } else {
                         getRoot().setCustomObject(CUSTOM_KEY, getClientName());
+                        sendToAll(new ChatMessage(-4, oldName + " is now known as " + getClientName()));
                     }
                     redraw(false);
                 } else if (command.equalsIgnoreCase("/cls")) {
@@ -253,6 +255,8 @@ public class ChatA1 extends AsciiThread {
             if (row.message.receiverId == -1) {
                 println("* " + row.message.text);
             } else if (row.message.receiverId == -2) {
+                println("* " + row.message.text);
+            } else if (row.message.receiverId == -4) {
                 println("* " + row.message.text);
             } else if (row.message.receiverId == -3) {
                 int index = row.message.text.indexOf(">");

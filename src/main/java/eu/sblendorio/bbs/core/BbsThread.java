@@ -1,43 +1,27 @@
 package eu.sblendorio.bbs.core;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UncheckedIOException;
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.net.URLConnection;
+import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-import static eu.sblendorio.bbs.core.HtmlUtils.utilHtmlClean;
-import static java.nio.charset.StandardCharsets.UTF_8;
+import java.io.*;
+import java.net.*;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
-import org.apache.commons.io.IOUtils;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.defaultString;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.substring;
-import static org.apache.commons.lang3.StringUtils.trim;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import static eu.sblendorio.bbs.core.HtmlUtils.utilHtmlClean;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.commons.lang3.StringUtils.*;
 
 public abstract class BbsThread extends Thread {
 
-    private static final Logger logger = LoggerFactory.getLogger(BbsThread.class);
+    private static Logger logger = LogManager.getLogger(BbsThread.class);
 
     public static class DownloadData {
         private final String filename;
@@ -405,11 +389,7 @@ public abstract class BbsThread extends Thread {
     }
 
     public void log(String message) {
-        final String logRow =
-            substring(new Timestamp(System.currentTimeMillis()).toString() + "000",0,23) +
-                " Client #" + getClientId() + ". " +
-                message
-            ;
+        final String logRow = "Client #" + getClientId() + ". " + message;
         logger.info(logRow);
     }
 

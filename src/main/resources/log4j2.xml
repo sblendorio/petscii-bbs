@@ -15,8 +15,24 @@
             <DefaultRolloverStrategy max="30" />
         </RollingFile>
 
+        <RollingFile
+                name="Global"
+                fileName="${sys:user.home}/bbs-logs/bbs-global.log"
+                filePattern="${sys:user.home}/bbs-logs/bbs-global.%d{yyyy-mm-dd}.log.gz"
+                ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS zzz} %p %c{1} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+            <DefaultRolloverStrategy max="30" />
+        </RollingFile>
+
         <Console name="STDOUT" target="SYSTEM_OUT">
-            <PatternLayout pattern="%m%n" />
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS zzz} %p %c{1} [%t] %m%n</Pattern>
+            </PatternLayout>
         </Console>
     </Appenders>
     <Loggers>
@@ -27,7 +43,7 @@
             <AppenderRef ref="ChatGptLog"/>
         </Logger>
         <Root level="debug">
-            <AppenderRef ref="STDOUT" />
+            <AppenderRef ref="Global" />
         </Root>
     </Loggers>
 </Configuration>

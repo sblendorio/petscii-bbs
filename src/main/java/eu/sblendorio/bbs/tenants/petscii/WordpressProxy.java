@@ -2,40 +2,30 @@ package eu.sblendorio.bbs.tenants.petscii;
 
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Hidden;
-import eu.sblendorio.bbs.core.HtmlUtils;
-import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
-import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
-import static eu.sblendorio.bbs.core.PetsciiKeys.CASE_LOCK;
-import static eu.sblendorio.bbs.core.PetsciiKeys.DEL;
-import static eu.sblendorio.bbs.core.PetsciiKeys.LOWERCASE;
 import eu.sblendorio.bbs.core.PetsciiThread;
-import static eu.sblendorio.bbs.core.Utils.equalsDomain;
-import static eu.sblendorio.bbs.core.Utils.normalizeDomain;
-import java.io.IOException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.WordUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import java.util.ArrayList;
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
+import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
+import static eu.sblendorio.bbs.core.PetsciiKeys.*;
+import static eu.sblendorio.bbs.core.Utils.equalsDomain;
+import static eu.sblendorio.bbs.core.Utils.normalizeDomain;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyMap;
 import static org.apache.commons.collections4.MapUtils.isEmpty;
-import org.apache.commons.lang3.StringUtils;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.SPACE;
-import static org.apache.commons.lang3.StringUtils.defaultString;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.lowerCase;
-import static org.apache.commons.lang3.StringUtils.repeat;
-import static org.apache.commons.lang3.StringUtils.substring;
-import static org.apache.commons.lang3.StringUtils.trim;
+import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
-import org.apache.commons.text.WordUtils;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Hidden
 public class WordpressProxy extends PetsciiThread {
@@ -43,7 +33,7 @@ public class WordpressProxy extends PetsciiThread {
     public static String CHROME_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36";
 
 
-    private static final Logger logger = LoggerFactory.getLogger(WordpressProxy.class);
+    private static Logger logger = LogManager.getLogger(WordpressProxy.class);
     String HR_TOP;
 
     @Override
