@@ -1,27 +1,44 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.zxing.WriterException;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.google.zxing.qrcode.encoder.ByteMatrix;
+import com.google.zxing.qrcode.encoder.Encoder;
+import com.linkedin.urls.Url;
+import com.linkedin.urls.detection.UrlDetector;
+import com.linkedin.urls.detection.UrlDetectorOptions;
 import eu.sblendorio.bbs.core.*;
-
-import static eu.sblendorio.bbs.core.Utils.bytes;
-
 import eu.sblendorio.bbs.tenants.petscii.Chat64.ChatMessage;
 import eu.sblendorio.bbs.tenants.petscii.Chat64.Row;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.BufferedReader;
 import java.io.IOException;
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
-import static java.util.Optional.ofNullable;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
+
+import static eu.sblendorio.bbs.core.Utils.bytes;
+import static java.lang.System.getProperty;
+import static java.lang.System.getenv;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Optional.ofNullable;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
-import org.apache.commons.lang3.StringUtils;
-import static org.apache.commons.lang3.StringUtils.defaultString;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.lowerCase;
+import static org.apache.commons.lang3.StringUtils.*;
 
 @Hidden
 public class ChatA1 extends AsciiThread {
@@ -92,11 +109,12 @@ public class ChatA1 extends AsciiThread {
 
             notifyEnteringUser();
             String rawCommand = null;
+            String originalCommand = null;
             redraw(false);
             do {
                 resetInput();
-                rawCommand = readLine();
-                rawCommand = defaultString(rawCommand).trim();
+                originalCommand = readLine();
+                rawCommand = defaultString(originalCommand).trim();
                 rawCommand = lowerCase(rawCommand);
                 final String command =  rawCommand;
                 if (isBlank(command)) {
@@ -110,6 +128,7 @@ public class ChatA1 extends AsciiThread {
 
                     if (recipient != null && recipient != getClientId()) {
                         if (isNotBlank(text)) {
+                            displayPotentialUrl(originalCommand);
                             send(recipient, new ChatMessage(recipient, text));
                             redraw(false);
                         }
@@ -153,6 +172,7 @@ public class ChatA1 extends AsciiThread {
                 } else if (".".equals(command) || "/q".equalsIgnoreCase(command) || "/quit".equalsIgnoreCase(command)) {
                     log("Exiting chat.");
                 } else if (StringUtils.isNotBlank(command)) {
+                    displayPotentialUrl(originalCommand);
                     sendToAll(new ChatMessage(-3, "<"+getClientName()+"@all>"+ command));
                     redraw(false);
                 } else {
@@ -262,6 +282,7 @@ public class ChatA1 extends AsciiThread {
                 int index = row.message.text.indexOf(">");
                 print(row.message.text.substring(0, index+1));
                 println(row.message.text.substring(index+1));
+                displayPotentialUrl(row.message.text.substring(index+1));
             } else {
                 String from = ofNullable(getClients().get(row.recipientId)).map(BbsThread::getClientName).orElse(null);
                 String to = ofNullable(getClients().get(row.message.receiverId)).map(BbsThread::getClientName).orElse(null);
@@ -272,9 +293,40 @@ public class ChatA1 extends AsciiThread {
 
                 print("<" + from + ">");
                 println(text);
+                displayPotentialUrl(text);
             }
             isFirstRow = false;
         }
+    }
+
+    private void displayPotentialUrl(String text) {
+        if (!(io instanceof MinitelInputOutput)) return;
+
+        if (
+            text == null
+            || text.contains("@")
+            || (countMatches(text, '.') == 1 && countMatches(text, '/') == 0)
+        ) return;
+
+        UrlDetector parser = new UrlDetector(text, UrlDetectorOptions.Default);
+        List<Url> found = parser.detect();
+        if (found == null || found.size() == 0) return;
+
+        String firstUrl = found.get(0).getFullUrl();
+        try {
+            String shortUrl = firstUrl.length() <= 24 ? firstUrl : shortenUrl(firstUrl);
+            String[] strMatrix = stringToQr(shortUrl);
+            println();
+            write(MinitelControls.GRAPHICS_MODE);
+            write(BlockGraphicsMinitel.getRenderedMidres(2, strMatrix));
+        } catch (Exception e) {
+            log("Malformed URL exception in text: \"" + text + "\"");
+            e.printStackTrace();
+            return;
+        } finally {
+            write(MinitelControls.TEXT_MODE);
+        }
+
     }
 
     @Override
@@ -305,4 +357,37 @@ public class ChatA1 extends AsciiThread {
         "ansi", bytes("\0337\033[r\0338\033[?7l"),
         "utf8", bytes("\0337\033[r\0338")
     );
+
+
+    private String shortenUrl(String firstUrl) throws IOException, ParseException {
+        String token = defaultString(getProperty("cutt_key", getenv("cutt_key")), "DUMMY");
+        URL shortService = new URL("https://cutt.ly/api/api.php?key=" + token + "&short=" +
+                URLEncoder.encode(firstUrl, UTF_8.toString()));
+        URLConnection conn = shortService.openConnection();
+        InputStream inputStream = conn.getInputStream();
+
+        String result = new BufferedReader(
+                new InputStreamReader(inputStream, UTF_8)).lines().collect(Collectors.joining("\n"));
+        inputStream.close();
+        JSONObject jtext = (JSONObject) new JSONParser().parse(result);
+        int status = NumberUtils.toInt(((JSONObject) jtext.get("url")).get("status").toString());
+        if (status == 1 ||
+                status == 4 ||
+                status == 6)
+            return firstUrl;
+        return ((JSONObject) jtext.get("url")).get("shortLink").toString();
+    }
+
+    private String[] stringToQr(String string) throws WriterException {
+        ByteMatrix matrix = Encoder.encode(string, ErrorCorrectionLevel.H).getMatrix();
+        String[] strMatrix = new String[matrix.getHeight()];
+        for (int y=0; y < matrix.getHeight(); ++y) {
+            strMatrix[y] = "";
+            for (int x = 0; x < matrix.getWidth(); ++x) {
+                strMatrix[y] += (matrix.get(x, y) == 1 ? "*" : ".");
+            }
+        }
+        return strMatrix;
+    }
+
 }

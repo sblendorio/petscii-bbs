@@ -245,6 +245,7 @@ public abstract class BbsThread extends Thread {
             log("BROKEN PIPE " + e);
         } catch (RuntimeException e) {
             if (e.getCause() == null) {
+                logger.error("Exception",e);
                 e.printStackTrace();
             } else if (e.getCause() instanceof BbsIOException) {
                 log("EOF " + e);
@@ -253,6 +254,7 @@ public abstract class BbsThread extends Thread {
             } else if (e.getCause() instanceof SocketException) {
                 log("BROKEN PIPE " + e);
             } else {
+                logger.error("Exception {}",e);
                 e.printStackTrace();
             }
         } catch (Exception e) {
@@ -529,6 +531,7 @@ public abstract class BbsThread extends Thread {
         try {
             responseCode = conn.getResponseCode();
         } catch (Exception e) {
+            logger.error(e);
             e.printStackTrace();
             throw e;
         }
@@ -667,6 +670,7 @@ public abstract class BbsThread extends Thread {
             try {
                 Thread.sleep(INTERVAL);
             } catch (InterruptedException e) {
+                logger.error(e);
                 e.printStackTrace();
             }
         }

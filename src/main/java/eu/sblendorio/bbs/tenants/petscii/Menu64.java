@@ -1,7 +1,5 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.maxmind.db.Reader;
 import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.Utils;
@@ -26,60 +24,13 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class Menu64 extends PetsciiThread {
 
-    public static class GeoData {
-        public final String city;
-        public final String cityGeonameId;
-        public final String country;
-        public final Double latitude;
-        public final Double longitude;
-        public final String timeZone;
-
-        public GeoData(final String city, final String cityGeonameId, final String country, final Double latitude,
-                       final Double longitude, final String timeZone) {
-            this.city = city;
-            this.cityGeonameId = cityGeonameId;
-            this.country = country;
-            this.latitude = latitude;
-            this.longitude = longitude;
-            this.timeZone = timeZone;
-        }
-    }
-
-    private static final String MAXMIND_DB = System.getProperty("user.home") + File.separator + "GeoLite2-City.mmdb";
     private static final String IP_FOR_ALTERNATE_LOGO = System.getProperty("alternate.logo.ip", "none");
     private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.port", "-1"));
-    private Reader maxmindReader;
-    private JsonNode maxmindResponse;
-    private GeoData geoData;
-
-    public void init() {
-        try {
-            File maxmindDb = new File(MAXMIND_DB);
-            maxmindReader = new Reader(maxmindDb);
-            maxmindResponse = maxmindReader.get(socket.getInetAddress());
-            maxmindReader.close();
-
-            geoData = new GeoData(
-                maxmindResponse.get("city").get("names").get("en").asText(),
-                maxmindResponse.get("city").get("geoname_id").asText(),
-                maxmindResponse.get("country").get("names").get("en").asText(),
-                maxmindResponse.get("location").get("latitude").asDouble(),
-                maxmindResponse.get("location").get("longitude").asDouble(),
-                maxmindResponse.get("location").get("time_zone").asText()
-            );
-            log("Location: " + geoData.city + ", " + geoData.country);
-        } catch (Exception e) {
-            maxmindResponse = null;
-            geoData = null;
-            log("Error retrieving GeoIP data: " + e.getClass().getName());
-        }
-    }
 
     @Override
     public void doLoop() throws Exception {
         if (alternateLogo()) { write(PetsciiKeys.LOWERCASE); println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); keyPressed(10_000); return; }
 
-        init();
         while (true) {
             write(CLR, LOWERCASE, CASE_LOCK, HOME);
             log("Starting Main Menu BBS");
@@ -97,7 +48,6 @@ public class Menu64 extends PetsciiThread {
             write(GREY3);
             gotoXY(39, alternateLogo() ? 23 : 24);
 
-            //final String line = geoData != null ? "Connected from "+geoData.city+", "+geoData.country : EMPTY;
             flush();
             boolean validKey;
             do {
@@ -246,7 +196,8 @@ public class Menu64 extends PetsciiThread {
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '3', REVOFF, 161); println("Politico.com");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '4', REVOFF, 161); println("Al Jazeera");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '5', REVOFF, 161); println("Wired");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '6', REVOFF, 161); println("Vintage Computer Federation");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '6', REVOFF, 161); println("Vintage" +
+                    " Computer Federation");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '7', REVOFF, 161); println("Indie Retro News");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '8', REVOFF, 161); println("The 8-Bit Guy");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '9', REVOFF, 161); println("Vintage is the new old");

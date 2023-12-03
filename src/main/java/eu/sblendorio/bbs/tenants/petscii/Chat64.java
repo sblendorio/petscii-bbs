@@ -127,7 +127,6 @@ public class Chat64 extends PetsciiThread {
                 write(INPUT_COLOR);
                 resetInput();
                 rawCommand = readLine();
-                displayPotentialUrl(rawCommand);
                 rawCommand = defaultString(rawCommand).trim();
                 final String command =  rawCommand;
                 if (isBlank(command)) {
@@ -143,6 +142,7 @@ public class Chat64 extends PetsciiThread {
                     if (candidateRecipient != null && candidateRecipient != getClientId()) {
                         recipient = candidateRecipient;
                         if (isNotBlank(text)) {
+                            displayPotentialUrl(rawCommand);
                             send(recipient, new ChatMessage(recipient, text));
                             redraw();
                         }
@@ -153,6 +153,7 @@ public class Chat64 extends PetsciiThread {
                     recipient = null;
                     String text = defaultString(command.replaceAll("(?is)^/all(\\s+.*)?$", "$1")).trim();
                     if (isNotBlank(text)) {
+                        displayPotentialUrl(rawCommand);
                         sendToAll(new ChatMessage(-3, "<"+getClientName()+"@all>" + text));
                         redraw();
                     } else {
@@ -199,6 +200,7 @@ public class Chat64 extends PetsciiThread {
                     redraw();
                     //send(getClientId(), new ChatMessage(recipient, command));
                 } else if (StringUtils.isNotBlank(command)) {
+                    displayPotentialUrl(rawCommand);
                     sendToAll(new ChatMessage(-3, "<"+getClientName()+"@all>"+ command));
                     redraw();
                 } else {
@@ -396,6 +398,7 @@ public class Chat64 extends PetsciiThread {
                 write(CYAN);
                 text = row.message.text.substring(index+1);
                 println(text);
+                displayPotentialUrl(text);
             } else {
                 String from = ofNullable(getClients().get(row.recipientId)).map(BbsThread::getClientName).orElse(null);
                 String to = ofNullable(getClients().get(row.message.receiverId)).map(BbsThread::getClientName).orElse(null);
@@ -408,8 +411,8 @@ public class Chat64 extends PetsciiThread {
                 print("<" + from + ">");
                 write(PetsciiColors.YELLOW);
                 println(text);
+                displayPotentialUrl(text);
             }
-            displayPotentialUrl(text);
         }
     }
 

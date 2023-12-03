@@ -18,7 +18,7 @@
         <RollingFile
                 name="Global"
                 fileName="${sys:user.home}/bbs-logs/bbs-global.log"
-                filePattern="${sys:user.home}/bbs-logs/bbs-global.%d{yyyy-mm-dd}.log.gz"
+                filePattern="${sys:user.home}/bbs-logs/bbs-global.%d{yyyy-MM-dd}.log.gz"
                 ignoreExceptions="false">
             <PatternLayout>
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS zzz} %p %c{1} [%t] %m%n</Pattern>
