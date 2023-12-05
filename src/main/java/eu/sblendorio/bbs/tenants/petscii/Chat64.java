@@ -457,6 +457,19 @@ public class Chat64 extends PetsciiThread {
     }
 
     private String shortenUrl(String firstUrl) throws IOException, ParseException {
+        final String urlShorter = "https://sblendorio.eu/shorten.php?url=" +
+                URLEncoder.encode(firstUrl, UTF_8.toString());
+        URL shortService = new URL(urlShorter);
+        URLConnection conn = shortService.openConnection();
+        InputStream inputStream = conn.getInputStream();
+        String result = new BufferedReader(
+                new InputStreamReader(inputStream, UTF_8)).lines().collect(Collectors.joining("\n"));
+        inputStream.close();
+
+        return "https://sblendorio.eu/"+result;
+    }
+
+    private String shortenUrlCuttly(String firstUrl) throws IOException, ParseException {
         String token = defaultString(getProperty("cutt_key", getenv("cutt_key")), "DUMMY");
         URL shortService = new URL("https://cutt.ly/api/api.php?key=" + token + "&short=" +
             URLEncoder.encode(firstUrl, UTF_8.toString()));
