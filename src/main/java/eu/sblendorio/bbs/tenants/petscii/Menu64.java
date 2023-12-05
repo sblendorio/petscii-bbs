@@ -37,7 +37,7 @@ public class Menu64 extends PetsciiThread {
             byte[] logoseq = readBinaryFile(
                     alternateLogo()
                             ? "petscii/bbs-menu-main-alternate.seq"
-                            : "petscii/bbs-menu-main.seq");
+                            : "petscii/bbs-menu-main-christmas.seq"); // bbs-menu-main-christmas.seq / bbs-menu-main.seq
             String currentYear = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
             logoseq = new String(logoseq, StandardCharsets.ISO_8859_1)
                     .replace("9999", currentYear)
@@ -461,7 +461,7 @@ public class Menu64 extends PetsciiThread {
     public void drawLogo() {
         write(alternateLogo()
             ? LOGO_BYTES_ALTERNATE
-            : LOGO_BYTES
+            : /*LOGO_BYTES*/ readBinaryFile("petscii/christmas-ribbon.seq")
         );
     }
 
@@ -483,7 +483,10 @@ public class Menu64 extends PetsciiThread {
         String filename = files.get(0).toString();
         if (startsWith(filename,"/")) filename = filename.substring(1);
         for (int i=0; i<25; ++i) newline();
-        writeRawFile(filename);
+
+        write(UPPERCASE); writeRawFile("petscii/goodbye/santa-kody.seq"); // christmas
+        // writeRawFile(filename); // no-christmas
+
         write(PetsciiKeys.CASE_UNLOCK);
     }
 
