@@ -13,6 +13,8 @@ import eu.sblendorio.bbs.tenants.petscii.Chat64.ChatMessage;
 import eu.sblendorio.bbs.tenants.petscii.Chat64.Row;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -42,6 +44,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 
 @Hidden
 public class ChatA1 extends AsciiThread {
+    private static Logger logger = LogManager.getLogger(ChatA1.class);
 
     private static final String CUSTOM_KEY = "CHAT";
     private boolean canRedraw = false;
@@ -129,6 +132,7 @@ public class ChatA1 extends AsciiThread {
                     if (recipient != null && recipient != getClientId()) {
                         if (isNotBlank(text)) {
                             displayPotentialUrl(originalCommand);
+                            logger.debug("<" + clientName + "@" + recipientName + ">" + text);
                             send(recipient, new ChatMessage(recipient, text));
                             redraw(false);
                         }
@@ -187,6 +191,7 @@ public class ChatA1 extends AsciiThread {
     }
 
     private /*synchronized*/ void sendToAll(ChatMessage chatMessage) {
+        logger.debug(chatMessage.text);
         getClients().keySet().stream()
                 .filter(id -> getClients().get(id) != null)
                 .filter(id -> id != getClientId()
@@ -313,6 +318,7 @@ public class ChatA1 extends AsciiThread {
         if (found == null || found.size() == 0) return;
 
         String firstUrl = found.get(0).getFullUrl();
+        log("Detected URL: " + firstUrl);
         try {
             String shortUrl = firstUrl.length() <= 24 ? firstUrl : shortenUrl(firstUrl);
             String[] strMatrix = stringToQr(shortUrl);

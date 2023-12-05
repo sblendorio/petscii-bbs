@@ -133,25 +133,17 @@ public abstract class BbsThread extends Thread {
     public abstract void doLoop() throws Exception;
 
     public void receive(long senderId, Object message) {
-        log("ENTERING BbsThread.receive(senderId="+senderId+", message="+message+"). child="+child+", child.class="+(child==null?"null":child.getClass().getSimpleName())+", child.clientclass="+(child==null||child.getClientClass()==null?"null":child.getClientClass().getSimpleName()));
         if (child == null) {
             log("WARNING: default receive method from [" + getClass().getSimpleName() + "] sender #" + senderId + ", message=\"" + message + "\".");
         } else {
-            log("RAISING UP receive, to child");
             child.receive(senderId, message);
         }
     }
 
     public int send(long receiverId, Object message) {
-        // FIXME here is potential hangup for chat
-        log("START. class="+this.getClass().getSimpleName()+"/"+this.getClientName()+", send(receiverId="+receiverId+", message="+message);
         BbsThread receiver = getClients().get(receiverId);
-        log("INLINE. receiver="+receiver+", receiver.class="+receiver.getClass().getSimpleName());
         if (receiver == null) return 1;
-        log("INLINE. BEFORE call receiver.receive(clientId="+getClientId()+", message="+message);
         receiver.receive(getClientId(), message);
-        log("INLINE. AFTER call receiver.receive(clientId="+getClientId()+", message="+message);
-        log("END. class="+this.getClass().getSimpleName()+"/"+this.getClientName()+", send(receiverId="+receiverId+", message="+message);
         return 0;
     }
 

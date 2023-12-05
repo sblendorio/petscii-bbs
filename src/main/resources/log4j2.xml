@@ -4,7 +4,21 @@
         <RollingFile
                 name="ChatGptLog"
                 fileName="${sys:user.home}/bbs-logs/bbs-chatgpt.log"
-                filePattern="${sys:user.home}/bbs-logs/bbs-chatgpt.%d{yyyy-ww}.log.gz"
+                filePattern="${sys:user.home}/bbs-logs/bbs-chatgpt.%d{yyyy-ww}.log.xz"
+                ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS zzz} %p %c{1} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+            <DefaultRolloverStrategy max="30" />
+        </RollingFile>
+
+        <RollingFile
+                name="HumanChatLog"
+                fileName="${sys:user.home}/bbs-logs/bbs-humanchat.log"
+                filePattern="${sys:user.home}/bbs-logs/bbs-humanchat.%d{yyyy-ww}.log.xz"
                 ignoreExceptions="false">
             <PatternLayout>
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS zzz} %p %c{1} [%t] %m%n</Pattern>
@@ -18,7 +32,7 @@
         <RollingFile
                 name="Global"
                 fileName="${sys:user.home}/bbs-logs/bbs-global.log"
-                filePattern="${sys:user.home}/bbs-logs/bbs-global.%d{yyyy-MM-dd}.log.gz"
+                filePattern="${sys:user.home}/bbs-logs/bbs-global.%d{yyyy-MM-dd}.log.xz"
                 ignoreExceptions="false">
             <PatternLayout>
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS zzz} %p %c{1} [%t] %m%n</Pattern>
@@ -41,6 +55,12 @@
         </Logger>
         <Logger name="eu.sblendorio.bbs.tenants.ascii.ClientChatGptAscii" level="debug" additivity="false">
             <AppenderRef ref="ChatGptLog"/>
+        </Logger>
+        <Logger name="eu.sblendorio.bbs.tenants.petscii.Chat64" level="debug" additivity="false">
+            <AppenderRef ref="HumanChatLog"/>
+        </Logger>
+        <Logger name="eu.sblendorio.bbs.tenants.ascii.ChatA1" level="debug" additivity="false">
+            <AppenderRef ref="HumanChatLog"/>
         </Logger>
         <Root level="debug">
             <AppenderRef ref="Global" />

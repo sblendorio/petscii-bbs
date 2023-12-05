@@ -7,37 +7,40 @@ import com.google.zxing.qrcode.encoder.Encoder;
 import com.linkedin.urls.Url;
 import com.linkedin.urls.detection.UrlDetector;
 import com.linkedin.urls.detection.UrlDetectorOptions;
-import eu.sblendorio.bbs.core.BbsThread;
-import eu.sblendorio.bbs.core.PetsciiColors;
-import static eu.sblendorio.bbs.core.PetsciiColors.*;
-import eu.sblendorio.bbs.core.PetsciiKeys;
-import eu.sblendorio.bbs.core.PetsciiThread;
-import static eu.sblendorio.bbs.core.Utils.bytes;
-import eu.sblendorio.bbs.core.BlockGraphicsPetscii;
-import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-
-import static java.lang.System.getProperty;
-import static java.lang.System.getenv;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import java.util.List;
-import static java.util.Optional.ofNullable;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.stream.Collectors;
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
-import static org.apache.commons.lang3.StringUtils.*;
-
+import eu.sblendorio.bbs.core.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.stream.Collectors;
+
+import static eu.sblendorio.bbs.core.PetsciiColors.*;
+import static eu.sblendorio.bbs.core.Utils.bytes;
+import static java.lang.System.getProperty;
+import static java.lang.System.getenv;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Optional.ofNullable;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.*;
+
 public class Chat64 extends PetsciiThread {
+    private static Logger logger = LogManager.getLogger(Chat64.class);
+
 
     private static final String CUSTOM_KEY = "CHAT";
     private static final int INPUT_COLOR = GREY3;
@@ -143,6 +146,7 @@ public class Chat64 extends PetsciiThread {
                         recipient = candidateRecipient;
                         if (isNotBlank(text)) {
                             displayPotentialUrl(rawCommand);
+                            logger.debug("<" + clientName + "@" + recipientName + ">" + text);
                             send(recipient, new ChatMessage(recipient, text));
                             redraw();
                         }
@@ -196,6 +200,8 @@ public class Chat64 extends PetsciiThread {
                 } else if (".".equals(command) || "/q".equalsIgnoreCase(command) || "/quit".equalsIgnoreCase(command)) {
                     log("Exiting chat.");
                 } else if (recipient != null) {
+                    String to = ofNullable(getClients().get(recipient)).map(BbsThread::getClientName).orElse(null);
+                    logger.debug("<" + clientName + "@" + to + ">" + command);
                     send(recipient, new ChatMessage(recipient, command));
                     redraw();
                     //send(getClientId(), new ChatMessage(recipient, command));
@@ -214,7 +220,7 @@ public class Chat64 extends PetsciiThread {
     }
 
     private /*synchronized*/ void sendToAll(ChatMessage chatMessage) {
-        log("START sendToAll, clientName="+getClientName()+", getClients().keySet()="+getClients().keySet());
+        logger.debug(chatMessage.text);
         getClients().keySet().stream()
                 .filter(id -> getClients().get(id) != null)
                 .filter(id -> id != getClientId()
@@ -222,14 +228,10 @@ public class Chat64 extends PetsciiThread {
                         && getClients().get(id).getClientClass().getSimpleName().startsWith("Chat")
                 )
                 .forEach(id -> send(id, chatMessage));
-        // FIXME: never gets here
-        log("END sendToAll, clientName="+getClientName());
     }
 
     private void notifyEnteringUser() {
-        log("START notifyEnteringUser, clientName="+getClientName());
         sendToAll(new ChatMessage(-1, getClientName() + " has entered"));
-        log("END notifyEnteringUser, clientName="+getClientName());
     }
 
     private void notifyExitingUser() {
@@ -418,12 +420,8 @@ public class Chat64 extends PetsciiThread {
 
     @Override
     public /*synchronized*/ void receive(long senderId, Object message) {
-        log("START receive, clientName="+getClientName()+", canRedraw="+canRedraw+", ...");
-        log("... rows.size()="+rows.size());
         ChatMessage chatMessage = (ChatMessage) message;
-        log("... adding message");
         rows.addLast(new Row(senderId, chatMessage));
-        log("... added message. canRedraw="+canRedraw+", readLineBuffer().length()="+readLineBuffer().length());
         if (canRedraw && (/* chatMessage.receiverId > 0 || */ readLineBuffer().length() == 0)) {
             redraw();
             write(INPUT_COLOR);
@@ -431,7 +429,6 @@ public class Chat64 extends PetsciiThread {
                 write(7);
             }
         }
-        log("END receive, clientName="+getClientName()+", canRedraw="+canRedraw+", rows.size()="+rows.size());
     }
 
     private void displayPotentialUrl(String text) {
@@ -445,6 +442,7 @@ public class Chat64 extends PetsciiThread {
         if (found == null || found.size() == 0) return;
 
         String firstUrl = found.get(0).getFullUrl();
+        log("Detected URL: " + firstUrl);
         try {
             String shortUrl = firstUrl.length() <= 24 ? firstUrl : shortenUrl(firstUrl);
             String[] strMatrix = stringToQr(shortUrl);
