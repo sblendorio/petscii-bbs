@@ -3,6 +3,7 @@ package eu.sblendorio.bbs.tenants.ascii;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Utils;
+import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -28,7 +29,11 @@ public class MenuApple1 extends AsciiThread {
     }
 
     public void logo() throws Exception {
-        readTextFile("apple1/intro-menu.txt").forEach(this::println);
+        readTextFile(
+                HolidayCommons.isXmasTime()
+                        ? "ascii/xmas40cols.txt"
+                        : "apple1/intro-menu.txt"
+        ).forEach(this::println);
         flush();
     }
 

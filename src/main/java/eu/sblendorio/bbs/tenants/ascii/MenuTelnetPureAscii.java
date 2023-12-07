@@ -52,7 +52,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
     public void logo() throws Exception {
         if (HolidayCommons.isXmasTime()) {
             cls();
-            readTextFile("ascii/xmas.txt").forEach(x -> {  println(); print(x); });
+            readTextFile("ascii/xmas80cols.txt").forEach(x -> {  println(); print(x); });
             flush();
             resetInput();
             keyPressed(30_000);
