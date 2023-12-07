@@ -5,6 +5,7 @@ import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.MinitelThread;
 import eu.sblendorio.bbs.core.Utils;
 import eu.sblendorio.bbs.tenants.ascii.*;
+import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -14,7 +15,6 @@ import java.util.List;
 
 import static eu.sblendorio.bbs.core.MinitelControls.*;
 import static eu.sblendorio.bbs.core.Utils.*;
-import static eu.sblendorio.bbs.core.Utils.STR_ALPHANUMERIC;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
@@ -145,7 +145,15 @@ public class MenuMinitelWithEcho extends MinitelThread {
 
     public void logo() throws Exception {
         write(CURSOR_OFF);
-        write(readBinaryFile("minitel/intro-retrocampus.vdt"));
+        write(SCROLL_OFF);
+
+        write(readBinaryFile(
+                HolidayCommons.isXmasTime()
+                ? "minitel/santaclaus.vdt"
+                : "minitel/intro-retrocampus.vdt"
+        ));
+
+        write(SCROLL_ON);
         flush(); resetInput();
         keyPressed(12_000);
         write(CURSOR_ON);

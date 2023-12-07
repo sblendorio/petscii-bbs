@@ -3,6 +3,7 @@ package eu.sblendorio.bbs.tenants.petscii;
 import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.Utils;
+import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -16,6 +17,7 @@ import java.util.List;
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
 import static eu.sblendorio.bbs.core.Utils.readExternalTxt;
+import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isXmasTime;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.repeat;
@@ -37,7 +39,7 @@ public class Menu64 extends PetsciiThread {
             byte[] logoseq = readBinaryFile(
                     alternateLogo()
                             ? "petscii/bbs-menu-main-alternate.seq"
-                            : "petscii/bbs-menu-main-christmas.seq"); // bbs-menu-main-christmas.seq / bbs-menu-main.seq
+                            : (isXmasTime() ? "petscii/bbs-menu-main-christmas.seq" : "petscii/bbs-menu-main.seq"));
             String currentYear = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
             logoseq = new String(logoseq, StandardCharsets.ISO_8859_1)
                     .replace("9999", currentYear)
@@ -461,7 +463,7 @@ public class Menu64 extends PetsciiThread {
     public void drawLogo() {
         write(alternateLogo()
             ? LOGO_BYTES_ALTERNATE
-            : /*LOGO_BYTES*/ readBinaryFile("petscii/christmas-ribbon.seq")
+            : (isXmasTime() ? readBinaryFile("petscii/christmas-ribbon.seq") : LOGO_BYTES)
         );
     }
 
@@ -484,8 +486,7 @@ public class Menu64 extends PetsciiThread {
         if (startsWith(filename,"/")) filename = filename.substring(1);
         for (int i=0; i<25; ++i) newline();
 
-        write(UPPERCASE); writeRawFile("petscii/goodbye/santa-kody.seq"); // christmas
-        // writeRawFile(filename); // no-christmas
+        write(UPPERCASE); writeRawFile(isXmasTime() ? "petscii/goodbye/santa-kody.seq" : filename);
 
         write(PetsciiKeys.CASE_UNLOCK);
     }

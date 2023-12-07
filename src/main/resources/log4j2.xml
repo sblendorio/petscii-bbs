@@ -4,7 +4,7 @@
         <RollingFile
                 name="ChatGptLog"
                 fileName="${sys:user.home}/bbs-logs/bbs-chatgpt.log"
-                filePattern="${sys:user.home}/bbs-logs/bbs-chatgpt.%d{yyyy-ww}.log.xz"
+                filePattern="${sys:user.home}/bbs-logs/bbs-chatgpt.%d{yyyy-ww}.log.gz"
                 ignoreExceptions="false">
             <PatternLayout>
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS zzz} %p %c{1} [%t] %m%n</Pattern>
@@ -18,7 +18,7 @@
         <RollingFile
                 name="HumanChatLog"
                 fileName="${sys:user.home}/bbs-logs/bbs-humanchat.log"
-                filePattern="${sys:user.home}/bbs-logs/bbs-humanchat.%d{yyyy-ww}.log.xz"
+                filePattern="${sys:user.home}/bbs-logs/bbs-humanchat.%d{yyyy-ww}.log.gz"
                 ignoreExceptions="false">
             <PatternLayout>
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS zzz} %p %c{1} [%t] %m%n</Pattern>
@@ -32,7 +32,7 @@
         <RollingFile
                 name="Global"
                 fileName="${sys:user.home}/bbs-logs/bbs-global.log"
-                filePattern="${sys:user.home}/bbs-logs/bbs-global.%d{yyyy-MM-dd}.log.xz"
+                filePattern="${sys:user.home}/bbs-logs/bbs-global.%d{yyyy-MM-dd}.log.gz"
                 ignoreExceptions="false">
             <PatternLayout>
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS zzz} %p %c{1} [%t] %m%n</Pattern>

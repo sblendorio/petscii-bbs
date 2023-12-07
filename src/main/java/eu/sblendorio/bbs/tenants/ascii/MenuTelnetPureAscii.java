@@ -3,6 +3,7 @@ package eu.sblendorio.bbs.tenants.ascii;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Utils;
+import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -28,6 +29,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
             13, 10,
             13, 10
         };
+
         screenColumns = 80;
     }
 
@@ -47,7 +49,15 @@ public class MenuTelnetPureAscii extends AsciiThread {
         println();
     }
 
-    public void logo() throws Exception {}
+    public void logo() throws Exception {
+        if (HolidayCommons.isXmasTime()) {
+            cls();
+            readTextFile("ascii/xmas.txt").forEach(x -> {  println(); print(x); });
+            flush();
+            resetInput();
+            keyPressed(30_000);
+        }
+    }
 
     @Override
     public byte[] initializingBytes() {
@@ -85,7 +95,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
     public void doLoop() throws Exception {
         logo();
         while (true) {
-            log("Starting Apple1 / main menu");
+            log("Starting ASCII / main menu");
             cls();
             displayMenu();
 
