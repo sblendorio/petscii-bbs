@@ -36,10 +36,15 @@ public class Menu64 extends PetsciiThread {
         while (true) {
             write(CLR, LOWERCASE, CASE_LOCK, HOME);
             log("Starting Main Menu BBS");
-            byte[] logoseq = readBinaryFile(
-                    alternateLogo()
-                            ? "petscii/bbs-menu-main-alternate.seq"
-                            : (isXmasTime() ? "petscii/bbs-menu-main-christmas.seq" : "petscii/bbs-menu-main.seq"));
+            String logoFilename;
+            if (alternateLogo()) {
+                logoFilename = "petscii/bbs-menu-main-alternate.seq";
+            } else if (isXmasTime()) {
+                logoFilename = "petscii/bbs-menu-main-christmas.seq";
+            } else {
+                logoFilename = "petscii/bbs-menu-main.seq";
+            }
+            byte[] logoseq = readBinaryFile(logoFilename);
             String currentYear = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
             logoseq = new String(logoseq, StandardCharsets.ISO_8859_1)
                     .replace("9999", currentYear)
@@ -461,10 +466,13 @@ public class Menu64 extends PetsciiThread {
     }
 
     public void drawLogo() {
-        write(alternateLogo()
-            ? LOGO_BYTES_ALTERNATE
-            : (isXmasTime() ? readBinaryFile("petscii/christmas-ribbon.seq") : LOGO_BYTES)
-        );
+        if (alternateLogo()) {
+            write(LOGO_BYTES_ALTERNATE);
+        } else if (isXmasTime()) {
+            write(readBinaryFile("petscii/christmas-ribbon.seq"));
+        } else {
+            write(LOGO_BYTES);
+        }
     }
 
     private boolean alternateLogo() {
@@ -486,7 +494,12 @@ public class Menu64 extends PetsciiThread {
         if (startsWith(filename,"/")) filename = filename.substring(1);
         for (int i=0; i<25; ++i) newline();
 
-        write(UPPERCASE); writeRawFile(isXmasTime() ? "petscii/goodbye/santa-kody.seq" : filename);
+        write(UPPERCASE);
+        if (isXmasTime()) {
+            writeRawFile("petscii/goodbye/santa-kody.seq");
+        } else {
+            writeRawFile(filename);
+        }
 
         write(PetsciiKeys.CASE_UNLOCK);
     }

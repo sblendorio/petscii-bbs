@@ -147,11 +147,11 @@ public class MenuMinitelWithEcho extends MinitelThread {
         write(CURSOR_OFF);
         write(SCROLL_OFF);
 
-        write(readBinaryFile(
-                HolidayCommons.isXmasTime()
-                ? "minitel/santaclaus.vdt"
-                : "minitel/intro-retrocampus.vdt"
-        ));
+        if (HolidayCommons.isXmasTime()) {
+            write(readBinaryFile("minitel/santaclaus.vdt"));
+        } else {
+            write(readBinaryFile("minitel/intro-retrocampus.vdt"));
+        }
 
         write(SCROLL_ON);
         flush(); resetInput();

@@ -29,12 +29,14 @@ public class MenuApple1 extends AsciiThread {
     }
 
     public void logo() throws Exception {
-        readTextFile(
-                HolidayCommons.isXmasTime()
-                        ? "ascii/xmas40cols.txt"
-                        : "apple1/intro-menu.txt"
-        ).forEach(this::println);
-        flush();
+        if (HolidayCommons.isXmasTime()) {
+            readTextFile("ascii/xmas40cols.txt").forEach(this::println);
+            flush(); resetInput();
+            keyPressed(60_000);
+        } else {
+            readTextFile("apple1/intro-menu.txt").forEach(this::println);
+            flush();
+        }
     }
 
     public String rssPropertyTimeout() { return "rss.a1.timeout"; }
