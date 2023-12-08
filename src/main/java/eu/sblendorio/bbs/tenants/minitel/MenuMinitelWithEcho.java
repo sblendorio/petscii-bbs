@@ -157,7 +157,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
             gotoXY(28,18);
             write(TEXT_MODE);
             attributes(TEXTSIZE_DOUBLE_ALL, CHAR_WHITE);
-            print(String.valueOf(month == 1 ? year : year+1));
+            print(String.valueOf(month <= 10 ? year : year+1));
         } else {
             write(readBinaryFile("minitel/intro-retrocampus.vdt"));
         }
