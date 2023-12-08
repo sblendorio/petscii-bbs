@@ -151,13 +151,13 @@ public class MenuMinitelWithEcho extends MinitelThread {
         if (HolidayCommons.isXmasTime()) {
             Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
-            int nextYear = year + 1;
+            int month = c.get(Calendar.MONTH) + 1;
 
             write(readBinaryFile("minitel/santaclaus.vdt"));
             gotoXY(28,18);
             write(TEXT_MODE);
             attributes(TEXTSIZE_DOUBLE_ALL, CHAR_WHITE);
-            print(String.valueOf(nextYear));
+            print(String.valueOf(month == 1 ? year : year+1));
         } else {
             write(readBinaryFile("minitel/intro-retrocampus.vdt"));
         }
