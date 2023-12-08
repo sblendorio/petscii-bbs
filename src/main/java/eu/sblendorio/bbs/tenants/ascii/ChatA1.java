@@ -45,8 +45,8 @@ import static org.apache.commons.lang3.StringUtils.*;
 @Hidden
 public class ChatA1 extends AsciiThread {
     private static Logger logger = LogManager.getLogger(ChatA1.class);
-
     private static final String CUSTOM_KEY = "CHAT";
+    private boolean toLowerCase = false;
     private boolean canRedraw = false;
     private boolean beep = true;
     private String termType;
@@ -55,17 +55,27 @@ public class ChatA1 extends AsciiThread {
     private ConcurrentLinkedDeque<Row> rows = new ConcurrentLinkedDeque<>();
 
     public ChatA1() {
-        this(null, "ascii");
+        this(null, "ascii", false);
     }
 
     public ChatA1(String termType) {
-        this(null, termType);
+        this(null, termType, false);
     }
 
     public ChatA1(BbsInputOutput interfaceType, String termType) {
+        this(interfaceType, termType, false);
+    }
+    public ChatA1(BbsInputOutput interfaceType, String termType, boolean toLowerCase) {
         super();
         this.interfaceType = interfaceType;
         this.termType = termType;
+        this.toLowerCase = toLowerCase;
+    }
+
+    public String parametricLowerCase(String s) {
+        return toLowerCase
+            ? lowerCase(s)
+            : s;
     }
 
     @Override
@@ -90,7 +100,7 @@ public class ChatA1 extends AsciiThread {
                 resetInput();
                 flush(); resetInput();
                 String candidateName = readLine();
-                final String name = defaultString(lowerCase(candidateName)).replace(" ", "");
+                final String name = defaultString(parametricLowerCase(candidateName)).replace(" ", "");
                 if (isBlank(name) || ".".equals(name)) {
                     return;
                 }
@@ -118,7 +128,7 @@ public class ChatA1 extends AsciiThread {
                 resetInput();
                 originalCommand = readLine();
                 rawCommand = defaultString(originalCommand).trim();
-                rawCommand = lowerCase(rawCommand);
+                rawCommand = parametricLowerCase(rawCommand);
                 final String command =  rawCommand;
                 if (isBlank(command)) {
                     redraw(false);
@@ -141,7 +151,7 @@ public class ChatA1 extends AsciiThread {
                         redraw(false);
                 } else if (command.matches("(?is)/nick +[\\.a-zA-Z0-9-]+")) {
                     String candidateName = command.replaceAll("\\s+", " ").substring(6);
-                    final String newName = lowerCase(candidateName);
+                    final String newName = parametricLowerCase(candidateName);
                     boolean alreadyPresent =
                         clients.values().stream().map(BbsThread::getClientName).anyMatch(x -> x.equalsIgnoreCase(newName));
                     final String oldName = getClientName();
