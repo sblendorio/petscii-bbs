@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Calendar;
 import java.util.List;
 
 import static eu.sblendorio.bbs.core.MinitelControls.*;
@@ -148,14 +149,22 @@ public class MenuMinitelWithEcho extends MinitelThread {
         write(SCROLL_OFF);
 
         if (HolidayCommons.isXmasTime()) {
+            Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int nextYear = year + 1;
+
             write(readBinaryFile("minitel/santaclaus.vdt"));
+            gotoXY(28,18);
+            write(TEXT_MODE);
+            attributes(TEXTSIZE_DOUBLE_ALL, CHAR_WHITE);
+            print(String.valueOf(nextYear));
         } else {
             write(readBinaryFile("minitel/intro-retrocampus.vdt"));
         }
 
         write(SCROLL_ON);
         flush(); resetInput();
-        keyPressed(12_000);
+        keyPressed(40_000);
         write(CURSOR_ON);
     }
 
