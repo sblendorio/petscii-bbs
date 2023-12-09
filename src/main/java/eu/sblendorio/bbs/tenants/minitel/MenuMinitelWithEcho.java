@@ -149,15 +149,11 @@ public class MenuMinitelWithEcho extends MinitelThread {
         write(SCROLL_OFF);
 
         if (HolidayCommons.isXmasTime()) {
-            Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH) + 1;
-
             write(readBinaryFile("minitel/santaclaus.vdt"));
             gotoXY(28,18);
             write(TEXT_MODE);
             attributes(TEXTSIZE_DOUBLE_ALL, CHAR_WHITE);
-            print(String.valueOf(month <= 10 ? year : year+1));
+            print(String.valueOf(HolidayCommons.xmasNewYear()));
         } else {
             write(readBinaryFile("minitel/intro-retrocampus.vdt"));
         }

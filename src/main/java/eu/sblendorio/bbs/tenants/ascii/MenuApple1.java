@@ -11,8 +11,10 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static eu.sblendorio.bbs.core.Utils.*;
+import static java.lang.String.valueOf;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
@@ -30,7 +32,9 @@ public class MenuApple1 extends AsciiThread {
 
     public void logo() throws Exception {
         if (HolidayCommons.isXmasTime()) {
-            readTextFile("ascii/xmas40cols.txt").forEach(this::println);
+            readTextFile("ascii/xmas40cols.txt").stream()
+                    .map(line -> line.replace("9999", valueOf(HolidayCommons.xmasNewYear())))
+                    .forEach(this::println);
             flush(); resetInput();
             keyPressed(60_000);
         } else {

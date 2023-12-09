@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import static eu.sblendorio.bbs.core.Utils.*;
+import static java.lang.String.valueOf;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
@@ -52,7 +53,9 @@ public class MenuTelnetPureAscii extends AsciiThread {
     public void logo() throws Exception {
         if (HolidayCommons.isXmasTime()) {
             cls();
-            readTextFile("ascii/xmas80cols.txt").forEach(x -> {  println(); print(x); });
+            readTextFile("ascii/xmas80cols.txt").stream()
+                    .map(line -> line.replace("9999", valueOf(HolidayCommons.xmasNewYear())))
+                    .forEach(x -> {  println(); print(x); });
             flush();
             resetInput();
             keyPressed(30_000);
