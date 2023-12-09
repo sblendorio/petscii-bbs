@@ -53,8 +53,9 @@ public class MenuTelnetPureAscii extends AsciiThread {
     public void logo() throws Exception {
         if (HolidayCommons.isXmasTime()) {
             cls();
+            final String NEW_YEAR = valueOf(HolidayCommons.xmasNewYear());
             readTextFile("ascii/xmas80cols.txt").stream()
-                    .map(line -> line.replace("9999", valueOf(HolidayCommons.xmasNewYear())))
+                    .map(line -> line.replace("9999", NEW_YEAR))
                     .forEach(x -> {  println(); print(x); });
             flush();
             resetInput();

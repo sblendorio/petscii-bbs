@@ -32,8 +32,9 @@ public class MenuApple1 extends AsciiThread {
 
     public void logo() throws Exception {
         if (HolidayCommons.isXmasTime()) {
+            final String NEW_YEAR = valueOf(HolidayCommons.xmasNewYear());
             readTextFile("ascii/xmas40cols.txt").stream()
-                    .map(line -> line.replace("9999", valueOf(HolidayCommons.xmasNewYear())))
+                    .map(line -> line.replace("9999", NEW_YEAR))
                     .forEach(this::println);
             flush(); resetInput();
             keyPressed(60_000);
