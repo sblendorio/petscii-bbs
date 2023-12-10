@@ -16,6 +16,7 @@ import java.util.List;
 
 import static eu.sblendorio.bbs.core.MinitelControls.*;
 import static eu.sblendorio.bbs.core.Utils.*;
+import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.getCountryFromIp;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
@@ -148,9 +149,17 @@ public class MenuMinitelWithEcho extends MinitelThread {
         write(CURSOR_OFF);
         write(SCROLL_OFF);
 
-        if (HolidayCommons.isXmasTime()) {
+        if (HolidayCommons.isAscanioDay()) {
+            String country = getCountryFromIp(ipAddress.getHostAddress());
+            write(readBinaryFile(
+                    "IT".equalsIgnoreCase(country)
+                            ? "minitel/ascanio.vdt"
+                            : "minitel/intro-retrocampus.vdt"
+            ));
+            write(TEXT_MODE);
+        } else if (HolidayCommons.isXmasTime()) {
             write(readBinaryFile("minitel/santaclaus.vdt"));
-            gotoXY(28,18);
+            gotoXY(28, 18);
             write(TEXT_MODE);
             attributes(TEXTSIZE_DOUBLE_ALL, CHAR_WHITE);
             print(String.valueOf(HolidayCommons.xmasNewYear()));

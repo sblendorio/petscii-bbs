@@ -6,6 +6,6 @@ public class TestMinitelDrcs extends MinitelThread {
     @Override
     public void doLoop() throws Exception {
         cls();
-        write(readBinaryFile("minitel/undefined.vdt"));
+        write(readBinaryFile("minitel/undefined-1.vdt"));
     }
 }
