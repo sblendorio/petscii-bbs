@@ -51,6 +51,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
     @Override
     public void doLoop() throws Exception {
         if (alternateLogo()) { println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); keyPressed(10_000); return; }
+        resetInput();
         logo();
         while (true) {
             log("Starting Minitel / main menu");

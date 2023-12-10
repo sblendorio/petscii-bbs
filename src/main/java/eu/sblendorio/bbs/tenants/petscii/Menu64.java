@@ -32,6 +32,7 @@ public class Menu64 extends PetsciiThread {
     public void doLoop() throws Exception {
         if (alternateLogo()) { write(PetsciiKeys.LOWERCASE); println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); keyPressed(10_000); return; }
 
+        resetInput();
         if (isAscanioDay()) {
             boolean italy = specialIp.contains(ipAddress.getHostAddress());
             if (!italy) {
