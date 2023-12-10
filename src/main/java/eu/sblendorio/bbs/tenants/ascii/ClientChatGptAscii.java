@@ -449,7 +449,7 @@ public class ClientChatGptAscii extends AsciiThread {
 
             return true;
         } catch (MessagingException e) {
-            e.printStackTrace();
+            log("Send Email Exception:", e);
             return false;
         }
     }

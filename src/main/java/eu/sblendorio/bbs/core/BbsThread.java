@@ -230,33 +230,30 @@ public abstract class BbsThread extends Thread {
             keepAliveThread.start();
             doLoop();
         } catch (BbsIOException e) {
-            log("EOF " + e);
+            log("EOF " + e, e);
         } catch (SocketTimeoutException e) {
-            log("TIMEOUT " + e);
+            log("TIMEOUT " + e, e);
         } catch (SocketException e) {
-            log("BROKEN PIPE " + e);
+            log("BROKEN PIPE " + e, e);
         } catch (RuntimeException e) {
             if (e.getCause() == null) {
-                logger.error("Exception",e);
-                e.printStackTrace();
+                logger.error("Exception", e);
             } else if (e.getCause() instanceof BbsIOException) {
-                log("EOF " + e);
+                log("EOF " + e, e);
             } else if (e.getCause() instanceof SocketTimeoutException) {
-                log("TIMEOUT " + e);
+                log("TIMEOUT " + e, e);
             } else if (e.getCause() instanceof SocketException) {
-                log("BROKEN PIPE " + e);
+                log("BROKEN PIPE " + e, e);
             } else {
-                logger.error("Exception {}",e);
-                e.printStackTrace();
+                logger.error("Exception {}", e);
             }
         } catch (Exception e) {
-            log("ERROR handling: " + e);
-            logger.error("ERROR handling", e);
+            log("ERROR handling: " + e, e);
         } finally {
             try {
                 socket.close();
             } catch (IOException e) {
-                log("Couldn't close a socket, what's going on?");
+                log("Couldn't close a socket, what's going on?", e);
             }
             if (keepAliveThread != null) keepAliveThread.interrupt();
             clients.remove(clientId);
@@ -385,6 +382,11 @@ public abstract class BbsThread extends Thread {
     public void log(String message) {
         final String logRow = "Client #" + getClientId() + ". " + message;
         logger.info(logRow);
+    }
+
+    public void log(String message, Throwable t) {
+        final String logRow = "Client #" + getClientId() + ". " + message;
+        logger.info(logRow, t);
     }
 
     public static char chr(int code) { return (char) code; }
@@ -524,7 +526,6 @@ public abstract class BbsThread extends Thread {
             responseCode = conn.getResponseCode();
         } catch (Exception e) {
             logger.error(e);
-            e.printStackTrace();
             throw e;
         }
         if (responseCode >= 301 && responseCode <= 399) {
@@ -663,7 +664,6 @@ public abstract class BbsThread extends Thread {
                 Thread.sleep(INTERVAL);
             } catch (InterruptedException e) {
                 logger.error(e);
-                e.printStackTrace();
             }
         }
         if (ch >= 0) restartKeepAlive();

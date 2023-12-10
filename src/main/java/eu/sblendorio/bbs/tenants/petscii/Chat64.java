@@ -449,11 +449,8 @@ public class Chat64 extends PetsciiThread {
             println();
             write(BlockGraphicsPetscii.getRenderedMidres(2, strMatrix));
         } catch (Exception e) {
-            log("Malformed URL exception in text: \"" + text + "\"");
-            e.printStackTrace();
-            return;
+            log("Malformed URL exception in text: \"" + text + "\"", e);
         }
-
     }
 
     private String shortenUrl(String firstUrl) throws IOException, ParseException {

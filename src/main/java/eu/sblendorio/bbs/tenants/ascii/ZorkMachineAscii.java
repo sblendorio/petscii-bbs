@@ -39,7 +39,7 @@ public class ZorkMachineAscii extends AsciiThread {
             VirtualConsole console = factory.getUI();
             console.runTheGame();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log("Unexpected Exception", ex);
         }
     }
 }

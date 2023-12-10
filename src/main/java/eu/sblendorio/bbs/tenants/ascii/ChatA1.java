@@ -336,13 +336,10 @@ public class ChatA1 extends AsciiThread {
             write(MinitelControls.GRAPHICS_MODE);
             write(BlockGraphicsMinitel.getRenderedMidres(2, strMatrix));
         } catch (Exception e) {
-            log("Malformed URL exception in text: \"" + text + "\"");
-            e.printStackTrace();
-            return;
+            log("Malformed URL exception in text: \"" + text + "\"", e);
         } finally {
             write(MinitelControls.TEXT_MODE);
         }
-
     }
 
     @Override

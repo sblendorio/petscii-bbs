@@ -470,7 +470,7 @@ public class ClientChatGptPetscii extends PetsciiThread {
 
             return true;
         } catch (MessagingException e) {
-            e.printStackTrace();
+            log("Send Email Exception:", e);
             return false;
         }
     }

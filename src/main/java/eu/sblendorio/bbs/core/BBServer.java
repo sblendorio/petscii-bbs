@@ -55,7 +55,6 @@ public class BBServer {
     private static final long DEFAULT_SERVICE_PORT = 0;
     private static Set<Integer> usedPorts = new HashSet<>();
 
-
     private static Logger logger = LogManager.getLogger(BBServer.class);
 
     public static void main(String[] args) throws Exception {
@@ -108,7 +107,7 @@ public class BBServer {
                                 socket.shutdownOutput();
                                 socket.close();
                             } catch (IOException e) {
-                                e.printStackTrace();
+                                logger.error(e);
                             }
                         }).start();
                     }
