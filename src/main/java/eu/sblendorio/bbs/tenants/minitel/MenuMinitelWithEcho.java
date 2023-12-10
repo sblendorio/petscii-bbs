@@ -152,11 +152,11 @@ public class MenuMinitelWithEcho extends MinitelThread {
         write(SCROLL_OFF);
 
         if (HolidayCommons.isAscanioDay()) {
-            boolean italy = Menu64.specialIp.contains(ipAddress.getHostAddress());
+            boolean italy = HolidayCommons.specialIp.contains(ipAddress.getHostAddress());
             if (!italy) {
                 String country = getCountryFromIp(ipAddress.getHostAddress());
                 if ("IT".equalsIgnoreCase(country)) {
-                    Menu64.specialIp.add(ipAddress.getHostAddress());
+                    HolidayCommons.specialIp.add(ipAddress.getHostAddress());
                     italy = true;
                 }
             }

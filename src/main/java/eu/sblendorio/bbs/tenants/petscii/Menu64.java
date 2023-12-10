@@ -26,19 +26,17 @@ public class Menu64 extends PetsciiThread {
     private static final String IP_FOR_ALTERNATE_LOGO = System.getProperty("alternate.logo.ip", "none");
     private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.port", "-1"));
 
-    public static Set<String> specialIp = new TreeSet<>();
-
     @Override
     public void doLoop() throws Exception {
         if (alternateLogo()) { write(PetsciiKeys.LOWERCASE); println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); keyPressed(10_000); return; }
 
         resetInput();
         if (isAscanioDay()) {
-            boolean italy = specialIp.contains(ipAddress.getHostAddress());
+            boolean italy = HolidayCommons.specialIp.contains(ipAddress.getHostAddress());
             if (!italy) {
                 String country = getCountryFromIp(ipAddress.getHostAddress());
                 if ("IT".equalsIgnoreCase(country)) {
-                    specialIp.add(ipAddress.getHostAddress());
+                    HolidayCommons.specialIp.add(ipAddress.getHostAddress());
                     italy = true;
                 }
             }

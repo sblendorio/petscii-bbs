@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Calendar;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static java.lang.Integer.valueOf;
 import static java.lang.System.getProperty;
@@ -23,6 +25,8 @@ public class HolidayCommons {
     private static Logger logger = LogManager.getLogger(HolidayCommons.class);
     public static String XMAS_START_DEFAULT = "1206";
     public static String XMAS_END_DEFAULT = "0106";
+
+    public static Set<String> specialIp = new TreeSet<>();
 
     public static int xmasNewYear() {
         Calendar c = Calendar.getInstance();
