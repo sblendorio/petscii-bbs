@@ -1,7 +1,10 @@
 package eu.sblendorio.bbs.tenants.mixed;
 
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.tenants.ascii.ChatA1;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
@@ -16,6 +19,8 @@ import static java.lang.System.getenv;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
 public class HolidayCommons {
+
+    private static Logger logger = LogManager.getLogger(HolidayCommons.class);
     public static String XMAS_START_DEFAULT = "1206";
     public static String XMAS_END_DEFAULT = "0106";
 
@@ -68,6 +73,7 @@ public class HolidayCommons {
             JSONObject root = (JSONObject) BbsThread.httpGetJson(url);
             JSONObject geo = (JSONObject) root.get("geo");
             String countryCode2 = (String) geo.get("country_code2");
+            logger.debug("{}: {}", countryCode2, ip);
 
             return countryCode2;
         } catch (Exception e) {

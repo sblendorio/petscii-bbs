@@ -9,10 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
@@ -29,13 +26,22 @@ public class Menu64 extends PetsciiThread {
     private static final String IP_FOR_ALTERNATE_LOGO = System.getProperty("alternate.logo.ip", "none");
     private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.port", "-1"));
 
+    public static Set<String> specialIp = new TreeSet<>();
+
     @Override
     public void doLoop() throws Exception {
         if (alternateLogo()) { write(PetsciiKeys.LOWERCASE); println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); keyPressed(10_000); return; }
 
         if (isAscanioDay()) {
-            String country = getCountryFromIp(ipAddress.getHostAddress());
-            if ("IT".equalsIgnoreCase(country)) {
+            boolean italy = specialIp.contains(ipAddress.getHostAddress());
+            if (!italy) {
+                String country = getCountryFromIp(ipAddress.getHostAddress());
+                if ("IT".equalsIgnoreCase(country)) {
+                    specialIp.add(ipAddress.getHostAddress());
+                    italy = true;
+                }
+            }
+            if (italy) {
                 write(CLR, UPPERCASE, CASE_LOCK, HOME);
                 write(readBinaryFile("petscii/ascanio.seq"));
                 keyPressed(30_000L);
