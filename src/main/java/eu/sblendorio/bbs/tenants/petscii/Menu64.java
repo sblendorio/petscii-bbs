@@ -3,13 +3,15 @@ package eu.sblendorio.bbs.tenants.petscii;
 import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.Utils;
-import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
@@ -31,20 +33,10 @@ public class Menu64 extends PetsciiThread {
         if (alternateLogo()) { write(PetsciiKeys.LOWERCASE); println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); keyPressed(10_000); return; }
 
         resetInput();
-        if (isAscanioDay()) {
-            boolean italy = HolidayCommons.specialIp.contains(ipAddress.getHostAddress());
-            if (!italy) {
-                String country = getCountryFromIp(ipAddress.getHostAddress());
-                if ("IT".equalsIgnoreCase(country)) {
-                    HolidayCommons.specialIp.add(ipAddress.getHostAddress());
-                    italy = true;
-                }
-            }
-            if (italy) {
-                write(CLR, UPPERCASE, CASE_LOCK, HOME);
-                write(readBinaryFile("petscii/ascanio.seq"));
-                keyPressed(30_000L);
-            }
+        if (isAscanioDay() && isItaly(ipAddress.getHostAddress())) {
+            write(CLR, UPPERCASE, CASE_LOCK, HOME);
+            write(readBinaryFile("petscii/ascanio.seq"));
+            keyPressed(30_000L);
         }
 
         while (true) {

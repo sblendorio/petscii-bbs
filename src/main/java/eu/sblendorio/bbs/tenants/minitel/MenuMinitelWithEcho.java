@@ -6,18 +6,16 @@ import eu.sblendorio.bbs.core.MinitelThread;
 import eu.sblendorio.bbs.core.Utils;
 import eu.sblendorio.bbs.tenants.ascii.*;
 import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
-import eu.sblendorio.bbs.tenants.petscii.Menu64;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Calendar;
 import java.util.List;
 
 import static eu.sblendorio.bbs.core.MinitelControls.*;
 import static eu.sblendorio.bbs.core.Utils.*;
-import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.getCountryFromIp;
+import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isItaly;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
@@ -151,20 +149,8 @@ public class MenuMinitelWithEcho extends MinitelThread {
         write(CURSOR_OFF);
         write(SCROLL_OFF);
 
-        if (HolidayCommons.isAscanioDay()) {
-            boolean italy = HolidayCommons.specialIp.contains(ipAddress.getHostAddress());
-            if (!italy) {
-                String country = getCountryFromIp(ipAddress.getHostAddress());
-                if ("IT".equalsIgnoreCase(country)) {
-                    HolidayCommons.specialIp.add(ipAddress.getHostAddress());
-                    italy = true;
-                }
-            }
-            write(readBinaryFile(
-                italy
-                    ? "minitel/ascanio.vdt"
-                    : "minitel/intro-retrocampus.vdt"
-            ));
+        if (HolidayCommons.isAscanioDay() && isItaly(ipAddress.getHostAddress())) {
+            write(readBinaryFile("minitel/ascanio.vdt"));
             write(TEXT_MODE);
         } else if (HolidayCommons.isXmasTime()) {
             write(readBinaryFile("minitel/santaclaus.vdt"));

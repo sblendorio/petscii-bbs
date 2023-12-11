@@ -1,15 +1,11 @@
 package eu.sblendorio.bbs.tenants.mixed;
 
 import eu.sblendorio.bbs.core.BbsThread;
-import eu.sblendorio.bbs.tenants.ascii.ChatA1;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Set;
@@ -26,7 +22,7 @@ public class HolidayCommons {
     public static String XMAS_START_DEFAULT = "1206";
     public static String XMAS_END_DEFAULT = "0106";
 
-    public static Set<String> specialIp = new TreeSet<>();
+    public static Set<String> italianIp = new TreeSet<>();
 
     public static int xmasNewYear() {
         Calendar c = Calendar.getInstance();
@@ -59,6 +55,26 @@ public class HolidayCommons {
         return (today.compareTo(xmasStart) >= 0) && (today.compareTo(xmasEnd) <= 0);
     }
 
+    public static boolean isAscanioDay() {
+        Calendar c = Calendar.getInstance();
+        int month = c.get(Calendar.MONTH) + 1;
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        return (month == 1) && (day == 8);
+    }
+
+    public static boolean isItaly(String ip) {
+        boolean italy = italianIp.contains(ip);
+        if (!italy) {
+            String country = getCountryFromIp(ip);
+            if ("IT".equalsIgnoreCase(country)) {
+                italianIp.add(ip);
+                italy = true;
+            }
+        }
+        return italy;
+    }
+
     public static String getCountryFromIp(String ip) {
         ip = ip.replaceAll("(?is)[^0-9:\\.]","");
         if ("127.0.0.1".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip))
@@ -85,13 +101,6 @@ public class HolidayCommons {
         }
     }
 
-    public static boolean isAscanioDay() {
-        Calendar c = Calendar.getInstance();
-        int month = c.get(Calendar.MONTH) + 1;
-        int day = c.get(Calendar.DAY_OF_MONTH);
-
-        return (month == 1) && (day == 8);
-    }
 
 
     public static void main(String[] args) {
