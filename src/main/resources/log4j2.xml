@@ -32,7 +32,7 @@
         <RollingFile
                 name="IpGeolocation"
                 fileName="${sys:user.home}/bbs-logs/bbs-ipgeolocation.log"
-                filePattern="${sys:user.home}/bbs-logs/bbs-ipgeolocation.%d{yyyy-MM}.log.gz"
+                filePattern="${sys:user.home}/bbs-logs/bbs-ipgeolocation.%d{yyyy-MM-dd}.log.gz"
                 ignoreExceptions="false">
             <PatternLayout>
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS zzz} %p %c{1} [%t] %m%n</Pattern>

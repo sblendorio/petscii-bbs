@@ -71,6 +71,8 @@ public class HolidayCommons {
                 italianIp.add(ip);
                 italy = true;
             }
+        } else {
+            logger.debug("Cached; IT {}; Hash size={}", ip, italianIp.size());
         }
         return italy;
     }
@@ -93,7 +95,7 @@ public class HolidayCommons {
             JSONObject root = (JSONObject) BbsThread.httpGetJson(url);
             JSONObject geo = (JSONObject) root.get("geo");
             String countryCode2 = (String) geo.get("country_code2");
-            logger.debug("{}: {}", countryCode2, ip);
+            logger.debug("Missed; {}: {}; Hash size={}", countryCode2, ip, italianIp.size());
 
             return countryCode2;
         } catch (Exception e) {
