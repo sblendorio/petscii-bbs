@@ -153,12 +153,14 @@ public class MenuMinitelWithEcho extends MinitelThread {
             write(readBinaryFile("minitel/ascanio.vdt"));
             write(TEXT_MODE);
         } else if (HolidayCommons.isXmasTime()) {
+            isItaly(ipAddress.getHostAddress()); // DELETE
             write(readBinaryFile("minitel/santaclaus.vdt"));
             gotoXY(28, 18);
             write(TEXT_MODE);
             attributes(TEXTSIZE_DOUBLE_ALL, CHAR_WHITE);
             print(String.valueOf(HolidayCommons.xmasNewYear()));
         } else {
+            isItaly(ipAddress.getHostAddress()); // DELETE
             write(readBinaryFile("minitel/intro-retrocampus.vdt"));
         }
 

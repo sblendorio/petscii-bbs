@@ -38,6 +38,8 @@ public class Menu64 extends PetsciiThread {
             write(readBinaryFile("petscii/ascanio.seq"));
             keyPressed(30_000L);
         }
+        else  isItaly(ipAddress.getHostAddress()); // DELETE
+
 
         while (true) {
             write(CLR, LOWERCASE, CASE_LOCK, HOME);
@@ -447,7 +449,8 @@ public class Menu64 extends PetsciiThread {
     public void patronsLogo() throws Exception {
         List<String> files = Arrays.asList(
             "petscii/patreon-sponsor-01.seq",
-            "petscii/patreon-sponsor-02.seq"
+            "petscii/patreon-sponsor-02.seq",
+            "petscii/patreon-sponsor-03.seq"
         );
         for (String file: files) {
             write(CLR, LOWERCASE, CASE_LOCK, HOME);

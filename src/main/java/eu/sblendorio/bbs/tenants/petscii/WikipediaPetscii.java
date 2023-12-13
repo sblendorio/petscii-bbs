@@ -217,7 +217,6 @@ public class WikipediaPetscii extends PetsciiThread {
         waitOff();
         write(GREY3);
 
-        rows.addAll(article);
         int page = 1;
         int j = 0;
         boolean forward = true;

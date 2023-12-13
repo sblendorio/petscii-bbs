@@ -169,7 +169,7 @@ https://it.wikipedia.org/w/api.php?format=json&action=parse&prop=text&page=Macci
     public static void main(String[] args) throws IOException, ParseException {
         System.out.println("INIZIO");
         WikipediaItem item = new WikipediaItem();
-        item.pageid = 87191L;
+        item.pageid = 6006689L;
         item.lang = "it";
         String text = getHtmlContent(item);
         Document doc = Jsoup.parse(text);

@@ -41,8 +41,6 @@ import java.util.Optional;
  */
 public class XModem {
 
-    private static Logger logger = LogManager.getLogger(XModem.class);
-
     protected static final byte CPMEOF = 26;       /* control/z */
     protected static final int MAXERRORS = 10;     /* max times to retry one block */
     protected static final int SECSIZE = 128;      /* cpm sector, transmission block */
@@ -192,17 +190,17 @@ public class XModem {
     }
 
     private void xerror() {
-        logger.error("too many errors... aborting");
+        log("XModem too many errors... aborting");
         die(1);
     }
 
     private void die(int how) {
-        logger.error("Error code {}", how);
+        log("XModem Error Code " + how);
         throw new UncheckedIOException(new BbsIOException("Too many errors during XModem transfer: " + how));
     }
 
     private void log(String message) {
-        logger.error(message);
+        log(message);
     }
 
     private static class CancelTransferException extends RuntimeException {}
