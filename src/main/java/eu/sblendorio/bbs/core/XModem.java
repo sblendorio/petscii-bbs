@@ -40,6 +40,7 @@ import java.util.Optional;
  * </pre>
  */
 public class XModem {
+    private static Logger logger = LogManager.getLogger(XModem.class);
 
     protected static final byte CPMEOF = 26;       /* control/z */
     protected static final int MAXERRORS = 10;     /* max times to retry one block */
@@ -200,7 +201,7 @@ public class XModem {
     }
 
     private void log(String message) {
-        log(message);
+        logger.debug(message);
     }
 
     private static class CancelTransferException extends RuntimeException {}
