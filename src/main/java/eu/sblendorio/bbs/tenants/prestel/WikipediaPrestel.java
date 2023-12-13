@@ -218,6 +218,7 @@ public class WikipediaPrestel extends PrestelThread {
             forward = true;
             ++j;
         }
+        flush(); resetInput(); keyPressed(60_000);
         println();
     }
 

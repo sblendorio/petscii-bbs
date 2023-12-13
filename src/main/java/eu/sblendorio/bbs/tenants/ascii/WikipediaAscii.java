@@ -196,6 +196,7 @@ public class WikipediaAscii extends AsciiThread {
             forward = true;
             ++j;
         }
+        flush(); resetInput(); keyPressed(60_000);
         println();
     }
 

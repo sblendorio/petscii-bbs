@@ -385,7 +385,9 @@ public class WikipediaMinitel extends MinitelThread {
             forward = true;
             ++j;
         }
+        flush(); resetInput(); keyPressed(60_000);
         println();
+
     }
 
     public void chooseItem(List<WikipediaCommons.WikipediaItem> items) throws IOException, ParseException {
