@@ -185,7 +185,6 @@ public class WikipediaPrestel extends PrestelThread {
         rows.addAll(article);
         waitOff();
 
-        rows.addAll(article);
         int page = 1;
         int j = 0;
         boolean forward = true;

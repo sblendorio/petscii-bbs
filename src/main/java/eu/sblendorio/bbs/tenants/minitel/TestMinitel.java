@@ -9,6 +9,7 @@ public class TestMinitel extends MinitelThread {
         println("Prova però, perché, com'è, ü, garçon");
         println("àáâäèéêëìíîïòóôöùúûüç");
         println("ÀÁÂÄÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÇ");
+        System.out.println("VARX="+System.getenv("VARX"));
         // write(readBinaryFile("minitel/undefined.vdt"));
     }
 }
