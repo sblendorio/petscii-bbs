@@ -19,7 +19,6 @@ import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isItaly;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class MenuMinitelWithEcho extends MinitelThread {
 
@@ -34,13 +33,6 @@ public class MenuMinitelWithEcho extends MinitelThread {
         return bytes(CAPSLOCK_OFF, SCROLL_ON, CURSOR_ON);
     }
 
-    private static final String IP_FOR_ALTERNATE_LOGO = System.getProperty("alternate.logo.ip", "none");
-    private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.port", "-1"));
-    public boolean alternateLogo() {
-        return IP_FOR_ALTERNATE_LOGO.equals(serverAddress.getHostAddress())
-                || serverPort == PORT_FOR_ALTERNATE_LOGO;
-    }
-
     public String rssPropertyTimeout() { return "rss.a1.timeout"; }
 
     public String rssPropertyTimeoutDefault() { return "40000"; }
@@ -48,7 +40,6 @@ public class MenuMinitelWithEcho extends MinitelThread {
 
     @Override
     public void doLoop() throws Exception {
-        if (alternateLogo()) { println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); keyPressed(10_000); return; }
         resetInput();
         logo();
         while (true) {

@@ -1,6 +1,9 @@
 package eu.sblendorio.bbs.tenants.prestel;
 
-import eu.sblendorio.bbs.core.*;
+import eu.sblendorio.bbs.core.AsciiThread;
+import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.PrestelThread;
+import eu.sblendorio.bbs.core.Utils;
 import eu.sblendorio.bbs.tenants.ascii.*;
 import org.apache.commons.lang3.StringUtils;
 
@@ -12,7 +15,6 @@ import java.util.List;
 import static eu.sblendorio.bbs.core.Utils.*;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class MenuPrestelWithEcho extends PrestelThread {
 
@@ -21,14 +23,6 @@ public class MenuPrestelWithEcho extends PrestelThread {
     public MenuPrestelWithEcho() {
         super();
         setLocalEcho(true);
-    }
-
-
-    private static final String IP_FOR_ALTERNATE_LOGO = System.getProperty("alternate.logo.ip", "none");
-    private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.port", "-1"));
-    public boolean alternateLogo() {
-        return IP_FOR_ALTERNATE_LOGO.equals(serverAddress.getHostAddress())
-                || serverPort == PORT_FOR_ALTERNATE_LOGO;
     }
 
     public byte[] initializingBytes() {
@@ -51,8 +45,6 @@ public class MenuPrestelWithEcho extends PrestelThread {
 
     @Override
     public void doLoop() throws Exception {
-        if (alternateLogo()) { println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); keyPressed(10_000); return; }
-
         logo();
         while (true) {
             log("Starting Prestel / main menu");

@@ -21,17 +21,10 @@ import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.repeat;
 import static org.apache.commons.lang3.StringUtils.startsWith;
-import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class Menu64 extends PetsciiThread {
-
-    private static final String IP_FOR_ALTERNATE_LOGO = System.getProperty("alternate.logo.ip", "none");
-    private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.port", "-1"));
-
     @Override
     public void doLoop() throws Exception {
-        if (alternateLogo()) { write(PetsciiKeys.LOWERCASE); println();println();println("Moved to BBS.RETROCAMPUS.COM");println(); keyPressed(10_000); return; }
-
         resetInput();
         if (isAscanioDay() && isItaly(ipAddress.getHostAddress())) {
             write(CLR, UPPERCASE, CASE_LOCK, HOME);
@@ -45,9 +38,7 @@ public class Menu64 extends PetsciiThread {
             write(CLR, LOWERCASE, CASE_LOCK, HOME);
             log("Starting Main Menu BBS");
             String logoFilename;
-            if (alternateLogo()) {
-                logoFilename = "petscii/bbs-menu-main-alternate.seq";
-            } else if (isXmasTime()) {
+            if (isXmasTime()) {
                 logoFilename = "petscii/bbs-menu-main-christmas.seq";
             } else {
                 logoFilename = "petscii/bbs-menu-main.seq";
@@ -61,7 +52,7 @@ public class Menu64 extends PetsciiThread {
             write(HOME);
             drawLogo();
             write(GREY3);
-            gotoXY(39, alternateLogo() ? 23 : 24);
+            gotoXY(39, 24);
 
             flush();
             boolean validKey;
@@ -475,18 +466,11 @@ public class Menu64 extends PetsciiThread {
     }
 
     public void drawLogo() {
-        if (alternateLogo()) {
-            write(LOGO_BYTES_ALTERNATE);
-        } else if (isXmasTime()) {
+        if (isXmasTime()) {
             write(readBinaryFile("petscii/christmas-ribbon.seq"));
         } else {
             write(LOGO_BYTES);
         }
-    }
-
-    private boolean alternateLogo() {
-        return IP_FOR_ALTERNATE_LOGO.equals(serverAddress.getHostAddress())
-            || serverPort == PORT_FOR_ALTERNATE_LOGO;
     }
 
     private void goodbye() throws Exception {
@@ -530,26 +514,5 @@ public class Menu64 extends PetsciiThread {
         18, 32, -110, 32, 18, 32, -110, 13, 18, -94, -94, -110, -66, 13, 18, 31,
         -66, -94, -68, -110, 13, 18, -69, -110, -94, -69, 13, -94, 32, 18, 32, -110,
         13, -68, 18, -94, -110, -66, 13
-    };
-
-    private static final byte[] LOGO_BYTES_ALTERNATE = new byte[] {
-        28, -69, -69, -84, -69, -84, 18, -68, -110, -84, -84, 32, -94, 32, -104, -84,
-        -94, 32, -94, 32, -94, -69, -84, 18, -66, -110, 32, -94, 32, -94, -94, 32,
-        -69, -84, 32, 32, 32, 32, 18, -101, -65, -110, -69, -95, 32, -66, 18, -68,
-        -110, 13, 18, 28, -84, -110, 32, 18, -68, -94, -110, 32, -95, 18, -95, -110,
-        -66, 18, -95, -110, 32, -95, -104, -95, 18, -95, -95, -110, 32, 18, -95, -110,
-        32, -95, -95, 18, -95, -95, -65, -110, -66, -95, -95, -95, -95, 18, -95, -110,
-        32, 32, 32, 32, 18, -101, -65, -110, -69, 18, -84, -110, -69, -95, -95, 13,
-        28, -66, 32, -68, -66, 32, -68, -68, 32, 32, 18, -94, -110, 32, -104, -68,
-        18, -94, -110, 32, 18, -94, -110, 32, 18, -94, -110, -66, -68, 18, -94, -110,
-        32, 18, -94, -110, 32, -66, -66, -66, -68, 18, -69, -110, 30, -68, 18, -94,
-        -110, -66, 32, -101, -68, 32, 18, -94, -110, 32, -66, -68, 13, 32, 32, 32,
-        32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-        32, 32, 32, 32, 32, 32, 32, -104, -68, -66, 13, 18, -102, 32, -94, -68,
-        -110, 13, 18, 32, -110, -94, 18, -84, -110, 13, 18, 32, -110, 32, 18, 32,
-        -110, 13, 18, -94, -94, -110, -66, 13, 18, -103, 32, -94, -68, -110, 13, 18,
-        32, -110, -94, 18, -84, -110, 13, 18, 32, -110, 32, 18, 32, -110, 13, 18,
-        -94, -94, -110, -66, 13, 18, -106, -66, -94, -68, -110, 13, 18, -69, -110, -94,
-        -69, 13, -94, 32, 18, 32, -110, 13, -68, 18, -94, -110, -66, 13
     };
 }

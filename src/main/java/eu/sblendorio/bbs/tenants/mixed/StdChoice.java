@@ -1,25 +1,13 @@
 package eu.sblendorio.bbs.tenants.mixed;
 
 import eu.sblendorio.bbs.core.AsciiThread;
-import eu.sblendorio.bbs.tenants.ascii.MenuApple1;
-import eu.sblendorio.bbs.tenants.ascii.MenuM10;
-import eu.sblendorio.bbs.tenants.ascii.MenuTelnetPureAscii;
-import eu.sblendorio.bbs.tenants.ascii.MenuTelnetAnsi;
-import eu.sblendorio.bbs.tenants.ascii.MenuTelnetAnsiNoEcho;
-import eu.sblendorio.bbs.tenants.ascii.MenuTelnetPureAsciiNoEcho;
-import eu.sblendorio.bbs.tenants.ascii.MenuTelnetUtf8Ansi;
-import eu.sblendorio.bbs.tenants.ascii.MenuVic20;
-import eu.sblendorio.bbs.tenants.ascii.MenuApple1WithEcho;
-import eu.sblendorio.bbs.tenants.petscii.Menu64;
+import eu.sblendorio.bbs.tenants.ascii.*;
 import eu.sblendorio.bbs.tenants.minitel.MenuMinitelWithEcho;
+import eu.sblendorio.bbs.tenants.petscii.Menu64;
 import eu.sblendorio.bbs.tenants.prestel.MenuPrestelWithEcho;
 import org.apache.commons.lang3.StringUtils;
-import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class StdChoice extends AsciiThread {
-    private static final String IP_FOR_ALTERNATE_LOGO = System.getProperty("alternate.logo.ip", "none");
-    private static final int PORT_FOR_ALTERNATE_LOGO = toInt(System.getProperty("alternate.logo.port", "-1"));
-
     @Override
     public void initBbs() throws Exception {
         Thread.sleep(2000);
@@ -28,9 +16,8 @@ public class StdChoice extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        if (alternateLogo()) { println();println();println("MOVED TO BBS.RETROCAMPUS.COM");println(); keyPressed(10_000); return; }
         int ch;
-        String banner = (alternateLogo() ? "RETROACADEMY" : "RETROCAMPUS") + " BBS";
+        String banner = "RETROCAMPUS BBS";
         write(12);
         println(banner);
         println(StringUtils.repeat('-', banner.length()));
@@ -79,11 +66,6 @@ public class StdChoice extends AsciiThread {
     private boolean isValidKey(int ch) {
         return (ch >= '#' && ch <= 127)
             || ch == 13 || ch == 10 || ch == -1;
-    }
-
-    private boolean alternateLogo() {
-        return IP_FOR_ALTERNATE_LOGO.equals(serverAddress.getHostAddress())
-            || serverPort == PORT_FOR_ALTERNATE_LOGO;
     }
 
 }
