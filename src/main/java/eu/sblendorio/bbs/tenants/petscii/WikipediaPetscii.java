@@ -253,8 +253,8 @@ public class WikipediaPetscii extends PetsciiThread {
             forward = true;
             ++j;
         }
+        gotoXY(0, 24); print("Press any key...");
         flush(); resetInput(); keyPressed(60_000);
-        println();
     }
 
     public void chooseItem(List<WikipediaCommons.WikipediaItem> items) throws IOException, ParseException {

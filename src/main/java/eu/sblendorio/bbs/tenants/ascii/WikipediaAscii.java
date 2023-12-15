@@ -196,8 +196,9 @@ public class WikipediaAscii extends AsciiThread {
             forward = true;
             ++j;
         }
-        flush(); resetInput(); keyPressed(60_000);
         println();
+        println("Press any key...");
+        flush(); resetInput(); keyPressed(60_000);
     }
 
     public void chooseItem(List<WikipediaCommons.WikipediaItem> items) throws IOException, ParseException {

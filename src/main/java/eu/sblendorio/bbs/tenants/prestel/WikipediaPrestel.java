@@ -11,6 +11,7 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 import java.util.List;
 
+import static eu.sblendorio.bbs.core.MinitelControls.CURSOR_ON;
 import static eu.sblendorio.bbs.core.PrestelControls.*;
 import static eu.sblendorio.bbs.core.Utils.bytes;
 import static org.apache.commons.lang3.StringUtils.lowerCase;
@@ -218,8 +219,8 @@ public class WikipediaPrestel extends PrestelThread {
             forward = true;
             ++j;
         }
+        gotoXY(0, 23); print("Press any key...");
         flush(); resetInput(); keyPressed(60_000);
-        println();
     }
 
     public void chooseItem(List<WikipediaCommons.WikipediaItem> items) throws IOException, ParseException {

@@ -356,19 +356,20 @@ public class WikipediaMinitel extends MinitelThread {
         int j = 0;
         boolean forward = true;
         while (j < rows.size()) {
-            if (j>0 && j % screenLines == 0 && forward) {
+            if (j > 0 && j % screenLines == 0 && forward) {
                 println();
                 print(getScreenColumns() >= 40
                         ? "-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT"
-                        :  "(" + page + ") SPC -PREV .EXIT"
+                        : "(" + page + ") SPC -PREV .EXIT"
                 );
 
-                resetInput(); int ch = readKey();
+                resetInput();
+                int ch = readKey();
                 if (ch == '.') {
                     return;
                 }
                 if (ch == '-' && page > 1) {
-                    j -= (screenLines *2);
+                    j -= (screenLines * 2);
                     --page;
                     forward = false;
                     cls();
@@ -385,9 +386,8 @@ public class WikipediaMinitel extends MinitelThread {
             forward = true;
             ++j;
         }
+        gotoXY(0, 23); print("Press any key..."); write(CURSOR_ON);
         flush(); resetInput(); keyPressed(60_000);
-        println();
-
     }
 
     public void chooseItem(List<WikipediaCommons.WikipediaItem> items) throws IOException, ParseException {
