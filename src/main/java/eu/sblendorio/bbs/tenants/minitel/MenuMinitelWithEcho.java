@@ -15,7 +15,7 @@ import java.util.List;
 
 import static eu.sblendorio.bbs.core.MinitelControls.*;
 import static eu.sblendorio.bbs.core.Utils.*;
-import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isItaly;
+import static eu.sblendorio.bbs.tenants.mixed.GeolocationCommons.isItaly;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;

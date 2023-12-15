@@ -1,12 +1,8 @@
 package eu.sblendorio.bbs.tenants.mixed;
 
-import eu.sblendorio.bbs.core.BbsThread;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.simple.JSONObject;
 
-import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Set;
 import java.util.TreeSet;
@@ -62,48 +58,6 @@ public class HolidayCommons {
 
         return (month == 1) && (day == 8);
     }
-
-    public static boolean isItaly(String ip) {
-        boolean italy = italianIp.contains(ip);
-        if (!italy) {
-            String country = getCountryFromIp(ip);
-            if ("IT".equalsIgnoreCase(country)) {
-                italianIp.add(ip);
-                italy = true;
-            }
-        } else {
-            logger.debug("Cached; IT {}; Hash size={}", ip, italianIp.size());
-        }
-        return italy;
-    }
-
-    public static String getCountryFromIp(String ip) {
-        ip = ip.replaceAll("(?is)[^0-9:\\.]","");
-        if ("127.0.0.1".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip))
-            return StringUtils.EMPTY;
-
-        String apiKey = defaultString(getenv("GEOKEY"), getProperty("GEOKEY", "DUMMY"));
-        if ("DUMMY".equalsIgnoreCase(apiKey))
-            return StringUtils.EMPTY;
-
-        try {
-            String url = "https://api.ipgeolocation.io/timezone?apiKey="
-                    + URLEncoder.encode(apiKey, "UTF-8")
-                    + "&ip="
-                    + URLEncoder.encode(ip, "UTF-8");
-
-            JSONObject root = (JSONObject) BbsThread.httpGetJson(url);
-            JSONObject geo = (JSONObject) root.get("geo");
-            String countryCode2 = (String) geo.get("country_code2");
-            logger.debug("Missed; {}: {}; Hash size={}", countryCode2, ip, italianIp.size());
-
-            return countryCode2;
-        } catch (Exception e) {
-            return StringUtils.EMPTY;
-        }
-    }
-
-
 
     public static void main(String[] args) {
         System.out.println("isXmas="+isXmasTime());

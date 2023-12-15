@@ -76,7 +76,7 @@
         <Logger name="eu.sblendorio.bbs.tenants.ascii.ChatA1" level="debug" additivity="false">
             <AppenderRef ref="HumanChatLog"/>
         </Logger>
-        <Logger name="eu.sblendorio.bbs.tenants.mixed.HolidayCommons" level="debug" additivity="false">
+        <Logger name="eu.sblendorio.bbs.tenants.mixed.GeolocationCommons" level="debug" additivity="false">
             <AppenderRef ref="IpGeolocation"/>
         </Logger>
         <Root level="debug">
