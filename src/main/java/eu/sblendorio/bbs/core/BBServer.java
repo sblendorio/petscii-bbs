@@ -1,36 +1,26 @@
 package eu.sblendorio.bbs.core;
 
 import com.google.common.reflect.ClassPath;
-import java.io.IOException;
-import java.io.PrintWriter;
-import static java.lang.System.currentTimeMillis;
-import java.lang.reflect.Modifier;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.sql.Timestamp;
-import java.util.*;
-
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptyMap;
-import static java.util.Comparator.comparing;
-import static java.util.Comparator.comparingLong;
-
-import java.util.stream.Collectors;
-
-import eu.sblendorio.bbs.tenants.ascii.ClientChatGptAscii;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import static org.apache.commons.lang3.StringUtils.defaultString;
-import static org.apache.commons.lang3.StringUtils.substring;
+import org.apache.commons.cli.*;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.reflect.Modifier;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.lang.System.*;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Arrays.asList;
+import static java.util.Collections.*;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparingLong;
+import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class BBServer {
@@ -57,9 +47,19 @@ public class BBServer {
 
     private static Logger logger = LogManager.getLogger(BBServer.class);
 
+    public static Set<String> diagIpSet = initDiagIpSet();
+
+    public static Set<String> initDiagIpSet() {
+        String ipSetString = defaultString(getenv("DIAG_IP_SET"), getProperty("DIAG_IP_SET", EMPTY)).replace(" ", "");
+        if (isBlank(ipSetString)) return emptySet();
+        return new HashSet<>(asList(ipSetString.split(",")));
+    }
+
     public static void main(String[] args) throws Exception {
         // args = new String[] {"-b", "MainMenu", "-p", "6510"};
         readParameters(args);
+
+        initDiagIpSet();
 
         Thread.currentThread().setName("BBSMain-" + Thread.currentThread().getId());
         logger.info("The BBS {} is running: timeout = {} millis" + (servicePort != 0 ? ", serviceport = {}" : ""),
@@ -76,6 +76,18 @@ public class BBServer {
                     while (true) {
                         Socket socket = listener.accept();
                         socket.setSoTimeout(timeout);
+
+                        final String clientIp = socket.getInetAddress().getHostAddress();
+                        if (diagIpSet.contains(clientIp)) {
+                            logger.info("DIAG: Connection by diagnostic IP {}, port {}", clientIp, endPoint.port);
+                            try {
+                                socket.getOutputStream().write("OK\n".getBytes(UTF_8));
+                                socket.close();
+                            } catch (Exception e) {
+                                logger.error("DIAG: ERROR during closing connection to diagnostic IP {}, port {}", clientIp, endPoint.port);
+                            }
+                            continue;
+                        }
 
                         BbsThread thread = endPoint.bbs.getDeclaredConstructor().newInstance();
                         BbsInputOutput io = thread.buildIO(socket);
