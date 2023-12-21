@@ -40,7 +40,7 @@ public class BbcPetscii extends RssPetscii {
 
     @Override
     public String prefix() {
-        return "http://feeds.bbci.co.uk/news/";
+        return "https://feeds.bbci.co.uk/news/";
     }
 
     @Override

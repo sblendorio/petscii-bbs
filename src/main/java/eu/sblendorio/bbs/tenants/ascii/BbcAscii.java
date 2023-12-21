@@ -65,7 +65,7 @@ public class BbcAscii extends RssAscii {
 
     @Override
     public String prefix() {
-        return "http://feeds.bbci.co.uk/news/";
+        return "https://feeds.bbci.co.uk/news/";
     }
 
     private Map<String, NewsSection> loadSections() {
