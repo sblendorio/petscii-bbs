@@ -44,7 +44,7 @@ public class CnnPetscii extends RssPetscii {
 
     @Override
     public String prefix() {
-        return "https://rss.cnn.com/rss/";
+        return "http://rss.cnn.com/rss/";
     }
 
     @Override

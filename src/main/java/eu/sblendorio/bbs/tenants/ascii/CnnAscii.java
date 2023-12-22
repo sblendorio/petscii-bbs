@@ -60,7 +60,7 @@ public class CnnAscii extends RssAscii {
 
     @Override
     public String prefix() {
-        return "https://rss.cnn.com/rss/";
+        return "http://rss.cnn.com/rss/";
     }
 
     private Map<String, NewsSection> loadSections() {
