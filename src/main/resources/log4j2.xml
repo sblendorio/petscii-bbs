@@ -44,6 +44,20 @@
         </RollingFile>
 
         <RollingFile
+                name="SuspiciousIp"
+                fileName="${sys:user.home}/bbs-logs/bbs-suspiciousip.log"
+                filePattern="${sys:user.home}/bbs-logs/bbs-suspiciousip.%d{yyyy-MM-dd}.log.gz"
+                ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS zzz} %p %c{1} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+            <DefaultRolloverStrategy max="30" />
+        </RollingFile>
+
+        <RollingFile
                 name="Global"
                 fileName="${sys:user.home}/bbs-logs/bbs-global.log"
                 filePattern="${sys:user.home}/bbs-logs/bbs-global.%d{yyyy-MM-dd}.log.gz"
@@ -78,6 +92,9 @@
         </Logger>
         <Logger name="eu.sblendorio.bbs.tenants.mixed.GeolocationCommons" level="debug" additivity="false">
             <AppenderRef ref="IpGeolocation"/>
+        </Logger>
+        <Logger name="eu.sblendorio.bbs.core.BbsInputOutput" level="debug" additivity="false">
+            <AppenderRef ref="SuspiciousIp"/>
         </Logger>
         <Root level="debug">
             <AppenderRef ref="Global" />

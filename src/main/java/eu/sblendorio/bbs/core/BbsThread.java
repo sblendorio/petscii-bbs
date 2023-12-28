@@ -305,6 +305,7 @@ public abstract class BbsThread extends Thread {
             bbs.ipAddress = root.ipAddress;
             bbs.socket = root.socket;
             bbs.io = bbs.buildIO(socket);
+            bbs.io.socket = root.socket;
             bbs.io.localEcho = bbs.localEcho;
             bbs.parent = this;
             bbs.keepAliveTimeout = bbs.keepAliveTimeout <= 0 ? root.keepAliveTimeout : bbs.keepAliveTimeout;

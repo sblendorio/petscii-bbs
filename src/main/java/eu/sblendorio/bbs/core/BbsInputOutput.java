@@ -17,7 +17,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 /* This class is a modified version of original BufferedReader from original java IO library */
 public abstract class BbsInputOutput extends Reader {
 
-    private static byte[] EMPTY_ARRAY = new byte[] {};
+    private final static byte[] EMPTY_ARRAY = new byte[] {};
 
     public static class QuotedPrintStream extends PrintStream {
         private boolean isQuoteMode = false;
@@ -45,12 +45,14 @@ public abstract class BbsInputOutput extends Reader {
         }
     }
 
-    private static Logger logger = LogManager.getLogger(BbsInputOutput.class);
+    private static final Logger logger = LogManager.getLogger(BbsInputOutput.class);
     private String readBuffer = EMPTY;
 
     protected Reader in;
     protected QuotedPrintStream out;
     protected Boolean localEcho = null;
+
+    protected Socket socket = null;
 
     protected static int defaultCharBufferSize = 8192;
 
@@ -252,10 +254,19 @@ public abstract class BbsInputOutput extends Reader {
         }
         if (count == 0) return EMPTY_ARRAY;
 
+        String ip = "UNKNOWN";
+        try {
+            ip = socket.getInetAddress().getHostAddress();
+        } catch (Exception e) {
+            logger.warn("Something happened during IP retrieval", e);
+        }
+
+        final String stringIp = "(suspicious IP: " + ip +")";
+
         byte[] excludedInput = new byte[count];
         arraycopy(buffer, 0, excludedInput, 0, count);
         final String missingInput = new String(excludedInput, ISO_8859_1);
-        logger.info("Flushing input buffer: '{}', len = {}",
+        logger.info("Flushing input buffer (" + ip + "): '{}', len = {}",
             substring(missingInput
                 .replaceAll("\r+", "\\\\r")
                 .replaceAll("\n+", "\\\\n")
@@ -268,17 +279,30 @@ public abstract class BbsInputOutput extends Reader {
             out.flush();
             out.close();
             this.close();
-            throw new BbsIOException("HTTP Connection detected, closing socket.");
+            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) {
+                if (missingInput.matches("(?is)^(P?OST|H?EAD|P?UT|D?ELETE|C?ONNECT|O?PTIONS) .*")) {
+                    logger.info("CATCH HTTP " + ip);
+                } else if (
+                        missingInput.matches("(?is)^G?ET .*") &&
+                                !missingInput.matches("(?is)^G?ET / .*") &&
+                                !missingInput.matches("(?is)^G?ET /favicon.*")
+                ) {
+                    logger.info("CATCH HTTPGET " + ip);
+                }
+                throw new BbsIOException("HTTP Connection detected " + stringIp + ", closing socket.");
+            }
         } else if (missingInput.matches("(?is)^.*Cookie: mstshash=[a-z].*")) {
             out.flush();
             out.close();
             this.close();
-            throw new BbsIOException("MICROSOFT REMOTE DESKTOP Connection detected, closing socket");
+            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH RDP " + ip);
+            throw new BbsIOException("MICROSOFT REMOTE DESKTOP Connection detected " + stringIp + ", closing socket");
         } else if (missingInput.matches("(?is)^.*P?uTTYPuTTYPuTTY.*")) {
             out.flush();
             out.close();
             this.close();
-            throw new BbsIOException("Weird PuTTY Connection detected, closing socket");
+            // if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH PUTTY " + ip);
+            throw new BbsIOException("Weird PuTTY Connection detected " + stringIp + ", closing socket");
         } else if (
             missingInput.matches("(?is)^SSH-[0-9\\.]+-.*") ||
                 missingInput.matches("(?is)^.*Handshake failed.*") ||
@@ -287,17 +311,26 @@ public abstract class BbsInputOutput extends Reader {
             out.flush();
             out.close();
             this.close();
-            throw new BbsIOException("SECURE SHELL (ssh) Connection detected, closing socket");
+            // if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH SSH " + ip);
+            throw new BbsIOException("SECURE SHELL (ssh) Connection detected " + stringIp + ", closing socket");
         } else if (missingInput.matches("(?is)^R?FB [0-9][0-9][0-9]\\.[0-9][0-9][0-9]\n.*")) {
             out.flush();
             out.close();
             this.close();
-            throw new BbsIOException("VNC Connection detected, closing socket");
+            // if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH VNC " + ip);
+            throw new BbsIOException("VNC Connection detected " + stringIp + ", closing socket");
+        } else if (missingInput.contains("/bin/busybox cat /proc")) {
+            out.flush();
+            out.close();
+            this.close();
+            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH SHELLATTACK " + ip);
+            throw new BbsIOException("Shell Attack detected " + stringIp + ", closing socket");
         } else if (count >= THRESHOLD) {
             out.flush();
             out.close();
             this.close();
-            throw new BbsIOException("SEVERE. BbsIOException::resetInput, potential DoS detected.");
+            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH DDOS " + ip);
+            throw new BbsIOException("SEVERE. BbsIOException::resetInput " + stringIp + ", potential DoS detected.");
         }
         return excludedInput;
     }
@@ -385,7 +418,7 @@ public abstract class BbsInputOutput extends Reader {
     }
     public String newlineString() {
         return new String(newlineBytes(), ISO_8859_1);
-    };
+    }
     public abstract byte[] newlineBytes();
     public abstract int backspaceKey();
     public abstract byte[] backspace();
