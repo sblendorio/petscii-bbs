@@ -243,7 +243,7 @@ public abstract class BbsInputOutput extends Reader {
     }
 
     public byte[] resetInput() throws IOException {
-        final int THRESHOLD = 192;
+        final int THRESHOLD = 110;
         byte[] buffer = new byte[THRESHOLD];
 
         int count = 0;
