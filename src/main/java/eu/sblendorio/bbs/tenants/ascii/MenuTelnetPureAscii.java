@@ -162,6 +162,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 else if ("l".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
                 else if ("m".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
                 else if ("n".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
+                else if ("x".equals(choice)) subThread = new ZorkMachineAscii("zmpp/planetfall-r39.z3");
                 else if ("o".equals(choice)) subThread = new ChatA1(getTerminalType());
                 else if ("p".equals(choice)) subThread = new PrivateMessagesAscii();
                 else if ("q".equals(choice)) subThread = new ElizaAscii();
@@ -203,17 +204,17 @@ public class MenuTelnetPureAscii extends AsciiThread {
         println("4 - Al Jazeera                             L - Zork II");
         println("5 - Indie Retro News                       M - Zork III");
         println("6 - VCF News                               N - Hitchhiker's");
-        println("7 - The 8-Bit Guy                          --------------Services");
-        println("                                           O - Chat");
-        println("Italian News-----------------------------  P - Private Msg");
-        println("A - Televideo RAI                          Q - Eliza");
-        println("B - Lercio                                 R - Chat GPT");
-        println("C - Disinformatico                         S - Patrons list");
-        println("D - Mupin.it                               T - Patrons Publishers");
-        println("E - Fatto Quotidiano                       U - Wifi Modem");
-        println("F - Amedeo Valoroso                        V - Apple-1 Demo");
-        println("G - Butac.it                               W - Wikipedia");
-        println("H - Alessandro Albano                      . - Logout");
+        println("7 - The 8-Bit Guy                          X - Planetfall");
+        println("                                           --------------Services");
+        println("Italian News-----------------------------  O - Chat");
+        println("A - Televideo RAI                          P - Private Msg");
+        println("B - Lercio                                 Q - Eliza");
+        println("C - Disinformatico                         R - Chat GPT");
+        println("D - Mupin.it                               S - Patrons list");
+        println("E - Fatto Quotidiano                       T - Patrons Publishers");
+        println("F - Amedeo Valoroso                        U - Wifi Modem");
+        println("G - Butac.it                               V - Apple-1 Demo");
+        println("H - Alessandro Albano                      W - Wikipedia");
         println();
     }
 

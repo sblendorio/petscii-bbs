@@ -32,7 +32,7 @@ public class MenuM10 extends AsciiThread {
     }
 
     protected void banner() {
-        println("BBS for M10 - by F.Sblendorio " + Calendar.getInstance().get(Calendar.YEAR));
+        println("BBS for M10      '.' to logout");
     }
 
     public void logo() throws Exception {}
@@ -44,21 +44,21 @@ public class MenuM10 extends AsciiThread {
     public void displayMenu() throws Exception {
         banner();
         println("1 - CNN News           Game Room-------");
-        println("2 - BBC News           N - TIC TAC TOE");
-        println("3 - Politico.com       O - Connect Four");
-        println("4 - Al Jazeera         P - Zork I");
-        println("5 - Indie Retro New    Q - Zork II");
-        println("6 - VCF News           R - Zork III");
-        println("7 - The 8-Bit Guy      S - Hitchhiker's");
-        println("Italian News---------  Services--------");
-        println("F - Televideo RAI      T - Chat");
-        println("G - Lercio             U - Private Msg");
-        println("H - Disinformatico     V - Eliza");
-        println("I - Mupin.it           W - ChatGPT");
-        println("J - Fatto Quotidiano   X - Patron list");
-        println("K - Amedeo Valoroso    Y - Wifi Modem");
-        println("L - Butac.it           Z - Wikipedia");
-        println("M - Alessandro Albano  . - Logout");
+        println("2 - BBC News           I - TIC TAC TOE");
+        println("3 - Politico.com       J - Connect Four");
+        println("4 - Al Jazeera         K - Zork I");
+        println("5 - Indie Retro New    L - Zork II");
+        println("6 - VCF News           M - Zork III");
+        println("7 - The 8-Bit Guy      N - Hitchhiker's");
+        println("Italian News---------  X - Planetfall");
+        println("A - Televideo RAI      Services--------");
+        println("B - Lercio             O - Chat");
+        println("C - Disinformatico     P - Private Msg");
+        println("D - Mupin.it           Q - Eliza");
+        println("E - Fatto Quotidiano   R - ChatGPT");
+        println("F - Amedeo Valoroso    S - Patron list");
+        println("G - Butac.it           T - Wifi Modem");
+        println("H - Alessandro Albano  U - Wikipedia");
     }
 
     public String readChoice() throws IOException {
@@ -70,7 +70,7 @@ public class MenuM10 extends AsciiThread {
     public void doLoop() throws Exception {
         logo();
         while (true) {
-            log("Starting Apple1 / main menu");
+            log("Starting M10 / main menu");
             cls();
             displayMenu();
 
@@ -113,33 +113,34 @@ public class MenuM10 extends AsciiThread {
                 else if ("5".equals(choice)) subThread = new IndieRetroNewsAscii();
                 else if ("6".equals(choice)) subThread = new VcfedAscii();
                 else if ("7".equals(choice)) subThread = new The8BitGuyAscii();
-                else if ("f".equals(choice)) subThread = new TelevideoRaiAscii(
+                else if ("a".equals(choice)) subThread = new TelevideoRaiAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getTerminalType(),
                         null,
                         null
                 );
-                else if ("g".equals(choice)) subThread = new LercioAscii();
-                else if ("h".equals(choice)) subThread = new DisinformaticoAscii();
-                else if ("i".equals(choice)) subThread = new MupinAscii();
-                else if ("j".equals(choice)) subThread = new IlFattoQuotidianoAscii();
-                else if ("k".equals(choice)) subThread = new AmedeoValorosoAscii();
-                else if ("l".equals(choice)) subThread = new ButacAscii();
-                else if ("m".equals(choice)) subThread = new AlessandroAlbanoAscii();
-                else if ("n".equals(choice)) subThread = new TicTacToeAscii();
-                else if ("o".equals(choice)) subThread = new Connect4Ascii();
-                else if ("p".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
-                else if ("q".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
-                else if ("r".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
-                else if ("s".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
-                else if ("t".equals(choice)) subThread = new ChatA1(getTerminalType());
-                else if ("u".equals(choice)) subThread = new PrivateMessagesAscii();
-                else if ("v".equals(choice)) subThread = new ElizaAscii();
-                else if ("w".equals(choice)) subThread = new ClientChatGptAscii();
-                else if ("x".equals(choice)) { showPatrons(); subThread = null; }
-                else if ("y".equals(choice)) { wifiModem(); subThread = null; }
-                else if ("z".equals(choice)) subThread = new WikipediaAscii();
+                else if ("b".equals(choice)) subThread = new LercioAscii();
+                else if ("c".equals(choice)) subThread = new DisinformaticoAscii();
+                else if ("d".equals(choice)) subThread = new MupinAscii();
+                else if ("e".equals(choice)) subThread = new IlFattoQuotidianoAscii();
+                else if ("f".equals(choice)) subThread = new AmedeoValorosoAscii();
+                else if ("g".equals(choice)) subThread = new ButacAscii();
+                else if ("h".equals(choice)) subThread = new AlessandroAlbanoAscii();
+                else if ("i".equals(choice)) subThread = new TicTacToeAscii();
+                else if ("j".equals(choice)) subThread = new Connect4Ascii();
+                else if ("k".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
+                else if ("l".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
+                else if ("m".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
+                else if ("n".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
+                else if ("x".equals(choice)) subThread = new ZorkMachineAscii("zmpp/planetfall-r39.z3");
+                else if ("o".equals(choice)) subThread = new ChatA1(getTerminalType());
+                else if ("p".equals(choice)) subThread = new PrivateMessagesAscii();
+                else if ("q".equals(choice)) subThread = new ElizaAscii();
+                else if ("r".equals(choice)) subThread = new ClientChatGptAscii();
+                else if ("s".equals(choice)) { showPatrons(); subThread = null; }
+                else if ("t".equals(choice)) { wifiModem(); subThread = null; }
+                else if ("u".equals(choice)) subThread = new WikipediaAscii();
                 else {
                     validKey = false;
                     subThread = null;

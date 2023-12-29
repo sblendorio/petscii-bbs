@@ -322,6 +322,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == '5') launch(new ZorkMachine("zmpp/zork2.z3", readBinaryFile("petscii/zork2.seq")));
                 else if (key == '6') launch(new ZorkMachine("zmpp/zork3.z3", readBinaryFile("petscii/zork3.seq")));
                 else if (key == '7') launch(new ZorkMachine("zmpp/hitchhiker-r60.z3", readBinaryFile("petscii/dontpanic.seq")));
+                else if (key == '8') launch(new ZorkMachine("zmpp/planetfall-r39.z3", readBinaryFile("petscii/planetfall.seq")));
                 else {
                     validKey = false;
                 }
