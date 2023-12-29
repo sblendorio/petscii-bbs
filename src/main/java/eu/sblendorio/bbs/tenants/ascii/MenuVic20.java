@@ -51,7 +51,7 @@ public class MenuVic20 extends AsciiThread {
         println("4-AJPlus  Q-Zork II");
         println("5-IRNews  R-Zork III");
         println("6-VCFNews S-Hitchhikr");
-        println("7-8bitGuy");
+        println("7-8bitGuy 8-Planetfal");
         println("Italian News  Service");
         println("------------  -------");
         println("F-Televideo   T-Chat");
@@ -159,6 +159,7 @@ public class MenuVic20 extends AsciiThread {
                 else if ("q".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
                 else if ("r".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
                 else if ("s".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
+                else if ("8".equals(choice)) subThread = new ZorkMachineAscii("zmpp/planetfall-r39.z3");
                 else if ("t".equals(choice)) subThread = new ChatA1(getTerminalType());
                 else if ("u".equals(choice)) subThread = new PrivateMessagesAscii();
                 else if ("v".equals(choice)) subThread = new ElizaAscii();
