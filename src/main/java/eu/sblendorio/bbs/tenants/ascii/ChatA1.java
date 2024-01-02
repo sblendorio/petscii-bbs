@@ -32,6 +32,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
+import static eu.sblendorio.bbs.core.BlockGraphicsMinitel.stringToQr;
 import static eu.sblendorio.bbs.core.Utils.bytes;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
@@ -403,16 +404,5 @@ public class ChatA1 extends AsciiThread {
         return ((JSONObject) jtext.get("url")).get("shortLink").toString();
     }
 
-    private String[] stringToQr(String string) throws WriterException {
-        ByteMatrix matrix = Encoder.encode(string, ErrorCorrectionLevel.H).getMatrix();
-        String[] strMatrix = new String[matrix.getHeight()];
-        for (int y=0; y < matrix.getHeight(); ++y) {
-            strMatrix[y] = "";
-            for (int x = 0; x < matrix.getWidth(); ++x) {
-                strMatrix[y] += (matrix.get(x, y) == 1 ? "*" : ".");
-            }
-        }
-        return strMatrix;
-    }
 
 }

@@ -1,9 +1,7 @@
 package eu.sblendorio.bbs.tenants.minitel;
 
-import eu.sblendorio.bbs.core.AsciiThread;
-import eu.sblendorio.bbs.core.BbsThread;
-import eu.sblendorio.bbs.core.MinitelThread;
-import eu.sblendorio.bbs.core.Utils;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import eu.sblendorio.bbs.core.*;
 import eu.sblendorio.bbs.tenants.ascii.*;
 import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
@@ -11,7 +9,10 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static eu.sblendorio.bbs.core.MinitelControls.*;
 import static eu.sblendorio.bbs.core.Utils.*;
@@ -146,22 +147,31 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 HolidayCommons.isAscanioDay() && (isItaly(ipAddress.getHostAddress()) || isLocalhost(ipAddress.getHostAddress()))
         ) {
             write(readBinaryFile("minitel/ascanio.vdt"));
+            String[] matrix = BlockGraphicsMinitel.stringToQr("t.ly/yjubs", ErrorCorrectionLevel.L);
+            int len = matrix.length+1;
+            List<String> listMatrix = new ArrayList<>();
+            listMatrix.add(StringUtils.repeat('.', matrix[0].length()+1));
+            for (String line: matrix) {
+                listMatrix.add("." + line);
+            }
+            String[] strMatrix = listMatrix.toArray(new String[len]);
+            gotoXY(0,0);
+            write(MinitelControls.GRAPHICS_MODE);
+            write(BlockGraphicsMinitel.getRenderedMidres(29, strMatrix, false, true));
             write(TEXT_MODE);
         } else if (HolidayCommons.isXmasTime()) {
-            isItaly(ipAddress.getHostAddress()); // DELETE
             write(readBinaryFile("minitel/santaclaus.vdt"));
             gotoXY(28, 18);
             write(TEXT_MODE);
             attributes(TEXTSIZE_DOUBLE_ALL, CHAR_WHITE);
             print(String.valueOf(HolidayCommons.xmasNewYear()));
         } else {
-            isItaly(ipAddress.getHostAddress()); // DELETE
             write(readBinaryFile("minitel/intro-retrocampus.vdt"));
         }
 
         write(SCROLL_ON);
         flush(); resetInput();
-        keyPressed(40_000);
+        keyPressed(60_000);
         write(CURSOR_ON);
     }
 

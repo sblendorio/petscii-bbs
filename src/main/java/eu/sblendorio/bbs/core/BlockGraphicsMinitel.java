@@ -1,5 +1,10 @@
 package eu.sblendorio.bbs.core;
 
+import com.google.zxing.WriterException;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.google.zxing.qrcode.encoder.ByteMatrix;
+import com.google.zxing.qrcode.encoder.Encoder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +45,7 @@ public class BlockGraphicsMinitel {
                 if (chr == empty && transparent) chr = 9;
                 result.add(chr);
             }
-            if (y < output.length-1 || finalCR) {
+            if ((htab+output[y].length < 40) &&  (y < output.length-1 || finalCR)) {
                 result.add(10);
                 result.add(13);
             }
@@ -65,6 +70,22 @@ public class BlockGraphicsMinitel {
             b= 0x5F;
         }
         return b;
+    }
+
+    public static String[] stringToQr(String string) throws WriterException {
+        return stringToQr(string, ErrorCorrectionLevel.H);
+    }
+
+    public static String[] stringToQr(String string, ErrorCorrectionLevel errorCorrectionLevel) throws WriterException {
+        ByteMatrix matrix = Encoder.encode(string, errorCorrectionLevel).getMatrix();
+        String[] strMatrix = new String[matrix.getHeight()];
+        for (int y=0; y < matrix.getHeight(); ++y) {
+            strMatrix[y] = "";
+            for (int x = 0; x < matrix.getWidth(); ++x) {
+                strMatrix[y] += (matrix.get(x, y) == 1 ? "*" : ".");
+            }
+        }
+        return strMatrix;
     }
 
 }

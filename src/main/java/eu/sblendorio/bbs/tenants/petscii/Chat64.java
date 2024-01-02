@@ -445,7 +445,7 @@ public class Chat64 extends PetsciiThread {
         log("Detected URL: " + firstUrl);
         try {
             String shortUrl = firstUrl.length() <= 24 ? firstUrl : shortenUrl(firstUrl);
-            String[] strMatrix = stringToQr(shortUrl);
+            String[] strMatrix = BlockGraphicsPetscii.stringToQr(shortUrl);
             println();
             write(BlockGraphicsPetscii.getRenderedMidres(2, strMatrix));
         } catch (Exception e) {
@@ -483,18 +483,6 @@ public class Chat64 extends PetsciiThread {
             status == 6)
             return firstUrl;
         return ((JSONObject) jtext.get("url")).get("shortLink").toString();
-    }
-
-    private String[] stringToQr(String string) throws WriterException {
-        ByteMatrix matrix = Encoder.encode(string, ErrorCorrectionLevel.H).getMatrix();
-        String[] strMatrix = new String[matrix.getHeight()];
-        for (int y=0; y < matrix.getHeight(); ++y) {
-            strMatrix[y] = "";
-            for (int x = 0; x < matrix.getWidth(); ++x) {
-                strMatrix[y] += (matrix.get(x, y) == 1 ? "*" : ".");
-            }
-        }
-        return strMatrix;
     }
 
 }

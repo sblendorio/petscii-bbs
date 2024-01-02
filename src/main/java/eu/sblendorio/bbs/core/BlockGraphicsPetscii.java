@@ -1,5 +1,10 @@
 package eu.sblendorio.bbs.core;
 
+import com.google.zxing.WriterException;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.google.zxing.qrcode.encoder.ByteMatrix;
+import com.google.zxing.qrcode.encoder.Encoder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,4 +63,18 @@ public class BlockGraphicsPetscii {
         }
         return result.stream().mapToInt(i -> i).toArray();
     }
+
+    public static String[] stringToQr(String string) throws WriterException {
+        ByteMatrix matrix = Encoder.encode(string, ErrorCorrectionLevel.H).getMatrix();
+        String[] strMatrix = new String[matrix.getHeight()];
+        for (int y=0; y < matrix.getHeight(); ++y) {
+            strMatrix[y] = "";
+            for (int x = 0; x < matrix.getWidth(); ++x) {
+                strMatrix[y] += (matrix.get(x, y) == 1 ? "*" : ".");
+            }
+        }
+        return strMatrix;
+    }
+
+
 }

@@ -1,8 +1,7 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
-import eu.sblendorio.bbs.core.PetsciiKeys;
-import eu.sblendorio.bbs.core.PetsciiThread;
-import eu.sblendorio.bbs.core.Utils;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import eu.sblendorio.bbs.core.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -29,13 +28,20 @@ public class Menu64 extends PetsciiThread {
     @Override
     public void doLoop() throws Exception {
         resetInput();
-
         if (
                 isAscanioDay() && (isItaly(ipAddress.getHostAddress()) || isLocalhost(ipAddress.getHostAddress()))
         ) {
             write(CLR, UPPERCASE, CASE_LOCK, HOME);
             write(readBinaryFile("petscii/ascanio.seq"));
-            keyPressed(30_000L);
+            write(HOME);
+            String[] matrix = BlockGraphicsMinitel.stringToQr("t.ly/yjubs", ErrorCorrectionLevel.M);
+            String[] matrixStr = new String[matrix.length+1];
+            matrixStr[0] = StringUtils.repeat('.', matrix[0].length());
+            for (int i=0; i<matrix.length; i++) matrixStr[i+1] = "." + matrix[i];
+            write(WHITE);
+            write(BlockGraphicsPetscii.getRenderedMidres(28, matrixStr, true, true));
+            write(GREY1);
+            keyPressed(60_000L);
         }
         else
             isItaly(ipAddress.getHostAddress()); // DELETE
