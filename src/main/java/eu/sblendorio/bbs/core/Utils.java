@@ -1,5 +1,8 @@
 package eu.sblendorio.bbs.core;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,7 +22,7 @@ import static org.apache.commons.lang3.StringUtils.lowerCase;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 public class Utils {
-
+    private static final Logger logger = LogManager.getLogger(Utils.class);
     private static final ClassLoader NULL_CLASSLOADER = null;
 
     private static final Set<Integer> PETSCII_CONTROL_CHARS = new HashSet<>(Arrays.asList(
@@ -121,8 +124,7 @@ public class Utils {
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+            logger.error("An error occurred.", e);
         }
         return result;
     }

@@ -3,6 +3,8 @@ package eu.sblendorio.bbs.tenants.mixed;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Set;
 import java.util.TreeSet;
@@ -10,6 +12,7 @@ import java.util.TreeSet;
 import static java.lang.Integer.valueOf;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
+import static java.util.Calendar.*;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
 public class HolidayCommons {
@@ -21,31 +24,41 @@ public class HolidayCommons {
     public static Set<String> italianIp = new TreeSet<>();
 
     public static int xmasNewYear() {
-        Calendar c = Calendar.getInstance();
+        return xmasNewYear(
+                defaultString(getenv("XMAS_START"), getProperty("XMAS_START", XMAS_START_DEFAULT))
+                        .substring(0, 2),
+                Calendar.getInstance());
+    }
 
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH) + 1;
-        int xmasStartMonth =
-                valueOf(defaultString(getenv("XMAS_START"), getProperty("XMAS_START", XMAS_START_DEFAULT))
-                        .substring(0, 2)
-                );
+    public static int xmasNewYear(String xmasStart, Calendar today) {
+        DateFormat sdf = new SimpleDateFormat("MMdd");
+        String todayMMDD = sdf.format(today.getTime());
+        int year = today.get(YEAR);
 
-        return month >= xmasStartMonth ? year + 1 : year;
+        return todayMMDD.compareTo(xmasStart) >= 0 ? year + 1 : year;
     }
 
     public static boolean isXmasTime() {
         String xmasStartDef = defaultString(getenv("XMAS_START"), getProperty("XMAS_START", XMAS_START_DEFAULT));
         String xmasEndDef = defaultString(getenv("XMAS_END"), getProperty("XMAS_END", XMAS_END_DEFAULT));
-        boolean ascent = xmasEndDef.compareTo(xmasStartDef) >=0;
-        int xmasNewYear = xmasNewYear();
 
-        Calendar c = Calendar.getInstance();
+        return isXmasTime(
+                xmasStartDef,
+                xmasEndDef,
+                Calendar.getInstance()
+        );
+    }
+
+    public static boolean isXmasTime(String xmasStartDef, String xmasEndDef, Calendar todayCal) {
+        boolean ascent = xmasEndDef.compareTo(xmasStartDef) >=0;
+        int xmasNewYear = xmasNewYear(xmasStartDef, todayCal);
+
         String year = String.format("%04d", xmasNewYear - (ascent ? 0 : 1));
         String nextYear = String.format("%04d", xmasNewYear);
-        String month = String.format("%02d", c.get(Calendar.MONTH)+1);
-        String day = String.format("%02d", c.get(Calendar.DAY_OF_MONTH));
+        String month = String.format("%02d", todayCal.get(MONTH)+1);
+        String day = String.format("%02d", todayCal.get(DAY_OF_MONTH));
 
-        String today = String.format("%04d", c.get(Calendar.YEAR)) + month + day;
+        String today = String.format("%04d", todayCal.get(YEAR)) + month + day;
         String xmasStart = year + xmasStartDef;
         String xmasEnd = nextYear + xmasEndDef;
 
@@ -54,8 +67,8 @@ public class HolidayCommons {
 
     public static boolean isAscanioDay() {
         Calendar c = Calendar.getInstance();
-        int month = c.get(Calendar.MONTH) + 1;
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        int month = c.get(MONTH) + 1;
+        int day = c.get(DAY_OF_MONTH);
 
         return (month == 1) && (day == 8);
     }
