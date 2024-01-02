@@ -23,6 +23,11 @@ public class GeolocationCommons {
     public static boolean isItaly(String ip) {
         return "IT".equalsIgnoreCase(getCountryByIp(ip));
     }
+
+    public static boolean isLocalhost(String ip) {
+        return "127.0.0.1".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip);
+    }
+
     public static String getCountryByIp(String ip) {
         ip = ip.replaceAll("(?is)[^0-9:\\.]","");
         if ("127.0.0.1".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip))

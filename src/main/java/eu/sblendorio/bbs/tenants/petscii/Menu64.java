@@ -17,6 +17,7 @@ import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
 import static eu.sblendorio.bbs.core.Utils.readExternalTxt;
 import static eu.sblendorio.bbs.tenants.mixed.GeolocationCommons.isItaly;
+import static eu.sblendorio.bbs.tenants.mixed.GeolocationCommons.isLocalhost;
 import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isAscanioDay;
 import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isXmasTime;
 import static java.util.Comparator.comparing;
@@ -29,7 +30,9 @@ public class Menu64 extends PetsciiThread {
     public void doLoop() throws Exception {
         resetInput();
 
-        if (isAscanioDay() && isItaly(ipAddress.getHostAddress())) {
+        if (
+                isAscanioDay() && (isItaly(ipAddress.getHostAddress()) || isLocalhost(ipAddress.getHostAddress()))
+        ) {
             write(CLR, UPPERCASE, CASE_LOCK, HOME);
             write(readBinaryFile("petscii/ascanio.seq"));
             keyPressed(30_000L);

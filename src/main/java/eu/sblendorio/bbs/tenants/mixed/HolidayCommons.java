@@ -22,6 +22,7 @@ public class HolidayCommons {
 
     public static int xmasNewYear() {
         Calendar c = Calendar.getInstance();
+
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH) + 1;
         int xmasStartMonth =
@@ -33,18 +34,18 @@ public class HolidayCommons {
     }
 
     public static boolean isXmasTime() {
-        Calendar c = Calendar.getInstance();
-        String year = String.format("%04d",c.get(Calendar.YEAR));
-        String nextYear = String.format("%04d",c.get(Calendar.YEAR) + 1);
-        String month = String.format("%02d", c.get(Calendar.MONTH)+1);
-        String day = String.format("%02d", c.get(Calendar.DAY_OF_MONTH));
         String xmasStartDef = defaultString(getenv("XMAS_START"), getProperty("XMAS_START", XMAS_START_DEFAULT));
         String xmasEndDef = defaultString(getenv("XMAS_END"), getProperty("XMAS_END", XMAS_END_DEFAULT));
-        if (xmasEndDef.compareTo(xmasStartDef) >=0) {
-            nextYear = year;
-        }
+        boolean ascent = xmasEndDef.compareTo(xmasStartDef) >=0;
+        int xmasNewYear = xmasNewYear();
 
-        String today = year + month + day;
+        Calendar c = Calendar.getInstance();
+        String year = String.format("%04d", xmasNewYear - (ascent ? 0 : 1));
+        String nextYear = String.format("%04d", xmasNewYear);
+        String month = String.format("%02d", c.get(Calendar.MONTH)+1);
+        String day = String.format("%02d", c.get(Calendar.DAY_OF_MONTH));
+
+        String today = String.format("%04d", c.get(Calendar.YEAR)) + month + day;
         String xmasStart = year + xmasStartDef;
         String xmasEnd = nextYear + xmasEndDef;
 
@@ -61,5 +62,6 @@ public class HolidayCommons {
 
     public static void main(String[] args) {
         System.out.println("isXmas="+isXmasTime());
+        System.out.println("new year="+xmasNewYear());
     }
 }

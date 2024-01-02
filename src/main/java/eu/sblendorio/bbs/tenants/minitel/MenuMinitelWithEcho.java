@@ -16,6 +16,7 @@ import java.util.List;
 import static eu.sblendorio.bbs.core.MinitelControls.*;
 import static eu.sblendorio.bbs.core.Utils.*;
 import static eu.sblendorio.bbs.tenants.mixed.GeolocationCommons.isItaly;
+import static eu.sblendorio.bbs.tenants.mixed.GeolocationCommons.isLocalhost;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
@@ -141,7 +142,9 @@ public class MenuMinitelWithEcho extends MinitelThread {
         write(CURSOR_OFF);
         write(SCROLL_OFF);
 
-        if (HolidayCommons.isAscanioDay() && isItaly(ipAddress.getHostAddress())) {
+        if (
+                HolidayCommons.isAscanioDay() && (isItaly(ipAddress.getHostAddress()) || isLocalhost(ipAddress.getHostAddress()))
+        ) {
             write(readBinaryFile("minitel/ascanio.vdt"));
             write(TEXT_MODE);
         } else if (HolidayCommons.isXmasTime()) {
