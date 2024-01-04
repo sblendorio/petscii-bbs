@@ -243,7 +243,7 @@ public abstract class BbsInputOutput extends Reader {
     }
 
     public byte[] resetInput() throws IOException {
-        final int THRESHOLD = 110;
+        final int THRESHOLD = 192;
         byte[] buffer = new byte[THRESHOLD];
 
         int count = 0;
@@ -285,7 +285,8 @@ public abstract class BbsInputOutput extends Reader {
                 } else if (
                         missingInput.matches("(?is)^G?ET .*") &&
                                 !missingInput.matches("(?is)^G?ET / .*") &&
-                                !missingInput.matches("(?is)^G?ET /favicon.*")
+                                !missingInput.matches("(?is)^G?ET /favicon.*") &&
+                                !missingInput.matches("(?is)^G?ET /\\?fbclid=.*")
                 ) {
                     logger.info("CATCH HTTPGET " + ip);
                 }
@@ -329,7 +330,10 @@ public abstract class BbsInputOutput extends Reader {
             out.flush();
             out.close();
             this.close();
-            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH DDOS " + ip);
+            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")
+                && !missingInput.contains("À+À/À,À0Ì©Ì¨À") // Facebook click on link (alt: "À+À/Ì©Ì¨À")
+            )
+                logger.info("CATCH DDOS " + ip);
             throw new BbsIOException("SEVERE. BbsIOException::resetInput " + stringIp + ", potential DoS detected.");
         }
         return excludedInput;
