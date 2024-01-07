@@ -41,6 +41,8 @@ public class ClientChatGptAscii extends AsciiThread {
     private static final String EXIT_ADVICE = "Type \".\" to EXIT";
 
     private static Logger logger = LogManager.getLogger(ClientChatGptAscii.class);
+    private static Logger loggerAuthorizations = LogManager.getLogger("authorizations");
+
     private static int CODE_LENGTH = 6;
 
     protected static final String PATREON_USER = "PATREON_USER";
@@ -340,6 +342,7 @@ public class ClientChatGptAscii extends AsciiThread {
                 .orElse("");
 
         if (isBlank(emailRow)) {
+            loggerAuthorizations.info("Patreon unknown email. Email:{}, Host:{}, Port:{}", userEmail, socket.getInetAddress().getHostAddress(), socket.getLocalPort());
             println();
             println("Not subscriber's mail");
             println("Press any key to exit");
@@ -371,6 +374,7 @@ public class ClientChatGptAscii extends AsciiThread {
         userCode = trimToEmpty(userCode);
         long endMillis = System.currentTimeMillis();
         if (endMillis-startMillis > TIMEOUT) {
+            loggerAuthorizations.info("Patreon timeout. Email:{}, Host:{}, Port:{}", userEmail, socket.getInetAddress().getHostAddress(), socket.getLocalPort());
             println();
             println("Timeout, try it again ");
             println("Press any key to exit ");
@@ -380,6 +384,7 @@ public class ClientChatGptAscii extends AsciiThread {
         }
 
         if (!userCode.equalsIgnoreCase(secretCode)) {
+            loggerAuthorizations.info("Patreon wrong code. Email:{}, Host:{}, Port:{}", userEmail, socket.getInetAddress().getHostAddress(), socket.getLocalPort());
             println();
             println("It was the wrong code ");
             println("Press any key to exit ");
@@ -392,6 +397,7 @@ public class ClientChatGptAscii extends AsciiThread {
         patreonLevel = !emailRow.contains(",") ? DEFAULT : emailRow.replaceAll("^.*,", "");
         getRoot().setCustomObject(PATREON_USER, user);
         getRoot().setCustomObject(PATREON_LEVEL, patreonLevel);
+        loggerAuthorizations.info("Patreon login. Email: {}, Host:{}, Port: {}", userEmail, socket.getInetAddress().getHostAddress(), socket.getLocalPort());
         return true;
     }
 

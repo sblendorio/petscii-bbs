@@ -41,6 +41,7 @@ import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
 public class ClientChatGptPetscii extends PetsciiThread {
     private static Logger logger = LogManager.getLogger(ClientChatGptPetscii.class);
+    private static Logger loggerAuthorizations = LogManager.getLogger("authorizations");
     private static int CODE_LENGTH = 6;
 
     private static byte[] LOGO_AUTHENTICATE = readBinaryFile("petscii/gpt.seq");
@@ -342,6 +343,7 @@ public class ClientChatGptPetscii extends PetsciiThread {
                 .orElse("");
 
         if (isBlank(emailRow)) {
+            loggerAuthorizations.info("Patreon unknown email. Email:{}, Host:{}, Port:{}", userEmail, socket.getInetAddress().getHostAddress(), socket.getLocalPort());
             println();
             write(PetsciiColors.RED);
             print("         "); write(REVON); println("                       ");
@@ -388,6 +390,7 @@ public class ClientChatGptPetscii extends PetsciiThread {
         userCode = trimToEmpty(userCode);
         long endMillis = System.currentTimeMillis();
         if (endMillis-startMillis > TIMEOUT) {
+            loggerAuthorizations.info("Patreon timeout. Email:{}, Host:{}, Port:{}", userEmail, socket.getInetAddress().getHostAddress(), socket.getLocalPort());
             write(UP, UP, UP, PetsciiColors.RED);
             print("         "); write(REVON); println("                       ");
             print("         "); write(REVON); print(" Timeout, try it again "); write(REVOFF); println("   ");
@@ -399,6 +402,7 @@ public class ClientChatGptPetscii extends PetsciiThread {
         }
 
         if (!userCode.equalsIgnoreCase(secretCode)) {
+            loggerAuthorizations.info("Patreon wrong code. Email:{}, Host:{}, Port:{}", userEmail, socket.getInetAddress().getHostAddress(), socket.getLocalPort());
             write(UP, UP, UP, PetsciiColors.RED);
             print("         "); write(REVON); println("                       ");
             print("         "); write(REVON); print(" It was the wrong code "); write(REVOFF); println("   ");
@@ -413,6 +417,7 @@ public class ClientChatGptPetscii extends PetsciiThread {
         patreonLevel = !emailRow.contains(",") ? DEFAULT : emailRow.replaceAll("^.*,", "");
         getRoot().setCustomObject(PATREON_USER, user);
         getRoot().setCustomObject(PATREON_LEVEL, patreonLevel);
+        loggerAuthorizations.info("Patreon login. Email: {}, Host:{}, Port: {}", userEmail, socket.getInetAddress().getHostAddress(), socket.getLocalPort());
         return true;
     }
 

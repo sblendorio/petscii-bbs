@@ -71,6 +71,20 @@
             <DefaultRolloverStrategy max="30" />
         </RollingFile>
 
+        <RollingFile
+                name="Authorizations"
+                fileName="${sys:user.home}/bbs-logs/bbs-authorizations.log"
+                filePattern="${sys:user.home}/bbs-logs/bbs-authorizations.%d{yyyy-ww}.log.gz"
+                ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS zzz} %p %c{1} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+            <DefaultRolloverStrategy max="30" />
+        </RollingFile>
+
         <Console name="STDOUT" target="SYSTEM_OUT">
             <PatternLayout>
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS zzz} %p %c{1} [%t] %m%n</Pattern>
@@ -95,6 +109,9 @@
         </Logger>
         <Logger name="eu.sblendorio.bbs.core.BbsInputOutput" level="debug" additivity="false">
             <AppenderRef ref="SuspiciousIp"/>
+        </Logger>
+        <Logger name="authorizations" level="debug" additivity="false">
+            <AppenderRef ref="Authorizations"/>
         </Logger>
         <Root level="debug">
             <AppenderRef ref="Global" />
