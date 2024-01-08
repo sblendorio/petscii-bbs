@@ -40,11 +40,12 @@ public class Menu64 extends PetsciiThread {
             write(BlockGraphicsPetscii.getRenderedMidres(28, matrixStr, true, true));
             write(HOME);
             write(readBinaryFile("petscii/ascanio.seq"));
+            flush(); resetInput();
             keyPressed(60_000L);
         }
 
         while (true) {
-            write(CLR, LOWERCASE, CASE_LOCK, HOME);
+            write(CLR, CASE_UNLOCK, LOWERCASE, CASE_LOCK, HOME);
             log("Starting Main Menu BBS");
             String logoFilename;
             if (isXmasTime()) {
