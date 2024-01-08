@@ -41,10 +41,9 @@ public class Menu64 extends PetsciiThread {
             write(WHITE);
             write(BlockGraphicsPetscii.getRenderedMidres(28, matrixStr, true, true));
             write(GREY1);
+            write(HOME);
             keyPressed(60_000L);
         }
-        else
-            isItaly(ipAddress.getHostAddress()); // DELETE
 
         while (true) {
             write(CLR, LOWERCASE, CASE_LOCK, HOME);
