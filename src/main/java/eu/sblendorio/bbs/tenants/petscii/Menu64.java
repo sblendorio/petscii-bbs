@@ -32,16 +32,14 @@ public class Menu64 extends PetsciiThread {
                 isAscanioDay() && (isItaly(ipAddress.getHostAddress()) || isLocalhost(ipAddress.getHostAddress()))
         ) {
             write(CLR, UPPERCASE, CASE_LOCK, HOME);
-            write(readBinaryFile("petscii/ascanio.seq"));
-            write(HOME);
             String[] matrix = BlockGraphicsMinitel.stringToQr("t.ly/yjubs", ErrorCorrectionLevel.M);
             String[] matrixStr = new String[matrix.length+1];
             matrixStr[0] = StringUtils.repeat('.', matrix[0].length());
             for (int i=0; i<matrix.length; i++) matrixStr[i+1] = "." + matrix[i];
             write(WHITE);
             write(BlockGraphicsPetscii.getRenderedMidres(28, matrixStr, true, true));
-            write(GREY1);
             write(HOME);
+            write(readBinaryFile("petscii/ascanio.seq"));
             keyPressed(60_000L);
         }
 
