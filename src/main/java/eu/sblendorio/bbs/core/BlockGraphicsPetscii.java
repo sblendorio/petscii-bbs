@@ -58,7 +58,10 @@ public class BlockGraphicsPetscii {
                     result.add(chr);
                 }
             }
-            if (y < output.length-1 || finalCR) result.add(13);
+            if (y < output.length-1 || finalCR) {
+                result.add(13);
+                result.add(146);
+            }
             reverse = false;
         }
         return result.stream().mapToInt(i -> i).toArray();
