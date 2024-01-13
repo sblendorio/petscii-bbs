@@ -43,22 +43,22 @@ public class MenuM10 extends AsciiThread {
 
     public void displayMenu() throws Exception {
         banner();
-        println("1 - CNN News           Game Room-------");
-        println("2 - BBC News           I - TIC TAC TOE");
-        println("3 - Politico.com       J - Connect Four");
-        println("4 - Al Jazeera         K - Zork I");
-        println("5 - Indie Retro New    L - Zork II");
-        println("6 - VCF News           M - Zork III");
-        println("7 - The 8-Bit Guy      N - Hitchhiker's");
+        println("1-CNN      2-BBC       Game Room-------");
+        println("3-Politico 4-Aljazeera I - TIC TAC TOE");
+        println("5-FoxNews              J - Connect Four");
+        println("6-Indie Retro New      K - Zork I");
+        println("7-VCF News             L - Zork II");
+        println("8-The 8-Bit Guy        M - Zork III");
+        println("");
         println("Italian News---------  X - Planetfall");
-        println("A - Televideo RAI      Services--------");
-        println("B - Lercio             O - Chat");
-        println("C - Disinformatico     P - Private Msg");
-        println("D - Mupin.it           Q - Eliza");
-        println("E - Fatto Quotidiano   R - ChatGPT");
-        println("F - Amedeo Valoroso    S - Patron list");
-        println("G - Butac.it           T - Wifi Modem");
-        println("H - Alessandro Albano  U - Wikipedia");
+        println("A-Televideo RAI        Services--------");
+        println("B-Lercio               O - Chat");
+        println("C-Disinformatico       P - Private Msg");
+        println("D-Mupin.it             Q - Eliza");
+        println("E-Fatto Quotidiano     R - ChatGPT");
+        println("F-Amedeo Valoroso      S - Patron list");
+        println("G-Butac.it             T - Wifi Modem");
+        println("H-Alessandro Albano    U - Wikipedia");
     }
 
     public String readChoice() throws IOException {
@@ -110,9 +110,10 @@ public class MenuM10 extends AsciiThread {
                 );
                 else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii();
                 else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii();
-                else if ("5".equals(choice)) subThread = new IndieRetroNewsAscii();
-                else if ("6".equals(choice)) subThread = new VcfedAscii();
-                else if ("7".equals(choice)) subThread = new The8BitGuyAscii();
+                else if ("5".equals(choice)) subThread = new OneRssFoxNewsAscii();
+                else if ("6".equals(choice)) subThread = new IndieRetroNewsAscii();
+                else if ("7".equals(choice)) subThread = new VcfedAscii();
+                else if ("8".equals(choice)) subThread = new The8BitGuyAscii();
                 else if ("a".equals(choice)) subThread = new TelevideoRaiAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),

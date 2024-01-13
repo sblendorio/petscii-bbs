@@ -41,7 +41,6 @@ public class ZorkMachineMinitel extends MinitelThread {
             write(MinitelControls.BACKGROUND_BLACK);
             cls();
         }
-        println("");
         println("BASED ON ZMPP PROJECT BY *WEI-JU WU*");
         println("");
         println("PORTED BY:");
@@ -51,7 +50,6 @@ public class ZorkMachineMinitel extends MinitelThread {
         println("USE: QUIT to exit");
         println("SAVE to store match");
         println("RESTORE to resume match");
-        println("");
         println("");
 
         flush();
@@ -65,7 +63,7 @@ public class ZorkMachineMinitel extends MinitelThread {
         try {
             final byte[] story = readBinaryFile(filename);
             BBSMachineFactory factory;
-            factory = new BBSMachineFactory(story, this);
+            factory = new BBSMachineFactory(story, this, 8);
             factory.buildMachine();
             VirtualConsole console = factory.getUI();
             console.runTheGame();

@@ -59,7 +59,7 @@ public class ZorkMachine extends PetsciiThread {
 
         try {
             final byte[] story = readBinaryFile(filename);
-            BBSMachineFactory factory = new BBSMachineFactory(story, this);
+            BBSMachineFactory factory = new BBSMachineFactory(story, this, 9);
             factory.buildMachine();
             VirtualConsole console = factory.getUI();
             console.runTheGame();

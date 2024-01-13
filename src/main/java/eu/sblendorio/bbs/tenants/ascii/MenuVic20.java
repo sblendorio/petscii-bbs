@@ -49,11 +49,11 @@ public class MenuVic20 extends AsciiThread {
         println("2-BBC     O-Connect 4");
         println("3-PoliticoP-Zork I");
         println("4-AJPlus  Q-Zork II");
-        println("5-IRNews  R-Zork III");
-        println("6-VCFNews S-Hitchhikr");
-        println("7-8bitGuy 8-Planetfal");
-        println("Italian News  Service");
-        println("------------  -------");
+        println("5-FoxNews R-Zork III");
+        println("6-IRNews  S-Hitchhikr");
+        println("7-VCFNews 8-Planetfal");
+        println("8-8bitGuy     Service");
+        println("Italian News  -------");
         println("F-Televideo   T-Chat");
         println("G-Wired       U-Msgs");
         println("H-Disinfor    U-Eliza");
@@ -136,9 +136,10 @@ public class MenuVic20 extends AsciiThread {
                 );
                 else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii();
                 else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii();
-                else if ("5".equals(choice)) subThread = new IndieRetroNewsAscii();
-                else if ("6".equals(choice)) subThread = new VcfedAscii();
-                else if ("7".equals(choice)) subThread = new The8BitGuyAscii();
+                else if ("5".equals(choice)) subThread = new OneRssFoxNewsAscii();
+                else if ("6".equals(choice)) subThread = new IndieRetroNewsAscii();
+                else if ("7".equals(choice)) subThread = new VcfedAscii();
+                else if ("8".equals(choice)) subThread = new The8BitGuyAscii();
                 else if ("f".equals(choice)) subThread = new TelevideoRaiAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),

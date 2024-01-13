@@ -10,9 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static eu.sblendorio.bbs.core.MinitelControls.*;
 import static eu.sblendorio.bbs.core.Utils.*;
@@ -87,15 +85,16 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 );
                 else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii();
                 else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii();
-                else if ("5".equals(choice)) subThread = new IndieRetroNewsAscii();
-                else if ("6".equals(choice)) subThread = new VcfedAscii();
-                else if ("7".equals(choice)) subThread = new The8BitGuyAscii();
+                else if ("5".equals(choice)) subThread = new OneRssFoxNewsAscii();
+                else if ("6".equals(choice)) subThread = new IndieRetroNewsAscii();
+                else if ("7".equals(choice)) subThread = new VcfedAscii();
+                else if ("8".equals(choice)) subThread = new The8BitGuyAscii();
                 else if ("a".equals(choice)) subThread = new TelevideoRaiAscii(
                         io,
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getTerminalType(),
-                        bytes(readBinaryFile("minitel/menu-televideo.vdt")),
+                        readBinaryFile("minitel/menu-televideo.vdt"),
                         bytes(31, 64+23, 64+1, 32, 32, 32, 32, 32, 32, 31, 64+23, 64+1)
                 );
                 else if ("b".equals(choice)) subThread = new LercioAscii();

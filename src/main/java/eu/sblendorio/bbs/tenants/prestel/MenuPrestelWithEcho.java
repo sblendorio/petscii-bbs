@@ -87,9 +87,10 @@ public class MenuPrestelWithEcho extends PrestelThread {
                 );
                 else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii(io);
                 else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii(io);
-                else if ("5".equals(choice)) subThread = new IndieRetroNewsAscii(io);
-                else if ("6".equals(choice)) subThread = new VcfedAscii(io);
-                else if ("7".equals(choice)) subThread = new The8BitGuyAscii(io);
+                else if ("5".equals(choice)) subThread = new OneRssFoxNewsAscii(io);
+                else if ("6".equals(choice)) subThread = new IndieRetroNewsAscii(io);
+                else if ("7".equals(choice)) subThread = new VcfedAscii(io);
+                else if ("8".equals(choice)) subThread = new The8BitGuyAscii(io);
                 else if ("a".equals(choice)) subThread = new TelevideoRaiAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),

@@ -30,7 +30,7 @@ public class BBSScreenModel implements ScreenModel, OutputStream, StatusLine {
 
     static int BUFFER_LENGTH = 8192;
 
-    private int nlines = 0;
+    int nlines = 0;
 
     private boolean isSelected = false;
 

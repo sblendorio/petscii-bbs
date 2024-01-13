@@ -139,9 +139,10 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 );
                 else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii();
                 else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii();
-                else if ("5".equals(choice)) subThread = new IndieRetroNewsAscii();
-                else if ("6".equals(choice)) subThread = new VcfedAscii();
-                else if ("7".equals(choice)) subThread = new The8BitGuyAscii();
+                else if ("5".equals(choice)) subThread = new OneRssFoxNewsAscii();
+                else if ("6".equals(choice)) subThread = new IndieRetroNewsAscii();
+                else if ("7".equals(choice)) subThread = new VcfedAscii();
+                else if ("8".equals(choice)) subThread = new The8BitGuyAscii();
                 else if ("a".equals(choice)) subThread = new TelevideoRaiAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
@@ -202,10 +203,10 @@ public class MenuTelnetPureAscii extends AsciiThread {
         println("2 - BBC News                               J - Connect Four");
         println("3 - Politico.com                           K - Zork I");
         println("4 - Al Jazeera                             L - Zork II");
-        println("5 - Indie Retro News                       M - Zork III");
-        println("6 - VCF News                               N - Hitchhiker's");
-        println("7 - The 8-Bit Guy                          X - Planetfall");
-        println("                                           --------------Services");
+        println("5 - Fox News                               M - Zork III");
+        println("6 - Indie Retro News                       N - Hitchhiker's");
+        println("7 - VCF News                               X - Planetfall");
+        println("8 - The 8-Bit Guy          .=LOGOUT        --------------Services");
         println("Italian News-----------------------------  O - Chat");
         println("A - Televideo RAI                          P - Private Msg");
         println("B - Lercio                                 Q - Eliza");

@@ -49,12 +49,18 @@ public class BBSMachineFactory extends MachineFactory<VirtualConsole> {
   ScreenModel screenModel;
   SaveGameDataStore saveGameDataStore;
   BbsThread bbsThread;
+  int initialScrollLine = 0;
 
   private byte[] byteArrayStory;
 
-  public BBSMachineFactory(byte[] byteArrayStory, BbsThread bbsThread) {
+  public BBSMachineFactory(byte[] byteArrayStory, BbsThread bbsThread, int initialScrollLine) {
     this.byteArrayStory = byteArrayStory;
     this.bbsThread = bbsThread;
+    this.initialScrollLine = initialScrollLine;
+  }
+
+  public BBSMachineFactory(byte[] byteArrayStory, BbsThread bbsThread) {
+    this(byteArrayStory, bbsThread, 0);
   }
 
   protected byte[] readStoryData() throws IOException {
@@ -72,6 +78,7 @@ public class BBSMachineFactory extends MachineFactory<VirtualConsole> {
     ioSystem = (IOSystem) bbsConsole;
     inputStream = new BBSInputStream(machine, bbsThread);
     screenModel = bbsConsole.getScreenModel();
+    if (screenModel instanceof BBSScreenModel) ((BBSScreenModel) screenModel).nlines = initialScrollLine;
     statusLine = (StatusLine) bbsConsole.getScreenModel();
     return bbsConsole;
   }
