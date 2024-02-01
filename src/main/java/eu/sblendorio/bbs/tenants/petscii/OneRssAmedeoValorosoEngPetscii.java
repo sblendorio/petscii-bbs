@@ -12,7 +12,7 @@ public class OneRssAmedeoValorosoEngPetscii extends OneRssPetscii {
     @Override
     protected void readSections() throws Exception {
         sections = new LinkedHashMap<>();
-        sections.put("1", new NewsSection("", "https://www.valoroso.it/en/feed/"));
+        sections.put("1", new NewsSection("", "https://www.valoroso.it/en/feed/?t="+System.currentTimeMillis()));
         newlineAfterDate = false;
         LOGO_SECTION = readBinaryFile("petscii/valoroso.seq");
     }

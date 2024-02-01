@@ -24,7 +24,7 @@ public class OneRssAmedeoValorosoEngAscii extends OneRssAscii {
 
     protected void readSections() throws Exception {
         sections = new LinkedHashMap<>();
-        sections.put("1", new OneRssAscii.NewsSection("", "https://www.valoroso.it/en/feed/"));
+        sections.put("1", new OneRssAscii.NewsSection("", "https://www.valoroso.it/en/feed/?t="+System.currentTimeMillis()));
         newlineAfterDate = false;
 
         this.LOGO_MENU = "Amedeo Valoroso - ENG".getBytes(StandardCharsets.ISO_8859_1);
