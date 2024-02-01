@@ -191,7 +191,7 @@ public class OneRssPetscii extends PetsciiThread {
             feed = input.build(new XmlReader(url));
         } catch (ParsingFeedException e) {
             String xmlString = httpGet(urlString);
-            xmlString = xmlString.replaceAll("(?is)<!--.*-->", "");
+            xmlString = xmlString.replaceAll("(?is)<!--.*?-->", "");
             feed = input.build(new StringReader(xmlString));
         }
         List<NewsFeed> result = new ArrayList<>();

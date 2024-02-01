@@ -21,10 +21,14 @@ public class OneRssAmedeoValorosoEngPetscii extends OneRssPetscii {
     public String getArticleBody(SyndEntry e) {
         if (e == null || e.getContents() == null)
             return "";
-        return e.getContents().stream()
+        String result = e.getContents().stream()
                 .map(SyndContent::getValue)
                 .map(StringUtils::defaultString)
-                .collect(Collectors.joining("<br>"));
+                .collect(Collectors.joining("<br>"))
+                .replaceAll("&#60;.*&#62;", "")
+                ;
+        System.out.println(result);
+        return result;
     }
 
 }
