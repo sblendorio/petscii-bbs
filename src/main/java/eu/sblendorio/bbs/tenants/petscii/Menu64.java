@@ -219,6 +219,7 @@ public class Menu64 extends PetsciiThread {
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '0', REVOFF, 161); println("Vintage is the new old");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'a', REVOFF, 161); println("2600 News");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'b', REVOFF, 161); println("Hackaday Blog");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'c', REVOFF, 161); println("Amedeo Valoroso - English");
             newline();
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '.', REVOFF, 161);
             print("Exit ");
@@ -250,6 +251,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == '0') launch(new Vitno());
                 else if (key == 'a') launch(new OneRss2600Petscii());
                 else if (key == 'b') launch(new HackadayPetscii());
+                else if (key == 'c') launch(new OneRssAmedeoValorosoEngPetscii());
                 else {
                     validKey = false;
                 }

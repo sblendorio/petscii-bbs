@@ -59,7 +59,7 @@ public class MenuVic20 extends AsciiThread {
         println("H-Disinfor    U-Eliza");
         println("I-IlPost      W-ChGPT");
         println("J-F.Quot      X-Patre");
-        println("K-A. Valoroso Y-Modem");
+        println("K/Z-Valoroso  Y-Modem");
         println("L-Butac       Z-WikiP");
         println("M-A.Albano    .-Exit");
     }
@@ -152,6 +152,7 @@ public class MenuVic20 extends AsciiThread {
                 else if ("i".equals(choice)) subThread = new MupinAscii();
                 else if ("j".equals(choice)) subThread = new IlFattoQuotidianoAscii();
                 else if ("k".equals(choice)) subThread = new AmedeoValorosoAscii();
+                else if ("z".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii();
                 else if ("l".equals(choice)) subThread = new ButacAscii();
                 else if ("m".equals(choice)) subThread = new AlessandroAlbanoAscii();
                 else if ("n".equals(choice)) subThread = new TicTacToeAscii();

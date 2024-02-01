@@ -155,6 +155,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 else if ("d".equals(choice)) subThread = new MupinAscii();
                 else if ("e".equals(choice)) subThread = new IlFattoQuotidianoAscii();
                 else if ("f".equals(choice)) subThread = new AmedeoValorosoAscii();
+                else if ("z".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii();
                 else if ("g".equals(choice)) subThread = new ButacAscii();
                 else if ("h".equals(choice)) subThread = new AlessandroAlbanoAscii();
                 else if ("i".equals(choice)) subThread = new TicTacToeAscii();
@@ -213,7 +214,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
         println("C - Disinformatico                         R - Chat GPT");
         println("D - Mupin.it                               S - Patrons list");
         println("E - Fatto Quotidiano                       T - Patrons Publishers");
-        println("F - Amedeo Valoroso                        U - Wifi Modem");
+        println("F - Amedeo Valoroso (Z - English version)  U - Wifi Modem");
         println("G - Butac.it                               V - Apple-1 Demo");
         println("H - Alessandro Albano                      W - Wikipedia");
         println();

@@ -56,7 +56,7 @@ public class MenuM10 extends AsciiThread {
         println("C-Disinformatico       P - Private Msg");
         println("D-Mupin.it             Q - Eliza");
         println("E-Fatto Quotidiano     R - ChatGPT");
-        println("F-Amedeo Valoroso      S - Patron list");
+        println("F-A.Valoroso (Z=ENG)   S - Patron list");
         println("G-Butac.it             T - Wifi Modem");
         println("H-Alessandro Albano    U - Wikipedia");
     }
@@ -126,6 +126,7 @@ public class MenuM10 extends AsciiThread {
                 else if ("d".equals(choice)) subThread = new MupinAscii();
                 else if ("e".equals(choice)) subThread = new IlFattoQuotidianoAscii();
                 else if ("f".equals(choice)) subThread = new AmedeoValorosoAscii();
+                else if ("z".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii();
                 else if ("g".equals(choice)) subThread = new ButacAscii();
                 else if ("h".equals(choice)) subThread = new AlessandroAlbanoAscii();
                 else if ("i".equals(choice)) subThread = new TicTacToeAscii();

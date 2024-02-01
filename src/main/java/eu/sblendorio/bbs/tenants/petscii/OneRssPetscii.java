@@ -2,6 +2,7 @@ package eu.sblendorio.bbs.tenants.petscii;
 
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.io.ParsingFeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import eu.sblendorio.bbs.core.BbsThread;
@@ -11,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.WordUtils;
 
+import java.io.StringReader;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -184,7 +186,14 @@ public class OneRssPetscii extends PetsciiThread {
     public List<NewsFeed> getFeeds(String urlString) throws Exception {
         URL url = new URL(urlString);
         SyndFeedInput input = new SyndFeedInput();
-        SyndFeed feed = input.build(new XmlReader(url));
+        SyndFeed feed;
+        try {
+            feed = input.build(new XmlReader(url));
+        } catch (ParsingFeedException e) {
+            String xmlString = httpGet(urlString);
+            xmlString = xmlString.replaceAll("(?is)<!--.*-->", "");
+            feed = input.build(new StringReader(xmlString));
+        }
         List<NewsFeed> result = new ArrayList<>();
         List<SyndEntry> entries = feed.getEntries();
         for (SyndEntry e : entries)

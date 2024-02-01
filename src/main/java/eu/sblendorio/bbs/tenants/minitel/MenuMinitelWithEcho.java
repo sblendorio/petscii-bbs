@@ -102,6 +102,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("d".equals(choice)) subThread = new MupinAscii();
                 else if ("e".equals(choice)) subThread = new IlFattoQuotidianoAscii();
                 else if ("f".equals(choice)) subThread = new AmedeoValorosoAscii();
+                else if ("z".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii();
                 else if ("g".equals(choice)) subThread = new ButacAscii();
                 else if ("h".equals(choice)) subThread = new AlessandroAlbanoAscii();
                 else if ("i".equals(choice)) subThread = new TicTacToeAscii();
@@ -121,7 +122,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("v".equals(choice)) { textDemo(); subThread = null; }
                 else if ("w".equals(choice)) subThread = new WikipediaMinitel();
                 else if ("x".equals(choice)) { videotelVault(); subThread = null; }
-                else if ("z".equals(choice)) subThread = new TestClientVideotex();
+                else if ("*".equals(choice)) subThread = new TestClientVideotex();
                 else {
                     validKey = false;
                     subThread = null;
