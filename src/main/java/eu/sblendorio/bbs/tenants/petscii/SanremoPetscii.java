@@ -10,5 +10,5 @@ public class SanremoPetscii extends GoogleBloggerProxy {
         this.screenLines = 19;
     }
 
-    private static final byte[] LOGO_BYTES = readBinaryFile("petscii/sanremo.seq");
+    private static final byte[] LOGO_BYTES = readBinaryFile("petscii/sanremo-red.seq");
 }
