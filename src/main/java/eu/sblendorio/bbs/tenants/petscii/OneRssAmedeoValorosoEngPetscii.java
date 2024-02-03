@@ -27,7 +27,6 @@ public class OneRssAmedeoValorosoEngPetscii extends OneRssPetscii {
                 .collect(Collectors.joining("<br>"))
                 .replaceAll("&#60;.*&#62;", "")
                 ;
-        System.out.println(result);
         return result;
     }
 
