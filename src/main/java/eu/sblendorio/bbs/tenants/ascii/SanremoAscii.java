@@ -2,10 +2,10 @@ package eu.sblendorio.bbs.tenants.ascii;
 
 import eu.sblendorio.bbs.core.BbsInputOutput;
 import eu.sblendorio.bbs.core.Hidden;
+import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 
 import java.nio.charset.StandardCharsets;
 
-@Hidden
 public class SanremoAscii extends GoogleBloggerProxyAscii {
 
     private BbsInputOutput inputOutput;
@@ -14,10 +14,10 @@ public class SanremoAscii extends GoogleBloggerProxyAscii {
         super();
         this.logo = LOGO_BYTES;
         this.blogUrl = "https://sanremo-commenti.blogspot.com";
-        this.pageSize = 7;
+        this.pageSize = 8;
     }
 
-    private static final byte[] LOGO_BYTES = "Sanremo 2024".getBytes(StandardCharsets.ISO_8859_1);
+    private static final byte[] LOGO_BYTES = ("Sanremo "+ HolidayCommons.currentYear() +" on BBS").getBytes(StandardCharsets.ISO_8859_1);
 
     public SanremoAscii(BbsInputOutput x) {
         this();

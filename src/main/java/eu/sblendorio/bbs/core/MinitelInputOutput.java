@@ -69,6 +69,7 @@ public class MinitelInputOutput extends BbsInputOutput {
     @Override
     public void print(String msg) {
         if (msg == null) return;
+        msg = msg.replace("\r\n", "\n");
         for (char c: msg.toCharArray()) {
             try {
                 if (isDiacritic(c)) {
@@ -77,6 +78,8 @@ public class MinitelInputOutput extends BbsInputOutput {
                 //     out.write(Character.toString(c).getBytes(StandardCharsets.UTF_8));
                 } else if (c >= 32 && c <= 127) {
                     out.write(c);
+                } else if (c == 10) {
+                    newline();
                 } else {
                     out.write('*');
                 }

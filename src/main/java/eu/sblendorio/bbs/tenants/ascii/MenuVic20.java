@@ -2,6 +2,7 @@ package eu.sblendorio.bbs.tenants.ascii;
 
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static eu.sblendorio.bbs.core.Utils.*;
+import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isSanremo;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
@@ -31,8 +33,11 @@ public class MenuVic20 extends AsciiThread {
     }
 
     protected void banner() {
-        println("RetrocampusBBS - Vic20");
-        newline();
+        println(isSanremo()
+                ? "RetrocampusBBS - Vic20"
+                : "Sanremo 2024 - press 9"
+        );
+        //newline();
     }
 
     public void logo() throws Exception {}
@@ -51,7 +56,7 @@ public class MenuVic20 extends AsciiThread {
         println("4-AJPlus  Q-Zork II");
         println("5-FoxNews R-Zork III");
         println("6-IRNews  S-Hitchhikr");
-        println("7-VCFNews 8-Planetfal");
+        println("7-VCFNews A-Planetfal");
         println("8-8bitGuy     Service");
         println("Italian News  -------");
         println("F-Televideo   T-Chat");
@@ -60,7 +65,7 @@ public class MenuVic20 extends AsciiThread {
         println("I-IlPost      W-ChGPT");
         println("J-F.Quot      X-Patre");
         println("K/Z-Valoroso  Y-Modem");
-        println("L-Butac       Z-WikiP");
+        println("L-Butac       B-WikiP");
         println("M-A.Albano    .-Exit");
     }
 
@@ -161,14 +166,15 @@ public class MenuVic20 extends AsciiThread {
                 else if ("q".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
                 else if ("r".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
                 else if ("s".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
-                else if ("8".equals(choice)) subThread = new ZorkMachineAscii("zmpp/planetfall-r39.z3");
+                else if ("a".equals(choice)) subThread = new ZorkMachineAscii("zmpp/planetfall-r39.z3");
                 else if ("t".equals(choice)) subThread = new ChatA1(getTerminalType());
                 else if ("u".equals(choice)) subThread = new PrivateMessagesAscii();
                 else if ("v".equals(choice)) subThread = new ElizaAscii();
                 else if ("w".equals(choice)) subThread = new ClientChatGptAscii();
                 else if ("x".equals(choice)) { showPatrons(); subThread = null; }
                 else if ("y".equals(choice)) { wifiModem(); subThread = null; }
-                else if ("z".equals(choice)) subThread = new WikipediaAscii();
+                else if ("b".equals(choice)) subThread = new WikipediaAscii();
+                else if ("9".equals(choice)) subThread = new SanremoAscii();
                 else {
                     validKey = false;
                     subThread = null;

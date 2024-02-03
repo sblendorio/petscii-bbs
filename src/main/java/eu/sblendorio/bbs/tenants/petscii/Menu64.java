@@ -17,8 +17,7 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.*;
 import static eu.sblendorio.bbs.core.Utils.readExternalTxt;
 import static eu.sblendorio.bbs.tenants.mixed.GeolocationCommons.isItaly;
 import static eu.sblendorio.bbs.tenants.mixed.GeolocationCommons.isLocalhost;
-import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isAscanioDay;
-import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isXmasTime;
+import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.*;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.repeat;
@@ -50,6 +49,8 @@ public class Menu64 extends PetsciiThread {
             String logoFilename;
             if (isXmasTime()) {
                 logoFilename = "petscii/bbs-menu-main-christmas.seq";
+            } else if (isSanremo()) {
+                logoFilename = "petscii/bbs-menu-main-sanremo.seq";
             } else {
                 logoFilename = "petscii/bbs-menu-main.seq";
             }
@@ -99,6 +100,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == 'c') patronsPublishers();
                 else if (key == 'y') wifiModem();
                 else if (key == 'w') launch(new WikipediaPetscii());
+                else if (isSanremo() && key == 's') launch(new SanremoPetscii());
                 else {
                     validKey = false;
                 }

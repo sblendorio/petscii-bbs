@@ -3,11 +3,12 @@ package eu.sblendorio.bbs.tenants.mixed;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.lang.Integer.valueOf;
 import static java.lang.System.getProperty;
@@ -28,6 +29,11 @@ public class HolidayCommons {
                 defaultString(getenv("XMAS_START"), getProperty("XMAS_START", XMAS_START_DEFAULT))
                         .substring(0, 2),
                 Calendar.getInstance());
+    }
+
+    public static int currentYear() {
+        Calendar c = Calendar.getInstance();
+        return c.get(YEAR);
     }
 
     public static int xmasNewYear(String xmasStart, Calendar today) {
@@ -77,4 +83,10 @@ public class HolidayCommons {
         System.out.println("isXmas="+isXmasTime());
         System.out.println("new year="+xmasNewYear());
     }
+
+    public static boolean isSanremo() {
+        return new File(getProperty("user.home") + File.separator + "sanremo.txt").exists();
+    }
+
+
 }

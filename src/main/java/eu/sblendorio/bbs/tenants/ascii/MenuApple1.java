@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import static eu.sblendorio.bbs.core.Utils.*;
+import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isSanremo;
 import static java.lang.String.valueOf;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
@@ -136,6 +137,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("u".equals(choice)) { wifiModem(); subThread = null; }
                 else if ("v".equals(choice)) { textDemo(); subThread = null; }
                 else if ("w".equals(choice)) subThread = new WikipediaAscii();
+                else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii();
                 else {
                     validKey = false;
                     subThread = null;
@@ -164,7 +166,9 @@ public class MenuApple1 extends AsciiThread {
         println("7 - VCF News           X - Planetfall");
         println("8 - 8Bit Guy   .=EXIT  --------Services");
         println("Italian News---------  O - Chat");
-        println("A - Televideo RAI      P - Private Msg");
+        println(isSanremo()
+              ? "A - Televideo 9-Sanremo P - Private Msg"
+              : "A - Televideo          P - Private Msg");
         println("B - Lercio             Q - Eliza");
         println("C - Disinformatico     R - Chat GPT");
         println("D - Mupin.it           S - Patrons list");

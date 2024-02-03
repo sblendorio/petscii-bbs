@@ -28,6 +28,7 @@ public class StdChoice extends AsciiThread {
         println("2- APPLE-1/II   NOECHO   40X24 (6502)");
         println("3- APPLE-1/II   W/ECHO   40X24 (6503)");
         println("4- PURE ASCII   W/ECHO   80X24 (8000)");
+        println("T- PURE ASCII   W/ECHO   72X24");
         println("5- PURE ASCII   NOECHO   80X24 (8001)");
         println("6- DOS CP 437   W/ECHO   80X24 (8088)");
         println("7- DOS CP 437   NOECHO   80X24 (8089)");
@@ -53,6 +54,7 @@ public class StdChoice extends AsciiThread {
         else if (ch == '2') launch(new MenuApple1(false));
         else if (ch == '3') launch(new MenuApple1WithEcho());
         else if (ch == '4') launch(new MenuTelnetPureAscii());
+        else if (ch == 't') launch(new MenuTelnetPure72ColsAscii());
         else if (ch == '5') launch(new MenuTelnetPureAsciiNoEcho());
         else if (ch == '6') launch(new MenuTelnetAnsi());
         else if (ch == '7') launch(new MenuTelnetAnsiNoEcho());

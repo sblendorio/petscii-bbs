@@ -16,6 +16,7 @@ import static eu.sblendorio.bbs.core.MinitelControls.*;
 import static eu.sblendorio.bbs.core.Utils.*;
 import static eu.sblendorio.bbs.tenants.mixed.GeolocationCommons.isItaly;
 import static eu.sblendorio.bbs.tenants.mixed.GeolocationCommons.isLocalhost;
+import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isSanremo;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
@@ -122,6 +123,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("v".equals(choice)) { textDemo(); subThread = null; }
                 else if ("w".equals(choice)) subThread = new WikipediaMinitel();
                 else if ("x".equals(choice)) { videotelVault(); subThread = null; }
+                else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii(io);
                 else if ("*".equals(choice)) subThread = new TestClientVideotex();
                 else {
                     validKey = false;
@@ -185,7 +187,11 @@ public class MenuMinitelWithEcho extends MinitelThread {
 
     public void displayMenu() throws Exception {
         write(SCROLL_OFF);
-        write(readBinaryFile("minitel/menu-retrocampus.vdt"));
+        if (isSanremo()) {
+            write(readBinaryFile("minitel/menu-retrocampus-sanremo.vdt"));
+        } else {
+            write(readBinaryFile("minitel/menu-retrocampus.vdt"));
+        }
         write(SCROLL_ON);
         flush(); resetInput();
     }

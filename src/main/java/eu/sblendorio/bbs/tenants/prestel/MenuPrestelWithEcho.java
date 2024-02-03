@@ -5,6 +5,7 @@ import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.PrestelThread;
 import eu.sblendorio.bbs.core.Utils;
 import eu.sblendorio.bbs.tenants.ascii.*;
+import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -13,6 +14,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static eu.sblendorio.bbs.core.Utils.*;
+import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isSanremo;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
@@ -122,6 +124,7 @@ public class MenuPrestelWithEcho extends PrestelThread {
                 // else if ("u".equals(choice)) { wifiModem(); subThread = null; }
                 else if ("w".equals(choice)) subThread = new WikipediaAscii(io);
                 else if ("x".equals(choice)) { textDemo(); subThread = null; }
+                else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii(io);
                 else {
                     validKey = false;
                     subThread = null;
@@ -155,7 +158,11 @@ public class MenuPrestelWithEcho extends PrestelThread {
 
     public void displayMenu() throws Exception {
         cls();
-        write(readBinaryFile("prestel/menu-retrocampus.cept3"));
+        if (isSanremo()) {
+            write(readBinaryFile("prestel/menu-retrocampus-sanremo.cept3"));
+        } else {
+            write(readBinaryFile("prestel/menu-retrocampus.cept3"));
+        }
         flush(); resetInput();
     }
 

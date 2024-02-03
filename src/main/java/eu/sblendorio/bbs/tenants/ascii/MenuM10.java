@@ -2,6 +2,7 @@ package eu.sblendorio.bbs.tenants.ascii;
 
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -10,6 +11,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import static eu.sblendorio.bbs.core.Utils.*;
+import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isSanremo;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
@@ -51,7 +53,9 @@ public class MenuM10 extends AsciiThread {
         println("8-The 8-Bit Guy        M - Zork III");
         println("");
         println("Italian News---------  X - Planetfall");
-        println("A-Televideo RAI        Services--------");
+        println(isSanremo()
+              ? "A-Televideo 9=Sanremo24 Services-------"
+              : "A-Televideo RAI        Services--------");
         println("B-Lercio               O - Chat");
         println("C-Disinformatico       P - Private Msg");
         println("D-Mupin.it             Q - Eliza");
@@ -143,6 +147,7 @@ public class MenuM10 extends AsciiThread {
                 else if ("s".equals(choice)) { showPatrons(); subThread = null; }
                 else if ("t".equals(choice)) { wifiModem(); subThread = null; }
                 else if ("u".equals(choice)) subThread = new WikipediaAscii();
+                else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii();
                 else {
                     validKey = false;
                     subThread = null;
