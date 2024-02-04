@@ -298,6 +298,7 @@ public abstract class BbsThread extends Thread {
     }
 
     public boolean launch(BbsThread bbs) throws Exception {
+        logger.debug("Launching {}", bbs == null ? "NULL" : bbs.getClass().getSimpleName());
         BbsThread root = getRoot();
         try {
             bbs.serverAddress = root.serverAddress;

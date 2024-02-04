@@ -6,7 +6,7 @@ public class SanremoPetscii extends GoogleBloggerProxy {
         super();
         this.logo = LOGO_BYTES;
         this.blogUrl = "https://sanremo-commenti.blogspot.com/";
-        this.pageSize = 8;
+        this.pageSize = 6;
         this.screenLines = 19;
     }
 

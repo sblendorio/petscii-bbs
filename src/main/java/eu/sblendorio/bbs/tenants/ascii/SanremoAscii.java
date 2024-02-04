@@ -14,7 +14,7 @@ public class SanremoAscii extends GoogleBloggerProxyAscii {
         super();
         this.logo = LOGO_BYTES;
         this.blogUrl = "https://sanremo-commenti.blogspot.com";
-        this.pageSize = 8;
+        this.pageSize = 6;
     }
 
     private static final byte[] LOGO_BYTES = ("Sanremo "+ HolidayCommons.currentYear() +" on BBS").getBytes(StandardCharsets.ISO_8859_1);
