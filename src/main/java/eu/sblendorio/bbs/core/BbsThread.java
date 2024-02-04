@@ -298,7 +298,7 @@ public abstract class BbsThread extends Thread {
     }
 
     public boolean launch(BbsThread bbs) throws Exception {
-        logger.debug("Launching {}", bbs == null ? "NULL" : bbs.getClass().getSimpleName());
+        logger.debug("Launching: {}", bbs == null ? "NULL" : bbs.getClass().getSimpleName());
         BbsThread root = getRoot();
         try {
             bbs.serverAddress = root.serverAddress;
@@ -360,6 +360,7 @@ public abstract class BbsThread extends Thread {
             logger.error("Launch interrupted", e);
             return false;
         } finally {
+            logger.debug("Finishing: {}", bbs == null ? "NULL" : bbs.getClass().getSimpleName());
             BbsStatus bbsStatus = root.bbsStack.pop();
             root.keepAlive = bbsStatus.keepAlive;
             root.keepAliveTimeout = bbsStatus.keepAliveTimeout;
