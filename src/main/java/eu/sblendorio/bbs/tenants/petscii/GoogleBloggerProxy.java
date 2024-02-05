@@ -67,6 +67,10 @@ public class GoogleBloggerProxy extends PetsciiThread {
     protected Blogger blogger;
     protected String blogId;
 
+    public String disclaimer() {
+        return null;
+    }
+
     protected Map<Integer, Post> posts = null;
 
     protected static class PageTokens {
@@ -295,7 +299,10 @@ public class GoogleBloggerProxy extends PetsciiThread {
                 .replaceAll("(?is)<style>.*?</style>", EMPTY)
                 .replaceAll("(?is)<script[ |>].*?</script>", EMPTY)
                 .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(/?<(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
-                .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r)*)+", EMPTY);
+                .replaceAll("(?is)^(\\s|\n|\r|\u00a0|&nbsp;)*", EMPTY)
+                .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r|\u00a0|&nbsp;)*)+", EMPTY)
+                + (disclaimer()==null?"":"<br><br>"+disclaimer());
+        System.out.println(content);
         final String head = p.getTitle() +
                 "<br>" +
                 HR_TOP +

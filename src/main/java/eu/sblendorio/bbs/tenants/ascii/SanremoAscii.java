@@ -17,6 +17,11 @@ public class SanremoAscii extends GoogleBloggerProxyAscii {
         this.pageSize = 6;
     }
 
+    @Override
+    public String disclaimer() {
+        return "Retrocampus BBS Sanremo non è una testata giornalistica ma un progetto a termine che pubblica abstract di notizie senza alcuna cadenza continuativa nè lucro citando sempre la fonte";
+    }
+
     private static final byte[] LOGO_BYTES = ("Sanremo "+ HolidayCommons.currentYear() +" on BBS").getBytes(StandardCharsets.ISO_8859_1);
 
     public SanremoAscii(BbsInputOutput x) {
