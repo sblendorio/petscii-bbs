@@ -279,7 +279,7 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
                 .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(/?<(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
                 .replaceAll("(?is)^(\\s|\n|\r|\u00a0|&nbsp;)*", EMPTY)
                 .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r|\u00a0|&nbsp;)*)+", EMPTY)
-            + (disclaimer()==null?"":"<br><br>"+disclaimer());
+                + (disclaimer()==null?"":"<br><br>"+disclaimer());
         final String head = p.getTitle() +
             "<br>" +
             HR_TOP +

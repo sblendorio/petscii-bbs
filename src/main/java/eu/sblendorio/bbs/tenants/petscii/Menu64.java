@@ -123,7 +123,7 @@ public class Menu64 extends PetsciiThread {
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '5', REVOFF, 161); print("Il Fatto quot. "); write(REVON, 161, 'p', REVOFF, 161); println("Retrocommodore");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '6', REVOFF, 161); print("TI Watch Museum"); write(REVON, 161, 'q', REVOFF, 161); println("Valoroso.IT");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '7', REVOFF, 161); print("Lercio         "); write(REVON, 161, 'r', REVOFF, 161); println("Mupin");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '8', REVOFF, 161); print("CICAP Lombardia"); write(REVON, 161, 's', REVOFF, 161); println("Query Online");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '8', REVOFF, 161); print("Bitold.eu      "); write(REVON, 161, 's', REVOFF, 161); println("Query Online");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '9', REVOFF, 161); print("Medbunker      "); write(REVON, 161, 't', REVOFF, 161); println("Formiche.net");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '0', REVOFF, 161); print("FNOMCeO        "); write(REVON, 161, 'u', REVOFF, 161); println("Infosec News");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'a', REVOFF, 161); print("Medical Facts  "); write(REVON, 161, 'v', REVOFF, 161); println("Giano News");
@@ -158,7 +158,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == '5') launch(new IlFattoQuotidiano());
                 else if (key == '6') launch(new OneTexasInstrumentsItaliaPetscii());
                 else if (key == '7') launch(new Lercio());
-                else if (key == '8') launch(new CicapLombardia());
+                else if (key == '8') launch(new BitoldPetscii());
                 else if (key == '9') launch(new Medbunker());
                 else if (key == '0') launch(new DottoreMaEVeroChe());
                 else if (key == 'a') launch(new MedicalFacts());

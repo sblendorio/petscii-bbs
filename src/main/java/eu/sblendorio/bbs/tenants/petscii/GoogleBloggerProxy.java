@@ -302,7 +302,6 @@ public class GoogleBloggerProxy extends PetsciiThread {
                 .replaceAll("(?is)^(\\s|\n|\r|\u00a0|&nbsp;)*", EMPTY)
                 .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r|\u00a0|&nbsp;)*)+", EMPTY)
                 + (disclaimer()==null?"":"<br><br>"+disclaimer());
-        System.out.println(content);
         final String head = p.getTitle() +
                 "<br>" +
                 HR_TOP +
