@@ -133,10 +133,12 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
                 bbsThread.println();
                 bbsThread.checkBelowLine();
                 checkForScreenPaging();
+            } else {
+                nlines = 0;
             }
         });
         bbsThread.flush();
-        nlines = 0;
+
     }
 
     @Override
