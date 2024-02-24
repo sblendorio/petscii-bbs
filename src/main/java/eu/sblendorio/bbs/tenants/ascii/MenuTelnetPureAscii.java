@@ -161,7 +161,8 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 else if ("h".equals(choice)) subThread = new AlessandroAlbanoAscii();
                 else if ("i".equals(choice)) subThread = new TicTacToeAscii();
                 else if ("j".equals(choice)) subThread = new Connect4Ascii();
-                else if ("k".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork1-ita.z5");
+                else if ("k".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
+                else if ("y".equals(choice)) subThread = new ZorkMachineAscii("zmpp/Zork-1-ITA-v7.z5");
                 else if ("l".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
                 else if ("m".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
                 else if ("n".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
@@ -205,23 +206,23 @@ public class MenuTelnetPureAscii extends AsciiThread {
         println("1 - CNN News                               I - TIC TAC TOE");
         println("2 - BBC News                               J - Connect Four");
         println("3 - Politico.com                           K - Zork I");
-        println("4 - Al Jazeera                             L - Zork II");
-        println("5 - Fox News                               M - Zork III");
-        println("6 - Indie Retro News                       N - Hitchhiker's");
-        println("7 - VCF News                               X - Planetfall");
-        println("8 - The 8-Bit Guy          .=LOGOUT        --------------Services");
-        println("Italian News-----------------------------  O - Chat");
+        println("4 - Al Jazeera                             Y - Zork I (ITA)");
+        println("5 - Fox News                               L - Zork II");
+        println("6 - Indie Retro News                       M - Zork III");
+        println("7 - VCF News                               N - Hitchhiker's");
+        println("8 - The 8-Bit Guy          .=LOGOUT        X - Planetfall");
+        println("Italian News-----------------------------  --------------Services");
         println(isSanremo()
-              ? "A - Televideo    9 - Speciale Sanremo 24   P - Private Msg"
-              : "A - Televideo                              P - Private Msg");
-        println("B - Lercio                                 Q - Eliza");
-        println("C - Disinformatico                         R - Chat GPT");
-        println("D - Mupin.it                               S - Patrons list");
-        println("E - Fatto Quotidiano                       T - Patrons Publishers");
-        println("F - Amedeo Valoroso (Z - English version)  U - Wifi Modem");
-        println("G - Butac.it                               V - Apple-1 Demo");
-        println("H - Alessandro Albano                      W - Wikipedia");
-        println();
+              ? "A - Televideo    9 - Speciale Sanremo 24   O - Chat"
+              : "A - Televideo                              O - Chat");
+        println("B - Lercio                                 P - Private Msg");
+        println("C - Disinformatico                         Q - Eliza");
+        println("D - Mupin.it                               R - Chat GPT");
+        println("E - Fatto Quotidiano                       S - Patrons list");
+        println("F - Amedeo Valoroso (Z - English version)  T - Patrons Publishers");
+        println("G - Butac.it                               U - Wifi Modem");
+        println("H - Alessandro Albano                      V - Apple-1 Demo");
+        println("                                           W - Wikipedia");
     }
 
     public String readChoice() throws IOException {

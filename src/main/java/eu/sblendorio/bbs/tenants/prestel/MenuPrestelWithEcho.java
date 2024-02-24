@@ -111,6 +111,7 @@ public class MenuPrestelWithEcho extends PrestelThread {
                 else if ("i".equals(choice)) subThread = new TicTacToeAscii(io);
                 else if ("j".equals(choice)) subThread = new Connect4Ascii();
                 else if ("k".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/zork1.z3");
+                else if ("9".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/Zork-1-ITA-v7.z5");
                 else if ("l".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/zork2.z3");
                 else if ("m".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/zork3.z3");
                 else if ("n".equals(choice)) subThread = new ZorkMachinePrestel("zmpp/hitchhiker-r60.z3");
