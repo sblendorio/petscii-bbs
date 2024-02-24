@@ -1,113 +1,96 @@
 /*
- * $Id: DefaultDictionary.java,v 1.12 2006/04/12 02:04:30 weiju Exp $
- * 
  * Created on 10/14/2005
- * Copyright 2005-2006 by Wei-ju Wu
+ * Copyright (c) 2005-2010, Wei-ju Wu.
+ * All rights reserved.
  *
- * This file is part of The Z-machine Preservation Project (ZMPP).
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * ZMPP is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * ZMPP is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with ZMPP; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * Neither the name of Wei-ju Wu nor the names of its contributors may
+ * be used to endorse or promote products derived from this software without
+ * specific prior written permission.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.zmpp.vm;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.zmpp.base.MemoryReadAccess;
+import org.zmpp.base.Memory;
+import org.zmpp.encoding.DictionarySizes;
 import org.zmpp.encoding.ZCharDecoder;
-import org.zmpp.encoding.ZsciiString;
+import org.zmpp.encoding.ZCharEncoder;
 
 /**
  * This class implements a view on the dictionary within a memory map.
  * Since it takes the implementations of getN
  *
  * @author Wei-ju Wu
- * @version 1.0
+ * @version 1.5
  */
 public class DefaultDictionary extends AbstractDictionary {
 
-  /**
-   * The lookup map.
-   */
-  private Map<ZsciiString, Integer> lookupMap;
-  
-  /**
-   * The maximum entry size.
-   */
+  /** The maximum entry size. */
   private int maxEntrySize;
-  
+
   /**
    * Constructor.
-   * 
-   * @param map the memory map
+   * @param memory the memory object
    * @param address the start address of the dictionary
-   * @param converter a Z char decoder object
+   * @param decoder ZCharDecoder object
+   * @param encoder ZCharEncoder object
    * @param sizes a sizes object
    */
-  public DefaultDictionary(MemoryReadAccess map, int address,
-                           ZCharDecoder decoder, DictionarySizes sizes) {
-    
-    super(map, address, decoder, sizes);
-    createLookupMap();
-  }  
+  public DefaultDictionary(Memory memory, int address,
+                           ZCharDecoder decoder,
+                           ZCharEncoder encoder,
+                           DictionarySizes sizes) {
+    super(memory, address, decoder, encoder, sizes);
+  }
 
   /**
    * {@inheritDoc}
    */
-  public int lookup(final ZsciiString token) {
-    
-    final ZsciiString lookupToken = truncateToken(token);
-        
-    if (lookupMap.containsKey(lookupToken)) {
-      
-      //System.out.println("Found, entry: " + lookupMap.get(entry));
-      return lookupMap.get(lookupToken);
-    }
-    //System.out.println("Not found, token: '" + token + "'");
-    return 0;
+  public int lookup(final String token) {
+    return lookupBinary(truncateTokenToBytes(token), 0,
+                        getNumberOfEntries() - 1);
   }
-  
+
+  /**
+   * Recursive binary search to find an input word in the dictionary.
+   * @param tokenBytes the byte array containing the input word
+   * @param left the left index
+   * @param right the right index
+   * @return the entry address
+   */
+  private int lookupBinary(byte[] tokenBytes, int left, int right) {
+    if (left > right) return 0;
+    int middle = left + (right - left) / 2;
+    int entryAddress = getEntryAddress(middle);
+    int res = tokenMatch(tokenBytes, entryAddress);
+    if (res < 0) {
+      return lookupBinary(tokenBytes, left, middle - 1);
+    } else if (res > 0) {
+      return lookupBinary(tokenBytes, middle + 1, right);
+    } else {
+      return entryAddress;
+    }
+  }
+
   /**
    * {@inheritDoc}
    */
-  protected int getMaxEntrySize() {
-    
-    return maxEntrySize;
-  }
-  
-  /**
-   * Create the dictionary lookup map. The standards document suggests to
-   * convert the tokens into ZSCII strings and look them up in the dictionary
-   * by a binary search algorithm, which results in a O(log n) search algorithm,
-   * instead I convert the dictionary strings into Java strings and put them
-   * into a (entry - address) map, which is easier to handle and is O(1).
-   * Generating it once at initialization is safe because the dictionary is in
-   * static memory and does not change at runtime.
-   */
-  private void createLookupMap() {
-    
-    lookupMap = new HashMap<>();
-    int entryAddress;
-    
-    for (int i = 0, n = getNumberOfEntries(); i < n; i++) {
-      
-      entryAddress = getEntryAddress(i);      
-      final ZsciiString str = getDecoder().decode2Zscii(getMemoryAccess(),
-          entryAddress, getSizes().getNumEntryBytes());
-      maxEntrySize = Math.max(str.length(), maxEntrySize);
-      lookupMap.put(str, entryAddress);
-    }
-  }
+  protected int getMaxEntrySize() { return maxEntrySize; }
 }

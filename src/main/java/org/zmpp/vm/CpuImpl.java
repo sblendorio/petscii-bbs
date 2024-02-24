@@ -1,398 +1,350 @@
 /*
- * $Id: CpuImpl.java,v 1.12 2006/05/30 17:22:53 weiju Exp $
- * 
  * Created on 2006/02/14
- * Copyright 2005-2006 by Wei-ju Wu
+ * Copyright (c) 2005-2010, Wei-ju Wu.
+ * All rights reserved.
  *
- * This file is part of The Z-machine Preservation Project (ZMPP).
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * ZMPP is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * ZMPP is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with ZMPP; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * Neither the name of Wei-ju Wu nor the names of its contributors may
+ * be used to endorse or promote products derived from this software without
+ * specific prior written permission.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.zmpp.vm;
 
+import org.zmpp.base.StoryFileHeader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.zmpp.base.Interruptable;
-import org.zmpp.base.MemoryAccess;
-import org.zmpp.encoding.ZsciiString;
+import java.util.logging.Logger;
 import org.zmpp.vmutil.FastShortStack;
+import static org.zmpp.base.MemoryUtil.toUnsigned16;
 
-public class CpuImpl implements Cpu, Interruptable {
+/**
+ * Cpu interface implementation.
+ * @author Wei-ju Wu
+ * @version 1.5
+ */
+public class CpuImpl implements Cpu {
 
-  /**
-   * The stack size is now 64 K.
-   */
-  private static final int STACKSIZE = 32768;
-  
-  /**
-   * The machine object.
-   */
+  private static final Logger LOG = Logger.getLogger("org.zmpp");
+
+  /** The stack size is now 64 K. */
+  private static final char STACKSIZE = 32768;
+
+  /** The machine object. */
   private Machine machine;
 
-  /**
-   * This machine's current program counter.
-   */
+  /** This machine's current program counter. */
   private int programCounter;
-  
-  /**
-   * This machine's global stack.
-   */
-  private FastShortStack stack;
-  
-  /**
-   * The routine info.
-   */
-  private List<RoutineContext> routineContextStack;
-  
-  /**
-   * The start of global variables.
-   */
-  private int globalsAddress;
-  
-  /**
-   * The instruction decoder.
-   */
-  private InstructionDecoder decoder;  
-  
-  /**
-   * This flag indicates the run status.
-   */
-  private boolean running;  
-  
-  public CpuImpl(final Machine machine, final InstructionDecoder decoder) {
-  
-    super();
-    this.machine = machine;
-    this.decoder = decoder;
-    this.running = true;
-  }
-  
-  public void reset() {
 
-    final GameData gamedata = machine.getGameData();
-    decoder.initialize(machine, gamedata.getMemoryAccess());
+  /** This machine's global stack. */
+  private FastShortStack stack;
+
+  /** The routine info. */
+  private List<RoutineContext> routineContextStack;
+
+  /** The start of global variables. */
+  private int globalsAddress;
+
+  /**
+   * Constructor.
+   * @param machine the Machine object
+   */
+  public CpuImpl(final Machine machine) {
+    this.machine = machine;
+  }
+
+  /** @{inheritDoc} */
+  public void reset() {
     stack = new FastShortStack(STACKSIZE);
-    routineContextStack = new ArrayList<>();
-    globalsAddress = gamedata.getStoryFileHeader().getGlobalsAddress();
-    
-    if (gamedata.getStoryFileHeader().getVersion() == 6) {
-      
+    routineContextStack = new ArrayList<RoutineContext>();
+    globalsAddress = machine.readUnsigned16(StoryFileHeader.GLOBALS);
+
+    if (machine.getVersion() == 6) {
       // Call main function in version 6
-      call(gamedata.getStoryFileHeader().getProgramStart(), 0, new short[0],
-           (short) 0);
-      
+      call(getProgramStart(), (char) 0,
+           new char[0], (char) 0);
     } else {
-      
-      programCounter = gamedata.getStoryFileHeader().getProgramStart();
+      programCounter = getProgramStart();
     }
   }
- 
+
   /**
-   * {@inheritDoc}
+   * Returns the story's start address.
+   * @return the start address
    */
-  public int getProgramCounter() {
-    
-    return programCounter;
+  private char getProgramStart() {
+    return machine.readUnsigned16(StoryFileHeader.PROGRAM_START);
+  }
+
+  /** {@inheritDoc} */
+  public int getPC() { return programCounter; }
+
+  /** {@inheritDoc} */
+  public void setPC(final int address) { programCounter = address; }
+
+  /**
+   * Increments the program counter.
+   * @param offset the increment value.
+   */
+  public void incrementPC(final int offset) { programCounter += offset; }
+
+  /** {@inheritDoc} */
+  public int unpackStringAddress(char packedAddress) {
+    int version = machine.getVersion();
+    return version == 6 || version == 7 ?
+      packedAddress * 4 + 8 * getStaticStringOffset()
+      : unpackAddress(packedAddress);
   }
 
   /**
-   * {@inheritDoc}
+   * Unpacks a routine address, exposed for testing.
+   * @param packedAddress the packed address
+   * @return the unpacked address
    */
-  public void setProgramCounter(final int address) {
-
-    programCounter = address;
-  }
-  
-  public void incrementProgramCounter(final int offset) {
-    
-    programCounter += offset;
+  public int unpackRoutineAddress(char packedAddress) {
+    int version = machine.getVersion();
+    return version == 6 || version == 7 ?
+      packedAddress * 4 + 8 * getRoutineOffset()
+      : unpackAddress(packedAddress);
   }
 
   /**
-   * {@inheritDoc}
+   * Only for V6 and V7 games: the routine offset.
+   * @return the routine offset
    */
-  public Instruction nextStep() {
-    
-    return decoder.decodeInstruction(getProgramCounter());
+  private char getRoutineOffset() {
+    return machine.readUnsigned16(StoryFileHeader.ROUTINE_OFFSET);
   }
-    
+
   /**
-   * {@inheritDoc}
+   * Only in V6 and V7: the static string offset.
+   * @return the static string offset
    */
-  public int translatePackedAddress(final int packedAddress,
-      final boolean isCall) {
-  
-    // Version specific packed address translation
-    final GameData gamedata = machine.getGameData();
-    
-    switch (gamedata.getStoryFileHeader().getVersion()) {
-    
-      case 1: case 2: case 3:  
+  private char getStaticStringOffset() {
+    return machine.readUnsigned16(StoryFileHeader.STATIC_STRING_OFFSET);
+  }
+
+  /**
+   * Version specific unpacking.
+   * @param packedAddress the packed address
+   * @return the unpacked address
+   */
+  private int unpackAddress(final char packedAddress) {
+    switch (machine.getVersion()) {
+      case 1: case 2: case 3:
         return packedAddress * 2;
-      case 4:
-      case 5:
+      case 4: case 5:
         return packedAddress * 4;
-      case 6:
-      case 7:
-        return packedAddress * 4 + 8 *
-          (isCall ? gamedata.getStoryFileHeader().getRoutineOffset() :
-                    gamedata.getStoryFileHeader().getStaticStringOffset());
       case 8:
       default:
         return packedAddress * 8;
     }
   }
-  
-  /**
-   * {@inheritDoc} 
-   */
-  public int computeBranchTarget(final short offset,
-      final int instructionLength) {
-        
-    return getProgramCounter() + instructionLength + offset - 2;
+
+  /** {@inheritDoc} */
+  public void doBranch(short branchOffset, int instructionLength) {
+    if (branchOffset >= 2 || branchOffset < 0) {
+      setPC(computeBranchTarget(branchOffset, instructionLength));
+    } else {
+      // FALSE is defined as 0, TRUE as 1, so simply return the offset
+      // since we do not have negative offsets
+      returnWith((char) branchOffset);
+    }
   }
-  
-  /**
-   * {@inheritDoc}
-   */
-  public void halt(final String errormsg) {
-  
-    machine.getOutput().print(new ZsciiString(errormsg));
-    running = false;
-  }  
 
   /**
-   * {@inheritDoc}
+   * Computes the branch target.
+   * @param offset offset value
+   * @param instructionLength instruction length
+   * @return branch target value
    */
-  public boolean isRunning() {
-    
-    return running;
+  private int computeBranchTarget(final short offset,
+      final int instructionLength) {
+    return getPC() + instructionLength + offset - 2;
   }
-  
-  /**
-   * {@inheritDoc}
-   */
-  public void setRunning(final boolean flag) {
-    
-    running = flag;
-  }
-  
+
   // ********************************************************************
   // ***** Stack operations
   // ***************************************
-  /**
-   * {@inheritDoc}
-   */
-  public int getStackPointer() {
-    
-    return stack.getStackPointer();
-  }
-  
+  /** {@inheritDoc} */
+  public char getSP() { return stack.getStackPointer(); }
+
   /**
    * Sets the global stack pointer to the specified value. This might pop off
    * several values from the stack.
-   * 
    * @param stackpointer the new stack pointer value
    */
-  private void setStackPointer(final int stackpointer) {
-
+  private void setSP(final char stackpointer) {
     // remove the last diff elements
     final int diff = stack.getStackPointer() - stackpointer;
-    for (int i = 0; i < diff; i++) {
-     
-      stack.pop();
-    }
+    for (int i = 0; i < diff; i++) { stack.pop(); }
   }
-  
-  /**
-   * {@inheritDoc}
-   */
-  public short getStackTopElement() {
-    
-    if (stack.size() > 0) {
-      
-      return stack.top();
-    }
-    return -1;
+
+  /** {@inheritDoc} */
+  public char getStackTop() {
+    if (stack.size() > 0) { return stack.top(); }
+    throw new java.lang.ArrayIndexOutOfBoundsException("Stack underflow error");
   }
-  
-  /**
-   * {@inheritDoc}
-   */
-  public void setStackTopElement(final short value) {
-    
+
+  /** {@inheritDoc} */
+  public void setStackTop(final char value) {
     stack.replaceTopElement(value);
   }
-  
-  /**
-   * {@inheritDoc}
-   */
-  public short getStackElement(final int index) {
-    
+
+  /** {@inheritDoc} */
+  public char getStackElement(final int index) {
     return stack.getValueAt(index);
   }
-  
-  /**
-   * {@inheritDoc}
-   */
-  public short popUserStack(int userstackAddress) {
 
-    MemoryAccess memaccess = machine.getGameData().getMemoryAccess();
-    int numFreeSlots = memaccess.readUnsignedShort(userstackAddress);
-    numFreeSlots++;
-    memaccess.writeUnsignedShort(userstackAddress, numFreeSlots);
-    return memaccess.readShort(userstackAddress + (numFreeSlots * 2));
+  /** {@inheritDoc} */
+  public char popStack(char userstackAddress) {
+    return userstackAddress == 0 ? getVariable((char) 0) :
+      popUserStack(userstackAddress);
   }
-  
+
   /**
-   * {@inheritDoc}
+   * Pops the user stack.
+   * @param userstackAddress address of user stack
+   * @return popped value
    */
-  public boolean pushUserStack(int userstackAddress, short value) {
-    
-    MemoryAccess memaccess = machine.getGameData().getMemoryAccess();
-    int numFreeSlots = memaccess.readUnsignedShort(userstackAddress);
+  private char popUserStack(char userstackAddress) {
+    int numFreeSlots = machine.readUnsigned16(userstackAddress);
+    numFreeSlots++;
+    machine.writeUnsigned16(userstackAddress, toUnsigned16(numFreeSlots));
+    return machine.readUnsigned16(userstackAddress + (numFreeSlots * 2));
+  }
+
+  /** {@inheritDoc} */
+  public boolean pushStack(char userstackAddress, char value) {
+    if (userstackAddress == 0) {
+      setVariable((char) 0, value);
+      return true;
+    } else {
+      return pushUserStack(userstackAddress, value);
+    }
+  }
+
+  /**
+   * Push user stack.
+   * @param userstackAddress address of user stack
+   * @param value value to push
+   * @return true if successful, false on overflow
+   */
+  private boolean pushUserStack(char userstackAddress, char value) {
+    int numFreeSlots = machine.readUnsigned16(userstackAddress);
     if (numFreeSlots > 0) {
-      
-      memaccess.writeShort(userstackAddress + (numFreeSlots * 2), value);
-      memaccess.writeUnsignedShort(userstackAddress, numFreeSlots - 1);
+      machine.writeUnsigned16(userstackAddress + (numFreeSlots * 2), value);
+      machine.writeUnsigned16(userstackAddress, toUnsigned16(numFreeSlots - 1));
       return true;
     }
     return false;
   }
-  
-  /**
-   * {@inheritDoc}
-   */
-  public short getVariable(final int variableNumber) {
 
-    final VariableType varType = getVariableType(variableNumber);
-    if (varType == VariableType.STACK) {
-      
+  /** {@inheritDoc} */
+  public char getVariable(final char variableNumber) {
+    final Cpu.VariableType varType = getVariableType(variableNumber);
+    if (varType == Cpu.VariableType.STACK) {
       if (stack.size() == getInvocationStackPointer()) {
-        
         //throw new IllegalStateException("stack underflow error");
-        System.err.println("stack underflow error");
+        LOG.severe("stack underflow error");
         return 0;
-        
       } else {
-   
         return stack.pop();
       }
-      
-    } else if (varType == VariableType.LOCAL) {
-      
-      final int localVarNumber = getLocalVariableNumber(variableNumber);
+    } else if (varType == Cpu.VariableType.LOCAL) {
+      final char localVarNumber = getLocalVariableNumber(variableNumber);
       checkLocalVariableAccess(localVarNumber);
       return getCurrentRoutineContext().getLocalVariable(localVarNumber);
-      
     } else { // GLOBAL
-      
-      return machine.getGameData().getMemoryAccess().readShort(globalsAddress
-          + (getGlobalVariableNumber(variableNumber) * 2));
+      return machine.readUnsigned16(globalsAddress +
+          (getGlobalVariableNumber(variableNumber) * 2));
     }
   }
-  
+
   /**
    * Returns the current invocation stack pointer.
-   * 
    * @return the invocation stack pointer
    */
-  private int getInvocationStackPointer() {
-    
-    return getCurrentRoutineContext() == null ? 0 : 
-      getCurrentRoutineContext().getInvocationStackPointer();
+  private char getInvocationStackPointer() {
+    return (char) (getCurrentRoutineContext() == null ? 0 :
+      getCurrentRoutineContext().getInvocationStackPointer());
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public void setVariable(final int variableNumber, final short value) {
-
-    final VariableType varType = getVariableType(variableNumber);
-    if (varType == VariableType.STACK) {
-      
+  /** {@inheritDoc} */
+  public void setVariable(final char variableNumber, final char value) {
+    final Cpu.VariableType varType = getVariableType(variableNumber);
+    if (varType == Cpu.VariableType.STACK) {
       stack.push(value);
-      
-    } else if (varType == VariableType.LOCAL) {
-      
-      final int localVarNumber = getLocalVariableNumber(variableNumber);
+    } else if (varType == Cpu.VariableType.LOCAL) {
+      final char localVarNumber = getLocalVariableNumber(variableNumber);
       checkLocalVariableAccess(localVarNumber);
       getCurrentRoutineContext().setLocalVariable(localVarNumber, value);
-      
     } else {
-      
-      machine.getGameData().getMemoryAccess().writeShort(globalsAddress
-          + (getGlobalVariableNumber(variableNumber) * 2), value);
+      machine.writeUnsigned16(globalsAddress +
+          (getGlobalVariableNumber(variableNumber) * 2), value);
     }
   }
-  
+
   /**
    * Returns the variable type for the given variable number.
-   * 
+   *
    * @param variableNumber the variable number
    * @return STACK if stack variable, LOCAL if local variable, GLOBAL if global
    */
-  public static VariableType getVariableType(final int variableNumber) {
-    
+  public static Cpu.VariableType getVariableType(final int variableNumber) {
     if (variableNumber == 0) {
-      
-      return VariableType.STACK;
-      
+      return Cpu.VariableType.STACK;
     } else if (variableNumber < 0x10) {
-      
-      return VariableType.LOCAL;
-      
+      return Cpu.VariableType.LOCAL;
     } else {
-      
-      return VariableType.GLOBAL;
+      return Cpu.VariableType.GLOBAL;
     }
   }
-
 
   /**
    * {@inheritDoc}
    */
   public void pushRoutineContext(final RoutineContext routineContext) {
-
-    routineContext.setInvocationStackPointer(getStackPointer());
+    routineContext.setInvocationStackPointer(getSP());
     routineContextStack.add(routineContext);
   }
-  
+
   /**
    * {@inheritDoc}
    */
-  public void popRoutineContext(final short returnValue) {
-    
+  public void returnWith(final char returnValue) {
     if (routineContextStack.size() > 0) {
-
       final RoutineContext popped =
         routineContextStack.remove(routineContextStack.size() - 1);
       popped.setReturnValue(returnValue);
-    
+
       // Restore stack pointer and pc
-      setStackPointer(popped.getInvocationStackPointer());
-      setProgramCounter(popped.getReturnAddress());
-      final int returnVariable = popped.getReturnVariable();
+      setSP(popped.getInvocationStackPointer());
+      setPC(popped.getReturnAddress());
+      final char returnVariable = popped.getReturnVariable();
       if (returnVariable != RoutineContext.DISCARD_RESULT) {
-        
         setVariable(returnVariable, returnValue);
       }
     } else {
-      
       throw new IllegalStateException("no routine context active");
     }
   }
@@ -401,231 +353,141 @@ public class CpuImpl implements Cpu, Interruptable {
    * {@inheritDoc}
    */
   public RoutineContext getCurrentRoutineContext() {
-    
     if (routineContextStack.size() == 0) {
       return null;
     }
     return routineContextStack.get(routineContextStack.size() - 1);
   }
-  
+
   /**
    * {@inheritDoc}
    */
   public List<RoutineContext> getRoutineContexts() {
-    
     return Collections.unmodifiableList(routineContextStack);
   }
-  
+
   /**
    * {@inheritDoc}
    */
   public void setRoutineContexts(final List<RoutineContext> contexts) {
-
     routineContextStack.clear();
     for (RoutineContext context : contexts) {
-      
       routineContextStack.add(context);
     }
   }
-  
+
   /**
    * This function is basically exposed to the debug application.
-   * 
    * @return the current routine stack pointer
    */
-  public int getRoutineStackPointer() {
-    
-    return routineContextStack.size();
+  public char getRoutineStackPointer() {
+    return (char) routineContextStack.size();
   }
-  
-  public RoutineContext call(final int packedRoutineAddress,
-      final int returnAddress, final short[] args, final short returnVariable) {
-    
-    final int routineAddress =
-      translatePackedAddress(packedRoutineAddress, true);
-    final int numArgs = args == null ? 0 : args.length;    
+
+  /** {@inheritDoc} */
+  public RoutineContext call(final char packedRoutineAddress,
+      final int returnAddress, final char[] args, final char returnVariable) {
+    final int routineAddress = unpackRoutineAddress(packedRoutineAddress);
+    final int numArgs = args == null ? 0 : args.length;
     final RoutineContext routineContext = decodeRoutine(routineAddress);
-    
+
     // Sets the number of arguments
     routineContext.setNumArguments(numArgs);
-    
+
     // Save return parameters
     routineContext.setReturnAddress(returnAddress);
-    
+
     // Only if this instruction stores a result
     if (returnVariable == RoutineContext.DISCARD_RESULT) {
-      
       routineContext.setReturnVariable(RoutineContext.DISCARD_RESULT);
-      
     } else {
-      
       routineContext.setReturnVariable(returnVariable);
-    }      
-    
+    }
+
     // Set call parameters into the local variables
     // if there are more parameters than local variables,
     // those are thrown away
     final int numToCopy = Math.min(routineContext.getNumLocalVariables(),
                                    numArgs);
-    
+
     for (int i = 0; i < numToCopy; i++) {
-      
-      routineContext.setLocalVariable(i, args[i]);
+      routineContext.setLocalVariable((char) i, args[i]);
     }
-    
+
     // save invocation stack pointer
-    routineContext.setInvocationStackPointer(getStackPointer());
-    
+    routineContext.setInvocationStackPointer(getSP());
+
     // Pushes the routine context onto the routine stack
     pushRoutineContext(routineContext);
-    
+
     // Jump to the address
-    setProgramCounter(routineContext.getStartAddress());
+    setPC(machine.getVersion() >= 5 ? routineAddress + 1 :
+      routineAddress + 1 + 2 * routineContext.getNumLocalVariables());
     return routineContext;
   }
 
   // ************************************************************************
   // ****** Private functions
   // ************************************************
-  
+
   /**
    * Decodes the routine at the specified address.
-   * 
    * @param routineAddress the routine address
    * @return a RoutineContext object
    */
   private RoutineContext decodeRoutine(final int routineAddress) {
+    final int numLocals = machine.readUnsigned8(routineAddress);
+    final char[] locals = new char[numLocals];
 
-    final GameData gamedata = machine.getGameData();
-    final MemoryAccess memaccess = gamedata.getMemoryAccess();    
-    final int numLocals = memaccess.readUnsignedByte(routineAddress);
-    final short[] locals = new short[numLocals];
-    int currentAddress = routineAddress + 1;
-    
-    if (gamedata.getStoryFileHeader().getVersion() <= 4) {
-      
+    if (machine.getVersion() <= 4) {
       // Only story files <= 4 actually store default values here,
-      // after V5 they are assumed as being 0 (standard document 1.0, S.5.2.1) 
+      // after V5 they are assumed as being 0 (standard document 1.0, S.5.2.1)
       for (int i = 0; i < numLocals; i++) {
-      
-        locals[i] = memaccess.readShort(currentAddress);
-        currentAddress += 2;
+        locals[i] = machine.readUnsigned16(routineAddress + 1 + 2 * i);
       }
     }
-    //System.out.printf("setting routine start to: %x\n", currentAddress);
-    
-    final RoutineContext info = new RoutineContext(currentAddress, numLocals);
-    
+    final RoutineContext info = new RoutineContext(numLocals);
     for (int i = 0; i < numLocals; i++) {
-      
-      info.setLocalVariable(i, locals[i]);
+      info.setLocalVariable((char) i, locals[i]);
     }
     return info;
   }
-    
+
   /**
    * Returns the local variable number for a specified variable number.
-   * 
    * @param variableNumber the variable number in an operand (0x01-0x0f)
    * @return the local variable number
    */
-  private int getLocalVariableNumber(final int variableNumber) {
-    
-    return variableNumber - 1;
+  private char getLocalVariableNumber(final char variableNumber) {
+    return (char) (variableNumber - 1);
   }
-  
+
   /**
    * Returns the global variable for the specified variable number.
-   * 
    * @param variableNumber a variable number (0x10-0xff)
    * @return the global variable number
    */
-  private int getGlobalVariableNumber(final int variableNumber) {
-    
-    return variableNumber - 0x10;
+  private char getGlobalVariableNumber(final char variableNumber) {
+    return (char) (variableNumber - 0x10);
   }
-  
+
   /**
    * This function throws an exception if a non-existing local variable
    * is accessed on the current routine context or no current routine context
    * is set.
-   * 
+   *
    * @param localVariableNumber the local variable number
    */
-  private void checkLocalVariableAccess(final int localVariableNumber) {
-    
+  private void checkLocalVariableAccess(final char localVariableNumber) {
     if (routineContextStack.size() == 0) {
-      
       throw new IllegalStateException("no routine context set");
     }
-    
-    if (localVariableNumber >= getCurrentRoutineContext().getNumLocalVariables()) {
-      
-      throw new IllegalStateException("access to non-existent local variable: "
-                                      + localVariableNumber);
+
+    if (localVariableNumber >= getCurrentRoutineContext()
+        .getNumLocalVariables()) {
+      throw new IllegalStateException(
+          "access to non-existent local variable: " +
+          (int) localVariableNumber);
     }
   }
-  
-  // ************************************************************************
-  // ****** Interrupt functions
-  // *************************************
-  
-  /**
-   * The flag to indicate interrupt output.
-   */
-  private boolean interruptDidOutput;
-  
-  /**
-   * The flag to indicate interrupt execution.
-   */
-  private boolean executeInterrupt;
-  
-  /**
-   * {@inheritDoc}
-   */
-  public boolean interruptDidOutput() {
-    
-    return interruptDidOutput;
-  }
-  
-  /**
-   * {@inheritDoc}
-   */
-  public short callInterrupt(final int routineAddress) {
-    
-    interruptDidOutput = false;
-    executeInterrupt = true;
-    final int originalRoutineStackSize = getRoutineContexts().size();
-    final RoutineContext routineContext = call(routineAddress,
-        machine.getCpu().getProgramCounter(),
-        new short[0], (short) RoutineContext.DISCARD_RESULT);
-    
-    for (;;) {
-      
-      final Instruction instr = nextStep();
-      instr.execute();
-      // check if something was printed
-      if (instr.isOutput()) {
-        interruptDidOutput = true;
-      }
-      if (getRoutineContexts().size() == originalRoutineStackSize) {
-        
-        break;
-      }
-    }
-    executeInterrupt = false;
-    return routineContext.getReturnValue();
-  }
-  
-  public void setInterruptRoutine(final int routineAddress) {
-    
-    // TODO
-  }
-  
-  /**
-   * Returns the interrupt status of the cpu object.
-   * 
-   * @return the interrup status
-   */
-  public boolean isExecutingInterrupt() { return executeInterrupt; }
 }

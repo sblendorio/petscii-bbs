@@ -1,9 +1,7 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
-import org.zmpp.textui.VirtualConsole;
-import org.zmpp.textui.bbs.BBSMachineFactory;
-
 import eu.sblendorio.bbs.core.AsciiThread;
+import org.zmpp.textui.cli.BbsScreenModel;
 
 public class ZorkMachineAscii extends AsciiThread {
 
@@ -33,11 +31,14 @@ public class ZorkMachineAscii extends AsciiThread {
         resetInput();
         try {
             final byte[] story = readBinaryFile(filename);
+            BbsScreenModel zorkMachine = new BbsScreenModel(story, this);
+            zorkMachine.runTheGame();
+            /* SBLEND
             BBSMachineFactory factory;
             factory = new BBSMachineFactory(story, this);
             factory.buildMachine();
             VirtualConsole console = factory.getUI();
-            console.runTheGame();
+            console.runTheGame();*/
         } catch (Exception ex) {
             log("Unexpected Exception", ex);
         }

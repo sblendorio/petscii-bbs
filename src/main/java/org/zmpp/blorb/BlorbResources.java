@@ -1,24 +1,30 @@
 /*
- * $Id: BlorbResources.java,v 1.7 2006/05/12 21:58:57 weiju Exp $
- * 
  * Created on 2006/02/06
- * Copyright 2005-2006 by Wei-ju Wu
+ * Copyright (c) 2005-2010, Wei-ju Wu.
+ * All rights reserved.
  *
- * This file is part of The Z-machine Preservation Project (ZMPP).
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * ZMPP is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * ZMPP is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with ZMPP; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * Neither the name of Wei-ju Wu nor the names of its contributors may
+ * be used to endorse or promote products derived from this software without
+ * specific prior written permission.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.zmpp.blorb;
 
@@ -27,80 +33,73 @@ import org.zmpp.media.InformMetadata;
 import org.zmpp.media.MediaCollection;
 import org.zmpp.media.Resources;
 import org.zmpp.media.SoundEffect;
+import org.zmpp.media.ZmppImage;
 
 /**
  * This class encapsulates a Blorb file and offers access to the sound
  * and graphics media collections.
- * 
+ *
  * @author Wei-ju Wu
- * @version 1.0
+ * @version 1.5
  */
 public class BlorbResources implements Resources {
 
-  /**
-   * The file's images.
-   */
+  /** The file's images. */
   private MediaCollection<BlorbImage> images;
-  
-  /**
-   * The file's sounds.
-   */
+
+  /** The file's sounds. */
   private MediaCollection<SoundEffect> sounds;
-  
-  /**
-   * The cover art.
-   */
+
+  /** The cover art. */
   private BlorbCoverArt coverart;
-  
-  /**
-   * The meta data.
-   */
+
+  /** The meta data. */
   private BlorbMetadataHandler metadata;
-  
-  /**
-   * The release number.
-   */
+
+  /** The release number. */
   private int release;
-  
+
   /**
    * Constructor.
-   * 
+   * @param imageFactory a NativeImageFactory
+   * @param soundEffectFactory a SoundEffectFactory
    * @param formchunk a form chunk in Blorb format
    */
-  public BlorbResources(FormChunk formchunk) {
-
-    images = new BlorbImages(formchunk);
-    sounds = new BlorbSounds(formchunk);
+  public BlorbResources(NativeImageFactory imageFactory,
+      SoundEffectFactory soundEffectFactory,
+      FormChunk formchunk) {
+    images = new BlorbImages(imageFactory, formchunk);
+    sounds = new BlorbSounds(soundEffectFactory, formchunk);
     coverart = new BlorbCoverArt(formchunk);
     metadata = new BlorbMetadataHandler(formchunk);
   }
-  
+
   /**
    * {@inheritDoc}
    */
-  public MediaCollection<BlorbImage> getImages() { return images; }
-  
+  public MediaCollection<? extends ZmppImage> getImages() { return images; }
+
   /**
    * {@inheritDoc}
    */
   public MediaCollection<SoundEffect> getSounds() { return sounds; }
-  
+
   /**
    * {@inheritDoc}
    */
   public int getCoverArtNum() { return coverart.getCoverArtNum(); }
-  
-  
+
+
   /**
    * {@inheritDoc}
    */
   public InformMetadata getMetadata() { return metadata.getMetadata(); }
-  
+
   /**
    * {@inheritDoc}
    */
   public int getRelease() { return release; }
-  
+
   /**
    * {@inheritDoc}
    */

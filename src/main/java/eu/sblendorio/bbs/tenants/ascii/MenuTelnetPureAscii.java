@@ -161,7 +161,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 else if ("h".equals(choice)) subThread = new AlessandroAlbanoAscii();
                 else if ("i".equals(choice)) subThread = new TicTacToeAscii();
                 else if ("j".equals(choice)) subThread = new Connect4Ascii();
-                else if ("k".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
+                else if ("k".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork1-ita.z5");
                 else if ("l".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
                 else if ("m".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
                 else if ("n".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");

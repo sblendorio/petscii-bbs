@@ -1,169 +1,187 @@
 /*
- * $Id: AbstractDictionary.java,v 1.8 2006/04/12 18:00:17 weiju Exp $
- * 
  * Created on 2006/09/25
- * Copyright 2005-2006 by Wei-ju Wu
+ * Copyright (c) 2005-2010, Wei-ju Wu.
+ * All rights reserved.
  *
- * This file is part of The Z-machine Preservation Project (ZMPP).
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * ZMPP is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * ZMPP is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with ZMPP; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * Neither the name of Wei-ju Wu nor the names of its contributors may
+ * be used to endorse or promote products derived from this software without
+ * specific prior written permission.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.zmpp.vm;
 
-import org.zmpp.base.MemoryReadAccess;
-import org.zmpp.encoding.ZCharDecoder;
-import org.zmpp.encoding.ZsciiString;
+import static org.zmpp.base.MemoryUtil.unsignedToSigned16;
 
+import org.zmpp.base.DefaultMemory;
+import org.zmpp.base.Memory;
+import org.zmpp.encoding.DictionarySizes;
+import org.zmpp.encoding.ZCharDecoder;
+import org.zmpp.encoding.ZCharEncoder;
+
+/**
+ * Abstract super class of dictionaries.
+ * @author Wei-ju Wu
+ * @version 1.5
+ */
 public abstract class AbstractDictionary implements Dictionary {
 
-  /**
-   * The memory map.
-   */
-  private MemoryReadAccess memaccess;
-  
-  /**
-   * The dictionary start address.
-   */
+  private Memory memory;
+
+  /** The dictionary start address. */
   private int address;
-  
-  /**
-   * A Z char decoder.
-   */
   private ZCharDecoder decoder;
-  
-  /**
-   * A sizes object.
-   */
+  private ZCharEncoder encoder;
+
+  /** A sizes object. */
   private DictionarySizes sizes;
-  
+
   /**
    * Constructor.
-   * 
-   * @param map the memory map
+   * @param memory the memory object
    * @param address the start address of the dictionary
-   * @param converter a Z char decoder object
-   * @param an object specifying the sizes of the dictionary entries
+   * @param decoder a ZCharDecoder object
+   * @param encoder a ZCharEncoder object
+   * @param sizes an object specifying the sizes of the dictionary entries
    */
-  public AbstractDictionary(final MemoryReadAccess map, final int address,
+  public AbstractDictionary(final Memory memory, final int address,
                             final ZCharDecoder decoder,
+                            final ZCharEncoder encoder,
                             final DictionarySizes sizes) {
-    
-    super();
-    this.memaccess = map;
+    this.memory = memory;
     this.address = address;
     this.decoder = decoder;
+    this.encoder = encoder;
     this.sizes = sizes;
   }
-  
-  /**
-   * {@inheritDoc}
-   */
+
+  /** {@inheritDoc} */
   public int getNumberOfSeparators() {
-    
-    return memaccess.readUnsignedByte(address);
+    return memory.readUnsigned8(address);
   }
-  
-  /**
-   * {@inheritDoc}
-   */
+
+  /** {@inheritDoc} */
   public byte getSeparator(final int i) {
-    
-    return (byte) memaccess.readUnsignedByte(address + i + 1);
+    return (byte) memory.readUnsigned8(address + i + 1);
   }
-  
-  /**
-   * {@inheritDoc}
-   */
+
+  /** {@inheritDoc} */
   public int getEntryLength() {
-    
-    return memaccess.readUnsignedByte(address + getNumberOfSeparators() + 1);
+    return memory.readUnsigned8(address + getNumberOfSeparators() + 1);
   }
-  
-  /**
-   * {@inheritDoc}
-   */
-  public int getNumberOfEntries() {
-    
+
+  /** {@inheritDoc} */
+  public short getNumberOfEntries() {
     // The number of entries is a signed value so that we can recognize
     // a negative number
-    return memaccess.readShort(address + getNumberOfSeparators() + 2);
+    return unsignedToSigned16(memory.readUnsigned16(address +
+        getNumberOfSeparators() + 2));
   }
-  
-  /**
-   * {@inheritDoc}
-   */
+
+  /** {@inheritDoc} */
   public int getEntryAddress(final int entryNum) {
-   
-    final int headerSize = getNumberOfSeparators() + 4;    
+    final int headerSize = getNumberOfSeparators() + 4;
     return address + headerSize + entryNum * getEntryLength();
   }
-  
-  protected ZCharDecoder getDecoder() {
-    
-    return decoder;
+
+  /**
+   * Access to the decoder object.
+   * @return the decoder object
+   */
+  protected ZCharDecoder getDecoder() { return decoder; }
+
+  /**
+   * Access to the Memory object.
+   * @return the Memory object
+   */
+  protected Memory getMemory() { return memory; }
+
+  /**
+   * Returns the DictionarySizes object for the current story file version.
+   * @return the DictionarySizes object
+   */
+  protected DictionarySizes getSizes() { return sizes; }
+
+  /**
+   * Unfortunately it seems that the maximum size of an entry is not equal
+   * to the size declared in the dictionary header, therefore we take
+   * the maximum length of a token defined in the Z-machine specification.
+   * The lookup token can only be 6 characters long in version 3
+   * and 9 in versions >= 4
+   * @param token the token to truncate
+   * @return the truncated token
+   */
+  protected String truncateToken(final String token) {
+    return token.length() > sizes.getMaxEntryChars() ?
+        token.substring(0, sizes.getMaxEntryChars()) : token;
   }
-  
-  protected MemoryReadAccess getMemoryAccess() {
-    
-    return memaccess;
+
+  /**
+   * Truncates the specified token and returns a dictionary encoded byte array.
+   * @param token the token
+   * @return the truncated token as a byte array
+   */
+  protected byte[] truncateTokenToBytes(final String token) {
+    byte[] result = new byte[sizes.getNumEntryBytes()];
+    Memory buffer = new DefaultMemory(result);
+    encoder.encode(token, buffer, 0);
+    return result;
   }
-  
-  protected DictionarySizes getSizes() {
-    
-    return sizes;
-  }
-  
-  protected ZsciiString truncateToken(final ZsciiString token) {
-    
-    // Unfortunately it seems that the maximum size of an entry is not equal 
-    // to the size declared in the dictionary header, therefore we take
-    // the maximum length of a token defined in the Z-machine specification.    
-    // The lookup token can only be 6 characters long in version 3
-    // and 9 in versions >= 4
-    if (token.length() > sizes.getMaxEntryChars()) {
-      
-      return token.substring(0, sizes.getMaxEntryChars());
+
+  /**
+   * Lexicographical comparison of the input word and the dictionary entry
+   * at the specified address.
+   * @param tokenBytes input word bytes
+   * @param entryAddress dictionary entry address
+   * @return comparison value, 0 if match, &lt; 0 if lexicographical smaller,
+   *         &lt; 0 if lexicographical greater
+   */
+  protected int tokenMatch(byte[] tokenBytes, int entryAddress) {
+    for (int i = 0; i < tokenBytes.length; i++) {
+      int tokenByte = tokenBytes[i] & 0xff;
+      int c = (getMemory().readUnsigned8(entryAddress + i) & 0xff);
+      if (tokenByte != c) {
+        return tokenByte - c;
+      }
     }
-    return token;
+    return 0;
   }
-  
+
   /**
    * Creates a string presentation of this dictionary.
-   * 
    * @return the string presentation
    */
+  @Override
   public String toString() {
-
     final StringBuilder buffer = new StringBuilder();
     int entryAddress;
     int i = 0;
     final int n = getNumberOfEntries();
-    
     while (true) {
-      
       entryAddress = getEntryAddress(i);
-      final String str = getDecoder().decode2Zscii(getMemoryAccess(),
-          entryAddress, sizes.getNumEntryBytes()).toString();
+      final String str = getDecoder().decode2Zscii(getMemory(),
+          entryAddress, sizes.getNumEntryBytes());
       buffer.append(String.format("[%4d] '%-9s' ", (i + 1), str));
       i++;
-      if ((i % 4) == 0) {
-        buffer.append("\n");
-      }
-      if (i == n) {
-        break;
-      }
+      if ((i % 4) == 0) { buffer.append("\n"); }
+      if (i == n) { break; }
     }
     return buffer.toString();
   }

@@ -5,8 +5,6 @@ import eu.sblendorio.bbs.core.PetsciiColors;
 import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import org.apache.commons.lang3.StringUtils;
-import org.zmpp.textui.VirtualConsole;
-import org.zmpp.textui.bbs.BBSMachineFactory;
 
 @Hidden
 public class ZorkMachine extends PetsciiThread {
@@ -56,7 +54,7 @@ public class ZorkMachine extends PetsciiThread {
         write(PetsciiColors.CYAN); print("     "); write(PetsciiColors.GREY2); print("RESTORE");  write(PetsciiColors.CYAN); println(" to resume game");
         println();
         write(PetsciiColors.GREY3);
-
+        /* SBLEND
         try {
             final byte[] story = readBinaryFile(filename);
             BBSMachineFactory factory = new BBSMachineFactory(story, this, 9);
@@ -69,6 +67,6 @@ public class ZorkMachine extends PetsciiThread {
                 throw ex;
             }
             log("Exiting zork machine (" + filename + ")");
-        }
+        } */
     }
 }

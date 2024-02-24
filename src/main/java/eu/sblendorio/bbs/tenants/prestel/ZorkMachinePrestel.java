@@ -2,8 +2,6 @@ package eu.sblendorio.bbs.tenants.prestel;
 
 import eu.sblendorio.bbs.core.PrestelControls;
 import eu.sblendorio.bbs.core.PrestelThread;
-import org.zmpp.textui.VirtualConsole;
-import org.zmpp.textui.bbs.BBSMachineFactory;
 
 public class ZorkMachinePrestel extends PrestelThread {
 
@@ -29,7 +27,7 @@ public class ZorkMachinePrestel extends PrestelThread {
     public void doLoop() throws Exception {
         logo();
         resetInput();
-        write(PrestelControls.CURSOR_ON);
+        write(PrestelControls.CURSOR_ON); /* SBLEND
         try {
             final byte[] story = readBinaryFile(filename);
             BBSMachineFactory factory;
@@ -39,6 +37,6 @@ public class ZorkMachinePrestel extends PrestelThread {
             console.runTheGame();
         } catch (Exception ex) {
             log("Unexpected Exception", ex);
-        }
+        } */
     }
 }

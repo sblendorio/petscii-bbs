@@ -1,24 +1,30 @@
 /*
- * $Id: TranscriptOutputStream.java,v 1.9 2006/04/12 02:04:30 weiju Exp $
- * 
  * Created on 11/08/2005
- * Copyright 2005-2006 by Wei-ju Wu
+ * Copyright (c) 2005-2010, Wei-ju Wu.
+ * All rights reserved.
  *
- * This file is part of The Z-machine Preservation Project (ZMPP).
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * ZMPP is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * ZMPP is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with ZMPP; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * Neither the name of Wei-ju Wu nor the names of its contributors may
+ * be used to endorse or promote products derived from this software without
+ * specific prior written permission.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.zmpp.io;
 
@@ -26,144 +32,101 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.zmpp.encoding.ZsciiEncoding;
+import java.util.logging.Logger;
+import org.zmpp.encoding.IZsciiEncoding;
 
 /**
  * This class defines an output stream for transcript output (Stream 2).
- * 
+ *
  * @author Wei-ju Wu
- * @version 1.0
+ * @version 1.5
  */
 public class TranscriptOutputStream implements OutputStream {
 
+  private static final Logger LOG = Logger.getLogger("org.zmpp");
   private IOSystem iosys;
   private BufferedWriter output;
   private Writer transcriptWriter;
   private boolean enabled;
   private StringBuilder linebuffer;
-  private ZsciiEncoding encoding;
+  private IZsciiEncoding encoding;
+  private boolean initialized;
 
   /**
    * Constructor.
-   * 
    * @param iosys the I/O system
+   * @param encoding IZsciiEncoding object
    */
   public TranscriptOutputStream(final IOSystem iosys,
-      final ZsciiEncoding encoding) {
-  
-    super();
+                                final IZsciiEncoding encoding) {
     this.iosys = iosys;
     this.encoding = encoding;
     linebuffer = new StringBuilder();
   }
-  
-  /**
-   * {@inheritDoc}
-   */
+
+  /** Initializes the output file. */
   private void initFile() {
-    
-    if (transcriptWriter == null) {
-      
+    if (!initialized && transcriptWriter == null) {
       transcriptWriter = iosys.getTranscriptWriter();
-      output = new BufferedWriter(transcriptWriter);
+      if (transcriptWriter != null) {
+        output = new BufferedWriter(transcriptWriter);
+      }
+      initialized = true;
     }
   }
-  
-  /**
-   * {@inheritDoc}
-   */
-  public void print(final short zsciiChar, final boolean isInput) {
-    
+
+  /** {@inheritDoc} */
+  public void print(final char zsciiChar) {
     initFile();
     if (output != null) {
-      
-      if (zsciiChar == ZsciiEncoding.NEWLINE) {
-        
+      if (zsciiChar == IZsciiEncoding.NEWLINE) {
         flush();
-        
-      } else if (zsciiChar == ZsciiEncoding.DELETE || zsciiChar == ZsciiEncoding.INSTDEL) {
+      } else if (zsciiChar == IZsciiEncoding.DELETE) {
         linebuffer.deleteCharAt(linebuffer.length() - 1);
-        
       } else {
-        
         linebuffer.append(encoding.getUnicodeChar(zsciiChar));
       }
+      flush();
     }
   }
-  
-  /**
-   * {@inheritDoc}
-   */
-  public void select(final boolean flag) {
-  
-    enabled = flag;
-  }
 
-  /**
-   * {@inheritDoc}
-   */
-  public boolean isSelected() {
-    
-    return enabled;
-  }
-  
-  /**
-   * {@inheritDoc}
-   */
+  /** {@inheritDoc} */
+  public void select(final boolean flag) { enabled = flag; }
+
+  /** {@inheritDoc} */
+  public boolean isSelected() { return enabled; }
+
+  /** {@inheritDoc} */
   public void flush() {
-    
     try {
-
       if (output != null) {
-        
         output.write(linebuffer.toString());
-        output.write("\n");
         linebuffer = new StringBuilder();
       }
-      
     } catch (IOException ex) {
-      
-      ex.printStackTrace(System.err);
+        LOG.throwing("TranscriptOutputStream", "flush", ex);
     }
   }
-  
-  /**
-   * {@inheritDoc}
-   */
-  public void close() {
 
+  /** {@inheritDoc} */
+  public void close() {
     if (output != null) {
-      
       try {
-        
         output.close();
         output = null;
-        
       } catch (Exception ex) {
-        
-        ex.printStackTrace(System.err);
-      }      
+        LOG.throwing("TranscriptOutputStream", "close", ex);
+      }
     }
-    
+
     if (transcriptWriter != null) {
-      
       try {
-        
         transcriptWriter.close();
         transcriptWriter = null;
-        
       } catch (Exception ex) {
-        
-        ex.printStackTrace(System.err);
-      }      
+        LOG.throwing("TranscriptOutputStream", "close", ex);
+      }
     }
-  }
-  
-  /**
-   * {@inheritDoc}
-   */
-  public void deletePrevious(final short zchar) {
-    
-    // transcript does not support deleting
+    initialized = false;
   }
 }

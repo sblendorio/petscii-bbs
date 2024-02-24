@@ -1,76 +1,68 @@
 /*
- * $Id: UserDictionary.java,v 1.6 2006/04/12 02:04:30 weiju Exp $
- * 
  * Created on 2006/01/09
- * Copyright 2005-2006 by Wei-ju Wu
+ * Copyright (c) 2005-2010, Wei-ju Wu.
+ * All rights reserved.
  *
- * This file is part of The Z-machine Preservation Project (ZMPP).
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * ZMPP is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * ZMPP is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with ZMPP; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * Neither the name of Wei-ju Wu nor the names of its contributors may
+ * be used to endorse or promote products derived from this software without
+ * specific prior written permission.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.zmpp.vm;
 
-import org.zmpp.base.MemoryReadAccess;
+import org.zmpp.base.Memory;
 import org.zmpp.encoding.ZCharDecoder;
-import org.zmpp.encoding.ZsciiString;
+import org.zmpp.encoding.ZCharEncoder;
 
 /**
  * This class implements a user dictionary. The specification suggests that
  * lookup is implemented using linear search in case the user dictionary
  * is specified as unordered (negative number of entries) and in case of
  * ordered a binary search will be performed.
- * 
  * @author Wei-ju Wu
- * @version 1.0
+ * @version 1.5
  */
 public class UserDictionary extends AbstractDictionary {
 
   /**
    * Constructor.
-   * 
-   * @param map the memory map
+   * @param memory the Memory object
    * @param address the start address of the dictionary
-   * @param converter a Z char decoder object
-   * @param sizes a sizes object
+   * @param decoder a ZCharDecoder object
+   * @param encoder a ZCharEncoder object
    */
-  public UserDictionary(MemoryReadAccess memaccess, int address,
-                        ZCharDecoder decoder) {
-    
-    super(memaccess, address, decoder, new DictionarySizesV4ToV8());
+  public UserDictionary(Memory memory, int address,
+                        ZCharDecoder decoder, ZCharEncoder encoder) {
+    super(memory, address, decoder, encoder, new DictionarySizesV4ToV8());
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public int lookup(final ZsciiString token) {
-
-    // We only implement linear search for the moment
+  /** {@inheritDoc} */
+  public int lookup(final String token) {
+    // We only implement linear search for user dictionaries
     final int n = Math.abs(getNumberOfEntries());
-    final ZsciiString lookupToken = truncateToken(token);
-    
+    final byte[] tokenBytes = truncateTokenToBytes(token);
     for (int i = 0; i < n; i++) {
-      
       final int entryAddress = getEntryAddress(i);
-      final ZsciiString entry = getDecoder().decode2Zscii(getMemoryAccess(),
-                                                          entryAddress,
-                                                          getEntryLength());
-      if (lookupToken.equals(entry)) {
-        
-        return entryAddress;
-      }
+      if (tokenMatch(tokenBytes, entryAddress) == 0) { return entryAddress; }
     }
     return 0;
-  }  
+  }
 }

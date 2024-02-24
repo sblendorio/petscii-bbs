@@ -20,11 +20,11 @@ This framework provides base classes for build your own **BBS** in PETSCII mode,
 - [C64 Forever](https://www.c64forever.com/), running CCGMS (included)
 
 ## System requirements
-- Java Development Kit (JDK) and JRE version 1.8+
+- Java Development Kit (JDK) and JRE version 17+
 - A machine that will act as server
 
 ## Required skills
-- Knowledge of Java language (compiler version 1.8+)
+- Knowledge of Java language (compiler version 17+)
 - BASIC TCP/IP concepts
 - Knowledge of PETSCII encoding
 

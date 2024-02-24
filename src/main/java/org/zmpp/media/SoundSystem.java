@@ -1,84 +1,72 @@
 /*
- * $Id: SoundSystem.java,v 1.2 2006/02/21 23:59:55 weiju Exp $
- * 
  * Created on 2006/01/29
- * Copyright 2005-2006 by Wei-ju Wu
+ * Copyright (c) 2005-2010, Wei-ju Wu.
+ * All rights reserved.
  *
- * This file is part of The Z-machine Preservation Project (ZMPP).
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * ZMPP is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * ZMPP is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with ZMPP; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * Neither the name of Wei-ju Wu nor the names of its contributors may
+ * be used to endorse or promote products derived from this software without
+ * specific prior written permission.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.zmpp.media;
 
 /**
  * This interface defines the sound system of the Z-machine preservation
  * project.
- * 
+ *
  * @author Wei-ju Wu
- * @version 1.0
+ * @version 1.5
  */
 public interface SoundSystem {
 
-  /**
-   * High pitched bleep.
-   */
-  public static final int BLEEP_HIGH  = 1;
+  /** High pitched bleep. */
+  int BLEEP_HIGH  = 1;
 
-  /**
-   * Low pitched bleep.
-   */
-  public static final int BLEEP_LOW   = 2;
-  
-  /**
-   * Prepares a sound.
-   */
-  public static final int EFFECT_PREPARE  = 1;
-  
-  /**
-   * Starts a sound.
-   */
-  public static final int EFFECT_START    = 2;
-  
-  /**
-   * Stops a sound.
-   */
-  public static final int EFFECT_STOP     = 3;
-  
-  /**
-   * Finishes a sound.
-   */
-  public static final int EFFECT_FINISH   = 4;
-  
-  /**
-   * The maximum value for volume.
-   */
-  public static final int VOLUME_MAX = 0;
+  /** Low pitched bleep. */
+  int BLEEP_LOW   = 2;
 
-  /**
-   * The minimum value for volume.
-   */
-  public static final int VOLUME_MIN = 255;
-  
-  /**
-   * Sets the volume to default.
-   */
-  public static final int VOLUME_DEFAULT = -1;
-  
+  /** Prepares a sound. */
+  int EFFECT_PREPARE  = 1;
+
+  /** Starts a sound. */
+  int EFFECT_START    = 2;
+
+  /** Stops a sound. */
+  int EFFECT_STOP     = 3;
+
+  /** Finishes a sound. */
+  int EFFECT_FINISH   = 4;
+
+  /** The maximum value for volume. */
+  int VOLUME_MAX = 0;
+
+  /** The minimum value for volume. */
+  int VOLUME_MIN = 255;
+
+  /** Sets the volume to default. */
+  int VOLUME_DEFAULT = -1;
+
   /**
    * Plays a sound.
-   * 
+   *
    * @param number the number of the resource, 1 and 2 are bleeps
    * @param effect the effect
    * @param volume the volume
@@ -86,9 +74,7 @@ public interface SoundSystem {
    * @param routine the interrupt routine (can be 0)
    */
   void play(int number, int effect, int volume, int repeats, int routine);
-  
-  /**
-   * Resets the sound system.
-   */
-  void reset();  
+
+  /** Resets the sound system. */
+  void reset();
 }

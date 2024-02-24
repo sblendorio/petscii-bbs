@@ -2,8 +2,6 @@ package eu.sblendorio.bbs.tenants.minitel;
 
 import eu.sblendorio.bbs.core.MinitelControls;
 import eu.sblendorio.bbs.core.MinitelThread;
-import org.zmpp.textui.VirtualConsole;
-import org.zmpp.textui.bbs.BBSMachineFactory;
 
 public class ZorkMachineMinitel extends MinitelThread {
 
@@ -59,7 +57,7 @@ public class ZorkMachineMinitel extends MinitelThread {
     @Override
     public void doLoop() throws Exception {
         logo();
-        resetInput();
+        resetInput();/* SBLEND
         try {
             final byte[] story = readBinaryFile(filename);
             BBSMachineFactory factory;
@@ -69,6 +67,6 @@ public class ZorkMachineMinitel extends MinitelThread {
             console.runTheGame();
         } catch (Exception ex) {
             log("Unexpected Exception", ex);
-        }
+        } */
     }
 }

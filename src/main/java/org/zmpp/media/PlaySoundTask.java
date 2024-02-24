@@ -1,31 +1,44 @@
 /*
- * $Id: PlaySoundTask.java,v 1.4 2006/04/12 02:04:30 weiju Exp $
- * 
  * Created on 2006/02/10
- * Copyright 2005-2006 by Wei-ju Wu
+ * Copyright (c) 2005-2010, Wei-ju Wu.
+ * All rights reserved.
  *
- * This file is part of The Z-machine Preservation Project (ZMPP).
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * ZMPP is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * ZMPP is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with ZMPP; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * Neither the name of Wei-ju Wu nor the names of its contributors may
+ * be used to endorse or promote products derived from this software without
+ * specific prior written permission.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.zmpp.media;
 
+import java.util.logging.Logger;
 import org.zmpp.base.Interruptable;
 
+/**
+ * Class to play sounds.
+ * @author Wei-ju Wu
+ * @version 1.5
+ */
 public class PlaySoundTask implements Runnable, SoundStopListener {
 
+  private static final Logger LOG = Logger.getLogger("org.zmpp");
   private int resourceNum;
   private SoundEffect sound;
   private int repeats;
@@ -34,16 +47,31 @@ public class PlaySoundTask implements Runnable, SoundStopListener {
   private Interruptable interruptable;
   private int routine;
   private boolean stopped;
-  
+
+  /**
+   * Constructor.
+   * @param resourceNum resource number
+   * @param sound sound object
+   * @param volume volume
+   * @param repeats number of repeats
+   */
   public PlaySoundTask(int resourceNum, SoundEffect sound, int volume,
                        int repeats) {
-  
     this(resourceNum, sound, volume, repeats, null, 0);
   }
-  
+
+  /**
+   * Constructor.
+   * @param resourceNum resource number
+   * @param sound sound object
+   * @param volume playback volume
+   * @param repeats number of repeats
+   * @param interruptable interruptable object (should not be used anymore)
+   * @param routine the interrupt routine
+   * @deprecated interrupts should be implemented differently
+   */
   public PlaySoundTask(int resourceNum, SoundEffect sound, int volume,
       int repeats, Interruptable interruptable, int routine) {
-    
     this.resourceNum = resourceNum;
     this.sound = sound;
     this.repeats = repeats;
@@ -51,115 +79,78 @@ public class PlaySoundTask implements Runnable, SoundStopListener {
     this.interruptable = interruptable;
     this.routine = routine;
   }
-  
+
   /**
    * Returns the resource number.
-   * 
    * @return the resource number
    */
-  public int getResourceNumber() {
-  
-    return resourceNum;
-  }
-  
-  /**
-   * {@inheritDoc}
-   */
+  public int getResourceNumber() { return resourceNum; }
+
+  /** {@inheritDoc} */
   public void run() {
-  
     sound.addSoundStopListener(this);
     sound.play(repeats, volume);
-      
+
     synchronized (this) {
-      
       while (!wasPlayed()) {
-        
         try { wait(); } catch (Exception ex) {
-          
-          ex.printStackTrace(System.err);
+          LOG.throwing("PlaySoundTask", "run", ex);
         }
       }
     }
     sound.removeSoundStopListener(this);
     if (!wasStopped() && interruptable != null && routine > 0) {
-      
       interruptable.setInterruptRoutine(routine);
     }
   }
-  
+
   /**
    * Returns the status of the played flag.
-   * 
    * @return the played flag
    */
-  public synchronized boolean wasPlayed() {
-    
-    return played;
-  }
-  
+  public synchronized boolean wasPlayed() { return played; }
+
   /**
    * Sets the status of the played flag and notifies waiting threads.
-   * 
    * @param flag the played flag
    */
   private synchronized void setPlayed(final boolean flag) {
-  
     played = flag;
     notifyAll();
   }
-  
+
   /**
    * Returns the status of the stopped flag.
-   * 
    * @return the stopped flag
    */
-  private synchronized boolean wasStopped() {
-    
-    return stopped;
-  }
-  
+  private synchronized boolean wasStopped() { return stopped; }
+
   /**
    * Sets the stopped flag and notifies waiting threads.
-   * 
-   * @param flag
+   * @param flag true to stop, false otherwise
    */
   private synchronized void setStopped(final boolean flag) {
-    
     stopped = flag;
     notifyAll();
   }
-  
-  /**
-   * Stops the sound.
-   */
+
+  /** Stops the sound. */
   public synchronized void stop() {
-    
     if (!wasPlayed()) {
-      
       setStopped(true);
       sound.stop();
     }
   }
 
-  /**
-   * This method waits until the sound was completely played or stopped.
-   */
+  /** This method waits until the sound was completely played or stopped. */
   public synchronized void waitUntilDone() {
-    
     while (!wasPlayed()) {
-      
       try { wait(); } catch (Exception ex) {
-        
-        ex.printStackTrace(System.err);
+        LOG.throwing("PlaySoundTask", "waitUntilDone", ex);
       }
     }
   }
-  
-  /**
-   * {@inheritDoc}
-   */
-  public void soundStopped(final SoundEffect sound) {
 
-    setPlayed(true);
-  }  
+  /** {@inheritDoc} */
+  public void soundStopped(final SoundEffect aSound) { setPlayed(true); }
 }

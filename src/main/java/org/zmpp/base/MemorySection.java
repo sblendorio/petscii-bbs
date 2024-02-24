@@ -1,154 +1,107 @@
 /*
- * $Id: MemorySection.java,v 1.5 2006/04/12 02:04:30 weiju Exp $
- * 
  * Created on 2005/09/23
- * Copyright 2005-2006 by Wei-ju Wu
+ * Copyright (c) 2005-2010, Wei-ju Wu.
+ * All rights reserved.
  *
- * This file is part of The Z-machine Preservation Project (ZMPP).
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * ZMPP is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * ZMPP is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with ZMPP; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * Neither the name of Wei-ju Wu nor the names of its contributors may
+ * be used to endorse or promote products derived from this software without
+ * specific prior written permission.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.zmpp.base;
 
 /**
- * A MemorySection object wraps a reference to a MemoryAccess object, a length
- * and a start to support subsections within memory.
+ * A MemorySection object wraps a Memory object, a length and a start to
+ * support subsections within memory.
  * All access functions will be relative to the initialized start offset
  * within the global memory.
- * 
+ *
  * @author Wei-ju Wu
- * @version 1.0
+ * @version 1.5
  */
-public class MemorySection implements MemoryAccess {
+public class MemorySection implements Memory {
 
-  private MemoryAccess memaccess;
+  private Memory memory;
   private int start;
   private int length;
-  
-  public MemorySection(final MemoryAccess memaccess, final int start,
-      final int length) {
-    
-    super();
-    this.memaccess = memaccess;
+
+  /**
+   * Constructor.
+   * @param memory the Memory objeci to wrap
+   * @param start the start of the section
+   * @param length the length of the section
+   */
+  public MemorySection(final Memory memory, final int start, final int length) {
+    this.memory = memory;
     this.start = start;
     this.length = length;
   }
-  
+
   /**
    * Returns the length of this object in bytes.
-   * 
    * @return the length in bytes
    */
-  public int getLength() {
-    
-    return length;
-  }
-    
-  /**
-   * {@inheritDoc}
-   */
-  public long readUnsigned48(final int address) {
-  
-    return memaccess.readUnsigned48(address + start);
-  }
-  
-  /**
-   * {@inheritDoc}
-   */
-  public void writeUnsigned48(final int address, final long value) {
-    
-    memaccess.writeUnsigned48(address + start, value);
-  }
-  
-  /**
-   * {@inheritDoc}
-   */
-  public void writeUnsignedShort(final int address, final int value) {
-    
-    memaccess.writeUnsignedShort(address + start, value);
+  public int getLength() { return length; }
+
+  /** {@inheritDoc} */
+  public void writeUnsigned16(final int address, final char value) {
+    memory.writeUnsigned16(address + start, value);
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public void writeShort(final int address, final short value) {
-    
-    memaccess.writeShort(address + start, value);
+  /** {@inheritDoc} */
+  public void writeUnsigned8(final int address, final char value) {
+    memory.writeUnsigned8(address + start, value);
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public void writeUnsignedByte(final int address, final short value) {
-
-    memaccess.writeUnsignedByte(address + start, value);
+  /** {@inheritDoc} */
+  public char readUnsigned16(final int address) {
+    return memory.readUnsigned16(address + start);
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public void writeByte(final int address, final byte value) {
-
-    memaccess.writeByte(address + start, value);
+  /** {@inheritDoc} */
+  public char readUnsigned8(final int address) {
+    return memory.readUnsigned8(address + start);
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public void writeUnsigned32(final int address, final long value) {
-
-    memaccess.writeUnsigned32(address + start, value);
+  /** {@inheritDoc} */
+  public void copyBytesToArray(byte[] dstData, int dstOffset,
+                               int srcOffset, int numBytes) {
+    memory.copyBytesToArray(dstData, dstOffset, srcOffset + start,
+                            numBytes);
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public long readUnsigned32(final int address) {
-    
-    return memaccess.readUnsigned32(address + start);
+  /** {@inheritDoc} */
+  public void copyBytesFromArray(byte[] srcData, int srcOffset, int dstOffset,
+                                 int numBytes) {
+    memory.copyBytesFromArray(srcData, srcOffset, dstOffset + start, numBytes);
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public int readUnsignedShort(final int address) {
-    
-    return memaccess.readUnsignedShort(address + start);
+  /** {@inheritDoc} */
+  public void copyBytesFromMemory(Memory srcMem, int srcOffset, int dstOffset,
+                                  int numBytes) {
+    memory.copyBytesFromMemory(srcMem, srcOffset, dstOffset + start, numBytes);
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public short readShort(final int address) {
-    
-    return memaccess.readShort(address + start);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public short readUnsignedByte(final int address) {
-    
-    return memaccess.readUnsignedByte(address + start);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public byte readByte(final int address) {
-    
-    return memaccess.readByte(address + start);
+  /** {@inheritDoc} */
+  public void copyArea(int src, int dst, int numBytes) {
+    memory.copyArea(src + start, dst + start, numBytes);
   }
 }
