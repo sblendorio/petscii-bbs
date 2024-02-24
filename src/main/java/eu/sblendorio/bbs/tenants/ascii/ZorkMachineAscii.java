@@ -33,12 +33,6 @@ public class ZorkMachineAscii extends AsciiThread {
             final byte[] story = readBinaryFile(filename);
             BbsScreenModel zorkMachine = new BbsScreenModel(story, this);
             zorkMachine.runTheGame();
-            /* SBLEND
-            BBSMachineFactory factory;
-            factory = new BBSMachineFactory(story, this);
-            factory.buildMachine();
-            VirtualConsole console = factory.getUI();
-            console.runTheGame();*/
         } catch (Exception ex) {
             log("Unexpected Exception", ex);
         }

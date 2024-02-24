@@ -5,6 +5,7 @@ import eu.sblendorio.bbs.core.PetsciiColors;
 import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import org.apache.commons.lang3.StringUtils;
+import org.zmpp.textui.cli.BbsScreenModel;
 
 @Hidden
 public class ZorkMachine extends PetsciiThread {
@@ -54,19 +55,16 @@ public class ZorkMachine extends PetsciiThread {
         write(PetsciiColors.CYAN); print("     "); write(PetsciiColors.GREY2); print("RESTORE");  write(PetsciiColors.CYAN); println(" to resume game");
         println();
         write(PetsciiColors.GREY3);
-        /* SBLEND
         try {
             final byte[] story = readBinaryFile(filename);
-            BBSMachineFactory factory = new BBSMachineFactory(story, this, 9);
-            factory.buildMachine();
-            VirtualConsole console = factory.getUI();
-            console.runTheGame();
+            BbsScreenModel zorkMachine = new BbsScreenModel(story, this, 9);
+            zorkMachine.runTheGame();
         } catch (Exception ex) {
             if (!"Exit from ZMPP game".equalsIgnoreCase(ex.getMessage())) {
                 log("Forced exit from zork machine (" + filename + ")");
                 throw ex;
             }
             log("Exiting zork machine (" + filename + ")");
-        } */
+        }
     }
 }

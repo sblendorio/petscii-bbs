@@ -2,6 +2,7 @@ package eu.sblendorio.bbs.tenants.prestel;
 
 import eu.sblendorio.bbs.core.PrestelControls;
 import eu.sblendorio.bbs.core.PrestelThread;
+import org.zmpp.textui.cli.BbsScreenModel;
 
 public class ZorkMachinePrestel extends PrestelThread {
 
@@ -27,16 +28,13 @@ public class ZorkMachinePrestel extends PrestelThread {
     public void doLoop() throws Exception {
         logo();
         resetInput();
-        write(PrestelControls.CURSOR_ON); /* SBLEND
+        write(PrestelControls.CURSOR_ON);
         try {
             final byte[] story = readBinaryFile(filename);
-            BBSMachineFactory factory;
-            factory = new BBSMachineFactory(story, this);
-            factory.buildMachine();
-            VirtualConsole console = factory.getUI();
-            console.runTheGame();
+            BbsScreenModel zorkMachine = new BbsScreenModel(story, this);
+            zorkMachine.runTheGame();
         } catch (Exception ex) {
             log("Unexpected Exception", ex);
-        } */
+        }
     }
 }
