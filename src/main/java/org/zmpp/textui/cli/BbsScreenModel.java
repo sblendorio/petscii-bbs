@@ -1,14 +1,19 @@
 package org.zmpp.textui.cli;
 
-
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.HtmlUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.davidmoten.text.utils.WordWrap;
 import org.zmpp.ExecutionControl;
+import org.zmpp.base.DefaultMemory;
+import org.zmpp.iff.DefaultFormChunk;
+import org.zmpp.iff.FormChunk;
+import org.zmpp.iff.WritableFormChunk;
 import org.zmpp.vm.InvalidStoryException;
 import org.zmpp.vm.MachineFactory;
 import org.zmpp.vm.MachineRunState;
+import org.zmpp.vm.SaveGameDataStore;
 import org.zmpp.windowing.*;
 import org.zmpp.windowing.BufferedScreenModel.StatusLineListener;
 
@@ -17,37 +22,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Mixes activites found in ZmppFrame, ScreenModelView and ScreenModelSplitView (swing client implementation)
- */
-public class BbsScreenModel implements ScreenModelListener,StatusLineListener {
-    private static Logger logger = LogManager.getLogger(BbsScreenModel.class);
+import static eu.sblendorio.bbs.core.HtmlUtils.inferDiacritics;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.defaultString;
+
+public class BbsScreenModel implements ScreenModelListener, StatusLineListener, SaveGameDataStore {
+    private static Logger logger = LogManager.getLogger("org.zmpp.screen");
 
     private String topRoomDescription ="";
 
-    /*
-    * Screen Model manages a virtual window
-    */
-    private final BufferedScreenModel screenModel = new BufferedScreenModel();
+    private final BufferedScreenModel screenModel = new BufferedScreenModel(); // Screen Model manages a virtual window
 
-    /*
-     * The actual Zork adventure file
-     */
+    // The actual Zork adventure file
     private final InputStream storyFile;
-    //private final InputStream storyFile = BbsScreenModel.class.getResourceAsStream("/zmpp/Zork-1-ITA-v7.z5");
-    //private final InputStream storyFile = BBSScreenModel.class.getResourceAsStream("/games/zork1.z3");
+
     private final BbsThread bbsThread;
+
     int nlines;
 
-    /*
-         * Execution control setup and run the Zork VM, constrol user input
-         */
-    private ExecutionControl executionControl;
-
-
+    private ExecutionControl executionControl; // Execution control setup and run the Zork VM, constrol user input
 
     private MachineRunState currentRunState;
-
 
     public MachineRunState getCurrentRunState() {
         return currentRunState;
@@ -67,15 +62,18 @@ public class BbsScreenModel implements ScreenModelListener,StatusLineListener {
             if (getCurrentRunState().isWaitingForInput()) {
                 bbsThread.flush();
                 bbsThread.resetInput();
-                String inputLine = bbsThread.readLine();
+                String rawInputLine = bbsThread.readLine();
+                String inputLine = inferDiacritics(rawInputLine);
                 setCurrentRunState(getExecutionControl().resumeWithInput(inputLine));
             }
         }
     }
+
     //usato solo per pulire la console
     public void clearScreen() {
         /*bbsThread.cls();
         bbsThread.flush();*/
+        bbsThread.optionalCls();
     }
     public BbsScreenModel(byte[] storyFile, BbsThread bbsThread) throws IOException,InvalidStoryException {
         this(storyFile, bbsThread, 0);
@@ -85,43 +83,27 @@ public class BbsScreenModel implements ScreenModelListener,StatusLineListener {
         this.bbsThread = bbsThread;
         this.storyFile = new ByteArrayInputStream(storyFile);
         this.nlines = nlines;
-        /*
-         * Zork VM configuration
-         */
+
+        // Zork VM configuration
         MachineFactory.MachineInitStruct initStruct = new MachineFactory.MachineInitStruct();
-        
         this.screenModel.addScreenModelListener(this);
-        
-        
+
         initStruct.storyFile = this.storyFile;
         initStruct.screenModel = this.screenModel;
-        initStruct.statusLine = this.screenModel; 
+        initStruct.statusLine = this.screenModel;
+        initStruct.saveGameDataStore = this;
 
         this.executionControl = new ExecutionControl(initStruct);
 
-        
-        /*
-         * Wiring game with the virtual window
-         */
+        // Wiring game with the virtual window
         this.screenModel.init(this.executionControl.getMachine(), this.executionControl.getZsciiEncoding());
-
-
-
-        
     }
 
     public void run(){
-
-        /*
-         * Starting the game
-         */
-        this.setCurrentRunState(this.executionControl.run());
-
+        this.setCurrentRunState(this.executionControl.run()); // Starting the game
     }
 
-   
-    //Implementation of screenModellistener
-
+    // Implementation of screenModellistener
     @Override
     public void screenModelUpdated(ScreenModel screenModel) {
         clearScreen();
@@ -138,11 +120,12 @@ public class BbsScreenModel implements ScreenModelListener,StatusLineListener {
     private void showText(AnnotatedText segment) {
         if (segment == null || segment.getText() == null || segment.getText().isBlank()) return;
 
-        String text = segment
-                .getText()
-                .replace("\r\n", "\n")
-                .replace("\r", "\n");
-
+        String text = bbsThread.preprocessDiacritics(
+            segment
+            .getText()
+            .replace("\r\n", "\n")
+            .replace("\r", "\n")
+        );
         wordWrap(text).forEach(s -> {
             bbsThread.print(s);
             if (!s.endsWith(">")) {
@@ -152,26 +135,13 @@ public class BbsScreenModel implements ScreenModelListener,StatusLineListener {
                 checkForScreenPaging();
             }
         });
-        /*
-                List<String> rows = wordWrap(text);
-for (int i=0; i<rows.size(); i++) {
-            String row = rows.get(i);
-            bbsThread.print(row);
-            if (!row.trim().endsWith(">")) {
-                bbsThread.println();
-            }
-        }*/
-
         bbsThread.flush();
         nlines = 0;
-
     }
 
     @Override
     public void topWindowUpdated(int cursorx, int cursory, AnnotatedCharacter c) {
-
         topRoomDescription += ""+c.getCharacter();
-
     }
 
     @Override
@@ -198,7 +168,6 @@ for (int i=0; i<rows.size(); i++) {
         throw new UnsupportedOperationException("Unimplemented method 'statusLineUpdated'");
     }
 
-
     protected List<String> wordWrap(String s) {
         String[] cleaned = s.split("\n");
         List<String> result = new ArrayList<>();
@@ -214,7 +183,6 @@ for (int i=0; i<rows.size(); i++) {
         }
         return result;
     }
-
 
     private void checkForScreenPaging() {
         if (nlines >= bbsThread.getScreenRows() - 1) {
@@ -232,4 +200,83 @@ for (int i=0; i<rows.size(); i++) {
             }
         }
     }
+
+    // Implementation of SaveGameDataStore
+    @Override
+    public boolean saveFormChunk(final WritableFormChunk formchunk) {
+        RandomAccessFile raf = null;
+        String currentdir = new File(System.getProperty("user.dir")).getAbsolutePath();
+        try {
+            bbsThread.newline();
+            File saveFile;
+            boolean sure = true;
+            do {
+                bbsThread.print("Filename: ");
+                bbsThread.flush();
+                bbsThread.resetInput();
+                String filename = bbsThread.readLine();
+                if (isBlank(filename)) {
+                    bbsThread.println("Aborted.");
+                    return false;
+                }
+                saveFile = new File(currentdir + File.separator + filename.toLowerCase() + ".ziff");
+                if (saveFile.exists()) {
+                    bbsThread.println("WARNING: File already exists.");
+                    bbsThread.print("Keep going with this? (Y/N) ");
+                    bbsThread.flush();
+                    bbsThread.resetInput();
+                    String line = bbsThread.readLine();
+                    if (isBlank(line)) {
+                        bbsThread.println("Aborted.");
+                        return false;
+                    }
+                    final String response = defaultString(line).trim().toLowerCase();
+                    sure = response.equals("y") || response.equals("yes");
+                }
+            } while (!sure);
+            raf = new RandomAccessFile(saveFile, "rw");
+            byte[] data = formchunk.getBytes();
+            raf.write(data);
+            return true;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (raf != null) try { raf.close(); } catch (Exception ex) { }
+        }
+
+        return false;
+    }
+
+    @Override
+    public FormChunk retrieveFormChunk() {
+        RandomAccessFile raf = null;
+        String currentdir = new File(System.getProperty("user.dir")).getAbsolutePath();
+        try {
+            bbsThread.newline();
+            bbsThread.print("Filename: ");
+            bbsThread.flush();
+            bbsThread.resetInput();
+            String filename = bbsThread.readLine();
+            if (isBlank(filename)) {
+                bbsThread.println("Aborted.");
+                return null;
+            }
+            File loadFile = new File(currentdir + File.separator + filename.toLowerCase() + ".ziff");
+            if (!loadFile.exists()) {
+                bbsThread.println("File not found. Aborted.");
+                return null;
+            }
+            raf = new RandomAccessFile(loadFile, "r");
+            byte[] data = new byte[(int) raf.length()];
+            raf.readFully(data);
+            return new DefaultFormChunk(new DefaultMemory(data));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (raf != null) try { raf.close(); } catch (Exception ex) { }
+        }
+
+        return null;
+    }
+
 }

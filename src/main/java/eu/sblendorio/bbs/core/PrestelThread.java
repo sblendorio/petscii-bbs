@@ -3,6 +3,7 @@ package eu.sblendorio.bbs.core;
 import java.io.IOException;
 import java.net.Socket;
 
+import static eu.sblendorio.bbs.core.HtmlUtils.utilHtmlDiacriticsToAscii;
 import static eu.sblendorio.bbs.core.PrestelControls.*;
 
 @Hidden
@@ -44,6 +45,11 @@ public abstract class PrestelThread extends BbsThread {
         write(HOME);
         for (int i=0; i<y; ++i) write(CURSOR_DOWN);
         for (int i=0; i<x; ++i) write(CURSOR_RIGHT);
+    }
+
+    @Override
+    public String preprocessDiacritics(String s) {
+        return utilHtmlDiacriticsToAscii(s);
     }
 
 }

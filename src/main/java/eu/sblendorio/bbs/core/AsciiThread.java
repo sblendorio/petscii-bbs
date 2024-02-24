@@ -53,4 +53,9 @@ public abstract class AsciiThread extends BbsThread {
         return utilHtmlDiacriticsToAscii(utilHtmlClean(s));
     }
 
+    @Override
+    public String preprocessDiacritics(String s) {
+        return utilHtmlDiacriticsToAscii(s);
+    }
+
 }

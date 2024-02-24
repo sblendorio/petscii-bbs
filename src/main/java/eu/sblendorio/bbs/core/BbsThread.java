@@ -687,4 +687,8 @@ public abstract class BbsThread extends Thread {
         return utilHtmlClean(s);
     }
 
+    public String preprocessDiacritics(String s) {
+        return s;
+    }
+
 }

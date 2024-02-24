@@ -123,6 +123,21 @@ public class HtmlUtils {
                 ;
     }
 
+    public static String inferDiacritics(String s) {
+        return s
+            .replace("a'", "à")
+            .replace("A'", "À")
+            .replace("e'", "è")
+            .replace("E'", "È")
+            .replace("i'", "ì")
+            .replace("I'", "Ì")
+            .replace("o'", "ò")
+            .replace("O'", "Ò")
+            .replace("u'", "ù")
+            .replace("U'", "Ù")
+        ;
+    }
+
     public static String utilHtmlDiacriticsToAscii(String s) {
         return s
             .replaceAll("[àá]", "a'")

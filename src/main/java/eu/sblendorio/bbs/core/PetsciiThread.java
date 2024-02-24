@@ -48,4 +48,9 @@ public abstract class PetsciiThread extends BbsThread {
         return utilHtmlDiacriticsToAscii(utilHtmlClean(s));
     }
 
+    @Override
+    public String preprocessDiacritics(String s) {
+        return utilHtmlDiacriticsToAscii(s);
+    }
+
 }
