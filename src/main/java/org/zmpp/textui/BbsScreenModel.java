@@ -1,7 +1,6 @@
-package org.zmpp.textui.cli;
+package org.zmpp.textui;
 
 import eu.sblendorio.bbs.core.BbsThread;
-import eu.sblendorio.bbs.core.HtmlUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.davidmoten.text.utils.WordWrap;
@@ -23,8 +22,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static eu.sblendorio.bbs.core.HtmlUtils.inferDiacritics;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class BbsScreenModel implements ScreenModelListener, StatusLineListener, SaveGameDataStore {
     private static Logger logger = LogManager.getLogger("org.zmpp.screen");

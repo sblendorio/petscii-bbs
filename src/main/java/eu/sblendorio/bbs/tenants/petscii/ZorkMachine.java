@@ -5,7 +5,7 @@ import eu.sblendorio.bbs.core.PetsciiColors;
 import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import org.apache.commons.lang3.StringUtils;
-import org.zmpp.textui.cli.BbsScreenModel;
+import org.zmpp.textui.BbsScreenModel;
 
 @Hidden
 public class ZorkMachine extends PetsciiThread {

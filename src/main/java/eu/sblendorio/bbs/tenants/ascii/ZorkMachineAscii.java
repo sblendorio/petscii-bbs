@@ -1,7 +1,7 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
 import eu.sblendorio.bbs.core.AsciiThread;
-import org.zmpp.textui.cli.BbsScreenModel;
+import org.zmpp.textui.BbsScreenModel;
 
 public class ZorkMachineAscii extends AsciiThread {
 

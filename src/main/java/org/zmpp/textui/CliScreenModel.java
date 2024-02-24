@@ -1,4 +1,4 @@
-package org.zmpp.textui.cli;
+package org.zmpp.textui;
 
 
 import java.io.BufferedReader;

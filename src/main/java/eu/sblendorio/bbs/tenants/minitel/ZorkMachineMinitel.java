@@ -2,7 +2,7 @@ package eu.sblendorio.bbs.tenants.minitel;
 
 import eu.sblendorio.bbs.core.MinitelControls;
 import eu.sblendorio.bbs.core.MinitelThread;
-import org.zmpp.textui.cli.BbsScreenModel;
+import org.zmpp.textui.BbsScreenModel;
 
 public class ZorkMachineMinitel extends MinitelThread {
 

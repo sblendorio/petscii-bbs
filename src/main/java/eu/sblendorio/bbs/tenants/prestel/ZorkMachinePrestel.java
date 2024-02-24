@@ -2,7 +2,7 @@ package eu.sblendorio.bbs.tenants.prestel;
 
 import eu.sblendorio.bbs.core.PrestelControls;
 import eu.sblendorio.bbs.core.PrestelThread;
-import org.zmpp.textui.cli.BbsScreenModel;
+import org.zmpp.textui.BbsScreenModel;
 
 public class ZorkMachinePrestel extends PrestelThread {
 
