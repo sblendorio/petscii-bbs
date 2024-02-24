@@ -126,17 +126,19 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
             .replace("\r\n", "\n")
             .replace("\r", "\n")
         );
-        wordWrap(text).forEach(s -> {
+        List<String> lines = wordWrap(text);
+        for (int i=0; i<lines.size(); i++) {
+            String s = lines.get(i);
             bbsThread.print(s);
-            if (!s.trim().endsWith(">")) {
+            if (i < lines.size() - 1) {
                 nlines++;
                 bbsThread.println();
                 bbsThread.checkBelowLine();
                 checkForScreenPaging();
-            } else {
+            } else if (s.trim().endsWith(">")) {
                 nlines = 0;
             }
-        });
+        }
         bbsThread.flush();
 
     }

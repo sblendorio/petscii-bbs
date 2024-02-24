@@ -53,11 +53,11 @@ public class MenuVic20 extends AsciiThread {
         println("1-CNN     N-TicTacToe");
         println("2-BBC     O-Connect 4");
         println("3-PoliticoP-Zork I");
-        println("4-AJPlus  Q-Zork II");
-        println("5-FoxNews R-Zork III");
-        println("6-IRNews  S-Hitchhikr");
-        println("7-VCFNews A-Planetfal");
-        println("8-8bitGuy     Service");
+        println("4-AJPlus  C-Zork(ita)");
+        println("5-FoxNews Q-Zork II");
+        println("6-IRNews  R-Zork III");
+        println("7-VCFNews S-Hitchhikr");
+        println("8-8bitGuy A-Planetfal");
         println("Italian News  -------");
         println("F-Televideo   T-Chat");
         println("G-Wired       U-Msgs");
@@ -163,6 +163,7 @@ public class MenuVic20 extends AsciiThread {
                 else if ("n".equals(choice)) subThread = new TicTacToeAscii();
                 else if ("o".equals(choice)) subThread = new Connect4Ascii();
                 else if ("p".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
+                else if ("c".equals(choice)) subThread = new ZorkMachineAscii("zmpp/Zork-1-ITA-v7.z5");
                 else if ("q".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
                 else if ("r".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
                 else if ("s".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
