@@ -190,7 +190,9 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
 
     private void checkForScreenPaging() {
         if (nlines >= bbsThread.getScreenRows() - 1) {
-            bbsThread.print("--- ANY KEY FOR NEXT PAGE -------------");
+            bbsThread.print(bbsThread.getScreenColumns() >= 40
+                    ? "--- ANY KEY FOR NEXT PAGE -------------"
+                    : "--- MORE ------------");
             try {
                 bbsThread.flush();
                 bbsThread.resetInput();
