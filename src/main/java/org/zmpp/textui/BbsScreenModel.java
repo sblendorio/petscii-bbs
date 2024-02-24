@@ -50,13 +50,13 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
     public void setCurrentRunState(MachineRunState runState) {
         this.currentRunState = runState;
     }
+
     public ExecutionControl getExecutionControl() {
         return executionControl;
     }
 
-
     public void runTheGame() throws Exception {
-        run();
+        setCurrentRunState(this.executionControl.run()); // Starting the game
         while (getCurrentRunState() != MachineRunState.STOPPED) {
             if (getCurrentRunState().isWaitingForInput()) {
                 bbsThread.flush();
@@ -98,11 +98,7 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
         this.screenModel.init(this.executionControl.getMachine(), this.executionControl.getZsciiEncoding());
     }
 
-    public void run(){
-        this.setCurrentRunState(this.executionControl.run()); // Starting the game
-    }
-
-    // Implementation of screenModellistener
+    // Implementation of ScreenModelListener
     @Override
     public void screenModelUpdated(ScreenModel screenModel) {
         clearScreen();
@@ -155,7 +151,7 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
     @Override
     public void windowErased(int window) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'windowErased'");
+        logger.debug("Unimplemented method 'windowErased'");
     }
 
     @Override
@@ -166,9 +162,8 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
 
     @Override
     public void statusLineUpdated(String objectDescription, String status) {
-        logger.debug(objectDescription+" "+status);
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'statusLineUpdated'");
+        logger.debug("Unimplemented method 'statusLineUpdated'. " + objectDescription+" "+status);
     }
 
     protected List<String> wordWrap(String s) {
