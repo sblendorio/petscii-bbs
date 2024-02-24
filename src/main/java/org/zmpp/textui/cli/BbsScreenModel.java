@@ -128,7 +128,7 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
         );
         wordWrap(text).forEach(s -> {
             bbsThread.print(s);
-            if (!s.endsWith(">")) {
+            if (!s.trim().endsWith(">")) {
                 nlines++;
                 bbsThread.println();
                 bbsThread.checkBelowLine();
