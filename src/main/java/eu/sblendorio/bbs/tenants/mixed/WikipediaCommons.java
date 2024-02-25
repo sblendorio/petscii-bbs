@@ -85,6 +85,7 @@ public class WikipediaCommons {
         doc.select(".catlinks").remove();
         doc.select(".noprint").remove();
         doc.select(".metadata").remove();
+        doc.select(".mw-empty-elt").remove();
         doc.select(".toc").remove();
         doc.select("style").remove();
         doc.select("script").remove();
