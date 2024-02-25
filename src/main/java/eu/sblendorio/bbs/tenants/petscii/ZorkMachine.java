@@ -70,7 +70,7 @@ public class ZorkMachine extends PetsciiThread {
                     });
             zorkMachine.runTheGame();
         } catch (Exception ex) {
-            log("Exiting zork machine (" + filename + ")");
+            log("Exiting zork machine (" + filename + ")", ex);
         }
     }
 }
