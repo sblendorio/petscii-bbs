@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 public class Main {
     public static final boolean DEBUG = true;
-    private static final PropertyResourceBundle MESSAGE_BUNDLE = (PropertyResourceBundle) PropertyResourceBundle.getBundle("zmpp_messages");
+    private static final PropertyResourceBundle MESSAGE_BUNDLE = (PropertyResourceBundle) PropertyResourceBundle.getBundle("zmpp/zmpp_messages");
     public static final String APP_NAME = getMessage("app.name");
 
     public static String getMessage(String property) {
