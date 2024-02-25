@@ -20,6 +20,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static eu.sblendorio.bbs.core.HtmlUtils.inferDiacritics;
 import static org.apache.commons.lang3.StringUtils.defaultString;
@@ -35,7 +36,10 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
     // The actual Zork adventure file
     private final InputStream storyFile;
 
-    private final BbsThread bbsThread;
+    private BbsThread bbsThread = null;
+
+    private Runnable boldOn = null;
+    private Runnable boldOff = null;
 
     int nlines;
 
@@ -75,13 +79,19 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
         bbsThread.optionalCls();
     }
     public BbsScreenModel(byte[] storyFile, BbsThread bbsThread) throws IOException,InvalidStoryException {
-        this(storyFile, bbsThread, 0);
+        this(storyFile, bbsThread, 0, null, null);
     }
 
-    public BbsScreenModel(byte[] storyFile, BbsThread bbsThread, int nlines) throws IOException,InvalidStoryException{
+    public BbsScreenModel(byte[] storyFile, BbsThread bbsThread, int nlines) throws IOException,InvalidStoryException {
+        this(storyFile, bbsThread, nlines, null, null);
+    }
+
+    public BbsScreenModel(byte[] storyFile, BbsThread bbsThread, int nlines, Runnable boldOn, Runnable boldOff) throws IOException,InvalidStoryException{
         this.bbsThread = bbsThread;
         this.storyFile = new ByteArrayInputStream(storyFile);
         this.nlines = nlines;
+        this.boldOn = boldOn;
+        this.boldOff = boldOff;
 
         // Zork VM configuration
         MachineFactory.MachineInitStruct initStruct = new MachineFactory.MachineInitStruct();
@@ -113,7 +123,16 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
     }
 
     private void showText(AnnotatedText segment) {
-        if (segment == null || segment.getText() == null || segment.getText().isBlank()) return;
+        if (segment == null || segment.getText() == null || segment.getText().isBlank())
+            return;
+
+        if (segment.getAnnotation().isBold()) {
+            Optional.ofNullable(boldOn).ifPresent(Runnable::run);
+            bbsThread.println();
+            nlines++;
+        } else {
+            Optional.ofNullable(boldOff).ifPresent(Runnable::run);
+        }
 
         String text = bbsThread.preprocessDiacritics(
             segment
@@ -132,8 +151,11 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
                 checkForScreenPaging();
             } else if (s.trim().endsWith(">")) {
                 nlines = 0;
+            } else if (!s.trim().endsWith(">") && !s.trim().endsWith("?")) {
+                // bbsThread.println(); nlines++;
             }
         }
+
         bbsThread.flush();
 
     }
