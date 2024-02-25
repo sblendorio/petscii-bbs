@@ -40,6 +40,7 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
 
     private Runnable boldOn = null;
     private Runnable boldOff = null;
+    private Runnable afterPaging = null;
 
     int nlines;
 
@@ -79,20 +80,23 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
         bbsThread.optionalCls();
     }
     public BbsScreenModel(byte[] storyFile, BbsThread bbsThread) throws IOException,InvalidStoryException {
-        this(storyFile, bbsThread, 0, null, null);
+        this(storyFile, bbsThread, 0, null, null, null);
     }
 
     public BbsScreenModel(byte[] storyFile, BbsThread bbsThread, int nlines) throws IOException,InvalidStoryException {
-        this(storyFile, bbsThread, nlines, null, null);
+        this(storyFile, bbsThread, nlines, null, null, null);
     }
 
-    public BbsScreenModel(byte[] storyFile, BbsThread bbsThread, int nlines, Runnable boldOn, Runnable boldOff) throws IOException,InvalidStoryException{
+    public BbsScreenModel(byte[] storyFile, BbsThread bbsThread, int nlines, Runnable boldOn, Runnable boldOff) throws IOException,InvalidStoryException {
+        this(storyFile, bbsThread, nlines, boldOn, boldOff, null);
+    }
+    public BbsScreenModel(byte[] storyFile, BbsThread bbsThread, int nlines, Runnable boldOn, Runnable boldOff, Runnable afterPaging) throws IOException,InvalidStoryException{
         this.bbsThread = bbsThread;
         this.storyFile = new ByteArrayInputStream(storyFile);
         this.nlines = nlines;
         this.boldOn = boldOn;
         this.boldOff = boldOff;
-
+        this.afterPaging = afterPaging;
         // Zork VM configuration
         MachineFactory.MachineInitStruct initStruct = new MachineFactory.MachineInitStruct();
         this.screenModel.addScreenModelListener(this);
@@ -209,21 +213,25 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
     }
 
     private void checkForScreenPaging() {
-        if (nlines >= bbsThread.getScreenRows() - 1) {
-            bbsThread.print(bbsThread.getScreenColumns() >= 40
-                    ? "--- ANY KEY FOR NEXT PAGE -------------"
-                    : "--- MORE ------------");
-            try {
+        try {
+            if (nlines >= bbsThread.getScreenRows() - 1) {
+                bbsThread.print(bbsThread.getScreenColumns() >= 40
+                        ? "--- ANY KEY FOR NEXT PAGE -------------"
+                        : "--- MORE ------------");
                 bbsThread.flush();
                 bbsThread.resetInput();
                 bbsThread.readKey();
-                bbsThread.println();
-                bbsThread.println();
-                bbsThread.optionalCls();
+                if (afterPaging == null) {
+                    bbsThread.println();
+                    bbsThread.println();
+                    bbsThread.optionalCls();
+                } else {
+                    afterPaging.run();
+                }
                 nlines = 0;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

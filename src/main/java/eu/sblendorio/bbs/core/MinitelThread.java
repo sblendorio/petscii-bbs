@@ -97,6 +97,14 @@ public abstract class MinitelThread extends BbsThread {
         }
     }
 
+    public void clearLine() {
+        write(0x1b, 0x5b, 0x32, 0x4b);
+    }
+
+    public void clearLineAndCr() {
+        write(0x1b, 0x5b, 0x32, 0x4b, 0x0d);
+    }
+
     public void gotoXY(int x, int y) {
         // origin (0,0)
         write(MOVEXY, 0x41 + y, 0x41 + x);

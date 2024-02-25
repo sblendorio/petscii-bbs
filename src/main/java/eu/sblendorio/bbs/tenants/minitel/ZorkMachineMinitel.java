@@ -68,7 +68,9 @@ public class ZorkMachineMinitel extends MinitelThread {
         resetInput();
         try {
             final byte[] story = readBinaryFile(filename);
-            BbsScreenModel zorkMachine = new BbsScreenModel(story, this, 8, boldOn, boldOff);
+            BbsScreenModel zorkMachine = new BbsScreenModel(
+                    story, this, 8, boldOn, boldOff, this::clearLineAndCr
+            );
             zorkMachine.runTheGame();
         } catch (Exception ex) {
             log("Unexpected Exception", ex);

@@ -9,6 +9,7 @@ import org.zmpp.textui.BbsScreenModel;
 
 import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
 import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
+import static eu.sblendorio.bbs.core.PetsciiKeys.DEL;
 
 @Hidden
 public class ZorkMachine extends PetsciiThread {
@@ -60,7 +61,13 @@ public class ZorkMachine extends PetsciiThread {
         write(GREY3);
         try {
             final byte[] story = readBinaryFile(filename);
-            BbsScreenModel zorkMachine = new BbsScreenModel(story, this, 9, ()->write(WHITE), ()->write(GREY3));
+            BbsScreenModel zorkMachine = new BbsScreenModel(
+                    story, this, 9,
+                    () -> write(WHITE),
+                    () -> write(GREY3),
+                    () -> {
+                        for (int i=0; i<39; i++) write(DEL);
+                    });
             zorkMachine.runTheGame();
         } catch (Exception ex) {
             if (!"Exit from ZMPP game".equalsIgnoreCase(ex.getMessage())) {
