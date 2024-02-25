@@ -132,8 +132,9 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
 
         if (segment.getAnnotation().isBold()) {
             Optional.ofNullable(boldOn).ifPresent(Runnable::run);
-            bbsThread.println();
             nlines++;
+            bbsThread.println();
+            bbsThread.checkBelowLine();
         } else {
             Optional.ofNullable(boldOff).ifPresent(Runnable::run);
         }
@@ -159,13 +160,14 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
             } else if (s.trim().endsWith(">") || s.trim().endsWith("?")) {
                 nlines = 0;
             } else {
-                bbsThread.println();
                 nlines++;
+                bbsThread.println();
+                bbsThread.checkBelowLine();
+                checkForScreenPaging();
             }
         }
 
         bbsThread.flush();
-
     }
 
     @Override
