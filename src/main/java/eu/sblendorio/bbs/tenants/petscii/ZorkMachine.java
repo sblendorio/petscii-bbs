@@ -70,10 +70,6 @@ public class ZorkMachine extends PetsciiThread {
                     });
             zorkMachine.runTheGame();
         } catch (Exception ex) {
-            if (!"Exit from ZMPP game".equalsIgnoreCase(ex.getMessage())) {
-                log("Forced exit from zork machine (" + filename + ")");
-                throw ex;
-            }
             log("Exiting zork machine (" + filename + ")");
         }
     }
