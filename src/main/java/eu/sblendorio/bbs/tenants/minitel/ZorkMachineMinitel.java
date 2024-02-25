@@ -8,15 +8,22 @@ public class ZorkMachineMinitel extends MinitelThread {
 
     private final String filename;
     private byte[] logo = null;
+    private Runnable boldOn = null;
+    private Runnable boldOff = null;
 
     public ZorkMachineMinitel() {
         this("zmpp/zork3.z3");
     }
 
     public ZorkMachineMinitel(String filename, byte[] logo) {
+        this(filename, logo, null, null);
+    }
+    public ZorkMachineMinitel(String filename, byte[] logo, Runnable boldOn, Runnable boldOff) {
         super();
         this.filename = filename;
         this.logo = logo;
+        this.boldOn = boldOn;
+        this.boldOff = boldOff;
     }
 
     public ZorkMachineMinitel(String filename) {
@@ -61,7 +68,7 @@ public class ZorkMachineMinitel extends MinitelThread {
         resetInput();
         try {
             final byte[] story = readBinaryFile(filename);
-            BbsScreenModel zorkMachine = new BbsScreenModel(story, this, 8);
+            BbsScreenModel zorkMachine = new BbsScreenModel(story, this, 8, boldOn, boldOff);
             zorkMachine.runTheGame();
         } catch (Exception ex) {
             log("Unexpected Exception", ex);

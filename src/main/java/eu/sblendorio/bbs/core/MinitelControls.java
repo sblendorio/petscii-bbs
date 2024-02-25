@@ -37,8 +37,8 @@ public class MinitelControls {
     public static final byte LIGNAGE_ON = 0x59;
     public static final byte LIGNAGE_OFF = 0x5a;
 
-    public static final byte REV_ON = 0x5c;
-    public static final byte REV_OFF = 0x5d;
+    public static final byte REV_ON = 0x5d;
+    public static final byte REV_OFF = 0x5c;
 
     public static final byte[] CSI = { 0x1b, 0x5b };
 
