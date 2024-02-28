@@ -38,6 +38,7 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
 
     private BbsThread bbsThread = null;
 
+    private boolean firstNewline = false;
     private Runnable boldOn = null;
     private Runnable boldOff = null;
     private Runnable afterPaging = null;
@@ -132,12 +133,15 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
 
         if (segment.getAnnotation().isBold()) {
             Optional.ofNullable(boldOn).ifPresent(Runnable::run);
-            nlines++;
-            bbsThread.println();
-            bbsThread.checkBelowLine();
+            if (firstNewline) {
+                nlines++;
+                bbsThread.println();
+                bbsThread.checkBelowLine();
+            }
         } else {
             Optional.ofNullable(boldOff).ifPresent(Runnable::run);
         }
+        firstNewline = true;
 
         String text = bbsThread.preprocessDiacritics(
             segment

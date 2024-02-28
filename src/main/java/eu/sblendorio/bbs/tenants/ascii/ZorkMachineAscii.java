@@ -6,14 +6,22 @@ import org.zmpp.textui.BbsScreenModel;
 public class ZorkMachineAscii extends AsciiThread {
 
     private final String filename;
+    private Runnable boldOn;
+    private Runnable boldOff;
 
     public ZorkMachineAscii() {
         this("zmpp/zork3.z3");
     }
 
     public ZorkMachineAscii(String filename) {
+        this(filename, null, null);
+    }
+
+    public ZorkMachineAscii(String filename, Runnable boldOn, Runnable boldOff) {
         super();
         this.filename = filename;
+        this.boldOn = boldOn;
+        this.boldOff = boldOff;
     }
 
     public void logo() throws Exception {
@@ -31,7 +39,7 @@ public class ZorkMachineAscii extends AsciiThread {
         resetInput();
         try {
             final byte[] story = readBinaryFile(filename);
-            BbsScreenModel zorkMachine = new BbsScreenModel(story, this);
+            BbsScreenModel zorkMachine = new BbsScreenModel(story, this, 0, boldOn, boldOff);
             zorkMachine.runTheGame();
         } catch (Exception ex) {
             log("Unexpected Exception", ex);

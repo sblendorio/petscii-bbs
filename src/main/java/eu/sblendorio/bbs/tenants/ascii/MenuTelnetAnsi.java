@@ -20,4 +20,14 @@ public class MenuTelnetAnsi extends MenuTelnetPureAscii {
         clsBytes = bytes("\033[H\033[2J");
     }
 
+    @Override
+    public void boldOn() {
+        write(bytes("\033[1m"));
+    }
+
+    @Override
+    public void boldOff() {
+        write(bytes("\033[0m"));
+    }
+
 }

@@ -21,7 +21,6 @@ import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
 public class MenuTelnetPureAscii extends AsciiThread {
-
     public MenuTelnetPureAscii() {
         super();
         setLocalEcho(true);
@@ -34,6 +33,10 @@ public class MenuTelnetPureAscii extends AsciiThread {
 
         screenColumns = 80;
     }
+
+    public void boldOn() {}
+
+    public void boldOff() {}
 
     @Override
     public void initBbs() throws Exception {
@@ -162,7 +165,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 else if ("i".equals(choice)) subThread = new TicTacToeAscii();
                 else if ("j".equals(choice)) subThread = new Connect4Ascii();
                 else if ("k".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
-                else if ("y".equals(choice)) subThread = new ZorkMachineAscii("zmpp/Zork-1-ITA-v7.z5");
+                else if ("y".equals(choice)) subThread = new ZorkMachineAscii("zmpp/Zork-1-ITA-v7.z5", this::boldOn, this::boldOff);
                 else if ("l".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
                 else if ("m".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
                 else if ("n".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
