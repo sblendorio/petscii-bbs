@@ -109,7 +109,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("i".equals(choice)) subThread = new TicTacToeAscii();
                 else if ("j".equals(choice)) subThread = new Connect4Ascii();
                 else if ("k".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork1.z3");
-                else if ("l".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/Zork-1-ITA-v7.z5", null, () -> attributes(REV_ON), () -> attributes(REV_OFF));
+                else if ("l".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/Zork-1-ITA-v7.z5", null, () -> attributes(CHAR_WHITE), () -> attributes(CHAR_GREEN));
                 else if ("m".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork2.z3");
                 else if ("n".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork3.z3");
                 else if ("o".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/hitchhiker-r60.z3", readBinaryFile("minitel/hitchhikers.vdt"));

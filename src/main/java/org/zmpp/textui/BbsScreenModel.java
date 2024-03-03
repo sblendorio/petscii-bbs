@@ -221,6 +221,7 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
     private void checkForScreenPaging() {
         try {
             if (nlines >= bbsThread.getScreenRows() - 1) {
+                Optional.ofNullable(boldOff).ifPresent(Runnable::run);
                 bbsThread.print(bbsThread.getScreenColumns() >= 40
                         ? "--- ANY KEY FOR NEXT PAGE -------------"
                         : "--- MORE ------------");
