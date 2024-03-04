@@ -132,12 +132,13 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
             return;
 
         if (segment.getAnnotation().isBold()) {
-            Optional.ofNullable(boldOn).ifPresent(Runnable::run);
             if (firstNewline) {
                 nlines++;
                 bbsThread.println();
                 bbsThread.checkBelowLine();
+                checkForScreenPaging();
             }
+            Optional.ofNullable(boldOn).ifPresent(Runnable::run);
         } else {
             Optional.ofNullable(boldOff).ifPresent(Runnable::run);
         }
