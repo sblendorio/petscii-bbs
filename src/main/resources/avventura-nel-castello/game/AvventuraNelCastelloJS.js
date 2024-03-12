@@ -2758,36 +2758,38 @@ class Avventura extends AvventuraNelCastelloJSEngine{
 			/* SEQUENZE */
 			sequenze:{
 				titolo: async () => {
-					this.CRT.clear();
-					await this.CRT.sleep(1000);
-					await this.CRT.println("    |>                    |>",{m: true});
-					await this.CRT.println("    |                     |",{m: true});
-					await this.CRT.println("   / \\     _   _   _     / \\",{m: true});
-					await this.CRT.println("  /   \\   | |_| |_| |   /   \\",{m: true});
-					await this.CRT.println(" /  #  \\  |         |  /  #  \\",{m: true});
-					await this.CRT.println("/=======\\ |   <#>   | /=======\\",{m: true});
-					await this.CRT.println("  |   |___|         |___|   |",{m: true});
-					await this.CRT.println("  |   |       ###       |   |",{m: true});
-					await this.CRT.println("  |   |      #####      |   |",{m: true});
-					await this.CRT.println("  |   |      #####      |   |",{m: true});
-					await this.CRT.println("===============================",{m: true});
-					bridge.revOn(); await this.CRT.print(i18n.title); bridge.revOff(); await this.CRT.println("");
-					await this.CRT.println("===============================\n",{m: true});
-					await this.CRT.wait();
-					let i=0;
-					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
-					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
-					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
-					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++], {nlAfter: 1});
-					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
-					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
-					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
-					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++], {nlAfter: 1});
-					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
-					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
-					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
-					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++], {nlAfter: 1});
-					await this.CRT.wait();
+				    if (bridge.showOriginalBanner()) {
+                        this.CRT.clear();
+                        await this.CRT.sleep(1000);
+                        await this.CRT.println("    |>                    |>",{m: true});
+                        await this.CRT.println("    |                     |",{m: true});
+                        await this.CRT.println("   / \\     _   _   _     / \\",{m: true});
+                        await this.CRT.println("  /   \\   | |_| |_| |   /   \\",{m: true});
+                        await this.CRT.println(" /  #  \\  |         |  /  #  \\",{m: true});
+                        await this.CRT.println("/=======\\ |   <#>   | /=======\\",{m: true});
+                        await this.CRT.println("  |   |___|         |___|   |",{m: true});
+                        await this.CRT.println("  |   |       ###       |   |",{m: true});
+                        await this.CRT.println("  |   |      #####      |   |",{m: true});
+                        await this.CRT.println("  |   |      #####      |   |",{m: true});
+                        await this.CRT.println("===============================",{m: true});
+                        bridge.revOn(); await this.CRT.print(i18n.title); bridge.revOff(); await this.CRT.println("");
+                        await this.CRT.println("===============================\n",{m: true});
+                        await this.CRT.wait();
+                        let i=0;
+                        await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
+                        await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
+                        await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
+                        await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++], {nlAfter: 1});
+                        await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
+                        await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
+                        await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
+                        await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++], {nlAfter: 1});
+                        await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
+                        await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
+                        await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
+                        await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++], {nlAfter: 1});
+                        await this.CRT.wait();
+                    }
 				},
 				prologo: async () => {
 					this.CRT.clear();

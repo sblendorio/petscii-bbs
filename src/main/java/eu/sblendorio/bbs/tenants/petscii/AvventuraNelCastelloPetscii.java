@@ -11,26 +11,15 @@ public class AvventuraNelCastelloPetscii extends PetsciiThread {
         public Bridge(BbsThread bbs) {
             super(bbs);
         }
-
-        @Override
-        public String transformDiacritics(String s) {
-            return HtmlUtils.utilHtmlDiacriticsToAscii(s);
-        }
-
-        @Override
-        public void revOn() {
-            write(PetsciiKeys.REVON);
-        }
-
-        @Override
-        public void revOff() {
-            write(PetsciiKeys.REVOFF);
-        }
+        @Override public boolean showOriginalBanner() { return true; }
+        @Override public String transformDiacritics(String s) { return HtmlUtils.utilHtmlDiacriticsToAscii(s);}
+        @Override public void revOn() { write(PetsciiKeys.REVON); }
+        @Override public void revOff() { write(PetsciiKeys.REVOFF); }
     }
     @Override
     public void doLoop() throws Exception {
         bridge = new Bridge(this);
-        bridge.init("it-it");
+        bridge.init("en-gb");
         bridge.start();
     }
 

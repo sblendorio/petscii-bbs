@@ -1881,17 +1881,16 @@ var i18n = {
 		sequences: {
 			title: [
 				`JavaScript adaptation of`,
-				`"CASTLE ADVENTURE" (original Italian "AVVENTURA NEL CASTELLO")`,
+				`"CASTLE ADVENTURE"  (original Italian:  "AVVENTURA NEL CASTELLO")`,
 				`by Federico Volpini`,
 				`(volpini.federico79@gmail.com)`,
 				`From the original Avventura nel Castello Version 4.1 for MS-DOS`,
 				`by Enrico Colombini and Chiara Tovena`,
 				`(C) Dinosoft 1982,1984,1987,1996`,
-				`Reproduced with the kind permission of the original authors`,
+				`Reproduced with the kind permission of  the original authors`,
 				`Distribution Licence: CC BY-NC-ND 4.0`,
-				`(Attribution-NonCommercial-NoDerivatives 4.0 International)`,
-				`Used sound library: Tone.js`,
-				`(https://tonejs.github.io/)`,
+				`(Attribution-NonCommercial-NoDerivatives`,
+				` 4.0 International)`,
 				`Translation into English by Adam Bishop (https://floss.social/@AdamBishop).`
 			],
 			prologue: [

@@ -66,6 +66,10 @@ public class AvventuraNelCastelloBridge {
         return result;
     }
 
+    public boolean showOriginalBanner() {
+        return true;
+    }
+
     public void print(String s) throws Exception {
         bbs.print(s);
     }
