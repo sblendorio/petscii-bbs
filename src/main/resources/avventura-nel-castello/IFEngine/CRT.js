@@ -54,8 +54,11 @@ class CRT{
 		if(options.cr) text += "\n";
 		
 		if(options.nlBefore > 0)
-		    for (let p=0; p<options.nlBefore; p++) bridge.println();
-			
+		    for (let p=0; p<options.nlBefore; p++) {
+                bridge.println();
+                this.currentCol = 1;
+		    }
+
 		text = this._truncate(text);
 
 		if(options.reversed){
@@ -71,10 +74,11 @@ class CRT{
                 if (options.reversed) bridge.revOff()
 		        bridge.println();
 			    if (options.reversed) bridge.revOn()
+    			this.currentCol = 1;
 		    } else {
 			    bridge.print(text[i]); // text
+                this.currentCol++;
 			}
-			this.currentCol++;
 			//this.fixed.append(text[i])
 			if(this.currentCol > this.width || text[i] == "\n"){
 
@@ -108,7 +112,10 @@ class CRT{
 		}
 
 		if(options.nlAfter > 0)
-		    for (let p=0; p<options.nlAfter; p++) bridge.println();
+		    for (let p=0; p<options.nlAfter; p++) {
+                bridge.println();
+                this.currentCol = 1
+		    }
 
 		bridge.flush();
 		
@@ -121,7 +128,10 @@ class CRT{
 			options = { ...this.printOptions, ...options };
 
 		if(options.nlBefore > 0)
-		    for (let p=0; p<options.nlBefore; p++) bridge.println();
+		    for (let p=0; p<options.nlBefore; p++) {
+		        bridge.println();
+		        this.currentCol = 1
+		    }
 
 
 		if(options.reversed){
@@ -143,6 +153,7 @@ class CRT{
                 if(options.reversed) bridge.revOff();
                 bridge.println();
                 if(options.reversed) bridge.revOn();
+                this.currentCol = 1;
             }
             bridge.print(splitLines[rn]);
         }
@@ -156,10 +167,14 @@ class CRT{
 
         if (text.slice(-1)=='\n') {
             bridge.println()
+            this.currentCol = 1;
         }
 
 		if(options.nlAfter > 0)
-		    for (let p=0; p<options.nlAfter; p++) bridge.println();
+		    for (let p=0; p<options.nlAfter; p++) {
+		        bridge.println();
+		        this.currentCol = 1
+		    }
 
         bridge.flush();
 
@@ -176,6 +191,7 @@ class CRT{
 	}
 
 	async input(cr, noInput){
+	    this.currentCol = 1;
 		if(cr==undefined)
 			cr = true;
 		

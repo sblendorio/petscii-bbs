@@ -91,7 +91,7 @@ public class AvventuraNelCastelloBridge {
         if (result.trim().equalsIgnoreCase(".")) return "stop";
         if (result.trim().equalsIgnoreCase("q")) return "stop";
         if (result.trim().equalsIgnoreCase("restore")) return "save";
-        return result;
+        return result.trim().toLowerCase();
     }
 
     public void pressAnyKey() throws Exception {
