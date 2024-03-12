@@ -114,6 +114,10 @@ public class AvventuraNelCastelloBridge {
         return bbs.getScreenColumns() - 1;
     }
 
+    public String transformDiacritics(String s) {
+        return s;
+    }
+
     public void flush() {
         bbs.flush();
     }

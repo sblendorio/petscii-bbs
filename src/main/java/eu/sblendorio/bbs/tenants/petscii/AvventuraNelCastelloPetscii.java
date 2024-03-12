@@ -1,9 +1,6 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
-import eu.sblendorio.bbs.core.AsciiThread;
-import eu.sblendorio.bbs.core.BbsThread;
-import eu.sblendorio.bbs.core.PetsciiKeys;
-import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.core.*;
 import eu.sblendorio.bbs.games.AvventuraNelCastelloBridge;
 
 public class AvventuraNelCastelloPetscii extends PetsciiThread {
@@ -13,6 +10,11 @@ public class AvventuraNelCastelloPetscii extends PetsciiThread {
     class Bridge extends AvventuraNelCastelloBridge {
         public Bridge(BbsThread bbs) {
             super(bbs);
+        }
+
+        @Override
+        public String transformDiacritics(String s) {
+            return HtmlUtils.utilHtmlDiacriticsToAscii(s);
         }
 
         @Override

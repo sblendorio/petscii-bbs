@@ -46,6 +46,7 @@ class CRT{
 	}
 
 	async printTyping(text, options){
+	    if (text) text = bridge.transformDiacritics(text);
 		if (options === undefined)
 			options = this.printOptions
 		else
@@ -122,6 +123,7 @@ class CRT{
 	}
 
 	async print(text, options){
+	    if (text) text = bridge.transformDiacritics(text);
 		if (options === undefined)
 			options = this.printOptions
 		else
