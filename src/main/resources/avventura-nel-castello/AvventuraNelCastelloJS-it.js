@@ -1301,8 +1301,8 @@ class Avventura extends AvventuraNelCastelloJSEngine{
 					...this.stanzeComuni.labirinto,
 					...{
 						directions: {
-							n: 'L29',
-							s: 'L31',
+							[i18n.specificMaze.sennoSsenseN]: 'L31',
+							[i18n.specificMaze.sennoNsenseS]: 'L29',
 							e: 'L30',
 							o: 'L31',
 							a: 'L32',
@@ -1319,8 +1319,8 @@ class Avventura extends AvventuraNelCastelloJSEngine{
 						directions: {
 							n: 'L30',
 							s: 'L31',
-							e: 'L30',
-							o: async () => {
+							[i18n.specificMaze.sennoEsenseO]: 'L30',
+							[i18n.specificMaze.sennoOsenseE]: async () => {
 								if(this.datiAvventura.objects.pergamena.tradotta){
 									this.entra('stanzaSegreta');
 									return false;

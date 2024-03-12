@@ -1301,8 +1301,8 @@ class Avventura extends AvventuraNelCastelloJSEngine{
 					...this.stanzeComuni.labirinto,
 					...{
 						directions: {
-							n: 'L31',
-							s: 'L29',
+							[i18n.specificMaze.sennoSsenseN]: 'L31',
+							[i18n.specificMaze.sennoNsenseS]: 'L29',
 							e: 'L30',
 							o: 'L31',
 							a: 'L32',

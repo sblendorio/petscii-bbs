@@ -4,6 +4,12 @@ var i18n = {
 	CRT: {
 		waitText: `Premere invio per continuare...`
 	},
+	specificMaze: {
+		sennoSsenseN: 's',
+		sennoNsenseS: 'n',
+		sennoEsenseO: 'e',
+		sennoOsenseE: 'o'
+	},
 	IFEngine: {
 		warnings: {
 			mustBeExtended: `IFEngine deve essere esteso`,
