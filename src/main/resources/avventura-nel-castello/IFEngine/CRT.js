@@ -27,7 +27,7 @@ class CRT{
 	}
 
 	async sleep(ms){
-		// SBLEND return new Promise(resolve => setTimeout(resolve, ms));
+		bridge.sleep(ms)
 	}
 
 	clear(){
@@ -120,6 +120,22 @@ class CRT{
 
 		bridge.flush();
 		
+	}
+
+	async printReverseLn(text, revText) {
+	    if (text) text = bridge.transformDiacritics(text);
+	    if (revText) revText = bridge.transformDiacritics(revText);
+	    var textParts = text.split(revText);
+	    if (textParts.length >= 1) bridge.print(textParts[0]);
+	    if (text.indexOf(revText) != -1) {
+	        bridge.revOn();
+	        bridge.print(revText);
+	        bridge.revOff();
+	    }
+        if (textParts.length >= 2) bridge.print(textParts[1]);
+
+	    bridge.println();
+	    this.currentCol = 1;
 	}
 
 	async print(text, options){

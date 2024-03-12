@@ -2840,7 +2840,8 @@ class Avventura extends AvventuraNelCastelloJSEngine{
 					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.fly.string[i++],{printDelay:100});
 					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.fly.string[i++],{printDelay:100});
 					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.fly.string[i++],{printDelay:1});
-					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.fly.string[i].replace(i18n.AvventuraNelCastelloJS.sequences.fly.reversed,`<span class='reversed'>${i18n.AvventuraNelCastelloJS.sequences.fly.reversed}</span>`),{printDelay:1,nlAfter:1});
+					await this.CRT.printReverseLn(i18n.AvventuraNelCastelloJS.sequences.fly.string[i], i18n.AvventuraNelCastelloJS.sequences.fly.reversed);
+
 					//await this.CRT.println("                 ===========",{printDelay:1});
 					await this.s0();
 					await this.CRT.wait();
@@ -2961,7 +2962,8 @@ class Avventura extends AvventuraNelCastelloJSEngine{
 					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.again.string[i++],{printDelay:100});
 					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.again.string[i++],{printDelay:100});
 					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.again.string[i++],{printDelay:1});
-					await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.again.string[i++].replace(i18n.AvventuraNelCastelloJS.sequences.again.reversed,`<span class='reversed'>${i18n.AvventuraNelCastelloJS.sequences.again.reversed}</span>`,{printDelay:1}));
+					await this.CRT.printReverseLn(i18n.AvventuraNelCastelloJS.sequences.again.string[i++], i18n.AvventuraNelCastelloJS.sequences.again.reversed);
+
 					await this.s0();
 
 					await this.CRT.wait();

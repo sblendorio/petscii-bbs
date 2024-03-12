@@ -117,6 +117,8 @@ public class AvventuraNelCastelloBridge {
         bbs.flush();
     }
 
+    public void sleep(long ms) throws Exception {}
+
     public void revOn() {}
 
     public void revOff() {}
