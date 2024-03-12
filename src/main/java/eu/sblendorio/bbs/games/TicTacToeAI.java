@@ -1,5 +1,5 @@
 // CREDITS: https://github.com/bigbhowell/tic-tac-toe
-package eu.sblendorio.bbs.games_ai;
+package eu.sblendorio.bbs.games;
 
 //
 //  File: TicTacToeAI.java

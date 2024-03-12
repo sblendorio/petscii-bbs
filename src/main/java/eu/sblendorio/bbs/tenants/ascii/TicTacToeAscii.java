@@ -3,7 +3,7 @@ package eu.sblendorio.bbs.tenants.ascii;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsInputOutput;
 import eu.sblendorio.bbs.core.Hidden;
-import eu.sblendorio.bbs.games_ai.TicTacToeAI;
+import eu.sblendorio.bbs.games.TicTacToeAI;
 
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;

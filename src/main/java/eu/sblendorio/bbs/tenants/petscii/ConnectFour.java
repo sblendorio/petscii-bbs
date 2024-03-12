@@ -3,8 +3,8 @@ package eu.sblendorio.bbs.tenants.petscii;
 import com.google.common.collect.ImmutableMap;
 import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.PetsciiThread;
-import eu.sblendorio.bbs.games_ai.ConnectFourAI.Board;
-import eu.sblendorio.bbs.games_ai.ConnectFourAI;
+import eu.sblendorio.bbs.games.ConnectFourAI.Board;
+import eu.sblendorio.bbs.games.ConnectFourAI;
 
 import java.util.Map;
 

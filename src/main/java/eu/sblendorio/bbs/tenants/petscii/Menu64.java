@@ -83,8 +83,8 @@ public class Menu64 extends PetsciiThread {
                     goodbye();
                     return;
                 }
-                else if (key == '1') menuNewsIta();
-                else if (key == '2') menuNewsEng();
+                else if (key == '1') menuNewsEng();
+                else if (key == '2') menuNewsIta();
                 else if (key == '3') menuGames();
                 else if (key == '4') menuDownloads();
                 else if (key == '5') launch(new Chat64());
@@ -398,7 +398,7 @@ public class Menu64 extends PetsciiThread {
         write(HOME);
         drawLogo();
         write(GREY3);
-        gotoXY(22,19);
+        gotoXY(22,20);
         flush();
         resetInput();
         readKey();

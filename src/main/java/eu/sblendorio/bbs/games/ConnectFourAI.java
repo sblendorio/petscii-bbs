@@ -1,5 +1,5 @@
 // CREDITS: https://github.com/jn1772/Connect4AI
-package eu.sblendorio.bbs.games_ai;
+package eu.sblendorio.bbs.games;
 
 import java.util.Scanner;
 

@@ -2,7 +2,7 @@ package eu.sblendorio.bbs.tenants.petscii;
 
 import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.PetsciiThread;
-import eu.sblendorio.bbs.games_ai.TicTacToeAI;
+import eu.sblendorio.bbs.games.TicTacToeAI;
 
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
