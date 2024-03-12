@@ -28,7 +28,7 @@ public class AvventuraNelCastelloPetscii extends PetsciiThread {
     @Override
     public void doLoop() throws Exception {
         bridge = new Bridge(this);
-        bridge.init("it");
+        bridge.init("it-it");
         bridge.start();
     }
 

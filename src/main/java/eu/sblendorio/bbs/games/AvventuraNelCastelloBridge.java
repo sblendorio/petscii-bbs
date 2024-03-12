@@ -133,28 +133,18 @@ public class AvventuraNelCastelloBridge {
     public void beep() {}
 
     public void init(String lang) throws Exception {
-        String locale;
-        String script;
-
-        if ("it".equalsIgnoreCase(lang)) {
-            locale = "it-it.i18n.js";
-            script = "AvventuraNelCastelloJS-it.js";
-        } else {
-            locale = "en-gb.i18n.js";
-            script = "AvventuraNelCastelloJS-en.js";
-        }
         bindings = new SimpleBindings();
         bindings.put("polyglot.js.allowAllAccess", true);
 
         bindings.put("bridge", this);
-        engine.eval(new String(readBinaryFile("avventura-nel-castello/" + locale), UTF_8), bindings);
-        engine.eval(new String(readBinaryFile("avventura-nel-castello/IFEngine/Sound.js"), UTF_8), bindings);
-        engine.eval(new String(readBinaryFile("avventura-nel-castello/IFEngine/CRT.js"), UTF_8), bindings);
-        engine.eval(new String(readBinaryFile("avventura-nel-castello/IFEngine/Thesaurus.js"), UTF_8), bindings);
-        engine.eval(new String(readBinaryFile("avventura-nel-castello/IFEngine/Parser.js"), UTF_8), bindings);
-        engine.eval(new String(readBinaryFile("avventura-nel-castello/IFEngine/IFEngine.js"), UTF_8), bindings);
-        engine.eval(new String(readBinaryFile("avventura-nel-castello/IFEngine/AvventuraNelCastelloJSEngine.js"), UTF_8), bindings);
-        engine.eval(new String(readBinaryFile("avventura-nel-castello/" + script), UTF_8), bindings);
+        engine.eval(new String(readBinaryFile("avventura-nel-castello/" + lang + ".i18n.js"), UTF_8), bindings);
+        engine.eval(new String(readBinaryFile("avventura-nel-castello/Sound.js"), UTF_8), bindings);
+        engine.eval(new String(readBinaryFile("avventura-nel-castello/CRT.js"), UTF_8), bindings);
+        engine.eval(new String(readBinaryFile("avventura-nel-castello/Thesaurus.js"), UTF_8), bindings);
+        engine.eval(new String(readBinaryFile("avventura-nel-castello/Parser.js"), UTF_8), bindings);
+        engine.eval(new String(readBinaryFile("avventura-nel-castello/IFEngine.js"), UTF_8), bindings);
+        engine.eval(new String(readBinaryFile("avventura-nel-castello/AvventuraNelCastelloJSEngine.js"), UTF_8), bindings);
+        engine.eval(new String(readBinaryFile("avventura-nel-castello/AvventuraNelCastelloJS.js" ), UTF_8), bindings);
     }
 
     public void start() throws Exception {
