@@ -19,6 +19,15 @@ public class AvventuraNelCastelloPetscii extends PetsciiThread {
         public Bridge(BbsThread bbs) {
             super(bbs);
         }
+
+        @Override
+        public void pressAnyKey() throws Exception {
+            flush(); bbs.resetInput();
+            bbs.readKey();
+            bbs.write(bbs.backspace()); bbs.write(bbs.backspace());
+            bbs.newline();
+        }
+
         @Override public boolean showOriginalBanner() { return false; }
         @Override public String transformDiacritics(String s) { return HtmlUtils.utilHtmlDiacriticsToAscii(s);}
         @Override public void revOn() { write(PetsciiKeys.REVON); }
