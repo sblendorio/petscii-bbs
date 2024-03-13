@@ -22,6 +22,8 @@ import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
 public class MenuMinitelWithEcho extends MinitelThread {
+    final static byte[] SPLASH_CASTELLO_ITA = readBinaryFile("minitel/avventura-nel-castello.vdt");
+    final static byte[] SPLASH_CASTELLO_ENG = readBinaryFile("minitel/castle-adventure.vdt");
 
     private byte[] clsBytes = new byte[] { 12 };
 
@@ -164,9 +166,9 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("5".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork3.z3");
                 else if ("6".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/hitchhiker-r60.z3", readBinaryFile("minitel/hitchhikers.vdt"));
                 else if ("7".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/planetfall-r39.z3", readBinaryFile("minitel/planetfall.vdt"));
-                else if ("8".equals(choice)) subThread = new TicTacToeAscii(); // CASTLEADV
+                else if ("8".equals(choice)) subThread = new AvventuraNelCastelloMinitel(SPLASH_CASTELLO_ENG, "en-gb");
                 else if ("9".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/Zork-1-ITA-v7.z5", null, () -> attributes(CHAR_WHITE), () -> attributes(CHAR_GREEN));
-                else if ("0".equals(choice)) subThread = new TicTacToeAscii(); // AVVENTURA NEL CASTELLO
+                else if ("0".equals(choice)) subThread = new AvventuraNelCastelloMinitel(SPLASH_CASTELLO_ITA, "it-it");
                 else {
                     validKey = false;
                     subThread = null;
