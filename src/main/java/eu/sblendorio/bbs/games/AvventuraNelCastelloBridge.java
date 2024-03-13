@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static eu.sblendorio.bbs.core.BbsThread.readBinaryFile;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -103,6 +105,18 @@ public class AvventuraNelCastelloBridge {
         bbs.write(bbs.backspace());
         bbs.write(bbs.backspace());
         bbs.newline();
+    }
+
+    public void joke() throws Exception {
+        for (int i=0; i<bbs.getScreenRows(); i++) {
+            for (int j=0; j<width(); j++) {
+                int ch = ThreadLocalRandom.current().nextInt(32, 126 + 1);
+                int probability = ThreadLocalRandom.current().nextInt(0, 100);
+                bbs.write(ch);
+                if (probability < 20) beep();
+            }
+            bbs.newline();
+        }
     }
 
     public void clear() throws Exception {

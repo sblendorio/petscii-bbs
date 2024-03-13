@@ -1,0 +1,20 @@
+Retrocampus BBS for UNIX Telnet
+
+NEWS & MISC
+----------------------
+1 - International News
+2 - Italian News
+3 - Games
+4 - Patreon - list members
+5 - Patreon - Publishers
+
+SPECIALS
+-----------------
+A - Chat
+B - Private Msg
+C - Eliza
+D - Chat GPT
+E - Wikipedia
+F - Wifi Modem
+G - Apple-1 Demo
+. - Logout

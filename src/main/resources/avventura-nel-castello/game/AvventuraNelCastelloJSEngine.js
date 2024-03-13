@@ -1013,14 +1013,9 @@ class AvventuraNelCastelloJSEngine extends IFEngine{
 			}
 		}
 		// SBLEND document.querySelectorAll(".joke").forEach( el => el.remove() );
-		// await this.CRT.clear();
-		await this.CRT.println("");
-		await this.CRT.println("");
-		await this.CRT.println("**************");
-		await this.CRT.println("**************");
-		await this.CRT.println("* >> BOOM << *");
-		await this.CRT.println("**************");
-		await this.CRT.println("**************");
+        await this.CRT.println("");
+		await this.CRT.wait();
+        bridge.joke();
 		this.CRT.currentCol = 1;
 		await this.CRT.println(i18n.AvventuraNelCastelloJSEngine.insult.fuck,{reversed: true, nlBefore: 2, nlAfter: 1});
 		await this.s0(2);

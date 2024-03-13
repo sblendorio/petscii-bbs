@@ -1,0 +1,18 @@
+Retrocampus BBS for UNIX Telnet
+
+Puzzle Games
+------------
+1 - Tic-Tac-Toe
+2 - Connect 4
+
+Text Adventures
+---------------
+3 - Zork I
+4 - Zork II
+5 - Zork III
+6 - Hitchhiker's
+7 - Planetfall
+8 - Castle Adventure
+9 - Zork I (ITA)
+0 - Avventura nel Castello (ITA)
+. - Logout

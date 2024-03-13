@@ -1,0 +1,13 @@
+Retrocampus BBS - International News
+------------------------------------
+
+1 - CNN News
+2 - BBC News
+3 - Politico.com
+4 - Al Jazeera
+5 - Fox News
+6 - Indie Retro News
+7 - VCF News
+8 - The 8-Bit Guy
+9 - Amedeo Valoroso (ENG)
+. - Go back
