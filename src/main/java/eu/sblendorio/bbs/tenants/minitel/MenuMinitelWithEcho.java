@@ -39,6 +39,154 @@ public class MenuMinitelWithEcho extends MinitelThread {
     public String rssPropertyTimeoutDefault() { return "40000"; }
 
 
+    public void menuInternationalNews() throws Exception {
+        while (true) {
+            cls();
+            write(SCROLL_OFF);
+            write(readBinaryFile("minitel/menu-international-news.vdt"));
+            write(SCROLL_ON);
+            flush(); resetInput();
+            boolean validKey;
+            do {
+                validKey = true;
+                resetInput();
+                String choice;
+                int key = readSingleKey();
+                choice = String.valueOf((char) key);
+                resetInput();
+                choice = StringUtils.lowerCase(choice);
+                BbsThread subThread = null;
+                if (".".equals(choice)) {
+                    return;
+                }
+                else if ("1".equals(choice)) subThread = new CnnAscii(
+                        io,
+                        rssPropertyTimeout(),
+                        rssPropertyTimeoutDefault(),
+                        getTerminalType(),
+                        bytes(0x1b, 0x3a, 0x6a, 0x43, 0x1e, readBinaryFile("minitel/cnn_home.vdt"), 17),
+                        bytes(31, 64+15, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+15, 64+2 ,0x1b, 0x54, 0x1b, 0x47)
+                );
+                else if ("2".equals(choice)) subThread = new BbcAscii(
+                        io,
+                        rssPropertyTimeout(),
+                        rssPropertyTimeoutDefault(),
+                        getTerminalType(),
+                        bytes(0x1b, 0x3a, 0x6a, 0x43, 0x1e, readBinaryFile("minitel/bbc_home.vdt"), 17),
+                        bytes(31, 64+22, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+22, 64+2 ,0x1b, 0x54, 0x1b, 0x47)
+                );
+                else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii();
+                else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii();
+                else if ("5".equals(choice)) subThread = new OneRssFoxNewsAscii();
+                else if ("6".equals(choice)) subThread = new IndieRetroNewsAscii();
+                else if ("7".equals(choice)) subThread = new VcfedAscii();
+                else if ("8".equals(choice)) subThread = new The8BitGuyAscii();
+                else if ("9".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii();
+                else {
+                    validKey = false;
+                    subThread = null;
+                }
+
+                execute(subThread);
+            } while (!validKey);
+        }
+    }
+
+    public void menuItalianNews() throws Exception {
+        while (true) {
+            cls();
+            write(SCROLL_OFF);
+            write(readBinaryFile("minitel/menu-italian-news.vdt"));
+            write(SCROLL_ON);
+            flush(); resetInput();
+            boolean validKey;
+            do {
+                validKey = true;
+                resetInput();
+                String choice;
+                int key = readSingleKey();
+                choice = String.valueOf((char) key);
+                resetInput();
+                choice = StringUtils.lowerCase(choice);
+                BbsThread subThread = null;
+                if (".".equals(choice)) {
+                    return;
+                }
+                else if ("1".equals(choice)) subThread = new TelevideoRaiAscii(
+                        io,
+                        rssPropertyTimeout(),
+                        rssPropertyTimeoutDefault(),
+                        getTerminalType(),
+                        readBinaryFile("minitel/menu-televideo.vdt"),
+                        bytes(31, 64+23, 64+1, 32, 32, 32, 32, 32, 32, 31, 64+23, 64+1)
+                );
+                else if ("2".equals(choice)) subThread = new LercioAscii();
+                else if ("3".equals(choice)) subThread = new DisinformaticoAscii();
+                else if ("4".equals(choice)) subThread = new MupinAscii();
+                else if ("5".equals(choice)) subThread = new IlFattoQuotidianoAscii();
+                else if ("6".equals(choice)) subThread = new AmedeoValorosoAscii();
+                else if ("7".equals(choice)) subThread = new ButacAscii();
+                else if ("8".equals(choice)) subThread = new AlessandroAlbanoAscii();
+                else {
+                    validKey = false;
+                    subThread = null;
+                }
+
+                execute(subThread);
+            } while (!validKey);
+        }
+    }
+
+    public void menuGames() throws Exception {
+        while (true) {
+            cls();
+            write(SCROLL_OFF);
+            write(readBinaryFile("minitel/menu-games.vdt"));
+            write(SCROLL_ON);
+            flush(); resetInput();
+            boolean validKey;
+            do {
+                validKey = true;
+                resetInput();
+                String choice;
+                int key = readSingleKey();
+                choice = String.valueOf((char) key);
+                resetInput();
+                choice = StringUtils.lowerCase(choice);
+                BbsThread subThread = null;
+                if (".".equals(choice)) {
+                    return;
+                }
+                else if ("1".equals(choice)) subThread = new TicTacToeAscii();
+                else if ("2".equals(choice)) subThread = new Connect4Ascii();
+                else if ("3".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork1.z3");
+                else if ("4".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork2.z3");
+                else if ("5".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork3.z3");
+                else if ("6".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/hitchhiker-r60.z3", readBinaryFile("minitel/hitchhikers.vdt"));
+                else if ("7".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/planetfall-r39.z3", readBinaryFile("minitel/planetfall.vdt"));
+                else if ("8".equals(choice)) subThread = new TicTacToeAscii(); // CASTLEADV
+                else if ("9".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/Zork-1-ITA-v7.z5", null, () -> attributes(CHAR_WHITE), () -> attributes(CHAR_GREEN));
+                else if ("0".equals(choice)) subThread = new TicTacToeAscii(); // AVVENTURA NEL CASTELLO
+                else {
+                    validKey = false;
+                    subThread = null;
+                }
+
+                execute(subThread);
+            } while (!validKey);
+        }
+    }
+
+    public void execute(BbsThread subThread) throws Exception {
+        if (subThread == null) return;
+        if (subThread instanceof AsciiThread) {
+            ((AsciiThread) subThread).clsBytes = this.clsBytes;
+            ((AsciiThread) subThread).screenColumns = this.getScreenColumns();
+            ((AsciiThread) subThread).screenRows = this.getScreenRows();
+        }
+        launch(subThread);
+    }
+
     @Override
     public void doLoop() throws Exception {
         resetInput();
@@ -68,76 +216,27 @@ public class MenuMinitelWithEcho extends MinitelThread {
                     println("* Disconnected");
                     return;
                 }
-                else if ("1".equals(choice)) subThread = new CnnAscii(
-                        io,
-                        rssPropertyTimeout(),
-                        rssPropertyTimeoutDefault(),
-                        getTerminalType(),
-                        bytes(0x1b, 0x3a, 0x6a, 0x43, 0x1e, readBinaryFile("minitel/cnn_home.vdt"), 17),
-                        bytes(31, 64+15, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+15, 64+2 ,0x1b, 0x54, 0x1b, 0x47)
-                );
-                else if ("2".equals(choice)) subThread = new BbcAscii(
-                        io,
-                        rssPropertyTimeout(),
-                        rssPropertyTimeoutDefault(),
-                        getTerminalType(),
-                        bytes(0x1b, 0x3a, 0x6a, 0x43, 0x1e, readBinaryFile("minitel/bbc_home.vdt"), 17),
-                        bytes(31, 64+22, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+22, 64+2 ,0x1b, 0x54, 0x1b, 0x47)
-                );
-                else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii();
-                else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii();
-                else if ("5".equals(choice)) subThread = new OneRssFoxNewsAscii();
-                else if ("6".equals(choice)) subThread = new IndieRetroNewsAscii();
-                else if ("7".equals(choice)) subThread = new VcfedAscii();
-                else if ("8".equals(choice)) subThread = new The8BitGuyAscii();
-                else if ("a".equals(choice)) subThread = new TelevideoRaiAscii(
-                        io,
-                        rssPropertyTimeout(),
-                        rssPropertyTimeoutDefault(),
-                        getTerminalType(),
-                        readBinaryFile("minitel/menu-televideo.vdt"),
-                        bytes(31, 64+23, 64+1, 32, 32, 32, 32, 32, 32, 31, 64+23, 64+1)
-                );
-                else if ("b".equals(choice)) subThread = new LercioAscii();
-                else if ("c".equals(choice)) subThread = new DisinformaticoAscii();
-                else if ("d".equals(choice)) subThread = new MupinAscii();
-                else if ("e".equals(choice)) subThread = new IlFattoQuotidianoAscii();
-                else if ("f".equals(choice)) subThread = new AmedeoValorosoAscii();
-                else if ("z".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii();
-                else if ("g".equals(choice)) subThread = new ButacAscii();
-                else if ("h".equals(choice)) subThread = new AlessandroAlbanoAscii();
-                else if ("i".equals(choice)) subThread = new TicTacToeAscii();
-                else if ("j".equals(choice)) subThread = new Connect4Ascii();
-                else if ("k".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork1.z3");
-                else if ("l".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/Zork-1-ITA-v7.z5", null, () -> attributes(CHAR_WHITE), () -> attributes(CHAR_GREEN));
-                else if ("m".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork2.z3");
-                else if ("n".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork3.z3");
-                else if ("o".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/hitchhiker-r60.z3", readBinaryFile("minitel/hitchhikers.vdt"));
-                else if ("p".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/planetfall-r39.z3", readBinaryFile("minitel/planetfall.vdt"));
-                else if ("q".equals(choice)) subThread = new ChatA1(io, getTerminalType());
-                else if ("r".equals(choice)) subThread = new PrivateMessagesAscii(io);
-                else if ("s".equals(choice)) subThread = new ElizaAscii(io);
-                else if ("t".equals(choice)) subThread = new ClientChatGptAscii(io, readBinaryFile("minitel/chatgpt-mainlogo.vdt"));
-                else if ("u".equals(choice)) { showPatrons(); subThread = null; }
-                else if ("v".equals(choice)) { patronsPublishers(); subThread = null; }
+
+                else if ("1".equals(choice)) { menuInternationalNews(); subThread = null; }
+                else if ("2".equals(choice)) { menuItalianNews(); subThread = null; }
+                else if ("3".equals(choice)) { menuGames(); subThread = null; }
+                else if ("4".equals(choice)) { showPatrons(); subThread = null; }
+                else if ("5".equals(choice)) { patronsPublishers(); subThread = null; }
+                else if ("a".equals(choice)) subThread = new ChatA1(io, getTerminalType());
+                else if ("b".equals(choice)) subThread = new PrivateMessagesAscii(io);
+                else if ("c".equals(choice)) subThread = new ElizaAscii(io);
+                else if ("d".equals(choice)) subThread = new ClientChatGptAscii(io, readBinaryFile("minitel/chatgpt-mainlogo.vdt"));
                 //else if ("u".equals(choice)) { wifiModem(); subThread = null; }
-                else if ("w".equals(choice)) subThread = new WikipediaMinitel();
-                else if ("x".equals(choice)) { videotelVault(); subThread = null; }
-                else if ("y".equals(choice)) { textDemo(); subThread = null; }
-                else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii(io);
+                else if ("e".equals(choice)) subThread = new WikipediaMinitel();
+                else if ("f".equals(choice)) { videotelVault(); subThread = null; }
+                else if ("g".equals(choice)) { textDemo(); subThread = null; }
+                // else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii(io);
                 else if ("*".equals(choice)) subThread = new TestClientVideotex();
                 else {
                     validKey = false;
                     subThread = null;
                 }
-                if (subThread == null) continue;
-
-                if (subThread instanceof AsciiThread) {
-                    ((AsciiThread) subThread).clsBytes = this.clsBytes;
-                    ((AsciiThread) subThread).screenColumns = this.getScreenColumns();
-                    ((AsciiThread) subThread).screenRows = this.getScreenRows();
-                }
-                launch(subThread);
+                execute(subThread);
             } while (!validKey);
         }
     }
@@ -191,7 +290,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
         if (isSanremo()) {
             write(readBinaryFile("minitel/menu-retrocampus-sanremo.vdt"));
         } else {
-            write(readBinaryFile("minitel/menu-retrocampus.vdt"));
+            write(readBinaryFile("minitel/menu-retrocampus-main.vdt"));
         }
         write(SCROLL_ON);
         flush(); resetInput();
