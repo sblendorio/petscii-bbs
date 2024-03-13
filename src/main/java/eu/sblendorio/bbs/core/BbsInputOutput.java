@@ -187,19 +187,12 @@ public abstract class BbsInputOutput extends Reader {
                 if (getLocalEcho()) {
                     if (mask) {
                         write('*');
+                    } else if (!upcase || !Character.isLetter(ch)) {
+                        write(ch);
                     } else {
-                        if (!upcase) {
-                            write(ch);
-                        } else {
-                            char temp = (char) convertToAscii(ch);
-                            if (temp >= 'a' && temp <= 'z') {
-                                temp -= 32;
-                                print(""+temp);
-                            } else {
-                                write(ch);
-                            }
-                        }
+                        print(""+(char)Character.toUpperCase(ch));
                     }
+
                     afterReadLineChar();
                     flush();
                 }
