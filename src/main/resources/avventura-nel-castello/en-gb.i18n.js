@@ -151,7 +151,7 @@ var i18n = {
 		warnings: {
 			mustBeExtended: `The AvventuraNelCastelloEngine must be extended.`
 		},
-		defaultInput: `What are you going to do?`,
+		defaultInput: `>`, // What are you going to do?
 		prefixLabels: {
 			ISee: `I can see`,
 			cantSeeHere: `I can't see here`,
@@ -202,7 +202,7 @@ var i18n = {
 				pattern: `(look(?: at)?|observe|examine)`
 			},
 			drop: {
-				pattern: `(leave|put|drop|throw)`
+				pattern: `(leave|drop|throw)`
 			},
 			press: {
 				pattern: `press`

@@ -5,14 +5,17 @@ import static eu.sblendorio.bbs.core.Utils.bytes;
 public class MenuTelnetUtf8Ansi extends MenuTelnetPureAscii {
 
     @Override
-    protected void banner() {
-        write(readBinaryFile("ansi/Retrocampus.utf8ans"));
-        write(bytes("\033[0m"));
-    }
+    protected void banner() {}
 
     @Override
     public String getTerminalType() {
         return "utf8";
+    }
+
+    @Override
+    public void displayMenu() throws Exception {
+        cls();
+        write(readBinaryFile("ansi/RetrocampusBbsMainMenu.utf8ans"));
     }
 
     public MenuTelnetUtf8Ansi() {

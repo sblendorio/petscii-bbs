@@ -86,7 +86,7 @@ public class AvventuraNelCastelloBridge {
     public String readLine() throws Exception {
         flush();
         bbs.resetInput();
-        String result = bbs.readLine();
+        String result = bbs.readLineUppercase();
         if (result.trim().equalsIgnoreCase(".")) return "stop";
         if (result.trim().equalsIgnoreCase("q")) return "stop";
         if (result.trim().equalsIgnoreCase("restore")) return "save";

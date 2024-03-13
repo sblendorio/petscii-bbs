@@ -145,15 +145,25 @@ public abstract class BbsInputOutput extends Reader {
     public void checkBelowLine() {
     }
 
+
+    // 0, false, null, true
+    public String readLineUppercase() throws IOException {
+        return readLineParametric(0, false, null, true, true);
+    }
+
     public String readLine(int maxLength, boolean mask, Set<Integer> allowedChars) throws IOException {
         return readLineParametric(maxLength, mask, allowedChars, true);
     }
 
     public String readLineParametric(int maxLength, boolean mask, Set<Integer> allowedChars, boolean sendCr) throws IOException {
+        return readLineParametric(maxLength, mask, allowedChars, sendCr, false);
+    }
+    public String readLineParametric(int maxLength, boolean mask, Set<Integer> allowedChars, boolean sendCr, boolean upcase) throws IOException {
         int ch;
         readBuffer = EMPTY;
         do {
             ch = readKey();
+            if (upcase && ch >= 'a' && ch <= 'z') ch -= 32;
             if (isBackspace(ch)) {
                 if (readBuffer.length() > 0) {
                     if (getLocalEcho()) {
@@ -175,7 +185,21 @@ public abstract class BbsInputOutput extends Reader {
                 readBuffer += "\"";
             } else if (isPrintableChar(ch) && (maxLength == 0 || readBuffer.length() < maxLength)) {
                 if (getLocalEcho()) {
-                    write(mask ? '*' : ch);
+                    if (mask) {
+                        write('*');
+                    } else {
+                        if (!upcase) {
+                            write(ch);
+                        } else {
+                            char temp = (char) convertToAscii(ch);
+                            if (temp >= 'a' && temp <= 'z') {
+                                temp -= 32;
+                                print(""+temp);
+                            } else {
+                                write(ch);
+                            }
+                        }
+                    }
                     afterReadLineChar();
                     flush();
                 }
@@ -187,7 +211,7 @@ public abstract class BbsInputOutput extends Reader {
         }
         final String result = readBuffer;
         readBuffer = EMPTY;
-        return result;
+        return upcase ? result.toUpperCase() : result;
     }
 
     public String readLineBuffer() {
