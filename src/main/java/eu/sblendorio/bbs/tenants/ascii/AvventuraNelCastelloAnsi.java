@@ -21,11 +21,21 @@ public class AvventuraNelCastelloAnsi extends AsciiThread {
     }
 
     public void printText(byte[] bytes) {
+        int col = 0;
+
         for (byte b : bytes)
-            if (b != '\n')
+            if (b != '\n') {
                 write(b);
-            else
+                col++;
+            } else {
+                for (int j=col; j<78; j++) write(' ');
+                write("\033[m".getBytes(ISO_8859_1));
                 println();
+                write("\033[7m".getBytes(ISO_8859_1));
+                col = 0;
+            }
+        if (col != 0) for (int j=col; j<78; j++) write(' ');
+        write("\033[m".getBytes(ISO_8859_1));
         flush();
     }
 
@@ -48,8 +58,7 @@ public class AvventuraNelCastelloAnsi extends AsciiThread {
         flush(); resetInput();
         keyPressed(30000);
         resetInput();
-        newline();
-        newline();
+        cls();
         bridge = new Bridge(this);
         bridge.init(locale);
         bridge.start();
