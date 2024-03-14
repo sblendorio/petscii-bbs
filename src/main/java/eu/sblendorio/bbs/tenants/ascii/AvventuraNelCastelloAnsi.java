@@ -33,9 +33,10 @@ public class AvventuraNelCastelloAnsi extends AsciiThread {
         public Bridge(BbsThread bbs) {
             super(bbs);
         }
+        @Override public boolean showOriginalBanner() { return false; }
         @Override public String transformDiacritics(String s) { return utf8 ? s : HtmlUtils.utilHtmlDiacriticsToAscii(s);}
         @Override public void revOn() { write("\033[7m".getBytes(ISO_8859_1)); }
-        @Override public void revOff() { write("\033[27m".getBytes(ISO_8859_1)); }
+        @Override public void revOff() { write("\033[m".getBytes(ISO_8859_1)); }
 
     }
 
@@ -49,8 +50,6 @@ public class AvventuraNelCastelloAnsi extends AsciiThread {
         resetInput();
         newline();
         newline();
-        newline();
-
         bridge = new Bridge(this);
         bridge.init(locale);
         bridge.start();
