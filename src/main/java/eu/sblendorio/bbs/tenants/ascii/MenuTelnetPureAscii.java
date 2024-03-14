@@ -295,14 +295,17 @@ public class MenuTelnetPureAscii extends AsciiThread {
                     println("* Disconnected");
                     return;
                 }
-                else if ("i".equals(choice)) subThread = new TicTacToeAscii();
-                else if ("j".equals(choice)) subThread = new Connect4Ascii();
-                else if ("k".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
-                else if ("y".equals(choice)) subThread = new ZorkMachineAscii("zmpp/Zork-1-ITA-v7.z5", this::boldOn, this::boldOff);
-                else if ("l".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
-                else if ("m".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
-                else if ("n".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
-                else if ("x".equals(choice)) subThread = new ZorkMachineAscii("zmpp/planetfall-r39.z3");
+                else if ("1".equals(choice)) subThread = new TicTacToeAscii();
+                else if ("2".equals(choice)) subThread = new Connect4Ascii();
+                else if ("3".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
+                else if ("4".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
+                else if ("5".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
+                else if ("6".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
+                else if ("7".equals(choice)) subThread = new ZorkMachineAscii("zmpp/planetfall-r39.z3");
+                else if ("8".equals(choice)) subThread = createCastleAdventure();
+                else if ("9".equals(choice)) subThread = new ZorkMachineAscii("zmpp/Zork-1-ITA-v7.z5", this::boldOn, this::boldOff);
+                else if ("0".equals(choice)) subThread = createAvventuraNelCastello();
+
                 else {
                     validKey = false;
                     subThread = null;
@@ -310,6 +313,14 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 execute(subThread);
             } while (!validKey);
         }
+    }
+
+    public BbsThread createAvventuraNelCastello() {
+        return new AvventuraNelCastelloAscii();
+    }
+
+    public BbsThread createCastleAdventure() {
+        return null;
     }
 
     public String readChoice() throws IOException {

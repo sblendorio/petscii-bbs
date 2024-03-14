@@ -12,11 +12,6 @@ public class MenuTelnetUtf8Ansi extends MenuTelnetPureAscii {
         return "utf8";
     }
 
-    @Override
-    public void displayMenu() throws Exception {
-        cls();
-        write(readBinaryFile("ansi/RetrocampusBbsMainMenu.utf8ans"));
-    }
 
     public MenuTelnetUtf8Ansi() {
         super();
