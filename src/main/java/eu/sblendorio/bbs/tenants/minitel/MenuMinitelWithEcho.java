@@ -217,7 +217,6 @@ public class MenuMinitelWithEcho extends MinitelThread {
                     println("* Disconnected");
                     return;
                 }
-
                 else if ("1".equals(choice)) { menuInternationalNews(); subThread = null; }
                 else if ("2".equals(choice)) { menuItalianNews(); subThread = null; }
                 else if ("3".equals(choice)) { menuGames(); subThread = null; }

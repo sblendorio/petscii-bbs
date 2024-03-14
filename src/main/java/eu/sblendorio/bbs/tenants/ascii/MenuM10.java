@@ -42,7 +42,6 @@ public class MenuM10 extends MenuApple1 {
     public void showMainMenu() {
         cls();
         println("Retrocampus BBS for KC85 - M10");
-        println();
         println("NEWS & MISC             SPECIALS");
         println("----------------------  --------");
         println("1 - International News  A - Chat");
@@ -67,12 +66,25 @@ public class MenuM10 extends MenuApple1 {
 
     public void showItalianNews() {
         cls();
-        printText(readBinaryFile("ascii/menu80-italian-news.txt"));
+        println("Retrocampus BBS - Italian News");
+        println("---------------------------------------");
+        println("1 - Televideo       6 - Amedeo Valoroso");
+        println("2 - Lercio          7 - Butac.it");
+        println("3 - Disinformatico  8 - A. Albano");
+        println("4 - Mupin.it        . - Go back");
+        println("5 - Fatto Quotidiano");
     }
 
     public void showGames() {
         cls();
-        printText(readBinaryFile("ascii/menu80-games.txt"));
+        println("Games");
+        println("---------------------------------------");
+        println("1 - Tic-Tac-Toe  6 - Hitchhiker's");
+        println("2 - Connect 4    7 - Planetfall");
+        println("3 - Zork I       8 - Castle Adventure");
+        println("4 - Zork II      9 - Zork I (ITA)");
+        println("5 - Zork III     0 - Avv.Castello (ITA)");
+        println(". - Logout");
     }
 
     public String readChoice() throws Exception {
