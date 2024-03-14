@@ -17,6 +17,6 @@ D - Chat GPT
 E - Wifi Modem
 F - Apple-1 Demo
 G - Wikipedia
-. - Go back
+. - Logout
 
 

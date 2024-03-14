@@ -148,7 +148,7 @@ public abstract class BbsInputOutput extends Reader {
 
     // 0, false, null, true
     public String readLineUppercase() throws IOException {
-        return readLineParametric(0, false, null, true, true);
+        return readLineParametric(0, false, null, true, true, true);
     }
 
     public String readLine(int maxLength, boolean mask, Set<Integer> allowedChars) throws IOException {
@@ -156,15 +156,17 @@ public abstract class BbsInputOutput extends Reader {
     }
 
     public String readLineParametric(int maxLength, boolean mask, Set<Integer> allowedChars, boolean sendCr) throws IOException {
-        return readLineParametric(maxLength, mask, allowedChars, sendCr, false);
+        return readLineParametric(maxLength, mask, allowedChars, sendCr, false, false);
     }
-    public String readLineParametric(int maxLength, boolean mask, Set<Integer> allowedChars, boolean sendCr, boolean upcase) throws IOException {
+    public String readLineParametric(int maxLength, boolean mask, Set<Integer> allowedChars, boolean sendCr, boolean upcase, boolean noEmpty) throws IOException {
         int ch;
         readBuffer = EMPTY;
         do {
             ch = readKey();
-            if (upcase && ch >= 'a' && ch <= 'z') ch -= 32;
-            if (isBackspace(ch)) {
+            if (noEmpty && isNewline(ch) && readBuffer.trim().isEmpty()) {
+                ch = 0;
+                continue;
+            } else if (isBackspace(ch)) {
                 if (readBuffer.length() > 0) {
                     if (getLocalEcho()) {
                         writeBackspace();
@@ -192,7 +194,6 @@ public abstract class BbsInputOutput extends Reader {
                     } else {
                         print(""+(char)Character.toUpperCase(ch));
                     }
-
                     afterReadLineChar();
                     flush();
                 }

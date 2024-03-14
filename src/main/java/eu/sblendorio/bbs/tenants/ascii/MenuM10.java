@@ -84,7 +84,7 @@ public class MenuM10 extends MenuApple1 {
         println("3 - Zork I       8 - Castle Adventure");
         println("4 - Zork II      9 - Zork I (ITA)");
         println("5 - Zork III     0 - Avv.Castello (ITA)");
-        println(". - Logout");
+        println(". - Go back");
     }
 
     public String readChoice() throws Exception {
