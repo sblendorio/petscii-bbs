@@ -40,7 +40,6 @@ public class MenuMinitelWithEcho extends MinitelThread {
 
     public String rssPropertyTimeoutDefault() { return "40000"; }
 
-
     public void menuInternationalNews() throws Exception {
         while (true) {
             cls();
@@ -228,10 +227,10 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("b".equals(choice)) subThread = new PrivateMessagesAscii(io);
                 else if ("c".equals(choice)) subThread = new ElizaAscii(io);
                 else if ("d".equals(choice)) subThread = new ClientChatGptAscii(io, readBinaryFile("minitel/chatgpt-mainlogo.vdt"));
-                //else if ("u".equals(choice)) { wifiModem(); subThread = null; }
                 else if ("e".equals(choice)) subThread = new WikipediaMinitel();
                 else if ("f".equals(choice)) { videotelVault(); subThread = null; }
                 else if ("g".equals(choice)) { textDemo(); subThread = null; }
+                else if ("h".equals(choice)) { wifiModem(); subThread = null; }
                 // else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii(io);
                 else if ("*".equals(choice)) subThread = new TestClientVideotex();
                 else {

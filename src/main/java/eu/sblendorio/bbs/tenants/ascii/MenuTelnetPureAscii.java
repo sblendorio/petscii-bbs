@@ -342,7 +342,6 @@ public class MenuTelnetPureAscii extends AsciiThread {
             println();
             resetInput();
             String choice;
-            print("> ");
             choice = readChoice();
             resetInput();
             choice = StringUtils.lowerCase(choice);
