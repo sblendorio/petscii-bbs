@@ -116,18 +116,6 @@ public class AvventuraNelCastelloBridge {
         bbs.newline();
     }
 
-    public void joke() throws Exception {
-        for (int i = 0; i < bbs.getScreenRows() * 2; i++) {
-            for (int j = 0; j < width(); j++) {
-                int ch = ThreadLocalRandom.current().nextInt(32, 126 + 1);
-                int probability = ThreadLocalRandom.current().nextInt(0, 100);
-                bbs.write(ch);
-                if (probability < 20) beep();
-            }
-            bbs.newline();
-        }
-    }
-
     public String filePrefix() {
         return "anc";
     }
@@ -167,7 +155,20 @@ public class AvventuraNelCastelloBridge {
 
     public void underlineOff() {}
 
-    public void beep() {}
+    public void beep() throws Exception { bbs.write(7); }
+
+    public void joke() throws Exception {
+        for (int i = 0; i < bbs.getScreenRows() * 2; i++) {
+            for (int j = 0; j < width(); j++) {
+                int ch = ThreadLocalRandom.current().nextInt(32, 126);
+                int probability = ThreadLocalRandom.current().nextInt(0, 100);
+                bbs.write(ch);
+                if (probability < 5) beep();
+            }
+            bbs.newline();
+        }
+        Thread.sleep(2000L);
+    }
 
     public void init(String lang) throws Exception {
         bindings = new SimpleBindings();
