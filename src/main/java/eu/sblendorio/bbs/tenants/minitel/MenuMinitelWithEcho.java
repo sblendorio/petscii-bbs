@@ -453,13 +453,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
             if (".".equals(choice)) break;
             BbsThread subThread = null;
             if ("1".equals(choice)) subThread = new SyncroWebAscii();
-            if (subThread == null) continue;
-
-            if (subThread instanceof AsciiThread) {
-                ((AsciiThread) subThread).clsBytes = this.clsBytes;
-            }
-
-            launch(subThread);
+            execute(subThread);
         } while (true);
     }
 

@@ -348,23 +348,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
             if (".".equals(choice)) break;
             BbsThread subThread = null;
             if ("1".equals(choice)) subThread = new SyncroWebAscii();
-            if (subThread == null) continue;
-
-            if (subThread instanceof AsciiThread) {
-                ((AsciiThread) subThread).clsBytes = this.clsBytes;
-                ((AsciiThread) subThread).screenColumns = this.screenColumns;
-                ((AsciiThread) subThread).screenRows = this.screenRows;
-            }
-
-            if (subThread instanceof WordpressProxyAscii) {
-                ((WordpressProxyAscii) subThread).pageSize *= 2;
-            } else if (subThread instanceof GoogleBloggerProxyAscii) {
-                ((GoogleBloggerProxyAscii) subThread).pageSize *= 2;
-            } else if (subThread instanceof OneRssAscii) {
-                ((OneRssAscii) subThread).pageSize *= 2;
-            }
-
-            launch(subThread);
+            execute(subThread);
         } while (true);
     }
 

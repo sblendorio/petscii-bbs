@@ -80,7 +80,6 @@ public class MenuApple1 extends AsciiThread {
                 String choice = readChoice();
                 resetInput();
                 choice = StringUtils.lowerCase(choice);
-                log("Menu. Choice = "+ choice);
                 BbsThread subThread;
                 if (".".equals(choice)) {
                     cls();
@@ -285,14 +284,7 @@ public class MenuApple1 extends AsciiThread {
             if (".".equals(choice)) break;
             BbsThread subThread = null;
             if ("1".equals(choice)) subThread = new SyncroWebAscii();
-            if (subThread == null) continue;
-
-            if (subThread instanceof AsciiThread) {
-                ((AsciiThread) subThread).clsBytes = this.clsBytes;
-                ((AsciiThread) subThread).screenColumns = this.screenColumns;
-                ((AsciiThread) subThread).screenRows = this.screenRows;
-            }
-            launch(subThread);
+            execute(subThread);
         } while (true);
     }
 
