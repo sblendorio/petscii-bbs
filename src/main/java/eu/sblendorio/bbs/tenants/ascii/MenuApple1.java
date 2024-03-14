@@ -123,13 +123,7 @@ public class MenuApple1 extends AsciiThread {
                 choice = StringUtils.lowerCase(choice);
                 log("Menu. Choice = " + choice);
                 BbsThread subThread;
-                if (".".equals(choice)) {
-                    cls();
-                    println("Goodbye! Come back soon!");
-                    println();
-                    println("* Disconnected");
-                    return;
-                }
+                if (".".equals(choice)) return;
                 else if ("1".equals(choice)) subThread = new CnnAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
@@ -173,13 +167,7 @@ public class MenuApple1 extends AsciiThread {
                 choice = StringUtils.lowerCase(choice);
                 log("Menu. Choice = " + choice);
                 BbsThread subThread;
-                if (".".equals(choice)) {
-                    cls();
-                    println("Goodbye! Come back soon!");
-                    println();
-                    println("* Disconnected");
-                    return;
-                }
+                if (".".equals(choice)) return;
                 else if ("1".equals(choice)) subThread = new TelevideoRaiAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
@@ -216,13 +204,7 @@ public class MenuApple1 extends AsciiThread {
                 choice = StringUtils.lowerCase(choice);
                 log("Menu. Choice = " + choice);
                 BbsThread subThread;
-                if (".".equals(choice)) {
-                    cls();
-                    println("Goodbye! Come back soon!");
-                    println();
-                    println("* Disconnected");
-                    return;
-                }
+                if (".".equals(choice)) return;
                 else if ("1".equals(choice)) subThread = new TicTacToeAscii();
                 else if ("2".equals(choice)) subThread = new Connect4Ascii();
                 else if ("3".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
