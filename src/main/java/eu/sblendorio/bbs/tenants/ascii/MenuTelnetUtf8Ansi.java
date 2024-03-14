@@ -1,5 +1,7 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
+import eu.sblendorio.bbs.core.BbsThread;
+
 import static eu.sblendorio.bbs.core.Utils.bytes;
 
 public class MenuTelnetUtf8Ansi extends MenuTelnetPureAscii {
@@ -52,4 +54,11 @@ public class MenuTelnetUtf8Ansi extends MenuTelnetPureAscii {
         printText(readBinaryFile("ansi/MenuGames.utf8ans"));
     }
 
+    public BbsThread createAvventuraNelCastello() {
+        return new AvventuraNelCastelloAnsi(readBinaryFile("ansi/castello.utf8ans"), "it-it", true);
+    }
+
+    public BbsThread createCastleAdventure() {
+        return new AvventuraNelCastelloAnsi(readBinaryFile("ansi/castle.utf8ans"), "en-gb", true);
+    }
 }

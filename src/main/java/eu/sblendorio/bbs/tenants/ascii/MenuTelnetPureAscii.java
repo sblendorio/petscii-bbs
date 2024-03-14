@@ -321,11 +321,11 @@ public class MenuTelnetPureAscii extends AsciiThread {
     }
 
     public BbsThread createAvventuraNelCastello() {
-        return new AvventuraNelCastelloAscii();
+        return new AvventuraNelCastelloAscii("it-it");
     }
 
     public BbsThread createCastleAdventure() {
-        return null;
+        return new AvventuraNelCastelloAscii("en-gb");
     }
 
     public String readChoice() throws Exception {
