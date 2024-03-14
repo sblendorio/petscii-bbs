@@ -74,11 +74,6 @@ public class MenuTelnetPureAscii extends AsciiThread {
         resetInput();
     }
 
-    protected void banner() {
-        println("Retrocampus BBS for UNIX Telnet - by F. Sblendorio " + Calendar.getInstance().get(Calendar.YEAR));
-        newline();
-    }
-
     protected void bannerPatronsPublishers() {
         println("Patrons - Publisher subscribers");
         println();
@@ -333,7 +328,8 @@ public class MenuTelnetPureAscii extends AsciiThread {
         return null;
     }
 
-    public String readChoice() throws IOException {
+    public String readChoice() throws Exception {
+        print(">");
         return readLine(setOfChars(STR_ALPHANUMERIC, "."));
     }
 
@@ -383,7 +379,6 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 .collect(toList());
 
         cls();
-        banner();
         println("You can support the development of this");
         println("BBS through Patreon starting with 3$ or");
         println("3.50eur per month:");
@@ -446,7 +441,6 @@ public class MenuTelnetPureAscii extends AsciiThread {
 
     public void wifiModem() throws Exception {
         cls();
-        banner();
         println("Once upon a a time,  there were dial up");
         println("BBSes. Nowadays we have Internet but we");
         println("recreate such an experience.");
@@ -460,10 +454,6 @@ public class MenuTelnetPureAscii extends AsciiThread {
         println("Press a key to go back");
         println("----------------------");
         flush(); resetInput(); readKey();
-    }
-
-    public int readSingleKey() throws IOException {
-        return readKey();
     }
 
 }

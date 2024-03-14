@@ -4,8 +4,6 @@ import static eu.sblendorio.bbs.core.Utils.bytes;
 
 public class MenuTelnetUtf8Ansi extends MenuTelnetPureAscii {
 
-    @Override
-    protected void banner() {}
 
     @Override
     public String getTerminalType() {
@@ -26,6 +24,32 @@ public class MenuTelnetUtf8Ansi extends MenuTelnetPureAscii {
     @Override
     public void boldOff() {
         write(bytes("\033[0m"));
+    }
+
+    @Override
+    public String readChoice() throws Exception {
+        int ch = readKey();
+        return "" + (char) ch;
+    }
+
+    public void showMainMenu() {
+        cls();
+        printText(readBinaryFile("ansi/RetrocampusBbsMainMenu.utf8ans"));
+    }
+
+    public void showInternationalNews() {
+        cls();
+        printText(readBinaryFile("ansi/MenuInternationalNews.utf8ans"));
+    }
+
+    public void showItalianNews() {
+        cls();
+        printText(readBinaryFile("ansi/MenuItalianNews.utf8ans"));
+    }
+
+    public void showGames() {
+        cls();
+        printText(readBinaryFile("ansi/MenuGames.utf8ans"));
     }
 
 }

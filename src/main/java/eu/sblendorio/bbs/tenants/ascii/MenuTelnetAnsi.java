@@ -5,9 +5,6 @@ import static eu.sblendorio.bbs.core.Utils.bytes;
 public class MenuTelnetAnsi extends MenuTelnetPureAscii {
 
     @Override
-    protected void banner() {}
-
-    @Override
     public String getTerminalType() {
         return "ansi";
     }
@@ -27,9 +24,30 @@ public class MenuTelnetAnsi extends MenuTelnetPureAscii {
         write(bytes("\033[0m"));
     }
 
-    public void displayMenu() throws Exception {
+    @Override
+    public String readChoice() throws Exception {
+        int ch = readKey();
+        return "" + (char) ch;
+    }
+
+    public void showMainMenu() {
         cls();
-        write(readBinaryFile("ansi/RetrocampusBbsMainMenu.ans"));
+        printText(readBinaryFile("ansi/RetrocampusBbsMainMenu.ans"));
+    }
+
+    public void showInternationalNews() {
+        cls();
+        printText(readBinaryFile("ansi/MenuInternationalNews.ans"));
+    }
+
+    public void showItalianNews() {
+        cls();
+        printText(readBinaryFile("ansi/MenuItalianNews.ans"));
+    }
+
+    public void showGames() {
+        cls();
+        printText(readBinaryFile("ansi/MenuGames.ans"));
     }
 
 }
