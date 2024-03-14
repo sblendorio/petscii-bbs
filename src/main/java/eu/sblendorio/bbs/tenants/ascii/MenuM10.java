@@ -48,7 +48,7 @@ public class MenuM10 extends MenuApple1 {
         println("2 - Italian News        B - Private Msg");
         println("3 - Games               C - Eliza");
         println("4 - Patreon List        D - Chat GPT");
-        println("5 - Patreon Publishers  E - Wifi Modem");
+        println("5 - Patreon Publishers  E - WiFi Modem");
         println("                        F - Apple1 Demo");
         println(". - Logout              G - Wikipedia");
     }
