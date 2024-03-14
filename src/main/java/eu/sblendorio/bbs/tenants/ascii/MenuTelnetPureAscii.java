@@ -341,7 +341,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 .filter(StringUtils::isNotBlank)
                 .filter(str -> !str.startsWith(";"))
                 .sorted(comparing(String::toLowerCase))
-                .collect(toList());
+                .toList();
 
         cls();
         println("You can support the development of this");
@@ -376,7 +376,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 .map(Path::toString)
                 .map(x -> x.startsWith("/") ? x.substring(1) : x)
                 .sorted(comparing(String::toLowerCase))
-                .collect(toList());
+                .toList();
         cls();
         int i = 0;
         while (i < drawings.size()) {

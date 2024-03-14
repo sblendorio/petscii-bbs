@@ -159,4 +159,12 @@ public class MenuVic20 extends MenuApple1 {
         launch(subThread);
     }
 
+    public BbsThread createAvventuraNelCastello() {
+        return new AvventuraNelCastelloVic20("it-it");
+    }
+
+    public BbsThread createCastleAdventure() {
+        return new AvventuraNelCastelloVic20("en-gb");
+    }
+
 }
