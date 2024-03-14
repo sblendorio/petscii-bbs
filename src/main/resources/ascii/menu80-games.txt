@@ -1,4 +1,4 @@
-Retrocampus BBS for UNIX Telnet
+Retrocampus BBS pure text version
 
 Puzzle Games
 ------------

@@ -39,7 +39,11 @@ public class AvventuraNelCastelloBridge {
         try {
             if (filename == null || filename.isBlank()) return false;
             String currentdir = new File(System.getProperty("user.dir")).getAbsolutePath();
-            File saveFile = new File(currentdir + File.separator + filename.toLowerCase() + ".anc");
+            File saveFile = new File(
+                    currentdir
+                            + File.separator
+                            + (filePrefix() == null || filePrefix().isBlank() ? "" : filePrefix().trim() + "-")
+                            + filename.toLowerCase() + ".anc");
             try (RandomAccessFile raf = new RandomAccessFile(saveFile, "rw")) {
                 raf.write(state.getBytes(StandardCharsets.UTF_8));
             }
@@ -51,11 +55,16 @@ public class AvventuraNelCastelloBridge {
     }
 
     public String restore(String filename) {
-        String result = "";
+        String result;
         try {
-            if (filename == null || filename.isBlank()) return result;
+            if (filename == null || filename.isBlank()) return "";
             String currentdir = new File(System.getProperty("user.dir")).getAbsolutePath();
-            File loadFile = new File(currentdir + File.separator + filename.toLowerCase() + ".anc");
+            File loadFile = new File(
+                    currentdir
+                            + File.separator
+                            + (filePrefix() == null || filePrefix().isBlank() ? "" : filePrefix().trim() + "-")
+                            + filename.toLowerCase()
+                            + ".anc");
             try (RandomAccessFile raf = new RandomAccessFile(loadFile, "r")) {
                 byte[] data = new byte[(int) raf.length()];
                 raf.readFully(data);
@@ -63,7 +72,7 @@ public class AvventuraNelCastelloBridge {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return result;
+            return "";
         }
         return result;
     }
@@ -108,8 +117,8 @@ public class AvventuraNelCastelloBridge {
     }
 
     public void joke() throws Exception {
-        for (int i=0; i<bbs.getScreenRows(); i++) {
-            for (int j=0; j<width(); j++) {
+        for (int i = 0; i < bbs.getScreenRows() * 2; i++) {
+            for (int j = 0; j < width(); j++) {
                 int ch = ThreadLocalRandom.current().nextInt(32, 126 + 1);
                 int probability = ThreadLocalRandom.current().nextInt(0, 100);
                 bbs.write(ch);
@@ -117,6 +126,15 @@ public class AvventuraNelCastelloBridge {
             }
             bbs.newline();
         }
+    }
+
+    public String filePrefix() {
+        return "anc";
+    }
+
+    public void pause() throws Exception {
+        Thread.sleep(3000L);
+        bbs.resetInput();
     }
 
     public void clear() throws Exception {

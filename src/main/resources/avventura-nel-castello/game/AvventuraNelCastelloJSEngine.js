@@ -775,6 +775,7 @@ class AvventuraNelCastelloJSEngine extends IFEngine{
 		await this.CRT.printTyping("     /  ~~~~  /  ",{printDelay:60, m: true});
 		await this.CRT.printTyping("    /  ~~~~  /   ",{printDelay:60, m: true});
 		await this.CRT.printTyping("   /  ~~~~  /   ",{printDelay:60, m: true});
+		bridge.pause();
 		await this.CRT.printTyping(i18n.AvventuraNelCastelloJSEngine.dieText,{printDelay:50, nlBefore: 1,nlAfter: 1});
 		await this._punti();
 		await this.CRT.println("");
@@ -995,26 +996,8 @@ class AvventuraNelCastelloJSEngine extends IFEngine{
 			await this.CRT.print(`${chunks[i]} `);
 			await this.s0();
 		}
-		await this.CRT.sleep(1500);
-		for(let i=0; i<3000; i++){
-			let char = String.fromCharCode(Math.floor(Math.random()*255)+255);
-			let y = Math.round(Math.random()*100);
-			let x = Math.round(Math.random()*100);
-			// SBLEND let span = document.createElement("span");
-			// SBLEND span.innerHTML = char;
-			// SBLEND span.className = "joke";
-			// SBLEND span.style.position = "absolute";
-			// SBLEND span.style.top = y+"%";
-			// SBLEND span.style.left = x+"%";
-			// SBLEND this.CRT.fixed.append(span);
-			if(i%10 == 0) {
-				await this.s4();
-				await this.CRT.sleep(25);
-			}
-		}
-		// SBLEND document.querySelectorAll(".joke").forEach( el => el.remove() );
         await this.CRT.println("");
-		await this.CRT.wait();
+		bridge.pause();
         bridge.joke();
 		this.CRT.currentCol = 1;
 		await this.CRT.println(i18n.AvventuraNelCastelloJSEngine.insult.fuck,{reversed: true, nlBefore: 2, nlAfter: 1});

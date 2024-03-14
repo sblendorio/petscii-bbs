@@ -34,6 +34,26 @@ public class MenuTelnetPureAscii extends AsciiThread {
         screenColumns = 80;
     }
 
+    public void showMainMenu() {
+        cls();
+        write(readBinaryFile("ascii/menu80-main.txt"));
+    }
+
+    public void showInternationalNews() {
+        cls();
+        write(readBinaryFile("ascii/menu80-international-news.txt"));
+    }
+
+    public void showItalianNews() {
+        cls();
+        write(readBinaryFile("ascii/menu80-italian-news.txt"));
+    }
+
+    public void showGames() {
+        cls();
+        write(readBinaryFile("ascii/menu80-games.txt"));
+    }
+
     public void boldOn() {}
 
     public void boldOff() {}
@@ -99,26 +119,81 @@ public class MenuTelnetPureAscii extends AsciiThread {
 
     public String rssPropertyTimeoutDefault() { return "40000"; }
 
+    public void execute(BbsThread subThread) throws Exception {
+        if (subThread == null) return;
+
+        if (subThread instanceof AsciiThread) {
+            ((AsciiThread) subThread).clsBytes = this.clsBytes;
+            ((AsciiThread) subThread).screenColumns = this.screenColumns;
+            ((AsciiThread) subThread).screenRows = this.screenRows;
+        }
+        if (subThread instanceof WordpressProxyAscii) {
+            ((WordpressProxyAscii) subThread).pageSize *= 2;
+        } else if (subThread instanceof GoogleBloggerProxyAscii) {
+            ((GoogleBloggerProxyAscii) subThread).pageSize *= 2;
+        } else if (subThread instanceof OneRssAscii) {
+            ((OneRssAscii) subThread).pageSize *= 2;
+        }
+        launch(subThread);
+    }
+
     @Override
     public void doLoop() throws Exception {
+        resetInput();
         logo();
         while (true) {
-            log("Starting ASCII / main menu");
-            cls();
-            displayMenu();
-
+            showMainMenu();
             flush();
             boolean validKey;
             do {
                 validKey = true;
-                log("Menu. Waiting for key pressed.");
                 resetInput();
-                String choice;
-                print("> ");
-                choice = readChoice();
+                String choice = readChoice();
                 resetInput();
                 choice = StringUtils.lowerCase(choice);
-                log("Menu. Choice = "+ choice);
+                log("Menu. Choice = " + choice);
+                BbsThread subThread;
+                if (".".equals(choice)) {
+                    cls();
+                    println("Goodbye! Come back soon!");
+                    println();
+                    println("* Disconnected");
+                    return;
+                }
+                else if ("1".equals(choice)) { menuInternationalNews(); subThread = null; }
+                else if ("2".equals(choice)) { menuItalianNews(); subThread = null; }
+                else if ("3".equals(choice)) { menuGames(); subThread = null; }
+                else if ("4".equals(choice)) { showPatrons(); subThread = null; }
+                else if ("5".equals(choice)) { patronsPublishers(); subThread = null; }
+                else if ("a".equals(choice)) subThread = new ChatA1(getTerminalType());
+                else if ("b".equals(choice)) subThread = new PrivateMessagesAscii();
+                else if ("c".equals(choice)) subThread = new ElizaAscii();
+                else if ("d".equals(choice)) subThread = new ClientChatGptAscii();
+                else if ("e".equals(choice)) { wifiModem(); subThread = null; }
+                else if ("f".equals(choice)) { textDemo(); subThread = null; }
+                else if ("g".equals(choice)) subThread = new WikipediaAscii();
+                else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii();
+                else {
+                    validKey = false;
+                    subThread = null;
+                }
+                execute(subThread);
+            } while (!validKey);
+        }
+    }
+
+    public void menuInternationalNews() throws Exception {
+        while (true) {
+            showInternationalNews();
+            flush();
+            boolean validKey;
+            do {
+                validKey = true;
+                resetInput();
+                String choice = readChoice();
+                resetInput();
+                choice = StringUtils.lowerCase(choice);
+                log("Menu. Choice = " + choice);
                 BbsThread subThread;
                 if (".".equals(choice)) {
                     cls();
@@ -147,21 +222,79 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 else if ("6".equals(choice)) subThread = new IndieRetroNewsAscii();
                 else if ("7".equals(choice)) subThread = new VcfedAscii();
                 else if ("8".equals(choice)) subThread = new The8BitGuyAscii();
-                else if ("a".equals(choice)) subThread = new TelevideoRaiAscii(
+                else if ("9".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii();
+                else {
+                    validKey = false;
+                    subThread = null;
+                }
+                execute(subThread);
+            } while (!validKey);
+        }
+    }
+
+    public void menuItalianNews() throws Exception {
+        while (true) {
+            showItalianNews();
+            flush();
+            boolean validKey;
+            do {
+                validKey = true;
+                resetInput();
+                String choice = readChoice();
+                resetInput();
+                choice = StringUtils.lowerCase(choice);
+                log("Menu. Choice = " + choice);
+                BbsThread subThread;
+                if (".".equals(choice)) {
+                    cls();
+                    println("Goodbye! Come back soon!");
+                    println();
+                    println("* Disconnected");
+                    return;
+                }
+                else if ("1".equals(choice)) subThread = new TelevideoRaiAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getTerminalType(),
                         null,
                         null
                 );
-                else if ("b".equals(choice)) subThread = new LercioAscii();
-                else if ("c".equals(choice)) subThread = new DisinformaticoAscii();
-                else if ("d".equals(choice)) subThread = new MupinAscii();
-                else if ("e".equals(choice)) subThread = new IlFattoQuotidianoAscii();
-                else if ("f".equals(choice)) subThread = new AmedeoValorosoAscii();
-                else if ("z".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii();
-                else if ("g".equals(choice)) subThread = new ButacAscii();
-                else if ("h".equals(choice)) subThread = new AlessandroAlbanoAscii();
+                else if ("2".equals(choice)) subThread = new LercioAscii();
+                else if ("3".equals(choice)) subThread = new DisinformaticoAscii();
+                else if ("4".equals(choice)) subThread = new MupinAscii();
+                else if ("5".equals(choice)) subThread = new IlFattoQuotidianoAscii();
+                else if ("6".equals(choice)) subThread = new AmedeoValorosoAscii();
+                else if ("7".equals(choice)) subThread = new ButacAscii();
+                else if ("8".equals(choice)) subThread = new AlessandroAlbanoAscii();
+                else {
+                    validKey = false;
+                    subThread = null;
+                }
+                execute(subThread);
+            } while (!validKey);
+        }
+    }
+
+    public void menuGames() throws Exception {
+        while (true) {
+            showGames();
+            flush();
+            boolean validKey;
+            do {
+                validKey = true;
+                resetInput();
+                String choice = readChoice();
+                resetInput();
+                choice = StringUtils.lowerCase(choice);
+                log("Menu. Choice = " + choice);
+                BbsThread subThread;
+                if (".".equals(choice)) {
+                    cls();
+                    println("Goodbye! Come back soon!");
+                    println();
+                    println("* Disconnected");
+                    return;
+                }
                 else if ("i".equals(choice)) subThread = new TicTacToeAscii();
                 else if ("j".equals(choice)) subThread = new Connect4Ascii();
                 else if ("k".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
@@ -170,62 +303,13 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 else if ("m".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
                 else if ("n".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
                 else if ("x".equals(choice)) subThread = new ZorkMachineAscii("zmpp/planetfall-r39.z3");
-                else if ("o".equals(choice)) subThread = new ChatA1(getTerminalType());
-                else if ("p".equals(choice)) subThread = new PrivateMessagesAscii();
-                else if ("q".equals(choice)) subThread = new ElizaAscii();
-                else if ("r".equals(choice)) subThread = new ClientChatGptAscii();
-                else if ("s".equals(choice)) { showPatrons(); subThread = null; }
-                else if ("t".equals(choice)) { patronsPublishers(); subThread = null; }
-                else if ("u".equals(choice)) { wifiModem(); subThread = null; }
-                else if ("v".equals(choice)) { textDemo(); subThread = null; }
-                else if ("w".equals(choice)) subThread = new WikipediaAscii();
-                else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii();
                 else {
                     validKey = false;
                     subThread = null;
                 }
-                if (subThread == null) continue;
-
-                if (subThread instanceof AsciiThread) {
-                    ((AsciiThread) subThread).clsBytes = this.clsBytes;
-                    ((AsciiThread) subThread).screenColumns = this.screenColumns;
-                    ((AsciiThread) subThread).screenRows = this.screenRows;
-                }
-                if (subThread instanceof WordpressProxyAscii) {
-                    ((WordpressProxyAscii) subThread).pageSize *= 2;
-                } else if (subThread instanceof GoogleBloggerProxyAscii) {
-                    ((GoogleBloggerProxyAscii) subThread).pageSize *= 2;
-                } else if (subThread instanceof OneRssAscii) {
-                    ((OneRssAscii) subThread).pageSize *= 2;
-                }
-                launch(subThread);
+                execute(subThread);
             } while (!validKey);
         }
-    }
-
-    public void displayMenu() throws Exception {
-        banner();
-        println("International News-----------------------  Game Room ------");
-        println("1 - CNN News                               I - TIC TAC TOE");
-        println("2 - BBC News                               J - Connect Four");
-        println("3 - Politico.com                           K - Zork I");
-        println("4 - Al Jazeera                             Y - Zork I (ITA)");
-        println("5 - Fox News                               L - Zork II");
-        println("6 - Indie Retro News                       M - Zork III");
-        println("7 - VCF News                               N - Hitchhiker's");
-        println("8 - The 8-Bit Guy          .=LOGOUT        X - Planetfall");
-        println("Italian News-----------------------------  --------------Services");
-        println(isSanremo()
-              ? "A - Televideo    9 - Speciale Sanremo 24   O - Chat"
-              : "A - Televideo                              O - Chat");
-        println("B - Lercio                                 P - Private Msg");
-        println("C - Disinformatico                         Q - Eliza");
-        println("D - Mupin.it                               R - Chat GPT");
-        println("E - Fatto Quotidiano                       S - Patrons list");
-        println("F - Amedeo Valoroso (Z - English version)  T - Patrons Publishers");
-        println("G - Butac.it                               U - Wifi Modem");
-        println("H - Alessandro Albano                      V - Apple-1 Demo");
-        println("                                           W - Wikipedia");
     }
 
     public String readChoice() throws IOException {

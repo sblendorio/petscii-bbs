@@ -14,7 +14,7 @@ A - Chat
 B - Private Msg
 C - Eliza
 D - Chat GPT
-E - Wikipedia
-F - Wifi Modem
-G - Apple-1 Demo
+E - Wifi Modem
+F - Apple-1 Demo
+G - Wikipedia
 . - Logout
