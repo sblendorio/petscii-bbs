@@ -10,15 +10,15 @@
            ╚═══════════════════════════════════════════════════════╝
 ┌───────────────────────────────────┐                        ═╡
 │ Gioco ideato e realizzato da:     │                         │
-│ Enrico Colombini e Chiara Tovena  │                   ╞═╩═╩═╡
-│ Versione MS-DOS: Enrico Colombini │     ╞═╪═╡         │  ░  │         ╞═╪═╡
-│ 4a edizione restaurata (v 4.1)    │     │   │         │     │         │   │
-│ (c) Dinosoft 1982 (Apple ][)      │     │ | ╞═╩═╩═╩═╩═╩═╩═╩═╩═╩═╩═╩═╩═╡ | │
-│ (c) Dinosoft (e J.Soft) 1984      │     │   │                         │   │
-│ (c) Dinosoft (e Hi-Tech) 1987     │     │   │  ╩   ╩   ╔═╦═╗   ╩   ╩  │   │
-│ (c) Dinosoft 1996 (erix@mclink.it)│     │   │          ╠═╬═╣          │   │
+│ - Enrico Colombini, Chiara Tovena │                   ╞═╩═╩═╡
+│ (C) Dinosoft 1982,1984,1987,1986  │     ╞═╪═╡         │  ░  │         ╞═╪═╡
+│ Riprod. col consenso degli autori │     │   │         │     │         │   │
+│ Adattamento Javascript di:        │     │ | ╞═╩═╩═╩═╩═╩═╩═╩═╩═╩═╩═╩═╩═╡ | │
+│ - Federico Volpini                │     │   │                         │   │
+│ Adattamento GraalVM di:           │     │   │  ╩   ╩   ╔═╦═╗   ╩   ╩  │   │
+│ - Francesco Sblendorio            │     │   │          ╠═╬═╣          │   │
 └───────────────────────────────────┘     ╘═══╧══════════╩═╩═╩══════════╧═══╛
  ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
 ┌────────────────────────────────────────────────────────────────────────────┐
-│    Copyrighted freeware: libera distribuzione purché non venga alterata    │
+│ Licenza di distribuzione: Attribution-NonCommercial-NoDerivatives 4.0 Int. │
 └────────────────────────────────────────────────────────────────────────────┘

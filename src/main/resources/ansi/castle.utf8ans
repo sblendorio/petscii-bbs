@@ -1,24 +1,24 @@
 
 ┌────────────────────────────────────────────────────────────────────────────┐
-│     Dinosoft presenta un documento storico: il primo adventure italiano    │
+│  Dinosoft presents an historic document: the first Italian text adventure  │
 └────────────────────────────────────────────────────────────────────────────┘
  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
            ╔═══════════════════════════════════════════════════════╗
-           ║   ╔══╗                           ╔══╗                 ║
-           ║   ╠══╣ V V E N T U R A   N E L   ║    A S T E L L O   ║
-           ║   ╩  ╩                           ╚══╝                 ║
+           ║        ╔══╗                ╔══╗                       ║
+           ║        ║    A S T L E      ╠══╣ D V E N T U R E       ║
+           ║        ╚══╝                ╩  ╩                       ║
            ╚═══════════════════════════════════════════════════════╝
 ┌───────────────────────────────────┐                        ═╡
-│ Gioco ideato e realizzato da:     │                         │
-│ Enrico Colombini e Chiara Tovena  │                   ╞═╩═╩═╡
-│ Versione MS-DOS: Enrico Colombini │     ╞═╪═╡         │  ░  │         ╞═╪═╡
-│ 4a edizione restaurata (v 4.1)    │     │   │         │     │         │   │
-│ (c) Dinosoft 1982 (Apple ][)      │     │ | ╞═╩═╩═╩═╩═╩═╩═╩═╩═╩═╩═╩═╩═╡ | │
-│ (c) Dinosoft (e J.Soft) 1984      │     │   │                         │   │
-│ (c) Dinosoft (e Hi-Tech) 1987     │     │   │  ╩   ╩   ╔═╦═╗   ╩   ╩  │   │
-│ (c) Dinosoft 1996 (erix@mclink.it)│     │   │          ╠═╬═╣          │   │
+│ From the original adventure by:   │                         │
+│ - Enrico Colombini, Chiara Tovena │                   ╞═╩═╩═╡
+│ (C) Dinosoft 1982,1984,1987,1986  │     ╞═╪═╡         │  ░  │         ╞═╪═╡
+│ Javascript adaption by:           │     │   │         │     │         │   │
+│ - Federico Volpini                │     │ | ╞═╩═╩═╩═╩═╩═╩═╩═╩═╩═╩═╩═╩═╡ | │
+│ GraalVM adaption by:              │     │   │                         │   │
+│ - Francesco Sblendorio            │     │   │  ╩   ╩   ╔═╦═╗   ╩   ╩  │   │
+│ Translation by: Adam Bishop       │     │   │          ╠═╬═╣          │   │
 └───────────────────────────────────┘     ╘═══╧══════════╩═╩═╩══════════╧═══╛
  ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
 ┌────────────────────────────────────────────────────────────────────────────┐
-│    Copyrighted freeware: libera distribuzione purché non venga alterata    │
+│   Distribution License: Attribution-NonCommercial-NoDerivatives 4.0 Intl.  │
 └────────────────────────────────────────────────────────────────────────────┘
