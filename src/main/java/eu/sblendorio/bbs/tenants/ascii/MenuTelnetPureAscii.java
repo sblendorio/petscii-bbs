@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.List;
@@ -34,19 +35,28 @@ public class MenuTelnetPureAscii extends AsciiThread {
         screenColumns = 80;
     }
 
+    private void printText(byte[] b) {
+        String text = new String(b, UTF_8);
+        String[] lines = text.split("\n");
+        for (int i = 0; i < lines.length; i++) {
+            if (i > 0) println();
+            print(lines[i]);
+        }
+    }
+
     public void showMainMenu() {
         cls();
-        write(readBinaryFile("ascii/menu80-main.txt"));
+        printText(readBinaryFile("ascii/menu80-main.txt"));
     }
 
     public void showInternationalNews() {
         cls();
-        write(readBinaryFile("ascii/menu80-international-news.txt"));
+        printText(readBinaryFile("ascii/menu80-international-news.txt"));
     }
 
     public void showItalianNews() {
         cls();
-        write(readBinaryFile("ascii/menu80-italian-news.txt"));
+        printText(readBinaryFile("ascii/menu80-italian-news.txt"));
     }
 
     public void showGames() {
