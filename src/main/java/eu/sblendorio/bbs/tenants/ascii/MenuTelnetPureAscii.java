@@ -35,13 +35,13 @@ public class MenuTelnetPureAscii extends AsciiThread {
         screenColumns = 80;
     }
 
-    private void printText(byte[] b) {
-        String text = new String(b, UTF_8);
-        String[] lines = text.split("\n");
-        for (int i = 0; i < lines.length; i++) {
-            if (i > 0) println();
-            print(lines[i]);
-        }
+    public void printText(byte[] bytes) {
+        for (byte b : bytes)
+            if (b != '\n')
+                write(b);
+            else
+                println();
+        flush();
     }
 
     public void showMainMenu() {
@@ -61,7 +61,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
 
     public void showGames() {
         cls();
-        write(readBinaryFile("ascii/menu80-games.txt"));
+        printText(readBinaryFile("ascii/menu80-games.txt"));
     }
 
     public void boldOn() {}
