@@ -101,6 +101,7 @@ public class AvventuraNelCastelloBridge {
         if (result.trim().equalsIgnoreCase(".")) return "stop";
         if (result.trim().equalsIgnoreCase("q")) return "stop";
         if (result.trim().equalsIgnoreCase("restore")) return "save";
+        bbs.optionalCls();
         return result.trim().toLowerCase();
     }
 
@@ -114,6 +115,7 @@ public class AvventuraNelCastelloBridge {
         bbs.write(bbs.backspace());
         bbs.write(bbs.backspace());
         bbs.newline();
+        bbs.optionalCls();
     }
 
     public String filePrefix() {
