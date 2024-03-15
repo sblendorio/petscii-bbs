@@ -263,7 +263,9 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
                     bbsThread.println("Aborted.");
                     return false;
                 }
-                saveFile = new File(currentdir + File.separator + filename.toLowerCase() + ".ziff");
+                saveFile = new File(
+                        currentdir + File.separator + nameOfTheGame + "-" + filename.toLowerCase() + ".ziff"
+                );
                 if (saveFile.exists()) {
                     bbsThread.println("WARNING: File already exists.");
                     bbsThread.print("Keep going with this? (Y/N) ");
@@ -305,7 +307,9 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
                 bbsThread.println("Aborted.");
                 return null;
             }
-            File loadFile = new File(currentdir + File.separator + filename.toLowerCase() + ".ziff");
+            File loadFile = new File(
+                    currentdir + File.separator + nameOfTheGame + "-" + filename.toLowerCase() + ".ziff"
+            );
             if (!loadFile.exists()) {
                 bbsThread.println("File not found. Aborted.");
                 return null;
