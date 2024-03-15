@@ -393,21 +393,20 @@ class IFEngine{
 	// Salva il gioco
 	async save() {
 		let etichetta;
-		do{
-			await this.CRT.printTyping(i18n.IFEngine.questions.saveLabel+" ",this.CRT.printDelay,false);
-		
-			etichetta = await this.CRT.input();
-			etichetta = etichetta.trim();
-			if (bridge.fileExists(etichetta, i18n.lang)) {
-					await this.CRT.print(i18n.IFEngine.warnings.doYouWantToOverwrite);
-					let resp = await this.CRT.input();
-					resp = resp.toLowerCase().substring(0);
-					if (!resp || resp === '' || resp === 'n' || resp === 'no' || resp == 'nope') etichetta = "";
-			}
-			if(etichetta == i18n.IFEngine.questions.cancelLetter.toLowerCase()){
-				return;
-			}
-		} while (etichetta == i18n.IFEngine.questions.listLetter.toLowerCase())
+
+        await this.CRT.printTyping(i18n.IFEngine.questions.saveLabel+" ",this.CRT.printDelay,false);
+
+        etichetta = await this.CRT.input();
+        etichetta = etichetta.trim();
+        if (bridge.fileExists(etichetta, i18n.lang)) {
+                await this.CRT.print(i18n.IFEngine.warnings.doYouWantToOverwrite);
+                let resp = await this.CRT.input();
+                resp = resp.toLowerCase().substring(0);
+                if (!resp || resp === '' || resp === 'n' || resp === 'no' || resp == 'nope') etichetta = "";
+        }
+        if(etichetta == i18n.IFEngine.questions.cancelLetter.toLowerCase()){
+            return;
+        }
 
 		if (etichetta && etichetta !== "") {
             let tbs = this._getTbs();
