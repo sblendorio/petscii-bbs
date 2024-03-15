@@ -6,28 +6,30 @@ import org.zmpp.textui.BbsScreenModel;
 
 public class ZorkMachineMinitel extends MinitelThread {
 
+    private final String nameOfTheGame;
     private final String filename;
     private byte[] logo = null;
     private Runnable boldOn = null;
     private Runnable boldOff = null;
 
     public ZorkMachineMinitel() {
-        this("zmpp/zork3.z3");
+        this("ExampleZork", "zmpp/zork3.z3");
     }
 
-    public ZorkMachineMinitel(String filename, byte[] logo) {
-        this(filename, logo, null, null);
+    public ZorkMachineMinitel(String nameOfTheGame, String filename, byte[] logo) {
+        this(nameOfTheGame, filename, logo, null, null);
     }
-    public ZorkMachineMinitel(String filename, byte[] logo, Runnable boldOn, Runnable boldOff) {
+    public ZorkMachineMinitel(String nameOfTheGame, String filename, byte[] logo, Runnable boldOn, Runnable boldOff) {
         super();
+        this.nameOfTheGame = nameOfTheGame;
         this.filename = filename;
         this.logo = logo;
         this.boldOn = boldOn;
         this.boldOff = boldOff;
     }
 
-    public ZorkMachineMinitel(String filename) {
-        this(filename, null);
+    public ZorkMachineMinitel(String nameOfTheGame, String filename) {
+        this(nameOfTheGame, filename, null);
     }
 
     public void logo() throws Exception {
@@ -69,7 +71,7 @@ public class ZorkMachineMinitel extends MinitelThread {
         try {
             final byte[] story = readBinaryFile(filename);
             BbsScreenModel zorkMachine = new BbsScreenModel(
-                    story, this, 8, boldOn, boldOff, this::clearLineAndCr
+                    nameOfTheGame, story, this, 8, boldOn, boldOff, this::clearLineAndCr
             );
             zorkMachine.runTheGame();
         } catch (Exception ex) {

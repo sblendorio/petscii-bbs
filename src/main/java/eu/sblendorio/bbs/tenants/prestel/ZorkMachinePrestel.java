@@ -6,14 +6,17 @@ import org.zmpp.textui.BbsScreenModel;
 
 public class ZorkMachinePrestel extends PrestelThread {
 
+    private final String nameOfTheGame;
+
     private final String filename;
 
     public ZorkMachinePrestel() {
-        this("zmpp/zork3.z3");
+        this("ExampleZork", "zmpp/zork3.z3");
     }
 
-    public ZorkMachinePrestel(String filename) {
+    public ZorkMachinePrestel(String nameOfTheGame, String filename) {
         super();
+        this.nameOfTheGame = nameOfTheGame;
         this.filename = filename;
         this.autoConceal = false;
     }
@@ -31,7 +34,7 @@ public class ZorkMachinePrestel extends PrestelThread {
         write(PrestelControls.CURSOR_ON);
         try {
             final byte[] story = readBinaryFile(filename);
-            BbsScreenModel zorkMachine = new BbsScreenModel(story, this);
+            BbsScreenModel zorkMachine = new BbsScreenModel(nameOfTheGame, story, this);
             zorkMachine.runTheGame();
         } catch (Exception ex) {
             log("Unexpected Exception", ex);

@@ -163,13 +163,13 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 }
                 else if ("1".equals(choice)) subThread = new TicTacToeAscii();
                 else if ("2".equals(choice)) subThread = new Connect4Ascii();
-                else if ("3".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork1.z3");
-                else if ("4".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork2.z3");
-                else if ("5".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork3.z3");
-                else if ("6".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/hitchhiker-r60.z3", readBinaryFile("minitel/hitchhikers.vdt"));
-                else if ("7".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/planetfall-r39.z3", readBinaryFile("minitel/planetfall.vdt"));
+                else if ("3".equals(choice)) subThread = new ZorkMachineMinitel("zork1", "zmpp/zork1.z3");
+                else if ("4".equals(choice)) subThread = new ZorkMachineMinitel("zork2", "zmpp/zork2.z3");
+                else if ("5".equals(choice)) subThread = new ZorkMachineMinitel("zork3", "zmpp/zork3.z3");
+                else if ("6".equals(choice)) subThread = new ZorkMachineMinitel("hitchhikers", "zmpp/hitchhiker-r60.z3", readBinaryFile("minitel/hitchhikers.vdt"));
+                else if ("7".equals(choice)) subThread = new ZorkMachineMinitel("planetfall", "zmpp/planetfall-r39.z3", readBinaryFile("minitel/planetfall.vdt"));
                 else if ("8".equals(choice)) subThread = new AvventuraNelCastelloMinitel(SPLASH_CASTELLO_ENG, COPYRIGHT_CASTELLO_ENG, "en-gb");
-                else if ("9".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/Zork-1-ITA-v7.z5", null, () -> attributes(CHAR_WHITE), () -> attributes(CHAR_GREEN));
+                else if ("9".equals(choice)) subThread = new ZorkMachineMinitel("zork1ita", "zmpp/Zork-1-ITA-v7.z5", null, () -> attributes(CHAR_WHITE), () -> attributes(CHAR_GREEN));
                 else if ("0".equals(choice)) subThread = new AvventuraNelCastelloMinitel(SPLASH_CASTELLO_ITA, COPYRIGHT_CASTELLO_ITA, "it-it");
                 else {
                     validKey = false;

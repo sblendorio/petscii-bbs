@@ -334,13 +334,13 @@ public class Menu64 extends PetsciiThread {
                 } else if (key == '1') launch(new TicTacToe());
                 else if (key == '2') launch(new ConnectFour());
                 else if (key == '3') launch(new Magic15());
-                else if (key == '4') launch(new ZorkMachine("zmpp/zork1.z3", readBinaryFile("petscii/zork1.seq")));
-                else if (key == '5') launch(new ZorkMachine("zmpp/zork2.z3", readBinaryFile("petscii/zork2.seq")));
-                else if (key == '6') launch(new ZorkMachine("zmpp/zork3.z3", readBinaryFile("petscii/zork3.seq")));
-                else if (key == '7') launch(new ZorkMachine("zmpp/hitchhiker-r60.z3", readBinaryFile("petscii/dontpanic.seq")));
-                else if (key == '8') launch(new ZorkMachine("zmpp/planetfall-r39.z3", readBinaryFile("petscii/planetfall.seq")));
+                else if (key == '4') launch(new ZorkMachine("zork1", "zmpp/zork1.z3", readBinaryFile("petscii/zork1.seq")));
+                else if (key == '5') launch(new ZorkMachine("zork2", "zmpp/zork2.z3", readBinaryFile("petscii/zork2.seq")));
+                else if (key == '6') launch(new ZorkMachine("zork3", "zmpp/zork3.z3", readBinaryFile("petscii/zork3.seq")));
+                else if (key == '7') launch(new ZorkMachine("hitchhikers", "zmpp/hitchhiker-r60.z3", readBinaryFile("petscii/dontpanic.seq")));
+                else if (key == '8') launch(new ZorkMachine("planetfall", "zmpp/planetfall-r39.z3", readBinaryFile("petscii/planetfall.seq")));
                 else if (key == '9') launch(new AvventuraNelCastelloPetscii(SPLASH_CASTELLO_ENG, "en-gb"));
-                else if (key == '0') launch(new ZorkMachine("zmpp/Zork-1-ITA-v7.z5", readBinaryFile("petscii/zork1.seq")));
+                else if (key == '0') launch(new ZorkMachine("zork1ita", "zmpp/Zork-1-ITA-v7.z5", readBinaryFile("petscii/zork1.seq")));
                 else if (key == 'a') launch(new AvventuraNelCastelloPetscii(SPLASH_CASTELLO_ITA, "it-it"));
                 else {
                     validKey = false;

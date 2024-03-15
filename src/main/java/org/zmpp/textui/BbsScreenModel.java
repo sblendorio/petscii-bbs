@@ -33,6 +33,7 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
 
     private final BufferedScreenModel screenModel = new BufferedScreenModel(); // Screen Model manages a virtual window
 
+    private final String nameOfTheGame;
     // The actual Zork adventure file
     private final InputStream storyFile;
 
@@ -80,18 +81,19 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
         bbsThread.flush();*/
         bbsThread.optionalCls();
     }
-    public BbsScreenModel(byte[] storyFile, BbsThread bbsThread) throws IOException,InvalidStoryException {
-        this(storyFile, bbsThread, 0, null, null, null);
+    public BbsScreenModel(String nameOfTheGame, byte[] storyFile, BbsThread bbsThread) throws IOException,InvalidStoryException {
+        this(nameOfTheGame, storyFile, bbsThread, 0, null, null, null);
     }
 
-    public BbsScreenModel(byte[] storyFile, BbsThread bbsThread, int nlines) throws IOException,InvalidStoryException {
-        this(storyFile, bbsThread, nlines, null, null, null);
+    public BbsScreenModel(String nameOfTheGame, byte[] storyFile, BbsThread bbsThread, int nlines) throws IOException,InvalidStoryException {
+        this(nameOfTheGame, storyFile, bbsThread, nlines, null, null, null);
     }
 
-    public BbsScreenModel(byte[] storyFile, BbsThread bbsThread, int nlines, Runnable boldOn, Runnable boldOff) throws IOException,InvalidStoryException {
-        this(storyFile, bbsThread, nlines, boldOn, boldOff, null);
+    public BbsScreenModel(String nameOfTheGame, byte[] storyFile, BbsThread bbsThread, int nlines, Runnable boldOn, Runnable boldOff) throws IOException,InvalidStoryException {
+        this(nameOfTheGame, storyFile, bbsThread, nlines, boldOn, boldOff, null);
     }
-    public BbsScreenModel(byte[] storyFile, BbsThread bbsThread, int nlines, Runnable boldOn, Runnable boldOff, Runnable afterPaging) throws IOException,InvalidStoryException{
+    public BbsScreenModel(String nameOfTheGame, byte[] storyFile, BbsThread bbsThread, int nlines, Runnable boldOn, Runnable boldOff, Runnable afterPaging) throws IOException,InvalidStoryException{
+        this.nameOfTheGame = nameOfTheGame;
         this.bbsThread = bbsThread;
         this.storyFile = new ByteArrayInputStream(storyFile);
         this.nlines = nlines;

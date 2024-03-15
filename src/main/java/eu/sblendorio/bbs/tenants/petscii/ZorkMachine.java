@@ -14,20 +14,24 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.DEL;
 @Hidden
 public class ZorkMachine extends PetsciiThread {
 
+    private final String nameOfTheGame;
     private final String filename;
     private final byte[] logo;
 
     public ZorkMachine() {
+        this.nameOfTheGame = "ExampleZork";
         this.filename = "zmpp/zork1.z3";
         this.logo = new byte[] {};
     }
 
-    public ZorkMachine(String filename) {
+    public ZorkMachine(String nameOfTheGame, String filename) {
+        this.nameOfTheGame = nameOfTheGame;
         this.filename = filename;
         this.logo = new byte[] {};
     }
 
-    public ZorkMachine(String filename, byte[] logo) {
+    public ZorkMachine(String nameOfTheGame, String filename, byte[] logo) {
+        this.nameOfTheGame = nameOfTheGame;
         this.filename = filename;
         this.logo = logo;
     }
@@ -62,6 +66,7 @@ public class ZorkMachine extends PetsciiThread {
         try {
             final byte[] story = readBinaryFile(filename);
             BbsScreenModel zorkMachine = new BbsScreenModel(
+                    nameOfTheGame,
                     story, this, 9,
                     () -> write(WHITE),
                     () -> write(GREY3),

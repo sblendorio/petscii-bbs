@@ -207,13 +207,13 @@ public class MenuApple1 extends AsciiThread {
                 if (".".equals(choice)) return;
                 else if ("1".equals(choice)) subThread = new TicTacToeAscii();
                 else if ("2".equals(choice)) subThread = new Connect4Ascii();
-                else if ("3".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork1.z3");
-                else if ("4".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork2.z3");
-                else if ("5".equals(choice)) subThread = new ZorkMachineAscii("zmpp/zork3.z3");
-                else if ("6".equals(choice)) subThread = new ZorkMachineAscii("zmpp/hitchhiker-r60.z3");
-                else if ("7".equals(choice)) subThread = new ZorkMachineAscii("zmpp/planetfall-r39.z3");
+                else if ("3".equals(choice)) subThread = new ZorkMachineAscii("zork1", "zmpp/zork1.z3");
+                else if ("4".equals(choice)) subThread = new ZorkMachineAscii("zork2", "zmpp/zork2.z3");
+                else if ("5".equals(choice)) subThread = new ZorkMachineAscii("zork3", "zmpp/zork3.z3");
+                else if ("6".equals(choice)) subThread = new ZorkMachineAscii("hitchhikers", "zmpp/hitchhiker-r60.z3");
+                else if ("7".equals(choice)) subThread = new ZorkMachineAscii("planetfall", "zmpp/planetfall-r39.z3");
                 else if ("8".equals(choice)) subThread = createCastleAdventure();
-                else if ("9".equals(choice)) subThread = new ZorkMachineAscii("zmpp/Zork-1-ITA-v7.z5");
+                else if ("9".equals(choice)) subThread = new ZorkMachineAscii("zork1ita", "zmpp/Zork-1-ITA-v7.z5");
                 else if ("0".equals(choice)) subThread = createAvventuraNelCastello();
 
                 else {
