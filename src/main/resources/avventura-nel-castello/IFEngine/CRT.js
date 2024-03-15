@@ -216,6 +216,19 @@ class CRT{
 		if(noInput==undefined)
 			noInput = false;
 
+        let inputTxt = bridge.readLineMandatory();
+
+		return inputTxt.trim();
+	}
+
+	async inputOptional(cr, noInput){
+	    this.currentCol = 1;
+		if(cr==undefined)
+			cr = true;
+
+		if(noInput==undefined)
+			noInput = false;
+
         let inputTxt = bridge.readLine();
 
 		return inputTxt.trim();

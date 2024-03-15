@@ -396,11 +396,11 @@ class IFEngine{
 
         await this.CRT.printTyping(i18n.IFEngine.questions.saveLabel+" ",this.CRT.printDelay,false);
 
-        etichetta = await this.CRT.input();
+        etichetta = await this.CRT.inputOptional();
         etichetta = etichetta.trim();
         if (bridge.fileExists(etichetta, i18n.lang)) {
                 await this.CRT.print(i18n.IFEngine.warnings.doYouWantToOverwrite);
-                let resp = await this.CRT.input();
+                let resp = await this.CRT.inputOptional();
                 resp = resp.toLowerCase().substring(0);
                 if (!resp || resp === '' || resp === 'n' || resp === 'no' || resp == 'nope') etichetta = "";
         }
@@ -438,7 +438,7 @@ class IFEngine{
 		do {
 			await this.CRT.printTyping(i18n.IFEngine.questions.restoreLabel,{nlBefore:1});
 		
-			etichetta = await this.CRT.input();
+			etichetta = await this.CRT.inputOptional();
 			etichetta = etichetta.trim();
 
 			if(etichetta == i18n.IFEngine.questions.cancelLetter.toLowerCase() || etichetta == ""){

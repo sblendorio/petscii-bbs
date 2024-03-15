@@ -456,6 +456,13 @@ public abstract class BbsThread extends Thread {
         return result;
     }
 
+    public String readLineUppercaseMandatory() throws IOException {
+        restartKeepAlive();
+        final String result = io.readLineUppercaseMandatory();
+        restartKeepAlive();
+        return result;
+    }
+
     public String readLineUppercase() throws IOException {
         restartKeepAlive();
         final String result = io.readLineUppercase();

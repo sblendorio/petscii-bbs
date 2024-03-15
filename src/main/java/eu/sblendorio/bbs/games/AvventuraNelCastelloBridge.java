@@ -95,13 +95,21 @@ public class AvventuraNelCastelloBridge {
         println();
     }
 
+    public String readLineMandatory() throws Exception {
+        flush();
+        bbs.resetInput();
+        String result = bbs.readLineUppercaseMandatory();
+        if (result.trim().equalsIgnoreCase(".")) return "stop";
+        if (result.trim().equalsIgnoreCase("q")) return "stop";
+        if (result.trim().equalsIgnoreCase("restore")) return "load";
+        bbs.optionalCls();
+        return result.trim().toLowerCase();
+    }
+
     public String readLine() throws Exception {
         flush();
         bbs.resetInput();
         String result = bbs.readLineUppercase();
-        if (result.trim().equalsIgnoreCase(".")) return "stop";
-        if (result.trim().equalsIgnoreCase("q")) return "stop";
-        if (result.trim().equalsIgnoreCase("restore")) return "load";
         bbs.optionalCls();
         return result.trim().toLowerCase();
     }

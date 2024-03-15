@@ -147,8 +147,12 @@ public abstract class BbsInputOutput extends Reader {
 
 
     // 0, false, null, true
-    public String readLineUppercase() throws IOException {
+    public String readLineUppercaseMandatory() throws IOException {
         return readLineParametric(0, false, null, true, true, true);
+    }
+
+    public String readLineUppercase() throws IOException {
+        return readLineParametric(0, false, null, true, true, false);
     }
 
     public String readLine(int maxLength, boolean mask, Set<Integer> allowedChars) throws IOException {
