@@ -1,0 +1,12 @@
+AVVENTURA NEL CASTELLO
+Dalla versione originale 4.1 per MS-DOS
+di Enrico Colombini e Chiara Tovena
+(C) Dinosoft 1982,1984,1987,1996
+Riprodotta col consenso degli autori
+
+Versione Javascript: Federico Volpini
+Versione GraalVM: Francesco Sblendorio
+
+Licenza di distribuzione:
+CC BY-NC-ND 4.0
+

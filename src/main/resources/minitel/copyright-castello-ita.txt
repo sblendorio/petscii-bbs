@@ -1,0 +1,12 @@
+CASTLE ADVENTURE
+From original version 4.1 for MS-DOS
+by Enrico Colombini and Chiara Tovena
+(C) Dinosoft 1982,1984,1987,1996
+
+Javascript adaption: Federico Volpini
+GraalVM adaption: Francesco Sblendorio
+Translation into English: Adam Bishop
+
+Distribuzione license:
+CC BY-NC-ND 4.0
+

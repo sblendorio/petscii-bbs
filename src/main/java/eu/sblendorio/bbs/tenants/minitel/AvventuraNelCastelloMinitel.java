@@ -13,10 +13,12 @@ public class AvventuraNelCastelloMinitel extends MinitelThread {
     AvventuraNelCastelloBridge bridge;
 
     byte[] splashScreen;
+    byte[] copyright;
     String locale;
 
-    public AvventuraNelCastelloMinitel(byte[] splashScreen, String locale) {
+    public AvventuraNelCastelloMinitel(byte[] splashScreen, byte[] copyright, String locale) {
         this.splashScreen = splashScreen;
+        this.copyright = copyright;
         this.locale = locale;
     }
 
@@ -56,6 +58,15 @@ public class AvventuraNelCastelloMinitel extends MinitelThread {
 
     }
 
+    public void printText(byte[] bytes) {
+        for (byte b : bytes)
+            if (b != '\n') {
+                write(b);
+            } else {
+                println();
+            }
+        flush();
+    }
 
     @Override
     public void doLoop() throws Exception {
@@ -68,12 +79,9 @@ public class AvventuraNelCastelloMinitel extends MinitelThread {
         resetInput();
         write(SCROLL_ON);
         write(CURSOR_ON);
-
-        gotoXY(0, 24);
-        newline();
-        newline();
-        newline();
         attributes(CHAR_WHITE);
+        cls();
+        printText(copyright);
 
         bridge = new Bridge(this);
         bridge.init(locale);

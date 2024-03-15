@@ -25,6 +25,9 @@ public class MenuMinitelWithEcho extends MinitelThread {
     final static byte[] SPLASH_CASTELLO_ITA = readBinaryFile("minitel/avventura-nel-castello.vdt");
     final static byte[] SPLASH_CASTELLO_ENG = readBinaryFile("minitel/castle-adventure.vdt");
 
+    final static byte[] COPYRIGHT_CASTELLO_ITA = readBinaryFile("minitel/copyright-castello-ita.txt");
+    final static byte[] COPYRIGHT_CASTELLO_ENG = readBinaryFile("minitel/copyright-castello-eng.txt");
+
     private byte[] clsBytes = new byte[] { 12 };
 
     public MenuMinitelWithEcho() {
@@ -165,9 +168,9 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("5".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/zork3.z3");
                 else if ("6".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/hitchhiker-r60.z3", readBinaryFile("minitel/hitchhikers.vdt"));
                 else if ("7".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/planetfall-r39.z3", readBinaryFile("minitel/planetfall.vdt"));
-                else if ("8".equals(choice)) subThread = new AvventuraNelCastelloMinitel(SPLASH_CASTELLO_ENG, "en-gb");
+                else if ("8".equals(choice)) subThread = new AvventuraNelCastelloMinitel(SPLASH_CASTELLO_ENG, COPYRIGHT_CASTELLO_ENG, "en-gb");
                 else if ("9".equals(choice)) subThread = new ZorkMachineMinitel("zmpp/Zork-1-ITA-v7.z5", null, () -> attributes(CHAR_WHITE), () -> attributes(CHAR_GREEN));
-                else if ("0".equals(choice)) subThread = new AvventuraNelCastelloMinitel(SPLASH_CASTELLO_ITA, "it-it");
+                else if ("0".equals(choice)) subThread = new AvventuraNelCastelloMinitel(SPLASH_CASTELLO_ITA, COPYRIGHT_CASTELLO_ITA, "it-it");
                 else {
                     validKey = false;
                     subThread = null;
