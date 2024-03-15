@@ -93,7 +93,6 @@ public class AvventuraNelCastelloAnsi extends AsciiThread {
         resetInput();
         cls();
         printText(copyright);
-        newline();
         bridge = new Bridge(this);
         bridge.init(locale);
         bridge.start();
