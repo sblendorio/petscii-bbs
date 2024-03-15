@@ -3,7 +3,10 @@ package eu.sblendorio.bbs.tenants.minitel;
 import eu.sblendorio.bbs.core.*;
 import eu.sblendorio.bbs.games.AvventuraNelCastelloBridge;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import static eu.sblendorio.bbs.core.MinitelControls.*;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
 
 public class AvventuraNelCastelloMinitel extends MinitelThread {
 
@@ -34,6 +37,23 @@ public class AvventuraNelCastelloMinitel extends MinitelThread {
         @Override public String transformDiacritics(String s) { return HtmlUtils.utilHtmlDiacriticsToAscii(s);}
         @Override public void revOn() { attributes(REV_ON); }
         @Override public void revOff() { attributes(REV_OFF); }
+
+        @Override
+        public void joke() throws Exception {
+            for (int i=0; i < 1000; i++) {
+                int x = ThreadLocalRandom.current().nextInt(0, 39);
+                int y = ThreadLocalRandom.current().nextInt(0, 24);
+                int ch = ThreadLocalRandom.current().nextInt(32, 127);
+                gotoXY(x, y);
+                write(ch);
+                int probability = ThreadLocalRandom.current().nextInt(0, 100);
+                if (probability < 5) beep();
+            }
+            Thread.sleep(3000L);
+            // write("\033[24;1H".getBytes(ISO_8859_1));
+            cls();
+        }
+
     }
 
 

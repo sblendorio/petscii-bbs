@@ -3,6 +3,13 @@ package eu.sblendorio.bbs.tenants.petscii;
 import eu.sblendorio.bbs.core.*;
 import eu.sblendorio.bbs.games.AvventuraNelCastelloBridge;
 
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
+
+import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
+import static eu.sblendorio.bbs.core.PetsciiKeys.DOWN;
+import static eu.sblendorio.bbs.core.PetsciiKeys.HOME;
+
 public class AvventuraNelCastelloPetscii extends PetsciiThread {
 
     AvventuraNelCastelloBridge bridge;
@@ -32,21 +39,40 @@ public class AvventuraNelCastelloPetscii extends PetsciiThread {
         @Override public String transformDiacritics(String s) { return HtmlUtils.utilHtmlDiacriticsToAscii(s);}
         @Override public void revOn() { write(PetsciiKeys.REVON); }
         @Override public void revOff() { write(PetsciiKeys.REVOFF); }
+
+        @Override
+        public void joke() throws Exception {
+            write(HOME);
+            int i = 0;
+            while (i < 2000) {
+                int ch = ThreadLocalRandom.current().nextInt(1, 256);
+                int probability = ThreadLocalRandom.current().nextInt(0, 100);
+                if (Set.of(144, 142, 147, 8, 9).contains(ch))
+                    continue;
+                write(ch);
+                if (probability < 5) beep();
+                i++;
+            }
+            write(HOME); write(GREY3);
+            for (i = 0; i < 25; i++) write(DOWN);
+            Thread.sleep(2000L);
+        }
+
     }
 
 
     @Override
     public void doLoop() throws Exception {
-        write(PetsciiKeys.CLR, PetsciiKeys.LOWERCASE, PetsciiKeys.CASE_LOCK, PetsciiKeys.HOME);
+        write(PetsciiKeys.CLR, PetsciiKeys.LOWERCASE, PetsciiKeys.CASE_LOCK, HOME);
         write(splashScreen);
-        write(PetsciiColors.GREY3);
+        write(GREY3);
         flush(); resetInput();
         keyPressed(30000);
         resetInput();
         newline();
         newline();
         newline();
-        write(PetsciiColors.GREY3);
+        write(GREY3);
 
         bridge = new Bridge(this);
         bridge.init(locale);
