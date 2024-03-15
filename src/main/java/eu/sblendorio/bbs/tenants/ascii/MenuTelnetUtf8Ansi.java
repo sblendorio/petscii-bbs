@@ -61,10 +61,20 @@ public class MenuTelnetUtf8Ansi extends MenuTelnetPureAscii {
     }
 
     public BbsThread createAvventuraNelCastello() {
-        return new AvventuraNelCastelloAnsi(readBinaryFile("ansi/castello.utf8ans"), "it-it", true);
+        return new AvventuraNelCastelloAnsi(
+                readBinaryFile("ansi/castello.utf8ans"),
+                readBinaryFile("ansi/castello-copyright.utf8ans"),
+                "it-it",
+                true
+        );
     }
 
     public BbsThread createCastleAdventure() {
-        return new AvventuraNelCastelloAnsi(readBinaryFile("ansi/castle.utf8ans"), "en-gb", true);
+        return new AvventuraNelCastelloAnsi(
+                readBinaryFile("ansi/castle.utf8ans"),
+                readBinaryFile("ansi/castle-copyright.utf8ans"),
+                "en-gb",
+                true
+        );
     }
 }

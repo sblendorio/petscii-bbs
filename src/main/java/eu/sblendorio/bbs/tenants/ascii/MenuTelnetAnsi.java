@@ -61,11 +61,21 @@ public class MenuTelnetAnsi extends MenuTelnetPureAscii {
     }
 
     public BbsThread createAvventuraNelCastello() {
-        return new AvventuraNelCastelloAnsi(readBinaryFile("ansi/castello.ans"), "it-it", false);
+        return new AvventuraNelCastelloAnsi(
+                readBinaryFile("ansi/castello.ans"),
+                readBinaryFile("ansi/castello-copyright.ans"),
+                "it-it",
+                false
+        );
     }
 
     public BbsThread createCastleAdventure() {
-        return new AvventuraNelCastelloAnsi(readBinaryFile("ansi/castle.ans"), "en-gb", false);
+        return new AvventuraNelCastelloAnsi(
+                readBinaryFile("ansi/castle.ans"),
+                readBinaryFile("ansi/castle-copyright.ans"),
+                "en-gb",
+                false
+        );
     }
 
 }

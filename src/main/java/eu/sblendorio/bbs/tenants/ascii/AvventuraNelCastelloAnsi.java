@@ -11,16 +11,19 @@ public class AvventuraNelCastelloAnsi extends AsciiThread {
 
     AvventuraNelCastelloBridge bridge;
     byte[] splashScreen;
+    byte[] copyright;
     String locale;
     boolean utf8;
 
-    public AvventuraNelCastelloAnsi(byte[] splashScreen, String locale, boolean utf8) {
+    public AvventuraNelCastelloAnsi(byte[] splashScreen, byte[] copyright, String locale, boolean utf8) {
         this.splashScreen = splashScreen;
+        this.copyright = copyright;
         this.locale = locale;
         this.utf8 = utf8;
     }
 
-    public void printText(byte[] bytes) {
+    public void printRevText(byte[] bytes) {
+        if (bytes == null) return;
         int col = 0;
 
         for (byte b : bytes)
@@ -36,6 +39,19 @@ public class AvventuraNelCastelloAnsi extends AsciiThread {
             }
         if (col != 0) for (int j=col; j<78; j++) write(' ');
         write("\033[m".getBytes(ISO_8859_1));
+        flush();
+    }
+
+    public void printText(byte[] bytes) {
+        if (bytes == null) return;
+        int col = 0;
+
+        for (byte b : bytes)
+            if (b != '\n') {
+                write(b);
+            } else {
+                println();
+            }
         flush();
     }
 
@@ -70,12 +86,14 @@ public class AvventuraNelCastelloAnsi extends AsciiThread {
     @Override
     public void doLoop() throws Exception {
         cls();
-        printText(splashScreen);
+        printRevText(splashScreen);
         write("\033[m".getBytes(ISO_8859_1));
         flush(); resetInput();
         keyPressed(30000);
         resetInput();
         cls();
+        printText(copyright);
+        newline();
         bridge = new Bridge(this);
         bridge.init(locale);
         bridge.start();
