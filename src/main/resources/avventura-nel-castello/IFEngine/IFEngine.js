@@ -398,16 +398,12 @@ class IFEngine{
 		
 			etichetta = await this.CRT.input();
 			etichetta = etichetta.trim();
-			if (bridge.fileExists(etichetta)) {
+			if (bridge.fileExists(etichetta, i18n.lang)) {
 					await this.CRT.print(i18n.IFEngine.warnings.doYouWantToOverwrite);
 					let resp = await this.CRT.input();
 					resp = resp.toLowerCase().substring(0);
-					if (resp === 'n') etichetta = "";
+					if (!resp || resp === '' || resp === 'n' || resp === 'no' || resp == 'nope') etichetta = "";
 			}
-			if(etichetta == i18n.IFEngine.questions.listLetter.toLowerCase()){
-				await this.CRT.printTyping(i18n.IFEngine.warnings.labelNotValid+"\n",this.CRT.printDelay);
-			}
-
 			if(etichetta == i18n.IFEngine.questions.cancelLetter.toLowerCase()){
 				return;
 			}
@@ -416,7 +412,7 @@ class IFEngine{
 		if (etichetta && etichetta !== "") {
             let tbs = this._getTbs();
             let saveState = JSON.stringify(tbs, (k,v) => typeof v === 'function' ? "" + v : v)
-            bridge.save(etichetta, saveState)
+            bridge.save(etichetta, saveState, i18n.lang)
             await this.CRT.printTyping(i18n.IFEngine.messages.saved);
 		} else {
             await this.CRT.println(i18n.IFEngine.warnings.saveAborted);
@@ -450,14 +446,14 @@ class IFEngine{
 			    return false;
 			}
 
-			if(!bridge.fileExists(etichetta)){
+			if(!bridge.fileExists(etichetta, i18n.lang)){
 				await this.CRT.println(i18n.IFEngine.warnings.notExistingFile)
 				return false;
             }
 
 		} while (etichetta == i18n.IFEngine.questions.cancelLetter.toLowerCase())
 		
-		let stored = bridge.restore(etichetta);
+		let stored = bridge.restore(etichetta, i18n.lang);
 		if(stored == null || stored === "") {
 			await this.CRT.printTyping(i18n.IFEngine.warnings.noData+"\n");
 			return false;	

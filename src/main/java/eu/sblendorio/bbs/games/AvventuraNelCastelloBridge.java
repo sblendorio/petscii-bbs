@@ -26,16 +26,17 @@ public class AvventuraNelCastelloBridge {
         this.bbs = bbs;
     }
 
-    public boolean fileExists(String filename) {
+    public boolean fileExists(String filename, String lang) {
         return new File(
                 new File(System.getProperty("user.dir")).getAbsolutePath()
                         + File.separator
+                        + (filePrefix() == null || filePrefix().isBlank() ? "" : filePrefix().trim() + "-")
                         + filename.toLowerCase()
-                        + ".anc"
+                        + ".anc-" + lang
         ).exists();
     }
 
-    public boolean save(String filename, String state) {
+    public boolean save(String filename, String state, String lang) {
         try {
             if (filename == null || filename.isBlank()) return false;
             String currentdir = new File(System.getProperty("user.dir")).getAbsolutePath();
@@ -43,7 +44,7 @@ public class AvventuraNelCastelloBridge {
                     currentdir
                             + File.separator
                             + (filePrefix() == null || filePrefix().isBlank() ? "" : filePrefix().trim() + "-")
-                            + filename.toLowerCase() + ".anc");
+                            + filename.toLowerCase() + ".anc-" + lang);
             try (RandomAccessFile raf = new RandomAccessFile(saveFile, "rw")) {
                 raf.write(state.getBytes(StandardCharsets.UTF_8));
             }
@@ -54,7 +55,7 @@ public class AvventuraNelCastelloBridge {
         return true;
     }
 
-    public String restore(String filename) {
+    public String restore(String filename, String lang) {
         String result;
         try {
             if (filename == null || filename.isBlank()) return "";
@@ -64,7 +65,7 @@ public class AvventuraNelCastelloBridge {
                             + File.separator
                             + (filePrefix() == null || filePrefix().isBlank() ? "" : filePrefix().trim() + "-")
                             + filename.toLowerCase()
-                            + ".anc");
+                            + ".anc-" + lang);
             try (RandomAccessFile raf = new RandomAccessFile(loadFile, "r")) {
                 byte[] data = new byte[(int) raf.length()];
                 raf.readFully(data);
@@ -100,7 +101,7 @@ public class AvventuraNelCastelloBridge {
         String result = bbs.readLineUppercase();
         if (result.trim().equalsIgnoreCase(".")) return "stop";
         if (result.trim().equalsIgnoreCase("q")) return "stop";
-        if (result.trim().equalsIgnoreCase("restore")) return "save";
+        if (result.trim().equalsIgnoreCase("restore")) return "load";
         bbs.optionalCls();
         return result.trim().toLowerCase();
     }

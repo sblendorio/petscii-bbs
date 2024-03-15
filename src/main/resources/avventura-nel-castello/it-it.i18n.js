@@ -1,6 +1,7 @@
 var i18n = {
 	htmlTitle: `Avventura nel Castello in Javascript`,
 	title: `   AVVENTURA NEL CASTELLO JS   `,
+	lang: 'it',
 	CRT: {
 		waitText: `Premere invio per continuare...`
 	},

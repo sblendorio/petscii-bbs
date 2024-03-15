@@ -11,3 +11,6 @@ Thumbs.db
 .gradle
 *.log
 *.ziff
+*.anc
+*.anc-it
+*.anc-en

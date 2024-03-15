@@ -1,6 +1,7 @@
 var i18n = {
 	htmlTitle: `Castle Adventure in JavaScript`,
 	title: `CASTLE ADVENTURE  IN JAVASCRIPT`,
+	lang: 'en',
 	CRT: {
 		waitText: `Press enter to continue...`
 	},
@@ -36,7 +37,7 @@ var i18n = {
 			stopQuestion: `Do you want to stop playing`,
 			areYouSureQuestion: `Are you sure`,
 			saveLabel: `Save label (X cancel):`,
-			restoreLabel: `Label (X cancel, L for list):`,
+			restoreLabel: `Label (X cancel):`,
 			cancelLetter: `X`,
 			listLetter: `L`,
 			what: `what?`
