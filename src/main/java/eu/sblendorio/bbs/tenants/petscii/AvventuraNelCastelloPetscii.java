@@ -47,7 +47,7 @@ public class AvventuraNelCastelloPetscii extends PetsciiThread {
             while (i < 2000) {
                 int ch = ThreadLocalRandom.current().nextInt(1, 256);
                 int probability = ThreadLocalRandom.current().nextInt(0, 100);
-                if (Set.of(144, 142, 147, 8, 9).contains(ch))
+                if (Set.of(144, 142, 147, 8, 9, 1, 2, 3, 4, 6, 10, 11, 12, 14, 15, 16, 21, 22, 23, 24, 25, 26, 27).contains(ch))
                     continue;
                 write(ch);
                 if (probability < 5) beep();
