@@ -3,6 +3,7 @@ package eu.sblendorio.bbs.tenants.ascii;
 import eu.sblendorio.bbs.core.BbsThread;
 
 import static eu.sblendorio.bbs.core.Utils.bytes;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
 
 public class MenuTelnetUtf8Ansi extends MenuTelnetPureAscii {
 
@@ -16,6 +17,11 @@ public class MenuTelnetUtf8Ansi extends MenuTelnetPureAscii {
     public MenuTelnetUtf8Ansi() {
         super();
         clsBytes = bytes("\033[H\033[2J");
+    }
+
+    @Override
+    public void initTerminal() throws Exception {
+        write("\033[r".getBytes(ISO_8859_1));
     }
 
     @Override

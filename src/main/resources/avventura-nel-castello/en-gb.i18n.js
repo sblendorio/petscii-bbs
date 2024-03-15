@@ -1901,7 +1901,7 @@ var i18n = {
 				`You rent a small tourist plane, and set off on a great adventure!`
 			],
 			intro: [
-				` * CASTLE ADVENTURE! *`,
+				` * CASTLE ADVENTURE! * `,
 				`You're piloting your single-seater over the desolate Highlands of Scotland. You've just flown over Loch Ness...`,
 				`Suddenly, the engine misfires.`,
 				`The controls aren't responding!`

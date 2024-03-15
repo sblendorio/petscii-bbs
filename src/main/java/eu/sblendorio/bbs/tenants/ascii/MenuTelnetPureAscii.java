@@ -142,9 +142,12 @@ public class MenuTelnetPureAscii extends AsciiThread {
         launch(subThread);
     }
 
+    public void initTerminal() throws Exception {}
+
     @Override
     public void doLoop() throws Exception {
         resetInput();
+        initTerminal();
         logo();
         while (true) {
             showMainMenu();

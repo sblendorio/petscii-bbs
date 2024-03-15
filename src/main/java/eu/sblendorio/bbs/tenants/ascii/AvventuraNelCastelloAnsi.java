@@ -3,7 +3,7 @@ package eu.sblendorio.bbs.tenants.ascii;
 import eu.sblendorio.bbs.core.*;
 import eu.sblendorio.bbs.games.AvventuraNelCastelloBridge;
 
-import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 
@@ -47,6 +47,23 @@ public class AvventuraNelCastelloAnsi extends AsciiThread {
         @Override public String transformDiacritics(String s) { return utf8 ? s : HtmlUtils.utilHtmlDiacriticsToAscii(s);}
         @Override public void revOn() { write("\033[7m".getBytes(ISO_8859_1)); }
         @Override public void revOff() { write("\033[m".getBytes(ISO_8859_1)); }
+
+        @Override
+        public void joke() throws Exception {
+            for (int i=0; i < 1000; i++) {
+                int x = ThreadLocalRandom.current().nextInt(0, 79) + 1;
+                int y = ThreadLocalRandom.current().nextInt(0, 24) + 1;
+                String pos = "\033[" + y + ";" + x + "H";
+                int ch = ThreadLocalRandom.current().nextInt(32, utf8 ? 127 : 256);
+                write(pos.getBytes(ISO_8859_1));
+                write(ch);
+                int probability = ThreadLocalRandom.current().nextInt(0, 100);
+                if (probability < 5) beep();
+            }
+            Thread.sleep(3000L);
+            // write("\033[24;1H".getBytes(ISO_8859_1));
+            cls();
+        }
 
     }
 
