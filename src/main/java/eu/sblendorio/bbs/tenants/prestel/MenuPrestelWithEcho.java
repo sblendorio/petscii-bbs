@@ -130,20 +130,24 @@ public class MenuPrestelWithEcho extends PrestelThread {
                     validKey = false;
                     subThread = null;
                 }
-                if (subThread == null) continue;
-
-                subThread.keepAliveChar = 17; // 17 = cursor on
-                if (subThread instanceof AsciiThread) {
-                    ((AsciiThread) subThread).clsBytes = this.clsBytes;
-                    ((AsciiThread) subThread).screenColumns = this.getScreenColumns();
-                    ((AsciiThread) subThread).screenRows = this.getScreenRows();
-                }
-                if (subThread instanceof DisinformaticoAscii) {
-                    ((DisinformaticoAscii) subThread).setPageSize(4);
-                }
-                launch(subThread);
+                execute(subThread);
             } while (!validKey);
         }
+    }
+
+    public void execute(BbsThread subThread) throws Exception {
+        if (subThread == null) return;
+
+        subThread.keepAliveChar = 17; // 17 = cursor on
+        if (subThread instanceof AsciiThread) {
+            ((AsciiThread) subThread).clsBytes = this.clsBytes;
+            ((AsciiThread) subThread).screenColumns = this.getScreenColumns();
+            ((AsciiThread) subThread).screenRows = this.getScreenRows();
+        }
+        if (subThread instanceof DisinformaticoAscii) {
+            ((DisinformaticoAscii) subThread).setPageSize(4);
+        }
+        launch(subThread);
     }
 
     @Override
@@ -253,11 +257,6 @@ public class MenuPrestelWithEcho extends PrestelThread {
         flush(); resetInput(); readKey();
     }
 
-    protected void bannerPatronsPublishers() {
-        println("Patrons - Publisher subscribers");
-        println();
-    }
-
     public String readChoice() throws IOException {
         return readLine(setOfChars(STR_ALPHANUMERIC, "."));
     }
@@ -265,7 +264,8 @@ public class MenuPrestelWithEcho extends PrestelThread {
     public void patronsPublishers() throws Exception {
         do {
             cls();
-            bannerPatronsPublishers();
+            println("Patrons - Publisher subscribers");
+            println();
             println("1 - Syncroweb (Fulvio Ieva)");
             println(". - Back");
             println();
