@@ -5,7 +5,6 @@ import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.PrestelThread;
 import eu.sblendorio.bbs.core.Utils;
 import eu.sblendorio.bbs.tenants.ascii.*;
-import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -47,6 +46,7 @@ public class MenuPrestelWithEcho extends PrestelThread {
 
     @Override
     public void doLoop() throws Exception {
+        resetInput();
         logo();
         while (true) {
             log("Starting Prestel / main menu");
@@ -73,6 +73,46 @@ public class MenuPrestelWithEcho extends PrestelThread {
                     println("* Disconnected");
                     return;
                 }
+                else if ("1".equals(choice)) { menuInternationalNews(); subThread = null; }
+                else if ("2".equals(choice)) { menuItalianNews(); subThread = null; }
+                else if ("3".equals(choice)) { menuGames(); subThread = null; }
+                else if ("4".equals(choice)) { showPatrons(); subThread = null; }
+                else if ("5".equals(choice)) { patronsPublishers(); subThread = null; }
+                else if ("a".equals(choice)) subThread = new PrivateMessagesAscii(io);
+                else if ("b".equals(choice)) subThread = new ElizaAscii(io);
+                else if ("c".equals(choice)) subThread = new ClientChatGptAscii(io);
+                else if ("d".equals(choice)) subThread = new WikipediaAscii(io);
+                else if ("e".equals(choice)) { textDemo(); subThread = null; }
+                else if ("f".equals(choice)) { wifiModem(); subThread = null; }
+                else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii(io);
+                else {
+                    validKey = false;
+                    subThread = null;
+                }
+                execute(subThread);
+            } while (!validKey);
+        }
+    }
+
+    public void menuInternationalNews() throws Exception {
+        while (true) {
+            cls();
+            write(readBinaryFile("prestel/menu-international-news.cept3"));
+            flush();
+            resetInput();
+            boolean validKey;
+            do {
+                validKey = true;
+                resetInput();
+                String choice;
+                int key = readSingleKey();
+                choice = String.valueOf((char) key);
+                resetInput();
+                choice = StringUtils.lowerCase(choice);
+                BbsThread subThread = null;
+                if (".".equals(choice)) {
+                    return;
+                }
                 else if ("1".equals(choice)) subThread = new CnnAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
@@ -93,39 +133,50 @@ public class MenuPrestelWithEcho extends PrestelThread {
                 else if ("6".equals(choice)) subThread = new IndieRetroNewsAscii(io);
                 else if ("7".equals(choice)) subThread = new VcfedAscii(io);
                 else if ("8".equals(choice)) subThread = new The8BitGuyAscii(io);
-                else if ("a".equals(choice)) subThread = new TelevideoRaiAscii(
+                else if ("9".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii(io);
+                else {
+                    validKey = false;
+                    subThread = null;
+                }
+
+                execute(subThread);
+            } while (!validKey);
+        }
+    }
+
+    public void menuItalianNews() throws Exception {
+        while (true) {
+            cls();
+            write(readBinaryFile("prestel/menu-italian-news.cept3"));
+            flush();
+            resetInput();
+            boolean validKey;
+            do {
+                validKey = true;
+                resetInput();
+                String choice;
+                int key = readSingleKey();
+                choice = String.valueOf((char) key);
+                resetInput();
+                choice = StringUtils.lowerCase(choice);
+                BbsThread subThread = null;
+                if (".".equals(choice)) {
+                    return;
+                }
+                else if ("1".equals(choice)) subThread = new TelevideoRaiAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getTerminalType(),
                         bytes(20, readBinaryFile("prestel/menu-televideo.cept3")),
                         bytes(11, 11, 13, 10, 32, 32, 32, 32, 32, 32, 13, 10, 11, 17)
                 );
-                else if ("b".equals(choice)) subThread = new LercioAscii(io);
-                else if ("c".equals(choice)) subThread = new DisinformaticoAscii(io);
-                else if ("d".equals(choice)) subThread = new MupinAscii(io);
-                else if ("e".equals(choice)) subThread = new IlFattoQuotidianoAscii(io);
-                else if ("f".equals(choice)) subThread = new AmedeoValorosoAscii(io);
-                else if ("z".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii(io);
-                else if ("g".equals(choice)) subThread = new ButacAscii(io);
-                else if ("h".equals(choice)) subThread = new AlessandroAlbanoAscii(io);
-                else if ("i".equals(choice)) subThread = new TicTacToeAscii(io);
-                else if ("j".equals(choice)) subThread = new Connect4Ascii();
-                else if ("k".equals(choice)) subThread = new ZorkMachinePrestel("zork1", "zmpp/zork1.z3");
-                else if ("9".equals(choice)) subThread = new ZorkMachinePrestel("zork1ita", "zmpp/Zork-1-ITA-v7.z5");
-                else if ("l".equals(choice)) subThread = new ZorkMachinePrestel("zork2", "zmpp/zork2.z3");
-                else if ("m".equals(choice)) subThread = new ZorkMachinePrestel("zork3", "zmpp/zork3.z3");
-                else if ("n".equals(choice)) subThread = new ZorkMachinePrestel("hitchhikers", "zmpp/hitchhiker-r60.z3");
-                else if ("y".equals(choice)) subThread = new ZorkMachinePrestel("planetfall", "zmpp/planetfall-r39.z3");
-                // else if ("o".equals(choice)) subThread = new ChatA1(io, getTerminalType());
-                else if ("p".equals(choice)) subThread = new PrivateMessagesAscii(io);
-                else if ("q".equals(choice)) subThread = new ElizaAscii(io);
-                else if ("r".equals(choice)) subThread = new ClientChatGptAscii(io);
-                else if ("s".equals(choice)) { showPatrons(); subThread = null; }
-                else if ("t".equals(choice)) { patronsPublishers(); subThread = null; }
-                // else if ("u".equals(choice)) { wifiModem(); subThread = null; }
-                else if ("w".equals(choice)) subThread = new WikipediaAscii(io);
-                else if ("x".equals(choice)) { textDemo(); subThread = null; }
-                else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii(io);
+                else if ("2".equals(choice)) subThread = new LercioAscii(io);
+                else if ("3".equals(choice)) subThread = new DisinformaticoAscii(io);
+                else if ("4".equals(choice)) subThread = new MupinAscii(io);
+                else if ("5".equals(choice)) subThread = new IlFattoQuotidianoAscii(io);
+                else if ("6".equals(choice)) subThread = new AmedeoValorosoAscii(io);
+                else if ("7".equals(choice)) subThread = new ButacAscii(io);
+                else if ("8".equals(choice)) subThread = new AlessandroAlbanoAscii(io);
                 else {
                     validKey = false;
                     subThread = null;
@@ -134,6 +185,45 @@ public class MenuPrestelWithEcho extends PrestelThread {
             } while (!validKey);
         }
     }
+
+    public void menuGames() throws Exception {
+        while (true) {
+            cls();
+            write(readBinaryFile("prestel/menu-games.cept3"));
+            flush();
+            resetInput();
+            boolean validKey;
+            do {
+                validKey = true;
+                resetInput();
+                String choice;
+                int key = readSingleKey();
+                choice = String.valueOf((char) key);
+                resetInput();
+                choice = StringUtils.lowerCase(choice);
+                BbsThread subThread;
+                if (".".equals(choice)) {
+                    return;
+                }
+                else if ("1".equals(choice)) subThread = new TicTacToeAscii(io);
+                else if ("2".equals(choice)) subThread = new Connect4Ascii();
+                else if ("3".equals(choice)) subThread = new ZorkMachinePrestel("zork1", "zmpp/zork1.z3");
+                else if ("4".equals(choice)) subThread = new ZorkMachinePrestel("zork2", "zmpp/zork2.z3");
+                else if ("5".equals(choice)) subThread = new ZorkMachinePrestel("zork3", "zmpp/zork3.z3");
+                else if ("6".equals(choice)) subThread = new ZorkMachinePrestel("hitchhikers", "zmpp/hitchhiker-r60.z3");
+                else if ("7".equals(choice)) subThread = new ZorkMachinePrestel("planetfall", "zmpp/planetfall-r39.z3");
+                else if ("8".equals(choice)) subThread = new AvventuraNelCastelloAscii("en-gb");
+                else if ("9".equals(choice)) subThread = new ZorkMachinePrestel("zork1ita", "zmpp/Zork-1-ITA-v7.z5");
+                else if ("0".equals(choice)) subThread = new AvventuraNelCastelloAscii("it-it");
+                else {
+                    validKey = false;
+                    subThread = null;
+                }
+                execute(subThread);
+            } while (!validKey);
+        }
+    }
+
 
     public void execute(BbsThread subThread) throws Exception {
         if (subThread == null) return;
@@ -166,7 +256,7 @@ public class MenuPrestelWithEcho extends PrestelThread {
         if (isSanremo()) {
             write(readBinaryFile("prestel/menu-retrocampus-sanremo.cept3"));
         } else {
-            write(readBinaryFile("prestel/menu-retrocampus.cept3"));
+            write(readBinaryFile("prestel/menu-retrocampus-main-menu.cept3"));
         }
         flush(); resetInput();
     }
