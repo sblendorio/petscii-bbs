@@ -2775,7 +2775,6 @@ class Avventura extends AvventuraNelCastelloJSEngine{
                         bridge.revOn(); await this.CRT.print(i18n.title); bridge.revOff(); await this.CRT.println("");
                         await this.CRT.println("===============================\n",{m: true});
                         await this.CRT.wait();
-                        bridge.optionalCls();
                         let i=0;
                         await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
                         await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
@@ -2790,7 +2789,6 @@ class Avventura extends AvventuraNelCastelloJSEngine{
                         await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++]);
                         await this.CRT.println(i18n.AvventuraNelCastelloJS.sequences.title[i++], {nlAfter: 1});
                         await this.CRT.wait();
-                        bridge.optionalCls();
                     }
 				},
 				prologo: async () => {
