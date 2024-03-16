@@ -212,9 +212,9 @@ public class MenuPrestelWithEcho extends PrestelThread {
                 else if ("5".equals(choice)) subThread = new ZorkMachinePrestel("zork3", "zmpp/zork3.z3");
                 else if ("6".equals(choice)) subThread = new ZorkMachinePrestel("hitchhikers", "zmpp/hitchhiker-r60.z3");
                 else if ("7".equals(choice)) subThread = new ZorkMachinePrestel("planetfall", "zmpp/planetfall-r39.z3");
-                else if ("8".equals(choice)) subThread = new AvventuraNelCastelloAscii("en-gb");
+                else if ("8".equals(choice)) subThread = new AvventuraNelCastelloPrestel("en-gb");
                 else if ("9".equals(choice)) subThread = new ZorkMachinePrestel("zork1ita", "zmpp/Zork-1-ITA-v7.z5");
-                else if ("0".equals(choice)) subThread = new AvventuraNelCastelloAscii("it-it");
+                else if ("0".equals(choice)) subThread = new AvventuraNelCastelloPrestel("it-it");
                 else {
                     validKey = false;
                     subThread = null;

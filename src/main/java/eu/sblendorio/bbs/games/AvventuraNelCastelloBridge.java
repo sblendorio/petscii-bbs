@@ -1,14 +1,14 @@
 package eu.sblendorio.bbs.games;
 
 import eu.sblendorio.bbs.core.BbsThread;
-import eu.sblendorio.bbs.tenants.ascii.IlFattoQuotidianoAscii;
 
-import javax.script.*;
+import javax.script.Bindings;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.SimpleBindings;
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static eu.sblendorio.bbs.core.BbsThread.readBinaryFile;
@@ -138,6 +138,10 @@ public class AvventuraNelCastelloBridge {
 
     public void clear() throws Exception {
         bbs.cls();
+    }
+
+    public void optionalCls() throws Exception {
+        bbs.optionalCls();
     }
 
     public int width() {
