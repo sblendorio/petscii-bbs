@@ -731,18 +731,25 @@ class AvventuraNelCastelloJSEngine extends IFEngine{
 		if(this.stanzaCorrente.interactors === undefined)
 			this.stanzaCorrente.interactors = {};
 		
+		let description;
+
 		if(this.stanzaCorrente.interactors.pareti === undefined)
 			this.stanzaCorrente.interactors.pareti = { ...this.commonInteractors.pareti};
 		if(this.stanzaCorrente.primaEntrata === undefined || descrizioneLunga){
 			this.stanzaCorrente.primaEntrata = true;
-			let description = Array.isArray(this.stanzaCorrente.description) ? this.stanzaCorrente.description.join("\n") : this.stanzaCorrente.description
-			await this.CRT.printTyping(description);
+			description = this._descrizione(this.stanzaCorrente.description)
 		} else {
-			await this.CRT.printTyping(this.stanzaCorrente.shortDescription);
+			description = this._descrizione(this.stanzaCorrente.shortDescription)
 		}
 
+		await this.CRT.printTyping(description);
 		await this.elenca(this.stanzaCorrente.interactors);
 		await this.elenca(this.stanzaCorrente.objects);
+	}
+
+	// restituisce un array descrittivo come una stringa separata da newlines
+	_descrizione(d){
+		return Array.isArray(d) ? d.join("\n") : d
 	}
 
 	// Elenca una lista "cose" visibili
