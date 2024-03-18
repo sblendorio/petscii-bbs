@@ -357,20 +357,19 @@ public class MenuTelnetPureAscii extends AsciiThread {
         println("-------------------");
 
         final int PAGESIZE = getScreenRows()-2;
-        int pages = patrons.size() / PAGESIZE + (patrons.size() % PAGESIZE == 0 ? 0 : 1);
-        for (int p = 0; p < pages; ++p) {
-            for (int i=0; i<PAGESIZE; ++i) {
-                int index = (p*PAGESIZE + i);
-                if (index < patrons.size())
-                    println(patrons.get(index));
+
+        int line = 0;
+        for  (int i = 0; i<patrons.size(); i++) {
+            line++;
+            println(patrons.get(i));
+
+            if (line % PAGESIZE == 0 || i == patrons.size()-1) {
+                println();
+                print("Press any key.");
+                flush(); resetInput(); readKey();
+                println();
             }
-            flush(); resetInput(); int ch = readKey();
-            if (ch == '.' || ch == 27) return;
-            println();
         }
-        println();
-        print("Press any key.");
-        flush(); resetInput(); readKey();
     }
 
     public void textDemo() throws Exception {

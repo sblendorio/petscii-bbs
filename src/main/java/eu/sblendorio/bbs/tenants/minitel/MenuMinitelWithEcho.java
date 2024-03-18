@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static eu.sblendorio.bbs.core.MinitelControls.*;
@@ -324,6 +325,8 @@ public class MenuMinitelWithEcho extends MinitelThread {
 
         cls();
         banner();
+
+        gotoXY(0,4);
         println("You can support the development of this");
         println("BBS through Patreon starting with 3$ or");
         println("3.50eur per month:");
@@ -334,20 +337,37 @@ public class MenuMinitelWithEcho extends MinitelThread {
         println("-------------------");
 
         final int PAGESIZE = getScreenRows()-2;
-        int pages = patrons.size() / PAGESIZE + (patrons.size() % PAGESIZE == 0 ? 0 : 1);
-        for (int p = 0; p < pages; ++p) {
-            for (int i=0; i<PAGESIZE; ++i) {
-                int index = (p*PAGESIZE + i);
-                if (index < patrons.size())
-                    println(patrons.get(index));
+
+        boolean firstPage = true;
+        int line = 12;
+        for  (int i = 0; i<patrons.size(); i++) {
+            line++;
+            println(patrons.get(i));
+
+            if (line % PAGESIZE == 0 || i == patrons.size()-1) {
+                println();
+                print("Press any key.");
+
+                if (firstPage) {
+                    String[] matrix = BlockGraphicsMinitel.stringToQr("t.ly/c1ryZ", ErrorCorrectionLevel.L);
+                    int len = matrix.length;
+                    List<String> listMatrix = new ArrayList<>();
+                    listMatrix.add(StringUtils.repeat('.', matrix[0].length()));
+                    Collections.addAll(listMatrix, matrix);
+                    String[] strMatrix = listMatrix.toArray(new String[len]);
+                    gotoXY(0, firstPage ? 9 : 0);
+                    write(CURSOR_OFF);
+                    write(MinitelControls.GRAPHICS_MODE);
+                    write(BlockGraphicsMinitel.getRenderedMidres(29, strMatrix, false, true));
+                    write(TEXT_MODE);
+                }
+                flush(); resetInput(); readKey();
+                write(CURSOR_ON);
+                cls();
+                firstPage = false;
             }
-            flush(); resetInput(); int ch = readKey();
-            if (ch == '.' || ch == 27) return;
-            println();
         }
-        println();
-        print("Press any key.");
-        flush(); resetInput(); readKey();
+
     }
 
     public void textDemo() throws Exception {
