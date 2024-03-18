@@ -735,7 +735,8 @@ class AvventuraNelCastelloJSEngine extends IFEngine{
 			this.stanzaCorrente.interactors.pareti = { ...this.commonInteractors.pareti};
 		if(this.stanzaCorrente.primaEntrata === undefined || descrizioneLunga){
 			this.stanzaCorrente.primaEntrata = true;
-			await this.CRT.printTyping(this.stanzaCorrente.description);
+			let description = Array.isArray(this.stanzaCorrente.description) ? this.stanzaCorrente.description.join("\n") : this.stanzaCorrente.description
+			await this.CRT.printTyping(description);
 		} else {
 			await this.CRT.printTyping(this.stanzaCorrente.shortDescription);
 		}
