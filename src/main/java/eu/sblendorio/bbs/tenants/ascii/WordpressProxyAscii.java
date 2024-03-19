@@ -16,8 +16,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static eu.sblendorio.bbs.core.Utils.equalsDomain;
-import static eu.sblendorio.bbs.core.Utils.normalizeDomain;
+import static eu.sblendorio.bbs.core.Utils.*;
+import static eu.sblendorio.bbs.core.Utils.STR_ALPHANUMERIC;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyMap;
 import static org.apache.commons.collections4.MapUtils.isEmpty;
@@ -94,7 +94,7 @@ public class WordpressProxyAscii extends AsciiThread {
                 : "(N+-)Page (.)Quit> "
             );
             resetInput();
-            flush(); String inputRaw = readLine();
+            flush(); String inputRaw = readLine(setOfChars(STR_ALPHANUMERIC, ".:,;_ []()<>@+-*/^='?!$%&#"));
             String input = lowerCase(trim(inputRaw));
             if (".".equals(input) || "exit".equals(input) || "quit".equals(input) || "q".equals(input)) {
                 break;

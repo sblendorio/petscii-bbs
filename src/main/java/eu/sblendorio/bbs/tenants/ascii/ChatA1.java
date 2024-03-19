@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
 import static eu.sblendorio.bbs.core.BlockGraphicsMinitel.stringToQr;
-import static eu.sblendorio.bbs.core.Utils.bytes;
+import static eu.sblendorio.bbs.core.Utils.*;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
@@ -100,8 +100,8 @@ public class ChatA1 extends AsciiThread {
                 print("Enter your name: ");
                 resetInput();
                 flush(); resetInput();
-                String candidateName = readLine();
-                final String name = defaultString(parametricLowerCase(candidateName)).replace(" ", "");
+                String candidateName = readLine(setOfChars(STR_ALPHANUMERIC, ".:,;_ []()<>@+-*/^='?!$%&#"));
+                final String name = defaultString(parametricLowerCase(candidateName)).trim().replace(" ", "");
                 if (isBlank(name) || ".".equals(name)) {
                     return;
                 }

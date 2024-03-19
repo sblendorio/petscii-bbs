@@ -24,7 +24,7 @@ import java.time.Instant;
 import java.util.*;
 
 import static com.theokanning.openai.completion.chat.ChatCompletionRequest.builder;
-import static eu.sblendorio.bbs.core.Utils.readExternalTxt;
+import static eu.sblendorio.bbs.core.Utils.*;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
 import static java.util.Arrays.asList;
@@ -130,7 +130,7 @@ public class ClientChatGptAscii extends AsciiThread {
             flush(); resetInput();
             write(USER_COLOR);
             print("You> ");
-            input = readLine();
+            input = readLine(setOfChars(STR_ALPHANUMERIC, ".:,;_ {}[]()<>@+-*/^='?!$%&#"));
             input = trimToEmpty(input);
             if (".".equalsIgnoreCase(input) || "exit".equalsIgnoreCase(input) || "quit".equalsIgnoreCase(input)) break;
             if (isBlank(input)) {
@@ -325,7 +325,7 @@ public class ClientChatGptAscii extends AsciiThread {
         println("                      johndoe!gmail.com");
         print(">");
         flush(); resetInput();
-        String tempEmail = readLine();
+        String tempEmail = readLine(setOfChars(STR_ALPHANUMERIC, ".:,;_ {}[]()<>@+-*/^='?!$%&#"));
         final String userEmail = trimToEmpty(tempEmail);
         if (isBlank(userEmail))
             return false;
