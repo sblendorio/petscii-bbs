@@ -130,7 +130,7 @@ public class ClientChatGptAscii extends AsciiThread {
             flush(); resetInput();
             write(USER_COLOR);
             print("You> ");
-            input = readLine(setOfChars(STR_ALPHANUMERIC, ".:,;_ {}[]()<>@+-*/^='?!$%&#"));
+            input = readLine(setOfChars(STR_ALPHANUMERIC, ".:,;_ \"{}[]()<>@+-*/^='?!$%&#"));
             input = trimToEmpty(input);
             if (".".equalsIgnoreCase(input) || "exit".equalsIgnoreCase(input) || "quit".equalsIgnoreCase(input)) break;
             if (isBlank(input)) {
