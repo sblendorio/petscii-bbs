@@ -131,6 +131,8 @@ public class WikipediaCommons {
             JSONObject root = (JSONObject) BbsThread.httpGetJson(url);
             continues = (JSONObject) root.get("continue");
             JSONObject query = (JSONObject) root.get("query");
+            if (query == null) break;
+
             JSONArray search = (JSONArray) query.get("search");
             for (Object obj : search) {
                 JSONObject itemJ = (JSONObject) obj;
