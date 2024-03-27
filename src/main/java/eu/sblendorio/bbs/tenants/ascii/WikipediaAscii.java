@@ -112,7 +112,8 @@ public class WikipediaAscii extends AsciiThread {
 
                 if (items.size() == 0) {
                     if (StringUtils.isNotBlank(keywords)) print("NO RESULT");
-                    continue;
+                    resetInput(); readKey();
+                    break;
                 }
 
                 break;
@@ -120,7 +121,7 @@ public class WikipediaAscii extends AsciiThread {
 
             if (items.size() == 1) {
                 showSingleResult(items.get(0));
-            } else {
+            } else if (items.size() > 1) {
                 chooseItem(items);
             }
         } while (true);
