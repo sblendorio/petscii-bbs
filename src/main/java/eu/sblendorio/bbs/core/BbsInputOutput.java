@@ -334,13 +334,13 @@ public abstract class BbsInputOutput extends Reader {
             out.flush();
             out.close();
             this.close();
-            // if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH SSH " + ip);
+            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH SSH " + ip);
             throw new BbsIOException("SECURE SHELL (ssh) Connection detected " + stringIp + ", closing socket");
         } else if (missingInput.matches("(?is)^R?FB [0-9][0-9][0-9]\\.[0-9][0-9][0-9]\n.*")) {
             out.flush();
             out.close();
             this.close();
-            // if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH VNC " + ip);
+            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH VNC " + ip);
             throw new BbsIOException("VNC Connection detected " + stringIp + ", closing socket");
         } else if (missingInput.matches("(?is)^.*/bin/busybox.*cat.*/proc.*$")) {
             out.flush();
