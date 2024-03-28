@@ -194,10 +194,18 @@ public class MenuMinitelWithEcho extends MinitelThread {
 
     @Override
     public void doLoop() throws Exception {
+        attributes(BACKGROUND_BLACK);
+        attributes(CHAR_WHITE);
+        attributes(TEXTSIZE_NORMAL);
+        write(0x1F, 0x40, 0x41, 0x18, 0x0F); // blank first line
         resetInput();
         logo();
         while (true) {
             log("Starting Minitel / main menu");
+            attributes(BACKGROUND_BLACK);
+            attributes(CHAR_WHITE);
+            attributes(TEXTSIZE_NORMAL);
+            write(0x1F, 0x40, 0x41, 0x18, 0x0F); // blank first line
             cls();
             displayMenu();
 
