@@ -34,8 +34,9 @@ public class Utils {
             142, 143, 144, 145, 146, 147,
             149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159
     ));
-
     // EXTRA_CONTROL_CHARS: 0, 10, 13, 20, 141, 148
+
+    public static final String ASCII_PRINTABLE = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
 
     public static final String STR_ALPHANUMERIC = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     public static final String STR_LETTER = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
