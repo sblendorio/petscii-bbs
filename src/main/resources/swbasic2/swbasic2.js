@@ -533,7 +533,7 @@ class Tokenizer {
       return false;
     }
     let t = this.tokens[this.theCurrentToken];
-    if (t.getText() == text) {
+    if (t.getText().toUpperCase() == text.toUpperCase()) {
       this.theLastToken = t;
       this.nextToken();
       return true;
@@ -644,7 +644,7 @@ class PNode {
 class Parser {
   constructor(text) {
     // prepare text: remove blank lines (incl. spaces, tabs), make uppercased
-    this.text = text.replace(/^\s*[\r\n]/gm, "").toUpperCase();
+    this.text = text.replace(/^\s*[\r\n]/gm, "");//.toUpperCase(); SBLEND
 
     this.lines = []; // code that has line numbers goes here
     this.statements = []; // list of statements (flattened)
@@ -932,12 +932,12 @@ class Parser {
     if (!this.accept("IDENTIFIER") && !this.accept("FUNCTION")) {
       if (this.accept("KEYWORD") || this.accept("LOGICAL_OPERATOR")) {
         node.type = "KEYWORD";
-        node.text = this.lastText();
+        node.text = this.lastText().toUpperCase();
         return node;
       }
     }
 
-    node.text = this.lastText();
+    node.text = this.lastText().toUpperCase();
     if (this.accept("OPENPAREN")) {
       // defined function
       if (this.defs.includes(node.text)) {
@@ -978,7 +978,7 @@ class Parser {
 
   getStatement() {
     if (this.accept("KEYWORD")) {
-      let keyword = this.lastText();
+      let keyword = this.lastText().toUpperCase();
       if (this.functions[keyword]) {
         return this.functions[keyword](this);
       }
@@ -1090,7 +1090,7 @@ class Parser {
     if (!this.accept("IDENTIFIER")) {
       throw "Expected function identifier after DEF";
     }
-    let fname = this.lastText();
+    let fname = this.lastText().toUpperCase();
     if (fname.length < 3 || !fname.startsWith("FN")) {
       throw "DEF function name must start with FN";
     }
@@ -1101,7 +1101,7 @@ class Parser {
     node.addChild(identifier);
     if (this.accept("OPENPAREN") && this.accept("IDENTIFIER") && this.willAccept("CLOSEPAREN")) {
       param = new PNode("DEF_FN_PARAM");
-      param.text = this.lastText();
+      param.text = this.lastText().toUpperCase();
       node.addChild(param);
       this.accept("CLOSEPAREN");
     } else {
@@ -1162,7 +1162,7 @@ class Parser {
       throw "Expected identifier in FOR statement";
     }
     let variable = new PNode("VARIABLE");
-    variable.text = this.lastText();
+    variable.text = this.lastText().toUpperCase();
     if (!this.acceptText("=")) {
       throw "Expected '=' ";
     }
@@ -1184,7 +1184,7 @@ class Parser {
   goto_statement(self) {
     let node = new PNode("GOTO");
     if (this.accept("NUMBER")) {
-      node.text = this.lastText();
+      node.text = this.lastText().toUpperCase();
       return node;
     }
     throw "GOTO should be followed by number";
@@ -1193,7 +1193,7 @@ class Parser {
   gosub_statement(self) {
     let node = new PNode("GOSUB");
     if (this.accept("NUMBER")) {
-      node.text = this.lastText();
+      node.text = this.lastText().toUpperCase();
       return node;
     }
     throw "GOSUB should be followed by number";
@@ -1209,7 +1209,7 @@ class Parser {
       if (this.willAccept("NUMBER")) {
         this.accept("NUMBER");
         let statement = new PNode("GOTO");
-        statement.text = this.lastText();
+        statement.text = this.lastText().toUpperCase();
         thenPart.addChild(statement);
       } else if (!this.willAcceptText("ELSE")) {
         let thenStatement = this.getStatement();
@@ -1225,7 +1225,7 @@ class Parser {
         if (this.willAccept("NUMBER")) {
           this.accept("NUMBER");
           let gotoStatement = new PNode("GOTO");
-          gotoStatement.text = this.lastText();
+          gotoStatement.text = this.lastText().toUpperCase();
           elsePart.addChild(gotoStatement);
         } else {
           let elseStatement = this.getStatement();
@@ -1240,7 +1240,7 @@ class Parser {
     } else if (this.accept("GOTO")) {
       let gotoPart = new PNode("GOTO");
       if (this.accept("NUMBER")) {
-        gotoPart.text = this.lastText();
+        gotoPart.text = this.lastText().toUpperCase();
         node.addChild(gotoPart);
         // ignore rest of line
         let ignore = new PNode("_");
@@ -1296,7 +1296,7 @@ class Parser {
     let node = new PNode("NEXT");
     if (this.accept("IDENTIFIER")) {
       while (this.hasMoreTokens()) {
-        node.addChild(new PNode("IDENTIFIER", this.lastText()));
+        node.addChild(new PNode("IDENTIFIER", this.lastText().toUpperCase()));
         if (!this.acceptText(","))
           break;
         if (!this.accept("IDENTIFIER"))
@@ -1440,7 +1440,7 @@ class Parser {
 class Variable {
   constructor(name) {
     // variable name with [] means its an array
-    this.name = name;
+    this.name = name.toUpperCase();
     this.value = null;
     this.bounds = null;
     this.mult = null;
@@ -1973,6 +1973,7 @@ class Interpreter {
       let origValue = this.getNumericValue(paramName);
       // set param value and evaluate the function
       this.setNumericValue(paramName, paramValue);
+
       let val = this.evalExpr(func.children[0]);
       // restore original
       this.setNumericValue(paramName, origValue);
@@ -2093,7 +2094,7 @@ class Interpreter {
         }
         let nextLength = statement.children.length;
         for (let j = 0; j < nextLength; j++) {
-          if (statement.children[j].text === varname) {
+          if (statement.children[j].text.toUpperCase() === varname.toUpperCase()) {
             return i;
           }
         }

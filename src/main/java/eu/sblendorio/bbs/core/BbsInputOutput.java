@@ -424,7 +424,7 @@ public abstract class BbsInputOutput extends Reader {
         }
     }
 
-    static List<String> readTextFile(String filename) throws IOException {
+    public static List<String> readTextFile(String filename) throws IOException {
         try (InputStream is = BbsInputOutput.class.getClassLoader().getResourceAsStream(filename)) {
             return readFromInputStream(is);
         }

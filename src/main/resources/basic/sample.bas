@@ -1,4 +1,3 @@
-10 PRINT "Come ti chiami";
-20 INPUT A$
-30 PRINT "Benvenuto, "; A$; "!"
-RUN
+10 DatA 10
+20 reAD x
+30 print X
