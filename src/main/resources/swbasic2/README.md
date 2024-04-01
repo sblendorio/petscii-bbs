@@ -10,7 +10,7 @@ SWBASIC2 is an updated/improved version of Yohanes Nugroho's [Simple Web Basic](
 
 - Refactored to meet newer ECMAScript standards (ES6+) so it can be easily imported into modern web application projects (Angular, React, etc.)
 - Implemented some missing statements and keywords: DEF FN, ON GOTO, ON GOSUB, NOT, RESTORE, STOP
-- Implemented some missing functions: ATN, EXP, LOG, POS, SGN, SPC, TAB
+- Implemented some missing functions: ATN, EXP, LOG, POS, SGN, SPC, TAB, SPACE$
 - Implemented additional language elements:
   - comma separated input
   - jumping out of FOR loops
@@ -31,7 +31,7 @@ A demo application of SWBASIC2 with some example programs can be found here: [sw
 
 ## Functions
 
-ABS, ASC, ATN, CHR$, COS, EXP, INSTR, INT, LEFT$, LEN, LOG, MID$, POS, RIGHT$, RND, SGN, SIN, SQR, SPC, STRING$, STR$, TAB, TAN, TIMER, VAL
+ABS, ASC, ATN, CHR$, SPACE$, COS, EXP, INSTR, INT, LEFT$, LEN, LOG, MID$, POS, RIGHT$, RND, SGN, SIN, SQR, SPC, STRING$, STR$, TAB, TAN, TIMER, VAL
 
 ## License
 

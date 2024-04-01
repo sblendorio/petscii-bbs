@@ -1,17 +1,17 @@
-package eu.sblendorio.bbs.tenants.petscii;
+package eu.sblendorio.bbs.tenants.ascii;
 
-import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.games.SwBasicBridge;
 
-public class RunBasicPetscii extends PetsciiThread {
+public class RunBasicAscii extends AsciiThread {
 
     private String source = null;
 
-    public RunBasicPetscii() {
-        source = "basic_cc/3dplot.bas";
+    public RunBasicAscii() {
+        source = "basic/sample.bas";
     }
 
-    public RunBasicPetscii(String source) {
+    public RunBasicAscii(String source) {
         this.source = source;
     }
 

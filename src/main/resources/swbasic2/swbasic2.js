@@ -22,7 +22,7 @@
  * Constants
  */
 const KEYWORDS  = /(AND|CLEAR|CLS|DATA|DEF|DIM|ELSE|END|FOR|GOSUB|GOTO|IF|INPUT|LET|MOD|NEXT|NOT|ON|OR|PRINT|RANDOMIZE|READ|REM|RESTORE|RETURN|STEP|STOP|SYSTEM|THEN|TO|WHILE|WEND)/ig;
-const FUNCTIONS = /^(ABS|ASC|ATN|CHR\$|COS|EXP|INSTR|INT|LEFT\$|LEN|LOG|MID\$|POS|RIGHT\$|RND|SGN|SIN|SPC|SQR|STRING\$|STR\$|TAB|TAN|TIMER|VAL)$/i;
+const FUNCTIONS = /^(ABS|ASC|ATN|CHR\$|SPACE\$|COS|EXP|INSTR|INT|LEFT\$|LEN|LOG|MID\$|POS|RIGHT\$|RND|SGN|SIN|SPC|SQR|STRING\$|STR\$|TAB|TAN|TIMER|VAL)$/i;
 
 const TAB_CHARACTER      = " ";
 const SPACE_CHARACTER    = " ";
@@ -1440,7 +1440,7 @@ class Parser {
 class Variable {
   constructor(name) {
     // variable name with [] means its an array
-    this.name = name.toUpperCase();
+    this.name = (name == null ? name : name.toUpperCase()); // SBLEND CHECK 1++2
     this.value = null;
     this.bounds = null;
     this.mult = null;
@@ -1735,6 +1735,14 @@ class Interpreter {
           return String.fromCharCode(val);
         }
         throw "Type mismatch for function CHR$";
+      }
+      case "SPACE$": {
+        this.expectParam(f, 1);
+        let val = this.evalExpr(f.children[0]);
+        if (Utils.isNumber(val)) {
+          return " ".repeat(val);
+        }
+        throw "Type mismatch for function SPACE$";
       }
       case "COS": {
         this.expectParam(f, 1);
