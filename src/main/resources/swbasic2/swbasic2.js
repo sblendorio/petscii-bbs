@@ -1849,7 +1849,7 @@ class Interpreter {
           let n = this.evalExpr(f.children[1]);
           if (Utils.isNumber(n)) {
             if (paramCount == 2) {
-              return val.substring(n);
+              return val.substring(n - 1);
             }
             let m = this.evalExpr(f.children[2]);
             if (Utils.isNumber(m)) {
@@ -1939,7 +1939,7 @@ class Interpreter {
         this.expectParam(f, 1);
         let val = this.evalExpr(f.children[0]);
         if (Utils.isNumber(val)) {
-          return val.toString();
+          return val < 0 ? val.toString() : " " + val.toString();
         }
         throw "Type mismatch for function STR$";
       }
@@ -2069,12 +2069,17 @@ class Interpreter {
       case "^":
         return Math.pow(leftVal, rightVal);
       case "/":
-      case "\\":
-        let result = leftVal / rightVal;
-        if (!isFinite(result)) {
+        let divisionResult = leftVal / rightVal;
+        if (!isFinite(divisionResult)) {
           throw "Division by zero";
         }
-        return leftVal / rightVal;
+        return divisionResult;
+      case "\\":
+        let intDivisionResult = leftVal / rightVal;
+        if (!isFinite(intDivisionResult)) {
+          throw "Division by zero";
+        }
+        return Math.floor(intDivisionResult);
       case "+":
         return leftVal + rightVal;
       case "-":
