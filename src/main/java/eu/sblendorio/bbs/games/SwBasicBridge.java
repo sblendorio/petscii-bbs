@@ -46,13 +46,13 @@ public class SwBasicBridge {
 
     public String stringInput(String prompt, int count) throws Exception {
         bbs.flush(); bbs.resetInput();
-        String line = bbs.readLine(setOfChars(ASCII_PRINTABLE));
+        String line = bbs.readLineNoCr(setOfChars(ASCII_PRINTABLE));
         return line;
     }
 
     public double numberInput(String prompt, int count) throws Exception {
         bbs.flush(); bbs.resetInput();
-        String line = bbs.readLine(setOfChars(STR_NUMBERS, "E+-."));
+        String line = bbs.readLineNoCr(setOfChars(STR_NUMBERS, "E+-."));
         try {
             return Double.valueOf(line);
         } catch (NumberFormatException e) {
