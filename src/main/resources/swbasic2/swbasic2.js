@@ -21,7 +21,7 @@
 /**
  * Constants
  */
-const KEYWORDS  = /(AND|CLEAR|CLS|DATA|DEF|DIM|ELSE|END|FOR|GOSUB|GOTO|IF|INPUT|LET|MOD|NEXT|NOT|ON|OR|PRINT|RANDOMIZE|READ|REM|RESTORE|RETURN|STEP|STOP|SYSTEM|THEN|TO|WHILE|WEND)/ig;
+const KEYWORDS  = /(AND|CLEAR|CLS|DATA|DEF|DIM|ELSE|END|FOR|WIDTH|GOSUB|GOTO|IF|INPUT|LET|MOD|NEXT|NOT|ON|OR|PRINT|RANDOMIZE|READ|REM|RESTORE|RETURN|STEP|STOP|SYSTEM|THEN|TO|WHILE|WEND)/ig;
 const FUNCTIONS = /^(ABS|ASC|ATN|CHR\$|SPACE\$|COS|EXP|INSTR|INT|LEFT\$|LEN|LOG|MID\$|POS|RIGHT\$|RND|SGN|SIN|SPC|SQR|STRING\$|STR\$|TAB|TAN|TIMER|VAL)$/i;
 
 const TAB_CHARACTER      = " ";
@@ -661,6 +661,7 @@ class Parser {
     this.functions["DIM"] = this.dim_statement.bind(this);
     this.functions["END"] = this.end_statement.bind(this);
     this.functions["FOR"] = this.for_statement.bind(this);
+    this.functions["WIDTH"] = this.width_statement.bind(this);
     this.functions["GOSUB"] = this.gosub_statement.bind(this);
     this.functions["GOTO"] = this.goto_statement.bind(this);
     this.functions["IF"] = this.if_statement.bind(this);
@@ -1181,6 +1182,15 @@ class Parser {
     return node;
   }
 
+  width_statement(self) {
+    let node = new PNode("WIDTH");
+    if (this.accept("NUMBER")) {
+      node.text = this.lastText().toUpperCase();
+      return node;
+    }
+    throw "WIDTH should be followed by number";
+  }
+
   goto_statement(self) {
     let node = new PNode("GOTO");
     if (this.accept("NUMBER")) {
@@ -1570,6 +1580,7 @@ class Interpreter {
     this.ifunctions["DIM"] = this.dim_statement.bind(this);
     this.ifunctions["END"] = this.end_statement.bind(this);
     this.ifunctions["FOR"] = this.for_statement.bind(this);
+    this.ifunctions["WIDTH"] = this.width_statement.bind(this);
     this.ifunctions["GOSUB"] = this.gosub_statement.bind(this);
     this.ifunctions["GOTO"] = this.goto_statement.bind(this);
     this.ifunctions["IF"] = this.if_statement.bind(this);
@@ -2028,6 +2039,9 @@ class Interpreter {
       rightVal = this.evalExpr(right);
     }
 
+    if (typeof leftVal == "string") leftVal = leftVal.toUpperCase(); // SBLEND
+    if (typeof rightVal == "string") rightVal = rightVal.toUpperCase(); // SBLEND
+
     if (text === "=") {
       return leftVal == rightVal;
     }
@@ -2070,6 +2084,8 @@ class Interpreter {
         return ~leftVal;
       case "UNARY_MINUS":
         return -leftVal;
+      case "UNARY_PLUS":
+        return leftVal;
       case "FUNCTION":
         return this.evalFunction(expr);
       case "DEF_FUNCTION":
@@ -2319,6 +2335,11 @@ class Interpreter {
     let statement = this.parser.statements[idx];
     let label = statement.getText();
     return this.findLabel(label);
+  }
+
+  width_statement(self, idx) {
+    // do nothing
+    return idx + 1;
   }
 
   if_statement(self, idx) {
