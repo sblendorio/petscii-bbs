@@ -1629,7 +1629,7 @@ class Interpreter {
   getArrayIndices(identifier) {
     let indices = [];
     for (let i = 0; i < identifier.children.length; i++) {
-      indices[i] = this.evalExpr(identifier.children[i]);
+      indices[i] = Math.floor(this.evalExpr(identifier.children[i]));
     }
     return indices;
   }
