@@ -1,4 +1,4 @@
-5 RANDOMIZE
+5 RANDOMIZE TIMER
 6 DIM MEM(1024)
 10 C$="      "
 20 Q=640:S=704:D$="    * >!<+++<*>"

@@ -1391,26 +1391,9 @@ class Parser {
 
   randomize_statement(self) {
     let node = new PNode("RANDOMIZE");
-    if (this.accept("EXPRESSION")) {
-        node.addChild(this.expression());
-    }
+    node.addChild(this.expression());
     return node;
   }
-
-    next_statement(self) {
-      let node = new PNode("NEXT");
-      if (this.accept("IDENTIFIER")) {
-        while (this.hasMoreTokens()) {
-          node.addChild(new PNode("IDENTIFIER", this.lastText().toUpperCase()));
-          if (!this.acceptText(","))
-            break;
-          if (!this.accept("IDENTIFIER"))
-            break;
-        }
-      }
-      return node;
-    }
-
 
   read_statement(self) {
     let node = new PNode("READ");
@@ -2594,11 +2577,11 @@ class Interpreter {
 
   randomize_statement(self, idx) {
     let statement = this.parser.statements[idx];
-    let val = statement && statement.children[0] ? this.evalExpr(statement.children[0]) : null;
-    if (val && Utils.isNumber(val)) {
+    let val = this.evalExpr(statement.children[0]);
+    if (Utils.isNumber(val)) {
       this.random.setSeed(val);
     } else {
-      this.random.setSeed(Date.now());
+      throw "RANDOMIZE expects number as argument";
     }
     return idx + 1;
   }
