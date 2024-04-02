@@ -8,7 +8,7 @@ public class RunBasicPetscii extends PetsciiThread {
     private String source = null;
 
     public RunBasicPetscii() {
-        source = "basic/startrek-40-1.bas";
+        source = "basic/startrek-40-2.bas";
     }
 
     public RunBasicPetscii(String source) {
