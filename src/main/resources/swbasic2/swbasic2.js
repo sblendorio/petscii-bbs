@@ -1751,7 +1751,7 @@ class Interpreter {
         this.expectParam(f, 1);
         let val = this.evalExpr(f.children[0]);
         if (Utils.isNumber(val)) {
-          return " ".repeat(val);
+          return SPACE_CHARACTER.repeat(val);
         }
         throw "Type mismatch for function SPACE$";
       }
@@ -2522,7 +2522,7 @@ class Interpreter {
       if (child.getType() === "EXPRESSION") {
         let val = this.evalExpr(child);
         if (child.children.length > 0 && child.children[0].getText() == "TAB") {
-          currentPos = val - currentPos;
+          currentPos = val - currentPos - 1;
           if (currentPos > 0) {
             result += TAB_CHARACTER.repeat(currentPos);
           }
