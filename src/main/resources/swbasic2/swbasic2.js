@@ -1971,7 +1971,8 @@ class Interpreter {
         this.expectParam(f, 1);
         let val = this.evalExpr(f.children[0]);
         if (typeof val === "string") {
-          return parseFloat(val);
+          var valFuncResult = parseFloat(val);
+          return isNaN(valFuncResult) ? 0 : valFuncResult;
         }
         throw "Type mismatch for function VAL";
       }
