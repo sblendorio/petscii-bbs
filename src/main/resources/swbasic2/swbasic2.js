@@ -1993,7 +1993,6 @@ class Interpreter {
       let origValue = this.getNumericValue(paramName);
       // set param value and evaluate the function
       this.setNumericValue(paramName, paramValue);
-
       let val = this.evalExpr(func.children[0]);
       // restore original
       this.setNumericValue(paramName, origValue);
