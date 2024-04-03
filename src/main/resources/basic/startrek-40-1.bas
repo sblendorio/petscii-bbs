@@ -38,7 +38,7 @@
 360 PRINT "FOR QUADRANT ";MID$(STR$(X1),2);",";MID$(STR$(Y1),2):RETURN
 400 C$="LONG":GOSUB 350:N=3:GOSUB 880
 410 FOR Y=Y1+1 TO Y1-1 STEP -1:F2=0:IF Y<0 OR Y>7 THEN F2=1
-415 GOSUB470:GOSUB480
+415 GOSUB 470:GOSUB 480
 420 FOR X=X1-1 TO X1+1:F1=0:IF X<0 OR X>7 THEN F1=1
 430 IF F1=0 AND F2=0 THEN 440
 435 PRINT C$;:GOTO 460
@@ -163,7 +163,7 @@
 2328 PRINT "Enterprise via its deflection shields"
 2329 PRINT "which are automatically activated by"
 2330 PRINT "the on-board computer every time a"
-2331 PRINT "Klingon firesat you."
+2331 PRINT "Klingon fires at you."
 2332 PRINT "Each time you enter or maneuver within"
 2333 PRINT "a quadrant containing a Klingon, he"
 2334 PRINT "will shoot at you, and the amount of"
@@ -262,18 +262,17 @@
 2438 PRINT "below, left, or right."
 2439 PRINT
 2440 PRINT "BATTLE RETREAT"
-2441 PRINT
-2442 PRINT "Firing zero units of phaser energy will"
-2443 PRINT "return you to command mode. This allows"
-2444 PRINT "you to retreat from battle."
-2445 PRINT
-2446 PRINT "GALAXY CO-ORDINATE SYSTEM"
-2447 PRINT
-2448 PRINT "Quadrant 0,0 is the lower left hand"
-2449 PRINT "quadrant of the galaxy and quadrant 7,7"
-2450 PRINT "is the upper right.Likewise, sector 0,0"
-2451 PRINT "is in the lower left hand corner of the"
-2452 PRINT "quadrant and 7,7 in the upper right."
-2453 INPUT "- PRESS ENTER TO PLAY";ZZ$
+2441 PRINT "Firing zero units of phaser energy will"
+2442 PRINT "return you to command mode. This allows"
+2443 PRINT "you to retreat from battle."
+2444 PRINT
+2445 PRINT "GALAXY CO-ORDINATE SYSTEM"
+2446 PRINT "Quadrant 0,0 is the lower left hand"
+2447 PRINT "quadrant of the galaxy and quadrant 7,7"
+2448 PRINT "is the upper right.Likewise, sector 0,0"
+2449 PRINT "is in the lower left hand corner of the"
+2450 PRINT "quadrant and 7,7 in the upper right."
+2452 PRINT: PRINT "Enter '.' to quit game.": PRINT
+2451 INPUT "- END OF INSTRUCTIONS. PRESS ENTER";ZZ$
 2454 IF ZZ$="." THEN GOSUB 2200: GOTO 2453
 2499 RETURN
