@@ -1,0 +1,7 @@
+Retrocampus BBS pure text version
+
+BASIC Programs
+------------
+1 - Star Trek
+. - Logout
+

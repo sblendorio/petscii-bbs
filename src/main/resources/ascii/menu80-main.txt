@@ -17,6 +17,6 @@ D - Chat GPT
 E - WiFi Modem
 F - Apple-1 Demo
 G - Wikipedia
+H - BASIC Programs
 . - Logout
-
 

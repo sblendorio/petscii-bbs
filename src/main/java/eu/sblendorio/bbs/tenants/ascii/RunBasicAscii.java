@@ -8,7 +8,7 @@ public class RunBasicAscii extends AsciiThread {
     private String source = null;
 
     public RunBasicAscii() {
-        source = "basic/startrek-40-1.bas";
+        source = "basic/startrek-40-2.bas";
     }
 
     public RunBasicAscii(String source) {
