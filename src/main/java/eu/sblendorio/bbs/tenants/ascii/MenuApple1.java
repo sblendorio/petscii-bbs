@@ -3,13 +3,12 @@ package eu.sblendorio.bbs.tenants.ascii;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Utils;
+import eu.sblendorio.bbs.games.SwBasicBridge;
 import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Calendar;
 import java.util.List;
 
 import static eu.sblendorio.bbs.core.Utils.*;
@@ -245,7 +244,7 @@ public class MenuApple1 extends AsciiThread {
                 log("Menu. Choice = " + choice);
                 BbsThread subThread;
                 if (".".equals(choice)) return;
-                else if ("1".equals(choice)) { RunBasic.execute("basic/startrek-40-1.bas", this); subThread = null; }
+                else if ("1".equals(choice)) { SwBasicBridge.run("basic/startrek-40-1.bas", this); subThread = null; }
 
                 else {
                     validKey = false;

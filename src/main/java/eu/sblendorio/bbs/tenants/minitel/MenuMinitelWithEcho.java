@@ -2,6 +2,7 @@ package eu.sblendorio.bbs.tenants.minitel;
 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import eu.sblendorio.bbs.core.*;
+import eu.sblendorio.bbs.games.SwBasicBridge;
 import eu.sblendorio.bbs.tenants.ascii.*;
 import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
@@ -202,7 +203,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 if (".".equals(choice)) {
                     return;
                 }
-                else if ("1".equals(choice)) { RunBasic.execute("basic/startrek-40-1.bas", this); subThread = null; }
+                else if ("1".equals(choice)) { SwBasicBridge.run("basic/startrek-40-1.bas", this); subThread = null; }
                 else {
                     validKey = false;
                     subThread = null;

@@ -28,20 +28,12 @@ public class RunBasic extends AsciiThread {
         this.bbsThread = bbsThread;
     }
 
-    public static void execute(String source, BbsThread bbsThread) throws Exception {
-        logger.info("Executing BASIC Program: '{}', on '{}'", source, bbsThread.getClass().getSimpleName());
-        SwBasicBridge bridge = new SwBasicBridge(bbsThread);
-        bridge.init(source);
-        bbsThread.cls();
-        bridge.start();
-    }
-
     @Override
     public void doLoop() throws Exception {
         logger.info("Running BASIC Program: '{}', on '{}'", source, bbsThread.getClass().getSimpleName());
+        bbsThread.cls();
         SwBasicBridge bridge = new SwBasicBridge(bbsThread);
         bridge.init(source);
-        bbsThread.cls();
         bridge.start();
     }
 }

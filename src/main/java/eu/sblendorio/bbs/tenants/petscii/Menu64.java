@@ -2,7 +2,7 @@ package eu.sblendorio.bbs.tenants.petscii;
 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import eu.sblendorio.bbs.core.*;
-import eu.sblendorio.bbs.tenants.ascii.RunBasic;
+import eu.sblendorio.bbs.games.SwBasicBridge;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -339,7 +339,7 @@ public class Menu64 extends PetsciiThread {
                 if (key == '.') {
                     return;
                 }
-                else if (key == '1') RunBasic.execute("basic/startrek-40-1.bas", this);
+                else if (key == '1') SwBasicBridge.run("basic/startrek-40-1.bas", this);
                 else {
                     validKey = false;
                 }

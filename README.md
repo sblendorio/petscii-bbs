@@ -19,6 +19,8 @@ This framework provides base classes for build your own **BBS** in PETSCII mode,
 - a common PC/Mac running [SyncTerm](https://sourceforge.net/projects/syncterm/) (*ConnectionType*=_Telnet_, *ScreenMode*=_C64_)
 - [C64 Forever](https://www.c64forever.com/), running CCGMS (included)
 
+The project has been extended to support also generic-ASCII client and also Videotex (Minitel/Teletel and Prestel standards).
+
 ## System requirements
 - Java Development Kit (JDK) and JRE version 17+
 - A machine that will act as server
@@ -134,14 +136,16 @@ You can study the sample BBSes (all classes that extend **PetsciiThread**) in th
 Thanks to:
 - [**Antonino Porcino**](https://github.com/nippur72/c64-emu) for his browser-based PETSCII BBS Client emulator
 - [**Brian W. Howell**](https://github.com/bigbhowell/tic-tac-toe) for the **tic-tac-toe** AI
+- [**Federico Volpini**](https://www.avventuranelcastello-js.it/) for his porting of *Avventura nel Castello*
 - [**Felice Pagano**](https://github.com/felicepagano/) for code optimizations
 - [**Henrik Wetterström**](http://droid64.sourceforge.net/) for **droid64** project, used to read and open D64 files
 - [**Jatin Thakur**](https://github.com/jn1772/Connect4AI) for the **connect-4** AI
+- [**Krisztián Kónya**](https://gitlab.com/konyisoft/swbasic) for his **SwBasic2**
 - [**Matteo Baccan**](https://github.com/matteobaccan) for code optimizations
 - [**Piero Corasaniti**](https://github.com/corasaniti) for the *SD2IEC* version of CSDB tenant
 - [**Richard Bettridge**](https://github.com/ssshake/theoldnet-bbs) for "Internet Browser" tenant
 - [**Roberto Manicardi**](https://github.com/rmanicardi) for adapting ZMPP to BBS engine
-- [**Wei-ju Wu**](http://zmpp.sourceforge.net/) for ZMPP, a Java implementation of Z-Machine (Infocom text adventures)
+- [**Wei-ju Wu**](http://zmpp.sourceforge.net/) for **ZMPP**, a Java implementation of Z-Machine (Infocom text adventures)
 
 ## Sample screenshot of the demo pack
 ![bbs1](http://www.sblendorio.eu/attachments/bbs-tictactoe.jpg)

@@ -2,6 +2,8 @@ package eu.sblendorio.bbs.games;
 
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Utils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.script.Bindings;
 import javax.script.ScriptEngine;
@@ -15,6 +17,8 @@ import static eu.sblendorio.bbs.core.Utils.*;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class SwBasicBridge {
+
+    private static Logger logger = LogManager.getLogger(SwBasicBridge.class);
 
     protected BbsThread bbs;
     protected ScriptEngine engine;
@@ -84,6 +88,14 @@ public class SwBasicBridge {
 
     public void start() throws Exception {
         engine.eval("interpreter.interpret();",bindings);
+    }
+
+    public static void run(String source, BbsThread bbsThread) throws Exception {
+        logger.info("Executing BASIC Program: '{}', on '{}'", source, bbsThread.getClass().getSimpleName());
+        bbsThread.cls();
+        SwBasicBridge bridge = new SwBasicBridge(bbsThread);
+        bridge.init(source);
+        bridge.start();
     }
 
 }

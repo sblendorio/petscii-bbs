@@ -272,7 +272,7 @@
 2448 PRINT "is the upper right.Likewise, sector 0,0"
 2449 PRINT "is in the lower left hand corner of the"
 2450 PRINT "quadrant and 7,7 in the upper right."
-2452 PRINT: PRINT "Enter '.' to quit game.": PRINT
+2452 PRINT: PRINT "Enter '.' to quit game."
 2451 INPUT "- END OF INSTRUCTIONS. PRESS ENTER";ZZ$
 2454 IF ZZ$="." THEN GOSUB 2200: GOTO 2453
 2499 RETURN
