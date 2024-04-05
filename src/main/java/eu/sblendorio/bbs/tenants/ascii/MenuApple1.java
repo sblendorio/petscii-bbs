@@ -68,6 +68,11 @@ public class MenuApple1 extends AsciiThread {
         printText(readBinaryFile("ascii/menu80-games.txt"));
     }
 
+    public void showBasicPrograms() {
+        cls();
+        printText(readBinaryFile("ascii/menu40-basic.txt"));
+    }
+
     public void doLoop() throws Exception {
         logo();
         while (true) {
@@ -100,6 +105,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("e".equals(choice)) { wifiModem(); subThread = null; }
                 else if ("f".equals(choice)) { textDemo(); subThread = null; }
                 else if ("g".equals(choice)) subThread = new WikipediaAscii();
+                else if ("h".equals(choice)) { menuBasicPrograms(); subThread = null; }
                 else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii();
                 else {
                     validKey = false;
@@ -215,6 +221,31 @@ public class MenuApple1 extends AsciiThread {
                 else if ("8".equals(choice)) subThread = createCastleAdventure();
                 else if ("9".equals(choice)) subThread = new ZorkMachineAscii("zork1ita", "zmpp/Zork-1-ITA-v7.z5");
                 else if ("0".equals(choice)) subThread = createAvventuraNelCastello();
+
+                else {
+                    validKey = false;
+                    subThread = null;
+                }
+                execute(subThread);
+            } while (!validKey);
+        }
+    }
+
+    public void menuBasicPrograms() throws Exception {
+        while (true) {
+            showBasicPrograms();
+            flush();
+            boolean validKey;
+            do {
+                validKey = true;
+                resetInput();
+                String choice = readChoice();
+                resetInput();
+                choice = StringUtils.lowerCase(choice);
+                log("Menu. Choice = " + choice);
+                BbsThread subThread;
+                if (".".equals(choice)) return;
+                else if ("1".equals(choice)) subThread = new RunBasic("basic/startrek-40-1.bas", this);
 
                 else {
                     validKey = false;

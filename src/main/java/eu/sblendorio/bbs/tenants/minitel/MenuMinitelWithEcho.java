@@ -182,6 +182,37 @@ public class MenuMinitelWithEcho extends MinitelThread {
         }
     }
 
+    public void menuBasicPrograms() throws Exception {
+        while (true) {
+            cls();
+            write(SCROLL_OFF);
+            write(readBinaryFile("minitel/menu-menuBasicPrograms.vdt"));
+            write(SCROLL_ON);
+            flush(); resetInput();
+            boolean validKey;
+            do {
+                validKey = true;
+                resetInput();
+                String choice;
+                int key = readSingleKey();
+                choice = String.valueOf((char) key);
+                resetInput();
+                choice = StringUtils.lowerCase(choice);
+                BbsThread subThread = null;
+                if (".".equals(choice)) {
+                    return;
+                }
+                else if ("1".equals(choice)) subThread = new RunBasic("basic/startrek-40-1.bas", this);
+                else {
+                    validKey = false;
+                    subThread = null;
+                }
+
+                execute(subThread);
+            } while (!validKey);
+        }
+    }
+
     public void execute(BbsThread subThread) throws Exception {
         if (subThread == null) return;
         if (subThread instanceof AsciiThread) {
@@ -242,6 +273,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("f".equals(choice)) { videotelVault(); subThread = null; }
                 else if ("g".equals(choice)) { textDemo(); subThread = null; }
                 else if ("h".equals(choice)) { wifiModem(); subThread = null; }
+                else if ("i".equals(choice)) { menuBasicPrograms(); subThread = null; }
                 // else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii(io);
                 else if ("*".equals(choice)) subThread = new TestClientVideotex();
                 else {

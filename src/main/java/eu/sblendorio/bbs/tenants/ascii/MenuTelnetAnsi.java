@@ -60,6 +60,11 @@ public class MenuTelnetAnsi extends MenuTelnetPureAscii {
         printText(readBinaryFile("ansi/MenuGames.ans"));
     }
 
+    public void showBasicPrograms() {
+        cls();
+        printText(readBinaryFile("ansi/MenuBasicPrograms.ans"));
+    }
+
     public BbsThread createAvventuraNelCastello() {
         return new AvventuraNelCastelloAnsi(
                 readBinaryFile("ansi/castello.ans"),
