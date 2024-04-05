@@ -339,7 +339,7 @@ public class Menu64 extends PetsciiThread {
                 if (key == '.') {
                     return;
                 }
-                else if (key == '1') launch(new RunBasic("basic/startrek-40-1.bas", this));
+                else if (key == '1') RunBasic.execute("basic/startrek-40-1.bas", this);
                 else {
                     validKey = false;
                 }
