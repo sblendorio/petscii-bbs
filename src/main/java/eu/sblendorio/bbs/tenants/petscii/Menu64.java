@@ -2,6 +2,7 @@ package eu.sblendorio.bbs.tenants.petscii;
 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import eu.sblendorio.bbs.core.*;
+import eu.sblendorio.bbs.tenants.ascii.RunBasic;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -104,6 +105,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == 'c') patronsPublishers();
                 else if (key == 'y') wifiModem();
                 else if (key == 'w') launch(new WikipediaPetscii());
+                else if (key == 'p') menuBasicPrograms();
                 else if (isSanremo() && key == 's') launch(new SanremoPetscii());
                 else {
                     validKey = false;
@@ -299,6 +301,45 @@ public class Menu64 extends PetsciiThread {
                     return;
                 }
                 else if (key == '1') launch(new SyncroWebPetscii());
+                else {
+                    validKey = false;
+                }
+                // if (validKey) return;
+            } while (!validKey);
+        } while (true);
+    }
+
+    public void menuBasicPrograms() throws Exception {
+        do {
+            write(CLR, LOWERCASE, CASE_LOCK, HOME);
+            drawLogo();
+            write(GREY3);
+            gotoXY(4, 5);
+            write(32, 32, 32, WHITE);
+            print("BASIC Programs");
+            newline();
+            write(RIGHT, RIGHT, RIGHT, ' ', ' ', ' ', ' ', GREY3);
+            println(repeat((char) 163, 20));
+            newline();
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161); println("Star Trek");
+            newline();
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '.', REVOFF, 161);
+            print("Exit ");
+            flush();
+            boolean validKey;
+            do {
+                validKey = true;
+                resetInput();
+                int key = readKey();
+                resetInput();
+                if (key >= 193 && key <= 218) {
+                    key -= 96;
+                }
+                key = Character.toLowerCase(key);
+                if (key == '.') {
+                    return;
+                }
+                else if (key == '1') launch(new RunBasic("basic/startrek-40-1.bas", this));
                 else {
                     validKey = false;
                 }
