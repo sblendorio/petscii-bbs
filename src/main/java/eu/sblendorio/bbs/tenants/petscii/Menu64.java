@@ -321,7 +321,8 @@ public class Menu64 extends PetsciiThread {
             write(RIGHT, RIGHT, RIGHT, ' ', ' ', ' ', ' ', GREY3);
             println(repeat((char) 163, 20));
             newline();
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161); println("Star Trek");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161); println("Star Trek (Bob Bishop)");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '2', REVOFF, 161); println("Star Trek (Vince Briel)");
             newline();
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '.', REVOFF, 161);
             print("Exit ");
@@ -340,6 +341,7 @@ public class Menu64 extends PetsciiThread {
                     return;
                 }
                 else if (key == '1') SwBasicBridge.run("basic/startrek-40-1.bas", this);
+                else if (key == '2') SwBasicBridge.run("basic/startrek-40-2.bas", this);
                 else {
                     validKey = false;
                 }

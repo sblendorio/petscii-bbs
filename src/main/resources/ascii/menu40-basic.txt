@@ -2,6 +2,7 @@ Retrocampus BBS pure text version
 
 BASIC Programs
 ------------
-1 - Star Trek
+1 - Star Trek (Bob Bishop)
+2 - Star Trek (Vince Briel)
 . - Logout
 

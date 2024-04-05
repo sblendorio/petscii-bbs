@@ -245,6 +245,7 @@ public class MenuApple1 extends AsciiThread {
                 BbsThread subThread;
                 if (".".equals(choice)) return;
                 else if ("1".equals(choice)) { SwBasicBridge.run("basic/startrek-40-1.bas", this); subThread = null; }
+                else if ("2".equals(choice)) { SwBasicBridge.run("basic/startrek-40-2.bas", this); subThread = null; }
 
                 else {
                     validKey = false;
