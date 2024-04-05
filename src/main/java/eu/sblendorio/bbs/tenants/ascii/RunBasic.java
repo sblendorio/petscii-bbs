@@ -16,6 +16,7 @@ public class RunBasic extends AsciiThread {
 
     public RunBasic() {
         source = "basic/startrek-40-2.bas";
+        this.bbsThread = this;
     }
 
     public RunBasic(String source) {
