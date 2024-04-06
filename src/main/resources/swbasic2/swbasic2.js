@@ -21,7 +21,7 @@
 /**
  * Constants
  */
-const KEYWORDS  = /(AND|CLEAR|CLS|DATA|DEF|DIM|ELSE|END|FOR|WIDTH|GOSUB|GOTO|IF|INPUT|LET|MOD|NEXT|NOT|ON|OR|PRINT|RANDOMIZE|READ|REM|RESTORE|RETURN|STEP|STOP|SYSTEM|THEN|TO|WHILE|WEND)/ig;
+const KEYWORDS  = /(AND|CLEAR|CLS|DATA|DEF|DIM|ELSE|END|FOR|WIDTH|GOSUB|GOTO|IF|INPUT|LET|MOD|NEXT|NOT|ON|OR|PRINT|RANDOMIZE|SLEEP|READ|REM|RESTORE|RETURN|STEP|STOP|SYSTEM|THEN|TO|WHILE|WEND)/ig;
 const FUNCTIONS = /^(ABS|ASC|ATN|CHR\$|SPACE\$|COS|EXP|INSTR|INT|LEFT\$|LEN|LOG|MID\$|POS|RIGHT\$|RND|SGN|SIN|SPC|SQR|STRING\$|STR\$|TAB|TAN|TIMER|VAL)$/i;
 
 const TAB_CHARACTER      = " ";
@@ -671,6 +671,7 @@ class Parser {
     this.functions["ON"] = this.on_statement.bind(this);
     this.functions["PRINT"] = this.print_statement.bind(this);
     this.functions["RANDOMIZE"] = this.randomize_statement.bind(this);
+    this.functions["SLEEP"] = this.sleep_statement.bind(this);
     this.functions["READ"] = this.read_statement.bind(this);
     this.functions["REM"] = this.rem_statement.bind(this);
     this.functions["RESTORE"] = this.restore_statement.bind(this);
@@ -1395,6 +1396,12 @@ class Parser {
     return node;
   }
 
+  sleep_statement(self) {
+    let node = new PNode("SLEEP");
+    node.addChild(this.expression());
+    return node;
+  }
+
   read_statement(self) {
     let node = new PNode("READ");
     while (this.hasMoreTokens()) {
@@ -1556,6 +1563,7 @@ class Interpreter {
     this.forInfo = [];
     this.defInfo = [];
     this.printFunction = null;
+    this.sleepFunction = null;
     this.numberInputFunction = null;
     this.stringInputFunction = null;
     this.clsFunction = null;
@@ -1589,6 +1597,7 @@ class Interpreter {
     this.ifunctions["ON"] = this.on_statement.bind(this);
     this.ifunctions["PRINT"] = this.print_statement.bind(this);
     this.ifunctions["RANDOMIZE"] = this.randomize_statement.bind(this);
+    this.ifunctions["SLEEP"] = this.sleep_statement.bind(this);
     this.ifunctions["READ"] = this.read_statement.bind(this);
     this.ifunctions["RESTORE"] = this.restore_statement.bind(this);
     this.ifunctions["RETURN"] = this.return_statement.bind(this);
@@ -2582,6 +2591,25 @@ class Interpreter {
       this.random.setSeed(val);
     } else {
       throw "RANDOMIZE expects number as argument";
+    }
+    return idx + 1;
+  }
+
+  sleep_statement(self, idx) {
+    let statement = this.parser.statements[idx];
+    let ms = this.evalExpr(statement.children[0]);
+    if (Utils.isNumber(ms)) {
+       if (this.sleepFunction) {
+         this.sleepFunction(ms);
+       } else {
+         const start = Date.now();
+         let now = start;
+         while (now - start < ms) {
+           now = Date.now();
+         }
+       }
+    } else {
+      throw "SLEEP expects number as argument";
     }
     return idx + 1;
   }

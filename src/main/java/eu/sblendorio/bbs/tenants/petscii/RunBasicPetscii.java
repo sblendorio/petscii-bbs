@@ -15,7 +15,7 @@ public class RunBasicPetscii extends PetsciiThread {
 
 
     public RunBasicPetscii() {
-        source = "basic/startrek-40-2.bas";
+        source = "basic/sample.bas";
     }
 
     public RunBasicPetscii(String source) {

@@ -4,5 +4,7 @@ BASIC Programs
 ------------
 1 - Star Trek (Bob Bishop)
 2 - Star Trek (Vince Briel)
+3 - Lunar Lander
+4 - Hamurabi
 . - Logout
 

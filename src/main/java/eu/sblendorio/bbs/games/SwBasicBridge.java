@@ -36,6 +36,14 @@ public class SwBasicBridge {
         }
     }
 
+    public void sleep(long ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            logger.debug(e);
+        }
+    }
+
     public void cls() {
         bbs.cls();
     }
@@ -84,6 +92,7 @@ public class SwBasicBridge {
         engine.eval("interpreter.numberInputFunction = bridge.numberInput", bindings);
         engine.eval("interpreter.clsFunction = bridge.cls", bindings);
         engine.eval("interpreter.endFunction = bridge.end", bindings);
+        engine.eval("interpreter.sleepFunction = bridge.sleep", bindings);
     }
 
     public void start() throws Exception {
