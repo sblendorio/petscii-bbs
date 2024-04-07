@@ -4,6 +4,6 @@ BASIC Programs
 ------------
 1 - Star Trek (D.Ahl / L.Wiest) 80 col
 2 - Star Trek (Bob Bishop)  40 col
-3 - Star Trek (Vince Briel) 40 col
+3 - Star Trek 2003 40 col
 . - Logout
 
