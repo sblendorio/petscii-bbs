@@ -9,6 +9,7 @@ import javax.script.Bindings;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.SimpleBindings;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
@@ -39,7 +40,8 @@ public class SwBasicBridge {
     public void sleep(long ms) {
         try {
             Thread.sleep(ms);
-        } catch (InterruptedException e) {
+            bbs.resetInput();
+        } catch (InterruptedException | IOException e) {
             logger.debug(e);
         }
     }

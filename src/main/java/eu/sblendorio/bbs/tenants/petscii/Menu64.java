@@ -3,6 +3,7 @@ package eu.sblendorio.bbs.tenants.petscii;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import eu.sblendorio.bbs.core.*;
 import eu.sblendorio.bbs.games.SwBasicBridge;
+import eu.sblendorio.bbs.tenants.mixed.WikipediaCommons;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -13,6 +14,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+import static eu.sblendorio.bbs.core.BlockGraphicsPetscii.getRenderedMidres;
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
 import static eu.sblendorio.bbs.core.Utils.readExternalTxt;
@@ -313,13 +315,27 @@ public class Menu64 extends PetsciiThread {
         do {
             write(CLR, LOWERCASE, CASE_LOCK, HOME);
             drawLogo();
-            write(GREY3);
-            gotoXY(4, 5);
-            write(32, 32, 32, WHITE);
-            print("BASIC Programs");
-            newline();
-            write(RIGHT, RIGHT, RIGHT, ' ', ' ', ' ', ' ', GREY3);
-            println(repeat((char) 163, 20));
+
+            gotoXY(0,4);
+            write(GREEN);
+            write(getRenderedMidres(4,
+                    new String[]{
+                            ".1111...111...111...1..111.",
+                            ".1...1.1...1.1...1..1.1...1",
+                            ".1...1.1...1.1......1.1....",
+                            ".1111..11111.11111..1.1....",
+                            ".1...1.1...1.....1..1.1....",
+                            ".1...1.1...1.1...1..1.1...1",
+                            ".1111..1...1..111...1..111."                    }
+                    , false, false));
+
+            //write(GREY3);
+            //gotoXY(18, 6);
+            //write(WHITE);
+            //print("Programs");
+            //newline();
+            //write(RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, GREY3);
+            //println(repeat((char) 163, 8));
             newline();
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161); println("Star Trek (Bob Bishop)");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '2', REVOFF, 161); println("Star Trek 2003");
