@@ -2370,6 +2370,8 @@ class Interpreter {
   }
 
   input_statement(self, idx) {
+    this.printPos = 0;
+
     let statement = this.parser.statements[idx];
     let count = statement.children.length;
     let prompt = statement.children[0].text;
