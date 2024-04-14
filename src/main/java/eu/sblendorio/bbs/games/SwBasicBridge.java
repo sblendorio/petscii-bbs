@@ -2,6 +2,7 @@ package eu.sblendorio.bbs.games;
 
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Utils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -104,9 +105,42 @@ public class SwBasicBridge {
     public static void run(String caption, String source, BbsThread bbsThread) throws Exception {
         logger.info("Executing BASIC Program: '{}', on '{}'", source, bbsThread.getClass().getSimpleName());
         bbsThread.cls();
+        bbsThread.println("*** RETROCAMPUS BBS BASIC 2.0 ***");
+        bbsThread.println();
+        bbsThread.println("READY.");
+        bbsThread.flush(); Thread.sleep(700);
+        typeln(bbsThread, "LOAD\"" + StringUtils.defaultString(caption).toUpperCase() + "\"");
+        bbsThread.println();
+        bbsThread.println("SEARCHING FOR " + StringUtils.defaultString(caption).toUpperCase());
+        bbsThread.flush(); Thread.sleep(700);
+        bbsThread.println("FOUND");
+        bbsThread.flush(); Thread.sleep(700);
+        bbsThread.print("LOADING...");
+        bbsThread.flush(); Thread.sleep(1800); bbsThread.println();
+        bbsThread.println("READY.");
+        bbsThread.flush(); Thread.sleep(700);
+        typeln(bbsThread, "RUN");
+        bbsThread.flush(); Thread.sleep(1400);
+        bbsThread.flush(); bbsThread.flush();
+        bbsThread.cls();
         SwBasicBridge bridge = new SwBasicBridge(bbsThread);
         bridge.init(source);
         bridge.start();
+    }
+
+
+    public static long DELAY = 50;
+    public static void type(BbsThread bbsThread, String s) throws Exception {
+        for (int i=0; i<s.length(); i++) {
+            bbsThread.print(s.substring(i, i+1));
+            Thread.sleep(DELAY);
+        }
+    }
+
+    public static void typeln(BbsThread bbsThread, String s) throws Exception {
+        type(bbsThread, s);
+        bbsThread.println();
+        Thread.sleep(DELAY);
     }
 
 }

@@ -189,6 +189,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
             write(SCROLL_OFF);
             write(readBinaryFile("minitel/menu-menuBasicPrograms.vdt"));
             write(SCROLL_ON);
+            attributes(CHAR_WHITE);
             flush(); resetInput();
             boolean validKey;
             do {
