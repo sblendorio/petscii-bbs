@@ -470,11 +470,10 @@ public class Menu64 extends PetsciiThread {
         write(HOME);
         drawLogo();
         write(GREY3);
-        gotoXY(22,20);
+        gotoXY(22,21);
         flush();
         resetInput();
         readKey();
-
     }
 
     public void patrons() throws Exception {

@@ -470,6 +470,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
 
     public void videotelVault() throws Exception {
         write(0x1b, 0x3a, 0x6a, 0x43); // scroll off
+        write(CURSOR_OFF);
         List<String> drawings = Utils.getDirContent("minitel/slideshow")
                 .stream()
                 .map(Path::toString)
@@ -493,6 +494,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
             i = (i+1) % drawings.size();
         }
         write(0x1b, 0x3a, 0x69, 0x43); // scroll on
+        write(CURSOR_ON);
         cls();
     }
 
