@@ -101,7 +101,7 @@ public class SwBasicBridge {
         engine.eval("interpreter.interpret();",bindings);
     }
 
-    public static void run(String source, BbsThread bbsThread) throws Exception {
+    public static void run(String caption, String source, BbsThread bbsThread) throws Exception {
         logger.info("Executing BASIC Program: '{}', on '{}'", source, bbsThread.getClass().getSimpleName());
         bbsThread.cls();
         SwBasicBridge bridge = new SwBasicBridge(bbsThread);

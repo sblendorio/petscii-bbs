@@ -322,12 +322,11 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 log("Menu. Choice = " + choice);
                 BbsThread subThread;
                 if (".".equals(choice)) return;
-                else if ("1".equals(choice)) { SwBasicBridge.run("basic_cc/startrek.bas", this); subThread = null; }
-                else if ("2".equals(choice)) { SwBasicBridge.run("basic/startrek-40-1.bas", this); subThread = null; }
-                else if ("3".equals(choice)) { SwBasicBridge.run("basic/startrek-40-2.bas", this); subThread = null; }
-                else if ("4".equals(choice)) { SwBasicBridge.run("basic/lunar-lander-40.bas", this); subThread = null; }
-                else if ("5".equals(choice)) { SwBasicBridge.run("basic_cc/hamurabi.bas", this); subThread = null; }
-                else if ("6".equals(choice)) { SwBasicBridge.run("basic_cc/checkers.bas", this); subThread = null; }
+                else if ("1".equals(choice)) { SwBasicBridge.run("Star Trek", "basic/startrek-40-1.bas", this); subThread = null; }
+                else if ("2".equals(choice)) { SwBasicBridge.run("Star Trek 2003", "basic/startrek-40-2.bas", this); subThread = null; }
+                else if ("3".equals(choice)) { SwBasicBridge.run("Lunar Lander", "basic/lunar-lander-40.bas", this); subThread = null; }
+                else if ("4".equals(choice)) { SwBasicBridge.run("Hamurabi", "basic_cc/hamurabi.bas", this); subThread = null; }
+                else if ("5".equals(choice)) { SwBasicBridge.run("Checkers", "basic_cc/checkers.bas", this); subThread = null; }
 
                 else {
                     validKey = false;

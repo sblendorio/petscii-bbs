@@ -359,11 +359,11 @@ public class Menu64 extends PetsciiThread {
                 if (key == '.') {
                     return;
                 }
-                else if (key == '1') SwBasicBridge.run("basic/startrek-40-1.bas", this);
-                else if (key == '2') SwBasicBridge.run("basic/startrek-40-2.bas", this);
-                else if (key == '3') SwBasicBridge.run("basic/lunar-lander-40.bas", this);
-                else if (key == '4') SwBasicBridge.run("basic/hamurabi-40.bas", this);
-                else if (key == '5') SwBasicBridge.run("basic/checkers-40.bas", this);
+                else if (key == '1') SwBasicBridge.run("Star Trek", "basic/startrek-40-1.bas", this);
+                else if (key == '2') SwBasicBridge.run("Star Trek 2003", "basic/startrek-40-2.bas", this);
+                else if (key == '3') SwBasicBridge.run("Lunar Lander", "basic/lunar-lander-40.bas", this);
+                else if (key == '4') SwBasicBridge.run("Hamurabi", "basic/hamurabi-40.bas", this);
+                else if (key == '5') SwBasicBridge.run("Checkers", "basic/checkers-40.bas", this);
                 else {
                     validKey = false;
                 }
