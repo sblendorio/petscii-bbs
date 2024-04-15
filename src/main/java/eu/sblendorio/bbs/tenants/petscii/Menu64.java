@@ -3,7 +3,6 @@ package eu.sblendorio.bbs.tenants.petscii;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import eu.sblendorio.bbs.core.*;
 import eu.sblendorio.bbs.games.SwBasicBridge;
-import eu.sblendorio.bbs.tenants.mixed.WikipediaCommons;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;

@@ -113,13 +113,13 @@ public class SwBasicBridge {
         bbsThread.println();
         bbsThread.println("SEARCHING FOR " + StringUtils.defaultString(caption).toUpperCase());
         bbsThread.flush(); Thread.sleep(700);
-        bbsThread.println("FOUND");
+        bbsThread.println("FOUND " + StringUtils.defaultString(caption).toUpperCase());
         bbsThread.flush(); Thread.sleep(700);
         bbsThread.print("LOADING...");
         bbsThread.flush(); Thread.sleep(1800); bbsThread.println();
         bbsThread.println("READY.");
         bbsThread.flush(); Thread.sleep(700);
-        typeln(bbsThread, "RUN");
+        typeln(bbsThread, "RUN", DELAY*5);
         bbsThread.flush(); Thread.sleep(1400);
         bbsThread.flush(); bbsThread.flush();
         bbsThread.cls();
@@ -131,16 +131,22 @@ public class SwBasicBridge {
 
     public static long DELAY = 50;
     public static void type(BbsThread bbsThread, String s) throws Exception {
+        type(bbsThread, s, DELAY);
+    }
+    public static void type(BbsThread bbsThread, String s, long delay) throws Exception {
         for (int i=0; i<s.length(); i++) {
             bbsThread.print(s.substring(i, i+1));
-            Thread.sleep(DELAY);
+            Thread.sleep(delay);
         }
     }
 
     public static void typeln(BbsThread bbsThread, String s) throws Exception {
-        type(bbsThread, s);
+        typeln(bbsThread, s, DELAY);
+    }
+    public static void typeln(BbsThread bbsThread, String s, long delay) throws Exception {
+        type(bbsThread, s, delay);
         bbsThread.println();
-        Thread.sleep(DELAY);
+        Thread.sleep(delay);
     }
 
 }
