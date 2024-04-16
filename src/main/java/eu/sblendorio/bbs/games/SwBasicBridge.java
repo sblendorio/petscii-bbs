@@ -119,7 +119,7 @@ public class SwBasicBridge {
         bbsThread.flush(); Thread.sleep(1800); bbsThread.println();
         bbsThread.println("READY.");
         bbsThread.flush(); Thread.sleep(700);
-        typeln(bbsThread, "RUN", DELAY*5);
+        typeln(bbsThread, "RUN", DELAY*8);
         bbsThread.flush(); Thread.sleep(1400);
         bbsThread.flush(); bbsThread.flush();
         bbsThread.cls();
