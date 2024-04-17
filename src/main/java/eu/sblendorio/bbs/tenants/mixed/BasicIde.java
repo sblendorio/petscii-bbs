@@ -1,7 +1,6 @@
-package eu.sblendorio.bbs.games;
+package eu.sblendorio.bbs.tenants.mixed;
 
 import eu.sblendorio.bbs.core.BbsThread;
-import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;

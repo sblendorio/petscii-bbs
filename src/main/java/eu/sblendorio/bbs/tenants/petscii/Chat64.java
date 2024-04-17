@@ -365,7 +365,7 @@ public class Chat64 extends PetsciiThread {
                           && x.getClientId() != this.getClientId()
                           && !x.getClientName().matches("(?i)^client[0-9]+$")
                           && !x.getClientName().matches("(?i)^.*[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private void displayMessages() {

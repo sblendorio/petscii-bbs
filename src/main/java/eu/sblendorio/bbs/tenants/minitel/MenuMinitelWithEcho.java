@@ -2,7 +2,7 @@ package eu.sblendorio.bbs.tenants.minitel;
 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import eu.sblendorio.bbs.core.*;
-import eu.sblendorio.bbs.games.SwBasicBridge;
+import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
 import eu.sblendorio.bbs.tenants.ascii.*;
 import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +21,6 @@ import static eu.sblendorio.bbs.tenants.mixed.GeolocationCommons.isLocalhost;
 import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isSanremo;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toList;
 
 public class MenuMinitelWithEcho extends MinitelThread {
     final static byte[] SPLASH_CASTELLO_ITA = readBinaryFile("minitel/avventura-nel-castello.vdt");
@@ -367,7 +366,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 .filter(StringUtils::isNotBlank)
                 .filter(str -> !str.startsWith(";"))
                 .sorted(comparing(String::toLowerCase))
-                .collect(toList());
+                .toList();
 
         cls();
         banner();
@@ -422,7 +421,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 .map(Path::toString)
                 .map(x -> x.startsWith("/") ? x.substring(1) : x)
                 .sorted(comparing(String::toLowerCase))
-                .collect(toList());
+                .toList();
         cls();
         int i = 0;
         while (i < drawings.size()) {
@@ -476,7 +475,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 .map(Path::toString)
                 .map(x -> x.startsWith("/") ? x.substring(1) : x)
                 .sorted(comparing(String::toLowerCase))
-                .collect(toList());
+                .toList();
         int i = 0;
         while (i < drawings.size()) {
             String filename = drawings.get(i);

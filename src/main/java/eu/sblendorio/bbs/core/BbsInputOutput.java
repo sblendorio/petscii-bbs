@@ -435,7 +435,7 @@ public abstract class BbsInputOutput extends Reader {
             return Collections.emptyList();
         }
         try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
-            return br.lines().collect(Collectors.toList());
+            return br.lines().toList();
         }
     }
 

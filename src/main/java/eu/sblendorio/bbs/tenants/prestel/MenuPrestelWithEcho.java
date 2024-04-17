@@ -267,7 +267,7 @@ public class MenuPrestelWithEcho extends PrestelThread {
                 .map(Path::toString)
                 .map(x -> x.startsWith("/") ? x.substring(1) : x)
                 .sorted(comparing(String::toLowerCase))
-                .collect(toList());
+                .toList();
         int i = 0;
         while (i < drawings.size()) {
             String filename = drawings.get(i);
@@ -294,7 +294,7 @@ public class MenuPrestelWithEcho extends PrestelThread {
                 .filter(StringUtils::isNotBlank)
                 .filter(str -> !str.startsWith(";"))
                 .sorted(comparing(String::toLowerCase))
-                .collect(toList());
+                .toList();
 
         final int PAGESIZE = 11;
         int pages = patrons.size() / PAGESIZE + (patrons.size() % PAGESIZE == 0 ? 0 : 1);

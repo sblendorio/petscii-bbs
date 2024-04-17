@@ -245,7 +245,7 @@ public class ChatOld64 extends PetsciiThread {
                 .stream()
                 .filter(x -> x.getClientClass().equals(this.getClientClass()) &&
                              x.getClientId() != this.getClientId())
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private void displayMessages() {

@@ -3,7 +3,7 @@ package eu.sblendorio.bbs.tenants.ascii;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Utils;
-import eu.sblendorio.bbs.games.SwBasicBridge;
+import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
 import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,7 +16,6 @@ import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isSanremo;
 import static java.lang.String.valueOf;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toList;
 
 public class MenuApple1 extends AsciiThread {
 
@@ -311,7 +310,7 @@ public class MenuApple1 extends AsciiThread {
                 .map(StringUtils::trim)
                 .filter(str -> !str.startsWith(";"))
                 .sorted(comparing(String::toLowerCase))
-                .collect(toList());
+                .toList();
 
         cls();
         println("Retrocampus BBS pure text version");
@@ -348,7 +347,7 @@ public class MenuApple1 extends AsciiThread {
                 .map(Path::toString)
                 .map(x -> x.startsWith("/") ? x.substring(1) : x)
                 .sorted(comparing(String::toLowerCase))
-                .collect(toList());
+                .toList();
         cls();
         int i = 0;
         while (i < drawings.size()) {

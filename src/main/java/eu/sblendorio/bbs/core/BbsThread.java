@@ -59,6 +59,22 @@ public abstract class BbsThread extends Thread {
 
     public abstract String getTerminalType();
 
+    public InetAddress getIpAddress() {
+        return ipAddress;
+    }
+
+    public InetAddress getServerAddress() {
+        return serverAddress;
+    }
+
+    public int getServerPort() {
+        return serverPort;
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
+
     public class KeepAliveThread extends Thread {
         private final static long ONE_HOUR = 1000L * 60L * 60L;
         private long startTimestamp = System.currentTimeMillis();

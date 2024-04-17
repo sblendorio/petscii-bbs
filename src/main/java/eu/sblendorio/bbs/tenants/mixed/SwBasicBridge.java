@@ -1,7 +1,6 @@
-package eu.sblendorio.bbs.games;
+package eu.sblendorio.bbs.tenants.mixed;
 
 import eu.sblendorio.bbs.core.BbsThread;
-import eu.sblendorio.bbs.core.Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,9 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-import static eu.sblendorio.bbs.core.BbsThread.readBinaryFile;
 import static eu.sblendorio.bbs.core.Utils.*;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class SwBasicBridge {
 

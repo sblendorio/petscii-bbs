@@ -1,9 +1,7 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
-import eu.sblendorio.bbs.core.AsciiThread;
-import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.PetsciiThread;
-import eu.sblendorio.bbs.games.SwBasicBridge;
+import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -45,7 +45,7 @@ public class OneDownload extends PetsciiThread {
             .map(row -> row.replaceAll("\\s*#\\s*", "#"))
             .map(row -> row.split("#"))
             .map(values -> new DownloadEntry(values[0], values[1]))
-            .collect(toList());
+            .toList();
 
         final String filenameConfig = System.getProperty("CONFIGMES", "/data/c.txt");
         Map<String, String> conf = readExternalTxt(filenameConfig).stream()

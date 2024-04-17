@@ -2,7 +2,7 @@ package eu.sblendorio.bbs.tenants.petscii;
 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import eu.sblendorio.bbs.core.*;
-import eu.sblendorio.bbs.games.SwBasicBridge;
+import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -21,7 +21,6 @@ import static eu.sblendorio.bbs.tenants.mixed.GeolocationCommons.isItaly;
 import static eu.sblendorio.bbs.tenants.mixed.GeolocationCommons.isLocalhost;
 import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.*;
 import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.repeat;
 import static org.apache.commons.lang3.StringUtils.startsWith;
 
@@ -497,7 +496,7 @@ public class Menu64 extends PetsciiThread {
                 .map(x -> x.replaceAll(" - .*$", ""))
                 .map(x -> StringUtils.substring(x, 0, 20))
                 .sorted(comparing(String::toLowerCase))
-                .collect(toList());
+                .toList();
 
         int count = 0;
         for (String name: patrons) {

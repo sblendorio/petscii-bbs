@@ -6,6 +6,7 @@ import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.service.OpenAiService;
 import eu.sblendorio.bbs.core.*;
+import eu.sblendorio.bbs.tenants.mixed.PatreonData;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -17,8 +18,6 @@ import org.davidmoten.text.utils.WordWrap;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
@@ -29,7 +28,6 @@ import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections4.CollectionUtils.size;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
@@ -42,26 +40,7 @@ public class ClientChatGptAscii extends AsciiThread {
 
     private static Logger logger = LogManager.getLogger(ClientChatGptAscii.class);
     private static Logger loggerAuthorizations = LogManager.getLogger("authorizations");
-
-    private static int CODE_LENGTH = 6;
-
-    protected static final String PATREON_USER = "PATREON_USER";
-    protected static final String PATREON_LEVEL = "PATREON_LEVEL";
     private static final String WAIT_MESSAGE = "...";
-    private static final long TIMEOUT = 300_000;
-    private String user = null;
-    private String patreonLevel = null;
-
-    private static Random random;
-
-    static {
-        try {
-            random = SecureRandom.getInstance("SHA1PRNG");
-        } catch (NoSuchAlgorithmException e) {
-            random = new Random(System.currentTimeMillis());
-        }
-    }
-
     private static byte[] USER_COLOR = new byte[] {};
     private static byte[] ASSISTANT_COLOR = new byte[] {};
     private static byte[] WAIT_COLOR = new byte[] {};
@@ -104,20 +83,20 @@ public class ClientChatGptAscii extends AsciiThread {
             this.setBbsInputOutput(interfaceType);
         }
 
-        boolean keepGoing = authenticate();
-        if (!keepGoing)
+        PatreonData patreonData = PatreonData.authenticateAscii(this);
+        if (patreonData == null)
             return;
 
-        registerFirstAccess(user);
-        changeClientName(user+"/"+UUID.randomUUID());
+        registerFirstAccess(patreonData.user);
+        changeClientName(patreonData.user+"/"+UUID.randomUUID());
 
-        String model = toInt(patreonLevel) > 0 ? "gpt-4" : "gpt-3.5-turbo";
+        String model = toInt(patreonData.patreonLevel) > 0 ? "gpt-4" : "gpt-3.5-turbo";
 
         cls();
         if (mainLogo == null) {
-            println("Chat GPT - Classic Client");
-            println("-------------------------");
-            if (toInt(patreonLevel) > 0) println("Model: " + model);
+            println("Patreon Login - Authenticate");
+            println("----------------------------");
+            if (toInt(patreonData.patreonLevel) > 0) println("Model: " + model);
             println();
             println(EXIT_ADVICE);
             println();
@@ -143,7 +122,7 @@ public class ClientChatGptAscii extends AsciiThread {
             conversation.add(new ChatMessage("user", input));
             logger.info("IP: '{}', email: '{}', role: 'user', message: {}",
                     ipAddress.getHostAddress(),
-                    user,
+                    patreonData.user,
                     input.replaceAll("\n", "\\\\n"));
 
             ChatCompletionRequest request = builder()
@@ -172,7 +151,7 @@ public class ClientChatGptAscii extends AsciiThread {
                     println("Press any key to EXIT");
                     logger.error("IP: '{}', email: '{}', exception: {}",
                             ipAddress.getHostAddress(),
-                            user,
+                            patreonData.user,
                             e);
                     flush();
                     resetInput();
@@ -190,7 +169,7 @@ public class ClientChatGptAscii extends AsciiThread {
 
             logger.info("IP: '{}', email: '{}', role: '{}', message: {}",
                     ipAddress.getHostAddress(),
-                    user,
+                    patreonData.user,
                     message.getRole(),
                     message.getContent().replaceAll("\n", "\\\\n"));
 
@@ -279,128 +258,6 @@ public class ClientChatGptAscii extends AsciiThread {
         flush();
     }
 
-    private boolean authenticate() throws IOException {
-        final String DEFAULT = "0";
-        String hostRow;
-        if (isNotBlank(hostRow = readExternalTxt(getProperty("PATREON_WHITELIST_IP_FILE", getProperty("user.home") + File.separator + "patreon_whitelist_ip.txt"))
-                .stream()
-                .filter(StringUtils::isNotBlank)
-                .map(StringUtils::trim)
-                .filter(row -> !row.startsWith(";"))
-                .filter(row -> row.replaceAll(",.*$", "").equalsIgnoreCase(ipAddress.getHostAddress()))
-                .findFirst().orElse(""))
-        ) {
-            if (ipAddress.getHostAddress() != null) {
-                user = ipAddress.getHostAddress();
-                patreonLevel = !hostRow.contains(",") ? DEFAULT : hostRow.replaceAll("^.*,", "");
-                return true;
-            }
-        }
-
-        try {
-            user = (String) getRoot().getCustomObject(PATREON_USER);
-            patreonLevel = (String) getRoot().getCustomObject(PATREON_LEVEL);
-        } catch (NullPointerException | ClassCastException e) {
-            log("User not logged " + e.getClass().getName() + " " + e.getMessage());
-        }
-        if (user != null && !"null".equalsIgnoreCase(user))
-            return true;
-
-        cls();
-        println("ChatGPT - Classic Client");
-        println("------------------------");
-        println();
-        println("For security reasons:");
-        println("- IP address");
-        println("- email");
-        println("- messages");
-        println("will be logged. If you proceed,");
-        println("you will accept this.");
-        println();
-        println("Functionality reserved to Patrons");
-        println("https://patreon.com/FrancescoSblendorio");
-        println();
-        println("Your Patreon email ('-' for underscore)");
-        println("   you can use ! instead of @, example:");
-        println("                      johndoe!gmail.com");
-        print(">");
-        flush(); resetInput();
-        String tempEmail = readLine(setOfChars(STR_ALPHANUMERIC, ".:,;_ {}[]()<>@+-*/^='?!$%&#"));
-        final String userEmail = trimToEmpty(tempEmail);
-        if (isBlank(userEmail))
-            return false;
-
-        String emailRow = readExternalTxt(getProperty("PATREON_EMAILS", getProperty("user.home") + File.separator + "patreon_emails.txt"))
-                .stream()
-                .filter(StringUtils::isNotBlank)
-                .map(StringUtils::trim)
-                .filter(row -> !row.startsWith(";"))
-                .filter(row -> row.replace("_", "-").replace("*", "@").replace("!", "@")
-                        .replaceAll(",.*$", "")
-                        .equalsIgnoreCase(userEmail.replace("_", "-").replace("*", "@").replace("!", "@")))
-                .findAny()
-                .orElse("");
-
-        if (isBlank(emailRow)) {
-            loggerAuthorizations.info("Patreon unknown email. Email:{}, Host:{}, Port:{}", userEmail, socket.getInetAddress().getHostAddress(), socket.getLocalPort());
-            println();
-            println("Not subscriber's mail");
-            println("Press any key to exit");
-            flush(); resetInput();
-            readKey();
-            return false;
-        }
-
-        String email = emailRow.replaceAll(",.*$", "");
-
-        waitOn();
-        String secretCode = generateSecretCode(CODE_LENGTH);
-        boolean success = sendSecretCode(email, secretCode);
-        waitOff();
-        if (!success) {
-            println();
-            println("Mail server error");
-            println("Press any key to exit ");
-            flush(); resetInput();
-            readKey();
-            return false;
-        }
-        long startMillis = System.currentTimeMillis();
-        println();
-        println("Please type " + CODE_LENGTH + "-digit code just sent");
-        print("to your email: ");
-        flush(); resetInput();
-        String userCode = readLine(CODE_LENGTH);
-        userCode = trimToEmpty(userCode);
-        long endMillis = System.currentTimeMillis();
-        if (endMillis-startMillis > TIMEOUT) {
-            loggerAuthorizations.info("Patreon timeout. Email:{}, Host:{}, Port:{}", userEmail, socket.getInetAddress().getHostAddress(), socket.getLocalPort());
-            println();
-            println("Timeout, try it again ");
-            println("Press any key to exit ");
-            flush(); resetInput();
-            readKey();
-            return false;
-        }
-
-        if (!userCode.equalsIgnoreCase(secretCode)) {
-            loggerAuthorizations.info("Patreon wrong code. Email:{}, Host:{}, Port:{}", userEmail, socket.getInetAddress().getHostAddress(), socket.getLocalPort());
-            println();
-            println("It was the wrong code ");
-            println("Press any key to exit ");
-            flush(); resetInput();
-            readKey();
-            return false;
-        }
-
-        user = email;
-        patreonLevel = !emailRow.contains(",") ? DEFAULT : emailRow.replaceAll("^.*,", "");
-        getRoot().setCustomObject(PATREON_USER, user);
-        getRoot().setCustomObject(PATREON_LEVEL, patreonLevel);
-        loggerAuthorizations.info("Patreon login. Email: {}, Host:{}, Port: {}", userEmail, socket.getInetAddress().getHostAddress(), socket.getLocalPort());
-        return true;
-    }
-
     private void registerFirstAccess(String user) throws IOException {
         final String filename = getProperty("PATREON_EMAILS", getProperty("user.home") + File.separator + "consent_emails.txt");
         List<String> rows = readExternalTxt(filename);
@@ -409,7 +266,7 @@ public class ClientChatGptAscii extends AsciiThread {
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trimToEmpty)
                 .map(row -> row.split(";")[0])
-                .collect(toList())
+                .toList()
                 .contains(user);
 
         if (!yetConnected) {
@@ -418,54 +275,6 @@ public class ClientChatGptAscii extends AsciiThread {
             for(String str: rows) writer.write(str + System.lineSeparator());
             writer.close();
         }
-    }
-
-    private boolean sendSecretCode(String email, String secretCode) {
-        final String USERNAME = defaultString(getProperty("MAIL_FROM", getenv("MAIL_FROM")));
-        final String PASSWORD = defaultString(getProperty("MAIL_FROM_PASSWORD", getenv("MAIL_FROM_PASSWORD")));
-        final String MAIL_SMTP_HOST = defaultString(getProperty("MAIL_SMTP_HOST", getenv("MAIL_SMTP_HOST")));
-        final String MAIL_SMTP_PORT = defaultString(getProperty("MAIL_SMTP_PORT", getenv("MAIL_SMTP_PORT")));
-        final String MAIL_SMTP_AUTH = defaultString(getProperty("MAIL_SMTP_AUTH", getenv("MAIL_SMTP_AUTH")));
-        final String MAIL_SMTP_STARTTLS_ENABLE = defaultString(getProperty("MAIL_SMTP_STARTTLS_ENABLE", getenv("MAIL_SMTP_STARTTLS_ENABLE")));
-
-        Properties prop = new Properties();
-        prop.put("mail.smtp.host", MAIL_SMTP_HOST);
-        prop.put("mail.smtp.port", MAIL_SMTP_PORT);
-        prop.put("mail.smtp.auth", MAIL_SMTP_AUTH);
-        prop.put("mail.smtp.starttls.enable", MAIL_SMTP_STARTTLS_ENABLE);
-
-        Session session = Session.getInstance(prop,
-                new jakarta.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(USERNAME, PASSWORD);
-                    }
-                });
-
-        try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(USERNAME));
-            message.setRecipients(
-                    Message.RecipientType.TO,
-                    InternetAddress.parse(email)
-            );
-            message.setSubject("BBS access code");
-            message.setText("Your temporary code is " + secretCode);
-
-            Transport.send(message);
-
-            return true;
-        } catch (MessagingException e) {
-            log("Send Email Exception:", e);
-            return false;
-        }
-    }
-
-    private String generateSecretCode(int length) {
-        return random
-                .ints(0, 10)
-                .limit(length)
-                .mapToObj(String::valueOf)
-                .collect(joining());
     }
 
 }
