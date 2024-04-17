@@ -1,12 +1,12 @@
-package eu.sblendorio.bbs.tenants.petscii;
+package eu.sblendorio.bbs.tenants.minitel;
 
-import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.core.MinitelThread;
 import eu.sblendorio.bbs.games.BasicIde;
 
 import java.util.Map;
 import java.util.TreeMap;
 
-public class BasicIdePetscii extends PetsciiThread {
+public class BasicIdeMinitel extends MinitelThread {
     private Map<Long, String> program = new TreeMap<>();
 
     @Override
