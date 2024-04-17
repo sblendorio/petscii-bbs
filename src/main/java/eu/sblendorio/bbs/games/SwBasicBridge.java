@@ -116,7 +116,7 @@ public class SwBasicBridge {
     public static void run(String caption, String source, BbsThread bbsThread) throws Exception {
         logger.info("Executing BASIC Program: '{}', on '{}'", source, bbsThread.getClass().getSimpleName());
         bbsThread.cls();
-        bbsThread.println("*** RETROCAMPUS BBS BASIC 2.0 ***");
+        bbsThread.println("*** RETROCAMPUS BBS BASIC 1.0 ***");
         bbsThread.println();
         bbsThread.println("READY.");
         bbsThread.flush(); Thread.sleep(700);

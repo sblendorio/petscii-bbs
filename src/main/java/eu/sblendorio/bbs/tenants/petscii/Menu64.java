@@ -315,6 +315,8 @@ public class Menu64 extends PetsciiThread {
             write(CLR, LOWERCASE, CASE_LOCK, HOME);
             drawLogo();
 
+            gotoXY(23, 8);  write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'z', REVOFF, 161); println("BBS BASIC");
+
             gotoXY(0,4);
             write(GREEN);
             write(getRenderedMidres(4,
@@ -341,6 +343,7 @@ public class Menu64 extends PetsciiThread {
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '3', REVOFF, 161); println("Lunar Lander");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '4', REVOFF, 161); println("Hamurabi");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '5', REVOFF, 161); println("Checkers");
+
             newline();
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '.', REVOFF, 161);
             print("Exit ");
@@ -364,6 +367,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == '3') SwBasicBridge.run("Lunar Lander", "basic/lunar-lander-40.bas", this);
                 else if (key == '4') SwBasicBridge.run("Hamurabi", "basic/hamurabi-40.bas", this);
                 else if (key == '5') SwBasicBridge.run("Checkers", "basic/checkers-40.bas", this);
+                else if (key == 'z') launch(new BasicIdePetscii());
                 else {
                     validKey = false;
                 }

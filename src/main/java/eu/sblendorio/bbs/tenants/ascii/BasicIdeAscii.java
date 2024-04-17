@@ -11,6 +11,8 @@ public class BasicIdeAscii extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
+        cls();
+        println("*** RETROCAMPUS BBS BASIC 1.0 ***");
         BasicIde.execute(this, program);
     }
 
