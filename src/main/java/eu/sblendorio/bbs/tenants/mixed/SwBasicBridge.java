@@ -93,10 +93,10 @@ public class SwBasicBridge {
         bindings.put("code", code);
 
         engine.eval(readFile("swbasic2/swbasic2.js"), bindings);
-        engine.eval("interpreter = new Interpreter();", bindings);
         engine.eval("let parser = new Parser(code);", bindings);
+        engine.eval("parser.printFunction = bridge.print", bindings);
         engine.eval("parser.parse()", bindings);
-        engine.eval("interpreter.setParser(parser)", bindings);
+        engine.eval("interpreter = new Interpreter();", bindings);
         engine.eval("interpreter.printFunction = bridge.print", bindings);
         engine.eval("interpreter.inkeyFunction = bridge.inkey", bindings);
         engine.eval("interpreter.stringInputFunction = bridge.stringInput", bindings);
@@ -104,6 +104,7 @@ public class SwBasicBridge {
         engine.eval("interpreter.clsFunction = bridge.cls", bindings);
         engine.eval("interpreter.endFunction = bridge.end", bindings);
         engine.eval("interpreter.sleepFunction = bridge.sleep", bindings);
+        engine.eval("interpreter.setParser(parser)", bindings);
     }
 
     public void start() throws Exception {

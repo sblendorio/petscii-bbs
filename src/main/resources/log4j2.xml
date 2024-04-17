@@ -2,6 +2,20 @@
 <Configuration status="WARN">
     <Appenders>
         <RollingFile
+                name="BasicIde"
+                fileName="${sys:user.home}/bbs-logs/bbs-basicIde.log"
+                filePattern="${sys:user.home}/bbs-logs/bbs-basicIde.%d{yyyy-ww}.log.gz"
+                ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS zzz} %p %c{1} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+            <DefaultRolloverStrategy max="30" />
+        </RollingFile>
+
+        <RollingFile
                 name="ChatGptLog"
                 fileName="${sys:user.home}/bbs-logs/bbs-chatgpt.log"
                 filePattern="${sys:user.home}/bbs-logs/bbs-chatgpt.%d{yyyy-ww}.log.gz"
@@ -92,6 +106,9 @@
         </Console>
     </Appenders>
     <Loggers>
+        <Logger name="eu.sblendorio.bbs.tenants.mixed.BasicIde" level="debug" additivity="false">
+            <AppenderRef ref="BasicIde"/>
+        </Logger>
         <Logger name="eu.sblendorio.bbs.tenants.petscii.ClientChatGptPetscii" level="debug" additivity="false">
             <AppenderRef ref="ChatGptLog"/>
         </Logger>

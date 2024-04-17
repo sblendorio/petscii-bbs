@@ -4,6 +4,8 @@ import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -22,6 +24,7 @@ import java.util.stream.Stream;
 import static java.lang.System.getProperty;
 
 public class BasicIde {
+    private static final Logger logger = LogManager.getLogger(BasicIde.class);
 
     public static String BASIC_USER_PROGRAMS_DIR = getProperty("user.home") + File.separator + "basic_user_programs";
 
@@ -76,12 +79,24 @@ public class BasicIde {
     public static void dir(BbsThread bbs) throws Exception {
         List<String> files;
         try (Stream<Path> paths = Files.walk(Paths.get(BASIC_USER_PROGRAMS_DIR))) {
-            files = paths.filter(Files::isRegularFile).map(Path::getFileName).map(Path::toString).toList();
+            files = paths.filter(Files::isRegularFile).map(Path::getFileName).map(Path::toString).sorted().toList();
         }
 
         int n = 0;
-        for (String file: files) {
-            bbs.println(file);
+        for (String row: files) {
+            bbs.println(row);
+            Double incrementDouble = Double.valueOf(row.length()) / Double.valueOf(bbs.getScreenColumns());
+            int increment = row.length() / bbs.getScreenColumns();
+            n += (increment + (incrementDouble - increment > 0 ? 1 : 0));
+            if (n > bbs.getScreenRows() - 3) {
+                n = 0;
+                bbs.print("--- SPACE FOR MORE, '.' FOR STOP ------");
+                bbs.flush(); bbs.resetInput();
+                int ch = bbs.readKey();
+                bbs.newline();
+                bbs.newline();
+                if (ch == '.') break;
+            }
         }
     }
 
@@ -106,6 +121,15 @@ public class BasicIde {
     public static void execute(BbsThread bbs, Map<Long, String> program) throws Exception {
         mkdir(BASIC_USER_PROGRAMS_DIR);
 
+        String user = "";
+        String patreonLevel = "0";
+        try {
+            user = (String) bbs.getRoot().getCustomObject(PatreonData.PATREON_USER);
+            patreonLevel = (String) bbs.getRoot().getCustomObject(PatreonData.PATREON_LEVEL);
+        } catch (NullPointerException | ClassCastException e) {
+            logger.error("User not logged " + e.getClass().getName() + " " + e.getMessage());
+        }
+
         prompt(bbs);
         do {
             bbs.flush();
@@ -124,19 +148,33 @@ public class BasicIde {
                 String text = line.replaceAll("^([0-9]+)(.*)$", "$2").trim();
                 program.put(NumberUtils.toLong(number), text);
             } else if ("LIST".equals(firstWord)) {
-                program.entrySet().forEach(
-                    row -> bbs.println(row.getKey() + " " + row.getValue())
-                );
+                int n = 0;
+                for (String row: program.entrySet().stream().map(row ->  row.getKey() + " " + row.getValue()).toList()) {
+                    bbs.println(row);
+                    Double incrementDouble = Double.valueOf(row.length()) / Double.valueOf(bbs.getScreenColumns());
+                    int increment = row.length() / bbs.getScreenColumns();
+                    n += (increment + (incrementDouble - increment > 0 ? 1 : 0));
+                    if (n > bbs.getScreenRows() - 3) {
+                        n = 0;
+                        bbs.print("--- SPACE FOR MORE, '.' FOR STOP ------");
+                        bbs.flush(); bbs.resetInput();
+                        int ch = bbs.readKey();
+                        bbs.newline();
+                        bbs.newline();
+                        if (ch == '.') break;
+                    }
+                }
                 prompt(bbs);
             } else if ("NEW".equals(firstWord)) {
                 program = new TreeMap<>();
                 prompt(bbs);
             } else if ("LOAD".equals(firstWord) && line.matches("^LOAD *\"([a-zA-Z0-9 ]+)\"?$")) {
                 String filename = line.replaceAll("^LOAD *\"([a-zA-Z0-9 ]+)\"?$", "$1").trim().toLowerCase().replaceAll("[^0-9A-Za-z ]", "");
+                bbs.newline();
                 bbs.println("LOADING " + filename);
                 boolean ok = load(filename, program);
                 if (!ok) {
-                    bbs.println("?LOADING ERROR");
+                    bbs.println("?FILE NOT FOUND ERROR");
                     promptNoline(bbs);
                 } else {
                     prompt(bbs);
@@ -147,6 +185,7 @@ public class BasicIde {
                 promptNoline(bbs);
             } else if ("SAVE".equals(firstWord) && line.matches("^SAVE *\"([a-zA-Z0-9 ]+)\"?$")) {
                 String filename = line.replaceAll("^SAVE *\"([a-zA-Z0-9 ]+)\"?$", "$1").trim().toLowerCase().replaceAll("[^0-9A-Za-z ]", "");
+                bbs.newline();
                 if (fileExists(filename)) {
                     bbs.print("FILE ALREADY EXISTS. OVERWRITE? ");
                     bbs.flush(); bbs.resetInput();
@@ -176,6 +215,8 @@ public class BasicIde {
                         .map(row -> row.getKey() + " " + row.getValue())
                         .collect(Collectors.joining("\n"));
 
+                logger.info("user={}, program={}", user, programText.replaceAll("\n", "\\\\n"));
+
                 SwBasicBridge bridge = new SwBasicBridge(bbs);
                 bridge.initWithProgramText(programText);
                 bridge.start();
@@ -203,14 +244,14 @@ public class BasicIde {
     public static String toUpper(String s) {
         if (StringUtils.isBlank(s)) return StringUtils.EMPTY;
 
-        String result = "";
+        StringBuilder result = new StringBuilder();
         boolean quote = false;
         for (int i=0; i<s.length(); i++) {
             String c = s.substring(i, i+1);
             if ("\"".equalsIgnoreCase(c)) quote = !quote;
-            result += (quote ? c : c.toUpperCase());
+            result.append(quote ? c : c.toUpperCase());
         }
-        return result.trim();
+        return result.toString().trim();
     }
 
     public static boolean isNumber(String line) {

@@ -652,6 +652,7 @@ class Parser {
     this.defs = []
     this.functions = [];
     this.tokenizer = null;
+    this.printFunction = null;
 
     this.functions["?"] = this.print_statement.bind(this);
     this.functions["CLEAR"] = this.clear_statement.bind(this);
@@ -1042,7 +1043,12 @@ class Parser {
       let errorMessage = "LINE " + lineNum + ", ERROR: ";
       errorMessage += e;
       console.log(errorMessage);
-      throw errorMessage;
+      // SBLEND
+      if (this.printFunction) {
+        this.printFunction(errorMessage, true);
+      } else {
+        throw errorMessage;
+      }
     }
   }
 
@@ -2175,7 +2181,13 @@ class Interpreter {
         } catch (e) {
           let errorMessage = "LINE " + this.findLineNumber(idx) + ", ERROR: ";
           errorMessage += e;
-          throw errorMessage;
+          console.log(errorMessage);
+          // SBLEND
+          if (this.printFunction) {
+            this.printFunction(errorMessage, true);
+          } else {
+            throw errorMessage;
+          }
         }
         if (newidx == -1) {
           this.lastPoint = idx;
