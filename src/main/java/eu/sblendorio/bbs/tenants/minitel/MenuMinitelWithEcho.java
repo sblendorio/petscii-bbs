@@ -208,6 +208,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("3".equals(choice)) { SwBasicBridge.run("Lunar Lander", "basic/lunar-lander-40.bas", this); subThread = null; }
                 else if ("4".equals(choice)) { SwBasicBridge.run("Hamurabi", "basic/hamurabi-40.bas", this); subThread = null; }
                 else if ("5".equals(choice)) { SwBasicBridge.run("Checkers", "basic/checkers-40.bas", this); subThread = null; }
+                else if ("z".equals(choice)) { subThread = new BasicIdeMinitel(); }
                 else {
                     validKey = false;
                     subThread = null;

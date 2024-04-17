@@ -7,5 +7,8 @@ BASIC Programs
 3 - Lunar Lander
 4 - Hamurabi
 5 - Checkers
+
+Z - BBS BASIC
+
 . - Logout
 
