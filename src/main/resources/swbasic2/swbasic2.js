@@ -1564,6 +1564,7 @@ class Interpreter {
     this.defInfo = [];
     this.printFunction = null;
     this.sleepFunction = null;
+    this.inkeyFunction = null;
     this.numberInputFunction = null;
     this.stringInputFunction = null;
     this.clsFunction = null;
@@ -2156,6 +2157,10 @@ class Interpreter {
     let length = this.parser.statements.length;
     try {
       while (idx < length) {
+        if (this.inkeyFunction) {
+            var codeKey = this.inkeyFunction(0);
+            if (codeKey == 3) break;
+        }
         let newidx = -1;
         try {
           let statement = this.parser.statements[idx];

@@ -47,6 +47,12 @@ public class SwBasicBridge {
         }
     }
 
+    public int inkey(long ms) throws Exception {
+        int result = bbs.keyPressed();
+        if (ms > 0) Thread.sleep(ms);
+        return result;
+    }
+
     public void cls() {
         bbs.cls();
     }
@@ -75,15 +81,19 @@ public class SwBasicBridge {
         }
     }
 
-    public void init(String source) throws Exception {
-        String sourceDecoded = java.net.URLDecoder.decode(source, StandardCharsets.UTF_8);
+    public void init(String filename) throws Exception {
+        String sourceDecoded = java.net.URLDecoder.decode(filename, StandardCharsets.UTF_8);
         if (sourceDecoded.contains("../") || sourceDecoded.contains("/..")) return;
+        String code = readFile(sourceDecoded);
+        initWithProgramText(code);
+    }
 
+    public void initWithProgramText(String code) throws Exception {
         bindings = new SimpleBindings();
         bindings.put("polyglot.js.allowAllAccess", true);
 
         bindings.put("bridge", this);
-        bindings.put("code", readFile(sourceDecoded));
+        bindings.put("code", code);
 
         engine.eval(readFile("swbasic2/swbasic2.js"), bindings);
         engine.eval("interpreter = new Interpreter();", bindings);
@@ -91,6 +101,7 @@ public class SwBasicBridge {
         engine.eval("parser.parse()", bindings);
         engine.eval("interpreter.setParser(parser)", bindings);
         engine.eval("interpreter.printFunction = bridge.print", bindings);
+        engine.eval("interpreter.inkeyFunction = bridge.inkey", bindings);
         engine.eval("interpreter.stringInputFunction = bridge.stringInput", bindings);
         engine.eval("interpreter.numberInputFunction = bridge.numberInput", bindings);
         engine.eval("interpreter.clsFunction = bridge.cls", bindings);
