@@ -212,7 +212,7 @@ public class BasicIde {
                 bbs.newline();
                 bbs.println("?SYNTAX ERROR");
                 promptNoline(bbs);
-            } else if (Set.of("DIR", "CATALOG", "FILES").contains(firstWord)) {
+            } else if (Set.of("DIR", "CAT", "CATALOG", "FILES").contains(firstWord)) {
                 bbs.newline();
                 dir(bbs);
                 prompt(bbs);
