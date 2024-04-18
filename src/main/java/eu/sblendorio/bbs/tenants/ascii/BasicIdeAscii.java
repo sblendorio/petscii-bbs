@@ -13,8 +13,7 @@ public class BasicIdeAscii extends AsciiThread {
     @Override
     public void doLoop() throws Exception {
         PatreonData patreonData = PatreonData.authenticateAscii(this);
-        if (patreonData == null)
-            return;
+        if (patreonData == null) return;
 
         cls();
         println("*** RETROCAMPUS BBS BASIC V1.0 ***");

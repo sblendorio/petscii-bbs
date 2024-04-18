@@ -67,8 +67,7 @@ public class ClientChatGptPetscii extends PetsciiThread {
     @Override
     public void doLoop() throws Exception {
         PatreonData patreonData = PatreonData.authenticatePetscii(this);
-        if (patreonData == null)
-            return;
+        if (patreonData == null) return;
 
         String model = toInt(patreonData.patreonLevel) > 0 ? "gpt-4" : "gpt-3.5-turbo";
         changeClientName(patreonData.user+"/"+UUID.randomUUID());
