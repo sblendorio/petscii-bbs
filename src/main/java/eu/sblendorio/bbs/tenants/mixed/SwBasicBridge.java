@@ -115,6 +115,7 @@ public class SwBasicBridge {
         logger.info("Executing BASIC Program: '{}', on '{}'", source, bbsThread.getClass().getSimpleName());
         bbsThread.cls();
         bbsThread.println("*** RETROCAMPUS BBS BASIC V1.0 ***");
+        bbsThread.println("DERIVED FROM SWBASIC2 BY KONYISOFT");
         bbsThread.println();
         bbsThread.println("READY.");
         bbsThread.flush(); Thread.sleep(700);
