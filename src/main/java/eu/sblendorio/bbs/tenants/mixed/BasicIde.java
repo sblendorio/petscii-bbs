@@ -139,6 +139,7 @@ public class BasicIde {
                 String text = line.replaceAll("^([0-9]+)(.*)$", "$2").trim();
                 program.put(NumberUtils.toLong(number), text);
             } else if ("LIST".equals(firstWord)) {
+                bbs.newline();
                 long lowerBound = Long.MIN_VALUE;
                 long upperBound = Long.MAX_VALUE;
                 if (line.matches("^LIST *([0-9]+)")) {
@@ -149,7 +150,6 @@ public class BasicIde {
                     if (!strBound.startsWith("-")) lowerBound = NumberUtils.toLong(strBound.substring(0, strBound.indexOf("-")));
                     if (!strBound.endsWith("-")) upperBound = NumberUtils.toLong(strBound.substring(strBound.indexOf("-")+1));
                 } else if (!line.trim().equals("LIST")) {
-                    bbs.newline();
                     bbs.println("?SYNTAX ERROR");
                     promptNoline(bbs);
                     continue;
