@@ -131,7 +131,7 @@ public class BasicIde {
             if (StringUtils.isBlank(line)) continue;
 
             String firstWord = line.replaceAll("^([A-Za-z][A-Za-z0-9]*).*$", "$1");
-            if ("QUIT".equals(firstWord) || "SYSTEM".equals(firstWord)) break;
+            if (Set.of("QUIT", "SYSTEM", "EXIT").contains(firstWord)) break;
 
             if (isNumber(line)) program.remove(NumberUtils.toLong(line));
             else if (startsWithNumber(line)) {
@@ -139,8 +139,25 @@ public class BasicIde {
                 String text = line.replaceAll("^([0-9]+)(.*)$", "$2").trim();
                 program.put(NumberUtils.toLong(number), text);
             } else if ("LIST".equals(firstWord)) {
+                long lowerBound = Long.MIN_VALUE;
+                long upperBound = Long.MAX_VALUE;
+                if (line.matches("^LIST *([0-9]+)")) {
+                    String strBound = line.replaceAll("^LIST *([0-9]*)", "$1").replace(" ", "");
+                    lowerBound = upperBound = NumberUtils.toLong(strBound);
+                } else if (line.matches("^LIST *([0-9]* *- *[0-9]*)")) {
+                    String strBound = line.replaceAll("^LIST *([0-9]* *- *[0-9]*)", "$1").replace(" ", "");
+                    if (!strBound.startsWith("-")) lowerBound = NumberUtils.toLong(strBound.substring(0, strBound.indexOf("-")));
+                    if (!strBound.endsWith("-")) upperBound = NumberUtils.toLong(strBound.substring(strBound.indexOf("-")+1));
+                } else if (!line.trim().equals("LIST")) {
+                    bbs.newline();
+                    bbs.println("?SYNTAX ERROR");
+                    promptNoline(bbs);
+                    continue;
+                }
                 int n = 0;
-                for (String row: program.entrySet().stream().map(row ->  row.getKey() + " " + row.getValue()).toList()) {
+                final long lbound = lowerBound;
+                final long ubound = upperBound;
+                for (String row: program.entrySet().stream().filter(row -> (lbound <= row.getKey() && row.getKey() <= ubound)).map(row -> row.getKey() + " " + row.getValue()).toList()) {
                     bbs.println(row);
                     int increment = row.length() / bbs.getScreenColumns();
                     int mod = row.length() % bbs.getScreenColumns();
@@ -195,7 +212,7 @@ public class BasicIde {
                 bbs.newline();
                 bbs.println("?SYNTAX ERROR");
                 promptNoline(bbs);
-            } else if ("DIR".equals(firstWord) || "CATALOG".equals(firstWord) || "FILES".equals(firstWord)) {
+            } else if (Set.of("DIR", "CATALOG", "FILES").contains(firstWord)) {
                 bbs.newline();
                 dir(bbs);
                 prompt(bbs);
