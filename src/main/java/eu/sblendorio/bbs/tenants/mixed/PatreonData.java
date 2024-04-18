@@ -11,9 +11,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.time.Instant;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
@@ -73,6 +76,7 @@ public class PatreonData {
                 user = bbs.getIpAddress().getHostAddress();
                 patreonLevel = !hostRow.contains(",") ? DEFAULT : hostRow.replaceAll("^.*,", "");
                 bbs.write(GREY3);
+                registerFirstAccess(user);
                 return new PatreonData(user, patreonLevel);
             }
         }
@@ -85,6 +89,7 @@ public class PatreonData {
         }
         if (user != null && !"null".equalsIgnoreCase(user)) {
             bbs.write(GREY3);
+            registerFirstAccess(user);
             return new PatreonData(user, patreonLevel);
         }
 
@@ -212,6 +217,7 @@ public class PatreonData {
         bbs.getRoot().setCustomObject(PatreonData.PATREON_LEVEL, patreonLevel);
         loggerAuthorizations.info("Patreon login. Email: {}, Host:{}, Port: {}", userEmail, bbs.getSocket().getInetAddress().getHostAddress(), bbs.getSocket().getLocalPort());
         bbs.write(GREY3);
+        registerFirstAccess(user);
         return new PatreonData(user, patreonLevel);
     }
 
@@ -231,6 +237,7 @@ public class PatreonData {
             if (bbs.getIpAddress().getHostAddress() != null) {
                 user = bbs.getIpAddress().getHostAddress();
                 patreonLevel = !hostRow.contains(",") ? DEFAULT : hostRow.replaceAll("^.*,", "");
+                registerFirstAccess(user);
                 return new PatreonData(user, patreonLevel);
             }
         }
@@ -241,8 +248,10 @@ public class PatreonData {
         } catch (NullPointerException | ClassCastException e) {
             loggerAuthorizations.info("User not logged " + e.getClass().getName() + " " + e.getMessage());
         }
-        if (user != null && !"null".equalsIgnoreCase(user))
+        if (user != null && !"null".equalsIgnoreCase(user)) {
+            registerFirstAccess(user);
             return new PatreonData(user, patreonLevel);
+        }
 
         bbs.cls();
         bbs.println("ChatGPT - Classic Client");
@@ -336,6 +345,7 @@ public class PatreonData {
         bbs.getRoot().setCustomObject(PatreonData.PATREON_USER, user);
         bbs.getRoot().setCustomObject(PatreonData.PATREON_LEVEL, patreonLevel);
         loggerAuthorizations.info("Patreon login. Email: {}, Host:{}, Port: {}", userEmail, bbs.getSocket().getInetAddress().getHostAddress(), bbs.getSocket().getLocalPort());
+        registerFirstAccess(user);
         return new PatreonData(user, patreonLevel);
     }
 
@@ -406,6 +416,25 @@ public class PatreonData {
                 .limit(length)
                 .mapToObj(String::valueOf)
                 .collect(joining());
+    }
+
+    private static void registerFirstAccess(String user) throws IOException {
+        final String filename = getProperty("PATREON_EMAILS", getProperty("user.home") + File.separator + "consent_emails.txt");
+        List<String> rows = readExternalTxt(filename);
+        boolean yetConnected = rows
+                .stream()
+                .filter(StringUtils::isNotBlank)
+                .map(StringUtils::trimToEmpty)
+                .map(row -> row.split(";")[0])
+                .toList()
+                .contains(user);
+
+        if (!yetConnected) {
+            rows.add(user + ";" + Instant.now().toString());
+            FileWriter writer = new FileWriter(filename);
+            for(String str: rows) writer.write(str + System.lineSeparator());
+            writer.close();
+        }
     }
 
 }

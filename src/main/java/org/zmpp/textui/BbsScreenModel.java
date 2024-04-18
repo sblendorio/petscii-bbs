@@ -1,6 +1,7 @@
 package org.zmpp.textui;
 
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.davidmoten.text.utils.WordWrap;
@@ -27,9 +28,12 @@ import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class BbsScreenModel implements ScreenModelListener, StatusLineListener, SaveGameDataStore {
+
+    private static final String SAVE_FILE_PATH = System.getProperty("user.home") + File.separator + "saved-text-adventures";
+
     private static Logger logger = LogManager.getLogger("org.zmpp.screen");
 
-    private String topRoomDescription ="";
+    private String topRoomDescription = "";
 
     private final BufferedScreenModel screenModel = new BufferedScreenModel(); // Screen Model manages a virtual window
 
@@ -251,8 +255,10 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
     // Implementation of SaveGameDataStore
     @Override
     public boolean saveFormChunk(final WritableFormChunk formchunk) {
+        Utils.mkdir(SAVE_FILE_PATH);
+
         RandomAccessFile raf = null;
-        String currentdir = new File(System.getProperty("user.dir")).getAbsolutePath();
+        String currentdir = new File(SAVE_FILE_PATH).getAbsolutePath();
         try {
             bbsThread.newline();
             File saveFile;
@@ -299,7 +305,7 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
     @Override
     public FormChunk retrieveFormChunk() {
         RandomAccessFile raf = null;
-        String currentdir = new File(System.getProperty("user.dir")).getAbsolutePath();
+        String currentdir = new File(SAVE_FILE_PATH).getAbsolutePath();
         try {
             bbsThread.newline();
             bbsThread.print("Filename: ");

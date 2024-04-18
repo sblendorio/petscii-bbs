@@ -28,14 +28,6 @@ public class BasicIde {
 
     public static String BASIC_USER_PROGRAMS_DIR = getProperty("user.home") + File.separator + "basic_user_programs";
 
-    public static void mkdir(String path) {
-        try {
-            Files.createDirectories(Paths.get(path));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static boolean load(String filename, Map<Long, String> program) {
         if (StringUtils.isBlank(filename) || !fileExists(filename))
             return false;
@@ -119,7 +111,7 @@ public class BasicIde {
     }
 
     public static void execute(BbsThread bbs, Map<Long, String> program) throws Exception {
-        mkdir(BASIC_USER_PROGRAMS_DIR);
+        Utils.mkdir(BASIC_USER_PROGRAMS_DIR);
 
         String user = "";
         String patreonLevel = "0";

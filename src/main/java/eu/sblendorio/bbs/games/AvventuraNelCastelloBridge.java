@@ -1,6 +1,7 @@
 package eu.sblendorio.bbs.games;
 
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.Utils;
 
 import javax.script.Bindings;
 import javax.script.ScriptEngine;
@@ -16,6 +17,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class AvventuraNelCastelloBridge {
 
+    private static final String SAVE_FILE_PATH = System.getProperty("user.home") + File.separator + "saved-text-adventures";
+
     protected BbsThread bbs;
     protected ScriptEngine engine;
     protected Bindings bindings;
@@ -28,7 +31,7 @@ public class AvventuraNelCastelloBridge {
 
     public boolean fileExists(String filename, String lang) {
         return new File(
-                new File(System.getProperty("user.dir")).getAbsolutePath()
+                new File(SAVE_FILE_PATH).getAbsolutePath()
                         + File.separator
                         + (filePrefix() == null || filePrefix().isBlank() ? "" : filePrefix().trim() + "-")
                         + lang + "-" + filename.toLowerCase()
@@ -37,9 +40,11 @@ public class AvventuraNelCastelloBridge {
     }
 
     public boolean save(String filename, String state, String lang) {
+        Utils.mkdir(SAVE_FILE_PATH);
+
         try {
             if (filename == null || filename.isBlank()) return false;
-            String currentdir = new File(System.getProperty("user.dir")).getAbsolutePath();
+            String currentdir = new File(SAVE_FILE_PATH).getAbsolutePath();
             File saveFile = new File(
                     currentdir
                             + File.separator
@@ -59,7 +64,7 @@ public class AvventuraNelCastelloBridge {
         String result;
         try {
             if (filename == null || filename.isBlank()) return "";
-            String currentdir = new File(System.getProperty("user.dir")).getAbsolutePath();
+            String currentdir = new File(SAVE_FILE_PATH).getAbsolutePath();
             File loadFile = new File(
                     currentdir
                             + File.separator

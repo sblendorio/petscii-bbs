@@ -87,10 +87,8 @@ public class ClientChatGptAscii extends AsciiThread {
         if (patreonData == null)
             return;
 
-        registerFirstAccess(patreonData.user);
-        changeClientName(patreonData.user+"/"+UUID.randomUUID());
-
         String model = toInt(patreonData.patreonLevel) > 0 ? "gpt-4" : "gpt-3.5-turbo";
+        changeClientName(patreonData.user+"/"+UUID.randomUUID());
 
         cls();
         if (mainLogo == null) {
@@ -256,25 +254,6 @@ public class ClientChatGptAscii extends AsciiThread {
     private void waitOff() {
         for (int i = 0; i < WAIT_MESSAGE.length(); ++i) write(AsciiKeys.BACKSPACE);
         flush();
-    }
-
-    private void registerFirstAccess(String user) throws IOException {
-        final String filename = getProperty("PATREON_EMAILS", getProperty("user.home") + File.separator + "consent_emails.txt");
-        List<String> rows = readExternalTxt(filename);
-        boolean yetConnected = rows
-                .stream()
-                .filter(StringUtils::isNotBlank)
-                .map(StringUtils::trimToEmpty)
-                .map(row -> row.split(";")[0])
-                .toList()
-                .contains(user);
-
-        if (!yetConnected) {
-            rows.add(user + ";" + Instant.now().toString());
-            FileWriter writer = new FileWriter(filename);
-            for(String str: rows) writer.write(str + System.lineSeparator());
-            writer.close();
-        }
     }
 
 }
