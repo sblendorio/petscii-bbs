@@ -14,7 +14,7 @@ public class BasicIdePetscii extends PetsciiThread {
     @Override
     public void doLoop() throws Exception {
         PatreonData patreonData = PatreonData.authenticatePetscii(this);
-        if (patreonData == null)  return;
+        if (patreonData == null) return;
 
         write(PetsciiColors.GREY3);
         cls();

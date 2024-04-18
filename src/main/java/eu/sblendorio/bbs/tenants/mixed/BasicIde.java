@@ -14,10 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -69,17 +66,19 @@ public class BasicIde {
     }
 
     public static void dir(BbsThread bbs) throws Exception {
-        List<String> files;
+        List<String> fileList;
         try (Stream<Path> paths = Files.walk(Paths.get(BASIC_USER_PROGRAMS_DIR))) {
-            files = paths.filter(Files::isRegularFile).map(Path::getFileName).map(Path::toString).sorted().toList();
+            fileList = paths.filter(Files::isRegularFile).map(Path::getFileName).map(Path::toString).sorted().toList();
         }
+
+        List<String> files = columnList(fileList, bbs.getScreenColumns()-1, 1);
 
         int n = 0;
         for (String row: files) {
             bbs.println(row);
-            Double incrementDouble = Double.valueOf(row.length()) / Double.valueOf(bbs.getScreenColumns());
             int increment = row.length() / bbs.getScreenColumns();
-            n += (increment + (incrementDouble - increment > 0 ? 1 : 0));
+            int mod = row.length() % bbs.getScreenColumns();
+            n += (increment + (mod > 0 ? 1 : 0));
             if (n > bbs.getScreenRows() - 3) {
                 n = 0;
                 bbs.print("--- SPACE FOR MORE, '.' FOR STOP ------");
@@ -143,9 +142,9 @@ public class BasicIde {
                 int n = 0;
                 for (String row: program.entrySet().stream().map(row ->  row.getKey() + " " + row.getValue()).toList()) {
                     bbs.println(row);
-                    Double incrementDouble = Double.valueOf(row.length()) / Double.valueOf(bbs.getScreenColumns());
                     int increment = row.length() / bbs.getScreenColumns();
-                    n += (increment + (incrementDouble - increment > 0 ? 1 : 0));
+                    int mod = row.length() % bbs.getScreenColumns();
+                    n += (increment + (mod > 0 ? 1 : 0));
                     if (n > bbs.getScreenRows() - 3) {
                         n = 0;
                         bbs.print("--- SPACE FOR MORE, '.' FOR STOP ------");
@@ -197,6 +196,7 @@ public class BasicIde {
                 bbs.println("?SYNTAX ERROR");
                 promptNoline(bbs);
             } else if ("DIR".equals(firstWord) || "CATALOG".equals(firstWord) || "FILES".equals(firstWord)) {
+                bbs.newline();
                 dir(bbs);
                 prompt(bbs);
             } else if ("CLS".equals(firstWord)) {
@@ -253,4 +253,42 @@ public class BasicIde {
     public static boolean startsWithNumber(String line) {
         return line.matches("^[0-9]+.*$");
     }
+
+    private static List<String> columnList(List<String> list, int screenWidth, int separatingSpaceLength) {
+        int max = list.stream().mapToInt(String::length).max().orElse(1) + separatingSpaceLength;
+        int div = screenWidth / max;
+        int mod = screenWidth % max;
+        int numCols = div + (mod > 0 ? 1 : 0);
+
+        List<String> result = new LinkedList<>();
+        int[] maxLength = new int[numCols];
+
+        for (int i = 0; i < list.size(); i++) {
+            int fileLength = list.get(i).length();
+            int columnIndex = i % numCols;
+
+            if (maxLength[columnIndex] < fileLength) {
+                maxLength[columnIndex] = fileLength;
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            String fileName = list.get(i);
+            sb.append(fileName);
+            if ((i + 1) % numCols != 0) {
+                sb.append(" ".repeat(Math.max(0, maxLength[i % numCols] - fileName.length() + separatingSpaceLength)));
+            }
+
+            if ((i + 1) % numCols == 0) {
+                result.add(sb.toString());
+                sb = new StringBuilder();
+            }
+        }
+        if (!sb.isEmpty()) {
+            result.add(sb.toString());
+        }
+        return result;
+    }
+
 }
