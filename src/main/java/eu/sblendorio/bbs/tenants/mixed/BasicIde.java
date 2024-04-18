@@ -160,8 +160,8 @@ public class BasicIde {
             } else if ("NEW".equals(firstWord)) {
                 program = new TreeMap<>();
                 prompt(bbs);
-            } else if ("LOAD".equals(firstWord) && line.matches("^LOAD *\"([a-zA-Z0-9 ]+)\"?$")) {
-                String filename = line.replaceAll("^LOAD *\"([a-zA-Z0-9 ]+)\"?$", "$1").trim().toLowerCase().replaceAll("[^0-9A-Za-z ]", "");
+            } else if ("LOAD".equals(firstWord) && line.matches("^LOAD *\"([a-zA-Z0-9-._ ]+)\"?$")) {
+                String filename = line.replaceAll("^LOAD *\"([a-zA-Z0-9-._ ]+)\"?$", "$1").trim().toLowerCase().replaceAll("[^0-9A-Za-z-._ ]", "");
                 bbs.newline();
                 bbs.println("LOADING " + filename);
                 boolean ok = load(filename, program);
@@ -175,8 +175,8 @@ public class BasicIde {
                 bbs.newline();
                 bbs.println("?SYNTAX ERROR");
                 promptNoline(bbs);
-            } else if ("SAVE".equals(firstWord) && line.matches("^SAVE *\"([a-zA-Z0-9 ]+)\"?$")) {
-                String filename = line.replaceAll("^SAVE *\"([a-zA-Z0-9 ]+)\"?$", "$1").trim().toLowerCase().replaceAll("[^0-9A-Za-z ]", "");
+            } else if ("SAVE".equals(firstWord) && line.matches("^SAVE *\"([a-zA-Z0-9-._ ]+)\"?$")) {
+                String filename = line.replaceAll("^SAVE *\"([a-zA-Z0-9-._ ]+)\"?$", "$1").trim().toLowerCase().replaceAll("[^0-9A-Za-z-._ ]", "");
                 bbs.newline();
                 if (fileExists(filename)) {
                     bbs.print("FILE ALREADY EXISTS. OVERWRITE? ");

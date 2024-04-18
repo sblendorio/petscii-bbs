@@ -17,7 +17,8 @@ public class BasicIdeMinitel extends MinitelThread {
             return;
 
         cls();
-        println("*** RETROCAMPUS BBS BASIC 1.0 ***");
+        println("*** RETROCAMPUS BBS BASIC V1.0 ***");
+        println("DERIVED FROM SWBASIC2 BY KONYISOFT");
         BasicIde.execute(this, program);
     }
 

@@ -43,13 +43,14 @@ public class AvventuraNelCastelloBridge {
         Utils.mkdir(SAVE_FILE_PATH);
 
         try {
-            if (filename == null || filename.isBlank()) return false;
+            if (filename == null || filename.isBlank() || filename.trim().equals("..") || filename.trim().equals(".")) return false;
+            filename = filename.trim().replaceAll("[^a-zA-Z0-9-._ ]", "").toLowerCase();
             String currentdir = new File(SAVE_FILE_PATH).getAbsolutePath();
             File saveFile = new File(
                     currentdir
                             + File.separator
                             + (filePrefix() == null || filePrefix().isBlank() ? "" : filePrefix().trim() + "-")
-                            + lang + "-" + filename.toLowerCase() + ".anc");
+                            + lang + "-" + filename + ".anc");
             try (RandomAccessFile raf = new RandomAccessFile(saveFile, "rw")) {
                 raf.write(state.getBytes(StandardCharsets.UTF_8));
             }
@@ -63,14 +64,14 @@ public class AvventuraNelCastelloBridge {
     public String restore(String filename, String lang) {
         String result;
         try {
-            if (filename == null || filename.isBlank()) return "";
+            if (filename == null || filename.isBlank() || filename.trim().equals("..") || filename.trim().equals(".")) return "";
+            filename = filename.trim().replaceAll("[^a-zA-Z0-9-._ ]", "").toLowerCase();
             String currentdir = new File(SAVE_FILE_PATH).getAbsolutePath();
             File loadFile = new File(
                     currentdir
                             + File.separator
                             + (filePrefix() == null || filePrefix().isBlank() ? "" : filePrefix().trim() + "-")
-                            + lang + "-" + filename.toLowerCase()
-                            + ".anc");
+                            + lang + "-" + filename + ".anc");
             try (RandomAccessFile raf = new RandomAccessFile(loadFile, "r")) {
                 byte[] data = new byte[(int) raf.length()];
                 raf.readFully(data);

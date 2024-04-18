@@ -268,12 +268,13 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
                 bbsThread.flush();
                 bbsThread.resetInput();
                 String filename = bbsThread.readLine();
-                if (isBlank(filename)) {
+                filename = filename.trim().replaceAll("[^a-zA-Z0-9-._ ]", "").toLowerCase();
+                if (isBlank(filename) || filename.trim().equals("..") || filename.trim().equals(".")) {
                     bbsThread.println("Aborted.");
                     return false;
                 }
                 saveFile = new File(
-                        currentdir + File.separator + nameOfTheGame + "-" + filename.toLowerCase() + ".ziff"
+                        currentdir + File.separator + nameOfTheGame + "-" + filename + ".ziff"
                 );
                 if (saveFile.exists()) {
                     bbsThread.println("WARNING: File already exists.");
@@ -312,12 +313,13 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
             bbsThread.flush();
             bbsThread.resetInput();
             String filename = bbsThread.readLine();
-            if (isBlank(filename)) {
+            filename = filename.trim().replaceAll("[^a-zA-Z0-9-._ ]", "").toLowerCase();
+            if (isBlank(filename) || filename.trim().equals("..") || filename.trim().equals(".")) {
                 bbsThread.println("Aborted.");
                 return null;
             }
             File loadFile = new File(
-                    currentdir + File.separator + nameOfTheGame + "-" + filename.toLowerCase() + ".ziff"
+                    currentdir + File.separator + nameOfTheGame + "-" + filename + ".ziff"
             );
             if (!loadFile.exists()) {
                 bbsThread.println("File not found. Aborted.");
