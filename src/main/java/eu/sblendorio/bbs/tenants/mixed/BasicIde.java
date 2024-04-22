@@ -8,10 +8,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -59,6 +56,7 @@ public class BasicIde {
                     Utils.readExternalTxt(filename).stream()
                             .filter(StringUtils::isNotBlank)
                             .map(StringUtils::trim)
+                            .filter(line -> !line.startsWith("-"))
                             .collect(Collectors.toMap(
                                     row -> Long.valueOf(row.replaceAll("^([0-9]+).*$", "$1")),
                                     row -> row.replaceAll("^[0-9]+ *(.*)$", "$1")
@@ -79,6 +77,7 @@ public class BasicIde {
             return false;
 
         filename = dir + File.separator + filename.trim().toLowerCase().replaceAll("\\.bas$", "") + ".bas";
+        program.put(-1L, user);
 
         String programText = program.entrySet().stream()
                 .map(row -> row.getKey() + " " + row.getValue())
@@ -89,6 +88,8 @@ public class BasicIde {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        } finally {
+            program.remove(-1L);
         }
     }
 
@@ -98,8 +99,13 @@ public class BasicIde {
 
         bbs.println(privateMode ? "PRIVATE DIR: " + user : "PUBLIC DIR:");
         List<String> fileList;
-        try (Stream<Path> paths = Files.walk(Paths.get(dir))) {
-            fileList = paths.filter(Files::isRegularFile).map(Path::getFileName).map(Path::toString).sorted().toList();
+        try (Stream<Path> paths = Files.walk(Paths.get(dir), 1)) {
+            fileList = paths
+                    .filter(Files::isRegularFile)
+                    .map(Path::getFileName)
+                    .map(Path::toString)
+                    .filter(name -> !name.startsWith("."))
+                    .sorted().toList();
         }
 
         List<String> files = columnList(fileList, bbs.getScreenColumns()-1, 1);
@@ -122,15 +128,29 @@ public class BasicIde {
         }
     }
 
+    public static String fileOwner(boolean privateMode, String user, String filename) {
+        String dir = BASIC_USER_PROGRAMS_DIR + (privateMode && StringUtils.isNotBlank(user) ? File.separator + filter(user) : "");
+        Utils.mkdir(dir);
+
+        filename = StringUtils.defaultString(filename).trim().toLowerCase().replaceAll("\\.bas$", "");
+        try (BufferedReader brTest = new BufferedReader(new FileReader(dir + File.separator + filename + ".bas"))) {
+            return brTest.readLine().replaceAll("^ *-1* (.*)$", "$1");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return "";
+        }
+
+    }
+
     public static boolean fileExists(boolean privateMode, String user, String filename) {
         String dir = BASIC_USER_PROGRAMS_DIR + (privateMode && StringUtils.isNotBlank(user) ? File.separator + filter(user) : "");
         Utils.mkdir(dir);
 
         filename = StringUtils.defaultString(filename).trim().toLowerCase().replaceAll("\\.bas$", "");
         return new File(dir
-                        + File.separator
-                        + filename
-                        + ".bas"
+                + File.separator
+                + filename
+                + ".bas"
         ).exists();
     }
 
@@ -153,6 +173,7 @@ public class BasicIde {
             logger.error("User not logged " + e.getClass().getName() + " " + e.getMessage());
         }
         boolean privateMode = false;
+        user="sblendorio@gmail.com";
 
         prompt(bbs);
         do {
@@ -221,13 +242,17 @@ public class BasicIde {
                 program = new TreeMap<>();
                 prompt(bbs);
             } else if ("KILL".equals(firstWord) && line.matches("^KILL *\"([a-zA-Z0-9-._ ]+)\"?$")) {
-                if (!privateMode) {
-                    bbs.newline();
-                    bbs.println("CAN'T DELETE PUBLIC FILES");
-                    prompt(bbs);
-                    continue;
-                }
                 String filename = line.replaceAll("^KILL *\"([a-zA-Z0-9-._ ]+)\"?$", "$1").trim().toLowerCase().replaceAll("[^0-9A-Za-z-._ ]", "");
+
+                if (fileExists(privateMode, user, filename)) {
+                    String owner = fileOwner(privateMode, user, filename);
+                    if (!owner.equals(user)) {
+                        bbs.println("YOU ARE NOT THE OWNER OF THE FILE");
+                        bbs.println("CAN'T DELETE IT");
+                        prompt(bbs);
+                        continue;
+                    }
+                }
                 bbs.newline();
                 bbs.println("ERASING " + filename);
                 bbs.print("ARE YOU SURE? ");
@@ -266,13 +291,20 @@ public class BasicIde {
                 String filename = line.replaceAll("^SAVE *\"([a-zA-Z0-9-._ ]+)\"?$", "$1").trim().toLowerCase().replaceAll("[^0-9A-Za-z-._ ]", "");
                 bbs.newline();
                 if (fileExists(privateMode, user, filename)) {
+                    String owner = fileOwner(privateMode, user, filename);
+                    if (!owner.equals(user)) {
+                        bbs.println("YOU ARE NOT THE OWNER OF THE FILE");
+                        bbs.println("CAN'T SAVE ON IT");
+                        prompt(bbs);
+                        continue;
+                    }
                     bbs.print("FILE ALREADY EXISTS. OVERWRITE? ");
                     bbs.flush(); bbs.resetInput();
                     String confirm = bbs.readLine();
                     confirm = confirm.trim().toLowerCase();
                     if (!Set.of("yes", "y").contains(confirm)) {
                         bbs.println("ABORTED.");
-                        promptNoline(bbs);
+                        prompt(bbs);
                         continue;
                     }
                 }
@@ -292,6 +324,7 @@ public class BasicIde {
                 prompt(bbs);
             } else if ("RUN".equals(firstWord)) {
                 String programText = program.entrySet().stream()
+                        .filter(row -> row.getKey() >= 0L)
                         .map(row -> row.getKey() + " " + row.getValue())
                         .collect(Collectors.joining("\n"));
 
