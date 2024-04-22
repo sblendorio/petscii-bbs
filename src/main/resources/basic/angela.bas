@@ -1,4 +1,4 @@
-10 dim v$(2)
+10 REM ANGELA GAME
 20 p = 0
 30 a1 = 0
 40 m1 = 0
@@ -21,30 +21,30 @@
 200 PRINT "-----------":print
 210 PRINT "I for instructions":print "C for credits"
 211 PRINT "ENTER to play":PRINT
-212 INPUT "Your choice";a$: IF a$="." THEN GOSUB 10000
+212 INPUT "Your choice";a$: IF a$="." THEN GOSUB 10000:GOTO 212
 213 if a$="i" then gosub 2500
 214 if a$="c" then GOSUB 2300
 215 PRINT:PRINT "Do you want to see the P101 registers"
-216 INPUT "during the game";r$: IF r$="." THEN GOSUB 10000
+216 INPUT "during the game";r$: IF r$="." THEN GOSUB 10000:GOTO 216
 220 REM
-230 INPUT "Goal";zz$: m1=val(zz$) : IF zz$="." THEN GOSUB 10000
+230 PRINT:INPUT "Goal";zz$: m1=val(zz$) : IF zz$="." THEN GOSUB 10000:GOTO 230
 240 IF m1 >= 30 AND m1 <= 100 THEN 280
-250 PRINT "Please enter a number between 30 and 100"
+250 PRINT "Please type a number between 30 and 100"
 260 GOTO 220
 280 v$ = "B1": GOSUB 1860
 300 v$ = "B2": GOSUB 2080
 310 v$ = "C1": GOSUB 1860
 320 p = 1
-330 INPUT "Your number?";zz$: m1=val(zz$) : IF zz$="." THEN GOSUB 10000
-340 print:print "Computing..";
+330 INPUT "Your number";zz$: m1=val(zz$) : IF zz$="." THEN GOSUB 10000: GOSUB 1570: GOTO 330
+340 rem sblend print:print "Computing..";
 350 m1 = INT(m1)
 
 360 IF not((m1 < 0 OR m1 > 6) AND p = 1) THEN 362
-361 PRINT:PRINT "Value not allowed": GOTO 330
+361 PRINT:PRINT "Value not allowed": GOSUB 1572: GOTO 330
 362 REM
 
 370 IF not((m1 < 1 OR m1 > 6) AND p = 0) THEN 373
-371 PRINT:PRINT "Value not allowed": GOTO 330
+371 PRINT:PRINT "Value not allowed": GOSUB 1572:GOTO 330
 373 REM
 380 p = 0
 390 GOSUB 440
@@ -152,7 +152,7 @@
 1161 GOSUB 1200: RETURN
 1162 rem
 
-1170 PRINT:PRINT "This value is not allowed"
+1170 PRINT:PRINT "This value is not allowed": GOSUB 1572
 1180 v = 0
 1190 RETURN
 1200 v$ = "C1": GOSUB 1940
@@ -217,9 +217,10 @@
 1560 RETURN
 1570 IF v THEN 1572
 1571 v = -1 : a = 0: p1 = 0: goto 1574
-1572 PRINT:PRINT "You:";a;" computer:";p1;" sum:";u: c = c + 1: a = 0: p1 = 0
-1573 PRINT
-1574 rem
+1572 if r$="y" THEN PRINT
+1573 PRINT "You:";MID$(STR$(a),2);" CPU:";mid$(str$(p1),2);" Sum:";mid$(str$(u),2);" ";: c = c + 1: a = 0: p1 = 0
+1574 IF r$="y" THEN PRINT
+1575 rem
 
 1580 RETURN
 1590 GOSUB 2120
@@ -263,7 +264,7 @@
 2121 r=a1:RETURN
 2122 if r$<>"y" then 2125
 2123 gosub 3000
-2125 if r$<>"y" then print ".";
+2125 rem sblend if r$<>"y" then print ".";
 
 2130 IF v$<>"M" THEN 2132
 2131 r=m1: RETURN
@@ -338,10 +339,10 @@
 2360 PRINT "- Giovanni De Sandre"
 2370 PRINT "as a demo for BEMA in New York in 1965."
 2380 PRINT
-2390 PRINT "Conversion to QB 4.5 from Java in 2013:"
+2390 PRINT "Conversion to QB 4.5 from JS in 2013:"
 2400 PRINT "- Claudio Larini"
-2410 PRINT ""
-2420 PRINT "Conversion to Applesoft Basic in 2024:"
+2410 PRINT
+2420 PRINT "Conversion to Microsoft Basic in 2024:"
 2430 PRINT "- Francesco Sblendorio"
 2440 PRINT "- Claudio Parmigiani"
 2450 PRINT: RETURN
@@ -367,11 +368,11 @@
 2680 PRINT
 2690 RETURN
 
-3000 PRINT "A=";A1;" M=";M1;" R=";R1;" B=";B1;
-3010 PRINT " B'=";B2;" C=";C1;" C'=";C2;" D=";D1
+3000 PRINT "A=";MID$(STR$(A1),2);" M=";MID$(STR$(M1),2);" R=";MID$(STR$(R1),2);" B=";MID$(STR$(B1),2);
+3010 PRINT " B'=";MID$(STR$(B2),2);" C=";MID$(STR$(C1),2);" C'=";MID$(STR$(C2),2);" D=";MID$(STR$(D1),2)
 3020 RETURN
 
-5000 INPUT "Another game";s$: IF s$="." THEN GOSUB 10000
+5000 PRINT:PRINT:INPUT "Another game";s$: IF s$="." THEN GOSUB 10000: GOTO 5000
 5010 if s$="y" then 230
 5020 end
 10000 INPUT "QUIT: ARE YOU SURE";KK$
