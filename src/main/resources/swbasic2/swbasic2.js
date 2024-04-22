@@ -319,7 +319,7 @@ class Tokenizer {
           }
 
           // get the matching keyword
-          let keyword = result[0];
+          let keyword = result[0].toUpperCase();
           let t;
           if (keyword === "OR" || keyword === "AND" || keyword === "NOT") {
             t = new Token(keyword, "LOGICAL_OPERATOR");
@@ -2063,7 +2063,7 @@ class Interpreter {
       return leftVal == rightVal;
     }
 
-    switch (type) {
+    switch (type.toUpperCase()) {
       case "*":
         return leftVal * rightVal;
       case "^":

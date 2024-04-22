@@ -21,13 +21,13 @@
 200 PRINT "-----------":print
 210 PRINT "I for instructions":print "C for credits"
 211 PRINT "ENTER to play":PRINT
-212 INPUT "Your choice?";a$
+212 INPUT "Your choice";a$: IF a$="." THEN GOSUB 10000
 213 if a$="i" then gosub 2500
 214 if a$="c" then GOSUB 2300
 215 PRINT:PRINT "Do you want to see the P101 registers"
-216 INPUT "during the game?";r$
+216 INPUT "during the game";r$: IF r$="." THEN GOSUB 10000
 220 REM
-230 INPUT "Goal? "; m1
+230 INPUT "Goal";zz$: m1=val(zz$) : IF zz$="." THEN GOSUB 10000
 240 IF m1 >= 30 AND m1 <= 100 THEN 280
 250 PRINT "Please enter a number between 30 and 100"
 260 GOTO 220
@@ -35,7 +35,7 @@
 300 v$ = "B2": GOSUB 2080
 310 v$ = "C1": GOSUB 1860
 320 p = 1
-330 INPUT "Your number? ";m1
+330 INPUT "Your number?";zz$: m1=val(zz$) : IF zz$="." THEN GOSUB 10000
 340 print:print "Computing..";
 350 m1 = INT(m1)
 
@@ -332,7 +332,7 @@
 2300 PRINT:PRINT
 2310 PRINT "Angela Game, originally developed for"
 2320 PRINT "Olivetti Programma 101 Desktop Computer"
-2330 PRINT "by:
+2330 PRINT "by:"
 2340 PRINT "- Piergiorgio Perotto"
 2350 PRINT "- Gastone Garziera"
 2360 PRINT "- Giovanni De Sandre"
@@ -340,7 +340,7 @@
 2380 PRINT
 2390 PRINT "Conversion to QB 4.5 from Java in 2013:"
 2400 PRINT "- Claudio Larini"
-2410 PRINT "
+2410 PRINT ""
 2420 PRINT "Conversion to Applesoft Basic in 2024:"
 2430 PRINT "- Francesco Sblendorio"
 2440 PRINT "- Claudio Parmigiani"
@@ -363,7 +363,7 @@
 2640 PRINT "make the computer start the game."
 2650 PRINT "The player who reaches the goal first,"
 2660 PRINT "or forces the opponent to exceed it,"
-2670 PRINT "wins.
+2670 PRINT "wins."
 2680 PRINT
 2690 RETURN
 
@@ -371,6 +371,9 @@
 3010 PRINT " B'=";B2;" C=";C1;" C'=";C2;" D=";D1
 3020 RETURN
 
-5000 INPUT "Another game?";s$
+5000 INPUT "Another game";s$: IF s$="." THEN GOSUB 10000
 5010 if s$="y" then 230
 5020 end
+10000 INPUT "QUIT: ARE YOU SURE";KK$
+10010 IF KK$<>"Y" AND KK$<>"S" AND KK$<>"." THEN RETURN
+10020 END
