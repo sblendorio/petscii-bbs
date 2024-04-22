@@ -28,7 +28,7 @@ const TAB_CHARACTER      = " ";
 const SPACE_CHARACTER    = " ";
 const DEFAULT_TAB_SIZE   = 10;  // used for "," delimiters
 const DEFAULT_ARRAY_SIZE = 10;
-const MAX_GOSUB          = 100;
+const MAX_GOSUB          = 255;
 const TRUNCATE_DECIMALS  = true;
 const MAX_DECIMALS       = 5;
 

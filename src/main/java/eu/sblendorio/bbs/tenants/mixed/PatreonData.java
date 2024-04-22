@@ -77,6 +77,8 @@ public class PatreonData {
                 patreonLevel = !hostRow.contains(",") ? DEFAULT : hostRow.replaceAll("^.*,", "");
                 bbs.write(GREY3);
                 registerFirstAccess(user);
+                bbs.getRoot().setCustomObject(PatreonData.PATREON_USER, user);
+                bbs.getRoot().setCustomObject(PatreonData.PATREON_LEVEL, patreonLevel);
                 return new PatreonData(user, patreonLevel);
             }
         }
@@ -237,6 +239,8 @@ public class PatreonData {
             if (bbs.getIpAddress().getHostAddress() != null) {
                 user = bbs.getIpAddress().getHostAddress();
                 patreonLevel = !hostRow.contains(",") ? DEFAULT : hostRow.replaceAll("^.*,", "");
+                bbs.getRoot().setCustomObject(PatreonData.PATREON_USER, user);
+                bbs.getRoot().setCustomObject(PatreonData.PATREON_LEVEL, patreonLevel);
                 registerFirstAccess(user);
                 return new PatreonData(user, patreonLevel);
             }
@@ -359,7 +363,7 @@ public class PatreonData {
         for (int i = 0; i < WAIT_MESSAGE_PETSCII.length(); ++i) bbs.write(AsciiKeys.BACKSPACE);
         bbs.flush();
     }
-    
+
     private static void waitOnAscii(BbsThread bbs) {
         bbs.print(WAIT_MESSAGE_ASCII);
         bbs.flush();

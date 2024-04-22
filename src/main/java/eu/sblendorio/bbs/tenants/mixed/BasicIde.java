@@ -25,11 +25,19 @@ public class BasicIde {
 
     public static String BASIC_USER_PROGRAMS_DIR = getProperty("user.home") + File.separator + "basic_user_programs";
 
-    public static boolean load(String filename, Map<Long, String> program) {
-        if (StringUtils.isBlank(filename) || !fileExists(filename))
+    public static String filter(String s) {
+        if (s == null) return null;
+        return s.replaceAll("[^A-Za-z-_.@]", "").replaceAll("\\.+", ".");
+    }
+
+    public static boolean load(boolean privateMode, String user, String filename, Map<Long, String> program) {
+        if (StringUtils.isBlank(filename) || !fileExists(privateMode, user, filename))
             return false;
         try {
-            filename = BASIC_USER_PROGRAMS_DIR + File.separator + filename.trim().toLowerCase().replaceAll("\\.bas$", "") + ".bas";
+            String dir = BASIC_USER_PROGRAMS_DIR + (privateMode && StringUtils.isNotBlank(user) ? File.separator + filter(user) : "");
+            Utils.mkdir(dir);
+
+            filename = dir + File.separator + filename.trim().toLowerCase().replaceAll("\\.bas$", "") + ".bas";
             program.clear();
             program.putAll(
                     Utils.readExternalTxt(filename).stream()
@@ -47,11 +55,14 @@ public class BasicIde {
         }
     }
 
-    public static boolean save(String filename, Map<Long, String> program) {
+    public static boolean save(boolean privateMode, String user, String filename, Map<Long, String> program) {
+        String dir = BASIC_USER_PROGRAMS_DIR + (privateMode && StringUtils.isNotBlank(user) ? File.separator + filter(user) : "");
+        Utils.mkdir(dir);
+
         if (StringUtils.isBlank(filename))
             return false;
 
-        filename = BASIC_USER_PROGRAMS_DIR + File.separator + filename.trim().toLowerCase().replaceAll("\\.bas$", "") + ".bas";
+        filename = dir + File.separator + filename.trim().toLowerCase().replaceAll("\\.bas$", "") + ".bas";
 
         String programText = program.entrySet().stream()
                 .map(row -> row.getKey() + " " + row.getValue())
@@ -65,9 +76,13 @@ public class BasicIde {
         }
     }
 
-    public static void dir(BbsThread bbs) throws Exception {
+    public static void dir(boolean privateMode, String user, BbsThread bbs) throws Exception {
+        String dir = BASIC_USER_PROGRAMS_DIR + (privateMode && StringUtils.isNotBlank(user) ? File.separator + filter(user) : "");
+        Utils.mkdir(dir);
+
+        bbs.println(privateMode ? "PRIVATE DIR: " + user : "PUBLIC DIR:");
         List<String> fileList;
-        try (Stream<Path> paths = Files.walk(Paths.get(BASIC_USER_PROGRAMS_DIR))) {
+        try (Stream<Path> paths = Files.walk(Paths.get(dir))) {
             fileList = paths.filter(Files::isRegularFile).map(Path::getFileName).map(Path::toString).sorted().toList();
         }
 
@@ -91,9 +106,12 @@ public class BasicIde {
         }
     }
 
-    public static boolean fileExists(String filename) {
+    public static boolean fileExists(boolean privateMode, String user, String filename) {
+        String dir = BASIC_USER_PROGRAMS_DIR + (privateMode && StringUtils.isNotBlank(user) ? File.separator + filter(user) : "");
+        Utils.mkdir(dir);
+
         filename = StringUtils.defaultString(filename).trim().toLowerCase().replaceAll("\\.bas$", "");
-        return new File(BASIC_USER_PROGRAMS_DIR
+        return new File(dir
                         + File.separator
                         + filename
                         + ".bas"
@@ -110,8 +128,6 @@ public class BasicIde {
     }
 
     public static void execute(BbsThread bbs, Map<Long, String> program) throws Exception {
-        Utils.mkdir(BASIC_USER_PROGRAMS_DIR);
-
         String user = "";
         String patreonLevel = "0";
         try {
@@ -120,6 +136,8 @@ public class BasicIde {
         } catch (NullPointerException | ClassCastException e) {
             logger.error("User not logged " + e.getClass().getName() + " " + e.getMessage());
         }
+
+        boolean privateMode = false;
 
         prompt(bbs);
         do {
@@ -173,6 +191,17 @@ public class BasicIde {
                     }
                 }
                 prompt(bbs);
+            } else if (Set.of("PUBLIC", "PUB").contains(firstWord)) {
+                privateMode = false;
+                bbs.println("CURRENT MODE: " + (privateMode ? "PRIVATE" : "PUBLIC"));
+                prompt(bbs);
+            } else if (Set.of("PRIVATE", "PRIV").contains(firstWord)) {
+                privateMode = true;
+                bbs.println("CURRENT MODE: " + (privateMode ? "PRIVATE" : "PUBLIC"));
+                prompt(bbs);
+            } else if (Set.of("MODE").contains(firstWord)) {
+                bbs.println("CURRENT MODE: " + (privateMode ? "PRIVATE" : "PUBLIC"));
+                prompt(bbs);
             } else if ("NEW".equals(firstWord)) {
                 program = new TreeMap<>();
                 prompt(bbs);
@@ -180,7 +209,7 @@ public class BasicIde {
                 String filename = line.replaceAll("^LOAD *\"([a-zA-Z0-9-._ ]+)\"?$", "$1").trim().toLowerCase().replaceAll("[^0-9A-Za-z-._ ]", "");
                 bbs.newline();
                 bbs.println("LOADING " + filename);
-                boolean ok = load(filename, program);
+                boolean ok = load(privateMode, user, filename, program);
                 if (!ok) {
                     bbs.println("?FILE NOT FOUND ERROR");
                     promptNoline(bbs);
@@ -194,7 +223,7 @@ public class BasicIde {
             } else if ("SAVE".equals(firstWord) && line.matches("^SAVE *\"([a-zA-Z0-9-._ ]+)\"?$")) {
                 String filename = line.replaceAll("^SAVE *\"([a-zA-Z0-9-._ ]+)\"?$", "$1").trim().toLowerCase().replaceAll("[^0-9A-Za-z-._ ]", "");
                 bbs.newline();
-                if (fileExists(filename)) {
+                if (fileExists(privateMode, user, filename)) {
                     bbs.print("FILE ALREADY EXISTS. OVERWRITE? ");
                     bbs.flush(); bbs.resetInput();
                     String confirm = bbs.readLine();
@@ -206,7 +235,7 @@ public class BasicIde {
                     }
                 }
                 bbs.println("SAVING " + filename);
-                save(filename, program);
+                save(privateMode, user, filename, program);
                 prompt(bbs);
             } else if ("SAVE".equals(firstWord)) {
                 bbs.newline();
@@ -214,7 +243,7 @@ public class BasicIde {
                 promptNoline(bbs);
             } else if (Set.of("DIR", "CAT", "CATALOG", "FILES").contains(firstWord)) {
                 bbs.newline();
-                dir(bbs);
+                dir(privateMode, user, bbs);
                 prompt(bbs);
             } else if ("CLS".equals(firstWord)) {
                 bbs.cls();
@@ -233,18 +262,20 @@ public class BasicIde {
                 prompt(bbs);
             } else if ("HELP".equals(firstWord)) {
                 bbs.println("AVAILABLE COMMANDS IN DIRECT MODE:");
-                bbs.println("- NEW");
-                bbs.println("- RUN");
-                bbs.println("- CLS");
-                bbs.println("- LIST");
-                bbs.println("- SAVE");
-                bbs.println("- LOAD");
-                bbs.println("- DIR");
-                bbs.println("- QUIT");
+                bbs.println("- NEW: erase program from memory");
+                bbs.println("- RUN: run current program");
+                bbs.println("- CLS: clear screen");
+                bbs.println("- LIST: list program");
+                bbs.println("- PUBLIC: enter public files mode");
+                bbs.println("- PRIVATE: enter private files mode");
+                bbs.println("- DIR: show dir (public or private)");
+                bbs.println("- SAVE\"name\": save program");
+                bbs.println("- LOAD\"name\": load program");
+                bbs.println("- QUIT/EXIT/SYSTEM: exit from BASIC");
                 prompt(bbs);
             } else {
-                bbs.println("?ILLEGAL DIRECT MODE ERROR");
-                bbs.println("USE: NEW, LIST, RUN, SAVE, LOAD, DIR");
+                bbs.println("?NO DIRECT MODE  ERROR");
+                bbs.println("USE 'HELP' FOR AVAILABLE COMMANDS");
                 prompt(bbs);
             }
         } while (true);
