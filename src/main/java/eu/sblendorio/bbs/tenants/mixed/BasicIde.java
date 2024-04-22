@@ -1,6 +1,7 @@
 package eu.sblendorio.bbs.tenants.mixed;
 
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -30,6 +31,21 @@ public class BasicIde {
         return s.replaceAll("[^A-Za-z-_.@]", "").replaceAll("\\.+", ".");
     }
 
+    public static boolean kill(boolean privateMode, String user, String filename, Map<Long, String> program) {
+        if (StringUtils.isBlank(filename) || !fileExists(privateMode, user, filename))
+            return false;
+        try {
+            String dir = BASIC_USER_PROGRAMS_DIR + (privateMode && StringUtils.isNotBlank(user) ? File.separator + filter(user) : "");
+            Utils.mkdir(dir);
+
+            filename = dir + File.separator + filename.trim().toLowerCase().replaceAll("\\.bas$", "") + ".bas";
+            new File(filename).delete();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     public static boolean load(boolean privateMode, String user, String filename, Map<Long, String> program) {
         if (StringUtils.isBlank(filename) || !fileExists(privateMode, user, filename))
             return false;
@@ -136,7 +152,6 @@ public class BasicIde {
         } catch (NullPointerException | ClassCastException e) {
             logger.error("User not logged " + e.getClass().getName() + " " + e.getMessage());
         }
-
         boolean privateMode = false;
 
         prompt(bbs);
@@ -205,6 +220,33 @@ public class BasicIde {
             } else if ("NEW".equals(firstWord)) {
                 program = new TreeMap<>();
                 prompt(bbs);
+            } else if ("KILL".equals(firstWord) && line.matches("^KILL *\"([a-zA-Z0-9-._ ]+)\"?$")) {
+                if (!privateMode) {
+                    bbs.newline();
+                    bbs.println("CAN'T DELETE PUBLIC FILES");
+                    prompt(bbs);
+                    continue;
+                }
+                String filename = line.replaceAll("^KILL *\"([a-zA-Z0-9-._ ]+)\"?$", "$1").trim().toLowerCase().replaceAll("[^0-9A-Za-z-._ ]", "");
+                bbs.newline();
+                bbs.println("ERASING " + filename);
+                bbs.print("ARE YOU SURE? ");
+                bbs.flush(); bbs.resetInput();
+                String isOk = bbs.readLine();
+                if (Set.of("y", "yes").contains(isOk.trim().toLowerCase())) {
+                    boolean ok = kill(privateMode, user, filename, program);
+                    if (!ok) {
+                        bbs.println("?FILE NOT FOUND ERROR");
+                        promptNoline(bbs);
+                    } else {
+                        bbs.println("DELETED.");
+                        prompt(bbs);
+                    }
+                }
+            } else if("KILL".equals(firstWord)) {
+                bbs.newline();
+                bbs.println("?SYNTAX ERROR");
+                promptNoline(bbs);
             } else if ("LOAD".equals(firstWord) && line.matches("^LOAD *\"([a-zA-Z0-9-._ ]+)\"?$")) {
                 String filename = line.replaceAll("^LOAD *\"([a-zA-Z0-9-._ ]+)\"?$", "$1").trim().toLowerCase().replaceAll("[^0-9A-Za-z-._ ]", "");
                 bbs.newline();
@@ -268,9 +310,11 @@ public class BasicIde {
                 bbs.println("- LIST: list program");
                 bbs.println("- PUBLIC: enter public files mode");
                 bbs.println("- PRIVATE: enter private files mode");
+                bbs.println("- MODE: show current mode");
                 bbs.println("- DIR: show dir (public or private)");
                 bbs.println("- SAVE\"name\": save program");
                 bbs.println("- LOAD\"name\": load program");
+                bbs.println("- KILL\"name\": delete program");
                 bbs.println("- QUIT/EXIT/SYSTEM: exit from BASIC");
                 prompt(bbs);
             } else {
