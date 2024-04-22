@@ -2155,7 +2155,7 @@ class Avventura extends AvventuraNelCastelloJSEngine{
 						}
 
 						await this.CRT.print( "- ");
-						await this.CRT.print(`&gt;${i18n.AvventuraNelCastelloJS.rooms.mirrorsHall.bonk}&lt;`, {reversed: true});
+						await this.CRT.print(`>${i18n.AvventuraNelCastelloJS.rooms.mirrorsHall.bonk}<`, {reversed: true});
 						await this.CRT.println( " -");
 						await this.s0();
 						await this.CRT.printTyping(i18n.AvventuraNelCastelloJS.rooms.mirrorsHall.notADoor);
