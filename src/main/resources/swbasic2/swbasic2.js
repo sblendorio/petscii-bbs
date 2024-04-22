@@ -1575,6 +1575,7 @@ class Interpreter {
     this.stringInputFunction = null;
     this.clsFunction = null;
     this.endFunction = null;
+    this.breakFunction = null;
     this.lastRandom = 0;
     this.inputStack = [];
     this.lastPoint = 0;
@@ -2163,10 +2164,6 @@ class Interpreter {
     let length = this.parser.statements.length;
     try {
       while (idx < length) {
-        if (this.inkeyFunction) {
-            var codeKey = this.inkeyFunction(0);
-            if (codeKey == 3) break;
-        }
         let newidx = -1;
         try {
           let statement = this.parser.statements[idx];
@@ -2236,7 +2233,11 @@ class Interpreter {
     }
 
     this.lastInputVar = 0;
-    this.run(0);  // 0th statement index
+    try {
+      this.run(0);  // 0th statement index
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   setParser(p) {
@@ -2353,6 +2354,8 @@ class Interpreter {
   }
 
   gosub_statement(self, idx) {
+    this.checkBreak();
+
     let statement = this.parser.statements[idx];
     let label = statement.getText();
     this.gosubStack.push(idx + 1);
@@ -2363,6 +2366,8 @@ class Interpreter {
   }
 
   goto_statement(self, idx) {
+    this.checkBreak();
+
     let statement = this.parser.statements[idx];
     let label = statement.getText();
     return this.findLabel(label);
@@ -2432,10 +2437,19 @@ class Interpreter {
     return idx + 1;
   }
 
+  checkBreak() {
+    if (this.inkeyFunction && this.breakFunction) {
+      var codeKey = this.inkeyFunction(0);
+      if (codeKey == 3) this.breakFunction();
+    }
+  }
+
   next_statement(self, idx) {
     if (this.forStack.length == 0) {
       throw "NEXT without FOR";
     }
+
+    this.checkBreak();
 
     let statement = this.parser.statements[idx];
     let nidx = this.forStack[this.forStack.length - 1];
@@ -2516,6 +2530,9 @@ class Interpreter {
     let statement = this.parser.statements[idx];
     let expr = statement.children[0];
     let val = this.evalExpr(expr);
+
+    checkBreak();
+
     if (val) {
       let gpart = statement.children[1];  // can be GOTO or GOSUB
       let type = gpart.getType();
@@ -2660,6 +2677,8 @@ class Interpreter {
   }
 
   wend_statement(self, idx) {
+    this.checkBreak();
+
     if (this.whileStack.length == 0) {
       throw "WEND without WHILE";
     }

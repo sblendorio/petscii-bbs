@@ -103,6 +103,7 @@ public class SwBasicBridge {
         engine.eval("interpreter.numberInputFunction = bridge.numberInput", bindings);
         engine.eval("interpreter.clsFunction = bridge.cls", bindings);
         engine.eval("interpreter.endFunction = bridge.end", bindings);
+        engine.eval("interpreter.breakFunction = function() { throw 'BREAK' }", bindings);
         engine.eval("interpreter.sleepFunction = bridge.sleep", bindings);
         engine.eval("interpreter.setParser(parser)", bindings);
     }
