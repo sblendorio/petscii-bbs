@@ -379,7 +379,7 @@ public class BasicIde {
     }
 
     private static List<String> columnList(List<String> list, int screenWidth, int separatingSpaceLength) {
-        int max = list.stream().mapToInt(String::length).max().orElse(1) + separatingSpaceLength;
+        int max = list.stream().mapToInt(String::length).max().orElse(1) + separatingSpaceLength + 1;
         int div = screenWidth / max;
         int mod = screenWidth % max;
         int numCols = div + (mod > 0 ? 1 : 0);
