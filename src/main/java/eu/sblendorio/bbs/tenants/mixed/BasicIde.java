@@ -222,7 +222,7 @@ public class BasicIde {
                         int ch = bbs.readKey();
                         bbs.newline();
                         bbs.newline();
-                        if (ch == '.') break;
+                        if (ch == '.' || ch == 3) break;
                     }
                 }
                 prompt(bbs);
