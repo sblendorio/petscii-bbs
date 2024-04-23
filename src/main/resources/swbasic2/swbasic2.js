@@ -2177,6 +2177,7 @@ class Interpreter {
           }
         } catch (e) {
           let errorMessage = "LINE " + this.findLineNumber(idx) + ", ERROR: ";
+          if (e) e = (""+e).replace(/[0-9a-zA-Z.]*Exception: /, "");
           errorMessage += e;
           console.log(errorMessage);
           // SBLEND
