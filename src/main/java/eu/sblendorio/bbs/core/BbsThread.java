@@ -507,6 +507,13 @@ public abstract class BbsThread extends Thread {
         return result;
     }
 
+    public String readLineNoCrInterruptable(Set<Integer> allowedChars) throws IOException {
+        restartKeepAlive();
+        final String result = io.readLineNoCrInterruptable(allowedChars);
+        restartKeepAlive();
+        return result;
+    }
+
     public String readPassword() throws IOException {
         restartKeepAlive();
         final String result = io.readPassword();

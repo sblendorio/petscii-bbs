@@ -18,6 +18,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 public abstract class BbsInputOutput extends Reader {
 
     private final static byte[] EMPTY_ARRAY = new byte[] {};
+    private final static int CHAR_INTERRUPT = 3;
 
     public static class QuotedPrintStream extends PrintStream {
         private boolean isQuoteMode = false;
@@ -148,11 +149,11 @@ public abstract class BbsInputOutput extends Reader {
 
     // 0, false, null, true
     public String readLineUppercaseMandatory() throws IOException {
-        return readLineParametric(0, false, null, true, true, true);
+        return readLineParametric(0, false, null, true, true, true, false);
     }
 
     public String readLineUppercase() throws IOException {
-        return readLineParametric(0, false, null, true, true, false);
+        return readLineParametric(0, false, null, true, true, false, false);
     }
 
     public String readLine(int maxLength, boolean mask, Set<Integer> allowedChars) throws IOException {
@@ -160,9 +161,12 @@ public abstract class BbsInputOutput extends Reader {
     }
 
     public String readLineParametric(int maxLength, boolean mask, Set<Integer> allowedChars, boolean sendCr) throws IOException {
-        return readLineParametric(maxLength, mask, allowedChars, sendCr, false, false);
+        return readLineParametric(maxLength, mask, allowedChars, sendCr, false, false, false);
     }
-    public String readLineParametric(int maxLength, boolean mask, Set<Integer> allowedChars, boolean sendCr, boolean upcase, boolean noEmpty) throws IOException {
+    public String readLineParametric(int maxLength, boolean mask, Set<Integer> allowedChars, boolean sendCr, boolean noEmpty) throws IOException {
+        return readLineParametric(maxLength, mask, allowedChars, sendCr, false, false, noEmpty);
+    }
+    public String readLineParametric(int maxLength, boolean mask, Set<Integer> allowedChars, boolean sendCr, boolean upcase, boolean noEmpty, boolean interruptable) throws IOException {
         int ch;
         readBuffer = EMPTY;
         do {
@@ -177,8 +181,10 @@ public abstract class BbsInputOutput extends Reader {
                         afterReadLineChar();
                         flush();
                     }
-                    readBuffer = readBuffer.substring(0, readBuffer.length()-1);
+                    readBuffer = readBuffer.substring(0, readBuffer.length() - 1);
                 }
+            } else if (ch == CHAR_INTERRUPT && interruptable) {
+                return null;
             } else if (allowedChars != null && !allowedChars.contains(ch)) {
                 continue;
             } else if (ch == 34 && (maxLength == 0 || readBuffer.length() < maxLength)) {
@@ -234,6 +240,10 @@ public abstract class BbsInputOutput extends Reader {
 
     public String readLineNoCr(Set<Integer> allowedChars) throws IOException {
         return readLineParametric(0, false, allowedChars, false);
+    }
+
+    public String readLineNoCrInterruptable(Set<Integer> allowedChars) throws IOException {
+        return readLineParametric(0, false, allowedChars, false, false, false, true);
     }
 
     public String readLine(Set<Integer> allowedChars) throws IOException {
