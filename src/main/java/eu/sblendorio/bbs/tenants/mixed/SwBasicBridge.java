@@ -65,14 +65,20 @@ public class SwBasicBridge {
     public String stringInput(String prompt, int count) throws Exception {
         bbs.flush(); bbs.resetInput();
         String line = bbs.readLineNoCrInterruptable(setOfChars(ASCII_PRINTABLE));
-        if (line == null) throw new InterruptedException("BREAK");
+        if (line == null) {
+            bbs.newline();
+            throw new InterruptedException("BREAK");
+        }
         return line;
     }
 
     public double numberInput(String prompt, int count) throws Exception {
         bbs.flush(); bbs.resetInput();
         String line = bbs.readLineNoCrInterruptable(setOfChars(STR_NUMBERS, "E+-."));
-        if (line == null) throw new InterruptedException("BREAK");
+        if (line == null) {
+            bbs.newline();
+            throw new InterruptedException("BREAK");
+        }
         try {
             return Double.valueOf(line);
         } catch (NumberFormatException e) {
