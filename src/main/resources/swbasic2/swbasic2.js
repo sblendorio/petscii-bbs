@@ -2532,7 +2532,7 @@ class Interpreter {
     let expr = statement.children[0];
     let val = this.evalExpr(expr);
 
-    checkBreak();
+    this.checkBreak();
 
     if (val) {
       let gpart = statement.children[1];  // can be GOTO or GOSUB
