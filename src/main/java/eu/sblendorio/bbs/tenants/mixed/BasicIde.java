@@ -173,7 +173,6 @@ public class BasicIde {
             logger.error("User not logged " + e.getClass().getName() + " " + e.getMessage());
         }
         boolean privateMode = false;
-        user="sblendorio@gmail.com";
 
         prompt(bbs);
         do {
