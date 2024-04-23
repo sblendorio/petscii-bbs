@@ -25,7 +25,7 @@ public class BasicIde {
 
     public static String filter(String s) {
         if (s == null) return null;
-        return s.replaceAll("[^A-Za-z-_.@]", "").replaceAll("\\.+", ".");
+        return s.replaceAll("[^0-9A-Za-z-_.@:]", "").replaceAll("\\.+", ".");
     }
 
     public static boolean kill(boolean privateMode, String user, String filename, Map<Long, String> program) {
