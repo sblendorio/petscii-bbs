@@ -32,7 +32,7 @@ public class BasicIde {
         if (StringUtils.isBlank(filename) || !fileExists(privateMode, user, filename))
             return false;
         try {
-            String dir = BASIC_USER_PROGRAMS_DIR + (privateMode && StringUtils.isNotBlank(user) ? File.separator + filter(user) : "");
+            String dir = BASIC_USER_PROGRAMS_DIR + (privateMode && StringUtils.isNotBlank(user) ? File.separator + "private" + File.separator + filter(user) : "");
             Utils.mkdir(dir);
 
             filename = dir + File.separator + filename.trim().toLowerCase().replaceAll("\\.bas$", "") + ".bas";
@@ -47,7 +47,7 @@ public class BasicIde {
         if (StringUtils.isBlank(filename) || !fileExists(privateMode, user, filename))
             return false;
         try {
-            String dir = BASIC_USER_PROGRAMS_DIR + (privateMode && StringUtils.isNotBlank(user) ? File.separator + filter(user) : "");
+            String dir = BASIC_USER_PROGRAMS_DIR + (privateMode && StringUtils.isNotBlank(user) ? File.separator + "private" + File.separator + filter(user) : "");
             Utils.mkdir(dir);
 
             filename = dir + File.separator + filename.trim().toLowerCase().replaceAll("\\.bas$", "") + ".bas";
@@ -70,7 +70,7 @@ public class BasicIde {
     }
 
     public static boolean save(boolean privateMode, String user, String filename, Map<Long, String> program) {
-        String dir = BASIC_USER_PROGRAMS_DIR + (privateMode && StringUtils.isNotBlank(user) ? File.separator + filter(user) : "");
+        String dir = BASIC_USER_PROGRAMS_DIR + (privateMode && StringUtils.isNotBlank(user) ? File.separator + "private" + File.separator + filter(user) : "");
         Utils.mkdir(dir);
 
         if (StringUtils.isBlank(filename))
@@ -94,7 +94,7 @@ public class BasicIde {
     }
 
     public static void dir(boolean privateMode, String user, BbsThread bbs) throws Exception {
-        String dir = BASIC_USER_PROGRAMS_DIR + (privateMode && StringUtils.isNotBlank(user) ? File.separator + filter(user) : "");
+        String dir = BASIC_USER_PROGRAMS_DIR + (privateMode && StringUtils.isNotBlank(user) ? File.separator + "private" + File.separator + filter(user) : "");
         Utils.mkdir(dir);
 
         bbs.println(privateMode ? "PRIVATE DIR: " + user : "PUBLIC DIR:");
@@ -129,7 +129,7 @@ public class BasicIde {
     }
 
     public static String fileOwner(boolean privateMode, String user, String filename) {
-        String dir = BASIC_USER_PROGRAMS_DIR + (privateMode && StringUtils.isNotBlank(user) ? File.separator + filter(user) : "");
+        String dir = BASIC_USER_PROGRAMS_DIR + (privateMode && StringUtils.isNotBlank(user) ? File.separator + "private" + File.separator + filter(user) : "");
         Utils.mkdir(dir);
 
         filename = StringUtils.defaultString(filename).trim().toLowerCase().replaceAll("\\.bas$", "");
@@ -143,7 +143,7 @@ public class BasicIde {
     }
 
     public static boolean fileExists(boolean privateMode, String user, String filename) {
-        String dir = BASIC_USER_PROGRAMS_DIR + (privateMode && StringUtils.isNotBlank(user) ? File.separator + filter(user) : "");
+        String dir = BASIC_USER_PROGRAMS_DIR + (privateMode && StringUtils.isNotBlank(user) ? File.separator + "private" + File.separator + filter(user) : "");
         Utils.mkdir(dir);
 
         filename = StringUtils.defaultString(filename).trim().toLowerCase().replaceAll("\\.bas$", "");
@@ -240,8 +240,8 @@ public class BasicIde {
             } else if ("NEW".equals(firstWord)) {
                 program = new TreeMap<>();
                 prompt(bbs);
-            } else if ("KILL".equals(firstWord) && line.matches("^KILL *\"([a-zA-Z0-9-._ ]+)\"?$")) {
-                String filename = line.replaceAll("^KILL *\"([a-zA-Z0-9-._ ]+)\"?$", "$1").trim().toLowerCase().replaceAll("[^0-9A-Za-z-._ ]", "");
+            } else if ("KILL".equals(firstWord) && line.matches("^KILL *\"([^.][a-zA-Z0-9-._ ]*)\"?$")) {
+                String filename = line.replaceAll("^KILL *\"([a-zA-Z0-9-._ ]+)\"?$", "$1").trim().toLowerCase().replaceAll("[^0-9A-Za-z-._ ]", "").replaceAll("\\.+", ".");
 
                 if (fileExists(privateMode, user, filename)) {
                     String owner = fileOwner(privateMode, user, filename);
@@ -271,8 +271,8 @@ public class BasicIde {
                 bbs.newline();
                 bbs.println("?SYNTAX ERROR");
                 promptNoline(bbs);
-            } else if ("LOAD".equals(firstWord) && line.matches("^LOAD *\"([a-zA-Z0-9-._ ]+)\"?$")) {
-                String filename = line.replaceAll("^LOAD *\"([a-zA-Z0-9-._ ]+)\"?$", "$1").trim().toLowerCase().replaceAll("[^0-9A-Za-z-._ ]", "");
+            } else if ("LOAD".equals(firstWord) && line.matches("^LOAD *\"([^.][a-zA-Z0-9-._ ]*)\"?$")) {
+                String filename = line.replaceAll("^LOAD *\"([a-zA-Z0-9-._ ]+)\"?$", "$1").trim().toLowerCase().replaceAll("[^0-9A-Za-z-._ ]", "").replaceAll("\\.+", ".");
                 bbs.newline();
                 bbs.println("LOADING " + filename);
                 boolean ok = load(privateMode, user, filename, program);
@@ -286,8 +286,8 @@ public class BasicIde {
                 bbs.newline();
                 bbs.println("?SYNTAX ERROR");
                 promptNoline(bbs);
-            } else if ("SAVE".equals(firstWord) && line.matches("^SAVE *\"([a-zA-Z0-9-._ ]+)\"?$")) {
-                String filename = line.replaceAll("^SAVE *\"([a-zA-Z0-9-._ ]+)\"?$", "$1").trim().toLowerCase().replaceAll("[^0-9A-Za-z-._ ]", "");
+            } else if ("SAVE".equals(firstWord) && line.matches("^SAVE *\"([^.][a-zA-Z0-9-._ ]*)\"?$")) {
+                String filename = line.replaceAll("^SAVE *\"([a-zA-Z0-9-._ ]+)\"?$", "$1").trim().toLowerCase().replaceAll("[^0-9A-Za-z-._ ]", "").replaceAll("\\.+", ".");
                 bbs.newline();
                 if (fileExists(privateMode, user, filename)) {
                     String owner = fileOwner(privateMode, user, filename);
@@ -365,6 +365,7 @@ public class BasicIde {
         for (int i=0; i<s.length(); i++) {
             String c = s.substring(i, i+1);
             if ("\"".equalsIgnoreCase(c)) quote = !quote;
+            if (!quote && "?".equals(c)) c = "PRINT";
             result.append(quote ? c : c.toUpperCase());
         }
         return result.toString().trim();
@@ -379,10 +380,8 @@ public class BasicIde {
     }
 
     private static List<String> columnList(List<String> list, int screenWidth, int separatingSpaceLength) {
-        int max = list.stream().mapToInt(String::length).max().orElse(1) + separatingSpaceLength + 1;
-        int div = screenWidth / max;
-        int mod = screenWidth % max;
-        int numCols = div + (mod > 0 ? 1 : 0);
+        int max = list.stream().mapToInt(String::length).max().orElse(1) + separatingSpaceLength;
+        int numCols = screenWidth / max;
 
         List<String> result = new LinkedList<>();
         int[] maxLength = new int[numCols];
