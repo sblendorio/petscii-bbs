@@ -1,5 +1,6 @@
 package eu.sblendorio.bbs.core;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -363,7 +364,9 @@ public abstract class BbsInputOutput extends Reader {
             out.close();
             this.close();
             if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")
-                && !missingInput.contains("À+À/À,À0Ì©Ì¨À") // Facebook click on link (alt: "À+À/Ì©Ì¨À")
+                    && !missingInput.contains("À+À/À,À0Ì©Ì¨À") // Facebook click on link (alt: "À+À/Ì©Ì¨À")
+                    && !containsIgnoreCase(missingInput,"PRINT") // copy&paste BASIC code
+                    && !containsIgnoreCase(missingInput,"GOTO") // copy&paste BASIC code
             )
                 logger.info("CATCH DDOS " + ip);
             throw new BbsIOException("SEVERE. BbsIOException::resetInput " + stringIp + ", potential DoS detected.");
