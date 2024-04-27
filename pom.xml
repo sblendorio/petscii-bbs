@@ -70,7 +70,7 @@
                                         <Build-Number>1.0</Build-Number>
                                     </manifestEntries>
                                 </transformer>
-                                <!-- The transformer below is of compatibility with graalvm-js -->
+                                <!-- The transformer below is for compatibility with graalvm-js -->
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                             </transformers>
                         </configuration>
