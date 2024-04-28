@@ -314,7 +314,7 @@ public class BasicIde {
                 bbs.newline();
                 bbs.println("?SYNTAX ERROR");
                 promptNoline(bbs);
-            } else if (Set.of("DIR", "CAT", "CATALOG", "FILES").contains(firstWord)) {
+            } else if (Set.of("DIR", "DIRECTORY", "CAT", "CATALOG", "FILES").contains(firstWord)) {
                 bbs.newline();
                 dir(privateMode, user, bbs);
                 prompt(bbs);
