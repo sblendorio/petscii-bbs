@@ -2581,7 +2581,7 @@ class Interpreter {
             }
             val = val + SPACE_CHARACTER;
             // no space added if no result yet (1st col), or the result ends with space or tab
-            if (result.length > 0 && !result.endsWith(SPACE_CHARACTER) && !result.endsWith(TAB_CHARACTER)) {
+            if (/* SBLEND result.length > 0 && */ !result.endsWith(SPACE_CHARACTER) && !result.endsWith(TAB_CHARACTER)) {
               val = SPACE_CHARACTER + val;
             }
           }
