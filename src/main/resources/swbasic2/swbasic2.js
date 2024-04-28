@@ -2579,11 +2579,11 @@ class Interpreter {
             if (TRUNCATE_DECIMALS) {
               val = Utils.toFixed(val, MAX_DECIMALS);
             }
-            val = val + SPACE_CHARACTER;
-            // no space added if no result yet (1st col), or the result ends with space or tab
-            if (/* SBLEND result.length > 0 && */ !result.endsWith(SPACE_CHARACTER) && !result.endsWith(TAB_CHARACTER)) {
+            // no space added if number is negative, or the result ends with space or tab
+            if (val >= 0 && /* SBLEND result.length > 0 && */ !result.endsWith(SPACE_CHARACTER) && !result.endsWith(TAB_CHARACTER)) {
               val = SPACE_CHARACTER + val;
             }
+            val = val + SPACE_CHARACTER;
           }
           result += val;
         }
