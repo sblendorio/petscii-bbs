@@ -368,6 +368,7 @@ public class BasicIde {
             if (!quote && "?".equals(c)) c = "PRINT";
             result.append(quote ? c : c.toUpperCase());
         }
+        if (quote) result.append('"');
         return result.toString().trim();
     }
 
