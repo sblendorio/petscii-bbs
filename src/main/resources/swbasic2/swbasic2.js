@@ -2056,6 +2056,8 @@ class Interpreter {
       rightVal = this.evalExpr(right);
     }
 
+    var originalLeftVal = leftVal;
+    var originalRightVal = rightVal;
     if (typeof leftVal == "string") leftVal = leftVal.toUpperCase(); // SBLEND
     if (typeof rightVal == "string") rightVal = rightVal.toUpperCase(); // SBLEND
 
@@ -2081,7 +2083,7 @@ class Interpreter {
         }
         return Math.floor(intDivisionResult);
       case "+":
-        return leftVal + rightVal;
+        return originalLeftVal + originalRightVal;
       case "-":
         return leftVal - rightVal;
       case "=":
