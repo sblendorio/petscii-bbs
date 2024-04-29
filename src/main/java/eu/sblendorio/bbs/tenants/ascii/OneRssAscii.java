@@ -29,6 +29,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class OneRssAscii extends AsciiThread {
+    public static String CHROME_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36";
 
     String HR_TOP;
 
@@ -184,7 +185,7 @@ public class OneRssAscii extends AsciiThread {
         try {
             feed = input.build(new XmlReader(url));
         } catch (ParsingFeedException e) {
-            String xmlString = httpGet(urlString);
+            String xmlString = httpGet(urlString, CHROME_AGENT);
             xmlString = xmlString.replaceAll("(?is)<!--.*?-->", "");
             feed = input.build(new StringReader(xmlString));
         }
