@@ -258,8 +258,8 @@ public class PatreonData {
         }
 
         bbs.cls();
-        bbs.println("ChatGPT - Classic Client");
-        bbs.println("------------------------");
+        bbs.println("Patreon - User Logon");
+        bbs.println("--------------------");
         bbs.println();
         bbs.println("For security reasons:");
         bbs.println("- IP address");
