@@ -129,17 +129,17 @@ public class MenuTelnetPureAscii extends AsciiThread {
     public void execute(BbsThread subThread) throws Exception {
         if (subThread == null) return;
 
-        if (subThread instanceof AsciiThread) {
-            ((AsciiThread) subThread).clsBytes = this.clsBytes;
-            ((AsciiThread) subThread).screenColumns = this.screenColumns;
-            ((AsciiThread) subThread).screenRows = this.screenRows;
+        if (subThread instanceof AsciiThread thread) {
+            thread.clsBytes = this.clsBytes;
+            thread.screenColumns = this.screenColumns;
+            thread.screenRows = this.screenRows;
         }
-        if (subThread instanceof WordpressProxyAscii) {
-            ((WordpressProxyAscii) subThread).pageSize *= 2;
-        } else if (subThread instanceof GoogleBloggerProxyAscii) {
-            ((GoogleBloggerProxyAscii) subThread).pageSize *= 2;
-        } else if (subThread instanceof OneRssAscii) {
-            ((OneRssAscii) subThread).pageSize *= 2;
+        if (subThread instanceof WordpressProxyAscii thread) {
+            thread.pageSize *= 2;
+        } else if (subThread instanceof GoogleBloggerProxyAscii thread) {
+            thread.pageSize *= 2;
+        } else if (subThread instanceof OneRssAscii thread) {
+            thread.pageSize *= 2;
         }
         launch(subThread);
     }
