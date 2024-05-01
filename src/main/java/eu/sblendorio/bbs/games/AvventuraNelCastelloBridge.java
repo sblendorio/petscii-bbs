@@ -30,6 +30,7 @@ public class AvventuraNelCastelloBridge {
     }
 
     public boolean fileExists(String filename, String lang) {
+        filename = filename.trim().replaceAll("[^a-zA-Z0-9-._ ]", "").replaceAll("\\.+", ".").toLowerCase();
         return new File(
                 new File(SAVE_FILE_PATH).getAbsolutePath()
                         + File.separator
@@ -44,7 +45,7 @@ public class AvventuraNelCastelloBridge {
 
         try {
             if (filename == null || filename.isBlank() || filename.trim().equals("..") || filename.trim().equals(".")) return false;
-            filename = filename.trim().replaceAll("[^a-zA-Z0-9-._ ]", "").toLowerCase();
+            filename = filename.trim().replaceAll("[^a-zA-Z0-9-._ ]", "").replaceAll("\\.+", ".").toLowerCase();
             String currentdir = new File(SAVE_FILE_PATH).getAbsolutePath();
             File saveFile = new File(
                     currentdir
@@ -65,7 +66,7 @@ public class AvventuraNelCastelloBridge {
         String result;
         try {
             if (filename == null || filename.isBlank() || filename.trim().equals("..") || filename.trim().equals(".")) return "";
-            filename = filename.trim().replaceAll("[^a-zA-Z0-9-._ ]", "").toLowerCase();
+            filename = filename.trim().replaceAll("[^a-zA-Z0-9-._ ]", "").replaceAll("\\.+", ".").toLowerCase();
             String currentdir = new File(SAVE_FILE_PATH).getAbsolutePath();
             File loadFile = new File(
                     currentdir

@@ -21,7 +21,7 @@ import static java.lang.System.getProperty;
 public class BasicIde {
     private static final Logger logger = LogManager.getLogger(BasicIde.class);
 
-    public static String BASIC_USER_PROGRAMS_DIR = getProperty("user.home") + File.separator + "basic_user_programs";
+    public static String BASIC_USER_PROGRAMS_DIR = getProperty("user.home") + File.separator + "basic-user-programs";
 
     public static String filter(String s) {
         if (s == null) return null;
