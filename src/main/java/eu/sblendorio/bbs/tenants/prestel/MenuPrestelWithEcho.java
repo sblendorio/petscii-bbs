@@ -230,10 +230,10 @@ public class MenuPrestelWithEcho extends PrestelThread {
         if (subThread == null) return;
 
         subThread.keepAliveChar = 17; // 17 = cursor on
-        if (subThread instanceof AsciiThread thread) {
-            thread.clsBytes = this.clsBytes;
-            thread.screenColumns = this.getScreenColumns();
-            thread.screenRows = this.getScreenRows();
+        if (subThread instanceof AsciiThread t) {
+            t.clsBytes = this.clsBytes;
+            t.screenColumns = this.getScreenColumns();
+            t.screenRows = this.getScreenRows();
         }
         if (subThread instanceof DisinformaticoAscii thread) {
             thread.setPageSize(4);
@@ -371,8 +371,8 @@ public class MenuPrestelWithEcho extends PrestelThread {
             if ("1".equals(choice)) subThread = new SyncroWebAscii();
             if (subThread == null) continue;
 
-            if (subThread instanceof AsciiThread thread) {
-                thread.clsBytes = this.clsBytes;
+            if (subThread instanceof AsciiThread t) {
+                t.clsBytes = this.clsBytes;
             }
 
             launch(subThread);

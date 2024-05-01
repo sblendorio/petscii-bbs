@@ -144,17 +144,17 @@ public class MenuVic20 extends MenuApple1 {
     public void execute(BbsThread subThread) throws Exception {
         if (subThread == null) return;
 
-        if (subThread instanceof AsciiThread thread) {
-            thread.clsBytes = this.clsBytes;
-            thread.screenColumns = this.screenColumns;
-            thread.screenRows = this.screenRows;
+        if (subThread instanceof AsciiThread t) {
+            t.clsBytes = this.clsBytes;
+            t.screenColumns = this.screenColumns;
+            t.screenRows = this.screenRows;
         }
-        if (subThread instanceof WordpressProxyAscii thread) {
-            thread.pageSize /= 2;
-        } else if (subThread instanceof GoogleBloggerProxyAscii thread) {
-            thread.pageSize /= 2;
-        } else if (subThread instanceof OneRssAscii thread) {
-            thread.pageSize /= 2;
+        if (subThread instanceof WordpressProxyAscii t) {
+            t.pageSize /= 2;
+        } else if (subThread instanceof GoogleBloggerProxyAscii t) {
+            t.pageSize /= 2;
+        } else if (subThread instanceof OneRssAscii t) {
+            t.pageSize /= 2;
         }
         launch(subThread);
     }

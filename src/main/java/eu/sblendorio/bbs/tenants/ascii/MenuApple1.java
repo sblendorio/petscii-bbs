@@ -273,10 +273,10 @@ public class MenuApple1 extends AsciiThread {
     public void execute(BbsThread subThread) throws Exception {
         if (subThread == null) return;
 
-        if (subThread instanceof AsciiThread thread) {
-            thread.clsBytes = this.clsBytes;
-            thread.screenColumns = this.screenColumns;
-            thread.screenRows = this.screenRows;
+        if (subThread instanceof AsciiThread t) {
+            t.clsBytes = this.clsBytes;
+            t.screenColumns = this.screenColumns;
+            t.screenRows = this.screenRows;
         }
         launch(subThread);
     }

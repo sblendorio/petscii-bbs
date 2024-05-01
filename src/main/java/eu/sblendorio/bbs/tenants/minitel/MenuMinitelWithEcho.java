@@ -223,10 +223,10 @@ public class MenuMinitelWithEcho extends MinitelThread {
 
     public void execute(BbsThread subThread) throws Exception {
         if (subThread == null) return;
-        if (subThread instanceof AsciiThread thread) {
-            thread.clsBytes = this.clsBytes;
-            thread.screenColumns = this.getScreenColumns();
-            thread.screenRows = this.getScreenRows();
+        if (subThread instanceof AsciiThread t) {
+            t.clsBytes = this.clsBytes;
+            t.screenColumns = this.getScreenColumns();
+            t.screenRows = this.getScreenRows();
         }
         launch(subThread);
     }
