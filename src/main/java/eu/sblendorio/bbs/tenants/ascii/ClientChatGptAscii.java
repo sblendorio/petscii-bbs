@@ -91,8 +91,8 @@ public class ClientChatGptAscii extends AsciiThread {
 
         cls();
         if (mainLogo == null) {
-            println("Patreon Login - Authenticate");
-            println("----------------------------");
+            println("Chat GPT - Classic Client");
+            println("-------------------------");
             if (toInt(patreonData.patreonLevel) > 0) println("Model: " + model);
             println();
             println(EXIT_ADVICE);

@@ -258,8 +258,8 @@ public class PatreonData {
         }
 
         bbs.cls();
-        bbs.println("Patreon - User Logon");
-        bbs.println("--------------------");
+        bbs.println("Patreon Login - Authenticate");
+        bbs.println("----------------------------");
         bbs.println();
         bbs.println("For security reasons:");
         bbs.println("- IP address");
