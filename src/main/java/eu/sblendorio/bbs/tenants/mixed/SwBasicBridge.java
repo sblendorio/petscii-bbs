@@ -155,6 +155,7 @@ public class SwBasicBridge {
     public static void type(BbsThread bbsThread, String s, long delay) throws Exception {
         for (int i=0; i<s.length(); i++) {
             bbsThread.print(s.substring(i, i+1));
+            bbsThread.flush();
             Thread.sleep(delay);
         }
     }
@@ -165,6 +166,7 @@ public class SwBasicBridge {
     public static void typeln(BbsThread bbsThread, String s, long delay) throws Exception {
         type(bbsThread, s, delay);
         bbsThread.println();
+        bbsThread.flush();
         Thread.sleep(delay);
     }
 
