@@ -13,8 +13,8 @@ https://www.patreon.com/FrancescoSblendorio
 This framework provides base classes for build your own **BBS** in PETSCII mode, accessibile through:
 - a Commodore 64 with a [RR-NET](http://wiki.icomp.de/wiki/RR-Net) compatible card, running [KipperTerm](https://csdb.dk/release/index.php?id=174537)
 - a Commodore 64 with a [WiFi modem card](http://www.codingkoala.com/kc64wifi/), running [CCGMS](https://csdb.dk/release/?id=156523)
-- a Commodore 64/128 with a [1541Ultimate](http://www.1541ultimate.net), running [UltimateTerm](https://csdb.dk/release/?id=207440)
-- an [Ultimate 64](https://ultimate64.com/), running [UltimateTerm](https://csdb.dk/release/?id=207440)
+- a Commodore 64/128 with a [1541Ultimate](http://www.1541ultimate.net), running [UltimateTerm](https://csdb.dk/release/?id=231748)
+- an [Ultimate 64](https://ultimate64.com/), running [UltimateTerm](https://csdb.dk/release/?id=231748)
 - a Commodore 64 with an [Easy Flash 3](http://store.go4retro.com/easyflash-3/) (with [CCGMS-EF](https://csdb.dk/release/?id=158760)) + a PC running [EF3USB](https://csdb.dk/release/?id=144900&show=notes)
 - a common PC/Mac running [SyncTerm](https://sourceforge.net/projects/syncterm/) (*ConnectionType*=_Telnet_, *ScreenMode*=_C64_)
 - [C64 Forever](https://www.c64forever.com/), running CCGMS (included)
@@ -22,11 +22,11 @@ This framework provides base classes for build your own **BBS** in PETSCII mode,
 The project has been extended to support also generic-ASCII client and also Videotex (Minitel/Teletel and Prestel standards).
 
 ## System requirements
-- Java Development Kit (JDK) and JRE version 17+
+- Java Development Kit (JDK) and JRE version 21+
 - A machine that will act as server
 
 ## Required skills
-- Knowledge of Java language (compiler version 17+)
+- Knowledge of Java language (compiler version 21+)
 - BASIC TCP/IP concepts
 - Knowledge of PETSCII encoding
 
