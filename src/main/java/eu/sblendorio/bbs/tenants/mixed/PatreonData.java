@@ -122,7 +122,7 @@ public class PatreonData {
         bbs.write(RETURN, RETURN, RETURN, RETURN, RETURN, RETURN, GREY1); bbs.print(repeat(' ', 39));
         bbs.write(UP, UP, UP, UP, UP, UP, UP, RETURN);
         final String userEmail = trimToEmpty(tempEmail);
-        if (isBlank(userEmail) || ".".equals(trimToEmpty(userEmail))) {
+        if (isBlank(userEmail) || ".".equals(userEmail)) {
             bbs.write(GREY3);
             return null;
         }
@@ -139,7 +139,10 @@ public class PatreonData {
                 .orElse("");
 
         if (isBlank(emailRow)) {
-            loggerAuthorizations.info("Patreon unknown email. Email:{}, Host:{}, Port:{}", userEmail, bbs.getSocket().getInetAddress().getHostAddress(), bbs.getSocket().getLocalPort());
+            loggerAuthorizations.info(
+                    "Patreon unknown email. Email:{}, Host:{}, Port:{}",
+                    userEmail, bbs.getSocket().getInetAddress().getHostAddress(), bbs.getSocket().getLocalPort()
+            );
             bbs.println();
             bbs.write(PetsciiColors.RED);
             bbs.print("         "); bbs.write(REVON); bbs.println("                       ");
@@ -278,7 +281,7 @@ public class PatreonData {
         bbs.flush(); bbs.resetInput();
         String tempEmail = bbs.readLine(setOfChars(STR_ALPHANUMERIC, ".:,;_ {}[]()<>@+-*/^='?!$%&#"));
         final String userEmail = trimToEmpty(tempEmail);
-        if (isBlank(userEmail))
+        if (isBlank(userEmail) || ".".equals(userEmail))
             return null;
 
         String emailRow = readExternalTxt(getProperty("PATREON_EMAILS", getProperty("user.home") + File.separator + "patreon_emails.txt"))
@@ -293,7 +296,10 @@ public class PatreonData {
                 .orElse("");
 
         if (isBlank(emailRow)) {
-            loggerAuthorizations.info("Patreon unknown email. Email:{}, Host:{}, Port:{}", userEmail, bbs.getSocket().getInetAddress().getHostAddress(), bbs.getSocket().getLocalPort());
+            loggerAuthorizations.info(
+                    "Patreon unknown email. Email:{}, Host:{}, Port:{}",
+                    userEmail, bbs.getSocket().getInetAddress().getHostAddress(), bbs.getSocket().getLocalPort()
+            );
             bbs.println();
             bbs.println("Not subscriber's mail");
             bbs.println("Press any key to exit");
