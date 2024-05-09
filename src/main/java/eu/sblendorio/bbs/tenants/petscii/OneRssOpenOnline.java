@@ -18,7 +18,7 @@ public class OneRssOpenOnline extends OneRssPetscii {
         this.sections.put("6", new OneRssPetscii.NewsSection("David Puente", "https://www.open.online/author/david-puente/feed"));
         this.sections.put("7", new OneRssPetscii.NewsSection("Juanne Pili", "https://www.open.online/author/juanne-pili/feed"));
         this.screenRows = 18;
-        this.pageSize = 5;
+        this.pageSize = 4;
         this.showAuthor = true;
         this.newlineAfterDate = false;
         this.offsetX = 25;

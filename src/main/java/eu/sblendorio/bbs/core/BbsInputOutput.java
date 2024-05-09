@@ -251,6 +251,10 @@ public abstract class BbsInputOutput extends Reader {
         return readLine(0, false, allowedChars);
     }
 
+    public String readLine(int maxLength, Set<Integer> allowedChars) throws IOException {
+        return readLine(maxLength, false, allowedChars);
+    }
+
     @Override
     public boolean ready() throws IOException {
         return in.ready();

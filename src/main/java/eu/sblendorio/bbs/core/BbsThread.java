@@ -500,6 +500,13 @@ public abstract class BbsThread extends Thread {
         return result;
     }
 
+    public String readLine(int maxLength, Set<Integer> allowedChars) throws IOException {
+        restartKeepAlive();
+        final String result = io.readLine(maxLength, allowedChars);
+        restartKeepAlive();
+        return result;
+    }
+
     public String readLineNoCr(Set<Integer> allowedChars) throws IOException {
         restartKeepAlive();
         final String result = io.readLineNoCr(allowedChars);

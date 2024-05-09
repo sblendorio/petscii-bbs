@@ -1,6 +1,5 @@
 package eu.sblendorio.bbs.tenants.mixed;
 
-import com.oracle.truffle.js.runtime.builtins.JSON;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -9,13 +8,61 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static java.lang.StringTemplate.STR;
-
 public class EnigmaCommons {
+
+    public static class EnigmaStatus {
+        private List<EnigmaCommons.Wiring> wirings = new LinkedList<>();
+        private List<EnigmaCommons.Rotor> rotors = new LinkedList<>();
+        private boolean autoIncrementRotors = false;
+        private String reflector = "UKW-A";
+
+        public EnigmaStatus() {
+        }
+
+        public EnigmaStatus(List<Wiring> wirings, List<Rotor> rotors, boolean autoIncrementRotors, String reflector) {
+            this.wirings = wirings;
+            this.rotors = rotors;
+            this.autoIncrementRotors = autoIncrementRotors;
+            this.reflector = reflector;
+        }
+
+        public List<Wiring> getWirings() {
+            return wirings;
+        }
+
+        public void setWirings(List<Wiring> wirings) {
+            this.wirings = wirings;
+        }
+
+        public List<Rotor> getRotors() {
+            return rotors;
+        }
+
+        public void setRotors(List<Rotor> rotors) {
+            this.rotors = rotors;
+        }
+
+        public boolean getAutoIncrementRotors() {
+            return autoIncrementRotors;
+        }
+
+        public void setAutoIncrementRotors(boolean autoIncrementRotors) {
+            this.autoIncrementRotors = autoIncrementRotors;
+        }
+
+        public String getReflector() {
+            return reflector;
+        }
+
+        public void setReflector(String reflector) {
+            this.reflector = reflector;
+        }
+    }
 
     private static String URL = "https://nuvolaris.dev/api/v1/web/dmaggiorotto/Test/enigma/${MACHINE_TYPE}/encrypt";
 
@@ -50,17 +97,23 @@ public class EnigmaCommons {
 
         String strWirings = wirings.stream().map(EnigmaCommons::wiring2string).collect(Collectors.joining(","));
         String strRotors = rotors.stream().map(EnigmaCommons::rotor2string).collect(Collectors.joining(","));
-        String input = STR."""
+        String input = """
             {
                "plugboard": {
-                 "wirings": [\{strWirings}]
+                 "wirings": [${strWirings}]
                },
-               "auto_increment_rotors": \{autoIncrementRotors},
-               "cleartext": "\{clearText.toUpperCase().trim()}",
-               "rotors": [\{strRotors}],
-               "reflector": "\{reflector}"
+               "auto_increment_rotors": ${autoIncrementRotors},
+               "cleartext": "${clearText}",
+               "rotors": [${strRotors}],
+               "reflector": "${reflector}"
             }
-            """;
+            """
+                .replace("${strWirings}", strWirings)
+                .replace("${autoIncrementRotors}", String.valueOf(autoIncrementRotors))
+                .replace("${clearText}", clearText.toUpperCase().trim())
+                .replace("${strRotors}", strRotors)
+                .replace("${reflector}", reflector);
+
 
         String url = URL.replace("${MACHINE_TYPE}", "I");
 
