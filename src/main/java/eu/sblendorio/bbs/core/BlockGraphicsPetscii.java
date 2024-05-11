@@ -6,6 +6,7 @@ import com.google.zxing.qrcode.encoder.ByteMatrix;
 import com.google.zxing.qrcode.encoder.Encoder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BlockGraphicsPetscii {
@@ -68,7 +69,11 @@ public class BlockGraphicsPetscii {
     }
 
     public static String[] stringToQr(String string) throws WriterException {
-        ByteMatrix matrix = Encoder.encode(string, ErrorCorrectionLevel.H).getMatrix();
+        return stringToQr(string, ErrorCorrectionLevel.H);
+    }
+
+    public static String[] stringToQr(String string, ErrorCorrectionLevel correction) throws WriterException {
+        ByteMatrix matrix = Encoder.encode(string, correction).getMatrix();
         String[] strMatrix = new String[matrix.getHeight()];
         for (int y=0; y < matrix.getHeight(); ++y) {
             strMatrix[y] = "";
@@ -79,5 +84,10 @@ public class BlockGraphicsPetscii {
         return strMatrix;
     }
 
-
+    public static void main(String[] args) throws Exception {
+        Arrays.stream(stringToQr("www.google.com", ErrorCorrectionLevel.L))
+                .map(x -> x.replace(".", "  "))
+                .map(x -> x.replace("*", "MM"))
+                .forEach(System.out::println);
+    }
 }
