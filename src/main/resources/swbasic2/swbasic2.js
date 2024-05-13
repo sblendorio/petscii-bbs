@@ -1989,7 +1989,7 @@ class Interpreter {
         this.expectParam(f, 0);
         if (!this.inkeyFunction) return "";
         if (this.inkeyValue == -1 || this.inkeyValue == 0) this.inkeyValue = this.inkeyFunction(50);
-        if (this.inkeyValue == 3) this.breakFunction();
+        if (this.breakFunction && this.inkeyValue == 3) this.breakFunction();
         var retValue = (this.inkeyValue == -1 || this.inkeyValue == 0 ? "" : String.fromCharCode(this.inkeyValue));
         this.inkeyValue = -1;
         return retValue;
