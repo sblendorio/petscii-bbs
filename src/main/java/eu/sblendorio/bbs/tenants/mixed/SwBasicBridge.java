@@ -45,7 +45,7 @@ public class SwBasicBridge {
     }
 
     public int inkey(long ms) throws Exception {
-        int result = bbs.keyPressed();
+        int result = bbs.convertToAscii(bbs.keyPressed());
         if (ms > 0) Thread.sleep(ms);
         return result;
     }

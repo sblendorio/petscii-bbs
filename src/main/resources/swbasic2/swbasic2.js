@@ -22,7 +22,7 @@
  * Constants
  */
 const KEYWORDS  = /(AND|CLEAR|CLS|DATA|DEF|DIM|ELSE|END|FOR|WIDTH|GOSUB|GOTO|IF|INPUT|LET|MOD|NEXT|NOT|ON|OR|PRINT|RANDOMIZE|SLEEP|READ|REM|RESTORE|RETURN|STEP|STOP|SYSTEM|THEN|TO|WHILE|WEND)/ig;
-const FUNCTIONS = /^(ABS|ASC|ATN|CHR\$|SPACE\$|COS|EXP|INSTR|INT|LEFT\$|LEN|LOG|MID\$|POS|RIGHT\$|RND|SGN|SIN|SPC|SQR|STRING\$|STR\$|TAB|TAN|TIMER|VAL)$/i;
+const FUNCTIONS = /^(ABS|ASC|ATN|CHR\$|SPACE\$|COS|EXP|INSTR|INT|LEFT\$|LEN|LOG|MID\$|POS|RIGHT\$|RND|SGN|SIN|SPC|SQR|STRING\$|STR\$|TAB|TAN|TIMER|VAL|INKEY\$)$/i;
 
 const TAB_CHARACTER      = " ";
 const SPACE_CHARACTER    = " ";
@@ -1571,6 +1571,7 @@ class Interpreter {
     this.printFunction = null;
     this.sleepFunction = null;
     this.inkeyFunction = null;
+    this.inkeyValue = -1;
     this.numberInputFunction = null;
     this.stringInputFunction = null;
     this.clsFunction = null;
@@ -1983,6 +1984,15 @@ class Interpreter {
       case "TIMER": {
         this.expectParam(f, 0);
         return Math.floor(new Date().getTime() / 1000);
+      }
+      case "INKEY$": {
+        this.expectParam(f, 0);
+        if (!this.inkeyFunction) return "";
+        if (this.inkeyValue == -1) this.inkeyValue = this.inkeyFunction(50);
+        if (this.inkeyValue == 3) this.breakFunction();
+        var retValue = (this.inkeyValue == -1 ? "" : String.fromCharCode(this.inkeyValue));
+        this.inkeyValue = -1;
+        return retValue;
       }
       case "VAL": {
         this.expectParam(f, 1);
@@ -2440,10 +2450,10 @@ class Interpreter {
     return idx + 1;
   }
 
-  checkBreak() {
+  checkBreak() {return;
     if (this.inkeyFunction && this.breakFunction) {
-      var codeKey = this.inkeyFunction(0);
-      if (codeKey == 3) this.breakFunction();
+      this.inkeyValue = this.inkeyFunction(0);
+      if (this.inkeyValue == 3) this.breakFunction();
     }
   }
 

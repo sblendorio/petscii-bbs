@@ -95,6 +95,7 @@ public abstract class BbsInputOutput extends Reader {
     public int backspaceAlias() {
         return 8;
     }
+    
     public int readKey() throws IOException {
         long DELTA = 800;
 
