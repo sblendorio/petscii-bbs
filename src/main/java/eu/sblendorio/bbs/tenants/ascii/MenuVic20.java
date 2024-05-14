@@ -4,6 +4,7 @@ import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.util.TriConsumer;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +26,16 @@ public class MenuVic20 extends MenuApple1 {
         screenColumns = 22;
         screenRows = 23;
     }
+
+    @Override
+    public TriConsumer<BbsThread, Integer, Integer> locate() {
+        return (bbs, y, x) -> {
+            bbs.write(19);
+            for (int i=1; i<y; i++) write(17);
+            for (int i=1; i<x; i++) write(29);
+        };
+    }
+
 
     @Override
     public void initBbs() throws Exception {

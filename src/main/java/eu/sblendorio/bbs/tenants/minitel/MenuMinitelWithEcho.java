@@ -6,6 +6,7 @@ import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
 import eu.sblendorio.bbs.tenants.ascii.*;
 import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.util.TriConsumer;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +31,10 @@ public class MenuMinitelWithEcho extends MinitelThread {
     final static byte[] COPYRIGHT_CASTELLO_ENG = readBinaryFile("minitel/copyright-castello-eng.txt");
 
     private byte[] clsBytes = new byte[] { 12 };
+
+    public TriConsumer<BbsThread, Integer, Integer> locate() {
+        return (bbs, y, x) -> bbs.write(MOVEXY, 0x40 + y, 0x40 + x);
+    }
 
     public MenuMinitelWithEcho() {
         super();
@@ -204,13 +209,13 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 if (".".equals(choice)) {
                     return;
                 }
-                else if ("1".equals(choice)) { SwBasicBridge.run("Star Trek", "basic/startrek-40-1.bas", this); subThread = null; }
-                else if ("2".equals(choice)) { SwBasicBridge.run("Star Trek 2003", "basic/startrek-40-2.bas", this); subThread = null; }
-                else if ("3".equals(choice)) { SwBasicBridge.run("Lunar Lander", "basic/lunar-lander-40.bas", this); subThread = null; }
-                else if ("4".equals(choice)) { SwBasicBridge.run("Hamurabi", "basic/hamurabi-40.bas", this); subThread = null; }
-                else if ("5".equals(choice)) { SwBasicBridge.run("Checkers", "basic/checkers-40.bas", this); subThread = null; }
-                else if ("6".equals(choice)) { SwBasicBridge.run("Angela", "basic/angela.bas", this); subThread = null; }
-                else if ("z".equals(choice)) { subThread = new BasicIdeMinitel(); }
+                else if ("1".equals(choice)) { SwBasicBridge.run("Star Trek", "basic/startrek-40-1.bas", this, locate()); subThread = null; }
+                else if ("2".equals(choice)) { SwBasicBridge.run("Star Trek 2003", "basic/startrek-40-2.bas", this, locate()); subThread = null; }
+                else if ("3".equals(choice)) { SwBasicBridge.run("Lunar Lander", "basic/lunar-lander-40.bas", this, locate()); subThread = null; }
+                else if ("4".equals(choice)) { SwBasicBridge.run("Hamurabi", "basic/hamurabi-40.bas", this, locate()); subThread = null; }
+                else if ("5".equals(choice)) { SwBasicBridge.run("Checkers", "basic/checkers-40.bas", this, locate()); subThread = null; }
+                else if ("6".equals(choice)) { SwBasicBridge.run("Angela", "basic/angela.bas", this, locate()); subThread = null; }
+                else if ("z".equals(choice)) { subThread = new BasicIdeMinitel(locate()); }
                 else {
                     validKey = false;
                     subThread = null;

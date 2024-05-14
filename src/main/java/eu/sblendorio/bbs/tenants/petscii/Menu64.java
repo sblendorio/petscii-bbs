@@ -4,6 +4,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import eu.sblendorio.bbs.core.*;
 import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.util.TriConsumer;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -12,6 +13,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import static eu.sblendorio.bbs.core.BlockGraphicsPetscii.getRenderedMidres;
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
@@ -363,13 +365,13 @@ public class Menu64 extends PetsciiThread {
                 if (key == '.') {
                     return;
                 }
-                else if (key == '1') SwBasicBridge.run("Star Trek", "basic/startrek-40-1.bas", this);
-                else if (key == '2') SwBasicBridge.run("Star Trek 2003", "basic/startrek-40-2.bas", this);
-                else if (key == '3') SwBasicBridge.run("Lunar Lander", "basic/lunar-lander-40.bas", this);
-                else if (key == '4') SwBasicBridge.run("Hamurabi", "basic/hamurabi-40.bas", this);
-                else if (key == '5') SwBasicBridge.run("Checkers", "basic/checkers-40.bas", this);
-                else if (key == '6') SwBasicBridge.run("Angela", "basic/angela.bas", this);
-                else if (key == 'z') launch(new BasicIdePetscii());
+                else if (key == '1') SwBasicBridge.run("Star Trek", "basic/startrek-40-1.bas", this, LOCATE);
+                else if (key == '2') SwBasicBridge.run("Star Trek 2003", "basic/startrek-40-2.bas", this, LOCATE);
+                else if (key == '3') SwBasicBridge.run("Lunar Lander", "basic/lunar-lander-40.bas", this, LOCATE);
+                else if (key == '4') SwBasicBridge.run("Hamurabi", "basic/hamurabi-40.bas", this, LOCATE);
+                else if (key == '5') SwBasicBridge.run("Checkers", "basic/checkers-40.bas", this, LOCATE);
+                else if (key == '6') SwBasicBridge.run("Angela", "basic/angela.bas", this, LOCATE);
+                else if (key == 'z') launch(new BasicIdePetscii(LOCATE));
                 else {
                     validKey = false;
                 }
@@ -377,6 +379,8 @@ public class Menu64 extends PetsciiThread {
             } while (!validKey);
         } while (true);
     }
+
+    public static TriConsumer<BbsThread, Integer, Integer> LOCATE = (bbs, y, x) -> ((PetsciiThread) bbs).gotoXY(x-1, y-1);
 
     public void menuGames() throws Exception {
         do {

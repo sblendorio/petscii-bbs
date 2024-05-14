@@ -6,6 +6,7 @@ import eu.sblendorio.bbs.core.Utils;
 import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
 import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.util.TriConsumer;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -31,6 +32,11 @@ public class MenuTelnetPureAscii extends AsciiThread {
 
         screenColumns = 80;
     }
+
+    public TriConsumer<BbsThread, Integer, Integer> locate() {
+        return null;
+    }
+
 
     public void printText(byte[] bytes) {
         for (byte b : bytes)
@@ -323,13 +329,13 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 log("Menu. Choice = " + choice);
                 BbsThread subThread;
                 if (".".equals(choice)) return;
-                else if ("1".equals(choice)) { SwBasicBridge.run("Star Trek", "basic/startrek-40-1.bas", this); subThread = null; }
-                else if ("2".equals(choice)) { SwBasicBridge.run("Star Trek 2003", "basic/startrek-40-2.bas", this); subThread = null; }
-                else if ("3".equals(choice)) { SwBasicBridge.run("Lunar Lander", "basic/lunar-lander-40.bas", this); subThread = null; }
-                else if ("4".equals(choice)) { SwBasicBridge.run("Hamurabi", "basic_cc/hamurabi.bas", this); subThread = null; }
-                else if ("5".equals(choice)) { SwBasicBridge.run("Checkers", "basic_cc/checkers.bas", this); subThread = null; }
-                else if ("6".equals(choice)) { SwBasicBridge.run("Angela", "basic/angela.bas", this); subThread = null; }
-                else if ("z".equals(choice)) { subThread = new BasicIdeAscii(); }
+                else if ("1".equals(choice)) { SwBasicBridge.run("Star Trek", "basic/startrek-40-1.bas", this, locate()); subThread = null; }
+                else if ("2".equals(choice)) { SwBasicBridge.run("Star Trek 2003", "basic/startrek-40-2.bas", this, locate()); subThread = null; }
+                else if ("3".equals(choice)) { SwBasicBridge.run("Lunar Lander", "basic/lunar-lander-40.bas", this, locate()); subThread = null; }
+                else if ("4".equals(choice)) { SwBasicBridge.run("Hamurabi", "basic_cc/hamurabi.bas", this, locate()); subThread = null; }
+                else if ("5".equals(choice)) { SwBasicBridge.run("Checkers", "basic_cc/checkers.bas", this, locate()); subThread = null; }
+                else if ("6".equals(choice)) { SwBasicBridge.run("Angela", "basic/angela.bas", this, locate()); subThread = null; }
+                else if ("z".equals(choice)) { subThread = new BasicIdeAscii(locate()); }
 
                 else {
                     validKey = false;

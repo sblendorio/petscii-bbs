@@ -1,6 +1,8 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.PetsciiThread;
+import org.apache.logging.log4j.util.TriConsumer;
 
 import static eu.sblendorio.bbs.core.Utils.bytes;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
@@ -11,6 +13,14 @@ public class MenuTelnetUtf8Ansi extends MenuTelnetPureAscii {
     @Override
     public String getTerminalType() {
         return "utf8";
+    }
+
+    @Override
+    public TriConsumer<BbsThread, Integer, Integer> locate() {
+        return (bbs, y, x) -> {
+            bbs.write(0x1b);
+            bbs.print("[" + (y+1) + "," + (x+1)+"H");
+        };
     }
 
 

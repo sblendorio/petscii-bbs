@@ -1,6 +1,7 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
 import eu.sblendorio.bbs.core.BbsThread;
+import org.apache.logging.log4j.util.TriConsumer;
 
 import java.nio.charset.StandardCharsets;
 
@@ -14,7 +15,16 @@ public class MenuTelnetAnsi extends MenuTelnetPureAscii {
         return "ansi";
     }
 
+    @Override
+    public TriConsumer<BbsThread, Integer, Integer> locate() {
+        return (bbs, y, x) -> {
+            bbs.write(0x1b);
+            bbs.print("[" + (y+1) + "," + (x+1)+"H");
+        };
+    }
+
     public MenuTelnetAnsi() {
+
         super();
         clsBytes = bytes("\033[H\033[2J");
     }

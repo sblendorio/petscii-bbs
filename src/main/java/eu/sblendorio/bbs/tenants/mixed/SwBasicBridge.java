@@ -4,6 +4,7 @@ import eu.sblendorio.bbs.core.BbsThread;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.util.TriConsumer;
 
 import javax.script.Bindings;
 import javax.script.ScriptEngine;
@@ -12,6 +13,7 @@ import javax.script.SimpleBindings;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.function.BiConsumer;
 
 import static eu.sblendorio.bbs.core.Utils.*;
 
@@ -22,11 +24,13 @@ public class SwBasicBridge {
     protected BbsThread bbs;
     protected ScriptEngine engine;
     protected Bindings bindings;
+    protected TriConsumer<BbsThread, Integer, Integer> locateFunction = null;
 
-    public SwBasicBridge(BbsThread bbs) {
+    public SwBasicBridge(BbsThread bbs, TriConsumer<BbsThread, Integer, Integer> locateFunction) {
         System.setProperty("polyglot.engine.WarnInterpreterOnly", "false");
         engine = (ScriptEngine) new ScriptEngineManager().getEngineByName("Graal.js");
         this.bbs = bbs;
+        this.locateFunction = locateFunction;
     }
 
     private String readFile(String name) throws Exception {
@@ -42,6 +46,11 @@ public class SwBasicBridge {
         } catch (InterruptedException | IOException e) {
             logger.debug(e);
         }
+    }
+
+    public void locate(int y, int x) {
+        if (locateFunction == null) return;
+        locateFunction.accept(bbs, y, x);
     }
 
     public int inkey(long ms) throws Exception {
@@ -107,6 +116,7 @@ public class SwBasicBridge {
         engine.eval("interpreter = new Interpreter();", bindings);
         engine.eval("interpreter.printFunction = bridge.print", bindings);
         engine.eval("interpreter.inkeyFunction = bridge.inkey", bindings);
+        engine.eval("interpreter.locateFunction = bridge.locate", bindings);
         engine.eval("interpreter.stringInputFunction = bridge.stringInput", bindings);
         engine.eval("interpreter.numberInputFunction = bridge.numberInput", bindings);
         engine.eval("interpreter.clsFunction = bridge.cls", bindings);
@@ -120,7 +130,7 @@ public class SwBasicBridge {
         engine.eval("interpreter.interpret();",bindings);
     }
 
-    public static void run(String caption, String source, BbsThread bbsThread) throws Exception {
+    public static void run(String caption, String source, BbsThread bbsThread, TriConsumer<BbsThread, Integer, Integer> locate) throws Exception {
         logger.info("Executing BASIC Program: '{}', on '{}'", source, bbsThread.getClass().getSimpleName());
         bbsThread.cls();
         bbsThread.println("*** RETROCAMPUS BBS BASIC V1.0 ***");
@@ -142,7 +152,7 @@ public class SwBasicBridge {
         bbsThread.flush(); Thread.sleep(1400);
         bbsThread.flush(); bbsThread.flush();
         bbsThread.cls();
-        SwBasicBridge bridge = new SwBasicBridge(bbsThread);
+        SwBasicBridge bridge = new SwBasicBridge(bbsThread, locate);
         bridge.init(source);
         bridge.start();
     }

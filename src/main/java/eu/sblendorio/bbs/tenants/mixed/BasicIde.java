@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.util.TriConsumer;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -163,7 +164,7 @@ public class BasicIde {
         promptNoline(bbs);
     }
 
-    public static void execute(BbsThread bbs, Map<Long, String> program) throws Exception {
+    public static void execute(BbsThread bbs, Map<Long, String> program, TriConsumer<BbsThread, Integer, Integer> locate) throws Exception {
         String user = "";
         String patreonLevel = "0";
         try {
@@ -329,7 +330,7 @@ public class BasicIde {
 
                 logger.info("user={}, program={}", user, programText.replaceAll("\n", "\\\\n"));
 
-                SwBasicBridge bridge = new SwBasicBridge(bbs);
+                SwBasicBridge bridge = new SwBasicBridge(bbs, locate);
                 bridge.initWithProgramText(programText);
                 bridge.start();
 
