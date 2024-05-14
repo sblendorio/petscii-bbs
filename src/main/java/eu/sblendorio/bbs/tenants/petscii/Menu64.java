@@ -365,13 +365,13 @@ public class Menu64 extends PetsciiThread {
                 if (key == '.') {
                     return;
                 }
-                else if (key == '1') SwBasicBridge.run("Star Trek", "basic/startrek-40-1.bas", this, LOCATE);
-                else if (key == '2') SwBasicBridge.run("Star Trek 2003", "basic/startrek-40-2.bas", this, LOCATE);
-                else if (key == '3') SwBasicBridge.run("Lunar Lander", "basic/lunar-lander-40.bas", this, LOCATE);
-                else if (key == '4') SwBasicBridge.run("Hamurabi", "basic/hamurabi-40.bas", this, LOCATE);
-                else if (key == '5') SwBasicBridge.run("Checkers", "basic/checkers-40.bas", this, LOCATE);
-                else if (key == '6') SwBasicBridge.run("Angela", "basic/angela.bas", this, LOCATE);
-                else if (key == 'z') launch(new BasicIdePetscii(LOCATE));
+                else if (key == '1') SwBasicBridge.run("Star Trek", "basic/startrek-40-1.bas", this, locate());
+                else if (key == '2') SwBasicBridge.run("Star Trek 2003", "basic/startrek-40-2.bas", this, locate());
+                else if (key == '3') SwBasicBridge.run("Lunar Lander", "basic/lunar-lander-40.bas", this, locate());
+                else if (key == '4') SwBasicBridge.run("Hamurabi", "basic/hamurabi-40.bas", this, locate());
+                else if (key == '5') SwBasicBridge.run("Checkers", "basic/checkers-40.bas", this, locate());
+                else if (key == '6') SwBasicBridge.run("Angela", "basic/angela.bas", this, locate());
+                else if (key == 'z') launch(new BasicIdePetscii(locate()));
                 else {
                     validKey = false;
                 }
@@ -380,7 +380,21 @@ public class Menu64 extends PetsciiThread {
         } while (true);
     }
 
-    public static TriConsumer<BbsThread, Integer, Integer> LOCATE = (bbs, y, x) -> ((PetsciiThread) bbs).gotoXY(x-1, y-1);
+    public TriConsumer<BbsThread, Integer, Integer> locate() {
+        return (bbs, y, x) -> {
+            if (x>0 && y>0) {
+                bbs.write(19);
+                for (int i=1; i<y; i++) bbs.write(17);
+                for (int i=1; i<x; i++) bbs.write(29);
+            } else if (y>0) {
+                for (int i=0; i<25; i++) bbs.write(145);
+                for (int i=1; i<y; i++) bbs.write(17);
+            } else if (x>0) {
+                bbs.write(13, 145);
+                for (int i=1; i<x; i++) bbs.write(29);
+            }
+        };
+    }
 
     public void menuGames() throws Exception {
         do {

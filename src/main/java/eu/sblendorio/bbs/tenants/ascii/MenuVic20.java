@@ -30,12 +30,19 @@ public class MenuVic20 extends MenuApple1 {
     @Override
     public TriConsumer<BbsThread, Integer, Integer> locate() {
         return (bbs, y, x) -> {
-            bbs.write(19);
-            for (int i=1; i<y; i++) write(17);
-            for (int i=1; i<x; i++) write(29);
+            if (x>0 && y>0) {
+                bbs.write(19);
+                for (int i=1; i<y; i++) bbs.write(17);
+                for (int i=1; i<x; i++) bbs.write(29);
+            } else if (y>0) {
+                for (int i=0; i<25; i++) bbs.write(145);
+                for (int i=1; i<y; i++) bbs.write(17);
+            } else if (x>0) {
+                bbs.write(13, 145);
+                for (int i=1; i<x; i++) bbs.write(29);
+            }
         };
     }
-
 
     @Override
     public void initBbs() throws Exception {

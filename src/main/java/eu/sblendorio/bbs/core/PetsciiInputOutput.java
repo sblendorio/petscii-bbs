@@ -73,6 +73,8 @@ public class PetsciiInputOutput extends BbsInputOutput {
 
     @Override
     public int convertToAscii(int ch) {
+        if (ch >= 193 && ch <= 218) ch -= 96;
+
         if (ch >= 'a' && ch <= 'z')
             return Character.toUpperCase(ch);
         else if (ch >= 'A' && ch <= 'Z')

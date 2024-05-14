@@ -18,8 +18,21 @@ public class MenuTelnetAnsi extends MenuTelnetPureAscii {
     @Override
     public TriConsumer<BbsThread, Integer, Integer> locate() {
         return (bbs, y, x) -> {
-            bbs.write(0x1b);
-            bbs.print("[" + (y+1) + "," + (x+1)+"H");
+            if (y>0 && x>0) {
+                bbs.write(0x1b);
+                bbs.print("[" + (y - 1) + "," + (x - 1));
+                bbs.write('H');
+            } else if (y>0) {
+                bbs.write(0x1b);
+                bbs.print("[25");
+                bbs.write('A');
+                bbs.write(0x1b); bbs.print("[" + (y-1)); bbs.write('B');
+            } else if (x>0) {
+                bbs.write(0x0d, 0x0a, 0x1b);
+                bbs.print("[1");
+                bbs.write('A');
+                bbs.write(0x1b); bbs.print("[" + (x-1)); bbs.write('C');
+            }
         };
     }
 

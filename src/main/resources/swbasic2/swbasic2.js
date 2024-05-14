@@ -2664,6 +2664,7 @@ class Interpreter {
     }
     if (this.locateFunction) {
         this.locateFunction(y, x);
+        if (x>0) this.printPos = x;
     }
     return idx + 1;
   }

@@ -33,7 +33,17 @@ public class MenuMinitelWithEcho extends MinitelThread {
     private byte[] clsBytes = new byte[] { 12 };
 
     public TriConsumer<BbsThread, Integer, Integer> locate() {
-        return (bbs, y, x) -> bbs.write(MOVEXY, 0x40 + y, 0x40 + x);
+        return (bbs, y, x) -> {
+            if (x>0 && y>0) {
+                bbs.write(MOVEXY, 0x40 + y, 0x40 + x);
+            } else if (y>0) {
+                write(0x1e);
+                for (int i=1; i<y; i++) bbs.write(0x0a);
+            } else if (x>0) {
+                bbs.write(0x0d, 0x0a, 0x0b);
+                for (int i=1; i<x; i++) bbs.write(0x09);
+            }
+        };
     }
 
     public MenuMinitelWithEcho() {
