@@ -2660,7 +2660,7 @@ class Interpreter {
     let y = this.evalExpr(statement.children[0]);
     let x = this.evalExpr(statement.children[1]);
     if (!Utils.isNumber(y) || !Utils.isNumber(x)) {
-      throw "RANDOMIZE expects number as argument";
+      throw "LOCATE expects numbers as argument";
     }
     if (this.locateFunction) {
         this.locateFunction(y, x);
