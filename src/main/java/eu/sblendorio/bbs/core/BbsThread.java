@@ -486,6 +486,13 @@ public abstract class BbsThread extends Thread {
         return result;
     }
 
+    public String readLineUppercase(Set<Integer> allowedChars) throws IOException {
+        restartKeepAlive();
+        final String result = io.readLineUppercase(allowedChars);
+        restartKeepAlive();
+        return result;
+    }
+
     public String readLine(int maxLength) throws IOException {
         restartKeepAlive();
         final String result = io.readLine(maxLength);

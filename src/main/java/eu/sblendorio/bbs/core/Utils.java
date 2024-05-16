@@ -35,8 +35,6 @@ public class Utils {
 
     public static final String STR_ALPHANUMERIC = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     public static final String STR_LETTER = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    public static final String STR_LETTER_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    public static final String STR_LETTER_LOWER = "abcdefghijklmnopqrstuvwxyz";
     public static final String STR_NUMBERS = "0123456789";
 
     public static boolean isControlChar(int c) { return PETSCII_CONTROL_CHARS.contains(c); }

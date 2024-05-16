@@ -158,6 +158,10 @@ public abstract class BbsInputOutput extends Reader {
         return readLineParametric(0, false, null, true, true, false, false);
     }
 
+    public String readLineUppercase(Set<Integer> allowedChars) throws IOException {
+        return readLineParametric(0, false, allowedChars, true, true, false, false);
+    }
+
     public String readLine(int maxLength, boolean mask, Set<Integer> allowedChars) throws IOException {
         return readLineParametric(maxLength, mask, allowedChars, true);
     }

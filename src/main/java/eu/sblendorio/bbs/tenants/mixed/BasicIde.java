@@ -362,14 +362,17 @@ public class BasicIde {
         if (StringUtils.isBlank(s)) return StringUtils.EMPTY;
 
         StringBuilder result = new StringBuilder();
-        boolean quote = false;
+        boolean doubleQuote = false;
+        boolean singleQuote = false;
         for (int i=0; i<s.length(); i++) {
             String c = s.substring(i, i+1);
-            if ("\"".equalsIgnoreCase(c)) quote = !quote;
-            if (!quote && "?".equals(c)) c = "PRINT";
-            result.append(quote ? c : c.toUpperCase());
+            if ("\"".equalsIgnoreCase(c) && !singleQuote) doubleQuote = !doubleQuote;
+            if ("'".equalsIgnoreCase(c) && !doubleQuote) singleQuote = true;
+            if (!singleQuote && !doubleQuote && StringUtils.right(result.toString(), 3).equalsIgnoreCase("REM")) singleQuote = true;
+            if (!singleQuote && !doubleQuote && "?".equals(c)) c = "PRINT";
+            result.append(doubleQuote || singleQuote ? c : c.toUpperCase());
         }
-        if (quote) result.append('"');
+        if (doubleQuote) result.append('"');
         return result.toString().trim();
     }
 

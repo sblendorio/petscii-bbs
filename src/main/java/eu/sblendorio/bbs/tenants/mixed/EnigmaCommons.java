@@ -22,7 +22,7 @@ public class EnigmaCommons {
                 new Rotor(0, 0, "I"),
                 new Rotor(0, 0, "I")
         );
-        private boolean autoIncrementRotors = false;
+        private boolean autoIncrementRotors = true;
         private String reflector = "UKW-A";
         private String originalMessage = "";
         private String encodedMessage = "";

@@ -13,7 +13,7 @@ import eu.sblendorio.bbs.tenants.mixed.EnigmaCommons.EnigmaStatus;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import static eu.sblendorio.bbs.core.Utils.STR_LETTER_UPPER;
+import static eu.sblendorio.bbs.core.Utils.STR_LETTER;
 import static eu.sblendorio.bbs.core.Utils.setOfChars;
 
 public class EnigmaPetscii extends PetsciiThread {
@@ -122,8 +122,8 @@ public class EnigmaPetscii extends PetsciiThread {
             if (ch == '8') {
                 print("Message: ");
                 flush(); resetInput();
-                String msg = readLine(setOfChars(STR_LETTER_UPPER));
-                machine.setOriginalMessage(msg);
+                String msg = readLineUppercase(setOfChars(STR_LETTER));
+                machine.setOriginalMessage(msg.toUpperCase());
                 EnigmaStatus newMachine = EnigmaCommons.process(machine);
                 println("Encoded: " + newMachine.getEncodedMessage());
                 flush(); resetInput();
