@@ -8,7 +8,9 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import org.zmpp.ExecutionControl;
+import org.zmpp.base.StoryFileHeader;
 import org.zmpp.vm.InvalidStoryException;
+import org.zmpp.vm.Machine;
 import org.zmpp.vm.MachineFactory;
 import org.zmpp.vm.MachineRunState;
 import org.zmpp.windowing.AnnotatedCharacter;
@@ -33,7 +35,7 @@ public class CliScreenModel implements ScreenModelListener,StatusLineListener {
     /*
      * The actual Zork adventure file
      */
-    private final InputStream storyFile = CliScreenModel.class.getResourceAsStream("/zmpp/Zork-1-ITA-v7.z5");
+    private final InputStream storyFile = CliScreenModel.class.getResourceAsStream("/zmpp/bureaucracy-r160.z4");
     //private final InputStream storyFile = BBSScreenModel.class.getResourceAsStream("/games/zork1.z3");
     /*
          * Execution control setup and run the Zork VM, constrol user input
@@ -61,6 +63,7 @@ public class CliScreenModel implements ScreenModelListener,StatusLineListener {
 
         BufferedReader bsr = new BufferedReader(new InputStreamReader(System.in));
         CliScreenModel model = new CliScreenModel();
+        resizeScreen(model.getExecutionControl().getMachine(), 25, 80);
         model.run();
         while(model.getCurrentRunState() != MachineRunState.STOPPED){
             if(model.getCurrentRunState().isWaitingForInput()){
@@ -130,6 +133,22 @@ public class CliScreenModel implements ScreenModelListener,StatusLineListener {
         }
     }
 
+    public static void resizeScreen(Machine machine, int numRows, int numCharsPerRow) {
+        if (machine.getVersion() >= 4) {
+            machine.writeUnsigned8(StoryFileHeader.SCREEN_HEIGHT, (char) numRows);
+            machine.writeUnsigned8(StoryFileHeader.SCREEN_WIDTH,
+                    (char) numCharsPerRow);
+        }
+        if (machine.getVersion() >= 5) {
+            machine.getFileHeader().setFontHeight(1);
+            machine.getFileHeader().setFontWidth(1);
+            machine.writeUnsigned16(StoryFileHeader.SCREEN_HEIGHT_UNITS,
+                    (char) numRows);
+            machine.writeUnsigned16(StoryFileHeader.SCREEN_WIDTH_UNITS,
+                    (char) numCharsPerRow);
+        }
+    }
+
     @Override
     public void topWindowUpdated(int cursorx, int cursory, AnnotatedCharacter c) {
 
@@ -144,14 +163,13 @@ public class CliScreenModel implements ScreenModelListener,StatusLineListener {
 
     @Override
     public void windowErased(int window) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'windowErased'");
+        System.out.println("BUREAU. windowErased, window="+window);
     }
 
     @Override
     public void topWindowCursorMoving(int line, int column) {
-        System.out.println("top window cursor moving :"+line+":"+column);
-        this.topRoomDescription = "";
+        System.out.println("top window cursor moving :"+line+":"+column+", topRoomDescription="+this.topRoomDescription);
+        //this.topRoomDescription = "";
     }
 
     @Override
