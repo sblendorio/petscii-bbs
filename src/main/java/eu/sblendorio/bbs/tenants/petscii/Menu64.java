@@ -108,6 +108,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == 'y') wifiModem();
                 else if (key == 'w') launch(new WikipediaPetscii());
                 else if (key == 'p') menuBasicPrograms();
+                else if (key == 'e') launch(new EnigmaPetscii());
                 else if (isSanremo() && key == 's') launch(new SanremoPetscii());
                 else {
                     validKey = false;

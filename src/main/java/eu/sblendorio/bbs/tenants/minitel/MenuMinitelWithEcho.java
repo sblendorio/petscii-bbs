@@ -297,6 +297,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("g".equals(choice)) { textDemo(); subThread = null; }
                 else if ("h".equals(choice)) { wifiModem(); subThread = null; }
                 else if ("i".equals(choice)) { menuBasicPrograms(); subThread = null; }
+                else if ("j".equals(choice)) subThread = new EnigmaAscii(io);
                 // else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii(io);
                 else if ("*".equals(choice)) subThread = new TestClientVideotex();
                 else {

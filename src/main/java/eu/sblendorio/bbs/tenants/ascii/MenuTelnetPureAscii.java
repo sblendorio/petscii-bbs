@@ -189,6 +189,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 else if ("f".equals(choice)) { textDemo(); subThread = null; }
                 else if ("g".equals(choice)) subThread = new WikipediaAscii();
                 else if ("h".equals(choice)) { menuBasicPrograms(); subThread = null; }
+                else if ("i".equals(choice)) subThread = new EnigmaAscii();
                 else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii();
                 else {
                     validKey = false;

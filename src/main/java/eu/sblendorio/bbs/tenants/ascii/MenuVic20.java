@@ -78,6 +78,8 @@ public class MenuVic20 extends MenuApple1 {
         println("E - WiFi Modem");
         println("F - Apple-1 Demo");
         println("G - Wikipedia");
+        println("H - BASIC");
+        println("I - Enigma");
         println(". - Logout");
     }
 
@@ -109,6 +111,7 @@ public class MenuVic20 extends MenuApple1 {
         println("6 - Amedeo Valoroso");
         println("7 - Butac.it");
         println("8 - Alessandro Albano");
+        println("9 - Ready 64");
         println(". - Go back");
     }
 

@@ -18,5 +18,6 @@ E - WiFi Modem
 F - Apple-1 Demo
 G - Wikipedia
 H - BASIC Programs
+I - Enigma Machine
 . - Logout
 

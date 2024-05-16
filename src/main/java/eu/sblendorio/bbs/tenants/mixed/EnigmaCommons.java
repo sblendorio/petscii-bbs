@@ -1,5 +1,9 @@
 package eu.sblendorio.bbs.tenants.mixed;
 
+import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.Utils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -12,6 +16,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static eu.sblendorio.bbs.core.Utils.STR_LETTER;
+import static eu.sblendorio.bbs.core.Utils.setOfChars;
 
 public class EnigmaCommons {
 
@@ -158,4 +165,146 @@ public class EnigmaCommons {
         return machine;
     }
 
+
+
+
+
+
+
+    public static void showConfig(BbsThread bbs, EnigmaStatus machine) {
+        bbs.println("Reflector: " + machine.getReflector());
+        bbs.println("Auto increment rotors: "+(machine.getAutoIncrementRotors() ? "Yes" : "No"));
+        bbs.println("Number of wirings: "+machine.getWirings().size());
+        int i=0;
+        for (EnigmaCommons.Wiring w: machine.getWirings()) {
+            i++;
+            bbs.println("  "+i+". From " + w.fromLetter() + " to " + w.toLetter());
+        }
+        i=0;
+        for (EnigmaCommons.Rotor r: machine.getRotors()) {
+            i++;
+            bbs.println("Rotor#"+i+": Type "+r.type()+", Ring "+r.ring()+", Position "+r.position());
+        }
+    }
+
+    public static void menu(BbsThread bbs, EnigmaStatus machine) throws Exception {
+        do {
+            bbs.cls();
+            bbs.println("Enigma machine by Denis Maggiorotto");
+            bbs.println("-----------------------------------");
+            showConfig(bbs, machine);
+            bbs.println();
+            bbs.println("1. Change rotor 1");
+            bbs.println("2. Change rotor 2");
+            bbs.println("3. Change rotor 3");
+            bbs.println("4. Change reflector");
+            bbs.println("5. Toggle auto increment rotors");
+            bbs.println("6. Add wiring");
+            bbs.println("7. Remove wiring");
+            bbs.println("8. Encrypt/Decrypt a string");
+            bbs.println(". - Back to main menu");
+            bbs.println();
+            bbs.flush(); bbs.resetInput();
+            int ch = bbs.readKey();
+            if (ch == '.') break;
+            if (ch == '1') {
+                bbs.println("Change rotor 1.");
+                EnigmaCommons.Rotor rotor0 = askRotor(bbs);
+                machine.setRotors(List.of(
+                        rotor0,
+                        machine.getRotors().get(1),
+                        machine.getRotors().get(2)
+                ));
+            }
+            if (ch == '2') {
+                bbs.println("Change rotor 2.");
+                EnigmaCommons.Rotor rotor1 = askRotor(bbs);
+                machine.setRotors(List.of(
+                        machine.getRotors().get(0),
+                        rotor1,
+                        machine.getRotors().get(2)
+                ));
+            }
+            if (ch == '3') {
+                bbs.println("Change rotor 3.");
+                EnigmaCommons.Rotor rotor2 = askRotor(bbs);
+                machine.setRotors(List.of(
+                        machine.getRotors().get(0),
+                        machine.getRotors().get(1),
+                        rotor2
+                ));
+            }
+            if (ch == '4') {
+                bbs.print("Enter reflector: ");
+                do {
+                    bbs.flush(); bbs.resetInput();
+                    String candidate = bbs.readLine();
+                    candidate = candidate.trim().toUpperCase();
+                    if (".".equals(candidate)) continue;
+                    if (Set.of("UKW-A", "UKW-B", "UKW-C").contains(candidate)) {
+                        machine.setReflector(candidate);
+                        break;
+                    }
+                    bbs.print("(UKW-A, UKW-B or UKW-C): ");
+                } while (true);
+            }
+            if (ch == '5') machine.setAutoIncrementRotors(!machine.getAutoIncrementRotors());
+            if (ch == '6') {
+                bbs.print("From: "); bbs.flush(); bbs.resetInput();
+                String from = bbs.readLine(1, setOfChars(Utils.STR_LETTER));
+                if (StringUtils.isEmpty(from)) continue;
+                bbs.print("To: "); bbs.flush(); bbs.resetInput();
+                String to = bbs.readLine(1, setOfChars(Utils.STR_LETTER));
+                if (StringUtils.isEmpty(to)) continue;
+                machine.getWirings().add(new EnigmaCommons.Wiring(from.toUpperCase(), to.toUpperCase()));
+            }
+            if (ch == '7' && !machine.getWirings().isEmpty()) {
+                machine.getWirings().removeLast();
+            }
+            if (ch == '8') {
+                bbs.print("Message: ");
+                bbs.flush(); bbs.resetInput();
+                String msg = bbs.readLineUppercase(setOfChars(STR_LETTER));
+                machine.setOriginalMessage(msg.toUpperCase());
+                EnigmaStatus newMachine = EnigmaCommons.process(machine);
+                bbs.println("Encoded: " + newMachine.getEncodedMessage());
+                bbs.flush(); bbs.resetInput();
+                bbs.readKey();
+            }
+        } while (true);
+    }
+
+    public static EnigmaCommons.Rotor askRotor(BbsThread bbs) throws Exception {
+        String type;
+        bbs.print("Type: ");
+        do {
+            bbs.flush(); bbs.resetInput();
+            String candidate = bbs.readLine();
+            candidate = candidate.trim().toUpperCase()
+                    .replace("1", "I").replace("2", "II").replace("3", "III");
+            if (".".equals(candidate)) continue;
+            if (Set.of("I", "II", "III").contains(candidate)) {
+                type = candidate;
+                break;
+            }
+            bbs.print("(I, II, or III): ");
+        } while (true);
+        int ring;
+        bbs.print("Ring: ");
+        do {
+            bbs.flush(); bbs.resetInput();
+            String candidate = bbs.readLine();
+            int candidateInt = NumberUtils.toInt(candidate.trim());
+            if (".".equals(candidate)) continue;
+            if (candidateInt >= 0 && candidateInt <= 26) {
+                ring = candidateInt;
+                break;
+            }
+            bbs.print("(0 to 26): ");
+        } while (true);
+        bbs.print("Position: "); bbs.flush(); bbs.resetInput();
+        String candidate = bbs.readLine();
+        int position = NumberUtils.toInt(candidate);
+        return new EnigmaCommons.Rotor(position, ring, type);
+    }
 }
