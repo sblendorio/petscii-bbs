@@ -72,7 +72,7 @@ class Utils {
   }
 
   static isAlphanumeric(c) {
-    return Utils.isAlpha(c) || Utils.isDigit(c);
+    return Utils.isAlpha(c) || Utils.isDigit(c) || c == '_' || c == '.'; // SBLEND
   }
 
   static toFixed(num, fixed) {

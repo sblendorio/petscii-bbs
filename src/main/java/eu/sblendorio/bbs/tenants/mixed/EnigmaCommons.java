@@ -17,9 +17,15 @@ public class EnigmaCommons {
 
     public static class EnigmaStatus {
         private List<EnigmaCommons.Wiring> wirings = new LinkedList<>();
-        private List<EnigmaCommons.Rotor> rotors = new LinkedList<>();
+        private List<EnigmaCommons.Rotor> rotors = List.of(
+                new Rotor(0, 0, "I"),
+                new Rotor(0, 0, "I"),
+                new Rotor(0, 0, "I")
+        );
         private boolean autoIncrementRotors = false;
         private String reflector = "UKW-A";
+        private String originalMessage = "";
+        private String encodedMessage = "";
 
         public EnigmaStatus() {
         }
@@ -62,6 +68,22 @@ public class EnigmaCommons {
         public void setReflector(String reflector) {
             this.reflector = reflector;
         }
+
+        public String getOriginalMessage() {
+            return originalMessage;
+        }
+
+        public void setOriginalMessage(String originalMessage) {
+            this.originalMessage = originalMessage;
+        }
+
+        public String getEncodedMessage() {
+            return encodedMessage;
+        }
+
+        public void setEncodedMessage(String encodedMessage) {
+            this.encodedMessage = encodedMessage;
+        }
     }
 
     private static String URL = "https://nuvolaris.dev/api/v1/web/dmaggiorotto/Test/enigma/${MACHINE_TYPE}/encrypt";
@@ -78,22 +100,22 @@ public class EnigmaCommons {
     }
     // reflector: UKW-A, UKW-B, UKW-C
 
-    private static void validate(String machineType, List<Wiring> originWirings, List<Rotor> originRotors, String reflector) throws Exception {
-        List<Rotor> rotors = originRotors == null ? Collections.emptyList() : originRotors;
+    private static void validate(EnigmaStatus machine) throws Exception {
+        List<Rotor> rotors = machine.getRotors() == null ? Collections.emptyList() : machine.getRotors();
         if (rotors.size() != 3)
             throw new IllegalArgumentException("Invalid rotors count");
-        if (reflector == null || !Set.of("UKW-A", "UKW-B", "UKW-C").contains(reflector.toUpperCase().trim()))
+        if (machine.getReflector() == null || !Set.of("UKW-A", "UKW-B", "UKW-C").contains(machine.getReflector().toUpperCase().trim()))
             throw new IllegalArgumentException("Invalid reflector");
         if (rotors.stream().filter(x -> !Set.of("I", "II", "III").contains(x.type().toUpperCase().trim())).count() != 0)
             throw new IllegalArgumentException("Invalid rotor type");
     }
 
-    public static String process(String originClearText, String machineType, List<Wiring> originWirings, boolean autoIncrementRotors, List<Rotor> originRotors, String reflector) throws Exception {
-        validate(machineType, originWirings, originRotors, reflector);
+    public static EnigmaStatus process(EnigmaStatus machine) throws Exception {
+        validate(machine);
 
-        List<Wiring> wirings = originWirings == null ? Collections.emptyList() : originWirings;
-        List<Rotor> rotors = originRotors == null ? Collections.emptyList() : originRotors;
-        String clearText = originClearText == null ? "" : originClearText.toUpperCase().trim().replace("[^A-Z]", "");
+        List<Wiring> wirings = machine.getWirings() == null ? Collections.emptyList() : machine.getWirings();
+        List<Rotor> rotors = machine.getRotors() == null ? Collections.emptyList() : machine.getRotors();
+        String clearText = machine.getOriginalMessage() == null ? "" : machine.getOriginalMessage().toUpperCase().trim().replace("[^A-Z]", "");
 
         String strWirings = wirings.stream().map(EnigmaCommons::wiring2string).collect(Collectors.joining(","));
         String strRotors = rotors.stream().map(EnigmaCommons::rotor2string).collect(Collectors.joining(","));
@@ -109,10 +131,10 @@ public class EnigmaCommons {
             }
             """
                 .replace("${strWirings}", strWirings)
-                .replace("${autoIncrementRotors}", String.valueOf(autoIncrementRotors))
+                .replace("${autoIncrementRotors}", String.valueOf(machine.getAutoIncrementRotors()))
                 .replace("${clearText}", clearText.toUpperCase().trim())
                 .replace("${strRotors}", strRotors)
-                .replace("${reflector}", reflector);
+                .replace("${reflector}", machine.getReflector());
 
 
         String url = URL.replace("${MACHINE_TYPE}", "I");
@@ -132,26 +154,8 @@ public class EnigmaCommons {
         }
 
         JSONObject root = (JSONObject) new JSONParser().parse(response.body());
-        return (String) root.get("cyphertext");
-    }
-
-    public static void main(String[] args) throws Exception {
-        String result = process(
-                "GCPDTZGHROYYSTEJR",
-                "I",
-                List.of(
-                        new Wiring("D", "Z")
-                ),
-                true,
-                List.of(
-                        new Rotor(0, 0, "I"),
-                        new Rotor(0, 0, "I"),
-                        new Rotor(0, 0, "I")
-                ),
-                "UKW-A"
-        );
-
-        System.out.println(result);
+        machine.setEncodedMessage((String) root.get("cyphertext"));
+        return machine;
     }
 
 }
