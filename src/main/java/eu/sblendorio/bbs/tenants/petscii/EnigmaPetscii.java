@@ -49,8 +49,8 @@ public class EnigmaPetscii extends PetsciiThread {
     public void menu() throws Exception {
         do {
             cls();
-            println("Enigma machine");
-            println("--------------");
+            println("Enigma machine by Denis Maggiorotto");
+            println("-----------------------------------");
             showConfig();
             println();
             println("1. Change rotor 1");
