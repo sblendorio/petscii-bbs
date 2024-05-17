@@ -50,7 +50,9 @@ public class MenuM10 extends MenuApple1 {
         println("4 - Patreon List        D - Chat GPT");
         println("5 - Patreon Publishers  E - WiFi Modem");
         println("                        F - Apple1 Demo");
-        println(". - Logout              G - Wikipedia");
+        println("                        G - Wikipedia");
+        println("                        H - BASIC");
+        println(". - Logout              I - Enigma");
     }
 
     public void showInternationalNews() {
