@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.jsoup.internal.StringUtil;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -265,6 +266,7 @@ public class EnigmaCommons {
                 bbs.print("Message: ");
                 bbs.flush(); bbs.resetInput();
                 String msg = bbs.readLineUppercase(setOfChars(STR_LETTER));
+                if (StringUtils.isEmpty(msg)) continue;
                 machine.setOriginalMessage(msg.toUpperCase());
                 EnigmaStatus newMachine = EnigmaCommons.process(machine);
                 bbs.println("Encoded: " + newMachine.getEncodedMessage());
