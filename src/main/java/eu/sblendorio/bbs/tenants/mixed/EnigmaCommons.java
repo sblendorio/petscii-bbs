@@ -94,7 +94,8 @@ public class EnigmaCommons {
         }
     }
 
-    private static String URL = "https://nuvolaris.dev/api/v1/web/dmaggiorotto/Test/enigma/${MACHINE_TYPE}/encrypt";
+    // https://nuvolaris.dev/api/v1/web/dmaggiorotto/Test/enigma/${MACHINE_TYPE}/encrypt
+    private static String URL = "https://enigma-rest-api-1-0.onrender.com/enigma-api/v1/enigma/${MACHINE_TYPE}/encrypt";
 
     public record Wiring(String fromLetter, String toLetter) {}
     public record Rotor(int position, int ring, String type) {} // type = I/II/III
