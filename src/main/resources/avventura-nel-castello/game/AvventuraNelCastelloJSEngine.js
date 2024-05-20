@@ -196,11 +196,12 @@ class AvventuraNelCastelloJSEngine extends IFEngine{
 					defaultMessage: i18n.AvventuraNelCastelloJSEngine.verbs.liftUp.defaultMessage,
 					callback: async(targets) => {
 						let target = targets[0];
-						if (this.Parser._getSource("alza", target.on))
-							return null;
 						if(this.inventario[target.key])
 							return i18n.AvventuraNelCastelloJSEngine.defaultMessages.inYourHand;
 						
+						if (this.Parser._getSource("alza", target.on))
+							return null;
+
 						if(this.stanzaCorrente.interactors.hasOwnProperty(target.key))
 							return this.Thesaurus.defaultMessages.SII_SERIO;
 							

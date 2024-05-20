@@ -2562,6 +2562,9 @@ class Avventura extends AvventuraNelCastelloJSEngine{
 					posizione: "salaTrono",
 					on: {
 						"alza|spingi": async () => {
+							if(this.datiAvventura.objects.cuscino.posizione != "salaTrono"){
+								return this.Thesaurus.verbs.alza.defaultMessage
+							}
 							this.scopri(this.datiAvventura.objects.astuccio);
 							this.aggiungiPunti("trovatoAstuccio");
 							await this.CRT.printTyping(i18n.AvventuraNelCastelloJS.objects.cushion.onLiftUp);

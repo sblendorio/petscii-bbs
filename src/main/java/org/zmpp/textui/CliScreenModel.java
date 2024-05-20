@@ -67,8 +67,18 @@ public class CliScreenModel implements ScreenModelListener,StatusLineListener {
         model.run();
         while(model.getCurrentRunState() != MachineRunState.STOPPED){
             if(model.getCurrentRunState().isWaitingForInput()){
+                System.out.println("<------ PRIMA. readchar="+model.getCurrentRunState().isReadChar()+", readline="+model.getCurrentRunState().isReadLine()+", none="+model.getCurrentRunState().isWaitingForInput() +"---------->");
+                if (model.getCurrentRunState().isReadChar()) {
+                    System.out.println("* "+ model.topRoomDescription);
+                }
                 String inputline = bsr.readLine();
-                model.setCurrentRunState(model.getExecutionControl().resumeWithInput(inputline));
+                System.out.println("<------ DOPO ---------->");
+                if (model.getCurrentRunState().isReadLine()) {
+                    model.setCurrentRunState(model.getExecutionControl().resumeWithInput(inputline));
+                } else if (model.getCurrentRunState().isReadChar()) {
+                    inputline.chars().forEach(c -> model.getExecutionControl().resumeWithInput(String.valueOf((char) c)));
+                    model.setCurrentRunState(model.getExecutionControl().resumeWithInput("\n"));
+                }
             }
         }
 
@@ -169,7 +179,7 @@ public class CliScreenModel implements ScreenModelListener,StatusLineListener {
     @Override
     public void topWindowCursorMoving(int line, int column) {
         System.out.println("top window cursor moving :"+line+":"+column+", topRoomDescription="+this.topRoomDescription);
-        //this.topRoomDescription = "";
+        this.topRoomDescription = "";
     }
 
     @Override
