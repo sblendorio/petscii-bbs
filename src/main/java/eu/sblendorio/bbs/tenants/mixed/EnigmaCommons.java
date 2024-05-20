@@ -174,7 +174,6 @@ public class EnigmaCommons {
 
     public static void showConfig(BbsThread bbs, EnigmaStatus machine) {
         bbs.println("Reflector: " + machine.getReflector());
-        bbs.println("Auto increment rotors: "+(machine.getAutoIncrementRotors() ? "Yes" : "No"));
         bbs.println("Number of wirings: "+machine.getWirings().size());
         int i=0;
         for (EnigmaCommons.Wiring w: machine.getWirings()) {
@@ -199,10 +198,9 @@ public class EnigmaCommons {
             bbs.println("2. Change rotor 2");
             bbs.println("3. Change rotor 3");
             bbs.println("4. Change reflector");
-            bbs.println("5. Toggle auto increment rotors");
-            bbs.println("6. Add wiring");
-            bbs.println("7. Remove wiring");
-            bbs.println("8. Encrypt/Decrypt a string");
+            bbs.println("5. Add wiring");
+            bbs.println("6. Remove wiring");
+            bbs.println("7. Encrypt/Decrypt a string");
             bbs.println(". - Back to main menu");
             bbs.println();
             bbs.flush(); bbs.resetInput();
@@ -249,8 +247,7 @@ public class EnigmaCommons {
                     bbs.print("(UKW-A, UKW-B or UKW-C): ");
                 } while (true);
             }
-            if (ch == '5') machine.setAutoIncrementRotors(!machine.getAutoIncrementRotors());
-            if (ch == '6') {
+            if (ch == '5') {
                 bbs.print("From: "); bbs.flush(); bbs.resetInput();
                 String from = bbs.readLine(1, setOfChars(Utils.STR_LETTER));
                 if (StringUtils.isEmpty(from)) continue;
@@ -259,10 +256,10 @@ public class EnigmaCommons {
                 if (StringUtils.isEmpty(to)) continue;
                 machine.getWirings().add(new EnigmaCommons.Wiring(from.toUpperCase(), to.toUpperCase()));
             }
-            if (ch == '7' && !machine.getWirings().isEmpty()) {
+            if (ch == '6' && !machine.getWirings().isEmpty()) {
                 machine.getWirings().removeLast();
             }
-            if (ch == '8') {
+            if (ch == '7') {
                 bbs.print("Message: ");
                 bbs.flush(); bbs.resetInput();
                 String msg = bbs.readLineUppercase(setOfChars(STR_LETTER));
