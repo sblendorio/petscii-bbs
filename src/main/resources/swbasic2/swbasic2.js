@@ -21,7 +21,7 @@
 /**
  * Constants
  */
-const KEYWORDS  = /(AND|CLEAR|CLS|DATA|DEF|DIM|ELSE|END|FOR|WIDTH|GOSUB|GOTO|IF|INPUT|LET|MOD|NEXT|NOT|ON|OR|PRINT|RANDOMIZE|LOCATE|SLEEP|READ|REM|RESTORE|RETURN|STEP|STOP|SYSTEM|THEN|TO|WHILE|WEND)/ig;
+const KEYWORDS  = /(AND|CLEAR|CLS|DATA|DEF|DIM|ELSE|END|FOR|WIDTH|GOSUB|GOTO|IF|INPUT|LET|MOD|NEXT|NOT|ON|OR|PRINT|RANDOMIZE|LOCATE|SLEEP|READ|REM|RESTORE|BEEP|RETURN|STEP|STOP|SYSTEM|THEN|TO|WHILE|WEND)/ig;
 const FUNCTIONS = /^(ABS|ASC|ATN|CHR\$|SPACE\$|COS|EXP|INSTR|INT|LEFT\$|LEN|LOG|MID\$|POS|RIGHT\$|RND|SGN|SIN|SPC|SQR|STRING\$|STR\$|TAB|TAN|TIMER|VAL|INKEY\$)$/i;
 
 const TAB_CHARACTER      = " ";
@@ -677,6 +677,7 @@ class Parser {
     this.functions["READ"] = this.read_statement.bind(this);
     this.functions["REM"] = this.rem_statement.bind(this);
     this.functions["RESTORE"] = this.restore_statement.bind(this);
+    this.functions["BEEP"] = this.beep_statement.bind(this);
     this.functions["RETURN"] = this.return_statement.bind(this);
     this.functions["STOP"] = this.end_statement.bind(this); // this also ends program
     this.functions["SYSTEM"] = this.end_statement.bind(this); // this also ends program
@@ -1447,6 +1448,11 @@ class Parser {
     return node;
   }
 
+  beep_statement(self) {
+    let node = new PNode("BEEP");
+    return node;
+  }
+
   return_statement(self) {
     let node = new PNode("RETURN");
     return node;
@@ -1578,6 +1584,7 @@ class Interpreter {
     this.forInfo = [];
     this.defInfo = [];
     this.printFunction = null;
+    this.beepFunction = null;
     this.locateFunction = null;
     this.sleepFunction = null;
     this.inkeyFunction = null;
@@ -1620,6 +1627,7 @@ class Interpreter {
     this.ifunctions["SLEEP"] = this.sleep_statement.bind(this);
     this.ifunctions["READ"] = this.read_statement.bind(this);
     this.ifunctions["RESTORE"] = this.restore_statement.bind(this);
+    this.ifunctions["BEEP"] = this.beep_statement.bind(this);
     this.ifunctions["RETURN"] = this.return_statement.bind(this);
     this.ifunctions["WEND"] = this.wend_statement.bind(this);
     this.ifunctions["WHILE"] = this.while_statement.bind(this);
@@ -2704,6 +2712,11 @@ class Interpreter {
 
   restore_statement(self, idx) {
     this.dataPointer = 0;
+    return idx + 1;
+  }
+
+  beep_statement(self, idx) {
+    if (this.beepFunction) this.beepFunction();
     return idx + 1;
   }
 

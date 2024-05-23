@@ -53,6 +53,10 @@ public class SwBasicBridge {
         locateFunction.accept(bbs, y, x);
     }
 
+    public void beep() {
+        bbs.write(7);
+    }
+
     public int inkey(long ms) throws Exception {
         int result = bbs.convertToAscii(bbs.keyPressed());
         if (ms > 0) Thread.sleep(ms);
@@ -116,6 +120,7 @@ public class SwBasicBridge {
         engine.eval("interpreter = new Interpreter();", bindings);
         engine.eval("interpreter.printFunction = bridge.print", bindings);
         engine.eval("interpreter.inkeyFunction = bridge.inkey", bindings);
+        engine.eval("interpreter.beepFunction = bridge.beep", bindings);
         engine.eval("interpreter.locateFunction = bridge.locate", bindings);
         engine.eval("interpreter.stringInputFunction = bridge.stringInput", bindings);
         engine.eval("interpreter.numberInputFunction = bridge.numberInput", bindings);
