@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>SWBASIC2</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Simple BASIC interpreter in Javascript">
+  <meta name="keywords" content="basic, bas, javascript, js, interpreter">
+  <meta name="author" content="Krisztian Konya, Konyisoft">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <script src="swbasic2.js"></script>
+  <script src="examples.js"></script>
+</head>
+
+<body>
+  <script>
+
+    $(function () {
+
+      const INPUTFORM =
+        `<div id="inputform"><input type="text" id="inputfield"><button id="button-return">Return</button></div>`;
+
+      const READY =
+        `<br class="clear">Ready.<br><span class="cursor"></span>`;
+
+      const NO_ERRORS =
+        `No errors`;
+
+      const EXAMPLES = {
+        "WELCOME": SOURCE_WELCOME,
+        "BAGELS": SOURCE_BAGELS,
+        "BUNNY": SOURCE_BUNNY,
+        "CHOMP": SOURCE_CHOMP,
+        "ELIZA": SOURCE_ELIZA,
+        "HAMURABI": SOURCE_HAMURABI,
+        "RSP": SOURCE_RSP
+      };
+
+      let interpreter;
+      let timeoutId;
+
+      function printResult(text, eol) {
+        appendResult(text);
+        if (eol) {
+          appendResult("<br>");
+        }
+      }
+
+      function locateFunction(y, x) {
+        printResult("LOCATE("+y+","+x+")", true);
+      }
+
+      function stringInput(prompt, count) {
+        console.log("Waiting for string input... (" + count + ")");
+        appendResult(INPUTFORM);
+        $("#inputfield").focus();
+        $("#inputfield").keypress(function(e) {
+          if (e.which == 13) {
+            $("#button-return").click();
+          }
+        });
+        $("#button-return").click(function() {
+          try {
+            let val = $("#inputfield").val().toUpperCase();
+            if (count > 1) {
+              let values = val.split(",");
+              if (values.length > count) {
+                throw("Invalid input (too many arguments)");
+              } else {
+                interpreter.pushInput(values);
+              }
+            } else {
+              interpreter.pushInput(val);
+            }
+  	        $("#inputform").remove();
+	          appendResult(" <span class='inputtext'>" + val + "</span>");
+            interpreter.resumeInput();
+            resetStatus();
+	        } catch(error) {
+            showError(error);
+            throw(error);
+	        }
+        });
+      }
+
+      function numberInput(prompt, count) {
+        console.log("Waiting for number input... (" + count + ")");
+        appendResult(INPUTFORM);
+        $("#inputfield").focus();
+        $("#inputfield").keypress(function(e) {
+          if (e.which == 13) {
+            $("#button-return").click();
+          }
+        });
+        $("#button-return").click(function() {
+          try {
+            let val = $("#inputfield").val();
+            let values = val.split(",");
+            if (values.length > count) {
+              throw("Invalid input (too many arguments)");
+            }
+            for (let i = 0; i < values.length; i++) {
+              let nval = parseFloat(values[i]);
+              if (isNaN(nval)) {
+                throw("Invalid input (numeric input expected)");
+              } else {
+                values[i] = nval;
+              }
+            }
+            interpreter.pushInput(values);
+            $("#inputform").remove();
+            appendResult(" <span class='inputtext'>" + val + "</span>");
+            interpreter.resumeInput();
+            resetStatus();
+          } catch(error) {
+            showError(error);
+            throw(error);
+          }
+        });
+      }
+
+      function end() {
+        console.log("End program");
+        $("#inputform").remove();
+        appendResult(READY);
+      }
+
+      function cls() {
+        console.log("Clear screen");
+        $("#result").empty();
+      }
+
+      function runCode(code) {
+        try {
+          resetStatus();
+          interpreter = new Interpreter();
+          let parser = new Parser(code);
+          parser.parse();
+          interpreter.setParser(parser);
+          interpreter.printFunction = printResult;
+          interpreter.locateFunction = locateFunction;
+          interpreter.stringInputFunction = stringInput;
+          interpreter.numberInputFunction = numberInput;
+          interpreter.clsFunction = cls;
+          interpreter.endFunction = end;
+          interpreter.interpret();
+        } catch (error) {
+          showError(error);
+          throw(error);
+        }
+      }
+
+      function appendResult(text) {
+        $("#result").append(text);
+        // Scroll to the bottom of result (scrolls pre-wrapper)
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          $(".pre-wrapper").scrollTop($(".pre-wrapper")[0].scrollHeight);
+        }, 100);
+      }
+
+      function showError(msg) {
+        $("#status-message").addClass("error");
+        $("#status-message").text(msg);
+      }
+
+      function resetStatus() {
+        $("#status-message").removeClass("error");
+        $("#status-message").text(NO_ERRORS);
+      }
+
+      function loadExample(code) {
+        resetStatus();
+        $("#result").empty();
+        $("#code").val("");
+        $("#code").val(code);
+      }
+
+      function setSideVisible(visible, contentId) {
+        $("aside").hide(); // hide all
+        if (visible) {
+          $(contentId).show(); // show content
+        }
+      }
+
+      function init() {
+        $("#code").val("");
+        $("#code").val(EXAMPLES["WELCOME"]);
+
+        // event handlers
+        $("#button-run-code").click(() => {
+          $("#result").empty();
+          let code = $("#code").val();
+          runCode(code);
+        });
+
+        $("#button-stop-code").click(() => {
+          if (interpreter) {
+            interpreter.forceEnd();
+          }
+        });
+
+        $("#button-clear-code").click(() => {
+          if (interpreter) {
+            interpreter.forceEnd();
+          }
+          resetStatus();
+          $("#code").val("");
+        });
+
+        $("#button-clear-result").click(() => {
+          if (interpreter) {
+            interpreter.forceEnd();
+          }
+          $("#result").empty();
+        });
+
+        $("#example-codes li").click(() => {
+          let id = $(event.target).data("source-id");
+          loadExample(EXAMPLES[id]);
+        });
+
+        $("#nav-examples").click(() => {
+          let isVisible = !$("#examples").is(":hidden");
+          setSideVisible(!isVisible, "#examples");
+        });
+
+        $("#nav-help").click(() => {
+          let isVisible = !$("#help").is(":hidden");
+          setSideVisible(!isVisible, "#help");
+        });
+
+        $(".close-icon").click(() => {
+          setSideVisible(false);
+        });
+
+        resetStatus();
+      }
+
+     init();
+
+    });
+
+  </script>
+
+  <!-- Header / navbar -->
+  <header class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+    <!-- Logo -->
+    <div>
+      <a class="navbar-brand" href="#"><span class="red">S</span><span class="blue">W</span>BASIC<span class="yellow">2</span></a>
+      <p class="subtitle">Simple BASIC interpreter in Javascript</p>
+    </div>
+
+    <!-- Responsive menu toggle button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarDropdown" aria-controls="navbarDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navigation menu -->
+    <div class="collapse navbar-collapse" id="navbarDropdown">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" id="nav-source" target="_blank" href="swbasic.js">Download</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="nav-repo" target="_blank" href="https://gitlab.com/konyisoft/swbasic">Repository</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="nav-examples">Examples</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="nav-help">Help</a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main>
+
+    <!-- Code -->
+    <section>
+      <div class="toolbar">
+        <h2>Code</h2>
+        <div class="buttons">
+          <button id="button-clear-code"><span>&#9634;</span> Clear</button>
+          <button id="button-stop-code"><span>&#9632;</span> Stop</button>
+          <button id="button-run-code"><span>&#9654;</span> Run</button>
+        </div>
+      </div>
+      <div class="content">
+        <textarea id="code" autocomplete="off"></textarea>
+      </div>
+    </section>
+
+    <!-- Result -->
+    <section>
+      <div class="toolbar">
+        <h2>Result</h2>
+        <div class="buttons">
+          <button id="button-clear-result"><span>&#9634;</span> Clear</button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="pre-wrapper">
+          <pre id="result"></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Examples -->
+    <aside id="examples" class="bg-dark text-light">
+      <div class="close-icon">&times;</div>
+      <div class="aside-wrapper">
+        <p>Try out the following example programs. Click on the program name to load it to the editor.</p>
+        <ul id="example-codes">
+          <li data-source-id="WELCOME">Welcome</li>
+          <li data-source-id="BAGELS">Bagels</li>
+          <li data-source-id="BUNNY">Bunny (graphics)</li>
+          <li data-source-id="CHOMP">Chomp</li>
+          <li data-source-id="ELIZA">Eliza</li>
+          <li data-source-id="HAMURABI">Hamurabi</li>
+          <li data-source-id="RSP">Rock, Scissors, Paper</li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Help -->
+    <aside id="help" class="bg-dark text-light">
+      <div class="close-icon">&times;</div>
+      <div class="aside-wrapper">
+        <h5>Keywords:</h5>
+        <p class="keywords">
+          ?, AND, CLEAR, CLS, DATA, DEF FN, DIM, ELSE, END, FOR, GOSUB, GOTO, IF, INPUT, LET, MOD, NEXT, NOT, ON GOTO, ON GOSUB, OR, PRINT, RANDOMIZE, READ, REM, RESTORE, RETURN, STEP, STOP, SYSTEM, THEN, TO
+        </p>
+        <h5>Functions:</h5>
+        <p class="functions">
+            ABS, ASC, ATN, CHR$, COS, EXP, INSTR, INT, LEFT$, LEN, LOG, MID$, POS, RIGHT$, RND, SGN, SIN, SQR, SPC, STRING$, STR$, TAB, TAN, TIMER, VAL
+        </p>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="container-fluid bg-dark text-light">
+    <p id="status-message" class="d-inline-block mt-1 mb-1">Status</p>
+  </footer>
+
+</body>
+</html>
