@@ -1438,6 +1438,8 @@ class Parser {
         continue;
       }
       let identifier = this.identifier();
+      if (identifier.type == 'VARIABLE' && identifier.text == 'READ')
+        throw "Unexpected constant";
       node.addChild(identifier);
     }
     return node;
