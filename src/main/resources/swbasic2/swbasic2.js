@@ -1406,9 +1406,17 @@ class Parser {
 
   locate_statement(self) {
     let node = new PNode("LOCATE");
-    node.addChild(this.expression());
-    this.acceptText(",")
-    node.addChild(this.expression());
+    if (this.willAcceptText(",")) {
+      node.addChild(new PNode("NUMBER", -1));
+    } else {
+      node.addChild(this.expression());
+    }
+    if (this.willAcceptText(",")) {
+      this.acceptText(",")
+      node.addChild(this.expression());
+    } else {
+      node.addChild(new PNode("NUMBER", -1));
+    }
     return node;
   }
 
