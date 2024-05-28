@@ -21,7 +21,7 @@
 /**
  * Constants
  */
-const KEYWORDS  = /(AND|CLEAR|CLS|DATA|DEF|DIM|ELSE|END|FOR|WIDTH|GOSUB|GOTO|IF|INPUT|LET|MOD|NEXT|NOT|ON|OR|PRINT|RANDOMIZE|LOCATE|SLEEP|READ|REM|RESTORE|BEEP|RETURN|STEP|STOP|SYSTEM|THEN|TO|WHILE|WEND)/ig;
+const KEYWORDS  = /(AND|CLEAR|CLS|DATA|DEF|DIM|ELSE|END|FOR|WIDTH|GOSUB|GOTO|IF|LINE|INPUT|LET|MOD|NEXT|NOT|ON|OR|PRINT|RANDOMIZE|LOCATE|SLEEP|READ|REM|RESTORE|BEEP|RETURN|STEP|STOP|SYSTEM|THEN|TO|WHILE|WEND)/ig;
 const FUNCTIONS = /^(ABS|ASC|ATN|CHR\$|SPACE\$|COS|EXP|INSTR|INT|LEFT\$|LEN|LOG|MID\$|POS|RIGHT\$|RND|SGN|SIN|SPC|SQR|STRING\$|STR\$|TAB|TAN|TIMER|VAL|INKEY\$)$/i;
 
 const TAB_CHARACTER      = " ";
@@ -667,6 +667,7 @@ class Parser {
     this.functions["GOTO"] = this.goto_statement.bind(this);
     this.functions["IF"] = this.if_statement.bind(this);
     this.functions["INPUT"] = this.input_statement.bind(this);
+    this.functions["LINE"] = this.line_statement.bind(this);
     this.functions["LET"] = this.let_statement.bind(this);
     this.functions["NEXT"] = this.next_statement.bind(this);
     this.functions["ON"] = this.on_statement.bind(this);
@@ -1133,6 +1134,9 @@ class Parser {
     if (this.willAccept("IDENTIFIER")) {
       while (this.hasMoreTokens()) {
         let identifier = this.identifier();
+        if (identifier.type == "VARIABLE" && ["DIM", ","].includes(identifier.text)) {
+          throw "Unexpected constant";
+        }
         if (identifier.getType() === "KEYWORD") {
           throw "Keyword is not allowed to use in identifier: " + identifier.getText();
         }
@@ -1273,9 +1277,8 @@ class Parser {
     throw "Expected THEN or GOTO in IF statement";
   }
 
-  input_statement(self) {
+  input_statement_general(self, questionMark) {
     let node = new PNode("INPUT");
-    let questionMark = "? ";
     if (this.accept("STRING")) {
       questionMark = this.lastText() + questionMark;
     }
@@ -1291,9 +1294,21 @@ class Parser {
         continue;
       }
       let identifier = this.identifier();
+      if (identifier.type == "VARIABLE" && ["INPUT", ","].includes(identifier.text)) {
+        throw "Unexpected constant";
+      }
       node.addChild(identifier);
     }
     return node;
+  }
+
+  input_statement(self) {
+    return this.input_statement_general(self, "? ");
+  }
+
+  line_statement(self) {
+    this.acceptText("INPUT");
+    return this.input_statement_general(self, "");
   }
 
   let_statement(self) {
@@ -1438,8 +1453,9 @@ class Parser {
         continue;
       }
       let identifier = this.identifier();
-      if (identifier.type == 'VARIABLE' && identifier.text == 'READ')
+      if (identifier.type == "VARIABLE" && ["READ", ","].includes(identifier.text)) {
         throw "Unexpected constant";
+      }
       node.addChild(identifier);
     }
     return node;
