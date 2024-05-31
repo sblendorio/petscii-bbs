@@ -1260,7 +1260,7 @@ class Parser {
         return node;
       }
       return node;
-    } else if (this.accept("GOTO")) {
+    } else if (this.acceptText("GOTO")) {
       let gotoPart = new PNode("GOTO");
       if (this.accept("NUMBER")) {
         gotoPart.text = this.lastText().toUpperCase();
@@ -2731,7 +2731,11 @@ class Interpreter {
         throw "READ without DATA";
       }
       let value = this.data[this.dataPointer++].text;
-      this.setValue(variable, value);
+      let name = variable.text;
+      if (name[name.length - 1] == "$")
+        this.setValue(variable, ""+value);
+      else
+        this.setValue(variable, value);
     }
     return idx + 1;
   }
