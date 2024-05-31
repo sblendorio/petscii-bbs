@@ -1261,10 +1261,12 @@ class Parser {
       }
       return node;
     } else if (this.acceptText("GOTO")) {
-      let gotoPart = new PNode("GOTO");
+      let thenPart = new PNode("THEN");
+      let statement = new PNode("GOTO");
       if (this.accept("NUMBER")) {
-        gotoPart.text = this.lastText().toUpperCase();
-        node.addChild(gotoPart);
+        statement.text = this.lastText().toUpperCase();
+        thenPart.addChild(statement);
+        node.addChild(thenPart);
         // ignore rest of line
         let ignore = new PNode("_");
         this.accept("STATEMENT_DELIMITER");
