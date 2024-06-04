@@ -646,6 +646,7 @@ class Parser {
     // prepare text: remove blank lines (incl. spaces, tabs), make uppercased
     this.text = text.replace(/^\s*[\r\n]/gm, "");//.toUpperCase(); SBLEND
 
+    this.prevToken = null;
     this.lines = []; // code that has line numbers goes here
     this.statements = []; // list of statements (flattened)
     this.labelIndex = [];
@@ -966,6 +967,10 @@ class Parser {
         }
       }
     }
+    if (this.prevToken != null & this.prevToken == this.tokenizer.theCurrentToken) {
+      throw "SYNTAX ERROR NEAR " + this.lastText();
+    }
+    this.prevToken = this.tokenizer.theCurrentToken
     return node;
   }
 
@@ -1134,9 +1139,6 @@ class Parser {
     if (this.willAccept("IDENTIFIER")) {
       while (this.hasMoreTokens()) {
         let identifier = this.identifier();
-        if (identifier.type == "VARIABLE" && ["DIM", ","].includes(identifier.text)) {
-          throw "Unexpected constant";
-        }
         if (identifier.getType() === "KEYWORD") {
           throw "Keyword is not allowed to use in identifier: " + identifier.getText();
         }
@@ -1296,9 +1298,6 @@ class Parser {
         continue;
       }
       let identifier = this.identifier();
-      if (identifier.type == "VARIABLE" && ["INPUT", ","].includes(identifier.text)) {
-        throw "Unexpected constant";
-      }
       node.addChild(identifier);
     }
     return node;
@@ -1455,9 +1454,6 @@ class Parser {
         continue;
       }
       let identifier = this.identifier();
-      if (identifier.type == "VARIABLE" && ["READ", ","].includes(identifier.text)) {
-        throw "Unexpected constant";
-      }
       node.addChild(identifier);
     }
     return node;
