@@ -37,6 +37,11 @@ const RAND_A = 214013;
 const RAND_C = 2531011;
 const RAND_Z = 1 << 24;
 
+var parseFloat = (function() {
+    var oldParse = parseFloat;
+    return function(str) { return (str == '.' || str == '-.') ? 0.0 : oldParse(str); }
+})();
+
 /**
  * Utils class
  */
