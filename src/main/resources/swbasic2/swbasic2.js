@@ -1269,10 +1269,10 @@ class Parser {
       return node;
     } else if (this.acceptText("GOTO")) {
       let thenPart = new PNode("THEN");
-      let statement = new PNode("GOTO");
+      let gotoPart = new PNode("GOTO");
       if (this.accept("NUMBER")) {
-        statement.text = this.lastText().toUpperCase();
-        thenPart.addChild(statement);
+        gotoPart.text = this.lastText().toUpperCase();
+        thenPart.addChild(gotoPart);
         node.addChild(thenPart);
         // ignore rest of line
         let ignore = new PNode("_");
