@@ -193,6 +193,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("7".equals(choice)) subThread = new ButacAscii();
                 else if ("8".equals(choice)) subThread = new AlessandroAlbanoAscii();
                 else if ("9".equals(choice)) subThread = new OneRssReady64Ascii();
+                else if ("0".equals(choice)) subThread = new CommessoPerplessoAscii();
                 else {
                     validKey = false;
                     subThread = null;

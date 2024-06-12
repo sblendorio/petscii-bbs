@@ -178,6 +178,7 @@ public class MenuPrestelWithEcho extends PrestelThread {
                 else if ("7".equals(choice)) subThread = new ButacAscii(io);
                 else if ("8".equals(choice)) subThread = new AlessandroAlbanoAscii(io);
                 else if ("9".equals(choice)) subThread = new OneRssReady64Ascii(io);
+                else if ("0".equals(choice)) subThread = new CommessoPerplessoAscii(io);
                 else {
                     validKey = false;
                     subThread = null;

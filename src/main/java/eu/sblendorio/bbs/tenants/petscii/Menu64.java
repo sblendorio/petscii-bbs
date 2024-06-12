@@ -138,9 +138,9 @@ public class Menu64 extends PetsciiThread {
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'a', REVOFF, 161); print("Medical Facts  "); write(REVON, 161, 'v', REVOFF, 161); println("Giano News");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'b', REVOFF, 161); print("Retrocampus    "); write(REVON, 161, 'w', REVOFF, 161); println("Red Hot Cyber");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'c', REVOFF, 161); print("RetroAcademy   "); write(REVON, 161, 'x', REVOFF, 161); println("MCC Blog");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'd', REVOFF, 161); print("D.E.T.A.       "); write(REVON, 161, 'y', REVOFF, 161); println("Ready 64");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'd', REVOFF, 161); print("C.H.P.D.B.     "); write(REVON, 161, 'y', REVOFF, 161); println("Ready 64");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'e', REVOFF, 161); println("Attivissimo");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'f', REVOFF, 161); println("Chi ha paura del buio?");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'f', REVOFF, 161); println("Commesso Perplesso");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'g', REVOFF, 161); println("Apulia Retrocomputing");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'h', REVOFF, 161); println("Arch. Informatica");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'i', REVOFF, 161); print("Alessandro Albano        "); write(REVON, 161, '.', REVOFF, 161); print("Exit");
@@ -173,9 +173,9 @@ public class Menu64 extends PetsciiThread {
                 else if (key == 'a') launch(new MedicalFacts());
                 else if (key == 'b') launch(new RetroCampus());
                 else if (key == 'c') launch(new RetroAcademy());
-                else if (key == 'd') launch(new DetaPetscii());
+                else if (key == 'd') launch(new ChpdbPetscii());
                 else if (key == 'e') launch(new Disinformatico());
-                else if (key == 'f') launch(new ChpdbPetscii());
+                else if (key == 'f') launch(new CommessoPerplessoPetscii());
                 else if (key == 'g') launch(new OneApuliaRetrocomputingPetscii());
                 else if (key == 'h') launch(new ArcheologiaInformatica());
                 else if (key == 'i') launch(new AlessandroAlbano());

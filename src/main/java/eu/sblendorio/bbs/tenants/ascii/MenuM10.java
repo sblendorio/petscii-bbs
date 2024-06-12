@@ -73,8 +73,8 @@ public class MenuM10 extends MenuApple1 {
         println("1 - Televideo       6 - Amedeo Valoroso");
         println("2 - Lercio          7 - Butac.it");
         println("3 - Disinformatico  8 - A. Albano");
-        println("4 - Mupin.it        . - Go back");
-        println("5 - Fatto Quotidiano");
+        println("4 - Mupin.it        9 - Ready 64");
+        println("5 - F.Quot.      0 - Commesso Perplesso");
     }
 
     public void showGames() {

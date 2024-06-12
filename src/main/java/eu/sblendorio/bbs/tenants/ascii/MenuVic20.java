@@ -112,6 +112,7 @@ public class MenuVic20 extends MenuApple1 {
         println("7 - Butac.it");
         println("8 - Alessandro Albano");
         println("9 - Ready 64");
+        println("0 - CommessoPerplesso");
         println(". - Go back");
     }
 
