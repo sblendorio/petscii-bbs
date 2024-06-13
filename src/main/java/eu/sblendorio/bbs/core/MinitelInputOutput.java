@@ -2,8 +2,8 @@ package eu.sblendorio.bbs.core;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 
+import static eu.sblendorio.bbs.core.HtmlUtils.utilHtmlClean;
 import static eu.sblendorio.bbs.core.MinitelControls.CURSOR_LEFT;
 
 public class MinitelInputOutput extends BbsInputOutput {
@@ -87,6 +87,11 @@ public class MinitelInputOutput extends BbsInputOutput {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public String htmlClean(String s) {
+        return utilHtmlClean(s);
     }
 
     private void printDiacritic(char ch) {
@@ -178,4 +183,4 @@ public class MinitelInputOutput extends BbsInputOutput {
         while ((ch = super.readKey()) == 19);
         return ch;
     }
-    }
+}

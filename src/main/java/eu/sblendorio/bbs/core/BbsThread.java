@@ -8,14 +8,12 @@ import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.net.*;
-import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static eu.sblendorio.bbs.core.HtmlUtils.utilHtmlClean;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.commons.lang3.StringUtils.*;
 
@@ -735,7 +733,7 @@ public abstract class BbsThread extends Thread {
     }
 
     public String htmlClean(String s) {
-        return utilHtmlClean(s);
+        return io.htmlClean(s);
     }
 
     public String preprocessDiacritics(String s) {

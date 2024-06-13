@@ -206,7 +206,7 @@ public abstract class RssAscii extends AsciiThread {
             String text = EMPTY;
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             for (NewsFeed feed : feeds) {
-                String temp = (io instanceof MinitelInputOutput) ? utilHtmlClean(feed.description) : htmlClean(feed.description);
+                String temp = htmlClean(feed.description);
                 String description = temp.trim();
                 description = StringUtils.isBlank(description) ? "&c64nbsp;" : description;
 
@@ -285,7 +285,7 @@ public abstract class RssAscii extends AsciiThread {
     }
 
     protected String[] wordWrap(String s) {
-        String temp = (io instanceof MinitelInputOutput ? utilHtmlClean(s) : htmlClean(s));
+        String temp = htmlClean(s);
         String[] cleaned = filterPrintableWithNewline(temp.trim()).replaceAll(" +", " ").split("\n");
         List<String> result = new LinkedList<>();
         for (String item: cleaned) {

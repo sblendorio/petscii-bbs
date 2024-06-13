@@ -1,6 +1,5 @@
 package eu.sblendorio.bbs.core;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -9,8 +8,9 @@ import java.net.Socket;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
+import static eu.sblendorio.bbs.core.HtmlUtils.utilHtmlClean;
+import static eu.sblendorio.bbs.core.HtmlUtils.utilHtmlDiacriticsToAscii;
 import static java.lang.System.arraycopy;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static org.apache.commons.lang3.StringUtils.*;
@@ -496,6 +496,10 @@ public abstract class BbsInputOutput extends Reader {
         for (char c: defaultString(s).toCharArray())
             if (isPrintableChar(c) || c == '\n' || c == '\r') result.append(c);
         return result.toString();
+    }
+
+    public String htmlClean(String s) {
+        return utilHtmlDiacriticsToAscii(utilHtmlClean(s));
     }
 
     @Override

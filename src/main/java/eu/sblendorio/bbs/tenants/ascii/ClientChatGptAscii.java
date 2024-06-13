@@ -208,9 +208,7 @@ public class ClientChatGptAscii extends AsciiThread {
                 .replaceAll("\n", "\r\n")
                 ;
 
-        if (!(io instanceof MinitelInputOutput)) result = HtmlUtils.utilHtmlDiacriticsToAscii(result);
-
-        return result;
+        return htmlClean(result);
     }
 
     private String asciiToUtf8(String input) {
