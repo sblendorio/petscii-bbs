@@ -78,6 +78,8 @@ public class OneRssAscii extends AsciiThread {
         screenRows = getScreenRows() - 4;
     }
 
+    public boolean resizeable() { return true; }
+
     public int getPageSize() {
         return this.pageSize;
     }

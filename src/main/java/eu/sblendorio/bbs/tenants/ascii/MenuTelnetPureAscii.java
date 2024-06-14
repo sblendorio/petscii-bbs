@@ -141,11 +141,11 @@ public class MenuTelnetPureAscii extends AsciiThread {
             t.screenRows = this.screenRows;
         }
         if (subThread instanceof WordpressProxyAscii t) {
-            t.pageSize *= 2;
+            if (t.resizeable()) t.pageSize *= 2;
         } else if (subThread instanceof GoogleBloggerProxyAscii t) {
-            t.pageSize *= 2;
+            if (t.resizeable()) t.pageSize *= 2;
         } else if (subThread instanceof OneRssAscii t) {
-            t.pageSize *= 2;
+            if (t.resizeable()) t.pageSize *= 2;
         }
         launch(subThread);
     }

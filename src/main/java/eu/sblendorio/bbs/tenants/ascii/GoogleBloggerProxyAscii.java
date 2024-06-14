@@ -65,6 +65,8 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
         }
     }
 
+    public boolean resizeable() { return true; }
+
     protected PageTokens pageTokens = new PageTokens();
 
     private String originalBlogUrl;

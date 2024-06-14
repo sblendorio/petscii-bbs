@@ -16,6 +16,6 @@ public class CommessoPerplessoPetscii extends WordpressProxy {
         this.showAuthor = false;
     }
 
-    private static final byte[] LOGO_BYTES =  readBinaryFile("petscii/commesso.seq");;
+    private static final byte[] LOGO_BYTES =  readBinaryFile("petscii/commesso.seq");
 
 }

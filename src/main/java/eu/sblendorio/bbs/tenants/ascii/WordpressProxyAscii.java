@@ -30,7 +30,7 @@ public class WordpressProxyAscii extends AsciiThread {
 
     public static String CHROME_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36";
 
-    String HR_TOP;
+    protected String HR_TOP;
 
     @Override
     public void initBbs() throws Exception {
@@ -78,6 +78,8 @@ public class WordpressProxyAscii extends AsciiThread {
         this.domain = domain;
         this.logo = logo;
     }
+
+    public boolean resizeable() { return true; }
 
     protected final String getApi() { return domain + "/wp-json/wp/v2/"; }
 

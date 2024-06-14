@@ -16,6 +16,9 @@ public class CommessoPerplessoAscii extends WordpressProxyAscii {
     }
 
     @Override
+    public boolean resizeable() { return false; }
+
+    @Override
     public void initBbs() throws Exception {
         super.initBbs();
         if (inputOutput != null) setBbsInputOutput(inputOutput);
@@ -25,7 +28,7 @@ public class CommessoPerplessoAscii extends WordpressProxyAscii {
         super();
         this.logo = LOGO_BYTES;
         this.domain = "https://www.commessoperplesso.it";
-        this.pageSize = 10;
+        this.pageSize = 18;
     }
 
 
