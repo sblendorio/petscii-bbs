@@ -6,11 +6,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import static eu.sblendorio.bbs.core.Utils.bytes;
 
-public class IlFattoQuotidianoMinitel extends WordpressProxyAscii {
+public class ButacMinitel extends WordpressProxyAscii {
 
     private BbsInputOutput inputOutput = null;
 
-    public IlFattoQuotidianoMinitel(BbsInputOutput x) {
+    public ButacMinitel(BbsInputOutput x) {
         this();
         this.inputOutput = x;
     }
@@ -25,15 +25,15 @@ public class IlFattoQuotidianoMinitel extends WordpressProxyAscii {
         if (inputOutput != null) setBbsInputOutput(inputOutput);
     }
 
-    public IlFattoQuotidianoMinitel() {
+    public ButacMinitel() {
         super();
         this.logo = LOGO_BYTES;
-        this.domain = "https://www.ilfattoquotidiano.it";
+        this.domain = "https://www.butac.it";
         this.showAuthor = true;
-        this.pageSize = 5;
-        this.mainLogoSize = 2;
+        this.pageSize = 9;
+        this.mainLogoSize = 3;
     }
 
-    private static final byte[] LOGO_BYTES =  bytes(readBinaryFile("minitel/fq.vdt"),30,10, 0x1b, 0x3a, 0x69, 0x43, 17);
+    private static final byte[] LOGO_BYTES =  bytes(readBinaryFile("minitel/butac.vdt"),30,10,10, 0x1b, 0x3a, 0x69, 0x43, 17);
 
 }

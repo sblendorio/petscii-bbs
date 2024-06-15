@@ -2,9 +2,9 @@ package eu.sblendorio.bbs.tenants.minitel;
 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import eu.sblendorio.bbs.core.*;
-import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
 import eu.sblendorio.bbs.tenants.ascii.*;
 import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
+import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
 
@@ -145,7 +145,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("4".equals(choice)) subThread = new MupinAscii(io);
                 else if ("5".equals(choice)) subThread = new IlFattoQuotidianoMinitel(io);
                 else if ("6".equals(choice)) subThread = new AmedeoValorosoAscii(io);
-                else if ("7".equals(choice)) subThread = new ButacAscii(io);
+                else if ("7".equals(choice)) subThread = new ButacMinitel(io);
                 else if ("8".equals(choice)) subThread = new AlessandroAlbanoAscii(io);
                 else if ("9".equals(choice)) subThread = new OneRssReady64Ascii(io);
                 else if ("0".equals(choice)) subThread = new CommessoPerplessoMinitel(io);
