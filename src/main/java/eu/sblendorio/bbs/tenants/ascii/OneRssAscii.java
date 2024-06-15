@@ -348,9 +348,14 @@ public class OneRssAscii extends AsciiThread {
                 print(getScreenColumns() >= 40
                         ? "-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT"
                         : "(" + page + ") SPC -PREV .EXIT");
+
                 flush();
-                resetInput();
-                int ch = readKey();
+                int ch;
+                do {
+                    resetInput();
+                    ch = readKey();
+                } while (ch == 27 || ch == 0);
+
                 if (ch == '.') {
                     return true;
                 } else if (ch == '-' && page > 1) {

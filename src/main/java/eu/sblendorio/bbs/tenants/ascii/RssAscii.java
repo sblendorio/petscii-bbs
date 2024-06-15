@@ -245,8 +245,14 @@ public abstract class RssAscii extends AsciiThread {
                     ? "-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT"
                     : "(" + page + ") SPC -PREV .EXIT"
                 );
-                resetInput();
-                int ch = keyPressed(timeout);
+                flush();
+
+                int ch;
+                do {
+                    resetInput();
+                    ch = keyPressed(timeout);
+                } while (ch == 27 || ch == 0);
+
                 if (getLocalEcho() && isPrintableChar(ch)) write(ch);
                 if (ch == '.') {
                     return true;

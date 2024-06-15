@@ -304,7 +304,13 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
                     :  "(" + page + ") SPC -PREV .EXIT"
                 );
 
-                resetInput(); int ch = readKey();
+                flush();
+                int ch;
+                do {
+                    resetInput();
+                    ch = readKey();
+                } while (ch == 27 || ch == 0);
+
                 if (ch == '.') {
                     listPosts();
                     return;
