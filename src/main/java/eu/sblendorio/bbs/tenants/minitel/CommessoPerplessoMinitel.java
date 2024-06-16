@@ -1,29 +1,24 @@
 package eu.sblendorio.bbs.tenants.minitel;
 
 import eu.sblendorio.bbs.core.BbsInputOutput;
+import eu.sblendorio.bbs.core.MinitelInputOutput;
 import eu.sblendorio.bbs.tenants.ascii.WordpressProxyAscii;
 import org.apache.commons.lang3.StringUtils;
+
+import java.io.IOException;
+import java.net.Socket;
 
 import static eu.sblendorio.bbs.core.Utils.bytes;
 
 public class CommessoPerplessoMinitel extends WordpressProxyAscii {
-
-    private BbsInputOutput inputOutput = null;
-
-    public CommessoPerplessoMinitel(BbsInputOutput x) {
-        this();
-        this.inputOutput = x;
-    }
+    @Override
+    public BbsInputOutput buildIO(Socket socket) throws IOException { return new MinitelInputOutput(socket); }
 
     @Override
     public boolean resizeable() { return false; }
 
     @Override
-    public void initBbs() throws Exception {
-        super.initBbs();
-        HR_TOP = StringUtils.repeat('`', getScreenColumns() - 1);
-        if (inputOutput != null) setBbsInputOutput(inputOutput);
-    }
+    public void initBbs() throws Exception {  HR_TOP = StringUtils.repeat('`', getScreenColumns() - 1); }
 
     public CommessoPerplessoMinitel() {
         super();

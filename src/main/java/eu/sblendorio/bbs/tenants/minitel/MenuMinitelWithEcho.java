@@ -140,15 +140,15 @@ public class MenuMinitelWithEcho extends MinitelThread {
                         readBinaryFile("minitel/menu-televideo.vdt"),
                         bytes(31, 64+23, 64+1, 32, 32, 32, 32, 32, 32, 31, 64+23, 64+1)
                 );
-                else if ("2".equals(choice)) subThread = new LercioMinitel(io);
+                else if ("2".equals(choice)) subThread = new LercioMinitel();
                 else if ("3".equals(choice)) subThread = new DisinformaticoAscii(io);
                 else if ("4".equals(choice)) subThread = new MupinAscii(io);
-                else if ("5".equals(choice)) subThread = new IlFattoQuotidianoMinitel(io);
+                else if ("5".equals(choice)) subThread = new IlFattoQuotidianoMinitel();
                 else if ("6".equals(choice)) subThread = new AmedeoValorosoAscii(io);
-                else if ("7".equals(choice)) subThread = new ButacMinitel(io);
+                else if ("7".equals(choice)) subThread = new ButacMinitel();
                 else if ("8".equals(choice)) subThread = new AlessandroAlbanoAscii(io);
                 else if ("9".equals(choice)) subThread = new OneRssReady64Ascii(io);
-                else if ("0".equals(choice)) subThread = new CommessoPerplessoMinitel(io);
+                else if ("0".equals(choice)) subThread = new CommessoPerplessoMinitel();
                 else {
                     validKey = false;
                     subThread = null;
