@@ -31,7 +31,7 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 public class OneRssAscii extends AsciiThread {
     public static String CHROME_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36";
 
-    String HR_TOP;
+    protected String HR_TOP;
 
     protected int screenRows;
     protected int pageSize = 10;
@@ -40,12 +40,14 @@ public class OneRssAscii extends AsciiThread {
     protected boolean newlineAfterDate = true;
     protected boolean twoColumns = true;
 
+    protected int gap = 4;
+
     protected List<NewsFeed> posts = emptyList();
     protected int currentPage = 1;
 
     protected boolean alwaysRefreshFeed = false;
 
-    static class NewsSection {
+    protected static class NewsSection {
         final String title;
         final Object url;
 
@@ -75,7 +77,7 @@ public class OneRssAscii extends AsciiThread {
     @Override
     public void initBbs() throws Exception {
         HR_TOP = StringUtils.repeat('-', getScreenColumns() - 1);
-        screenRows = getScreenRows() - 4;
+        screenRows = getScreenRows() - gap;
     }
 
     public boolean resizeable() { return true; }
@@ -330,7 +332,7 @@ public class OneRssAscii extends AsciiThread {
             totalRows += 1 + line.chars().filter(ch -> ch == '\r').count();
             println(line.replaceAll("\r", newlineString() +" " + repeat(" ", (getScreenColumns()-3)-iLen)));
         }
-        for (int i = 0; i <= (getScreenRows() - totalRows - mainLogoSize - 2); ++i) newline();
+        for (int i = 0; i <= (getScreenRows() - totalRows - mainLogoSize - (gap-2)); ++i) newline();
         flush();
         return true;
     }
