@@ -95,13 +95,13 @@ public class MenuMinitelWithEcho extends MinitelThread {
                         bytes(0x1b, 0x3a, 0x6a, 0x43, 0x1e, readBinaryFile("minitel/bbc_home.vdt"), 17),
                         bytes(31, 64+22, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+22, 64+2 ,0x1b, 0x54, 0x1b, 0x47)
                 );
-                else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii();
-                else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii();
-                else if ("5".equals(choice)) subThread = new OneRssFoxNewsAscii();
-                else if ("6".equals(choice)) subThread = new IndieRetroNewsAscii();
-                else if ("7".equals(choice)) subThread = new VcfedAscii();
-                else if ("8".equals(choice)) subThread = new The8BitGuyAscii();
-                else if ("9".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii();
+                else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii(io);
+                else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii(io);
+                else if ("5".equals(choice)) subThread = new OneRssFoxNewsAscii(io);
+                else if ("6".equals(choice)) subThread = new IndieRetroNewsAscii(io);
+                else if ("7".equals(choice)) subThread = new VcfedAscii(io);
+                else if ("8".equals(choice)) subThread = new The8BitGuyMinitel();
+                else if ("9".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii(io);
                 else {
                     validKey = false;
                     subThread = null;
