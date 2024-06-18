@@ -26,7 +26,7 @@ import static org.apache.commons.lang3.math.NumberUtils.*;
 @Hidden
 public class GoogleBloggerProxyAscii extends AsciiThread {
 
-    String HR_TOP;
+    protected String HR_TOP;
 
     @Override
     public void initBbs() throws Exception {
@@ -37,6 +37,7 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
     protected String labels = null;
     protected boolean showTimestamp = true;
     protected byte[] logo = LOGO_BLOGGER;
+    protected int logoSize = 1;
     protected int pageSize = 8;
     protected int screenLines;
 
@@ -120,7 +121,7 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        screenLines = getScreenRows() - 4;
+        screenLines = getScreenRows() - 3 - logoSize;
         init();
         log("Blogger entering (" + blogUrl + ")");
         listPosts();
@@ -246,7 +247,7 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
             totalRows += 1 + line.chars().filter(ch -> ch == '\r').count();
             println(line.replaceAll("\r", newlineString() + " " + repeat(" ", nCols-iLen)));
         }
-        for (int i = 0; i < (getScreenRows() - totalRows - 3); ++i) newline();
+        for (int i = 0; i < (getScreenRows() - totalRows  - logoSize - 2); ++i) newline();
     }
 
     protected List<String> wordWrap(String s) {

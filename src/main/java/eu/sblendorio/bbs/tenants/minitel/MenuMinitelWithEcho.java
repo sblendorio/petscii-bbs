@@ -141,7 +141,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                         bytes(31, 64+23, 64+1, 32, 32, 32, 32, 32, 32, 31, 64+23, 64+1)
                 );
                 else if ("2".equals(choice)) subThread = new LercioMinitel();
-                else if ("3".equals(choice)) subThread = new DisinformaticoAscii(io);
+                else if ("3".equals(choice)) subThread = new DisinformaticoMinitel();
                 else if ("4".equals(choice)) subThread = new MupinAscii(io);
                 else if ("5".equals(choice)) subThread = new IlFattoQuotidianoMinitel();
                 else if ("6".equals(choice)) subThread = new AmedeoValorosoAscii(io);
