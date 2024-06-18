@@ -21,9 +21,9 @@
 200 PRINT "-----------":print
 210 PRINT "I for instructions":print "C for credits"
 211 PRINT "ENTER to play":PRINT
-212 INPUT "Your choice";a$: IF a$="." THEN GOSUB 10000:GOTO 212
-213 if a$="i" then gosub 2500
-214 if a$="c" then GOSUB 2300
+212 INPUT "Your choice";A$: IF A$="." THEN GOSUB 10000:GOTO 212
+213 IF A$="i" then GOSUB 2500
+214 IF A$="c" then GOSUB 2300
 215 PRINT:PRINT "Do you want to see the P101 registers"
 216 INPUT "during the game";r$: IF r$="." THEN GOSUB 10000:GOTO 216
 220 REM
