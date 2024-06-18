@@ -25,7 +25,7 @@ public class OneRssPoliticoAscii extends OneRssAscii {
 
     protected void readSections() throws Exception {
         this.sections = new LinkedHashMap<>();
-        this.sections.put("", new NewsSection(null, "https://www.politico.com/rss/politicopicks.xml"));
+        this.sections.put("", new NewsSection(null, "https://www.sblendorio.eu/ba-simple-proxy.php?mode=native&url=https://www.politico.com/rss/politicopicks.xml"));
         this.LOGO_MENU = "Politico".getBytes(StandardCharsets.ISO_8859_1);
         this.LOGO_SECTION = "Politico".getBytes(StandardCharsets.ISO_8859_1);
     }
