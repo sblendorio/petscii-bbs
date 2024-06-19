@@ -23,6 +23,7 @@ public class OneRssPoliticoAscii extends OneRssAscii {
         this.twoColumns = false;
     }
 
+    @Override
     protected void readSections() throws Exception {
         this.sections = new LinkedHashMap<>();
         this.sections.put("", new NewsSection(null, "https://www.politico.com/rss/politicopicks.xml"));
