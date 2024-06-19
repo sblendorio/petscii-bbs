@@ -17,6 +17,7 @@ public class OneRssPoliticoPetscii extends OneRssPetscii {
         this.showAuthor = true;
         this.newlineAfterDate = false;
         this.LOGO_MENU = this.LOGO_SECTION = readBinaryFile("petscii/politico.seq");
+        this.CHROME_AGENT = "curl/8.6.0";
     }
 
     @Override
