@@ -56,11 +56,10 @@ public class Ossa extends PetsciiThread {
                 choice = readKey();
             } while ("12345.".indexOf(choice) == -1);
             switch (choice) {
-                case '1': displayBodyPart("cranio"); break;
-                case '2': displayBodyPart("tronco"); break;
-                case '3': displayBodyPart("braccio"); break;
-                case '4': displayBodyPart("gamba"); break;
-                default:
+                case '1' -> displayBodyPart("cranio");
+                case '2' -> displayBodyPart("tronco");
+                case '3' -> displayBodyPart("braccio");
+                case '4' -> displayBodyPart("gamba");
             }
         } while (choice != '5' && choice != '.');
     }

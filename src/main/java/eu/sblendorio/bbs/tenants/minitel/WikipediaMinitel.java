@@ -161,9 +161,9 @@ public class WikipediaMinitel extends MinitelThread {
                 }
 
                 switch (ch) {
-                    case '2': items = WikipediaCommons.search(lang, keywords); break;
-                    case '3': items = WikipediaCommons.searchFirst(lang, keywords); break;
-                    default:  items = WikipediaCommons.pickRandomPage(lang);
+                    case '2' -> items = WikipediaCommons.search(lang, keywords);
+                    case '3' -> items = WikipediaCommons.searchFirst(lang, keywords);
+                    default  -> items = WikipediaCommons.pickRandomPage(lang);
                 }
 
                 flush(); resetInput();
