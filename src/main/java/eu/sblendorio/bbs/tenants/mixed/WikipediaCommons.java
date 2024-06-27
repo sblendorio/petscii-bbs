@@ -4,6 +4,8 @@ import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -21,7 +23,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
 public class WikipediaCommons {
-
+    private static Logger logger = LogManager.getLogger(WikipediaCommons.class);
     private static final int LIMIT_SEARCH = 100;
     private static final String URL_GET_BY_PAGEID = "https://${LANG}.wikipedia.org/w/api.php?format=json&action=parse&prop=text&pageid=${PAGEID}";
     private static final String URL_SEARCH_BY_KEYWORDS = "https://${LANG}.wikipedia.org/w/api.php?format=json&action=query&list=search&srsearch=${KEYWORDS}&sroffset=${OFFSET}&srlimit=${LIMIT}";
@@ -52,9 +54,15 @@ public class WikipediaCommons {
         public String snippet;
         public String timestamp;
         public Long ns;
+
+        @Override
+        public String toString() {
+            return "[lang:"+lang+", pageid:"+pageid+", title:<"+title+">]";
+        }
     }
 
     public static String getTextContent(WikipediaItem item) throws IOException, ParseException {
+        logger.info("Wikipedia.getTextContent: " + item);
         return getTextContent(item.lang, item.pageid);
     }
 
@@ -119,6 +127,7 @@ public class WikipediaCommons {
         return asList(item);
     }
     public static List<WikipediaItem> search(String lang, String keywords, boolean onlyFirst) throws IOException, ParseException {
+        logger.info("Wikipedia.{} search for '{}'", lang, keywords);
         Long offset = 0L;
         Long limit = onlyFirst ? 1L : 50L;
         List<WikipediaItem> result = new ArrayList<>();
