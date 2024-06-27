@@ -36,7 +36,6 @@ public class AvventuraNelCastelloMinitel extends MinitelThread {
         }
 
         @Override public boolean showOriginalBanner() { return false; }
-        @Override public String transformDiacritics(String s) { return HtmlUtils.utilHtmlDiacriticsToAscii(s);}
         @Override public void revOn() { attributes(REV_ON); }
         @Override public void revOff() { attributes(REV_OFF); }
 
