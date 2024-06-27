@@ -1,23 +1,27 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
 import eu.sblendorio.bbs.core.BbsInputOutput;
+import eu.sblendorio.bbs.tenants.petscii.WordpressProxy;
 
 import java.nio.charset.StandardCharsets;
 
-public class VitnoAscii extends WordpressProxyAscii {
+public class HackadayAscii extends WordpressProxyAscii {
+
     private BbsInputOutput inputOutput = null;
 
-    public VitnoAscii() {
+    public HackadayAscii() {
         super();
         this.logo = LOGO_BYTES;
-        this.domain = "https://vitno.org";
+        this.domain = "https://www.hackaday.com";
         this.pageSize = 9;
-        this.httpUserAgent = CHROME_AGENT;
-
+        this.screenLines = 19;
+        this.showAuthor = true;
     }
-    private static final byte[] LOGO_BYTES = "Vintage is the new old".getBytes(StandardCharsets.ISO_8859_1);
 
-    public VitnoAscii(BbsInputOutput inputOutput) {
+    public String by() { return "by"; }
+    private static final byte[] LOGO_BYTES = "Hackaday".getBytes(StandardCharsets.ISO_8859_1);
+
+    public HackadayAscii(BbsInputOutput inputOutput) {
         this();
         this.inputOutput = inputOutput;
     }
@@ -27,5 +31,4 @@ public class VitnoAscii extends WordpressProxyAscii {
         super.initBbs();
         if (inputOutput != null) setBbsInputOutput(inputOutput);
     }
-
 }

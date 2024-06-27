@@ -1,23 +1,23 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
 import eu.sblendorio.bbs.core.BbsInputOutput;
+import eu.sblendorio.bbs.core.Hidden;
 
 import java.nio.charset.StandardCharsets;
 
-public class VitnoAscii extends WordpressProxyAscii {
+@Hidden
+public class WiredComAscii extends WordpressProxyAscii {
     private BbsInputOutput inputOutput = null;
 
-    public VitnoAscii() {
+    public WiredComAscii() {
         super();
         this.logo = LOGO_BYTES;
-        this.domain = "https://vitno.org";
-        this.pageSize = 9;
-        this.httpUserAgent = CHROME_AGENT;
-
+        this.domain = "https://www.wired.com";
     }
-    private static final byte[] LOGO_BYTES = "Vintage is the new old".getBytes(StandardCharsets.ISO_8859_1);
 
-    public VitnoAscii(BbsInputOutput inputOutput) {
+    private static final byte[] LOGO_BYTES = "Wired".getBytes(StandardCharsets.ISO_8859_1);
+
+    public WiredComAscii(BbsInputOutput inputOutput) {
         this();
         this.inputOutput = inputOutput;
     }
@@ -27,5 +27,6 @@ public class VitnoAscii extends WordpressProxyAscii {
         super.initBbs();
         if (inputOutput != null) setBbsInputOutput(inputOutput);
     }
+
 
 }

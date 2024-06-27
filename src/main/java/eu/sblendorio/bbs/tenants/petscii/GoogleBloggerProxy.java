@@ -308,7 +308,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
                 "<br>";
         List<String> rows = wordWrap(head);
         final String timestamp = showTimestamp
-            ? p.getPublished().toStringRfc3339().replaceAll("^(\\d\\d\\d\\d).(\\d\\d).(\\d\\d).*","$3/$2/$1") + " - "
+            ? p.getPublished().toString().replaceAll("^(\\d\\d\\d\\d).(\\d\\d).(\\d\\d).*","$3/$2/$1") + " - "
             : "";
         List<String> article = wordWrap(timestamp + content);
         rows.addAll(article);

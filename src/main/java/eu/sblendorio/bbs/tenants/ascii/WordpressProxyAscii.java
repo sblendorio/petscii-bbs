@@ -28,7 +28,7 @@ import static org.apache.commons.lang3.math.NumberUtils.toLong;
 @Hidden
 public class WordpressProxyAscii extends AsciiThread {
 
-    public static String CHROME_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36";
+    public String CHROME_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36";
 
     protected String HR_TOP;
 
@@ -72,6 +72,8 @@ public class WordpressProxyAscii extends AsciiThread {
         this();
         this.domain = domain;
     }
+
+    public String by() { return "di"; }
 
     public WordpressProxyAscii(String domain, byte[] logo) {
         this();
@@ -277,7 +279,7 @@ public class WordpressProxyAscii extends AsciiThread {
                 )
                 .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r|\u00a0)*)+", EMPTY)
                 ;
-        final String head = p.title + (isNotBlank(author) ? " - di " + author : EMPTY) + "<br>" + HR_TOP ;
+        final String head = p.title + (isNotBlank(author) ? " - "+by()+" " + author : EMPTY) + "<br>" + HR_TOP ;
         List<String> rows = wordWrap(head);
 
         List<String> article = wordWrap(p.date.replaceAll("^(\\d\\d\\d\\d).(\\d\\d).(\\d\\d).*","$3/$2/$1") +

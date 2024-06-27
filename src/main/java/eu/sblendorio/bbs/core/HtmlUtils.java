@@ -111,7 +111,7 @@ public class HtmlUtils {
 
                 .replaceAll("&#160;|&#xA0;|&nbsp;?", " ")
                 .replaceAll("’|‘|°|&apos;|&rsquo;|&rsquor;|&lsquo;|&lsquor;|&sbquo;|&#x2019;|&#8216;|&#8217;|&#039;|&#39;|\u0300|\u0301", "'")
-                .replaceAll("″|“|”|„|&quot;|«|»|&#8220;|&#8221;|&laquo;|&raquo;|&#xAB;|&#xBB;|&#x201C;|&#x201D;|&#8243;", "\"")
+                .replaceAll("″|“|”|„|&quot;|&#34;|«|»|&#8220;|&#8221;|&laquo;|&raquo;|&#xAB;|&#xBB;|&#x201C;|&#x201D;|&#8243;", "\"")
                 .replaceAll("&amp;?", "&")
                 .replace("&#47;", "/")
                 .replace("&gt;", ">")

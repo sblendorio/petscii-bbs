@@ -8,7 +8,7 @@ public class Vitno extends WordpressProxy {
     public Vitno() {
         super();
         this.logo = LOGO_BYTES;
-        this.domain = "https://vintageisthenewold.com";
+        this.domain = "https://vitno.org";
         this.pageSize = 7;
         this.screenLines = 18;
         this.showAuthor = true;

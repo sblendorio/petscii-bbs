@@ -98,10 +98,14 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("3".equals(choice)) subThread = new OneRssPoliticoMinitel();
                 else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii(io);
                 else if ("5".equals(choice)) subThread = new OneRssFoxNewsAscii(io);
-                else if ("6".equals(choice)) subThread = new IndieRetroNewsAscii(io);
+                else if ("6".equals(choice)) subThread = new WiredComMinitel();
                 else if ("7".equals(choice)) subThread = new VcfedAscii(io);
-                else if ("8".equals(choice)) subThread = new The8BitGuyMinitel();
-                else if ("9".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii(io);
+                else if ("8".equals(choice)) subThread = new IndieRetroNewsAscii(io);
+                else if ("9".equals(choice)) subThread = new The8BitGuyMinitel();
+                else if ("0".equals(choice)) subThread = new VitnoAscii(io);
+                else if ("a".equals(choice)) subThread = new OneRss2600Minitel();
+                else if ("b".equals(choice)) subThread = new HackadayMinitel();
+                else if ("c".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii(io);
                 else {
                     validKey = false;
                     subThread = null;
