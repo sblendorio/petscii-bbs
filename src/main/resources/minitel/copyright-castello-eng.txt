@@ -1,12 +1,12 @@
-AVVENTURA NEL CASTELLO
-Dalla versione originale 4.1 per MS-DOS
-di Enrico Colombini e Chiara Tovena
+CASTLE ADVENTURE
+From original version 4.1 for MS-DOS
+by Enrico Colombini and Chiara Tovena
 (C) Dinosoft 1982,1984,1987,1996
-Riprodotta col consenso degli autori
 
-Versione Javascript: Federico Volpini
-Versione GraalVM: Francesco Sblendorio
+Javascript adaption: Federico Volpini
+GraalVM adaption: Francesco Sblendorio
+Translation into English: Adam Bishop
 
-Licenza di distribuzione:
+Distribuzione license:
 CC BY-NC-ND 4.0
 
