@@ -96,80 +96,73 @@ public class MinitelInputOutput extends BbsInputOutput {
 
     private void printDiacritic(char ch) {
         char car;
+        boolean quote = false;
         switch (ch) {
 /*
-            case 'à': car = 'a'; write(SS2, ACCENT_GRAVE); break;
-            case 'á': car = 'a'; write(SS2, ACCENT_AIGU); break;
-            case 'â': car = 'a'; write(SS2, ACCENT_CIRCONFLEXE); break;
-            case 'ä': car = 'a'; write(SS2, TREMA); break;
-            case 'è': car = 'e'; write(SS2, ACCENT_GRAVE); break;
-            case 'é': car = 'e'; write(SS2, ACCENT_AIGU); break;
-            case 'ê': car = 'e'; write(SS2, ACCENT_CIRCONFLEXE); break;
-            case 'ë': car = 'e'; write(SS2, TREMA); break;
-            case 'ì': car = 'i'; write(SS2, ACCENT_GRAVE); break;
-            case 'í': car = 'i'; write(SS2, ACCENT_AIGU); break;
-            case 'î': car = 'i'; write(SS2, ACCENT_CIRCONFLEXE); break;
-            case 'ï': car = 'i'; write(SS2, TREMA); break;
-            case 'ò': car = 'o'; write(SS2, ACCENT_GRAVE); break;
-            case 'ó': car = 'o'; write(SS2, ACCENT_AIGU); break;
-            case 'ô': car = 'o'; write(SS2, ACCENT_CIRCONFLEXE); break;
-            case 'ö': car = 'o'; write(SS2, TREMA); break;
-            case 'ù': car = 'u'; write(SS2, ACCENT_GRAVE); break;
-            case 'ú': car = 'u'; write(SS2, ACCENT_AIGU); break;
-            case 'û': car = 'u'; write(SS2, ACCENT_CIRCONFLEXE); break;
-            case 'ü': car = 'u'; write(SS2, TREMA); break;
-            case 'ç': car = 'c'; write(SS2, CEDILLE); break;
+            case 'à' -> { car = 'a'; write(SS2, ACCENT_GRAVE); }
+            case 'á' -> { car = 'a'; write(SS2, ACCENT_AIGU); }
+            case 'â' -> { car = 'a'; write(SS2, ACCENT_CIRCONFLEXE); }
+            case 'ä' -> { car = 'a'; write(SS2, TREMA); }
+            case 'è' -> { car = 'e'; write(SS2, ACCENT_GRAVE); }
+            case 'é' -> { car = 'e'; write(SS2, ACCENT_AIGU); }
+            case 'ê' -> { car = 'e'; write(SS2, ACCENT_CIRCONFLEXE); }
+            case 'ë' -> { car = 'e'; write(SS2, TREMA); }
+            case 'ì' -> { car = 'i'; write(SS2, ACCENT_GRAVE); }
+            case 'í' -> { car = 'i'; write(SS2, ACCENT_AIGU); }
+            case 'î' -> { car = 'i'; write(SS2, ACCENT_CIRCONFLEXE); }
+            case 'ï' -> { car = 'i'; write(SS2, TREMA); }
+            case 'ò' -> { car = 'o'; write(SS2, ACCENT_GRAVE); }
+            case 'ó' -> { car = 'o'; write(SS2, ACCENT_AIGU); }
+            case 'ô' -> { car = 'o'; write(SS2, ACCENT_CIRCONFLEXE); }
+            case 'ö' -> { car = 'o'; write(SS2, TREMA); }
+            case 'ù' -> { car = 'u'; write(SS2, ACCENT_GRAVE); }
+            case 'ú' -> { car = 'u'; write(SS2, ACCENT_AIGU); }
+            case 'û' -> { car = 'u'; write(SS2, ACCENT_CIRCONFLEXE); }
+            case 'ü' -> { car = 'u'; write(SS2, TREMA); }
+            case 'ç' -> { car = 'c'; write(SS2, CEDILLE); }
 */
-            case 'à': car = 'a'; write(SS2, ACCENT_GRAVE); break;
-            case 'á': car = 'a'; write(SS2, ACCENT_GRAVE); break;
-            case 'â': car = 'a'; write(SS2, ACCENT_CIRCONFLEXE); break;
-            case 'ä': car = 'a'; write(SS2, TREMA); break;
-            case 'è': car = 'e'; write(SS2, ACCENT_GRAVE); break;
-            case 'é': car = 'e'; write(SS2, ACCENT_AIGU); break;
-            case 'ê': car = 'e'; write(SS2, ACCENT_CIRCONFLEXE); break;
-            case 'ë': car = 'e'; write(SS2, TREMA); break;
-            case 'ì': car = 'i'; write(SS2, ACCENT_CIRCONFLEXE); break;
-            case 'í': car = 'i'; write(SS2, ACCENT_CIRCONFLEXE); break;
-            case 'î': car = 'i'; write(SS2, ACCENT_CIRCONFLEXE); break;
-            case 'ï': car = 'i'; write(SS2, TREMA); break;
-            case 'ò': car = 'o'; write(SS2, ACCENT_CIRCONFLEXE); break;
-            case 'ó': car = 'o'; write(SS2, ACCENT_CIRCONFLEXE); break;
-            case 'ô': car = 'o'; write(SS2, ACCENT_CIRCONFLEXE); break;
-            case 'ö': car = 'o'; write(SS2, TREMA); break;
-            case 'ù': car = 'u'; write(SS2, ACCENT_GRAVE); break;
-            case 'ú': car = 'u'; write(SS2, ACCENT_GRAVE); break;
-            case 'û': car = 'u'; write(SS2, ACCENT_CIRCONFLEXE); break;
-            case 'ü': car = 'u'; write(SS2, TREMA); break;
-            case 'ç': car = 'c'; write(SS2, CEDILLE); break;
+            case 'à' -> { car = 'a'; write(SS2, ACCENT_GRAVE); }
+            case 'á' -> { car = 'a'; write(SS2, ACCENT_GRAVE); }
+            case 'â' -> { car = 'a'; write(SS2, ACCENT_CIRCONFLEXE); }
+            case 'ä' -> { car = 'a'; write(SS2, TREMA); }
+            case 'è' -> { car = 'e'; write(SS2, ACCENT_GRAVE); }
+            case 'é' -> { car = 'e'; write(SS2, ACCENT_AIGU); }
+            case 'ê' -> { car = 'e'; write(SS2, ACCENT_CIRCONFLEXE); }
+            case 'ë' -> { car = 'e'; write(SS2, TREMA); }
+            case 'ì' -> { car = 'i'; write(SS2, ACCENT_CIRCONFLEXE); }
+            case 'í' -> { car = 'i'; write(SS2, ACCENT_CIRCONFLEXE); }
+            case 'î' -> { car = 'i'; write(SS2, ACCENT_CIRCONFLEXE); }
+            case 'ï' -> { car = 'i'; write(SS2, TREMA); }
+            case 'ò' -> { car = 'o'; write(SS2, ACCENT_CIRCONFLEXE); }
+            case 'ó' -> { car = 'o'; write(SS2, ACCENT_CIRCONFLEXE); }
+            case 'ô' -> { car = 'o'; write(SS2, ACCENT_CIRCONFLEXE); }
+            case 'ö' -> { car = 'o'; write(SS2, TREMA); }
+            case 'ù' -> { car = 'u'; write(SS2, ACCENT_GRAVE); }
+            case 'ú' -> { car = 'u'; write(SS2, ACCENT_GRAVE); }
+            case 'û' -> { car = 'u'; write(SS2, ACCENT_CIRCONFLEXE); }
+            case 'ü' -> { car = 'u'; write(SS2, TREMA); }
+            case 'ç' -> { car = 'c'; write(SS2, CEDILLE); }
 
             // Pour les cas où on essaye d'afficher un caractère diacritique majuscule,
             // ce que ne peut pas faire le Minitel.
 
-            case 'À': car = 'A'; break;
-            case 'Á': car = 'A'; break;
-            case 'Â': car = 'A'; break;
-            case 'Ä': car = 'A'; break;
-            case 'È': car = 'E'; break;
-            case 'É': car = 'E'; break;
-            case 'Ê': car = 'E'; break;
-            case 'Ë': car = 'E'; break;
-            case 'Ì': car = 'I'; break;
-            case 'Í': car = 'I'; break;
-            case 'Î': car = 'I'; break;
-            case 'Ï': car = 'I'; break;
-            case 'Ò': car = 'O'; break;
-            case 'Ó': car = 'O'; break;
-            case 'Ô': car = 'O'; break;
-            case 'Ö': car = 'O'; break;
-            case 'Ù': car = 'U'; break;
-            case 'Ú': car = 'U'; break;
-            case 'Û': car = 'U'; break;
-            case 'Ü': car = 'U'; break;
-            case 'Ç': car = 'C'; break;
+            case 'À', 'Á' -> { quote = true; car = 'A'; }
+            case 'È', 'É' -> { quote = true; car = 'E'; }
+            case 'Ì', 'Í' -> { quote = true; car = 'I'; }
+            case 'Ò', 'Ó' -> { quote = true; car = 'O'; }
+            case 'Ù', 'Ú' -> { quote = true; car = 'U'; }
 
-            default: car = ' ';
+            case 'Â', 'Ä' -> car = 'A';
+            case 'Ê', 'Ë' -> car = 'E';
+            case 'Î', 'Ï' -> car = 'I';
+            case 'Ô', 'Ö' -> car = 'O';
+            case 'Û', 'Ü' -> car = 'U';
+            case 'Ç' -> car = 'C';
+
+            default -> car = ' ';
         }
         write(car);
+        if (quote) write('\'');
 
     }
 
