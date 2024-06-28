@@ -16,6 +16,13 @@ public class DisinformaticoAscii extends GoogleBloggerProxyAscii {
         this.pageSize = 7;
     }
 
+    protected String downstreamTransform(String s) {
+        return s
+                .replaceAll("^.*?<!--INSERT STORY/NEWS HTML BELOW-->([\\n\\s\\r]*<p>)?\\s*", "")
+                .replaceAll("(?is)<i>\\[[^\\]<>\n\r]*\\]</i></p>", "")
+                ;
+    }
+
     private static final byte[] LOGO_BYTES = "Il disinformatico".getBytes(StandardCharsets.ISO_8859_1);
 
     public DisinformaticoAscii(BbsInputOutput x) {

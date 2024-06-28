@@ -32,6 +32,13 @@ public class DisinformaticoMinitel extends GoogleBloggerProxyAscii {
         this.logoSize = 2;
     }
 
+    protected String downstreamTransform(String s) {
+        return s
+            .replaceAll("^.*?<!--INSERT STORY/NEWS HTML BELOW-->([\\n\\s\\r]*<p>)?\\s*", "")
+                .replaceAll("(?is)<i>\\[[^\\]<>\n\r]*\\]</i></p>", "")
+        ;
+    }
+
     private static final byte[] LOGO_BYTES =  bytes(readBinaryFile("minitel/disinformatico.vdt"),30,10, 0x1b, 0x3a, 0x69, 0x43, 17);
 
 }

@@ -13,6 +13,13 @@ public class Disinformatico extends GoogleBloggerProxy {
         this.screenLines = 19;
     }
 
+    protected String downstreamTransform(String s) {
+        return s
+                .replaceAll("^.*?<!--INSERT STORY/NEWS HTML BELOW-->([\\n\\s\\r]*<p>)?\\s*", "")
+                .replaceAll("(?is)<i>\\[[^\\]<>\n\r]*\\]</i></p>", "")
+                ;
+    }
+
     private static final byte[] LOGO_BYTES = new byte[] {
         18, -127, 32, -94, -94, 32, 32, -110, 32, 5, -84, -84, 32, -84, -94, 32,
         -69, 32, 32, -69, 32, 32, -84, -69, 32, 32, 32, 32, 32, 32, 32, 32,
