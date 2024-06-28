@@ -17,6 +17,7 @@ public class Disinformatico extends GoogleBloggerProxy {
         return s
                 .replaceAll("^.*?<!--INSERT STORY/NEWS HTML BELOW-->([\\n\\s\\r]*<p>)?\\s*", "")
                 .replaceAll("(?is)<i>\\[[^\\]<>\n\r]*\\]</i></p>", "")
+                .replaceAll("^\\s*(<p>\\s*)?", "")
                 ;
     }
 

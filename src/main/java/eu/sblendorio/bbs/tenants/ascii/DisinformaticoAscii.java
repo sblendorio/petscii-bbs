@@ -20,6 +20,7 @@ public class DisinformaticoAscii extends GoogleBloggerProxyAscii {
         return s
                 .replaceAll("^.*?<!--INSERT STORY/NEWS HTML BELOW-->([\\n\\s\\r]*<p>)?\\s*", "")
                 .replaceAll("(?is)<i>\\[[^\\]<>\n\r]*\\]</i></p>", "")
+                .replaceAll("^\\s*(<p>\\s*)?", "")
                 ;
     }
 

@@ -34,8 +34,9 @@ public class DisinformaticoMinitel extends GoogleBloggerProxyAscii {
 
     protected String downstreamTransform(String s) {
         return s
-            .replaceAll("^.*?<!--INSERT STORY/NEWS HTML BELOW-->([\\n\\s\\r]*<p>)?\\s*", "")
+                .replaceAll("^.*?<!--INSERT STORY/NEWS HTML BELOW-->([\\n\\s\\r]*<p>)?\\s*", "")
                 .replaceAll("(?is)<i>\\[[^\\]<>\n\r]*\\]</i></p>", "")
+                .replaceAll("^\\s*(<p>\\s*)?", "")
         ;
     }
 
