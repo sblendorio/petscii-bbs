@@ -337,6 +337,10 @@ public class OneRssAscii extends AsciiThread {
         return true;
     }
 
+    protected void emptyRow() {
+        println();
+    }
+
     private boolean displayPost(NewsFeed feed, NewsSection section) throws Exception {
         logo(section);
         List<String> rows = feedToText(feed);
@@ -346,7 +350,7 @@ public class OneRssAscii extends AsciiThread {
         boolean forward = true;
         while (j < rows.size()) {
             if (j > 0 && j % screenRows == 0 && forward) {
-                println();
+                emptyRow();
                 print(getScreenColumns() >= 40
                         ? "-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT"
                         : "(" + page + ") SPC -PREV .EXIT");

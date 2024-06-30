@@ -20,6 +20,8 @@ public class IlFattoQuotidianoMinitel extends WordpressProxyAscii {
     @Override
     public void initBbs() throws Exception { HR_TOP = StringUtils.repeat('`', getScreenColumns() - 1); }
 
+    // @Override protected void emptyRow() { println(HR_TOP); }
+
     public IlFattoQuotidianoMinitel() {
         super();
         this.logo = LOGO_BYTES;

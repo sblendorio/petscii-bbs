@@ -254,6 +254,10 @@ public class WordpressProxyAscii extends AsciiThread {
         return s;
     }
 
+    protected void emptyRow() {
+        println();
+    }
+
     protected void displayPost(int n) throws Exception {
         cls();
         drawSecondaryLogo();
@@ -291,7 +295,7 @@ public class WordpressProxyAscii extends AsciiThread {
         boolean forward = true;
         while (j < rows.size()) {
             if (j>0 && j % screenLines == 0 && forward) {
-                println();
+                emptyRow();
                 print(getScreenColumns() >= 40
                     ? "-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT"
                     :  "(" + page + ") SPC -PREV .EXIT"
