@@ -87,6 +87,11 @@ public abstract class BbsThread extends Thread {
             this.setName(name + "-" + UUID.randomUUID());
         }
 
+        public KeepAliveThread(String name, long clientId) {
+            this();
+            this.setName(name + "-#" + clientId);
+        }
+
         @Override
         public void interrupt() {
             running.set(false);
@@ -128,7 +133,7 @@ public abstract class BbsThread extends Thread {
         BbsThread root = getRoot();
         root.keepAlive = keepAlive;
         root.keepAliveThread.interrupt();
-        root.keepAliveThread = root.new KeepAliveThread(this.getClass().getSimpleName());
+        root.keepAliveThread = root.new KeepAliveThread(this.getClass().getSimpleName(), this.getClientId());
         root.keepAliveThread.start();
     }
 
@@ -224,7 +229,7 @@ public abstract class BbsThread extends Thread {
     public void run() {
         this.startTimestamp = System.currentTimeMillis();
         try {
-            keepAliveThread = new KeepAliveThread(this.getClass().getSimpleName());
+            keepAliveThread = new KeepAliveThread(this.getClass().getSimpleName(), this.getClientId());
             setClientId(clientCount.incrementAndGet());
             clientClass = getClass();
             ipAddress = socket.getInetAddress();
@@ -346,7 +351,7 @@ public abstract class BbsThread extends Thread {
             child = bbs;
             try {
                 root.keepAliveThread.interrupt();
-                root.keepAliveThread = root.new KeepAliveThread(bbs.getClass().getSimpleName());
+                root.keepAliveThread = root.new KeepAliveThread(bbs.getClass().getSimpleName(), this.getClientId());
                 bbs.keepAliveThread = root.keepAliveThread;
                 root.keepAliveThread.start();
             } catch (Exception e) {
@@ -382,7 +387,7 @@ public abstract class BbsThread extends Thread {
             root.keepAliveChar = bbsStatus.keepAliveChar;
             try {
                 root.keepAliveThread.interrupt();
-                root.keepAliveThread = root.new KeepAliveThread(this.getClass().getSimpleName()) ;
+                root.keepAliveThread = root.new KeepAliveThread(this.getClass().getSimpleName(), this.getClientId()) ;
                 root.keepAliveThread.start();
             } catch (Exception e) {
                 logger.info("Error during KeepAliveThread restart", e);
