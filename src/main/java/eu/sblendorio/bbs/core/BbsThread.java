@@ -89,7 +89,7 @@ public abstract class BbsThread extends Thread {
 
         public KeepAliveThread(BbsThread bbsThread) {
             this();
-            this.setName("#" + bbsThread.getClientId() + "-" + bbsThread.getClass().getSimpleName());
+            this.setName(bbsThread.getClass().getSimpleName() + "#" + bbsThread.getClientId());
         }
 
         @Override
