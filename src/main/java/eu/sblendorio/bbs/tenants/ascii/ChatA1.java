@@ -184,7 +184,7 @@ public class ChatA1 extends AsciiThread {
                     canRedraw = false;
                     displayHelp();
                     redraw(false);
-                } else if (".".equals(command) || "/q".equalsIgnoreCase(command) || "/quit".equalsIgnoreCase(command)) {
+                } else if (".".equals(command) || "/q".equalsIgnoreCase(command) || "/quit".equalsIgnoreCase(command) || "/exit".equalsIgnoreCase(command)) {
                     log("Exiting chat.");
                 } else if (StringUtils.isNotBlank(command)) {
                     displayPotentialUrl(originalCommand);

@@ -193,7 +193,7 @@ public class Chat64 extends PetsciiThread {
                     canRedraw = false;
                     displayHelp();
                     redraw();
-                } else if (".".equals(command) || "/q".equalsIgnoreCase(command) || "/quit".equalsIgnoreCase(command)) {
+                } else if (".".equals(command) || "/q".equalsIgnoreCase(command) || "/quit".equalsIgnoreCase(command) || "/exit".equalsIgnoreCase(command)) {
                     log("Exiting chat.");
                 } else if (recipient != null) {
                     String to = ofNullable(getClients().get(recipient)).map(BbsThread::getClientName).orElse(null);
