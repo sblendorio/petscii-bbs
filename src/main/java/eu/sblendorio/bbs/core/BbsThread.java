@@ -43,6 +43,8 @@ public abstract class BbsThread extends Thread {
     protected Class clientClass;
     protected Socket socket = null;
     protected BbsInputOutput io;
+
+    public BbsInputOutput io() {return io;}
     protected Map<String, Object> customObject = new HashMap<>();
 
     protected BbsThread child = null;

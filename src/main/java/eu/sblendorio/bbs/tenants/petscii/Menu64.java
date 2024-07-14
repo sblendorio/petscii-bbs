@@ -264,6 +264,7 @@ public class Menu64 extends PetsciiThread {
                 else if (key == 'a') launch(new OneRss2600Petscii());
                 else if (key == 'b') launch(new HackadayPetscii());
                 else if (key == 'c') launch(new OneRssAmedeoValorosoEngPetscii());
+                else if (key == '*') launch(new LiteCnnPetscii());
                 else {
                     validKey = false;
                 }
