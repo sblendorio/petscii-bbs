@@ -61,9 +61,9 @@ public class LiteCnnCommons {
         return new Article(item.title(), datePublished, author, text);
     }
 
-    public static List<String> feedToText(BbsThread bbs, LiteCnnCommons.Article feed) {
+    public static List<String> feedToText(BbsThread bbs, String hrTop, LiteCnnCommons.Article feed) {
         String author = (StringUtils.isBlank(StringUtils.trim(feed.author()))) ? "" : (" - by " + StringUtils.trim(feed.author()));
-        String head = StringUtils.trim(feed.title()) + author + "<br>" + this.HR_TOP + "<br>";
+        String head = StringUtils.trim(feed.title()) + author + "<br>" + hrTop + "<br>";
         List<String> rows = wordWrap(bbs, head);
         List<String> article = wordWrap(bbs, (
                 (feed.date() == null) ? "" : (

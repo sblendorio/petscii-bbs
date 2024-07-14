@@ -97,7 +97,7 @@ public class LiteCnnAscii extends AsciiThread {
     private boolean displayPost(LiteCnnCommons.ArticleItem item) throws Exception {
         drawLogo();
         LiteCnnCommons.Article article = LiteCnnCommons.getArticle(item);
-        List<String> rows = LiteCnnCommons.feedToText(this, article);
+        List<String> rows = LiteCnnCommons.feedToText(this, this.HR_TOP, article);
 
         int page = 1;
         int j = 0;
