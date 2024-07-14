@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class LiteCnnCommons {
     public record ArticleItem(String url, String title) {}
-    public record Article(String date, String author, String text) {}
+    public record Article(String title, String date, String author, String text) {}
 
     public final static String BASE_URL = "https://lite.cnn.com/";
     public final static String AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36";
@@ -44,14 +44,14 @@ public class LiteCnnCommons {
                 }).toList();
     }
 
-    public static Article getArticle(ArticleItem article) throws Exception {
-        final String wholeText = get(BASE_URL + article.url());
+    public static Article getArticle(ArticleItem item) throws Exception {
+        final String wholeText = get(BASE_URL + item.url());
         final Document doc = Jsoup.parse(wholeText);
         final String author = doc.select(".byline--lite").text().replaceAll("(?is)^By ", "");
         final String text = doc.select(".paragraph--lite").stream().map(Element::text).collect(Collectors.joining("<br><br>"));
         final String metadata = doc.select("script").select("script[type$=json]").html();
-        final String datePublished = ((String) ((JSONObject) new JSONParser().parse(metadata)).get("datePublished")).replaceAll("T.*$", "");
-        return new Article(datePublished, author, text);
+        final String datePublished = metadata.replaceAll("(?is).*?\"datePublished\".*?:.*?\"(....-..-..).*$", "$1");
+        return new Article(item.title(), datePublished, author, text);
     }
 
     public static void main(String[] args) throws Exception {

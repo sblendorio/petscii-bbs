@@ -1,79 +1,204 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
 import eu.sblendorio.bbs.core.AsciiThread;
-import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.tenants.mixed.LiteCnnCommons;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import static eu.sblendorio.bbs.core.Utils.*;
+import static java.lang.Math.min;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyMap;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
-import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
 @Hidden
 public class LiteCnnAscii extends AsciiThread {
     protected int screenLines;
     protected Integer secondaryLogoSize = null;
     protected int mainLogoSize = 1;
-    protected byte[] logo = "CNN".getBytes(StandardCharsets.ISO_8859_1);
+    protected byte[] logo = "CNN\n".getBytes(StandardCharsets.ISO_8859_1);
+    public byte[] LOGO_SECTION = "LOGO_SECTION".getBytes(ISO_8859_1);
+    protected int pageSize = 10;
+    protected int currentPage = 1;
+    protected int gap = 4;
+    protected boolean alwaysRefreshFeed = false;
+    protected boolean newlineAfterDate = false;
+    protected String HR_TOP;
 
     List<LiteCnnCommons.ArticleItem> posts = Collections.emptyList();
 
     public LiteCnnAscii() {
+    }
 
+    @Override
+    public void initBbs() throws Exception {
+        HR_TOP = StringUtils.repeat('-', getScreenColumns() - 1);
+        screenRows = getScreenRows() - gap;
     }
 
     @Override
     public void doLoop() throws Exception {
-        screenLines = getScreenRows() - 3 - (secondaryLogoSize == null ? mainLogoSize : secondaryLogoSize);
-        listPosts();
+        boolean keepGoing = listPosts();
+        if (!keepGoing) return;
+
         while (true) {
-            log("Wordpress waiting for input");
+            log("RssReader waiting for input");
             print(getScreenColumns() >= 40
-                    ? "(N+-)Page (H)elp (R)eload (.)Quit> "
+                    ? "#, (N+-)Page (R)eload (.)Quit> "
                     : "(N+-)Page (.)Quit> "
             );
             resetInput();
             flush();
-            String inputRaw = readLine(setOfChars(STR_ALPHANUMERIC, ".:,;_ []()<>@+-*/^='?!$%&#"));
+            String inputRaw = readLine();
             String input = lowerCase(trim(inputRaw));
+            if (".".equals(input) || "exit".equals(input) || "quit".equals(input) || "q".equals(input)) {
+                break;
+            } else if (("+".equals(input) || "n".equals(input) || "n+".equals(input)) && currentPage*pageSize<posts.size()) {
+                ++currentPage;
+                if (alwaysRefreshFeed) posts = null;
+                try {
+                    listPosts();
+                } catch (NullPointerException e) {
+                    --currentPage;
+                    if (alwaysRefreshFeed) posts = null;
+                    listPosts();
+                }
+            } else if (("-".equals(input) || "n-".equals(input)) && currentPage > 1) {
+                --currentPage;
+                if (alwaysRefreshFeed) posts = null;
+                listPosts();
+            } else if ("--".equals(input)) {
+                currentPage = 1;
+                if (alwaysRefreshFeed) posts = null;
+                listPosts();
+            } else if ("r".equals(input) || "reload".equals(input) || "refresh".equals(input)) {
+                posts = null;
+                listPosts();
+            } else if (toInt(input) >= 1 && toInt(input) <= posts.size()) {
+                boolean exitByUser = displayPost(posts.get(toInt(input) - 1));
+                if (exitByUser) listPosts();
+                listPosts();
+            } else if ("".equals(input)) {
+                listPosts();
+            }
         }
     }
+
+    protected void emptyRow() {
+        println();
+    }
+
+    private boolean displayPost(LiteCnnCommons.ArticleItem item) throws Exception {
+        drawLogo();
+        LiteCnnCommons.Article article = LiteCnnCommons.getArticle(item);
+        List<String> rows = feedToText(article);
+
+        int page = 1;
+        int j = 0;
+        boolean forward = true;
+        while (j < rows.size()) {
+            if (j > 0 && j % screenRows == 0 && forward) {
+                emptyRow();
+                print(getScreenColumns() >= 40
+                        ? "-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT"
+                        : "(" + page + ") SPC -PREV .EXIT");
+
+                flush();
+                int ch;
+                do {
+                    resetInput();
+                    ch = readKey();
+                } while (ch == 27 || ch == 0);
+
+                if (ch == '.') {
+                    return true;
+                } else if (ch == '-' && page > 1) {
+                    j -= (screenRows * 2);
+                    --page;
+                    forward = false;
+                    drawLogo();
+                    continue;
+                } else {
+                    ++page;
+                }
+                drawLogo();
+            }
+            String row = rows.get(j);
+            println(row);
+            forward = true;
+            ++j;
+        }
+        println();
+        return false;
+    }
+
+    private List<String> feedToText(LiteCnnCommons.Article feed) {
+        String author = (StringUtils.isBlank(StringUtils.trim(feed.author()))) ? "" : (" - by " + StringUtils.trim(feed.author()));
+        String head = StringUtils.trim(feed.title()) + author + "<br>" + this.HR_TOP + "<br>";
+        List<String> rows = wordWrap(head);
+        List<String> article = wordWrap((
+                (feed.date() == null) ? "" : (
+                        feed.date() + " - " + (this.newlineAfterDate ? "<br>" : ""))) + feed.text()
+                // .replaceAll("^([\\s\\n\\r]+|(<(br|p|img|div|/)[^>]*>))+", "")
+                .replaceAll("(?is)[\n\r ]+", " ")
+                .replaceAll("(?is)<style>.*?</style>", EMPTY)
+                .replaceAll("(?is)<script[ >].*?</script>", EMPTY)
+                .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(</?(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
+                .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r|\u00a0)*)+", EMPTY)
+        );
+        rows.addAll(article);
+        return rows;
+    }
+
+    protected List<String> wordWrap(String s) {
+        String[] cleaned = filterPrintableWithNewline(htmlClean(s)).split("\n");
+        List<String> result = new ArrayList<>();
+        for (String item: cleaned) {
+            String[] wrappedLine = WordUtils
+                    .wrap(item, getScreenColumns() - 1, "\n", true)
+                    .split("\n");
+            result.addAll(asList(wrappedLine));
+        }
+        return result;
+    }
+
 
     protected void drawLogo() {
+        cls();
         write(logo);
-        newline();
-        newline();
+        println();
     }
 
-    private void listPosts() throws Exception {
+    private boolean listPosts() throws Exception {
+        final int mainLogoSize = 2;
         cls();
-        drawLogo();
-        if (posts.isEmpty()) {
+        write(LOGO_SECTION);
+        println();
+        println();
+        if (isEmpty(posts)) {
             posts = LiteCnnCommons.getArticles();
         }
+        final int start = pageSize * (currentPage-1);
+        final int end = min(pageSize + start, posts.size());
+
         long totalRows = 0;
-        for (int i=0; i<posts.size(); i++) {
+        for (int i = start; i < end; ++i) {
             LiteCnnCommons.ArticleItem post = posts.get(i);
-            print(i + ".");
-            final int nCols = getScreenColumns() - 3;
-            final int iLen = nCols-String.valueOf(i).length();
+            print((i+1) + ".");
+            final int iLen = (getScreenColumns()-3)-String.valueOf(i+1).length();
             String line = WordUtils.wrap(filterPrintable(htmlClean(post.title())), iLen, "\r", true);
             totalRows += 1 + line.chars().filter(ch -> ch == '\r').count();
-            println(line.replaceAll("\r", newlineString() + " " + repeat(" ", nCols-iLen)));
+            println(line.replaceAll("\r", newlineString() +" " + repeat(" ", (getScreenColumns()-3)-iLen)));
         }
-        for (int i = 0; i < (getScreenRows() - totalRows - mainLogoSize - 2); ++i) newline();
-
+        for (int i = 0; i <= (getScreenRows() - totalRows - mainLogoSize - (gap-2)); ++i) newline();
+        flush();
+        return true;
     }
 }
