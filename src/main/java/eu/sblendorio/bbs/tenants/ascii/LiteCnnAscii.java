@@ -29,7 +29,6 @@ public class LiteCnnAscii extends AsciiThread {
     protected int currentPage = 1;
     protected int gap = 4;
     protected boolean alwaysRefreshFeed = false;
-    protected boolean newlineAfterDate = false;
     protected String HR_TOP;
 
     List<LiteCnnCommons.ArticleItem> posts = Collections.emptyList();
@@ -98,7 +97,7 @@ public class LiteCnnAscii extends AsciiThread {
     private boolean displayPost(LiteCnnCommons.ArticleItem item) throws Exception {
         drawLogo();
         LiteCnnCommons.Article article = LiteCnnCommons.getArticle(item);
-        List<String> rows = feedToText(article);
+        List<String> rows = LiteCnnCommons.feedToText(this, article);
 
         int page = 1;
         int j = 0;
@@ -137,36 +136,6 @@ public class LiteCnnAscii extends AsciiThread {
         }
         println();
         return false;
-    }
-
-    private List<String> feedToText(LiteCnnCommons.Article feed) {
-        String author = (StringUtils.isBlank(StringUtils.trim(feed.author()))) ? "" : (" - by " + StringUtils.trim(feed.author()));
-        String head = StringUtils.trim(feed.title()) + author + "<br>" + this.HR_TOP + "<br>";
-        List<String> rows = wordWrap(head);
-        List<String> article = wordWrap((
-                (feed.date() == null) ? "" : (
-                        feed.date() + " - " + (this.newlineAfterDate ? "<br>" : ""))) + feed.text()
-                // .replaceAll("^([\\s\\n\\r]+|(<(br|p|img|div|/)[^>]*>))+", "")
-                .replaceAll("(?is)[\n\r ]+", " ")
-                .replaceAll("(?is)<style>.*?</style>", EMPTY)
-                .replaceAll("(?is)<script[ >].*?</script>", EMPTY)
-                .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(</?(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
-                .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r|\u00a0)*)+", EMPTY)
-        );
-        rows.addAll(article);
-        return rows;
-    }
-
-    protected List<String> wordWrap(String s) {
-        String[] cleaned = filterPrintableWithNewline(htmlClean(s)).split("\n");
-        List<String> result = new ArrayList<>();
-        for (String item: cleaned) {
-            String[] wrappedLine = WordUtils
-                    .wrap(item, getScreenColumns() - 1, "\n", true)
-                    .split("\n");
-            result.addAll(asList(wrappedLine));
-        }
-        return result;
     }
 
 

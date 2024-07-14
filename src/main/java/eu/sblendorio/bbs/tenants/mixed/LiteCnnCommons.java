@@ -1,5 +1,8 @@
 package eu.sblendorio.bbs.tenants.mixed;
 
+import eu.sblendorio.bbs.core.BbsThread;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.WordUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.jsoup.Jsoup;
@@ -11,8 +14,12 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 public class LiteCnnCommons {
     public record ArticleItem(String url, String title) {}
@@ -54,9 +61,41 @@ public class LiteCnnCommons {
         return new Article(item.title(), datePublished, author, text);
     }
 
+    public static List<String> feedToText(BbsThread bbs, LiteCnnCommons.Article feed) {
+        String author = (StringUtils.isBlank(StringUtils.trim(feed.author()))) ? "" : (" - by " + StringUtils.trim(feed.author()));
+        String head = StringUtils.trim(feed.title()) + author + "<br>" + this.HR_TOP + "<br>";
+        List<String> rows = wordWrap(bbs, head);
+        List<String> article = wordWrap(bbs, (
+                (feed.date() == null) ? "" : (
+                        feed.date() + " - ")) + feed.text()
+                // .replaceAll("^([\\s\\n\\r]+|(<(br|p|img|div|/)[^>]*>))+", "")
+                .replaceAll("(?is)[\n\r ]+", " ")
+                .replaceAll("(?is)<style>.*?</style>", EMPTY)
+                .replaceAll("(?is)<script[ >].*?</script>", EMPTY)
+                .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(</?(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
+                .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r|\u00a0)*)+", EMPTY)
+        );
+        rows.addAll(article);
+        return rows;
+    }
+
+    public static List<String> wordWrap(BbsThread bbs, String s) {
+        String[] cleaned = bbs.filterPrintableWithNewline(bbs.htmlClean(s)).split("\n");
+        List<String> result = new ArrayList<>();
+        for (String item: cleaned) {
+            String[] wrappedLine = WordUtils
+                    .wrap(item, bbs.getScreenColumns() - 1, "\n", true)
+                    .split("\n");
+            result.addAll(asList(wrappedLine));
+        }
+        return result;
+    }
+
+
+
+
     public static void main(String[] args) throws Exception {
         var articles = getArticles();
         System.out.println(getArticle(articles.getFirst()));
     }
-
 }
