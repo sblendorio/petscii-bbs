@@ -92,10 +92,14 @@ public class MenuVic20 extends MenuApple1 {
         println("3 - Politico.com");
         println("4 - Al Jazeera");
         println("5 - Fox News");
-        println("6 - Indie Retro News");
+        println("6 - Wired");
         println("7 - VCF News");
-        println("8 - The 8-Bit Guy");
-        println("9 - Amedeo Valoroso");
+        println("8 - Indie Retro News");
+        println("9 - The 8-Bit Guy");
+        println("0 - Vitno");
+        println("A - 2600 News");
+        println("B - Hackaday Blog");
+        println("C - Amedeo Valoroso");
         println(". - Go back");
     }
 

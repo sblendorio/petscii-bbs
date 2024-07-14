@@ -6,10 +6,14 @@ Retrocampus BBS - International News
 3 - Politico.com
 4 - Al Jazeera
 5 - Fox News
-6 - Indie Retro News
+6 - Wired
 7 - VCF News
-8 - The 8-Bit Guy
-9 - Amedeo Valoroso (ENG)
+8 - Indie Retro News
+9 - The 8-Bit Guy
+0 - Vintage is the new old
+A - 2600 News
+B - Hackaday Blog
+C - Amedeo Valoroso (ENG)
 . - Go back
 
 

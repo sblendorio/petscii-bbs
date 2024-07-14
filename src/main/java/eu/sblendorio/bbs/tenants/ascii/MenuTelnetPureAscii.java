@@ -231,10 +231,14 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii();
                 else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii();
                 else if ("5".equals(choice)) subThread = new OneRssFoxNewsAscii();
-                else if ("6".equals(choice)) subThread = new IndieRetroNewsAscii();
+                else if ("6".equals(choice)) subThread = new WiredComAscii();
                 else if ("7".equals(choice)) subThread = new VcfedAscii();
-                else if ("8".equals(choice)) subThread = new The8BitGuyAscii();
-                else if ("9".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii();
+                else if ("8".equals(choice)) subThread = new IndieRetroNewsAscii();
+                else if ("9".equals(choice)) subThread = new The8BitGuyAscii();
+                else if ("0".equals(choice)) subThread = new VitnoAscii();
+                else if ("a".equals(choice)) subThread = new OneRss2600Ascii();
+                else if ("b".equals(choice)) subThread = new HackadayAscii();
+                else if ("c".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii();
                 else {
                     validKey = false;
                     subThread = null;
