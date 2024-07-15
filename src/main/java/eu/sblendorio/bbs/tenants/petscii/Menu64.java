@@ -157,46 +157,44 @@ public class Menu64 extends PetsciiThread {
                 key = Character.toLowerCase(key);
                 log("Menu-NewsITA. Pressed: '" + (key < 32 || key > 127 ? "chr(" + key + ")" : ((char) key)) + "' (code=" +
                     key + ")");
-                if (key == '.') {
-                    return;
-                }
-                else if (key == '1') launch(new TelevideoRaiPetscii());
-                else if (key == '2') launch(new OneRssOpenOnline());
-                else if (key == '3') launch(new ValigiaBlu());
-                else if (key == '4') launch(new Linkiesta());
-                else if (key == '5') launch(new IlFattoQuotidiano());
-                else if (key == '6') launch(new OneTexasInstrumentsItaliaPetscii());
-                else if (key == '7') launch(new Lercio());
-                else if (key == '8') launch(new BitoldPetscii());
-                else if (key == '9') launch(new Medbunker());
-                else if (key == '0') launch(new DottoreMaEVeroChe());
-                else if (key == 'a') launch(new MedicalFacts());
-                else if (key == 'b') launch(new RetroCampus());
-                else if (key == 'c') launch(new RetroAcademy());
-                else if (key == 'd') launch(new ChpdbPetscii());
-                else if (key == 'e') launch(new Disinformatico());
-                else if (key == 'f') launch(new CommessoPerplessoPetscii());
-                else if (key == 'g') launch(new OneApuliaRetrocomputingPetscii());
-                else if (key == 'h') launch(new ArcheologiaInformatica());
-                else if (key == 'i') launch(new AlessandroAlbano());
-                else if (key == 'j') launch(new BufaleNet());
-                else if (key == 'k') launch(new Butac());
-                else if (key == 'l') launch(new FactaNews());
-                else if (key == 'm') launch(new DavidPuenteBlog());
-                else if (key == 'n') launch(new Sportal());
-                else if (key == 'o') launch(new IndieCampus());
-                else if (key == 'p') launch(new Retrocommodore());
-                else if (key == 'q') launch(new ValorosoIt());
-                else if (key == 'r') launch(new Mupin());
-                else if (key == 's') launch(new QueryOnline());
-                else if (key == 't') launch(new FormichePetscii());
-                else if (key == 'u') launch(new InfosecNewsPetscii());
-                else if (key == 'v') launch(new GianoNewsPetscii());
-                else if (key == 'w') launch(new RedHotCyberPetscii());
-                else if (key == 'x') launch(new MccPetscii());
-                else if (key == 'y') launch(new OneRssReady64Petscii());
-                else {
-                    validKey = false;
+                switch (key) {
+                    case '1' -> launch(new TelevideoRaiPetscii());
+                    case '2' -> launch(new OneRssOpenOnline());
+                    case '3' -> launch(new ValigiaBlu());
+                    case '4' -> launch(new Linkiesta());
+                    case '5' -> launch(new IlFattoQuotidiano());
+                    case '6' -> launch(new OneTexasInstrumentsItaliaPetscii());
+                    case '7' -> launch(new Lercio());
+                    case '8' -> launch(new BitoldPetscii());
+                    case '9' -> launch(new Medbunker());
+                    case '0' -> launch(new DottoreMaEVeroChe());
+                    case 'a' -> launch(new MedicalFacts());
+                    case 'b' -> launch(new RetroCampus());
+                    case 'c' -> launch(new RetroAcademy());
+                    case 'd' -> launch(new ChpdbPetscii());
+                    case 'e' -> launch(new Disinformatico());
+                    case 'f' -> launch(new CommessoPerplessoPetscii());
+                    case 'g' -> launch(new OneApuliaRetrocomputingPetscii());
+                    case 'h' -> launch(new ArcheologiaInformatica());
+                    case 'i' -> launch(new AlessandroAlbano());
+                    case 'j' -> launch(new BufaleNet());
+                    case 'k' -> launch(new Butac());
+                    case 'l' -> launch(new FactaNews());
+                    case 'm' -> launch(new DavidPuenteBlog());
+                    case 'n' -> launch(new Sportal());
+                    case 'o' -> launch(new IndieCampus());
+                    case 'p' -> launch(new Retrocommodore());
+                    case 'q' -> launch(new ValorosoIt());
+                    case 'r' -> launch(new Mupin());
+                    case 's' -> launch(new QueryOnline());
+                    case 't' -> launch(new FormichePetscii());
+                    case 'u' -> launch(new InfosecNewsPetscii());
+                    case 'v' -> launch(new GianoNewsPetscii());
+                    case 'w' -> launch(new RedHotCyberPetscii());
+                    case 'x' -> launch(new MccPetscii());
+                    case 'y' -> launch(new OneRssReady64Petscii());
+                    case '.' -> { return; }
+                    default -> validKey = false;
                 }
                 // if (validKey) return;
             } while (!validKey);
@@ -248,24 +246,22 @@ public class Menu64 extends PetsciiThread {
                 key = Character.toLowerCase(key);
                 log("Menu-NewsENG. Pressed: '" + (key < 32 || key > 127 ? "chr(" + key + ")" : ((char) key)) + "' (code=" +
                         key + ")");
-                if (key == '.') {
-                    return;
-                }
-                else if (key == '1') launch(new LiteCnnPetscii()); //launch(new CnnPetscii());
-                else if (key == '2') launch(new BbcPetscii());
-                else if (key == '3') launch(new OneRssPoliticoPetscii());
-                else if (key == '4') launch(new OneRssAJPlusPetscii());
-                else if (key == '5') launch(new OneRssFoxnewsPetscii());
-                else if (key == '6') launch(new WiredCom());
-                else if (key == '7') launch(new Vcfed());
-                else if (key == '8') launch(new IndieRetroNews());
-                else if (key == '9') launch(new The8BitGuy());
-                else if (key == '0') launch(new Vitno());
-                else if (key == 'a') launch(new OneRss2600Petscii());
-                else if (key == 'b') launch(new HackadayPetscii());
-                else if (key == 'c') launch(new OneRssAmedeoValorosoEngPetscii());
-                else {
-                    validKey = false;
+                switch (key) {
+                    case '1' -> launch(new LiteCnnPetscii()); //launch(new CnnPetscii());
+                    case '2' -> launch(new BbcPetscii());
+                    case '3' -> launch(new OneRssPoliticoPetscii());
+                    case '4' -> launch(new OneRssAJPlusPetscii());
+                    case '5' -> launch(new OneRssFoxnewsPetscii());
+                    case '6' -> launch(new WiredCom());
+                    case '7' -> launch(new Vcfed());
+                    case '8' -> launch(new IndieRetroNews());
+                    case '9' -> launch(new The8BitGuy());
+                    case '0' -> launch(new Vitno());
+                    case 'a' -> launch(new OneRss2600Petscii());
+                    case 'b' -> launch(new HackadayPetscii());
+                    case 'c' -> launch(new OneRssAmedeoValorosoEngPetscii());
+                    case '.' -> { return; }
+                    default -> validKey = false;
                 }
                 // if (validKey) return;
             } while (!validKey);
@@ -363,18 +359,16 @@ public class Menu64 extends PetsciiThread {
                     key -= 96;
                 }
                 key = Character.toLowerCase(key);
-                if (key == '.') {
-                    return;
-                }
-                else if (key == '1') SwBasicBridge.run("Star Trek", "basic/startrek-40-1.bas", this, locate());
-                else if (key == '2') SwBasicBridge.run("Star Trek 2003", "basic/startrek-40-2.bas", this, locate());
-                else if (key == '3') SwBasicBridge.run("Lunar Lander", "basic/lunar-lander-40.bas", this, locate());
-                else if (key == '4') SwBasicBridge.run("Hamurabi", "basic/hamurabi-40.bas", this, locate());
-                else if (key == '5') SwBasicBridge.run("Checkers", "basic/checkers-40.bas", this, locate());
-                else if (key == '6') SwBasicBridge.run("Angela", "basic/angela.bas", this, locate());
-                else if (key == 'z') launch(new BasicIdePetscii(locate()));
-                else {
-                    validKey = false;
+                switch (key) {
+                    case '1' -> SwBasicBridge.run("Star Trek", "basic/startrek-40-1.bas", this, locate());
+                    case '2' -> SwBasicBridge.run("Star Trek 2003", "basic/startrek-40-2.bas", this, locate());
+                    case '3' -> SwBasicBridge.run("Lunar Lander", "basic/lunar-lander-40.bas", this, locate());
+                    case '4' -> SwBasicBridge.run("Hamurabi", "basic/hamurabi-40.bas", this, locate());
+                    case '5' -> SwBasicBridge.run("Checkers", "basic/checkers-40.bas", this, locate());
+                    case '6' -> SwBasicBridge.run("Angela", "basic/angela.bas", this, locate());
+                    case '7' -> launch(new BasicIdePetscii(locate()));
+                    case '.' -> { return; }
+                    default -> validKey = false;
                 }
                 // if (validKey) return;
             } while (!validKey);
@@ -420,7 +414,6 @@ public class Menu64 extends PetsciiThread {
                 log("Menu-Games. Pressed: '" + (key < 32 || key > 127 ? "chr(" + key + ")" : ((char) key)) + "' (code=" +
                     key + ")");
                 switch (key) {
-                    case '.' -> { return; }
                     case '1' -> launch(new TicTacToe());
                     case '2' -> launch(new ConnectFour());
                     case '3' -> launch(new Magic15());
@@ -433,6 +426,7 @@ public class Menu64 extends PetsciiThread {
                     case '0' -> launch(new AvventuraNelCastelloPetscii(SPLASH_CASTELLO_ENG, "en-gb"));
                     case 'a' -> launch(new ZorkMachine("zork1ita", "zmpp/Zork-1-ITA-v7.z5", readBinaryFile("petscii/zork1.seq")));
                     case 'b' -> launch(new AvventuraNelCastelloPetscii(SPLASH_CASTELLO_ITA, "it-it"));
+                    case '.' -> { return; }
                     default -> validKey = false;
                 }
                 // if (validKey) return;
