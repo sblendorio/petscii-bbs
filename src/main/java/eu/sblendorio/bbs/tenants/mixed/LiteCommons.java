@@ -30,18 +30,16 @@ public class LiteCommons {
     public record Article(String title, String date, String author, String text) {}
 
     protected BbsThread bbs;
-    private int screenRows;
 
     public LiteCommons(BbsThread bbs) {
         this.bbs = bbs;
     }
 
-    public int screenLines;
-    public int mainLogoSize = 1;
     public int pageSize = 10;
     public int currentPage = 1;
     public int gap = 4;
     public boolean alwaysRefreshFeed = false;
+
 
     List<LiteCommons.ArticleItem> posts = Collections.emptyList();
 
@@ -61,7 +59,7 @@ public class LiteCommons {
 
     }
 
-    public   String AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36";
+    public String AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36";
 
     public  String get(String url) throws Exception {
         String result;
@@ -85,8 +83,17 @@ public class LiteCommons {
                 }).toList();
     }
 
+    public Article getArticle(ArticleItem item) throws Exception {
+        String wholeText = get(baseUrl() + item.url());
+        Document doc = Jsoup.parse(wholeText);
+        String author = doc.select(".byline--lite").text().replaceAll("(?is)^By ", "");
+        String text = doc.select(".paragraph--lite").stream().map(Element::text).collect(Collectors.joining("<br><br>"));
+        String metadata = doc.select("script").select("script[type$=json]").html();
+        String datePublished = metadata.replaceAll("(?is).*?\"datePublished\".*?:.*?\"(....-..-..).*$", "$1");
+        return new Article(item.title(), datePublished, author, text);
+    }
+
     public void doLoop() throws Exception {
-        screenRows = bbs.getScreenRows() - gap;
         boolean keepGoing = listPosts();
         if (!keepGoing) return;
 
@@ -123,21 +130,10 @@ public class LiteCommons {
             } else if (toInt(input) >= 1 && toInt(input) <= posts.size()) {
                 boolean exitByUser = displayPost(posts.get(toInt(input) - 1));
                 if (exitByUser) listPosts();
-                listPosts();
             } else if ("".equals(input)) {
                 listPosts();
             }
         }
-    }
-
-    public Article getArticle(ArticleItem item) throws Exception {
-         String wholeText = get(baseUrl() + item.url());
-         Document doc = Jsoup.parse(wholeText);
-         String author = doc.select(".byline--lite").text().replaceAll("(?is)^By ", "");
-         String text = doc.select(".paragraph--lite").stream().map(Element::text).collect(Collectors.joining("<br><br>"));
-         String metadata = doc.select("script").select("script[type$=json]").html();
-         String datePublished = metadata.replaceAll("(?is).*?\"datePublished\".*?:.*?\"(....-..-..).*$", "$1");
-        return new Article(item.title(), datePublished, author, text);
     }
 
     public  List<String> feedToText(LiteCommons.Article feed) {
@@ -191,7 +187,7 @@ public class LiteCommons {
         int j = 0;
         boolean forward = true;
         while (j < rows.size()) {
-            if (j > 0 && j % screenRows == 0 && forward) {
+            if (j > 0 && j % (bbs.getScreenRows() - gap) == 0 && forward) {
                 emptyRow();
                 printArticleStatusLine(page);
                 bbs.flush();
@@ -204,7 +200,7 @@ public class LiteCommons {
                 if (ch == '.') {
                     return true;
                 } else if (ch == '-' && page > 1) {
-                    j -= (screenRows * 2);
+                    j -= 2*(bbs.getScreenRows() - gap);
                     --page;
                     forward = false;
                     drawLogo();
@@ -231,7 +227,6 @@ public class LiteCommons {
     }
 
     public boolean listPosts() throws Exception {
-        final int mainLogoSize = 2;
         drawLogo();
         if (isEmpty(posts)) {
             posts = getArticles();
@@ -242,15 +237,20 @@ public class LiteCommons {
         long totalRows = 0;
         for (int i = start; i < end; ++i) {
             LiteCommons.ArticleItem post = posts.get(i);
+            highlight(true);
             bbs.print((i+1) + ".");
+            highlight(false);
             final int iLen = (bbs.getScreenColumns()-3)-String.valueOf(i+1).length();
             String line = WordUtils.wrap(bbs.filterPrintable(bbs.htmlClean(post.title())), iLen, "\r", true);
             totalRows += 1 + line.chars().filter(ch -> ch == '\r').count();
             bbs.println(line.replaceAll("\r", bbs.newlineString() +" " + repeat(" ", (bbs.getScreenColumns()-3)-iLen)));
         }
-        for (int i = 0; i <= (screenRows - totalRows - mainLogoSize - (gap-2)); ++i) bbs.newline();
+        for (int i = 0; i <= (bbs.getScreenRows() - totalRows - gap); ++i) bbs.newline();
         bbs.flush();
         return true;
+    }
+
+    public void highlight(boolean on) {
     }
 
     public void main(String[] args) throws Exception {
