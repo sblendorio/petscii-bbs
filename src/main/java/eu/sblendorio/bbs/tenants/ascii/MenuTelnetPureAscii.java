@@ -214,13 +214,14 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 log("Menu. Choice = " + choice);
                 BbsThread subThread;
                 if (".".equals(choice)) return;
-                else if ("1".equals(choice)) subThread = new CnnAscii(
+                else if ("1".equals(choice)) subThread = new LiteCnnAscii80();
+                        /*new CnnAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getTerminalType(),
                         null,
                         null
-                );
+                );*/
                 else if ("2".equals(choice)) subThread = new BbcAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
@@ -239,7 +240,6 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 else if ("a".equals(choice)) subThread = new OneRss2600Ascii();
                 else if ("b".equals(choice)) subThread = new HackadayAscii();
                 else if ("c".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii();
-                else if ("*".equals(choice)) subThread = new LiteCnnAscii80();
                 else {
                     validKey = false;
                     subThread = null;

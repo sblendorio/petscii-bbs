@@ -251,7 +251,7 @@ public class Menu64 extends PetsciiThread {
                 if (key == '.') {
                     return;
                 }
-                else if (key == '1') launch(new CnnPetscii());
+                else if (key == '1') launch(new LiteCnnPetscii()); //launch(new CnnPetscii());
                 else if (key == '2') launch(new BbcPetscii());
                 else if (key == '3') launch(new OneRssPoliticoPetscii());
                 else if (key == '4') launch(new OneRssAJPlusPetscii());
@@ -264,7 +264,6 @@ public class Menu64 extends PetsciiThread {
                 else if (key == 'a') launch(new OneRss2600Petscii());
                 else if (key == 'b') launch(new HackadayPetscii());
                 else if (key == 'c') launch(new OneRssAmedeoValorosoEngPetscii());
-                else if (key == '*') launch(new LiteCnnPetscii());
                 else {
                     validKey = false;
                 }

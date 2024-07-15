@@ -17,6 +17,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
+import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
 import static java.lang.Math.min;
 import static java.util.Arrays.asList;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
@@ -25,6 +27,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 public class LiteCommons {
+    public String AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36";
 
     public record ArticleItem(String url, String title) {}
     public record Article(String title, String date, String author, String text) {}
@@ -45,36 +48,6 @@ public class LiteCommons {
 
     public String baseUrl() { return "https://lite.cnn.com/"; }
 
-    public void printListStatusLine() {
-        bbs.print(bbs.getScreenColumns() >= 40
-                ? "#, (N+-)Page (R)eload (.)Quit> "
-                : "(N+-)Page (.)Quit> "
-        );
-    }
-
-    public void printArticleStatusLine(int page) {
-        bbs.print(bbs.getScreenColumns() >= 40
-                ? "-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT"
-                : "(" + page + ") SPC -PREV .EXIT");
-
-    }
-
-    public String AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36";
-
-    public  String get(String url) throws Exception {
-        String result;
-        try (HttpClient client = HttpClient.newHttpClient()) {
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).headers("User-Agent", AGENT).GET().build();
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() != 200) {
-                System.out.println(response.body());
-                throw new IllegalStateException("BAD HTTP REQUEST");
-            }
-            result = response.body();
-        }
-        return result;
-    }
-
     public List<ArticleItem> getArticles() throws Exception {
         return Jsoup.parse(get(baseUrl())).select(".card--lite").stream()
                 .map(element -> {
@@ -91,6 +64,52 @@ public class LiteCommons {
         String metadata = doc.select("script").select("script[type$=json]").html();
         String datePublished = metadata.replaceAll("(?is).*?\"datePublished\".*?:.*?\"(....-..-..).*$", "$1");
         return new Article(item.title(), datePublished, author, text);
+    }
+
+    public void printListStatusLine() {
+        bbs.print(bbs.getScreenColumns() >= 40
+                ? "#, (N+-)Page (R)eload (.)Quit> "
+                : "(N+-)Page (.)Quit> "
+        );
+    }
+
+    public void printArticleStatusLine(int page) {
+        bbs.print(bbs.getScreenColumns() >= 40
+                ? "-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT"
+                : "(" + page + ") SPC -PREV .EXIT");
+
+    }
+
+    public static void printArticleStatusLinePetscii(BbsThread bbs, int page) {
+        bbs.write(WHITE); bbs.print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT"); bbs.write(GREY3);
+    }
+
+    public static void printListStatusLinePetscii(BbsThread bbs) {
+        bbs.write(WHITE);bbs.print("#"); bbs.write(GREY3);
+        bbs.print(" [");
+        bbs.write(WHITE); bbs.print("N+-"); bbs.write(GREY3);
+        bbs.print("]Page [");
+        bbs.write(WHITE); bbs.print("R"); bbs.write(GREY3);
+        bbs.print("]eload [");
+        bbs.write(WHITE); bbs.print("."); bbs.write(GREY3);
+        bbs.print("]");
+        bbs.write(WHITE); bbs.print("Q"); bbs.write(GREY3);
+        bbs.print("uit> ");
+    }
+
+
+    public String get(String url) throws Exception {
+        String result;
+        try (HttpClient client = HttpClient.newHttpClient()) {
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).headers("User-Agent", AGENT).GET().build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                System.out.println(response.body());
+                throw new IllegalStateException("BAD HTTP REQUEST");
+            }
+            result = response.body();
+        }
+        return result;
     }
 
     public void doLoop() throws Exception {

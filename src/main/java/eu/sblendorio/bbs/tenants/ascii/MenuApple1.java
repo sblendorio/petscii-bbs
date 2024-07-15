@@ -134,13 +134,14 @@ public class MenuApple1 extends AsciiThread {
                 log("Menu. Choice = " + choice);
                 BbsThread subThread;
                 if (".".equals(choice)) return;
-                else if ("1".equals(choice)) subThread = new CnnAscii(
+                else if ("1".equals(choice)) subThread = new LiteCnnAscii40();
+                        /*new CnnAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getTerminalType(),
                         null,
                         null
-                );
+                );*/
                 else if ("2".equals(choice)) subThread = new BbcAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),

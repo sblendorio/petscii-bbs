@@ -79,14 +79,15 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 if (".".equals(choice)) {
                     return;
                 }
-                else if ("1".equals(choice)) subThread = new CnnAscii(
+                else if ("1".equals(choice)) subThread = new LiteCnnMinitel();
+                    /*new CnnAscii(
                         io,
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getTerminalType(),
                         bytes(0x1b, 0x3a, 0x6a, 0x43, 0x1e, readBinaryFile("minitel/cnn_home.vdt"), 17),
                         bytes(31, 64+15, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+15, 64+2 ,0x1b, 0x54, 0x1b, 0x47)
-                );
+                );*/
                 else if ("2".equals(choice)) subThread = new BbcAscii(
                         io,
                         rssPropertyTimeout(),

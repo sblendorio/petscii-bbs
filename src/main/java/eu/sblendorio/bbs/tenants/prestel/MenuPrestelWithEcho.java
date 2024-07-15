@@ -113,13 +113,14 @@ public class MenuPrestelWithEcho extends PrestelThread {
                 if (".".equals(choice)) {
                     return;
                 }
-                else if ("1".equals(choice)) subThread = new CnnAscii(
+                else if ("1".equals(choice)) subThread = new LiteCnnPrestel();
+                        /*new CnnAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getTerminalType(),
                         bytes(readBinaryFile("prestel/cnn_home.cept3"),13,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,17),
                         bytes(11, 11, 13, 10, 32, 32, 32, 32, 32, 32, 13, 10, 11)
-                );
+                );*/
                 else if ("2".equals(choice)) subThread = new BbcAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),

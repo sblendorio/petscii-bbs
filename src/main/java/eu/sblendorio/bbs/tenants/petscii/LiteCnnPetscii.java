@@ -22,23 +22,8 @@ public class LiteCnnPetscii extends PetsciiThread {
             bbs.cls();
             bbs.write(Utils.bytes(readBinaryFile("petscii/cnn-news.seq"), PetsciiColors.GREY3));
         }
-        public void printArticleStatusLine(int page) {
-            bbs.write(WHITE); bbs.print("-PAGE " + page + "-  SPACE=NEXT  -=PREV  .=EXIT"); bbs.write(GREY3);
-        }
-        public void printListStatusLine() {
-            bbs.write(WHITE);bbs.print("#"); bbs.write(GREY3);
-            bbs.print(" [");
-            bbs.write(WHITE); bbs.print("N+-"); bbs.write(GREY3);
-            bbs.print("]Page [");
-            bbs.write(WHITE); bbs.print("H"); bbs.write(GREY3);
-            bbs.print("]elp [");
-            bbs.write(WHITE); bbs.print("R"); bbs.write(GREY3);
-            bbs.print("]eload [");
-            bbs.write(WHITE); bbs.print("."); bbs.write(GREY3);
-            bbs.print("]");
-            bbs.write(WHITE); bbs.print("Q"); bbs.write(GREY3);
-            bbs.print("uit> ");
-        }
+        public void printArticleStatusLine(int page) { printArticleStatusLinePetscii(bbs, page); }
+        public void printListStatusLine() { printListStatusLinePetscii(bbs); }
 
     }
 
