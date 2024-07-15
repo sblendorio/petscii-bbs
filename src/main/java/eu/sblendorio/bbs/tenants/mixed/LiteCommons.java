@@ -62,7 +62,7 @@ public class LiteCommons {
         String author = doc.select(".byline--lite").text().replaceAll("(?is)^By ", "");
         String text = doc.select(".paragraph--lite").stream().map(Element::text).collect(Collectors.joining("<br><br>"));
         String metadata = doc.select("script").select("script[type$=json]").html();
-        String datePublished = metadata.replaceAll("(?is).*?\"datePublished\".*?:.*?\"(....-..-..).*$", "$1");
+        String datePublished = metadata.replaceAll("(?is).*?\"datePublished\".*?:.*?\"(....)-(..)-(..).*$", "$1/$2/$3");
         return new Article(item.title(), datePublished, author, text);
     }
 
