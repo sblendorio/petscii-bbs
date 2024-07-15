@@ -85,10 +85,10 @@ public class MenuM10 extends MenuApple1 {
         println("---------------------------------------");
         println("1 - Tic-Tac-Toe  6 - Hitchhiker's");
         println("2 - Connect 4    7 - Planetfall");
-        println("3 - Zork I       8 - Castle Adventure");
-        println("4 - Zork II      9 - Zork I (ITA)");
-        println("5 - Zork III     0 - Avv.Castello (ITA)");
-        println(". - Go back");
+        println("3 - Zork I       8 - Stationfall");
+        println("4 - Zork II      9 - Castle Adventure");
+        println("5 - Zork III     0 - Zork I (ITA)");
+        println(". - Go back      A - Avv.Castello (ITA)");
     }
 
     public String readChoice() throws Exception {

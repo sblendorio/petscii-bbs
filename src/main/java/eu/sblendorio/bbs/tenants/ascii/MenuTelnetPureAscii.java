@@ -302,21 +302,23 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 log("Menu. Choice = " + choice);
                 BbsThread subThread;
                 if (".".equals(choice)) return;
-                else if ("1".equals(choice)) subThread = new TicTacToeAscii();
-                else if ("2".equals(choice)) subThread = new Connect4Ascii();
-                else if ("3".equals(choice)) subThread = new ZorkMachineAscii("zork1", "zmpp/zork1.z3");
-                else if ("4".equals(choice)) subThread = new ZorkMachineAscii("zork2", "zmpp/zork2.z3");
-                else if ("5".equals(choice)) subThread = new ZorkMachineAscii("zork3", "zmpp/zork3.z3");
-                else if ("6".equals(choice)) subThread = new ZorkMachineAscii("hitchhikers", "zmpp/hitchhiker-r60.z3");
-                else if ("7".equals(choice)) subThread = new ZorkMachineAscii("planetfall", "zmpp/planetfall-r39.z3");
-                else if ("8".equals(choice)) subThread = createCastleAdventure();
-                else if ("9".equals(choice)) subThread = new ZorkMachineAscii("zork1ita", "zmpp/Zork-1-ITA-v7.z5", this::boldOn, this::boldOff);
-                else if ("0".equals(choice)) subThread = createAvventuraNelCastello();
-
-                else {
-                    validKey = false;
-                    subThread = null;
-                }
+                subThread = switch (choice) {
+                    case "1" -> new TicTacToeAscii();
+                    case "2" -> new Connect4Ascii();
+                    case "3" -> new ZorkMachineAscii("zork1", "zmpp/zork1.z3");
+                    case "4" -> new ZorkMachineAscii("zork2", "zmpp/zork2.z3");
+                    case "5" -> new ZorkMachineAscii("zork3", "zmpp/zork3.z3");
+                    case "6" -> new ZorkMachineAscii("hitchhikers", "zmpp/hitchhiker-r60.z3");
+                    case "7" -> new ZorkMachineAscii("planetfall", "zmpp/planetfall-r39.z3");
+                    case "8" -> new ZorkMachineAscii("stationfall", "zmpp/stationfall-r107.z3");
+                    case "9" -> createCastleAdventure();
+                    case "0" -> new ZorkMachineAscii("zork1ita", "zmpp/Zork-1-ITA-v7.z5", this::boldOn, this::boldOff);
+                    case "a" -> createAvventuraNelCastello();
+                    default -> {
+                        validKey = false;
+                        yield null;
+                    }
+                };
                 execute(subThread);
             } while (!validKey);
         }

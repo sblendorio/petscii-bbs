@@ -12,11 +12,11 @@ Text Adventures
 5 - Zork III
 6 - Hitchhiker's
 7 - Planetfall
-8 - Castle Adventure
-9 - Zork I (ITA)
-0 - Avventura nel Castello (ITA)
+8 - Stationfall
+9 - Castle Adventure
+0 - Zork I (ITA)
+A - Avventura nel Castello (ITA)
 . - Logout
-
 
 
 
