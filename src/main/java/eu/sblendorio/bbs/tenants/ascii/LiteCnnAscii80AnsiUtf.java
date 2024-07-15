@@ -9,8 +9,8 @@ import eu.sblendorio.bbs.tenants.mixed.LiteCommons;
 @Hidden
 public class LiteCnnAscii80AnsiUtf extends AsciiThread {
 
-    static class LiteCnnCommons extends LiteCommons {
-        public LiteCnnCommons(BbsThread bbs) {
+    static class LiteCustom extends LiteCommons {
+        public LiteCustom(BbsThread bbs) {
             super(bbs);
             gap = 6;
         }
@@ -23,7 +23,7 @@ public class LiteCnnAscii80AnsiUtf extends AsciiThread {
     }
 
 
-    protected LiteCommons liteCommons = new LiteCnnCommons(this);
+    protected LiteCommons liteCommons = new LiteCustom(this);
 
     public LiteCnnAscii80AnsiUtf() {
     }

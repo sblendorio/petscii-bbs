@@ -29,8 +29,7 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 public class LiteCommons {
     public String AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36";
 
-    public record ArticleItem(String url, String title) {}
-    public record Article(String title, String date, String author, String text) {}
+    public record Article(String url, String title, String date, String author, String text) {}
 
     protected BbsThread bbs;
 
@@ -44,26 +43,26 @@ public class LiteCommons {
     public boolean alwaysRefreshFeed = false;
 
 
-    List<LiteCommons.ArticleItem> posts = Collections.emptyList();
+    List<LiteCommons.Article> posts = Collections.emptyList();
 
     public String baseUrl() { return "https://lite.cnn.com/"; }
 
-    public List<ArticleItem> getArticles() throws Exception {
+    public List<Article> getArticles() throws Exception {
         return Jsoup.parse(get(baseUrl())).select(".card--lite").stream()
                 .map(element -> {
                     Elements li = Jsoup.parse(element.html()).select("a");
-                    return new ArticleItem(li.attr("href"), li.text());
+                    return new Article(li.attr("href"), li.text(), null, null, null);
                 }).toList();
     }
 
-    public Article getArticle(ArticleItem item) throws Exception {
+    public Article getArticle(Article item) throws Exception {
         String wholeText = get(baseUrl() + item.url());
         Document doc = Jsoup.parse(wholeText);
         String author = doc.select(".byline--lite").text().replaceAll("(?is)^By ", "");
         String text = doc.select(".paragraph--lite").stream().map(Element::text).collect(Collectors.joining("<br><br>"));
         String metadata = doc.select("script").select("script[type$=json]").html();
         String datePublished = metadata.replaceAll("(?is).*?\"datePublished\".*?:.*?\"(....)-(..)-(..).*$", "$1/$2/$3");
-        return new Article(item.title(), datePublished, author, text);
+        return new Article(item.url(), item.title(), datePublished, author, text);
     }
 
     public void printListStatusLine() {
@@ -104,7 +103,7 @@ public class LiteCommons {
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).headers("User-Agent", AGENT).GET().build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
-                System.out.println(response.body());
+                System.out.println(response.statusCode());
                 throw new IllegalStateException("BAD HTTP REQUEST");
             }
             result = response.body();
@@ -155,8 +154,10 @@ public class LiteCommons {
         }
     }
 
+    public String by() { return "by"; }
+
     public  List<String> feedToText(LiteCommons.Article feed) {
-        String author = (StringUtils.isBlank(StringUtils.trim(feed.author()))) ? "" : (" - by " + StringUtils.trim(feed.author()));
+        String author = (StringUtils.isBlank(StringUtils.trim(feed.author()))) ? "" : (" - " + by() + " " + StringUtils.trim(feed.author()));
         String head = StringUtils.trim(feed.title()) + author + "<br>" + hrTop() + "<br>";
         List<String> rows = wordWrap(head);
         List<String> article = wordWrap((
@@ -197,7 +198,7 @@ public class LiteCommons {
         bbs.println();
     }
 
-    protected boolean displayPost(LiteCommons.ArticleItem item) throws Exception {
+    protected boolean displayPost(LiteCommons.Article item) throws Exception {
         drawLogo();
         LiteCommons.Article article = getArticle(item);
         List<String> rows = feedToText(article);
@@ -255,7 +256,7 @@ public class LiteCommons {
 
         long totalRows = 0;
         for (int i = start; i < end; ++i) {
-            LiteCommons.ArticleItem post = posts.get(i);
+            LiteCommons.Article post = posts.get(i);
             highlight(true);
             bbs.print((i+1) + ".");
             highlight(false);
@@ -272,8 +273,9 @@ public class LiteCommons {
     public void highlight(boolean on) {
     }
 
-    public void main(String[] args) throws Exception {
-        var articles = getArticles();
-        System.out.println(getArticle(articles.getFirst()));
+    public static void main(String[] args) throws Exception {
+        var start = new LiteCommons(null);
+        var articles = start.getArticles();
+        System.out.println(start.getArticle(articles.getFirst()));
     }
 }

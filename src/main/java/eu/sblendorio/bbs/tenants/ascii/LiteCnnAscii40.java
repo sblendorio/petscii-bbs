@@ -8,17 +8,18 @@ import eu.sblendorio.bbs.tenants.mixed.LiteCommons;
 @Hidden
 public class LiteCnnAscii40 extends AsciiThread {
 
-    static class LiteCnnCommons extends LiteCommons {
-        public LiteCnnCommons(BbsThread bbs) {
+    static class LiteCustom extends LiteCommons {
+        public LiteCustom(BbsThread bbs) {
             super(bbs);
             this.pageSize = 6;
         }
     }
 
 
-    public LiteCommons liteCommons = new LiteCnnCommons(this);
+    public LiteCommons liteCommons = new LiteCustom(this);
 
     public LiteCnnAscii40() {
+        super();
         this.screenColumns = 40;
     }
 

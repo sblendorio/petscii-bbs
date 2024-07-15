@@ -77,6 +77,7 @@ public class MenuM10 extends MenuApple1 {
         println("3 - Disinformatico  8 - A. Albano");
         println("4 - Mupin.it        9 - Ready 64");
         println("5 - F.Quot.      0 - Commesso Perplesso");
+        println("                 A - Fanpage");
     }
 
     public void showGames() {
@@ -111,6 +112,10 @@ public class MenuM10 extends MenuApple1 {
             if (t.resizeable()) t.pageSize /= 2;
         } else if (subThread instanceof OneRssAscii t) {
             if (t.resizeable()) t.pageSize /= 2;
+        } else if (subThread instanceof LiteCnnAscii40 t) {
+            t.liteCommons.pageSize /= 2;
+        } else if (subThread instanceof LiteFanpageAscii40 t) {
+            t.liteCommons.pageSize /= 2;
         }
         launch(subThread);
     }

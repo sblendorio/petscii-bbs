@@ -154,6 +154,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("8".equals(choice)) subThread = new AlessandroAlbanoAscii(io);
                 else if ("9".equals(choice)) subThread = new OneRssReady64Minitel();
                 else if ("0".equals(choice)) subThread = new CommessoPerplessoMinitel();
+                else if ("a".equals(choice)) subThread = new LiteFanpageMinitel();
                 else {
                     validKey = false;
                     subThread = null;

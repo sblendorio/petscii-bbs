@@ -279,6 +279,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 else if ("8".equals(choice)) subThread = new AlessandroAlbanoAscii();
                 else if ("9".equals(choice)) subThread = new OneRssReady64Ascii();
                 else if ("0".equals(choice)) subThread = new CommessoPerplessoAscii();
+                else if ("a".equals(choice)) subThread = new LiteFanpageAscii80();
                 else {
                     validKey = false;
                     subThread = null;

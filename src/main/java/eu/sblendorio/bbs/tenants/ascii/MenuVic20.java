@@ -3,6 +3,7 @@ package eu.sblendorio.bbs.tenants.ascii;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
+import eu.sblendorio.bbs.tenants.mixed.LiteFanpageCommons;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
 
@@ -117,6 +118,7 @@ public class MenuVic20 extends MenuApple1 {
         println("8 - Alessandro Albano");
         println("9 - Ready 64");
         println("0 - CommessoPerplesso");
+        println("A - Fanpage");
         println(". - Go back");
     }
 
@@ -183,6 +185,8 @@ public class MenuVic20 extends MenuApple1 {
         } else if (subThread instanceof OneRssAscii t) {
             if (t.resizeable()) t.pageSize /= 2;
         } else if (subThread instanceof LiteCnnAscii40 t) {
+            t.liteCommons.pageSize /= 2;
+        } else if (subThread instanceof LiteFanpageAscii40 t) {
             t.liteCommons.pageSize /= 2;
         }
         launch(subThread);

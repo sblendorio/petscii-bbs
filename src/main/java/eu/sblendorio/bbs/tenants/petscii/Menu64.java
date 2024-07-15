@@ -126,7 +126,7 @@ public class Menu64 extends PetsciiThread {
             write(REVON, GREEN, 161, WHITE, ' ', RED, REVOFF, 161, CYAN); print("Italian News   "); write(GREY3, REVON, 161, 'j', REVOFF, 161); println("Bufale.net");
             write(RIGHT, RIGHT, RIGHT, ' ', ' ', ' ', ' ', LIGHT_BLUE); print(repeat((char) 163, 12)); print("   "); write(GREY3, REVON, 161, 'k', REVOFF, 161); println("Butac");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161); print("Televideo      "); write(REVON, 161, 'l', REVOFF, 161); println("Facta news");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '2', REVOFF, 161); print("Open Online    "); write(REVON, 161, 'm', REVOFF, 161); println("David Puente");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '2', REVOFF, 161); print("Open Online    "); write(REVON, 161, 'm', REVOFF, 161); println("Fanpage");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '3', REVOFF, 161); print("Valigia Blu    "); write(REVON, 161, 'n', REVOFF, 161); println("Sportal.it");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '4', REVOFF, 161); print("Linkiesta      "); write(REVON, 161, 'o', REVOFF, 161); println("Indie Campus");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '5', REVOFF, 161); print("Il Fatto quot. "); write(REVON, 161, 'p', REVOFF, 161); println("Retrocommodore");
@@ -180,7 +180,7 @@ public class Menu64 extends PetsciiThread {
                     case 'j' -> launch(new BufaleNet());
                     case 'k' -> launch(new Butac());
                     case 'l' -> launch(new FactaNews());
-                    case 'm' -> launch(new DavidPuenteBlog());
+                    case 'm' -> launch(new LiteFanpagePetscii());
                     case 'n' -> launch(new Sportal());
                     case 'o' -> launch(new IndieCampus());
                     case 'p' -> launch(new Retrocommodore());
