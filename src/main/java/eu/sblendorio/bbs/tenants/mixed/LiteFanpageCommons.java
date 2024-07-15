@@ -64,7 +64,6 @@ public class LiteFanpageCommons extends LiteCommons {
 
     public Article getArticle(Article item) throws Exception {
         String wholeText = BbsThread.httpGet(item.url());
-        if (wholeText == null) System.out.println(item);
         Document doc = Jsoup.parse(wholeText);
         String text = doc.select("p").stream().map(Element::text).collect(Collectors.joining("<br><br>"));
         return new Article(item.url(), item.title(), item.date(), item.author(), text);
