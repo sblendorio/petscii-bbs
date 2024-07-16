@@ -972,7 +972,7 @@ class Parser {
         }
       }
     }
-    if (this.prevToken != null & this.prevToken == this.tokenizer.theCurrentToken) {
+    if (this.prevToken != null && this.prevToken == this.tokenizer.theCurrentToken) {
       throw "SYNTAX ERROR NEAR " + this.lastText();
     }
     this.prevToken = this.tokenizer.theCurrentToken
@@ -2522,6 +2522,7 @@ class Interpreter {
       val += info.step;
       if (info.step >= 0) {
         if (val > info.limit) {
+          this.setNumericValue(loopVar, val);
           this.forStack.pop();
           return idx + 1;
         }
@@ -2560,12 +2561,13 @@ class Interpreter {
         let done = false;
         if (info.step >= 0) {
           if (val > info.limit)
-            done = true;
+           done = true;
         } else {
           if (val < info.limit)
             done = true;
         }
         if (done) {
+          this.setNumericValue(loopVar, val);
           this.forStack.pop();
           if (j == count - 1) {
             return idx + 1;
