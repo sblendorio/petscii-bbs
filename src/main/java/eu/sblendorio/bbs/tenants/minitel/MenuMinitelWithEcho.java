@@ -76,42 +76,41 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 resetInput();
                 choice = StringUtils.lowerCase(choice);
                 BbsThread subThread = null;
-                if (".".equals(choice)) {
-                    return;
-                }
-                else if ("1".equals(choice)) subThread = new LiteCnnMinitel();
-                    /*new CnnAscii(
-                        io,
-                        rssPropertyTimeout(),
-                        rssPropertyTimeoutDefault(),
-                        getTerminalType(),
-                        bytes(0x1b, 0x3a, 0x6a, 0x43, 0x1e, readBinaryFile("minitel/cnn_home.vdt"), 17),
-                        bytes(31, 64+15, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+15, 64+2 ,0x1b, 0x54, 0x1b, 0x47)
-                );*/
-                else if ("2".equals(choice)) subThread = new BbcAscii(
-                        io,
-                        rssPropertyTimeout(),
-                        rssPropertyTimeoutDefault(),
-                        getTerminalType(),
-                        bytes(0x1b, 0x3a, 0x6a, 0x43, 0x1e, readBinaryFile("minitel/bbc_home.vdt"), 17),
-                        bytes(31, 64+22, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+22, 64+2 ,0x1b, 0x54, 0x1b, 0x47)
-                );
-                else if ("3".equals(choice)) subThread = new OneRssPoliticoMinitel();
-                else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii(io);
-                else if ("5".equals(choice)) subThread = new OneRssFoxNewsAscii(io);
-                else if ("6".equals(choice)) subThread = new WiredComMinitel();
-                else if ("7".equals(choice)) subThread = new VcfedAscii(io);
-                else if ("8".equals(choice)) subThread = new IndieRetroNewsAscii(io);
-                else if ("9".equals(choice)) subThread = new The8BitGuyMinitel();
-                else if ("0".equals(choice)) subThread = new VitnoAscii(io);
-                else if ("a".equals(choice)) subThread = new OneRss2600Minitel();
-                else if ("b".equals(choice)) subThread = new HackadayMinitel();
-                else if ("c".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii(io);
-                else {
-                    validKey = false;
-                    subThread = null;
-                }
-
+                if (".".equals(choice)) return;
+                subThread = switch (choice) {
+                    case "1" -> new LiteCnnMinitel();
+                                /*new CnnAscii(
+                                    io,
+                                    rssPropertyTimeout(),
+                                    rssPropertyTimeoutDefault(),
+                                    getTerminalType(),
+                                    bytes(0x1b, 0x3a, 0x6a, 0x43, 0x1e, readBinaryFile("minitel/cnn_home.vdt"), 17),
+                                    bytes(31, 64+15, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+15, 64+2 ,0x1b, 0x54, 0x1b, 0x47)
+                            );*/
+                    case "2" -> new BbcAscii(
+                            io,
+                            rssPropertyTimeout(),
+                            rssPropertyTimeoutDefault(),
+                            getTerminalType(),
+                            bytes(0x1b, 0x3a, 0x6a, 0x43, 0x1e, readBinaryFile("minitel/bbc_home.vdt"), 17),
+                            bytes(31, 64+22, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+22, 64+2 ,0x1b, 0x54, 0x1b, 0x47)
+                    );
+                    case "3" -> new OneRssPoliticoMinitel();
+                    case "4" -> new OneRssAJPlusAscii(io);
+                    case "5" -> new OneRssFoxNewsAscii(io);
+                    case "6" -> new WiredComMinitel();
+                    case "7" -> new VcfedAscii(io);
+                    case "8" -> new IndieRetroNewsAscii(io);
+                    case "9" -> new The8BitGuyMinitel();
+                    case "0" -> new VitnoAscii(io);
+                    case "a" -> new OneRss2600Minitel();
+                    case "b" -> new HackadayMinitel();
+                    case "c" -> new OneRssAmedeoValorosoEngAscii(io);
+                    default -> {
+                        validKey = false;
+                        yield null;
+                    }
+                };
                 execute(subThread);
             } while (!validKey);
         }
@@ -128,37 +127,35 @@ public class MenuMinitelWithEcho extends MinitelThread {
             do {
                 validKey = true;
                 resetInput();
-                String choice;
                 int key = readSingleKey();
-                choice = String.valueOf((char) key);
                 resetInput();
+                String choice = String.valueOf((char) key);
                 choice = StringUtils.lowerCase(choice);
-                BbsThread subThread = null;
-                if (".".equals(choice)) {
-                    return;
-                }
-                else if ("1".equals(choice)) subThread = new TelevideoRaiAscii(
-                        io,
-                        rssPropertyTimeout(),
-                        rssPropertyTimeoutDefault(),
-                        getTerminalType(),
-                        readBinaryFile("minitel/menu-televideo.vdt"),
-                        bytes(31, 64+23, 64+1, 32, 32, 32, 32, 32, 32, 31, 64+23, 64+1)
-                );
-                else if ("2".equals(choice)) subThread = new LercioMinitel();
-                else if ("3".equals(choice)) subThread = new DisinformaticoMinitel();
-                else if ("4".equals(choice)) subThread = new MupinAscii(io);
-                else if ("5".equals(choice)) subThread = new IlFattoQuotidianoMinitel();
-                else if ("6".equals(choice)) subThread = new AmedeoValorosoAscii(io);
-                else if ("7".equals(choice)) subThread = new ButacMinitel();
-                else if ("8".equals(choice)) subThread = new AlessandroAlbanoAscii(io);
-                else if ("9".equals(choice)) subThread = new OneRssReady64Minitel();
-                else if ("0".equals(choice)) subThread = new CommessoPerplessoMinitel();
-                else if ("a".equals(choice)) subThread = new LiteFanpageMinitel();
-                else {
-                    validKey = false;
-                    subThread = null;
-                }
+                if (".".equals(choice)) return;
+                BbsThread subThread = switch (choice) {
+                    case "1" -> new TelevideoRaiAscii(
+                            io,
+                            rssPropertyTimeout(),
+                            rssPropertyTimeoutDefault(),
+                            getTerminalType(),
+                            readBinaryFile("minitel/menu-televideo.vdt"),
+                            bytes(31, 64+23, 64+1, 32, 32, 32, 32, 32, 32, 31, 64+23, 64+1)
+                    );
+                    case "2" -> new LercioMinitel();
+                    case "3" -> new DisinformaticoMinitel();
+                    case "4" -> new MupinAscii(io);
+                    case "5" -> new IlFattoQuotidianoMinitel();
+                    case "6" -> new AmedeoValorosoAscii(io);
+                    case "7" -> new ButacMinitel();
+                    case "8" -> new AlessandroAlbanoAscii(io);
+                    case "9" -> new OneRssReady64Minitel();
+                    case "0" -> new CommessoPerplessoMinitel();
+                    case "a" -> new LiteFanpageMinitel();
+                    default -> {
+                        validKey = false;
+                        yield null;
+                    }
+                };
 
                 execute(subThread);
             } while (!validKey);
@@ -226,21 +223,17 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 resetInput();
                 choice = StringUtils.lowerCase(choice);
                 BbsThread subThread = null;
-                if (".".equals(choice)) {
-                    return;
+                switch (choice) {
+                    case "." -> { return; }
+                    case "1" -> SwBasicBridge.run("Star Trek", "basic/startrek-40-1.bas", this, locate());
+                    case "2" -> SwBasicBridge.run("Star Trek 2003", "basic/startrek-40-2.bas", this, locate());
+                    case "3" -> SwBasicBridge.run("Lunar Lander", "basic/lunar-lander-40.bas", this, locate());
+                    case "4" -> SwBasicBridge.run("Hamurabi", "basic/hamurabi-40.bas", this, locate());
+                    case "5" -> SwBasicBridge.run("Checkers", "basic/checkers-40.bas", this, locate());
+                    case "6" -> SwBasicBridge.run("Angela", "basic/angela.bas", this, locate());
+                    case "z" -> subThread = new BasicIdeMinitel(locate());
+                    default ->  validKey = false;
                 }
-                else if ("1".equals(choice)) { SwBasicBridge.run("Star Trek", "basic/startrek-40-1.bas", this, locate()); subThread = null; }
-                else if ("2".equals(choice)) { SwBasicBridge.run("Star Trek 2003", "basic/startrek-40-2.bas", this, locate()); subThread = null; }
-                else if ("3".equals(choice)) { SwBasicBridge.run("Lunar Lander", "basic/lunar-lander-40.bas", this, locate()); subThread = null; }
-                else if ("4".equals(choice)) { SwBasicBridge.run("Hamurabi", "basic/hamurabi-40.bas", this, locate()); subThread = null; }
-                else if ("5".equals(choice)) { SwBasicBridge.run("Checkers", "basic/checkers-40.bas", this, locate()); subThread = null; }
-                else if ("6".equals(choice)) { SwBasicBridge.run("Angela", "basic/angela.bas", this, locate()); subThread = null; }
-                else if ("z".equals(choice)) { subThread = new BasicIdeMinitel(locate()); }
-                else {
-                    validKey = false;
-                    subThread = null;
-                }
-
                 execute(subThread);
             } while (!validKey);
         }

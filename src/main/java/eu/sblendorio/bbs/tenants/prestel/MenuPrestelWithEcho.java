@@ -205,23 +205,23 @@ public class MenuPrestelWithEcho extends PrestelThread {
                 resetInput();
                 choice = StringUtils.lowerCase(choice);
                 BbsThread subThread;
-                if (".".equals(choice)) {
-                    return;
-                }
-                else if ("1".equals(choice)) subThread = new TicTacToeAscii(io);
-                else if ("2".equals(choice)) subThread = new Connect4Ascii();
-                else if ("3".equals(choice)) subThread = new ZorkMachinePrestel("zork1", "zmpp/zork1.z3");
-                else if ("4".equals(choice)) subThread = new ZorkMachinePrestel("zork2", "zmpp/zork2.z3");
-                else if ("5".equals(choice)) subThread = new ZorkMachinePrestel("zork3", "zmpp/zork3.z3");
-                else if ("6".equals(choice)) subThread = new ZorkMachinePrestel("hitchhikers", "zmpp/hitchhiker-r60.z3");
-                else if ("7".equals(choice)) subThread = new ZorkMachinePrestel("planetfall", "zmpp/planetfall-r39.z3");
-                else if ("8".equals(choice)) subThread = new AvventuraNelCastelloPrestel("en-gb");
-                else if ("9".equals(choice)) subThread = new ZorkMachinePrestel("zork1ita", "zmpp/Zork-1-ITA-v7.z5");
-                else if ("0".equals(choice)) subThread = new AvventuraNelCastelloPrestel("it-it");
-                else {
-                    validKey = false;
-                    subThread = null;
-                }
+                if (".".equals(choice)) return;
+                subThread = switch (choice) {
+                    case "1" -> new TicTacToeAscii(io);
+                    case "2" -> new Connect4Ascii();
+                    case "3" -> new ZorkMachinePrestel("zork1", "zmpp/zork1.z3");
+                    case "4" -> new ZorkMachinePrestel("zork2", "zmpp/zork2.z3");
+                    case "5" -> new ZorkMachinePrestel("zork3", "zmpp/zork3.z3");
+                    case "6" -> new ZorkMachinePrestel("hitchhikers", "zmpp/hitchhiker-r60.z3");
+                    case "7" -> new ZorkMachinePrestel("planetfall", "zmpp/planetfall-r39.z3");
+                    case "8" -> new AvventuraNelCastelloPrestel("en-gb");
+                    case "9" -> new ZorkMachinePrestel("zork1ita", "zmpp/Zork-1-ITA-v7.z5");
+                    case "0" -> new AvventuraNelCastelloPrestel("it-it");
+                    default -> {
+                        validKey = false;
+                        yield null;
+                    }
+                };
                 execute(subThread);
             } while (!validKey);
         }

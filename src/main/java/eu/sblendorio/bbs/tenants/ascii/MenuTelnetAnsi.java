@@ -121,36 +121,37 @@ public class MenuTelnetAnsi extends MenuTelnetPureAscii {
                 log("Menu. Choice = " + choice);
                 BbsThread subThread;
                 if (".".equals(choice)) return;
-                else if ("1".equals(choice)) subThread = new LiteCnnAscii80Ansi();
-                        /*new CnnAscii(
-                        rssPropertyTimeout(),
-                        rssPropertyTimeoutDefault(),
-                        getTerminalType(),
-                        null,
-                        null
-                );*/
-                else if ("2".equals(choice)) subThread = new BbcAscii(
-                        rssPropertyTimeout(),
-                        rssPropertyTimeoutDefault(),
-                        getTerminalType(),
-                        null,
-                        null
-                );
-                else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii();
-                else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii();
-                else if ("5".equals(choice)) subThread = new OneRssFoxNewsAscii();
-                else if ("6".equals(choice)) subThread = new WiredComAscii();
-                else if ("7".equals(choice)) subThread = new VcfedAscii();
-                else if ("8".equals(choice)) subThread = new IndieRetroNewsAscii();
-                else if ("9".equals(choice)) subThread = new The8BitGuyAscii();
-                else if ("0".equals(choice)) subThread = new VitnoAscii();
-                else if ("a".equals(choice)) subThread = new OneRss2600Ascii();
-                else if ("b".equals(choice)) subThread = new HackadayAscii();
-                else if ("c".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii();
-                else {
-                    validKey = false;
-                    subThread = null;
-                }
+                subThread = switch (choice) {
+                    case "1" -> new LiteCnnAscii80Ansi();
+                                /*new CnnAscii(
+                                rssPropertyTimeout(),
+                                rssPropertyTimeoutDefault(),
+                                getTerminalType(),
+                                null,
+                                null);*/
+                    case "2" -> new BbcAscii(
+                                    rssPropertyTimeout(),
+                                    rssPropertyTimeoutDefault(),
+                                    getTerminalType(),
+                                    null,
+                                    null
+                                );
+                    case "3" -> new OneRssPoliticoAscii();
+                    case "4" -> new OneRssAJPlusAscii();
+                    case "5" -> new OneRssFoxNewsAscii();
+                    case "6" -> new WiredComAscii();
+                    case "7" -> new VcfedAscii();
+                    case "8" -> new IndieRetroNewsAscii();
+                    case "9" -> new The8BitGuyAscii();
+                    case "0" -> new VitnoAscii();
+                    case "a" -> new OneRss2600Ascii();
+                    case "b" -> new HackadayAscii();
+                    case "c" -> new OneRssAmedeoValorosoEngAscii();
+                    default -> {
+                        validKey = false;
+                        yield null;
+                    }
+                };
                 execute(subThread);
             } while (!validKey);
         }

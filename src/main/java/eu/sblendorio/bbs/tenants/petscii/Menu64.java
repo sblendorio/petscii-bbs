@@ -86,32 +86,29 @@ public class Menu64 extends PetsciiThread {
                 key = Character.toLowerCase(key);
                 log("Menu. Pressed: '" + (key < 32 || key > 127 ? "chr(" + key + ")" : ((char) key)) + "' (code=" +
                     key + ")");
-                if (key == '.') {
-                    goodbye();
-                    return;
-                }
-                else if (key == '1') menuNewsEng();
-                else if (key == '2') menuNewsIta();
-                else if (key == '3') menuGames();
-                else if (key == '4') menuDownloads();
-                else if (key == '5') launch(new Chat64());
-                else if (key == '6') launch(new UserLogon());
-                else if (key == '7') launch(new InternetBrowser());
-                else if (key == '8') launch(new ElizaPetscii());
-                else if (key == '9') launch(new ClientChatGptPetscii());
-                else if (key == 'g') launch(new PetsciiArtGallery());
-                // else if (key == 'l') launch(new Ossa());
-                else if (key == 'x') about();
-                else if (key == 'a') patrons();
-                else if (key == 'b') patronsLogo();
-                else if (key == 'c') patronsPublishers();
-                else if (key == 'y') wifiModem();
-                else if (key == 'w') launch(new WikipediaPetscii());
-                else if (key == 'p') menuBasicPrograms();
-                else if (key == 'e') launch(new EnigmaPetscii());
-                else if (isSanremo() && key == 's') launch(new SanremoPetscii());
-                else {
-                    validKey = false;
+                switch (key) {
+                    case '.' -> { goodbye(); return; }
+                    case '1' -> menuNewsEng();
+                    case '2' -> menuNewsIta();
+                    case '3' -> menuGames();
+                    case '4' -> menuDownloads();
+                    case '5' -> launch(new Chat64());
+                    case '6' -> launch(new UserLogon());
+                    case '7' -> launch(new InternetBrowser());
+                    case '8' -> launch(new ElizaPetscii());
+                    case '9' -> launch(new ClientChatGptPetscii());
+                    case 'g' -> launch(new PetsciiArtGallery());
+                    case 'x' -> about();
+                    case 'a' -> patrons();
+                    case 'b' -> patronsLogo();
+                    case 'c' -> patronsPublishers();
+                    case 'y' -> wifiModem();
+                    case 'w' -> launch(new WikipediaPetscii());
+                    case 'p' -> menuBasicPrograms();
+                    case 'e' -> launch(new EnigmaPetscii());
+                    case 's' -> { if (isSanremo()) launch(new SanremoPetscii()); }
+                    //case 'l' -> launch(new Ossa());
+                    default -> validKey = false;
                 }
             } while (!validKey);
         }
@@ -469,13 +466,12 @@ public class Menu64 extends PetsciiThread {
                 log("Menu-Downloads. Pressed: '" + (key < 32 || key > 127 ? "chr(" + key + ")" : ((char) key)) +
                     "' (code=" +
                     key + ")");
-                if (key == '.') {
-                    return;
-                } else if (key == '1') launch(new CsdbReleases());
-                else if (key == '2') launch(new CsdbReleasesSD2IEC());
-                // else if (key == '3') launch(new ArnoldC64());
-                else {
-                    validKey = false;
+                switch (key) {
+                    case '.' -> { return; }
+                    case '1' -> launch(new CsdbReleases());
+                    case '2' -> launch(new CsdbReleasesSD2IEC());
+                    //case '3' -> launch(new ArnoldC64());
+                    default  -> validKey = false;
                 }
                 // if (validKey) return;
             } while (!validKey);
