@@ -112,9 +112,7 @@ public class MenuM10 extends MenuApple1 {
             if (t.resizeable()) t.pageSize /= 2;
         } else if (subThread instanceof OneRssAscii t) {
             if (t.resizeable()) t.pageSize /= 2;
-        } else if (subThread instanceof LiteCnnAscii40 t) {
-            t.liteCommons.pageSize /= 2;
-        } else if (subThread instanceof LiteFanpageAscii40 t) {
+        } else if (subThread instanceof LiteAscii t) {
             t.liteCommons.pageSize /= 2;
         }
         launch(subThread);

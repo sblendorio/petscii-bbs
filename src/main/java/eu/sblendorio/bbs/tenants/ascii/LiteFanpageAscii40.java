@@ -1,13 +1,11 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
-import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Hidden;
-import eu.sblendorio.bbs.tenants.mixed.LiteCommons;
 import eu.sblendorio.bbs.tenants.mixed.LiteFanpageCommons;
 
 @Hidden
-public class LiteFanpageAscii40 extends AsciiThread {
+public class LiteFanpageAscii40 extends LiteAscii {
 
     static class LiteCustom extends LiteFanpageCommons {
         public LiteCustom(BbsThread bbs) {
@@ -16,10 +14,8 @@ public class LiteFanpageAscii40 extends AsciiThread {
         }
     }
 
-    protected LiteCommons liteCommons = new LiteCustom(this);
-
     public LiteFanpageAscii40() {
-        super();
+        liteCommons = new LiteCustom(this);
         this.screenColumns = 40;
     }
 

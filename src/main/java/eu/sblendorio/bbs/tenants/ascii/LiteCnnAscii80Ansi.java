@@ -4,7 +4,7 @@ import eu.sblendorio.bbs.core.*;
 import eu.sblendorio.bbs.tenants.mixed.LiteCommons;
 
 @Hidden
-public class LiteCnnAscii80Ansi extends AsciiThread {
+public class LiteCnnAscii80Ansi extends LiteAscii {
 
     static class LiteCnnCommons extends LiteCommons {
         public LiteCnnCommons(BbsThread bbs) {
@@ -19,12 +19,9 @@ public class LiteCnnAscii80Ansi extends AsciiThread {
 
     }
 
-
-    protected LiteCommons liteCommons = new LiteCnnCommons(this);
-
     public LiteCnnAscii80Ansi() {
+        liteCommons = new LiteCnnAscii40.LiteCustom(this);
     }
-
 
     @Override
     public void doLoop() throws Exception {
