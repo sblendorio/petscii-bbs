@@ -224,7 +224,6 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 choice = StringUtils.lowerCase(choice);
                 BbsThread subThread = null;
                 switch (choice) {
-                    case "." -> { return; }
                     case "1" -> SwBasicBridge.run("Star Trek", "basic/startrek-40-1.bas", this, locate());
                     case "2" -> SwBasicBridge.run("Star Trek 2003", "basic/startrek-40-2.bas", this, locate());
                     case "3" -> SwBasicBridge.run("Lunar Lander", "basic/lunar-lander-40.bas", this, locate());
@@ -232,6 +231,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                     case "5" -> SwBasicBridge.run("Checkers", "basic/checkers-40.bas", this, locate());
                     case "6" -> SwBasicBridge.run("Angela", "basic/angela.bas", this, locate());
                     case "z" -> subThread = new BasicIdeMinitel(locate());
+                    case "." -> { return; }
                     default ->  validKey = false;
                 }
                 execute(subThread);

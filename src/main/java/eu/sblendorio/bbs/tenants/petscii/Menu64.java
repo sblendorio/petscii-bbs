@@ -87,7 +87,6 @@ public class Menu64 extends PetsciiThread {
                 log("Menu. Pressed: '" + (key < 32 || key > 127 ? "chr(" + key + ")" : ((char) key)) + "' (code=" +
                     key + ")");
                 switch (key) {
-                    case '.' -> { goodbye(); return; }
                     case '1' -> menuNewsEng();
                     case '2' -> menuNewsIta();
                     case '3' -> menuGames();
@@ -108,6 +107,7 @@ public class Menu64 extends PetsciiThread {
                     case 'e' -> launch(new EnigmaPetscii());
                     case 's' -> { if (isSanremo()) launch(new SanremoPetscii()); }
                     //case 'l' -> launch(new Ossa());
+                    case '.' -> { goodbye(); return; }
                     default -> validKey = false;
                 }
             } while (!validKey);
@@ -467,10 +467,10 @@ public class Menu64 extends PetsciiThread {
                     "' (code=" +
                     key + ")");
                 switch (key) {
-                    case '.' -> { return; }
                     case '1' -> launch(new CsdbReleases());
                     case '2' -> launch(new CsdbReleasesSD2IEC());
                     //case '3' -> launch(new ArnoldC64());
+                    case '.' -> { return; }
                     default  -> validKey = false;
                 }
                 // if (validKey) return;
