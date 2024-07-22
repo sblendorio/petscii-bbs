@@ -22,7 +22,7 @@ public class LiteCnnAscii80AnsiUtf extends LiteAscii {
     }
 
     public LiteCnnAscii80AnsiUtf() {
-        liteCommons = new LiteCnnAscii40.LiteCustom(this);
+        liteCommons = new LiteCustom(this);
     }
 
 

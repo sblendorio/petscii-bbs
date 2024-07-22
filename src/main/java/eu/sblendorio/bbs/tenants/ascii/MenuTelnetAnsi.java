@@ -147,6 +147,7 @@ public class MenuTelnetAnsi extends MenuTelnetPureAscii {
                     case "a" -> new OneRss2600Ascii();
                     case "b" -> new HackadayAscii();
                     case "c" -> new OneRssAmedeoValorosoEngAscii();
+                    case "d" -> new LiteNprAscii80();
                     default -> {
                         validKey = false;
                         yield null;

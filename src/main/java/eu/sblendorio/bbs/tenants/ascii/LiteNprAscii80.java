@@ -2,19 +2,19 @@ package eu.sblendorio.bbs.tenants.ascii;
 
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Hidden;
-import eu.sblendorio.bbs.tenants.mixed.LiteFanpageCommons;
+import eu.sblendorio.bbs.tenants.mixed.LiteNprCommons;
 
 @Hidden
-public class LiteFanpageAscii80 extends LiteAscii {
+public class LiteNprAscii80 extends LiteAscii {
 
-    static class LiteCustom extends LiteFanpageCommons {
+    static class LiteCustom extends LiteNprCommons {
         public LiteCustom(BbsThread bbs) {
             super(bbs);
             pageSize = 10;
         }
     }
 
-    public LiteFanpageAscii80() {
+    public LiteNprAscii80() {
         liteCommons = new LiteCustom(this);
     }
 

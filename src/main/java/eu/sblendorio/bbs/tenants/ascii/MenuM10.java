@@ -65,7 +65,8 @@ public class MenuM10 extends MenuApple1 {
         println("4 - Al Jazeera     A - 2600 News");
         println("5 - Fox News       B - Hackaday Blog");
         println("6 - Wired          C - A.Valoroso (ENG)");
-        println("7 - VCF News       . - Go back");
+        println("7 - VCF News       D - NPR.org");
+        println("                   . - Go back");
     }
 
     public void showItalianNews() {

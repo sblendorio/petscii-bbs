@@ -101,6 +101,7 @@ public class MenuVic20 extends MenuApple1 {
         println("A - 2600 News");
         println("B - Hackaday Blog");
         println("C - Amedeo Valoroso");
+        println("D - NPR");
         println(". - Go back");
     }
 

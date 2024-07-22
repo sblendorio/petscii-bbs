@@ -1,15 +1,18 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
-import eu.sblendorio.bbs.core.*;
+import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.Hidden;
+import eu.sblendorio.bbs.core.Utils;
 import eu.sblendorio.bbs.tenants.mixed.LiteCommons;
 
 @Hidden
 public class LiteCnnAscii80Ansi extends LiteAscii {
 
-    static class LiteCnnCommons extends LiteCommons {
-        public LiteCnnCommons(BbsThread bbs) {
+    static class LiteCustom extends LiteCommons {
+        public LiteCustom(BbsThread bbs) {
             super(bbs);
             gap = 6;
+            this.pageSize = 10;
         }
 
         public void drawLogo() throws Exception {
@@ -20,7 +23,7 @@ public class LiteCnnAscii80Ansi extends LiteAscii {
     }
 
     public LiteCnnAscii80Ansi() {
-        liteCommons = new LiteCnnAscii40.LiteCustom(this);
+        liteCommons = new LiteCustom(this);
     }
 
     @Override

@@ -8,11 +8,14 @@ import eu.sblendorio.bbs.tenants.mixed.LiteCommons;
 public class LiteCnnAscii80 extends LiteAscii {
 
     static class LiteCustom extends LiteCommons {
-        public LiteCustom(BbsThread bbs) { super(bbs); }
+        public LiteCustom(BbsThread bbs) {
+            super(bbs);
+            this.pageSize = 10;
+        }
     }
 
     public LiteCnnAscii80() {
-        liteCommons = new LiteCnnAscii40.LiteCustom(this);
+        liteCommons = new LiteCustom(this);
     }
 
     @Override

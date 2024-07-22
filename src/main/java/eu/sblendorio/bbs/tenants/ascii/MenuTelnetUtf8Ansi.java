@@ -146,6 +146,7 @@ public class MenuTelnetUtf8Ansi extends MenuTelnetPureAscii {
                 else if ("a".equals(choice)) subThread = new OneRss2600Ascii();
                 else if ("b".equals(choice)) subThread = new HackadayAscii();
                 else if ("c".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii();
+                else if ("d".equals(choice)) subThread = new LiteNprAscii80();
                 else {
                     validKey = false;
                     subThread = null;
