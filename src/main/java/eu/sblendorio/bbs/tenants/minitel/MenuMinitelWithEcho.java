@@ -230,6 +230,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                     case "4" -> SwBasicBridge.run("Hamurabi", "basic/hamurabi-40.bas", this, locate());
                     case "5" -> SwBasicBridge.run("Checkers", "basic/checkers-40.bas", this, locate());
                     case "6" -> SwBasicBridge.run("Angela", "basic/angela.bas", this, locate());
+                    case "7" -> SwBasicBridge.run("Angela", "basic/pcm.bas", this, locate());
                     case "z" -> subThread = new BasicIdeMinitel(locate());
                     case "." -> { return; }
                     default ->  validKey = false;

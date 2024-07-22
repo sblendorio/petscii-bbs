@@ -8,6 +8,7 @@ BASIC Programs
 4 - Hamurabi
 5 - Checkers
 6 - Angela Game (P101)
+7 - Paper Cup Machine
 
 Z - BBS BASIC
 

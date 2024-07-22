@@ -345,6 +345,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 else if ("4".equals(choice)) { SwBasicBridge.run("Hamurabi", "basic_cc/hamurabi.bas", this, locate()); subThread = null; }
                 else if ("5".equals(choice)) { SwBasicBridge.run("Checkers", "basic_cc/checkers.bas", this, locate()); subThread = null; }
                 else if ("6".equals(choice)) { SwBasicBridge.run("Angela", "basic/angela.bas", this, locate()); subThread = null; }
+                else if ("7".equals(choice)) { SwBasicBridge.run("Paper Cup Machine", "basic/pcm.bas", this, locate()); subThread = null; }
                 else if ("z".equals(choice)) { subThread = new BasicIdeAscii(locate()); }
 
                 else {
