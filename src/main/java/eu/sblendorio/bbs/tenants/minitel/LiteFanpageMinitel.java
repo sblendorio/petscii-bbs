@@ -19,7 +19,7 @@ public class LiteFanpageMinitel extends MinitelThread {
         public char hrChar() { return '`'; }
         public void drawLogo() throws Exception {
             bbs.cls();
-            bbs.write(Utils.bytes(readBinaryFile("minitel/fanpage.vdt")));
+            bbs.write(Utils.bytes(readBinaryFile("minitel/fanpage2.vdt")));
         }
     }
 
