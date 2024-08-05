@@ -292,7 +292,7 @@ public class GoogleBloggerProxyAscii extends AsciiThread {
                 .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r|\u00a0|&nbsp;)*)+", EMPTY)
                 + (disclaimer()==null?"":"<br><br>"+disclaimer())
         ).replaceAll("(?is)<!--.*?-->","");
-        System.out.println(content);
+
         final String head = p.getTitle() +
             "<br>" +
             HR_TOP +

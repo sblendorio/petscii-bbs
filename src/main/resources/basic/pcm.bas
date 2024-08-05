@@ -83,7 +83,7 @@
 760 REM human plays
 765 PRINT
 766 LINE INPUT"Type letter of the desired position: ";Z$:GOSUB 10000:IF Z$="." THEN 766
-767 C$=Z$+".":Z=ASC(C$):IF Z>=97 AND Z<=122 THEN C$=CHR$(Z-32)
+767 C$=LEFT$(Z$+".",1):Z=ASC(C$):IF Z>=97 AND Z<=122 THEN C$=CHR$(Z-32)
 770 GOSUB 850
 775 IF F=1 THEN PRINT:PRINT"Invalid input... Try again":GOTO 765
 780 GOSUB 800:REM check if the same number exists in the same position

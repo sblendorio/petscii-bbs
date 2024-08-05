@@ -1,0 +1,48 @@
+Connesso a silver.libera.chat sulla porta 6667 come john77 (SSL: false)
+:silver.libera.chat NOTICE * :*** Checking Ident
+:silver.libera.chat NOTICE * :*** Looking up your hostname...
+:silver.libera.chat NOTICE * :*** Found your hostname: 89-64-91-215.dynamic.chello.pl
+:silver.libera.chat NOTICE * :*** No Ident response
+:silver.libera.chat 001 john77 :Welcome to the Libera.Chat Internet Relay Chat Network john77
+:silver.libera.chat 002 john77 :Your host is silver.libera.chat[108.181.132.149/6667], running version solanum-1.0-dev
+:silver.libera.chat 003 john77 :This server was created Wed Jul 17 2024 at 21:44:04 UTC
+:silver.libera.chat 004 john77 silver.libera.chat solanum-1.0-dev DGIMQRSZaghilopsuwz CFILMPQRSTbcefgijklmnopqrstuvz bkloveqjfI
+:silver.libera.chat 005 john77 ACCOUNTEXTBAN=a ETRACE FNC SAFELIST ELIST=CMNTU CALLERID=g MONITOR=100 KNOCK WHOX CHANTYPES=# EXCEPTS INVEX :are supported by this server
+:silver.libera.chat 005 john77 CHANMODES=eIbq,k,flj,CFLMPQRSTcgimnprstuz CHANLIMIT=#:250 PREFIX=(ov)@+ MAXLIST=bqeI:100 MODES=4 NETWORK=Libera.Chat STATUSMSG=@+ CASEMAPPING=rfc1459 NICKLEN=16 MAXNICKLEN=16 CHANNELLEN=50 TOPICLEN=390 :are supported by this server
+:silver.libera.chat 005 john77 DEAF=D TARGMAX=NAMES:1,LIST:1,KICK:1,WHOIS:1,PRIVMSG:4,NOTICE:4,ACCEPT:,MONITOR: EXTBAN=$,agjrxz :are supported by this server
+:silver.libera.chat 251 john77 :There are 67 users and 32486 invisible on 27 servers
+:silver.libera.chat 252 john77 39 :IRC Operators online
+:silver.libera.chat 253 john77 1 :unknown connection(s)
+:silver.libera.chat 254 john77 21931 :channels formed
+:silver.libera.chat 255 john77 :I have 2128 clients and 1 servers
+:silver.libera.chat 265 john77 2128 2669 :Current local users 2128, max 2669
+:silver.libera.chat 266 john77 32553 33133 :Current global users 32553, max 33133
+:silver.libera.chat 250 john77 :Highest connection count: 2670 (2669 clients) (18124 connections received)
+:silver.libera.chat 375 john77 :- silver.libera.chat Message of the Day -
+:silver.libera.chat 372 john77 :- This server is provided by Psychz Networks.
+:silver.libera.chat 372 john77 :-
+:silver.libera.chat 372 john77 :- Welcome to Libera Chat, the IRC network for
+:silver.libera.chat 372 john77 :- free & open-source software and peer directed projects.
+:silver.libera.chat 372 john77 :-
+:silver.libera.chat 372 john77 :- Use of Libera Chat is governed by our network policies.
+:silver.libera.chat 372 john77 :-
+:silver.libera.chat 372 john77 :- To reduce network abuses we perform open proxy checks
+:silver.libera.chat 372 john77 :- on hosts at connection time.
+:silver.libera.chat 372 john77 :-
+:silver.libera.chat 372 john77 :- Please visit us in #libera for questions and support.
+:silver.libera.chat 372 john77 :-
+:silver.libera.chat 372 john77 :- Website and documentation:  https://libera.chat
+:silver.libera.chat 372 john77 :- Webchat:                    https://web.libera.chat
+:silver.libera.chat 372 john77 :- Network policies:           https://libera.chat/policies
+:silver.libera.chat 372 john77 :- Email:                      support@libera.chat
+:silver.libera.chat 376 john77 :End of /MOTD command.
+:john77 MODE john77 :+iw
+/join #retrocomputing
+:john77!~john77@89-64-91-215.dynamic.chello.pl JOIN #retrocomputing
+:silver.libera.chat 353 john77 = #retrocomputing :john77 agneli gnarchie @ChanServ yambo SurfBlueCrab dbohdan i4n anth NyB clemens3 sugarbeet cp-
+:silver.libera.chat 366 john77 #retrocomputing :End of /NAMES list.
+/msg #retrocomputing ciao hello
+:Guest25!~Guest25@89-64-91-215.dynamic.chello.pl JOIN #retrocomputing
+:Guest25!~Guest25@89-64-91-215.dynamic.chello.pl PRIVMSG #retrocomputing :ciaone
+:Guest25!~Guest25@89-64-91-215.dynamic.chello.pl PRIVMSG john77 :provolone
+/msg Guest25 trimone
