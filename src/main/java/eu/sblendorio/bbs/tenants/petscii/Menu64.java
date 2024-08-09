@@ -2,6 +2,7 @@ package eu.sblendorio.bbs.tenants.petscii;
 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import eu.sblendorio.bbs.core.*;
+import eu.sblendorio.bbs.tenants.ascii.ZorkMachineAscii;
 import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
@@ -429,6 +430,7 @@ public class Menu64 extends PetsciiThread {
                     case '0' -> launch(new AvventuraNelCastelloPetscii(SPLASH_CASTELLO_ENG, "en-gb"));
                     case 'a' -> launch(new ZorkMachine("zork1ita", "zmpp/Zork-1-ITA-v7.z5", readBinaryFile("petscii/zork1.seq")));
                     case 'b' -> launch(new AvventuraNelCastelloPetscii(SPLASH_CASTELLO_ITA, "it-it"));
+                    case 'c' -> launch(new ZorkMachine("advent350", "zmpp/advent.z3"));
                     case '.' -> { return; }
                     default -> validKey = false;
                 }

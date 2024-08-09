@@ -316,6 +316,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
                     case "9" -> createCastleAdventure();
                     case "0" -> new ZorkMachineAscii("zork1ita", "zmpp/Zork-1-ITA-v7.z5", this::boldOn, this::boldOff);
                     case "a" -> createAvventuraNelCastello();
+                    case "b" -> new ZorkMachineAscii("advent350", "zmpp/advent.z3");
                     default -> {
                         validKey = false;
                         yield null;

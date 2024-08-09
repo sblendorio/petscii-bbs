@@ -195,6 +195,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                     case "9" -> new AvventuraNelCastelloMinitel(SPLASH_CASTELLO_ENG, COPYRIGHT_CASTELLO_ENG, "en-gb");
                     case "0" -> new ZorkMachineMinitel("zork1ita", "zmpp/Zork-1-ITA-v7.z5", null, () -> attributes(CHAR_WHITE), () -> attributes(CHAR_GREEN));
                     case "a" -> new AvventuraNelCastelloMinitel(SPLASH_CASTELLO_ITA, COPYRIGHT_CASTELLO_ITA, "it-it");
+                    case "b" -> new ZorkMachineMinitel("advent350", "zmpp/advent.z3", readBinaryFile("minitel/colossal-cave-adventure.vdt"));
                     default -> {
                         validKey = false;
                         yield null;

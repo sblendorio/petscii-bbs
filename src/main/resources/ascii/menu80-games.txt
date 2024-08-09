@@ -16,8 +16,8 @@ Text Adventures
 9 - Castle Adventure
 0 - Zork I (ITA)
 A - Avventura nel Castello (ITA)
+B - Colossal Cave Adventure (1977)
 . - Logout
-
 
 
 
