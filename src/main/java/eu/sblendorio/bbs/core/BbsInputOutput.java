@@ -340,11 +340,17 @@ public abstract class BbsInputOutput extends Reader {
             this.close();
             if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH RDP " + ip);
             throw new BbsIOException("MICROSOFT REMOTE DESKTOP Connection detected " + stringIp + ", closing socket");
+        } else if (missingInput.matches("(?is)^.*M?GLNDD_[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+.*")) {
+            out.flush();
+            out.close();
+            this.close();
+            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH MGLNDD " + ip);
+            throw new BbsIOException("MGLNDD port scanner Connection detected " + stringIp + ", closing socket");
         } else if (missingInput.matches("(?is)^.*P?uTTYPuTTYPuTTY.*")) {
             out.flush();
             out.close();
             this.close();
-            // if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH PUTTY " + ip);
+            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH PUTTY " + ip);
             throw new BbsIOException("Weird PuTTY Connection detected " + stringIp + ", closing socket");
         } else if (
             missingInput.matches("(?is)^SSH-[0-9\\.]+-.*") ||
