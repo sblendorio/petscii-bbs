@@ -139,6 +139,7 @@ public class MenuVic20 extends MenuApple1 {
         println("0 - Zork I (ITA)");
         println("A - Avv. nel Castello");
         println("B - Cave Adventure");
+        println("C - Avventura (ITA)");
         println(". - Go back");
     }
 

@@ -237,6 +237,7 @@ public class MenuApple1 extends AsciiThread {
                     case "0" -> new ZorkMachineAscii("zork1ita", "zmpp/Zork-1-ITA-v7.z5");
                     case "a" -> createAvventuraNelCastello();
                     case "b" -> new ZorkMachineAscii("advent350", "zmpp/advent.z3");
+                    case "c" -> new ZorkMachineAscii("advent77ita", "zmpp/avventura-colossal-ita.z5");
                     default -> {
                         validKey = false;
                         yield null;
