@@ -5,29 +5,27 @@ import com.theokanning.openai.completion.chat.ChatCompletionChoice;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.service.OpenAiService;
-import eu.sblendorio.bbs.core.*;
+import eu.sblendorio.bbs.core.AsciiKeys;
+import eu.sblendorio.bbs.core.AsciiThread;
+import eu.sblendorio.bbs.core.BbsInputOutput;
 import eu.sblendorio.bbs.tenants.mixed.PatreonData;
-import jakarta.mail.*;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.davidmoten.text.utils.WordWrap;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.time.Duration;
-import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
 import static com.theokanning.openai.completion.chat.ChatCompletionRequest.builder;
-import static eu.sblendorio.bbs.core.Utils.*;
+import static eu.sblendorio.bbs.core.Utils.STR_ALPHANUMERIC;
+import static eu.sblendorio.bbs.core.Utils.setOfChars;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
 import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.joining;
 import static org.apache.commons.collections4.CollectionUtils.size;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
@@ -232,6 +230,7 @@ public class ClientChatGptAscii extends AsciiThread {
         for (String item: cleaned) {
             String[] wrappedLine = WordWrap
                     .from(item)
+                    .includeExtraWordChars("0123456789()")
                     .maxWidth(this.getScreenColumns() - 1)
                     .newLine("\n")
                     .breakWords(false)

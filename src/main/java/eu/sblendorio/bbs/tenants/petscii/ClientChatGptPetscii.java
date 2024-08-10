@@ -216,6 +216,7 @@ public class ClientChatGptPetscii extends PetsciiThread {
         for (String item: cleaned) {
             String[] wrappedLine = WordWrap
                     .from(item)
+                    .includeExtraWordChars("0123456789()")
                     .maxWidth(this.getScreenColumns() - 1)
                     .newLine("\n")
                     .breakWords(false)
