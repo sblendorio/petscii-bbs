@@ -73,7 +73,7 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
                 bbsThread.flush();
                 bbsThread.resetInput();
                 String rawInputLine = bbsThread.readLine();
-                String inputLine = (".".equals(rawInputLine) ? "q" : inferDiacritics(rawInputLine)).trim();
+                String inputLine = (".".equals(rawInputLine) ? "quit" : inferDiacritics(rawInputLine)).trim();
                 if ("..".equalsIgnoreCase(inputLine)) {
                     break;
                 }
