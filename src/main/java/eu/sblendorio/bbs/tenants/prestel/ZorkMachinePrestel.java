@@ -29,6 +29,7 @@ public class ZorkMachinePrestel extends PrestelThread {
 
     @Override
     public void doLoop() throws Exception {
+        log("Zork Machine started. Filename=" + this.filename);
         logo();
         resetInput();
         write(PrestelControls.CURSOR_ON);

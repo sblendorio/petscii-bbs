@@ -37,6 +37,7 @@ public class ZorkMachineAscii extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
+        log("Zork Machine started. Filename=" + this.filename);
         logo();
         resetInput();
         try {

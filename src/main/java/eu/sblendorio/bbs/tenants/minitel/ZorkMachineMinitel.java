@@ -33,6 +33,7 @@ public class ZorkMachineMinitel extends MinitelThread {
     }
 
     public void logo() throws Exception {
+        log("Zork Machine started. Filename=" + this.filename);
         cls();
         if (logo == null) {
             readTextFile("minitel/intro-zork.txt").forEach(this::println);
