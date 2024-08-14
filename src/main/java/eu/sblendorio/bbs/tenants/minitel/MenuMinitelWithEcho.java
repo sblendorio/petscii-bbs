@@ -242,8 +242,9 @@ public class MenuMinitelWithEcho extends MinitelThread {
                             write(readBinaryFile("minitel/melissa.vdt"));
                             write(SCROLL_ON);
                             try {
-                                flush(); resetInput(); readKey();
-                            } catch (IOException e) { }
+                                flush(); resetInput();
+                                int ch = keyPressed(60_000);
+                            } catch (IOException e) { e.printStackTrace(); }
                             write(CURSOR_ON);
                         });
                     case "z" -> subThread = new BasicIdeMinitel(locate());
