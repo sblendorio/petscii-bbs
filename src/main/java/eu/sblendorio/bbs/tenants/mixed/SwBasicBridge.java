@@ -1,5 +1,6 @@
 package eu.sblendorio.bbs.tenants.mixed;
 
+import com.theokanning.openai.runs.Run;
 import eu.sblendorio.bbs.core.BbsThread;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -10,9 +11,11 @@ import javax.script.Bindings;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.SimpleBindings;
+import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import static eu.sblendorio.bbs.core.Utils.*;
@@ -136,6 +139,10 @@ public class SwBasicBridge {
     }
 
     public static void run(String caption, String source, BbsThread bbsThread, TriConsumer<BbsThread, Integer, Integer> locate) throws Exception {
+        run(caption, source, bbsThread, locate, null);
+    }
+
+    public static void run(String caption, String source, BbsThread bbsThread, TriConsumer<BbsThread, Integer, Integer> locate, Runnable code) throws Exception {
         logger.info("Executing BASIC Program: '{}', on '{}'", source, bbsThread.getClass().getSimpleName());
         bbsThread.cls();
         bbsThread.println("*** RETROCAMPUS BBS BASIC V1.0 ***");
@@ -156,6 +163,7 @@ public class SwBasicBridge {
         typeln(bbsThread, "RUN", DELAY*8);
         bbsThread.flush(); Thread.sleep(1400);
         bbsThread.flush(); bbsThread.flush();
+        Optional.ofNullable(code).ifPresent(Runnable::run);
         bbsThread.cls();
         SwBasicBridge bridge = new SwBasicBridge(bbsThread, locate);
         bridge.init(source);

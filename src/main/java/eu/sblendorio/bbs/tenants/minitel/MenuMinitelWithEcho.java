@@ -235,6 +235,17 @@ public class MenuMinitelWithEcho extends MinitelThread {
                     case "6" -> SwBasicBridge.run("Angela", "basic/angela.bas", this, locate());
                     case "7" -> SwBasicBridge.run("Paper Cup Machine", "basic/pcm.bas", this, locate());
                     case "8" -> SwBasicBridge.run("Orbit", "basic/orbit.bas", this, locate());
+                    case "9" ->
+                        SwBasicBridge.run("Melissa", "basic/melissa.bas", this, locate(), () -> {
+                            write(SCROLL_OFF);
+                            write(CURSOR_OFF);
+                            write(readBinaryFile("minitel/melissa.vdt"));
+                            write(SCROLL_ON);
+                            try {
+                                flush(); resetInput(); readKey();
+                            } catch (IOException e) { }
+                            write(CURSOR_ON);
+                        });
                     case "z" -> subThread = new BasicIdeMinitel(locate());
                     case "." -> { return; }
                     default ->  validKey = false;
