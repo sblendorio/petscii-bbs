@@ -138,32 +138,50 @@ public class SwBasicBridge {
         engine.eval("interpreter.interpret();",bindings);
     }
 
+    public static void run(String source, BbsThread bbsThread, TriConsumer<BbsThread, Integer, Integer> locate) throws Exception {
+        run(null, source, bbsThread, locate, null);
+    }
+
+    public static void run(String source, BbsThread bbsThread) throws Exception {
+        run(null, source, bbsThread, null, null);
+    }
+
     public static void run(String caption, String source, BbsThread bbsThread, TriConsumer<BbsThread, Integer, Integer> locate) throws Exception {
         run(caption, source, bbsThread, locate, null);
     }
 
     public static void run(String caption, String source, BbsThread bbsThread, TriConsumer<BbsThread, Integer, Integer> locate, Runnable code) throws Exception {
         logger.info("Executing BASIC Program: '{}', on '{}'", source, bbsThread.getClass().getSimpleName());
-        bbsThread.cls();
-        bbsThread.println("*** RETROCAMPUS BBS BASIC V1.0 ***");
-        bbsThread.println("DERIVED FROM SWBASIC2 BY KONYISOFT");
-        bbsThread.println();
-        bbsThread.println("READY.");
-        bbsThread.flush(); Thread.sleep(700);
-        typeln(bbsThread, "LOAD\"" + StringUtils.defaultString(caption).toUpperCase() + "\"");
-        bbsThread.println();
-        bbsThread.println("SEARCHING FOR " + StringUtils.defaultString(caption).toUpperCase());
-        bbsThread.flush(); Thread.sleep(700);
-        bbsThread.println("FOUND " + StringUtils.defaultString(caption).toUpperCase());
-        bbsThread.flush(); Thread.sleep(700);
-        bbsThread.print("LOADING...");
-        bbsThread.flush(); Thread.sleep(1800); bbsThread.println();
-        bbsThread.println("READY.");
-        bbsThread.flush(); Thread.sleep(700);
-        typeln(bbsThread, "RUN", DELAY*8);
-        bbsThread.flush(); Thread.sleep(1400);
-        bbsThread.flush(); bbsThread.flush();
-        Optional.ofNullable(code).ifPresent(Runnable::run);
+        if (caption != null) {
+            bbsThread.cls();
+            bbsThread.println("*** RETROCAMPUS BBS BASIC V1.0 ***");
+            bbsThread.println("DERIVED FROM SWBASIC2 BY KONYISOFT");
+            bbsThread.println();
+            bbsThread.println("READY.");
+            bbsThread.flush();
+            Thread.sleep(700);
+            typeln(bbsThread, "LOAD\"" + caption.toUpperCase() + "\"");
+            bbsThread.println();
+            bbsThread.println("SEARCHING FOR " + caption.toUpperCase());
+            bbsThread.flush();
+            Thread.sleep(700);
+            bbsThread.println("FOUND " + caption.toUpperCase());
+            bbsThread.flush();
+            Thread.sleep(700);
+            bbsThread.print("LOADING...");
+            bbsThread.flush();
+            Thread.sleep(1800);
+            bbsThread.println();
+            bbsThread.println("READY.");
+            bbsThread.flush();
+            Thread.sleep(700);
+            typeln(bbsThread, "RUN", DELAY * 8);
+            bbsThread.flush();
+            Thread.sleep(1400);
+            bbsThread.flush();
+            bbsThread.flush();
+            Optional.ofNullable(code).ifPresent(Runnable::run);
+        }
         bbsThread.cls();
         SwBasicBridge bridge = new SwBasicBridge(bbsThread, locate);
         bridge.init(source);
