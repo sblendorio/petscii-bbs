@@ -316,7 +316,19 @@ public abstract class BbsInputOutput extends Reader {
                 (missingInput.length() > 120 ? "..." : EMPTY),
             missingInput.length());
 
-        if (missingInput.matches("(?is)^(G?ET|P?OST|H?EAD|P?UT|D?ELETE|C?ONNECT|O?PTIONS) [^\n]+ HTTP.*")) {
+        if (missingInput.matches("(?is)^.*User-Agent: Expanse, a Palo Alto Networks.*")) {
+            out.flush();
+            out.close();
+            this.close();
+            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH User-Agent: Expanse Palo Alto. " + ip);
+            throw new BbsIOException("EXPANSE-PALOALTO port scanner Connection detected " + stringIp + ", closing socket");
+        } else if (missingInput.matches("(?is)^.*User-Agent: curl/.*")) {
+            out.flush();
+            out.close();
+            this.close();
+            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH User-Agent: curl. " + ip);
+            throw new BbsIOException("CURL port scanner Connection detected " + stringIp + ", closing socket");
+        } else if (missingInput.matches("(?is)^(G?ET|P?OST|H?EAD|P?UT|D?ELETE|C?ONNECT|O?PTIONS) [^\n]+ HTTP.*")) {
             // out.write(10);
             out.flush();
             out.close();
