@@ -320,13 +320,13 @@ public abstract class BbsInputOutput extends Reader {
             out.flush();
             out.close();
             this.close();
-            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH User-Agent: Expanse Palo Alto. " + ip);
+            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH EXPANSEPALOALTO " + ip);
             throw new BbsIOException("EXPANSE-PALOALTO port scanner Connection detected " + stringIp + ", closing socket");
         } else if (missingInput.matches("(?is)^.*User-Agent: curl/.*")) {
             out.flush();
             out.close();
             this.close();
-            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH User-Agent: curl. " + ip);
+            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH CURL " + ip);
             throw new BbsIOException("CURL port scanner Connection detected " + stringIp + ", closing socket");
         } else if (missingInput.matches("(?is)^(G?ET|P?OST|H?EAD|P?UT|D?ELETE|C?ONNECT|O?PTIONS) [^\n]+ HTTP.*")) {
             // out.write(10);
