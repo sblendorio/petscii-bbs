@@ -316,18 +316,30 @@ public abstract class BbsInputOutput extends Reader {
                 (missingInput.length() > 120 ? "..." : EMPTY),
             missingInput.length());
 
-        if (missingInput.matches("(?is)^.*User-Agent: Expanse, a Palo Alto Networks.*")) {
+        if (missingInput.contains("User-Agent: Expanse, a Palo Alto Networks")) {
             out.flush();
             out.close();
             this.close();
             if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH EXPANSEPALOALTO " + ip);
             throw new BbsIOException("EXPANSE-PALOALTO port scanner Connection detected " + stringIp + ", closing socket");
-        } else if (missingInput.matches("(?is)^.*User-Agent: curl/.*")) {
+        } else if (missingInput.contains("User-Agent: curl/")) {
             out.flush();
             out.close();
             this.close();
             if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH CURL " + ip);
             throw new BbsIOException("CURL port scanner Connection detected " + stringIp + ", closing socket");
+        } else if (missingInput.contains("User-Agent: libwww-perl/")) {
+            out.flush();
+            out.close();
+            this.close();
+            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH LIBWWWPERL " + ip);
+            throw new BbsIOException("LIB-WWW-PERL port scanner Connection detected " + stringIp + ", closing socket");
+        } else if (missingInput.matches("(?is)^.* /.* HTTP/1\\.0[^0-9.].*")) {
+            out.flush();
+            out.close();
+            this.close();
+            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH HTTPONEZERO " + ip);
+            throw new BbsIOException("HTTP 1.0 connection detected " + stringIp + ", closing socket");
         } else if (missingInput.matches("(?is)^(G?ET|P?OST|H?EAD|P?UT|D?ELETE|C?ONNECT|O?PTIONS) [^\n]+ HTTP.*")) {
             // out.write(10);
             out.flush();
@@ -358,7 +370,7 @@ public abstract class BbsInputOutput extends Reader {
             this.close();
             if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH MGLNDD " + ip);
             throw new BbsIOException("MGLNDD port scanner Connection detected " + stringIp + ", closing socket");
-        } else if (missingInput.matches("(?is)^.*P?uTTYPuTTYPuTTY.*")) {
+        } else if (missingInput.contains("uTTYPuTTYPuTTY")) {
             out.flush();
             out.close();
             this.close();
@@ -374,7 +386,7 @@ public abstract class BbsInputOutput extends Reader {
             this.close();
             if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH SSH " + ip);
             throw new BbsIOException("SECURE SHELL (ssh) Connection detected " + stringIp + ", closing socket");
-        } else if (missingInput.matches("(?is)^R?FB [0-9][0-9][0-9]\\.[0-9][0-9][0-9]\n.*")) {
+        } else if (missingInput.matches("(?is)^R?FB [0-9]+\\.[0-9]+\n.*")) {
             out.flush();
             out.close();
             this.close();
