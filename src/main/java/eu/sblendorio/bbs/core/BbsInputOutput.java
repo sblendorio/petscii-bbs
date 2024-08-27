@@ -404,6 +404,12 @@ public abstract class BbsInputOutput extends Reader {
             this.close();
             if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH SHELLATTACK " + ip);
             throw new BbsIOException("Shell Attack detected " + stringIp + ", closing socket");
+        } else if (missingInput.contains("Ì©À/À0À+À,À")) {
+            out.flush();
+            out.close();
+            this.close();
+            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH CLIENTHELLOSSH " + ip);
+            throw new BbsIOException("ClientHello SSH connection detected " + stringIp + ", closing socket");
         } else if (count >= THRESHOLD) {
             out.flush();
             out.close();
@@ -415,12 +421,6 @@ public abstract class BbsInputOutput extends Reader {
             )
                 logger.info("CATCH DDOS " + ip);
             throw new BbsIOException("SEVERE. BbsIOException::resetInput " + stringIp + ", potential DoS detected.");
-        } else if (missingInput.contains("Ì©À/À0À+À,À")) {
-            out.flush();
-            out.close();
-            this.close();
-            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH CLIENTHELLOSSH " + ip);
-            throw new BbsIOException("ClientHello SSH connection detected " + stringIp + ", closing socket");
         }
         return excludedInput;
     }
