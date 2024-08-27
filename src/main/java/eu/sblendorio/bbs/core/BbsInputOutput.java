@@ -334,6 +334,12 @@ public abstract class BbsInputOutput extends Reader {
             this.close();
             if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH CURL " + ip);
             throw new BbsIOException("CURL port scanner Connection detected " + stringIp + ", closing socket");
+        } else if (missingInput.contains("User-Agent: facebookexternalhit/")) {
+            out.flush();
+            out.close();
+            this.close();
+            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH FACEBOOKEXTERNALHIT " + ip);
+            throw new BbsIOException("FACEBOOKEXTERNALHIT Connection detected " + stringIp + ", closing socket");
         } else if (missingInput.contains("User-Agent: libwww-perl/")) {
             out.flush();
             out.close();
