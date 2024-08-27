@@ -322,6 +322,12 @@ public abstract class BbsInputOutput extends Reader {
             this.close();
             if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH EXPANSEPALOALTO " + ip);
             throw new BbsIOException("EXPANSE-PALOALTO port scanner Connection detected " + stringIp + ", closing socket");
+        } else if (missingInput.contains("DWP-Handshake")) {
+            out.flush();
+            out.close();
+            this.close();
+            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH JDWP " + ip);
+            throw new BbsIOException("JDWP-Handshake port scanner Connection detected " + stringIp + ", closing socket");
         } else if (missingInput.contains("User-Agent: curl/")) {
             out.flush();
             out.close();
