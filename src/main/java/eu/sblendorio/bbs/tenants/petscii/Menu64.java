@@ -346,6 +346,7 @@ public class Menu64 extends PetsciiThread {
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '7', REVOFF, 161); println("Paper Cup Machine");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '8', REVOFF, 161); println("Orbit");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '9', REVOFF, 161); println("Melissa (Systems - ITA)");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '0', REVOFF, 161); println("Dobble");
 
             newline();
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '.', REVOFF, 161);
@@ -372,6 +373,7 @@ public class Menu64 extends PetsciiThread {
                     case '7' -> SwBasicBridge.run("Paper Cup Machine", "basic/pcm-petscii.bas", this, locate());
                     case '8' -> SwBasicBridge.run("Orbit", "basic/orbit.bas", this, locate());
                     case '9' -> SwBasicBridge.run("Melissa", "basic/melissa.bas", this, locate());
+                    case '0' -> SwBasicBridge.run("Dobble", "basic/dobble.bas", this, locate());
                     case 'z' -> launch(new BasicIdePetscii(locate()));
                     case '.' -> { return; }
                     default -> validKey = false;

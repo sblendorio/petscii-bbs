@@ -1,8 +1,6 @@
-Retrocampus BBS pure text version
-
 BASIC Programs
 ------------
-1 - Star Trek
+1 - Star Trek (Bob Bishop)
 2 - Star Trek 2003
 3 - Lunar Lander
 4 - Hamurabi
@@ -11,6 +9,8 @@ BASIC Programs
 7 - Paper Cup Machine
 8 - Orbit
 9 - Melissa (Systems - ITA)
+0 - Dobble
+
 
 Z - BBS BASIC
 

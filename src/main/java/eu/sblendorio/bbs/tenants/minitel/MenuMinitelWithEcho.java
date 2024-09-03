@@ -247,6 +247,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                             } catch (IOException e) { e.printStackTrace(); }
                             write(CURSOR_ON);
                         });
+                    case "0" -> SwBasicBridge.run("Dobble", "basic/dobble.bas", this, locate());
                     case "z" -> subThread = new BasicIdeMinitel(locate());
                     case "." -> { return; }
                     default ->  validKey = false;
