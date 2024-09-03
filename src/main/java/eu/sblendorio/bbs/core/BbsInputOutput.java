@@ -414,8 +414,8 @@ public abstract class BbsInputOutput extends Reader {
             out.flush();
             out.close();
             this.close();
-            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH CLIENTHELLOSSH " + ip);
-            throw new BbsIOException("ClientHello SSH connection detected " + stringIp + ", closing socket");
+            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH CLIENTHELLOSSL " + ip);
+            throw new BbsIOException("ClientHello SSL connection detected " + stringIp + ", closing socket");
         } else if (count >= THRESHOLD) {
             out.flush();
             out.close();
