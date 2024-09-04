@@ -1,4 +1,4 @@
-1 dash$=string$(38, 96)
+1 dash$=string$(38, 45)
 2 rem Dobble - 2024 by Jader Monari - Massimo Ferri
 3 rem Written for Apple-1's Applesoft BASIC by Claudio Parmigiani - P-LAB
 4 randomize timer
