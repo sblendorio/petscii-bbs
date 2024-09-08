@@ -141,7 +141,7 @@ public class SwBasicBridge {
     }
 
     public void start() throws Exception {
-        engine.eval("interpreter.interpret();",bindings);
+        engine.eval("interpreter.interpret();", bindings);
     }
 
     public static void run(String source, BbsThread bbsThread, TriConsumer<BbsThread, Integer, Integer> locate) throws Exception {
