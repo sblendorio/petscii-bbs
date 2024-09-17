@@ -555,8 +555,8 @@ public class Menu64 extends PetsciiThread {
     public void patronsLogo() throws Exception {
         List<String> files = Arrays.asList(
             "petscii/patreon-sponsor-01.seq",
-            "petscii/patreon-sponsor-02.seq"/*,
-             "petscii/patreon-sponsor-03.seq"*/
+            "petscii/patreon-sponsor-02.seq",
+            "petscii/patreon-sponsor-03.seq"
         );
         for (String file: files) {
             write(CLR, LOWERCASE, CASE_LOCK, HOME);
