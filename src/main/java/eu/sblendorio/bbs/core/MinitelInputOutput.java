@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 import static eu.sblendorio.bbs.core.HtmlUtils.utilHtmlClean;
+import static eu.sblendorio.bbs.core.HtmlUtils.utilHtmlUpperDiacriticsToAscii;
 import static eu.sblendorio.bbs.core.MinitelControls.CURSOR_LEFT;
 
 public class MinitelInputOutput extends BbsInputOutput {
@@ -91,7 +92,7 @@ public class MinitelInputOutput extends BbsInputOutput {
 
     @Override
     public String htmlClean(String s) {
-        return utilHtmlClean(s);
+        return utilHtmlUpperDiacriticsToAscii(utilHtmlClean(s));
     }
 
     private void printDiacritic(char ch) {

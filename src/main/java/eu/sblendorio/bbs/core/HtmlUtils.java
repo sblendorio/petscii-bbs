@@ -169,6 +169,25 @@ public class HtmlUtils {
         ;
     }
 
+    public static String utilHtmlUpperDiacriticsToAscii(String s) {
+        return s
+            .replaceAll("[ÀÁ]", "A'")
+            .replaceAll("[ÈÉ]", "E'")
+            .replaceAll("[ÌÍ]", "I'")
+            .replaceAll("[ÒÓ]", "O'")
+            .replaceAll("[ÙÚ]", "U'")
+            .replaceAll("Ü", "U")
+            .replaceAll("Ë", "E")
+            .replaceAll("Ê", "E")
+            .replaceAll("Ï", "I")
+            .replaceAll("Ô", "O")
+            .replaceAll("Â", "A")
+            .replaceAll("Ç", "C")
+            .replaceAll("¿", "")
+            .replaceAll("¡", "")
+        ;
+    }
+
     private HtmlUtils() {
         throw new IllegalStateException("Utility class");
     }
