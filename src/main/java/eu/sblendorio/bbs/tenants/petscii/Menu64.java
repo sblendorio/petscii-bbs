@@ -436,6 +436,7 @@ public class Menu64 extends PetsciiThread {
                     case 'b' -> launch(new AvventuraNelCastelloPetscii(SPLASH_CASTELLO_ITA, "it-it"));
                     case 'c' -> launch(new ZorkMachine("advent350", "zmpp/advent.z3"));
                     case 'd' -> launch(new ZorkMachine("advent77ita", "zmpp/avventura-colossal-ita.z5"));
+                    case 'e' -> launch(new ZorkMachine("wishbringer", "zmpp/wishbringer-r69.z3"));
                     case '.' -> { return; }
                     default -> validKey = false;
                 }

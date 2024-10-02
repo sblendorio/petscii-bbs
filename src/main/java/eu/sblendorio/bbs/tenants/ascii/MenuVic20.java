@@ -140,6 +140,7 @@ public class MenuVic20 extends MenuApple1 {
         println("A - Avv. nel Castello");
         println("B - Cave Adventure");
         println("C - Avventura (ITA)");
+        println("D - Wishbringer");
         println(". - Go back");
     }
 
