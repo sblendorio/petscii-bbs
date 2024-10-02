@@ -229,7 +229,7 @@ public class BBServer {
             + "Connection: Closed\n"
             + "\n"
             + "<html><head><title>"+ BbsThread.clients.size()+" client"+(BbsThread.clients.size()==1?"":"s")+"</title>"
-            + "<meta http-equiv=\"refresh\" content=\"5\"></head><body><pre>\n"
+            + "<!-- meta http-equiv=\"refresh\" content=\"5\" --></head><body><pre>\n"
             + "Number of clients: " + BbsThread.clients.size() + "\n"
             + "\n" +
             BbsThread.clients.entrySet().stream()
