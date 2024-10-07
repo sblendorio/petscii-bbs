@@ -572,7 +572,7 @@ public class UserLogon extends PetsciiThread {
         String password = "password";
         String salt = UUID.randomUUID().toString();
         String hash = sha256Hex(salt + password);
-        System.out.println("update users set salt='"+salt+"', password='"+hash+"' where nick='"+nick+"'");
+        System.out.println("update users set salt='"+salt+"', password='"+hash+"' where nick='"+nick+"';");
 
     }
 
