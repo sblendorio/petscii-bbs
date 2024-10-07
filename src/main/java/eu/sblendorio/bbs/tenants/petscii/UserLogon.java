@@ -567,6 +567,15 @@ public class UserLogon extends PetsciiThread {
         return true;
     }
 
+    public static void main(String[] args) {
+        String nick="nickname";
+        String password = "password";
+        String salt = UUID.randomUUID().toString();
+        String hash = sha256Hex(salt + password);
+        System.out.println("update users set salt='"+salt+"', password='"+hash+"' where nick='"+nick+"'");
+
+    }
+
     public long countTotalMessages(String nick) throws Exception {
         try (PreparedStatement ps = conn.prepareStatement("select count(*) from messages where user_to=? collate nocase")) {
             ps.setString(1, nick);
