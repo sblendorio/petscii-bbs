@@ -22,7 +22,7 @@ public class HolidayCommons {
     public static String XMAS_START_DEFAULT = "1206";
     public static String XMAS_END_DEFAULT = "0106";
 
-    public static String HALLOWEEN_START_DEFAULT = "1020";
+    public static String HALLOWEEN_START_DEFAULT = "1001";
     public static String HALLOWEEN_END_DEFAULT = "1101";
 
     public static Set<String> italianIp = new TreeSet<>();

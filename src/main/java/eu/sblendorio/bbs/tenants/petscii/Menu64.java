@@ -2,7 +2,6 @@ package eu.sblendorio.bbs.tenants.petscii;
 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import eu.sblendorio.bbs.core.*;
-import eu.sblendorio.bbs.tenants.ascii.ZorkMachineAscii;
 import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
@@ -14,7 +13,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 import static eu.sblendorio.bbs.core.BlockGraphicsPetscii.getRenderedMidres;
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
@@ -57,6 +55,8 @@ public class Menu64 extends PetsciiThread {
             String logoFilename;
             if (isXmasTime()) {
                 logoFilename = "petscii/bbs-menu-main-christmas.seq";
+            } else if (isHalloweenTime()) {
+                logoFilename = "petscii/bbs-menu-main-halloween.seq";
             } else if (isSanremo()) {
                 logoFilename = "petscii/bbs-menu-main-sanremo.seq";
             } else {
@@ -584,6 +584,8 @@ public class Menu64 extends PetsciiThread {
     public void drawLogo() {
         if (isXmasTime()) {
             write(readBinaryFile("petscii/christmas-ribbon.seq"));
+        } else if (isHalloweenTime()) {
+            write(readBinaryFile("petscii/halloween-ribbon.seq"));
         } else {
             write(LOGO_BYTES);
         }
@@ -605,7 +607,9 @@ public class Menu64 extends PetsciiThread {
 
         write(UPPERCASE);
         if (isXmasTime()) {
-            writeRawFile("petscii/goodbye/santa-kody.seq");
+            writeRawFile("petscii/santa-kody.seq");
+        } else if (isHalloweenTime()) {
+            writeRawFile("petscii/halloween.seq");
         } else {
             writeRawFile(filename);
         }

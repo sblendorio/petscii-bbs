@@ -39,8 +39,14 @@ public class MenuApple1 extends AsciiThread {
             readTextFile("ascii/xmas40cols.txt").stream()
                     .map(line -> line.replace("9999", NEW_YEAR))
                     .forEach(this::println);
-            flush(); resetInput();
+            flush();
+            resetInput();
             keyPressed(60_000);
+        //} else if (HolidayCommons.isHalloweenTime()) {
+        //    readTextFile("ascii/halloween40.txt").forEach(this::println);
+        //    flush();
+        //    resetInput();
+        //    keyPressed(60_000);
         } else {
             readTextFile("apple1/intro-menu.txt").forEach(this::println);
             flush();

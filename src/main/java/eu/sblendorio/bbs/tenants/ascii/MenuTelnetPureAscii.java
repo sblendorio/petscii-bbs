@@ -97,6 +97,11 @@ public class MenuTelnetPureAscii extends AsciiThread {
             flush();
             resetInput();
             keyPressed(30_000);
+        //} else if (HolidayCommons.isHalloweenTime()) {
+        //    readTextFile("ascii/halloween80.txt").forEach(this::println);
+        //    flush();
+        //    resetInput();
+        //    keyPressed(30_000);
         }
     }
 
