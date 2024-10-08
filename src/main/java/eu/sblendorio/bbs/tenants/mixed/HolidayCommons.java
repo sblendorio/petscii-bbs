@@ -22,6 +22,9 @@ public class HolidayCommons {
     public static String XMAS_START_DEFAULT = "1206";
     public static String XMAS_END_DEFAULT = "0106";
 
+    public static String HALLOWEEN_START_DEFAULT = "1020";
+    public static String HALLOWEEN_END_DEFAULT = "1101";
+
     public static Set<String> italianIp = new TreeSet<>();
 
     public static int xmasNewYear() {
@@ -55,6 +58,26 @@ public class HolidayCommons {
         );
     }
 
+    public static boolean isHalloweenTime() {
+        String startDef = defaultString(getenv("HALLOWEEN_START"), getProperty("HALLOWEEN_START", HALLOWEEN_START_DEFAULT));
+        String endDef = defaultString(getenv("HALLOWEEN_END"), getProperty("HALLOWEEN_END", HALLOWEEN_END_DEFAULT));
+
+        return isIncluded(startDef, endDef, Calendar.getInstance());
+    }
+    public static boolean isIncluded(String start, String end, Calendar todayCal) {
+        int year = todayCal.get(YEAR);
+
+        String month = String.format("%02d", todayCal.get(MONTH)+1);
+        String day = String.format("%02d", todayCal.get(DAY_OF_MONTH));
+
+        String today = String.format("%04d", todayCal.get(YEAR)) + month + day;
+        String xStart = year + start;
+        String xEnd = year + end;
+
+        return today.compareTo(xStart)>=0 && today.compareTo(xEnd)<=0;
+
+    }
+
     public static boolean isXmasTime(String xmasStartDef, String xmasEndDef, Calendar todayCal) {
         boolean ascent = xmasEndDef.compareTo(xmasStartDef) >=0;
         int xmasNewYear = xmasNewYear(xmasStartDef, todayCal);
@@ -80,6 +103,7 @@ public class HolidayCommons {
     }
 
     public static void main(String[] args) {
+        System.out.println("isHalloween="+isHalloweenTime());
         System.out.println("isXmas="+isXmasTime());
         System.out.println("new year="+xmasNewYear());
     }
