@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.*;
 import java.net.Socket;
 import java.util.Collections;
+import java.util.HexFormat;
 import java.util.List;
 import java.util.Set;
 
@@ -308,12 +309,18 @@ public abstract class BbsInputOutput extends Reader {
         byte[] excludedInput = new byte[count];
         arraycopy(buffer, 0, excludedInput, 0, count);
         final String missingInput = new String(excludedInput, ISO_8859_1);
-        logger.info("Flushing input buffer (" + ip + "): '{}', len = {}",
+        // TLS: c0 2b c0 2f c0 (À+À/À)
+        // TLS: c0 2b c0 2c c0 (À+À,À)
+        // TLS: c0 2f c0 2b c0 (À/À+À)
+        // TLS: 16 03 01
+        // TLS: 16 03 03
+        logger.info("Flushing input buffer (" + ip + "): '{}'{}, len = {}",
             substring(missingInput
                 .replaceAll("\r+", "\\\\r")
                 .replaceAll("\n+", "\\\\n")
                 .replaceAll("\\p{C}", "?"), 0, 120) +
                 (missingInput.length() > 120 ? "..." : EMPTY),
+            "", //" HEX: "+ HexFormat.ofDelimiter(" ").formatHex(excludedInput),
             missingInput.length());
 
         if (missingInput.contains("User-Agent: Expanse, a Palo Alto Networks")) {
