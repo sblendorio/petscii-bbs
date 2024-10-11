@@ -98,7 +98,7 @@ public abstract class BbsInputOutput extends Reader {
     }
     
     public int readKey() throws IOException {
-        long DELTA = 800;
+        long DELTA = 1200;
 
         int result = in.read();
         if (result == returnAlias()) result = 10;
