@@ -88,20 +88,21 @@ public class MenuVic20 extends MenuApple1 {
         cls();
         println("International News");
         println("---------------------");
-        println("1 - CNN News");
-        println("2 - BBC News");
-        println("3 - Politico.com");
-        println("4 - Al Jazeera");
-        println("5 - Fox News");
-        println("6 - Wired");
-        println("7 - VCF News");
-        println("8 - Indie Retro News");
-        println("9 - The 8-Bit Guy");
-        println("0 - Vitno");
-        println("A - 2600 News");
-        println("B - Hackaday Blog");
-        println("C - Amedeo Valoroso");
-        println("D - NPR");
+        println("1 - CNN Full Text");
+        println("2 - CNN Headlines");
+        println("3 - BBC News");
+        println("4 - Politico.com");
+        println("5 - Al Jazeera");
+        println("6 - Fox News");
+        println("7 - Wired");
+        println("8 - VCF News");
+        println("9 - Indie Retro News");
+        println("0 - The 8-Bit Guy");
+        println("A - Vitno");
+        println("B - 2600 News");
+        println("C - Hackaday Blog");
+        println("D - Amedeo Valoroso");
+        println("E - NPR");
         println(". - Go back");
     }
 

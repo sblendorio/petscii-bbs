@@ -123,31 +123,31 @@ public class MenuTelnetAnsi extends MenuTelnetPureAscii {
                 if (".".equals(choice)) return;
                 subThread = switch (choice) {
                     case "1" -> new LiteCnnAscii80Ansi();
-                                /*new CnnAscii(
+                    case "2" -> new CnnAscii(
                                 rssPropertyTimeout(),
                                 rssPropertyTimeoutDefault(),
                                 getTerminalType(),
                                 null,
-                                null);*/
-                    case "2" -> new BbcAscii(
+                                null);
+                    case "3" -> new BbcAscii(
                                     rssPropertyTimeout(),
                                     rssPropertyTimeoutDefault(),
                                     getTerminalType(),
                                     null,
                                     null
                                 );
-                    case "3" -> new OneRssPoliticoAscii();
-                    case "4" -> new OneRssAJPlusAscii();
-                    case "5" -> new OneRssFoxNewsAscii();
-                    case "6" -> new WiredComAscii();
-                    case "7" -> new VcfedAscii();
-                    case "8" -> new IndieRetroNewsAscii();
-                    case "9" -> new The8BitGuyAscii();
-                    case "0" -> new VitnoAscii();
-                    case "a" -> new OneRss2600Ascii();
-                    case "b" -> new HackadayAscii();
-                    case "c" -> new OneRssAmedeoValorosoEngAscii();
-                    case "d" -> new LiteNprAscii80();
+                    case "4" -> new OneRssPoliticoAscii();
+                    case "5" -> new OneRssAJPlusAscii();
+                    case "6" -> new OneRssFoxNewsAscii();
+                    case "7" -> new WiredComAscii();
+                    case "8" -> new VcfedAscii();
+                    case "9" -> new IndieRetroNewsAscii();
+                    case "0" -> new The8BitGuyAscii();
+                    case "a" -> new VitnoAscii();
+                    case "b" -> new OneRss2600Ascii();
+                    case "c" -> new HackadayAscii();
+                    case "d" -> new OneRssAmedeoValorosoEngAscii();
+                    case "e" -> new LiteNprAscii80();
                     default -> {
                         validKey = false;
                         yield null;

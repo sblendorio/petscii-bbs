@@ -59,14 +59,14 @@ public class MenuM10 extends MenuApple1 {
         cls();
         println("Retrocampus BBS - International News");
         println("---------------------------------------");
-        println("1 - CNN News       8 - Indie Retro News");
-        println("2 - BBC News       9 - The 8-Bit Guy");
-        println("3 - Politico.com   0 - Vitno");
-        println("4 - Al Jazeera     A - 2600 News");
-        println("5 - Fox News       B - Hackaday Blog");
-        println("6 - Wired          C - A.Valoroso (ENG)");
-        println("7 - VCF News       D - NPR.org");
-        println("                   . - Go back");
+        println("1 - CNN News Full  9 - Indie Retro News");
+        println("2 - CNN News Head  0 - The 8-Bit Guy");
+        println("3 - BBC News       A - Vitno");
+        println("4 - Politico.com   B - 2600 News");
+        println("5 - Al Jazeera     C - Hackaday Blog");
+        println("6 - Fox News       D - A.Valoroso (ENG)");
+        println("7 - Wired          E - NPR.org");
+        println("8 - VCF News       . - Go back");
     }
 
     public void showItalianNews() {
