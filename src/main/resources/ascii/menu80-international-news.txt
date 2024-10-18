@@ -1,21 +1,20 @@
 Retrocampus BBS - International News
 ------------------------------------
 
-1 - CNN News - Full Text
-2 - CNN News - Headlines
-3 - BBC News
-4 - Politico.com
-5 - Al Jazeera
-6 - Fox News
-7 - Wired
-8 - VCF News
-9 - Indie Retro News
-0 - The 8-Bit Guy
-A - Vintage is the new old
-B - 2600 News
-C - Hackaday Blog
-D - Amedeo Valoroso (ENG)
-E - National Public Radio
+1 - CNN News
+2 - BBC News
+3 - Politico.com
+4 - Al Jazeera
+5 - Fox News
+6 - Wired
+7 - VCF News
+8 - Indie Retro News
+9 - The 8-Bit Guy
+0 - Vintage is the new old
+A - 2600 News
+B - Hackaday Blog
+C - Amedeo Valoroso (ENG)
+D - National Public Radio
 . - Go back
 
 

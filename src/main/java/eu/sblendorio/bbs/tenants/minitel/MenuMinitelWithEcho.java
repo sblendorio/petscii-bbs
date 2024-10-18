@@ -79,15 +79,15 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 if (".".equals(choice)) return;
                 subThread = switch (choice) {
                     case "1" -> new LiteCnnMinitel();
-                    case "2" -> new CnnAscii(
+                                /*new CnnAscii(
                                     io,
                                     rssPropertyTimeout(),
                                     rssPropertyTimeoutDefault(),
                                     getTerminalType(),
                                     bytes(0x1b, 0x3a, 0x6a, 0x43, 0x1e, readBinaryFile("minitel/cnn_home.vdt"), 17),
                                     bytes(31, 64+15, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+15, 64+2 ,0x1b, 0x54, 0x1b, 0x47)
-                            );
-                    case "3" -> new BbcAscii(
+                            );*/
+                    case "2" -> new BbcAscii(
                             io,
                             rssPropertyTimeout(),
                             rssPropertyTimeoutDefault(),
@@ -95,18 +95,18 @@ public class MenuMinitelWithEcho extends MinitelThread {
                             bytes(0x1b, 0x3a, 0x6a, 0x43, 0x1e, readBinaryFile("minitel/bbc_home.vdt"), 17),
                             bytes(31, 64+22, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+22, 64+2 ,0x1b, 0x54, 0x1b, 0x47)
                     );
-                    case "4" -> new OneRssPoliticoMinitel();
-                    case "5" -> new OneRssAJPlusAscii(io);
-                    case "6" -> new OneRssFoxNewsAscii(io);
-                    case "7" -> new WiredComMinitel();
-                    case "8" -> new VcfedAscii(io);
-                    case "9" -> new IndieRetroNewsAscii(io);
-                    case "0" -> new The8BitGuyMinitel();
-                    case "a" -> new VitnoAscii(io);
-                    case "b" -> new OneRss2600Minitel();
-                    case "c" -> new HackadayMinitel();
-                    case "d" -> new OneRssAmedeoValorosoEngAscii(io);
-                    case "e" -> new LiteNprMinitel();
+                    case "3" -> new OneRssPoliticoMinitel();
+                    case "4" -> new OneRssAJPlusAscii(io);
+                    case "5" -> new OneRssFoxNewsAscii(io);
+                    case "6" -> new WiredComMinitel();
+                    case "7" -> new VcfedAscii(io);
+                    case "8" -> new IndieRetroNewsAscii(io);
+                    case "9" -> new The8BitGuyMinitel();
+                    case "0" -> new VitnoAscii(io);
+                    case "a" -> new OneRss2600Minitel();
+                    case "b" -> new HackadayMinitel();
+                    case "c" -> new OneRssAmedeoValorosoEngAscii(io);
+                    case "d" -> new LiteNprMinitel();
                     default -> {
                         validKey = false;
                         yield null;

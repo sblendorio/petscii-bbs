@@ -141,32 +141,32 @@ public class MenuApple1 extends AsciiThread {
                 BbsThread subThread;
                 if (".".equals(choice)) return;
                 else if ("1".equals(choice)) subThread = new LiteCnnAscii40();
-                else if ("2".equals(choice)) subThread = new CnnAscii(
+                        /*new CnnAscii(
+                        rssPropertyTimeout(),
+                        rssPropertyTimeoutDefault(),
+                        getTerminalType(),
+                        null,
+                        null
+                );*/
+                else if ("2".equals(choice)) subThread = new BbcAscii(
                         rssPropertyTimeout(),
                         rssPropertyTimeoutDefault(),
                         getTerminalType(),
                         null,
                         null
                 );
-                else if ("3".equals(choice)) subThread = new BbcAscii(
-                        rssPropertyTimeout(),
-                        rssPropertyTimeoutDefault(),
-                        getTerminalType(),
-                        null,
-                        null
-                );
-                else if ("4".equals(choice)) subThread = new OneRssPoliticoAscii();
-                else if ("5".equals(choice)) subThread = new OneRssAJPlusAscii();
-                else if ("6".equals(choice)) subThread = new OneRssFoxNewsAscii();
-                else if ("7".equals(choice)) subThread = new WiredComAscii();
-                else if ("8".equals(choice)) subThread = new VcfedAscii();
-                else if ("9".equals(choice)) subThread = new IndieRetroNewsAscii();
-                else if ("0".equals(choice)) subThread = new The8BitGuyAscii();
-                else if ("a".equals(choice)) subThread = new VitnoAscii();
-                else if ("b".equals(choice)) subThread = new OneRss2600Ascii();
-                else if ("c".equals(choice)) subThread = new HackadayAscii();
-                else if ("d".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii();
-                else if ("e".equals(choice)) subThread = new LiteNprAscii40();
+                else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii();
+                else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii();
+                else if ("5".equals(choice)) subThread = new OneRssFoxNewsAscii();
+                else if ("6".equals(choice)) subThread = new WiredComAscii();
+                else if ("7".equals(choice)) subThread = new VcfedAscii();
+                else if ("8".equals(choice)) subThread = new IndieRetroNewsAscii();
+                else if ("9".equals(choice)) subThread = new The8BitGuyAscii();
+                else if ("0".equals(choice)) subThread = new VitnoAscii();
+                else if ("a".equals(choice)) subThread = new OneRss2600Ascii();
+                else if ("b".equals(choice)) subThread = new HackadayAscii();
+                else if ("c".equals(choice)) subThread = new OneRssAmedeoValorosoEngAscii();
+                else if ("d".equals(choice)) subThread = new LiteNprAscii40();
                 else {
                     validKey = false;
                     subThread = null;
