@@ -91,7 +91,7 @@ public class MenuM10 extends MenuApple1 {
         println("4 - Zork II      0 - Zork I (ITA)");
         println("5 - Zork III     A - Avv.Castello (ITA)");
         println("6 - Hitchhiker's B - Cave Adventure)");
-        println(". - Go back      C - Avvenuta (ITA)");
+        println(". - Go back      C - Avventura (ITA)");
         println("                 D - Wishbringer");
     }
 
