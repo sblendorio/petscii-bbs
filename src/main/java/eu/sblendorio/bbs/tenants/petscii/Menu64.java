@@ -2,6 +2,7 @@ package eu.sblendorio.bbs.tenants.petscii;
 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import eu.sblendorio.bbs.core.*;
+import eu.sblendorio.bbs.tenants.mixed.PatreonData;
 import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
@@ -513,17 +514,10 @@ public class Menu64 extends PetsciiThread {
         drawLogo();
         write(GREY3, REVOFF);
         gotoXY(20, 12);
-        List<String> patrons =
-                readExternalTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
+        List<String> patrons = PatreonData.getPatrons()
                 .stream()
-                .map(StringUtils::trim)
-                .filter(StringUtils::isNotBlank)
-                .filter(str -> !str.startsWith(";"))
-                .map(x -> x.replaceAll(" - .*$", ""))
                 .map(x -> StringUtils.substring(x, 0, 20))
-                .sorted(comparing(String::toLowerCase))
                 .toList();
-
         int count = 0;
         for (String name: patrons) {
             count++;

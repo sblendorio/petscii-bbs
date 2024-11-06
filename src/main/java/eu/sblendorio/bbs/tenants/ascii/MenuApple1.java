@@ -4,6 +4,7 @@ import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Utils;
 import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
+import eu.sblendorio.bbs.tenants.mixed.PatreonData;
 import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
@@ -336,14 +337,7 @@ public class MenuApple1 extends AsciiThread {
     }
 
     public void showPatrons() throws Exception {
-        List<String> patrons = readExternalTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
-                .stream()
-                .filter(StringUtils::isNotBlank)
-                .map(StringUtils::trim)
-                .filter(str -> !str.startsWith(";"))
-                .sorted(comparing(String::toLowerCase))
-                .toList();
-
+        List<String> patrons = PatreonData.getPatronsWithTier();
         cls();
         println("Retrocampus BBS pure text version");
         println();

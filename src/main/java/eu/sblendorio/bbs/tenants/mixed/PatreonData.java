@@ -15,22 +15,32 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.sql.*;
 import java.time.Instant;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
-import static eu.sblendorio.bbs.core.PetsciiKeys.REVON;
 import static eu.sblendorio.bbs.core.Utils.*;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
 import static java.util.stream.Collectors.joining;
+import static org.apache.commons.codec.CharEncoding.UTF_8;
 import static org.apache.commons.lang3.StringUtils.*;
 
 public class PatreonData {
     private static Logger loggerAuthorizations = LogManager.getLogger("authorizations");
+    protected static final String DB_FILE = System.getProperty("user.home") + "/patreon.db";
+    protected static final Properties properties;
+    static {
+        properties = new Properties();
+        properties.setProperty("characterEncoding", UTF_8);
+        properties.setProperty("encoding", "\"" + UTF_8 + "\"");
+    }
+
     public static byte[] PETSCII_LOGO_AUTHENTICATE = BbsThread.readBinaryFile("petscii/patreon_login.seq");
     public static int CODE_LENGTH = 6;
     public static final String PATREON_USER = "PATREON_USER";
@@ -59,12 +69,15 @@ public class PatreonData {
         }
     }
 
-    public static PatreonData authenticatePetscii(BbsThread bbs) throws IOException {
+    public static PatreonData authenticatePetscii(BbsThread bbs) throws Exception {
         final String DEFAULT = "0";
         String user = null;
         String patreonLevel = DEFAULT;
         String hostRow;
-        if (isNotBlank(hostRow = readExternalTxt(getProperty("PATREON_WHITELIST_IP_FILE", getProperty("user.home") + File.separator + "patreon_whitelist_ip.txt"))
+
+        Connection conn = openConnection();
+
+        if (isNotBlank(hostRow = getFirstColumn(conn, "select ip from ipwhitelist")
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
@@ -76,7 +89,7 @@ public class PatreonData {
                 user = bbs.getIpAddress().getHostAddress();
                 patreonLevel = !hostRow.contains(",") ? DEFAULT : hostRow.replaceAll("^.*,", "");
                 bbs.write(GREY3);
-                registerFirstAccess(user);
+                registerFirstAccess(conn, user);
                 bbs.getRoot().setCustomObject(PatreonData.PATREON_USER, user);
                 bbs.getRoot().setCustomObject(PatreonData.PATREON_LEVEL, patreonLevel);
                 return new PatreonData(user, patreonLevel);
@@ -91,7 +104,7 @@ public class PatreonData {
         }
         if (user != null && !"null".equalsIgnoreCase(user)) {
             bbs.write(GREY3);
-            registerFirstAccess(user);
+            registerFirstAccess(conn, user);
             return new PatreonData(user, patreonLevel);
         }
 
@@ -127,7 +140,7 @@ public class PatreonData {
             return null;
         }
 
-        String emailRow = readExternalTxt(getProperty("PATREON_EMAILS", getProperty("user.home") + File.separator + "patreon_emails.txt"))
+        String emailRow = getFirstColumn(conn, "select email from members union select email from fixed")
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
@@ -222,16 +235,19 @@ public class PatreonData {
         bbs.getRoot().setCustomObject(PatreonData.PATREON_LEVEL, patreonLevel);
         loggerAuthorizations.info("Patreon login. Email: {}, Host:{}, Port: {}", userEmail, bbs.getSocket().getInetAddress().getHostAddress(), bbs.getSocket().getLocalPort());
         bbs.write(GREY3);
-        registerFirstAccess(user);
+        registerFirstAccess(conn, user);
         return new PatreonData(user, patreonLevel);
     }
 
-    public static PatreonData authenticateAscii(BbsThread bbs) throws IOException {
+    public static PatreonData authenticateAscii(BbsThread bbs) throws Exception {
         final String DEFAULT = "0";
         String user = "";
         String patreonLevel = DEFAULT;
         String hostRow;
-        if (isNotBlank(hostRow = readExternalTxt(getProperty("PATREON_WHITELIST_IP_FILE", getProperty("user.home") + File.separator + "patreon_whitelist_ip.txt"))
+
+        Connection conn = openConnection();
+
+        if (isNotBlank(hostRow = getFirstColumn(conn, "select ip from ipwhitelist")
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
@@ -244,7 +260,7 @@ public class PatreonData {
                 patreonLevel = !hostRow.contains(",") ? DEFAULT : hostRow.replaceAll("^.*,", "");
                 bbs.getRoot().setCustomObject(PatreonData.PATREON_USER, user);
                 bbs.getRoot().setCustomObject(PatreonData.PATREON_LEVEL, patreonLevel);
-                registerFirstAccess(user);
+                registerFirstAccess(conn, user);
                 return new PatreonData(user, patreonLevel);
             }
         }
@@ -256,7 +272,7 @@ public class PatreonData {
             loggerAuthorizations.info("User not logged " + e.getClass().getName() + " " + e.getMessage());
         }
         if (user != null && !"null".equalsIgnoreCase(user)) {
-            registerFirstAccess(user);
+            registerFirstAccess(conn, user);
             return new PatreonData(user, patreonLevel);
         }
 
@@ -284,7 +300,7 @@ public class PatreonData {
         if (isBlank(userEmail) || ".".equals(userEmail))
             return null;
 
-        String emailRow = readExternalTxt(getProperty("PATREON_EMAILS", getProperty("user.home") + File.separator + "patreon_emails.txt"))
+        String emailRow = getFirstColumn(conn, "select email from members union select email from fixed")
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
@@ -355,7 +371,7 @@ public class PatreonData {
         bbs.getRoot().setCustomObject(PatreonData.PATREON_USER, user);
         bbs.getRoot().setCustomObject(PatreonData.PATREON_LEVEL, patreonLevel);
         loggerAuthorizations.info("Patreon login. Email: {}, Host:{}, Port: {}", userEmail, bbs.getSocket().getInetAddress().getHostAddress(), bbs.getSocket().getLocalPort());
-        registerFirstAccess(user);
+        registerFirstAccess(conn, user);
         return new PatreonData(user, patreonLevel);
     }
 
@@ -395,7 +411,7 @@ public class PatreonData {
         prop.put("mail.smtp.starttls.enable", MAIL_SMTP_STARTTLS_ENABLE);
 
         Session session = Session.getInstance(prop,
-                new jakarta.mail.Authenticator() {
+                new Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(USERNAME, PASSWORD);
                     }
@@ -428,22 +444,59 @@ public class PatreonData {
                 .collect(joining());
     }
 
-    private static void registerFirstAccess(String user) throws IOException {
-        final String filename = getProperty("PATREON_EMAILS", getProperty("user.home") + File.separator + "consent_emails.txt");
-        List<String> rows = readExternalTxt(filename);
-        boolean yetConnected = rows
-                .stream()
-                .filter(StringUtils::isNotBlank)
-                .map(StringUtils::trimToEmpty)
-                .map(row -> row.split(";")[0])
-                .toList()
-                .contains(user);
+    private static void registerFirstAccess(Connection conn, String user) throws Exception {
+        try (PreparedStatement ps = conn.prepareStatement("insert or ignore into consentlist (user, timestamp) values (?, ?)")) {
+            ps.setString(1, user);
+            ps.setString(2, Instant.now().toString());
+            ps.executeUpdate();
+        }
+    }
 
-        if (!yetConnected) {
-            rows.add(user + ";" + Instant.now().toString());
-            FileWriter writer = new FileWriter(filename);
-            for(String str: rows) writer.write(str + System.lineSeparator());
-            writer.close();
+    private static List<String> getFirstColumn(Connection conn, String query) throws SQLException {
+        List<String> result = new LinkedList<>();
+        try (Statement s = conn.createStatement();
+             ResultSet r = s.executeQuery(query)) {
+            while (r.next())
+                result.add(r.getString(1));
+        }
+        return result;
+    }
+
+    private static Connection openConnection() throws Exception {
+        if (!new File(DB_FILE).exists()) createDatabase(properties);
+        return DriverManager.getConnection("jdbc:sqlite:" + DB_FILE, properties);
+    }
+
+    public static List<String> getPatrons() throws Exception {
+        try (Connection conn = openConnection()) {
+            return getFirstColumn(conn, "select name from members order by name");
+        }
+    }
+
+    public static List<String> getPatronsWithTier() throws Exception {
+        try (Connection conn = openConnection()) {
+            return getFirstColumn(conn, "select name || case type when 'Supporter' then '' when '' then '' else ' - ' || type end from members order by name");
+        }
+    }
+
+    public static void createDatabase(Properties properties) throws Exception {
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + DB_FILE, properties)) {
+
+            try (Statement s = conn.createStatement()) {
+                s.executeUpdate("CREATE TABLE members (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100), email VARCHAR(100), type VARCHAR(50))");
+            }
+
+            try (Statement s = conn.createStatement()) {
+                s.executeUpdate("CREATE TABLE fixed (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100), email VARCHAR(100), type VARCHAR(50), disabled INTEGER default 0)");
+            }
+
+            try (Statement s = conn.createStatement()) {
+                s.executeUpdate("CREATE TABLE ipwhitelist (id INTEGER PRIMARY KEY AUTOINCREMENT, ip VARCHAR(100), type VARCHAR(50), notes VARCHAR(100))");
+            }
+
+            try (Statement s = conn.createStatement()) {
+                s.executeUpdate("CREATE TABLE consentlist (id INTEGER PRIMARY KEY AUTOINCREMENT, user VARCHAR(100), timestamp VARCHAR(100), UNIQUE(user))");
+            }
         }
     }
 

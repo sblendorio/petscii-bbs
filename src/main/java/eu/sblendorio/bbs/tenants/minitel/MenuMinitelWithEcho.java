@@ -4,6 +4,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import eu.sblendorio.bbs.core.*;
 import eu.sblendorio.bbs.tenants.ascii.*;
 import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
+import eu.sblendorio.bbs.tenants.mixed.PatreonData;
 import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
@@ -397,13 +398,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
 
 
     public void showPatrons() throws Exception {
-        List<String> patrons = readExternalTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
-                .stream()
-                .map(StringUtils::trim)
-                .filter(StringUtils::isNotBlank)
-                .filter(str -> !str.startsWith(";"))
-                .sorted(comparing(String::toLowerCase))
-                .toList();
+        List<String> patrons = PatreonData.getPatronsWithTier();
 
         cls();
         banner();

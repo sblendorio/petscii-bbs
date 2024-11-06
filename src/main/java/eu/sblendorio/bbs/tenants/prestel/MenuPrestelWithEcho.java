@@ -5,6 +5,7 @@ import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.PrestelThread;
 import eu.sblendorio.bbs.core.Utils;
 import eu.sblendorio.bbs.tenants.ascii.*;
+import eu.sblendorio.bbs.tenants.mixed.PatreonData;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -291,13 +292,7 @@ public class MenuPrestelWithEcho extends PrestelThread {
     }
 
     public void showPatrons() throws Exception {
-        List<String> patrons = readExternalTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
-                .stream()
-                .map(StringUtils::trim)
-                .filter(StringUtils::isNotBlank)
-                .filter(str -> !str.startsWith(";"))
-                .sorted(comparing(String::toLowerCase))
-                .toList();
+        List<String> patrons = PatreonData.getPatronsWithTier();
 
         final int PAGESIZE = 11;
         int pages = patrons.size() / PAGESIZE + (patrons.size() % PAGESIZE == 0 ? 0 : 1);

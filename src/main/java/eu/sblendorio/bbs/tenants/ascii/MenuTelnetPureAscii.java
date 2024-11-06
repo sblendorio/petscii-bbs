@@ -3,6 +3,7 @@ package eu.sblendorio.bbs.tenants.ascii;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Utils;
+import eu.sblendorio.bbs.tenants.mixed.PatreonData;
 import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
 import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
@@ -402,13 +403,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
     }
 
     public void showPatrons() throws Exception {
-        List<String> patrons = readExternalTxt(System.getProperty("PATREON_LIST", System.getProperty("user.home") + File.separator + "patreon_list.txt"))
-                .stream()
-                .map(StringUtils::trim)
-                .filter(StringUtils::isNotBlank)
-                .filter(str -> !str.startsWith(";"))
-                .sorted(comparing(String::toLowerCase))
-                .toList();
+        List<String> patrons = PatreonData.getPatronsWithTier();
 
         cls();
         println("You can support the development of this");
