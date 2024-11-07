@@ -140,7 +140,7 @@ public class PatreonData {
             return null;
         }
 
-        String emailRow = getFirstColumn(conn, "select email from members union select email from fixed")
+        String emailRow = getFirstColumn(conn, "select email from members union select email from fixed where disabled=0")
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
@@ -247,7 +247,7 @@ public class PatreonData {
 
         Connection conn = openConnection();
 
-        if (isNotBlank(hostRow = getFirstColumn(conn, "select ip from ipwhitelist")
+        if (isNotBlank(hostRow = getFirstColumn(conn, "select ip from ipwhitelist where disabled=0")
                 .stream()
                 .filter(StringUtils::isNotBlank)
                 .map(StringUtils::trim)
@@ -445,10 +445,16 @@ public class PatreonData {
     }
 
     private static void registerFirstAccess(Connection conn, String user) throws Exception {
+        try (PreparedStatement ps = conn.prepareStatement("select 1 from consentlist where user = ?")) {
+            ps.setString(1, user);
+            if (ps.executeQuery().next()) return;
+        }
         try (PreparedStatement ps = conn.prepareStatement("insert or ignore into consentlist (user, timestamp) values (?, ?)")) {
             ps.setString(1, user);
             ps.setString(2, Instant.now().toString());
             ps.executeUpdate();
+        } catch (SQLException e) {
+            loggerAuthorizations.warn("Error during inserting {} in consentlist at {}: {}", user, Instant.now().toString(), e);
         }
     }
 
@@ -491,7 +497,7 @@ public class PatreonData {
             }
 
             try (Statement s = conn.createStatement()) {
-                s.executeUpdate("CREATE TABLE ipwhitelist (id INTEGER PRIMARY KEY AUTOINCREMENT, ip VARCHAR(100), type VARCHAR(50), notes VARCHAR(100))");
+                s.executeUpdate("CREATE TABLE ipwhitelist (id INTEGER PRIMARY KEY AUTOINCREMENT, ip VARCHAR(100), type VARCHAR(50), notes VARCHAR(100), disabled INTEGER default 0)");
             }
 
             try (Statement s = conn.createStatement()) {
