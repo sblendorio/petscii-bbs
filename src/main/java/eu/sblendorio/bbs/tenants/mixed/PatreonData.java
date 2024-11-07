@@ -518,9 +518,11 @@ public class PatreonData {
                 s.executeUpdate("CREATE TABLE ipwhitelist (id INTEGER PRIMARY KEY AUTOINCREMENT, ip VARCHAR(100), type VARCHAR(50), notes VARCHAR(100), disabled INTEGER default 0)");
             }
 
+            /*
             try (Statement s = conn.createStatement()) {
                 s.executeUpdate("CREATE TABLE consentlist (id INTEGER PRIMARY KEY AUTOINCREMENT, user VARCHAR(100), timestamp VARCHAR(100), UNIQUE(user))");
             }
+            */
         }
     }
 
