@@ -445,6 +445,23 @@ public class PatreonData {
     }
 
     private static void registerFirstAccess(Connection conn, String user) throws Exception {
+        final String filename = getProperty("PATREON_CONSENT_EMAILS", getProperty("user.home") + File.separator + "consent_emails.txt");
+        List<String> rows = readExternalTxt(filename);
+        boolean yetConnected = rows
+                .stream()
+                .filter(StringUtils::isNotBlank)
+                .map(StringUtils::trimToEmpty)
+                .map(row -> row.split(";")[0])
+                .toList()
+                .contains(user);
+
+        if (!yetConnected) {
+            rows.add(user + ";" + Instant.now().toString());
+            FileWriter writer = new FileWriter(filename);
+            for(String str: rows) writer.write(str + System.lineSeparator());
+            writer.close();
+        }
+/*
         try (PreparedStatement ps = conn.prepareStatement("select 1 from consentlist where user = ?")) {
             ps.setString(1, user);
             if (ps.executeQuery().next()) return;
@@ -456,6 +473,7 @@ public class PatreonData {
         } catch (SQLException e) {
             loggerAuthorizations.warn("Error during inserting {} in consentlist at {}: {}", user, Instant.now().toString(), e);
         }
+ */
     }
 
     private static List<String> getFirstColumn(Connection conn, String query) throws SQLException {
