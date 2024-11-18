@@ -76,7 +76,7 @@ public class PatreonData {
         String hostRow;
 
         try (Connection conn = openConnection()) {
-            if (isNotBlank(hostRow = getFirstColumn(conn, "select ip from ipwhitelist")
+            if (isNotBlank(hostRow = getFirstColumn(conn, "select ip from ipwhitelist where disabled=0")
                     .stream()
                     .filter(StringUtils::isNotBlank)
                     .map(StringUtils::trim)
