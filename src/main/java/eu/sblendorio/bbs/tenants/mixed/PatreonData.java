@@ -373,7 +373,7 @@ public class PatreonData {
             if (isBlank(userEmail) || ".".equals(userEmail))
                 return null;
 
-            String emailRow = getFirstColumn(conn, "select email from members union select email from fixed")
+            String emailRow = getFirstColumn(conn, "select email from members union select email from fixed where disabled=0")
                     .stream()
                     .filter(StringUtils::isNotBlank)
                     .map(StringUtils::trim)
