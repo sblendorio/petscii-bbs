@@ -12,10 +12,7 @@ import org.apache.logging.log4j.util.TriConsumer;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static eu.sblendorio.bbs.core.MinitelControls.*;
 import static eu.sblendorio.bbs.core.Utils.*;
@@ -199,7 +196,9 @@ public class MenuMinitelWithEcho extends MinitelThread {
                     case "0" -> new ZorkMachineMinitel("zork1ita", "zmpp/Zork-1-ITA-v7.z5", null, () -> attributes(CHAR_WHITE), () -> attributes(CHAR_GREEN));
                     case "a" -> new AvventuraNelCastelloMinitel(SPLASH_CASTELLO_ITA, COPYRIGHT_CASTELLO_ITA, "it-it");
                     case "b" -> new ZorkMachineMinitel("advent350", "zmpp/advent.z3", readBinaryFile("minitel/colossal-cave-adventure.vdt"));
-                    case "c" -> new ZorkMachineMinitel("advent77ita", "zmpp/avventura-colossal-ita.z5", readBinaryFile("minitel/colossal-cave-adventure-ita.vdt"), () -> attributes(CHAR_WHITE), () -> attributes(CHAR_GREEN));
+                    case "c" -> new ZorkMachineMinitel("advent77ita", "zmpp/avventura-colossal-ita.z5", readBinaryFile("minitel/colossal-cave-adventure-ita.vdt"), () -> attributes(CHAR_WHITE), () -> attributes(CHAR_GREEN), Map.of(
+                            "help", () -> { println("Help non disponibile"); println(); print(">"); }
+                    ));
                     case "d" -> new ZorkMachineMinitel("wishbringer", "zmpp/wishbringer-r69.z3");
                     default -> {
                         validKey = false;

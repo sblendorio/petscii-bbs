@@ -12,6 +12,7 @@ import org.apache.logging.log4j.util.TriConsumer;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 import static eu.sblendorio.bbs.core.Utils.*;
 import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isSanremo;
@@ -323,7 +324,9 @@ public class MenuTelnetPureAscii extends AsciiThread {
                     case "0" -> new ZorkMachineAscii("zork1ita", "zmpp/Zork-1-ITA-v7.z5", this::boldOn, this::boldOff);
                     case "a" -> createAvventuraNelCastello();
                     case "b" -> new ZorkMachineAscii("advent350", "zmpp/advent.z3");
-                    case "c" -> new ZorkMachineAscii("advent77ita", "zmpp/avventura-colossal-ita.z5", this::boldOn, this::boldOff);
+                    case "c" -> new ZorkMachineAscii("advent77ita", "zmpp/avventura-colossal-ita.z5", this::boldOn, this::boldOff, Map.of(
+                            "help", () -> { println("Help non disponibile"); println(); print(">"); }
+                    ));
                     case "d" -> new ZorkMachineAscii("wishbringer", "zmpp/wishbringer-r69.z3");
                     default -> {
                         validKey = false;

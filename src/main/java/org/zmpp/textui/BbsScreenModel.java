@@ -2,6 +2,7 @@ package org.zmpp.textui;
 
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Utils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.davidmoten.text.utils.WordWrap;
@@ -18,10 +19,7 @@ import org.zmpp.windowing.*;
 import org.zmpp.windowing.BufferedScreenModel.StatusLineListener;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static eu.sblendorio.bbs.core.HtmlUtils.inferDiacritics;
 import static org.apache.commons.lang3.StringUtils.defaultString;
@@ -47,6 +45,7 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
     private Runnable boldOn = null;
     private Runnable boldOff = null;
     private Runnable afterPaging = null;
+    private Map<String, Runnable> overrides = null;
 
     int nlines;
 
@@ -77,7 +76,11 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
                 if ("..".equalsIgnoreCase(inputLine)) {
                     break;
                 }
-                setCurrentRunState(getExecutionControl().resumeWithInput(inputLine));
+                if (overrides != null && overrides.containsKey(inputLine.toLowerCase())) {
+                    overrides.get(inputLine.toLowerCase()).run();
+                } else {
+                    setCurrentRunState(getExecutionControl().resumeWithInput(inputLine));
+                }
             }
         }
     }
@@ -99,7 +102,12 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
     public BbsScreenModel(String nameOfTheGame, byte[] storyFile, BbsThread bbsThread, int nlines, Runnable boldOn, Runnable boldOff) throws IOException,InvalidStoryException {
         this(nameOfTheGame, storyFile, bbsThread, nlines, boldOn, boldOff, null);
     }
-    public BbsScreenModel(String nameOfTheGame, byte[] storyFile, BbsThread bbsThread, int nlines, Runnable boldOn, Runnable boldOff, Runnable afterPaging) throws IOException,InvalidStoryException{
+
+    public BbsScreenModel(String nameOfTheGame, byte[] storyFile, BbsThread bbsThread, int nlines, Runnable boldOn, Runnable boldOff, Runnable afterPaging) throws IOException,InvalidStoryException {
+        this(nameOfTheGame, storyFile, bbsThread, nlines, boldOn, boldOff, afterPaging, null);
+    }
+
+    public BbsScreenModel(String nameOfTheGame, byte[] storyFile, BbsThread bbsThread, int nlines, Runnable boldOn, Runnable boldOff, Runnable afterPaging, Map<String, Runnable> overrides) throws IOException,InvalidStoryException{
         this.nameOfTheGame = nameOfTheGame;
         this.bbsThread = bbsThread;
         this.storyFile = new ByteArrayInputStream(storyFile);
@@ -107,6 +115,7 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
         this.boldOn = boldOn;
         this.boldOff = boldOff;
         this.afterPaging = afterPaging;
+        this.overrides = overrides;
         // Zork VM configuration
         MachineFactory.MachineInitStruct initStruct = new MachineFactory.MachineInitStruct();
         this.screenModel.addScreenModelListener(this);

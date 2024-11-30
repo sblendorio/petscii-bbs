@@ -10,10 +10,7 @@ import org.apache.logging.log4j.util.TriConsumer;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static eu.sblendorio.bbs.core.BlockGraphicsPetscii.getRenderedMidres;
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
@@ -438,7 +435,9 @@ public class Menu64 extends PetsciiThread {
                     case 'a' -> launch(new ZorkMachine("zork1ita", "zmpp/Zork-1-ITA-v7.z5", readBinaryFile("petscii/zork1.seq")));
                     case 'b' -> launch(new AvventuraNelCastelloPetscii(SPLASH_CASTELLO_ITA, "it-it"));
                     case 'c' -> launch(new ZorkMachine("advent350", "zmpp/advent.z3"));
-                    case 'd' -> launch(new ZorkMachine("advent77ita", "zmpp/avventura-colossal-ita.z5"));
+                    case 'd' -> launch(new ZorkMachine("advent77ita", "zmpp/avventura-colossal-ita.z5", null, Map.of(
+                            "help", () -> { println("Help non disponibile"); println(); print(">"); }
+                    )));
                     case 'e' -> launch(new ZorkMachine("wishbringer", "zmpp/wishbringer-r69.z3"));
                     case '.' -> { return; }
                     default -> validKey = false;
