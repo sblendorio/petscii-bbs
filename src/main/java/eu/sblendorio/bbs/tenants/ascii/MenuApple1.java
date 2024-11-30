@@ -280,6 +280,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("8".equals(choice)) { SwBasicBridge.run("Orbit", "basic/orbit.bas", this, locate()); subThread = null; }
                 else if ("9".equals(choice)) { SwBasicBridge.run("Melissa", "basic/melissa.bas", this, locate()); subThread = null; }
                 else if ("0".equals(choice)) { SwBasicBridge.run("Dobble", "basic/dobble-dash.bas", this, locate()); subThread = null; }
+                else if ("a".equals(choice)) { SwBasicBridge.run("Oregon Trail", "basic/oregon.bas", this, locate()); subThread = null; }
                 else if ("z".equals(choice)) { subThread = new BasicIdeAscii(locate()); }
 
                 else {

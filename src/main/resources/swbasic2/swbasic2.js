@@ -2031,7 +2031,7 @@ class Interpreter {
       }
       case "TIMER": {
         this.expectParam(f, 0);
-        return Math.floor(new Date().getTime() / 1000);
+        return new Date().getTime() / 1000;
       }
       case "INKEY$": {
         this.expectParam(f, 0);

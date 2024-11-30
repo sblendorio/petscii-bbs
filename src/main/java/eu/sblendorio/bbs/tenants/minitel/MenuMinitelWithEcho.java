@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import static eu.sblendorio.bbs.core.MinitelControls.*;
 import static eu.sblendorio.bbs.core.Utils.*;
@@ -25,6 +26,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 
 public class MenuMinitelWithEcho extends MinitelThread {
+    static Random random = new Random(System.currentTimeMillis());
     final static byte[] SPLASH_CASTELLO_ITA = readBinaryFile("minitel/avventura-nel-castello.vdt");
     final static byte[] SPLASH_CASTELLO_ENG = readBinaryFile("minitel/castle-adventure.vdt");
 
@@ -250,6 +252,18 @@ public class MenuMinitelWithEcho extends MinitelThread {
                             write(CURSOR_ON);
                         });
                     case "0" -> SwBasicBridge.run("Dobble", "basic/dobble.bas", this, locate());
+                    case "a" ->
+                            SwBasicBridge.run("Oregon Trail", "basic/oregon.bas", this, locate(), () -> {
+                                write(SCROLL_OFF);
+                                write(CURSOR_OFF);
+                                write(readBinaryFile(List.of("minitel/oregon.vdt","minitel/oregon2.vdt","minitel/oregon3.vdt").get(random.nextInt(3))));
+                                write(SCROLL_ON);
+                                try {
+                                    flush(); resetInput();
+                                    int ch = keyPressed(60_000);
+                                } catch (IOException e) { e.printStackTrace(); }
+                                write(CURSOR_ON);
+                            });
                     case "z" -> subThread = new BasicIdeMinitel(locate());
                     case "." -> { return; }
                     default ->  validKey = false;

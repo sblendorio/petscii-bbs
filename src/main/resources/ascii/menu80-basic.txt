@@ -10,7 +10,7 @@ BASIC Programs
 8 - Orbit
 9 - Melissa (Systems - ITA)
 0 - Dobble
-
+A - Oregon Trail
 
 Z - BBS BASIC
 
