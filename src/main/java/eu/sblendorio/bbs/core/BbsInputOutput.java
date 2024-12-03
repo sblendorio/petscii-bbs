@@ -389,12 +389,12 @@ public abstract class BbsInputOutput extends Reader {
             this.close();
             if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH MGLNDD " + ip);
             throw new BbsIOException("MGLNDD port scanner Connection detected " + stringIp + ", closing socket");
-        } else if (missingInput.contains("uTTYPuTTYPuTTY")) {
-            out.flush();
-            out.close();
-            this.close();
-            if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH PUTTY " + ip);
-            throw new BbsIOException("Weird PuTTY Connection detected " + stringIp + ", closing socket");
+        // } else if (missingInput.contains("uTTYPuTTYPuTTY")) {
+        //     out.flush();
+        //     out.close();
+        //     this.close();
+        //     if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")) logger.info("CATCH PUTTY " + ip);
+        //     throw new BbsIOException("Weird PuTTY Connection detected " + stringIp + ", closing socket");
         } else if (
             missingInput.matches("(?is)^SSH-[0-9\\.]+-.*") ||
                 missingInput.matches("(?is)^.*Handshake failed.*") ||
