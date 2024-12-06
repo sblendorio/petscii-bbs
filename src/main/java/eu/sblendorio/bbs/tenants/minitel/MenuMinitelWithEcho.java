@@ -367,6 +367,8 @@ public class MenuMinitelWithEcho extends MinitelThread {
             write(TEXT_MODE);
         } else if (HolidayCommons.isHalloweenTime()) {
             write(readBinaryFile("minitel/pumpkin.vdt"));
+        } else if (HolidayCommons.isXmasTime()) {
+            write(readBinaryFile("minitel/santaclaus.vdt"));
         } else {
             write(readBinaryFile("minitel/intro-retrocampus.vdt"));
         }
