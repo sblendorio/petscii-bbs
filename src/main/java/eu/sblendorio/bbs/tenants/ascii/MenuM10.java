@@ -58,7 +58,10 @@ public class MenuM10 extends MenuApple1 {
         println("5 - Patreon Publishers  E - WiFi Modem");
         println("                        F - Apple1 Demo");
         println("                        G - Wikipedia");
-        println("                        H - BASIC");
+        if (HolidayCommons.isVcf())
+            println("V - VCF SW 2025         H - BASIC");
+        else
+            println("                        H - BASIC");
         println(". - Logout              I - Enigma");
     }
 
