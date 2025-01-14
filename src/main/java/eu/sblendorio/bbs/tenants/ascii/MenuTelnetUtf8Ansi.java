@@ -68,8 +68,8 @@ public class MenuTelnetUtf8Ansi extends MenuTelnetPureAscii {
         cls();
         printText(readBinaryFile(
                 HolidayCommons.isVcf()
-                ? "ansi/RetrocampusBbsMainMenu.utf8ans"
-                : "ansi/RetrocampusBbsMainMenuVcfsw2025.utf8ans"
+                ? "ansi/RetrocampusBbsMainMenuVcfsw2025.utf8ans"
+                : "ansi/RetrocampusBbsMainMenu.utf8ans"
         ));
     }
 

@@ -69,8 +69,8 @@ public class MenuTelnetAnsi extends MenuTelnetPureAscii {
         cls();
         printText(readBinaryFile(
                 HolidayCommons.isVcf()
-                ? "ansi/RetrocampusBbsMainMenu.ans"
-                : "ansi/RetrocampusBbsMainMenuVcfsw2025.ans"
+                ? "ansi/RetrocampusBbsMainMenuVcfsw2025.ans"
+                : "ansi/RetrocampusBbsMainMenu.ans"
         ));
     }
 
