@@ -56,7 +56,7 @@ public class MenuVic20 extends MenuApple1 {
 
     public void showVcfSw2025() throws Exception {
         cls();
-        write(readBinaryFile("ascii/vcfsw2025-vic20.txt"));
+        printText(readBinaryFile("ascii/vcfsw2025-vic20.txt"));
         flush(); resetInput();
         readKey();
     }

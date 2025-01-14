@@ -37,7 +37,7 @@ public class MenuM10 extends MenuApple1 {
 
     public void showVcfSw2025() throws Exception {
         cls();
-        write(readBinaryFile("ascii/vcfsw2025-m10.txt"));
+        printText(readBinaryFile("ascii/vcfsw2025-m10.txt"));
         flush(); resetInput();
         readKey();
     }

@@ -214,7 +214,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
 
     public void showVcfSw2025() throws Exception {
         cls();
-        write(readBinaryFile("ascii/vcfsw2025.txt"));
+        printText(readBinaryFile("ascii/vcfsw2025.txt"));
         flush(); resetInput();
         readKey();
     }
