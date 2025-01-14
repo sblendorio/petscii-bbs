@@ -1,6 +1,7 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
 
@@ -66,7 +67,11 @@ public class MenuTelnetAnsi extends MenuTelnetPureAscii {
 
     public void showMainMenu() {
         cls();
-        printText(readBinaryFile("ansi/RetrocampusBbsMainMenu.ans"));
+        printText(readBinaryFile(
+                HolidayCommons.isVcf()
+                ? "ansi/RetrocampusBbsMainMenu.ans"
+                : "ansi/RetrocampusBbsMainMenuVcfsw2025.ans"
+        ));
     }
 
     public void showInternationalNews() {
@@ -130,12 +135,12 @@ public class MenuTelnetAnsi extends MenuTelnetPureAscii {
                                 null,
                                 null);*/
                     case "2" -> new BbcAscii(
-                                    rssPropertyTimeout(),
-                                    rssPropertyTimeoutDefault(),
-                                    getTerminalType(),
-                                    null,
-                                    null
-                                );
+                            rssPropertyTimeout(),
+                            rssPropertyTimeoutDefault(),
+                            getTerminalType(),
+                            null,
+                            null
+                    );
                     case "3" -> new OneRssPoliticoAscii();
                     case "4" -> new OneRssAJPlusAscii();
                     case "5" -> new OneRssFoxNewsAscii();
@@ -156,6 +161,13 @@ public class MenuTelnetAnsi extends MenuTelnetPureAscii {
                 execute(subThread);
             } while (!validKey);
         }
+    }
+
+    public void showVcfSw2025() throws Exception {
+        cls();
+        write(readBinaryFile("ansi/vcfsw2025.ans"));
+        flush(); resetInput();
+        readKey();
     }
 
 }

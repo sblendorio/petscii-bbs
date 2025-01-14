@@ -197,6 +197,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 else if ("g".equals(choice)) subThread = new WikipediaAscii();
                 else if ("h".equals(choice)) { menuBasicPrograms(); subThread = null; }
                 else if ("i".equals(choice)) subThread = new EnigmaAscii();
+                else if ("v".equals(choice) && HolidayCommons.isVcf()) { showVcfSw2025(); subThread = null;}
                 else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii();
                 else {
                     validKey = false;
@@ -205,6 +206,13 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 execute(subThread);
             } while (!validKey);
         }
+    }
+
+    public void showVcfSw2025() throws Exception {
+        cls();
+        write(readBinaryFile("ascii/vcfsw2025.txt"));
+        flush(); resetInput();
+        readKey();
     }
 
     public void menuInternationalNews() throws Exception {

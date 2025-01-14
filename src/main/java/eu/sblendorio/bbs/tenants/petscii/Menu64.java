@@ -57,6 +57,8 @@ public class Menu64 extends PetsciiThread {
                 logoFilename = "petscii/bbs-menu-main-halloween.seq";
             } else if (isSanremo()) {
                 logoFilename = "petscii/bbs-menu-main-sanremo.seq";
+            } else if (isVcf()) {
+                logoFilename = "petscii/bbs-menu-main-vcfsw25.seq";
             } else {
                 logoFilename = "petscii/bbs-menu-main.seq";
             }
@@ -105,6 +107,7 @@ public class Menu64 extends PetsciiThread {
                     case 'p' -> menuBasicPrograms();
                     case 'e' -> launch(new EnigmaPetscii());
                     case 's' -> { if (isSanremo()) launch(new SanremoPetscii()); }
+                    case 'v' -> { if (isVcf()) launch(new VcfSw2025Petscii()); }
                     //case 'l' -> launch(new Ossa());
                     case '.' -> { goodbye(); return; }
                     default -> validKey = false;

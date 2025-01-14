@@ -112,5 +112,9 @@ public class HolidayCommons {
         return new File(getProperty("user.home") + File.separator + "sanremo.txt").exists();
     }
 
+    public static boolean isVcf() {
+        return new File(getProperty("user.home") + File.separator + "vcf.txt").exists();
+    }
+
 
 }

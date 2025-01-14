@@ -2,6 +2,7 @@ package eu.sblendorio.bbs.tenants.ascii;
 
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
 
@@ -65,7 +66,11 @@ public class MenuTelnetUtf8Ansi extends MenuTelnetPureAscii {
 
     public void showMainMenu() {
         cls();
-        printText(readBinaryFile("ansi/RetrocampusBbsMainMenu.utf8ans"));
+        printText(readBinaryFile(
+                HolidayCommons.isVcf()
+                ? "ansi/RetrocampusBbsMainMenu.utf8ans"
+                : "ansi/RetrocampusBbsMainMenuVcfsw2025.utf8ans"
+        ));
     }
 
     public void showInternationalNews() {
@@ -155,5 +160,13 @@ public class MenuTelnetUtf8Ansi extends MenuTelnetPureAscii {
             } while (!validKey);
         }
     }
+
+    public void showVcfSw2025() throws Exception {
+        cls();
+        write(readBinaryFile("ansi/vcfsw2025.utf8ans"));
+        flush(); resetInput();
+        readKey();
+    }
+
 
 }
