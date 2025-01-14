@@ -35,6 +35,13 @@ public class MenuM10 extends MenuApple1 {
 
     public void logo() throws Exception {}
 
+    public void showVcfSw2025() throws Exception {
+        cls();
+        write(readBinaryFile("ascii/vcfsw2025-m10.txt"));
+        flush(); resetInput();
+        readKey();
+    }
+
     public String rssPropertyTimeout() { return "rss.m10.timeout"; }
 
     public String rssPropertyTimeoutDefault() { return "60000"; }
@@ -66,7 +73,10 @@ public class MenuM10 extends MenuApple1 {
         println("5 - Fox News       B - Hackaday Blog");
         println("6 - Wired          C - A.Valoroso (ENG)");
         println("7 - VCF News       D - NPR.org");
-        println("                   . - Go back");
+        if (HolidayCommons.isVcf())
+            println("V - VCF SW 2025    . - Go back");
+        else
+            println("                   . - Go back");
     }
 
     public void showItalianNews() {

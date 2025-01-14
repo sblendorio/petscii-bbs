@@ -61,7 +61,18 @@ public class MenuApple1 extends AsciiThread {
 
     public void showMainMenu() {
         cls();
-        printText(readBinaryFile("ascii/menu80-main.txt"));
+        printText(readBinaryFile(
+                HolidayCommons.isVcf()
+                        ? "ascii/menu80-main-vcfsw.txt"
+                        : "ascii/menu80-main.txt"
+        ));
+    }
+
+    public void showVcfSw2025() throws Exception {
+        cls();
+        write(readBinaryFile("ascii/vcfsw2025.txt"));
+        flush(); resetInput();
+        readKey();
     }
 
     public void showInternationalNews() {
@@ -119,6 +130,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("h".equals(choice)) { menuBasicPrograms(); subThread = null; }
                 else if ("i".equals(choice)) subThread = new EnigmaAscii();
                 else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii();
+                else if ("v".equals(choice) && HolidayCommons.isVcf()) { showVcfSw2025(); subThread = null;}
                 else {
                     validKey = false;
                     subThread = null;

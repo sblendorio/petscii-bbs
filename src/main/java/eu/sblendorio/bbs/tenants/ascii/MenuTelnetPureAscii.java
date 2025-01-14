@@ -51,7 +51,11 @@ public class MenuTelnetPureAscii extends AsciiThread {
 
     public void showMainMenu() {
         cls();
-        printText(readBinaryFile("ascii/menu80-main.txt"));
+        printText(readBinaryFile(
+                HolidayCommons.isVcf()
+                ? "ascii/menu80-main-vcfsw.txt"
+                : "ascii/menu80-main.txt"
+        ));
     }
 
     public void showInternationalNews() {

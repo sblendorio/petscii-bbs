@@ -54,6 +54,13 @@ public class MenuVic20 extends MenuApple1 {
     @Override
     public void logo() throws Exception {}
 
+    public void showVcfSw2025() throws Exception {
+        cls();
+        write(readBinaryFile("ascii/vcfsw2025-vic20.txt"));
+        flush(); resetInput();
+        readKey();
+    }
+
     public String rssPropertyTimeout() { return "rss.vic20.timeout"; }
 
     public String rssPropertyTimeoutDefault() { return "60000"; }
@@ -70,7 +77,10 @@ public class MenuVic20 extends MenuApple1 {
         println("4 - Patreon - list members");
         println("5 - Patreon - Publishers");
         println();
-        println("SPECIALS");
+        if (HolidayCommons.isVcf())
+            println("SPECIALS: V - VCF Sw 2025");
+        else
+            println("SPECIALS:");
         println("-----------------");
         println("A - Chat");
         println("B - Private Msg");
