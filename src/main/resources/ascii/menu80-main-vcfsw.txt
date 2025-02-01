@@ -9,15 +9,15 @@ NEWS & MISC
 5 - Patreon - Publishers
 
 SPECIALS [V - VCF S/West 2025]
------------------
-A - Chat
-B - Private Msg
-C - Eliza
-D - Chat GPT
-E - WiFi Modem
-F - Apple-1 Demo
-G - Wikipedia
-H - BASIC Programs
-I - Enigma Machine
+------------------------------------
+A - Chat          G - Apple-1 Demo
+B - Private Msg   H - Wikipedia
+C - Eliza         I - BASIC Programs
+D - Chat GPT      J - Enigma Machine
+E - Mistral AI
+F - WiFi Modem
+G - Apple-1 Demo
+H - Wikipedia
+I - BASIC Programs
+J - Enigma Machine
 . - Logout
-

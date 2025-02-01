@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import static eu.sblendorio.bbs.core.Utils.*;
+import static eu.sblendorio.bbs.tenants.CommonConstants.*;
 import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isSanremo;
 import static java.lang.String.valueOf;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -123,12 +124,13 @@ public class MenuApple1 extends AsciiThread {
                 else if ("a".equals(choice)) subThread = new ChatA1(null, getTerminalType(), true);
                 else if ("b".equals(choice)) subThread = new PrivateMessagesAscii();
                 else if ("c".equals(choice)) subThread = new ElizaAscii();
-                else if ("d".equals(choice)) subThread = new ClientChatGptAscii();
-                else if ("e".equals(choice)) { wifiModem(); subThread = null; }
-                else if ("f".equals(choice)) { textDemo(); subThread = null; }
-                else if ("g".equals(choice)) subThread = new WikipediaAscii();
-                else if ("h".equals(choice)) { menuBasicPrograms(); subThread = null; }
-                else if ("i".equals(choice)) subThread = new EnigmaAscii();
+                else if ("d".equals(choice)) subThread = new ClientChatGptAscii("ChatGPT", CHATGPT_API, "OPENAI_KEY", CHATGPT_MODEL, null, null);
+                else if ("e".equals(choice)) subThread = new ClientChatGptAscii("Mistral", MISTRAL_API, "MISTRALAI_KEY", MISTRAL_MODEL, null, null);
+                else if ("f".equals(choice)) { wifiModem(); subThread = null; }
+                else if ("g".equals(choice)) { textDemo(); subThread = null; }
+                else if ("h".equals(choice)) subThread = new WikipediaAscii();
+                else if ("i".equals(choice)) { menuBasicPrograms(); subThread = null; }
+                else if ("j".equals(choice)) subThread = new EnigmaAscii();
                 else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii();
                 else if ("v".equals(choice) && HolidayCommons.isVcf()) { showVcfSw2025(); subThread = null;}
                 else {

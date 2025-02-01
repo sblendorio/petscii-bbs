@@ -55,14 +55,15 @@ public class MenuM10 extends MenuApple1 {
         println("2 - Italian News        B - Private Msg");
         println("3 - Games               C - Eliza");
         println("4 - Patreon List        D - Chat GPT");
-        println("5 - Patreon Publishers  E - WiFi Modem");
-        println("                        F - Apple1 Demo");
-        println("                        G - Wikipedia");
+        println("5 - Patreon Publishers  E - Mistral AI");
+        println("                        F - WiFi Modem");
+        println("                        G - Apple1 Demo");
+        println("                        H - Wikipedia");
         if (HolidayCommons.isVcf())
-            println("V - VCF SW 2025         H - BASIC");
+            println("V - VCF SW 2025         I - BASIC");
         else
-            println("                        H - BASIC");
-        println(". - Logout              I - Enigma");
+            println("                        I - BASIC");
+        println(". - Logout              J - Enigma");
     }
 
     public void showInternationalNews() {

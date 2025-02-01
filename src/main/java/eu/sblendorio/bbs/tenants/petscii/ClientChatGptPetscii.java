@@ -1,10 +1,6 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
-import com.theokanning.openai.OpenAiHttpException;
-import com.theokanning.openai.completion.chat.ChatCompletionChoice;
-import com.theokanning.openai.completion.chat.ChatCompletionRequest;
-import com.theokanning.openai.completion.chat.ChatMessage;
-import com.theokanning.openai.service.OpenAiService;
+import com.google.gson.Gson;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiColors;
@@ -15,50 +11,60 @@ import org.apache.logging.log4j.Logger;
 import org.davidmoten.text.utils.WordWrap;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
-import static com.theokanning.openai.completion.chat.ChatCompletionRequest.builder;
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
 import static java.util.Arrays.asList;
-import static org.apache.commons.collections4.CollectionUtils.size;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
 public class ClientChatGptPetscii extends PetsciiThread {
-    private static Logger logger = LogManager.getLogger(ClientChatGptPetscii.class);
-    private static Logger loggerAuthorizations = LogManager.getLogger("authorizations");
-    public static byte[] PETSCII_BIG_LOGO = BbsThread.readBinaryFile("petscii/gpt-biglogo.seq");
+    private static final Logger logger = LogManager.getLogger(ClientChatGptPetscii.class);
+    public byte[] petsciiBigLogo;
+    public String model;
+    public String apiUrl;
+    public String keyName;
+    public String aiName;
+    public int assistantColor;
     private static final String WAIT_MESSAGE = "Please wait...";
     private static final String EXIT_ADVICE = "Type \".\" to EXIT";
 
-    private static int USER_COLOR = WHITE;
-    private static int ASSISTANT_COLOR = PetsciiColors.LIGHT_BLUE;
-    private static int WAIT_COLOR = GREY2;
-    private static int MORE_COLOR = GREY2;
+    private static final int USER_COLOR = WHITE;
+    private static final int WAIT_COLOR = GREY2;
+    private static final int MORE_COLOR = GREY2;
 
-    private OpenAiService openAiService = null;
+    private final HttpClient client;
+
+    public ClientChatGptPetscii(String aiName, String apiUrl, String keyName, String model, int assistantColor, byte[] logo) {
+        super();
+        this.petsciiBigLogo = logo;
+        this.model = model;
+        this.apiUrl = apiUrl;
+        this.keyName = keyName;
+        this.aiName = aiName;
+        this.assistantColor = assistantColor;
+        this.client = HttpClient.newBuilder()
+                .connectTimeout(timeout())
+                .build();
+    }
 
     private String apiKey() {
-        return defaultString(getProperty("OPENAI_KEY", getenv("OPENAI_KEY")), "DUMMY");
+        return Objects.toString(getProperty(keyName, getenv(keyName)), "DUMMY");
     }
 
     private Duration timeout() {
-        long seconds = toLong(defaultString(getProperty("OPENAI_TIMEOUT_SECS", getenv("OPENAI_TIMEOUT_SECS")), "180"));
+        long seconds = toLong(Objects.toString(getProperty("AI_TIMEOUT_SECS", getenv("AI_TIMEOUT_SECS")), "180"));
         return Duration.ofSeconds(seconds);
-    }
-
-    private OpenAiService service() {
-        if (openAiService == null)
-            openAiService = new OpenAiService(apiKey(), timeout());
-        return openAiService;
     }
 
     @Override
@@ -66,13 +72,13 @@ public class ClientChatGptPetscii extends PetsciiThread {
         PatreonData patreonData = PatreonData.authenticatePetscii(this);
         if (patreonData == null) return;
 
-        String model = toInt(patreonData.patreonLevel) > 0 ? "gpt-4" : "gpt-3.5-turbo";
+        //String model = toInt(patreonData.patreonLevel) > 0 ? "gpt-4" : "gpt-3.5-turbo";
         changeClientName(patreonData.user+"/"+UUID.randomUUID());
 
         cls();
-        write(PETSCII_BIG_LOGO);
+        write(petsciiBigLogo);
         println();
-        List<ChatMessage> conversation = new LinkedList<>();
+        List<Map<String, Object>> conversation = new LinkedList<>();
         String input;
         if (toInt(patreonData.patreonLevel) > 0) {
             write(GREY3);
@@ -95,25 +101,40 @@ public class ClientChatGptPetscii extends PetsciiThread {
                 continue;
             }
             input = asciiToUtf8(input);
+            conversation.add(Map.of(
+                    "role", "user",
+                    "content", input
+            ));
 
-            conversation.add(new ChatMessage("user", input));
             logger.info("IP: '{}', email: '{}', role: 'user', message: {}",
                     ipAddress.getHostAddress(),
                     patreonData.user,
                     input.replaceAll("\n", "\\\\n"));
 
-            ChatCompletionRequest request = builder()
-                    .model(model)
-                    .messages(conversation)
-                    .build();
+            Map<String, Object> requestBody = Map.of(
+                    "model", model,
+                    "messages", conversation
+            );
+            Gson gson = new Gson();
 
             waitOn(exitAdvice);
             if (exitAdvice) exitAdvice = false;
-            final List<ChatCompletionChoice> choices;
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(apiUrl))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + apiKey())
+                    .timeout(timeout())
+                    .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(requestBody), StandardCharsets.UTF_8))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            String assistantResponse;
+
             try {
-                choices = service().createChatCompletion(request).getChoices();
+                assistantResponse = parseAssistantResponse(response.body());
             } catch (Exception e) {
-                if (e instanceof OpenAiHttpException && e.getMessage() != null && e.getMessage().contains("maximum context length")) {
+                e.printStackTrace();
+                if (e.getMessage() != null && e.getMessage().contains("maximum context length")) {
                     cls();
                     write(RED);
                     println("                                       ");
@@ -142,22 +163,29 @@ public class ClientChatGptPetscii extends PetsciiThread {
                 }
             }
             waitOff();
-            if (size(choices) == 0) continue;
 
-            final ChatCompletionChoice completion = choices.get(0);
-            final ChatMessage message = completion.getMessage();
-            conversation.add(message);
+            conversation.add(Map.of(
+                    "role", "assistant",
+                    "content", assistantResponse
+            ));
 
             logger.info("IP: '{}', email: '{}', role: '{}', message: {}",
                     ipAddress.getHostAddress(),
                     patreonData.user,
-                    message.getRole(),
-                    message.getContent().replaceAll("\n", "\\\\n"));
+                    "assistant",
+                    assistantResponse.replaceAll("\n", "\\\\n"));
 
-            final String answer = "ChatGPT> " + message.getContent();
+            final String answer = aiName +  "> " + assistantResponse;
             println();
             printPagedText(answer);
         } while (true);
+    }
+
+    public String parseAssistantResponse(String jsonResponse) {
+        Gson gson = new Gson();
+        Map<String, Object> response = gson.fromJson(jsonResponse, Map.class);
+        String content = ((Map)((List<Map>) response.get("choices")).get(0).get("message")).get("content").toString();
+        return content;
     }
 
     private void printPagedText(String answerContent) throws IOException {
@@ -166,14 +194,14 @@ public class ClientChatGptPetscii extends PetsciiThread {
         lines.add(EMPTY);
         int count = 0;
 
-        write(ASSISTANT_COLOR);
+        write(assistantColor);
         for (String line: lines) {
             println(line);
             count++;
             if (count % (this.getScreenRows() - 1) == 0) {
                 write(MORE_COLOR);
                 print("-- More --");
-                write(ASSISTANT_COLOR);
+                write(assistantColor);
                 flush(); resetInput();
                 int key = readKey();
                 println();

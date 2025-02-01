@@ -16,6 +16,7 @@ import java.util.*;
 
 import static eu.sblendorio.bbs.core.MinitelControls.*;
 import static eu.sblendorio.bbs.core.Utils.*;
+import static eu.sblendorio.bbs.tenants.CommonConstants.*;
 import static eu.sblendorio.bbs.tenants.mixed.GeolocationCommons.isItaly;
 import static eu.sblendorio.bbs.tenants.mixed.GeolocationCommons.isLocalhost;
 import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isSanremo;
@@ -328,13 +329,14 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("a".equals(choice)) subThread = new ChatA1(io, getTerminalType());
                 else if ("b".equals(choice)) subThread = new PrivateMessagesAscii(io);
                 else if ("c".equals(choice)) subThread = new ElizaAscii(io);
-                else if ("d".equals(choice)) subThread = new ClientChatGptAscii(io, readBinaryFile("minitel/chatgpt-mainlogo.vdt"));
-                else if ("e".equals(choice)) subThread = new WikipediaMinitel();
-                else if ("f".equals(choice)) { videotelVault(); subThread = null; }
-                else if ("g".equals(choice)) { textDemo(); subThread = null; }
-                else if ("h".equals(choice)) { wifiModem(); subThread = null; }
-                else if ("i".equals(choice)) { menuBasicPrograms(); subThread = null; }
-                else if ("j".equals(choice)) subThread = new EnigmaAscii(io);
+                else if ("d".equals(choice)) subThread = new ClientChatGptAscii("ChatGPT", CHATGPT_API, "OPENAI_KEY", CHATGPT_MODEL, io, readBinaryFile("minitel/chatgpt-mainlogo.vdt"));
+                else if ("e".equals(choice)) subThread = new ClientChatGptAscii("Mistral", MISTRAL_API, "MISTRALAI_KEY", MISTRAL_MODEL, io, readBinaryFile("minitel/mistral.vdt"));
+                else if ("f".equals(choice)) subThread = new WikipediaMinitel();
+                else if ("g".equals(choice)) { videotelVault(); subThread = null; }
+                else if ("h".equals(choice)) { textDemo(); subThread = null; }
+                else if ("i".equals(choice)) { wifiModem(); subThread = null; }
+                else if ("j".equals(choice)) { menuBasicPrograms(); subThread = null; }
+                else if ("k".equals(choice)) subThread = new EnigmaAscii(io);
                 else if (isVcf() && "v".equals(choice)) subThread = new VcfSw2025Minitel();
                 // else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii(io);
                 else if ("*".equals(choice)) subThread = new TestClientVideotex();

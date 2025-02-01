@@ -7,7 +7,6 @@ import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
 
-import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.*;
@@ -15,11 +14,10 @@ import java.util.*;
 import static eu.sblendorio.bbs.core.BlockGraphicsPetscii.getRenderedMidres;
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.PetsciiKeys.*;
-import static eu.sblendorio.bbs.core.Utils.readExternalTxt;
+import static eu.sblendorio.bbs.tenants.CommonConstants.*;
 import static eu.sblendorio.bbs.tenants.mixed.GeolocationCommons.isItaly;
 import static eu.sblendorio.bbs.tenants.mixed.GeolocationCommons.isLocalhost;
 import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.*;
-import static java.util.Comparator.comparing;
 import static org.apache.commons.lang3.StringUtils.repeat;
 import static org.apache.commons.lang3.StringUtils.startsWith;
 
@@ -96,7 +94,8 @@ public class Menu64 extends PetsciiThread {
                     case '6' -> launch(new UserLogon());
                     case '7' -> launch(new InternetBrowser());
                     case '8' -> launch(new ElizaPetscii());
-                    case '9' -> launch(new ClientChatGptPetscii());
+                    case '9' -> launch(new ClientChatGptPetscii("ChatGPT", CHATGPT_API, "OPENAI_KEY", CHATGPT_MODEL, LIGHT_BLUE, readBinaryFile("petscii/gpt-biglogo.seq")));
+                    case 'm' -> launch(new ClientChatGptPetscii("Mistral", MISTRAL_API, "MISTRALAI_KEY", MISTRAL_MODEL, YELLOW, readBinaryFile("petscii/mistral.seq")));
                     case 'g' -> launch(new PetsciiArtGallery());
                     case 'x' -> about();
                     case 'a' -> patrons();

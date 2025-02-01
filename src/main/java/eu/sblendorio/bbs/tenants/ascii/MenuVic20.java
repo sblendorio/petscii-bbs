@@ -86,11 +86,12 @@ public class MenuVic20 extends MenuApple1 {
         println("B - Private Msg");
         println("C - Eliza");
         println("D - Chat GPT");
-        println("E - WiFi Modem");
-        println("F - Apple-1 Demo");
-        println("G - Wikipedia");
-        println("H - BASIC");
-        println("I - Enigma");
+        println("E - Mistral");
+        println("F - WiFi Modem");
+        println("G - Apple-1 Demo");
+        println("H - Wikipedia");
+        println("I - BASIC");
+        println("J - Enigma");
         println(". - Logout");
     }
 

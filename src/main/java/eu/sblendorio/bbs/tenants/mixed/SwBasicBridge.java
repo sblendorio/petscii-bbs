@@ -1,8 +1,6 @@
 package eu.sblendorio.bbs.tenants.mixed;
 
-import com.theokanning.openai.runs.Run;
 import eu.sblendorio.bbs.core.BbsThread;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.util.TriConsumer;
@@ -11,12 +9,10 @@ import javax.script.Bindings;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.SimpleBindings;
-import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
-import java.util.function.BiConsumer;
 
 import static eu.sblendorio.bbs.core.Utils.*;
 
