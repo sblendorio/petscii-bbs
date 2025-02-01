@@ -111,7 +111,8 @@ public class ClientChatGptAscii extends AsciiThread {
                     "content", input
             ));
 
-            logger.info("IP: '{}', email: '{}', role: 'user', message: {}",
+            logger.info("model: '{}', IP: '{}', email: '{}', role: 'user', message: {}",
+                    model,
                     ipAddress.getHostAddress(),
                     patreonData.user,
                     input.replaceAll("\n", "\\\\n"));
@@ -131,10 +132,11 @@ public class ClientChatGptAscii extends AsciiThread {
                     .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(requestBody), StandardCharsets.UTF_8))
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String assistantResponse;
+            String responseBody = response.body();
+            String assistantResponse = "";
 
             try {
-                assistantResponse = parseAssistantResponse(response.body());
+                assistantResponse = parseAssistantResponse(responseBody);
             } catch (Exception e) {
                 if (e.getMessage() != null && e.getMessage().contains("maximum context length")) {
                     e.printStackTrace();
@@ -148,13 +150,16 @@ public class ClientChatGptAscii extends AsciiThread {
                     break;
 
                 } else {
+                    e.printStackTrace();
                     cls();
                     println("Unexpected error. Please write to sysop");
                     println("Press any key to EXIT");
-                    logger.error("IP: '{}', email: '{}', exception: {}",
+                    logger.error("model: '{}', IP: '{}', email: '{}', exception: '{}', responseBody: '{}'",
+                            model,
                             ipAddress.getHostAddress(),
                             patreonData.user,
-                            e);
+                            e,
+                            responseBody);
                     flush();
                     resetInput();
                     readKey();
@@ -169,7 +174,8 @@ public class ClientChatGptAscii extends AsciiThread {
                     "content", assistantResponse
             ));
 
-            logger.info("IP: '{}', email: '{}', role: '{}', message: {}",
+            logger.info("model: '{}', IP: '{}', email: '{}', role: '{}', message: {}",
+                    model,
                     ipAddress.getHostAddress(),
                     patreonData.user,
                     "assistant",

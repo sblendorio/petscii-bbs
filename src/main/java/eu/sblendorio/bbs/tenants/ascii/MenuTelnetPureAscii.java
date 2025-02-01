@@ -197,7 +197,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 else if ("b".equals(choice)) subThread = new PrivateMessagesAscii();
                 else if ("c".equals(choice)) subThread = new ElizaAscii();
                 else if ("d".equals(choice)) subThread = new ClientChatGptAscii("ChatGPT", CHATGPT_API, "OPENAI_KEY", CHATGPT_MODEL, null, null);
-                else if ("e".equals(choice)) subThread = new ClientChatGptAscii("Mistral", MISTRAL_API, "MISTRALAI_KEY", MISTRAL_API, null, null);
+                else if ("e".equals(choice)) subThread = new ClientChatGptAscii("Mistral", MISTRAL_API, "MISTRALAI_KEY", MISTRAL_MODEL, null, null);
                 else if ("f".equals(choice)) { wifiModem(); subThread = null; }
                 else if ("g".equals(choice)) { textDemo(); subThread = null; }
                 else if ("h".equals(choice)) subThread = new WikipediaAscii();

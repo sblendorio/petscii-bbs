@@ -106,7 +106,8 @@ public class ClientChatGptPetscii extends PetsciiThread {
                     "content", input
             ));
 
-            logger.info("IP: '{}', email: '{}', role: 'user', message: {}",
+            logger.info("model: '{}', IP: '{}', email: '{}', role: 'user', message: {}",
+                    model,
                     ipAddress.getHostAddress(),
                     patreonData.user,
                     input.replaceAll("\n", "\\\\n"));
@@ -128,10 +129,11 @@ public class ClientChatGptPetscii extends PetsciiThread {
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String assistantResponse;
+            String responseBody = response.body();
+            String assistantResponse = "";
 
             try {
-                assistantResponse = parseAssistantResponse(response.body());
+                assistantResponse = parseAssistantResponse(responseBody);
             } catch (Exception e) {
                 e.printStackTrace();
                 if (e.getMessage() != null && e.getMessage().contains("maximum context length")) {
@@ -148,14 +150,17 @@ public class ClientChatGptPetscii extends PetsciiThread {
                     readKey();
                     break;
                 } else {
+                    e.printStackTrace();
                     cls();
                     write(RED);
                     println("Unexpected error. Please write to sysop");
                     println("Press any key to EXIT");
-                    logger.error("IP: '{}', email: '{}', exception: {}",
+                    logger.error("model: '{}', IP: '{}', email: '{}', exception: '{}', responseBody: '{}'",
+                            model,
                             ipAddress.getHostAddress(),
                             patreonData.user,
-                            e);
+                            e,
+                            responseBody);
                     flush();
                     resetInput();
                     readKey();
@@ -169,7 +174,8 @@ public class ClientChatGptPetscii extends PetsciiThread {
                     "content", assistantResponse
             ));
 
-            logger.info("IP: '{}', email: '{}', role: '{}', message: {}",
+            logger.info("model: '{}', IP: '{}', email: '{}', role: '{}', message: {}",
+                    model,
                     ipAddress.getHostAddress(),
                     patreonData.user,
                     "assistant",
