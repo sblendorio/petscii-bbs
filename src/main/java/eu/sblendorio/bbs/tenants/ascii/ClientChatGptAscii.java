@@ -45,7 +45,7 @@ public class ClientChatGptAscii extends AsciiThread {
     private static final byte[] MORE_COLOR = new byte[] {};
 
     private final HttpClient client;
-//     public ClientChatGptPetscii(String aiName, String apiUrl, String keyName, String model, byte[] logo) {
+
     public ClientChatGptAscii(String aiName, String apiUrl, String keyName, String model, BbsInputOutput interfaceType, byte[] logo) {
         super();
         this.interfaceType = interfaceType;
@@ -131,13 +131,20 @@ public class ClientChatGptAscii extends AsciiThread {
                     .timeout(timeout())
                     .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(requestBody), StandardCharsets.UTF_8))
                     .build();
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String responseBody = response.body();
+            String responseBody = "";
             String assistantResponse = "";
 
             try {
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                responseBody = response.body();
                 assistantResponse = parseAssistantResponse(responseBody);
             } catch (Exception e) {
+                logger.error("model: '{}', IP: '{}', email: '{}', exception: '{}', responseBody: '{}'",
+                        model,
+                        ipAddress.getHostAddress(),
+                        patreonData.user,
+                        e,
+                        responseBody);
                 if (e.getMessage() != null && e.getMessage().contains("maximum context length")) {
                     e.printStackTrace();
                     cls();
@@ -154,12 +161,6 @@ public class ClientChatGptAscii extends AsciiThread {
                     cls();
                     println("Unexpected error. Please write to sysop");
                     println("Press any key to EXIT");
-                    logger.error("model: '{}', IP: '{}', email: '{}', exception: '{}', responseBody: '{}'",
-                            model,
-                            ipAddress.getHostAddress(),
-                            patreonData.user,
-                            e,
-                            responseBody);
                     flush();
                     resetInput();
                     readKey();

@@ -1,9 +1,7 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
 import com.google.gson.Gson;
-import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.HtmlUtils;
-import eu.sblendorio.bbs.core.PetsciiColors;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.tenants.mixed.PatreonData;
 import org.apache.logging.log4j.LogManager;
@@ -127,14 +125,20 @@ public class ClientChatGptPetscii extends PetsciiThread {
                     .timeout(timeout())
                     .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(requestBody), StandardCharsets.UTF_8))
                     .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String responseBody = response.body();
+            String responseBody = "";
             String assistantResponse = "";
 
             try {
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                responseBody = response.body();
                 assistantResponse = parseAssistantResponse(responseBody);
             } catch (Exception e) {
+                logger.error("model: '{}', IP: '{}', email: '{}', exception: '{}', responseBody: '{}'",
+                        model,
+                        ipAddress.getHostAddress(),
+                        patreonData.user,
+                        e,
+                        responseBody);
                 e.printStackTrace();
                 if (e.getMessage() != null && e.getMessage().contains("maximum context length")) {
                     cls();
@@ -155,12 +159,6 @@ public class ClientChatGptPetscii extends PetsciiThread {
                     write(RED);
                     println("Unexpected error. Please write to sysop");
                     println("Press any key to EXIT");
-                    logger.error("model: '{}', IP: '{}', email: '{}', exception: '{}', responseBody: '{}'",
-                            model,
-                            ipAddress.getHostAddress(),
-                            patreonData.user,
-                            e,
-                            responseBody);
                     flush();
                     resetInput();
                     readKey();
