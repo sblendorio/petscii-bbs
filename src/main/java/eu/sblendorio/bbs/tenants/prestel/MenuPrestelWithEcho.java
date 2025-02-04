@@ -14,8 +14,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static eu.sblendorio.bbs.core.Utils.*;
-import static eu.sblendorio.bbs.tenants.CommonConstants.CHATGPT_API;
-import static eu.sblendorio.bbs.tenants.CommonConstants.CHATGPT_MODEL;
+import static eu.sblendorio.bbs.tenants.CommonConstants.*;
 import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isSanremo;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
@@ -83,7 +82,7 @@ public class MenuPrestelWithEcho extends PrestelThread {
                 else if ("5".equals(choice)) { patronsPublishers(); subThread = null; }
                 else if ("a".equals(choice)) subThread = new PrivateMessagesAscii(io);
                 else if ("b".equals(choice)) subThread = new ElizaAscii(io);
-                else if ("c".equals(choice)) subThread = new ClientChatGptAscii("ChatGPT", CHATGPT_API, "OPENAI_KEY", CHATGPT_MODEL, io, null);
+                else if ("c".equals(choice)) subThread = new ClientChatGptAscii("ChatGPT", CHATGPT_API, "OPENAI_KEY", chatGptModel.get(), io, null);
                 else if ("d".equals(choice)) subThread = new WikipediaAscii(io);
                 else if ("e".equals(choice)) { textDemo(); subThread = null; }
                 else if ("f".equals(choice)) { wifiModem(); subThread = null; }

@@ -9,12 +9,12 @@ import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
-import static eu.sblendorio.bbs.core.Utils.*;
+import static eu.sblendorio.bbs.core.Utils.STR_ALPHANUMERIC;
+import static eu.sblendorio.bbs.core.Utils.setOfChars;
 import static eu.sblendorio.bbs.tenants.CommonConstants.*;
 import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isSanremo;
 import static java.lang.String.valueOf;
@@ -124,8 +124,8 @@ public class MenuApple1 extends AsciiThread {
                 else if ("a".equals(choice)) subThread = new ChatA1(null, getTerminalType(), true);
                 else if ("b".equals(choice)) subThread = new PrivateMessagesAscii();
                 else if ("c".equals(choice)) subThread = new ElizaAscii();
-                else if ("d".equals(choice)) subThread = new ClientChatGptAscii("ChatGPT", CHATGPT_API, "OPENAI_KEY", CHATGPT_MODEL, null, null);
-                else if ("e".equals(choice)) subThread = new ClientChatGptAscii("Mistral", MISTRAL_API, "MISTRALAI_KEY", MISTRAL_MODEL, null, null);
+                else if ("d".equals(choice)) subThread = new ClientChatGptAscii("ChatGPT", CHATGPT_API, "OPENAI_KEY", chatGptModel.get(), null, null);
+                else if ("e".equals(choice)) subThread = new ClientChatGptAscii("Mistral", MISTRAL_API, "MISTRALAI_KEY", mistralModel.get(), null, null);
                 else if ("f".equals(choice)) { wifiModem(); subThread = null; }
                 else if ("g".equals(choice)) { textDemo(); subThread = null; }
                 else if ("h".equals(choice)) subThread = new WikipediaAscii();

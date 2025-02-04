@@ -3,6 +3,7 @@ package eu.sblendorio.bbs.tenants.petscii;
 import com.google.gson.Gson;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.tenants.CommonConstants;
 import eu.sblendorio.bbs.tenants.mixed.PatreonData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

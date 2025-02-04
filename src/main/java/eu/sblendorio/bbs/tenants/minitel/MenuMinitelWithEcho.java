@@ -6,11 +6,9 @@ import eu.sblendorio.bbs.tenants.ascii.*;
 import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import eu.sblendorio.bbs.tenants.mixed.PatreonData;
 import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
-import eu.sblendorio.bbs.tenants.petscii.AttivissimoMePetscii;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
@@ -330,8 +328,8 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("a".equals(choice)) subThread = new ChatA1(io, getTerminalType());
                 else if ("b".equals(choice)) subThread = new PrivateMessagesAscii(io);
                 else if ("c".equals(choice)) subThread = new ElizaAscii(io);
-                else if ("d".equals(choice)) subThread = new ClientChatGptAscii("ChatGPT", CHATGPT_API, "OPENAI_KEY", CHATGPT_MODEL, io, readBinaryFile("minitel/chatgpt-mainlogo.vdt"));
-                else if ("e".equals(choice)) subThread = new ClientChatGptAscii("Mistral", MISTRAL_API, "MISTRALAI_KEY", MISTRAL_MODEL, io, readBinaryFile("minitel/mistral.vdt"));
+                else if ("d".equals(choice)) subThread = new ClientChatGptAscii("ChatGPT", CHATGPT_API, "OPENAI_KEY", chatGptModel.get(), io, readBinaryFile("minitel/chatgpt-mainlogo.vdt"));
+                else if ("e".equals(choice)) subThread = new ClientChatGptAscii("Mistral", MISTRAL_API, "MISTRALAI_KEY", mistralModel.get(), io, readBinaryFile("minitel/mistral.vdt"));
                 else if ("f".equals(choice)) subThread = new WikipediaMinitel();
                 else if ("g".equals(choice)) { videotelVault(); subThread = null; }
                 else if ("h".equals(choice)) { textDemo(); subThread = null; }
