@@ -6,6 +6,7 @@ import eu.sblendorio.bbs.tenants.ascii.*;
 import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import eu.sblendorio.bbs.tenants.mixed.PatreonData;
 import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
+import eu.sblendorio.bbs.tenants.petscii.AttivissimoMePetscii;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
 
@@ -145,7 +146,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                             bytes(31, 64+23, 64+1, 32, 32, 32, 32, 32, 32, 31, 64+23, 64+1)
                     );
                     case "2" -> new LercioMinitel();
-                    case "3" -> new DisinformaticoMinitel();
+                    case "3" -> new AttivissimoMeMinitel();
                     case "4" -> new MupinAscii(io);
                     case "5" -> new IlFattoQuotidianoMinitel();
                     case "6" -> new AmedeoValorosoAscii(io);

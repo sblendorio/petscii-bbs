@@ -170,7 +170,7 @@ public class Menu64 extends PetsciiThread {
                     case 'b' -> launch(new RetroCampus());
                     case 'c' -> launch(new RetroAcademy());
                     case 'd' -> launch(new ChpdbPetscii());
-                    case 'e' -> launch(new Disinformatico());
+                    case 'e' -> launch(new AttivissimoMePetscii());
                     case 'f' -> launch(new CommessoPerplessoPetscii());
                     case 'g' -> launch(new OneApuliaRetrocomputingPetscii());
                     case 'h' -> launch(new ArcheologiaInformatica());

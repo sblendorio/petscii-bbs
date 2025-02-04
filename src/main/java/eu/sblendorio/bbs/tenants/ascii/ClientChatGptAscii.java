@@ -237,9 +237,9 @@ public class ClientChatGptAscii extends AsciiThread {
                 .replaceAll("e'", "è")
                 .replaceAll("E'", "È")
                 .replaceAll("i'", "ì")
-                .replaceAll("I'", "Ì")
+                //.replaceAll("I'", "Ì")
                 .replaceAll("o'", "ò")
-                .replaceAll("O'", "Ò")
+                //.replaceAll("O'", "Ò")
                 .replaceAll("u'", "ù")
                 .replaceAll("U'", "Ù")
                 ;

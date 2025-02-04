@@ -293,7 +293,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
                         null
                 );
                 else if ("2".equals(choice)) subThread = new LercioAscii();
-                else if ("3".equals(choice)) subThread = new DisinformaticoAscii();
+                else if ("3".equals(choice)) subThread = new AttivissimoMeAscii();
                 else if ("4".equals(choice)) subThread = new MupinAscii();
                 else if ("5".equals(choice)) subThread = new IlFattoQuotidianoAscii();
                 else if ("6".equals(choice)) subThread = new AmedeoValorosoAscii();
