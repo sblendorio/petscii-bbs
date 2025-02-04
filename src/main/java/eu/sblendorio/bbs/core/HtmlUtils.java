@@ -162,6 +162,8 @@ public class HtmlUtils {
             .replaceAll("[ÙÚ]", "U'")
             .replaceAll("Ü", "U")
             .replaceAll("ü", "u")
+            .replaceAll("Û", "U")
+            .replaceAll("û", "u")
             .replaceAll("Ë", "E")
             .replaceAll("ë", "e")
             .replaceAll("ê", "e")

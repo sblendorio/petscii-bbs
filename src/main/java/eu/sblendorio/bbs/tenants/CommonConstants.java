@@ -32,7 +32,7 @@ public class CommonConstants {
                     .collect(toMap(
                             parts -> parts[0].trim(),
                             parts -> parts[1].trim(),
-                            (v1, v2) -> v1  // In case of duplicate keys, keep first value
+                            (a, b) -> a
                     ));
 
             var value = configMap.getOrDefault(name, defaultValue);
