@@ -17,7 +17,6 @@ public class CommonConstants {
     public static Supplier<String> chatGptModel = () -> getConfigProperty("CHATGPT_MODEL", "gpt-4o-mini" /* "gpt-3.5-turbo" */);
     public static Supplier<String> mistralModel = () -> getConfigProperty("MISTRAL_MODEL", "ministral-8b-latest");
 
-
     public static String getConfigProperty(String name, String defaultValue) {
         File f = new File(System.getProperty("user.home") + File.separator + CONFIG_FILE_NAME);
         boolean exists = f.exists();
