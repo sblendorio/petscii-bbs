@@ -2,10 +2,12 @@ package eu.sblendorio.bbs.tenants;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.stream.Collectors.toMap;
 
 public class CommonConstants {
@@ -22,8 +24,8 @@ public class CommonConstants {
         boolean exists = f.exists();
         if (!exists) return defaultValue;
 
-        try {
-            Map<String, String> configMap = Files.lines(f.toPath())
+        try (var lines = Files.lines(f.toPath(), UTF_8)) {
+            Map<String, String> configMap = lines
                     .map(String::trim)
                     .filter(line -> !line.isEmpty() && !line.startsWith("#"))
                     .map(line -> line.split("=", 2))
@@ -35,7 +37,7 @@ public class CommonConstants {
                     ));
 
             var value = configMap.getOrDefault(name, defaultValue);
-            return value.trim().equals("") ? defaultValue : value;
+            return value.isBlank() ? defaultValue : value;
         } catch (IOException e) {
             e.printStackTrace();
             return defaultValue;
