@@ -14,10 +14,10 @@ public class CommonConstants {
     public static final String CHATGPT_API = "https://api.openai.com/v1/chat/completions";
     public static final String MISTRAL_API = "https://api.mistral.ai/v1/chat/completions";
 
-    public static Supplier<String> chatGptModel = () -> getConfigProperty("CHATGPT_MODEL", "gpt-4o-mini" /* "gpt-3.5-turbo" */);
-    public static Supplier<String> mistralModel = () -> getConfigProperty("MISTRAL_MODEL", "ministral-8b-latest");
+    public static Supplier<String> chatGptModel = () -> get("CHATGPT_MODEL", "gpt-4o-mini" /* "gpt-3.5-turbo" */);
+    public static Supplier<String> mistralModel = () -> get("MISTRAL_MODEL", "ministral-8b-latest");
 
-    public static String getConfigProperty(String name, String defaultValue) {
+    public static String get(String name, String defaultValue) {
         File f = new File(System.getProperty("user.home") + File.separator + CONFIG_FILE_NAME);
         boolean exists = f.exists();
         if (!exists) return defaultValue;
