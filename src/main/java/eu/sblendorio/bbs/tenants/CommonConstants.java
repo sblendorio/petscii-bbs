@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.stream.Collectors.toMap;
@@ -23,7 +24,7 @@ public class CommonConstants {
         boolean exists = f.exists();
         if (!exists) return defaultValue;
 
-        try (var lines = Files.lines(f.toPath(), UTF_8)) {
+        try (Stream<String> lines = Files.lines(f.toPath(), UTF_8)) {
             Map<String, String> configMap = lines
                     .map(String::trim)
                     .filter(line -> !line.isEmpty() && !line.startsWith("#"))
