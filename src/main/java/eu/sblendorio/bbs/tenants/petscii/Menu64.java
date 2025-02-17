@@ -96,6 +96,7 @@ public class Menu64 extends PetsciiThread {
                     case '8' -> launch(new ElizaPetscii());
                     case '9' -> launch(new ClientChatGptPetscii("ChatGPT", CHATGPT_API, "OPENAI_KEY", chatGptModel.get(), LIGHT_BLUE, readBinaryFile("petscii/gpt-biglogo.seq")));
                     case 'm' -> launch(new ClientChatGptPetscii("Mistral", MISTRAL_API, "MISTRALAI_KEY", mistralModel.get(), YELLOW, readBinaryFile("petscii/mistral.seq")));
+                    // case 'd' -> launch(new ClientChatGptPetscii("DeepSeek", DSOR_API, "DSOR_KEY", dsorModel.get(), CYAN, readBinaryFile("petscii/deepseek.seq")));
                     case 'g' -> launch(new PetsciiArtGallery());
                     case 'x' -> about();
                     case 'a' -> patrons();
@@ -135,7 +136,7 @@ public class Menu64 extends PetsciiThread {
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '0', REVOFF, 161); print("FNOMCeO        "); write(REVON, 161, 'u', REVOFF, 161); println("Infosec News");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'a', REVOFF, 161); print("Medical Facts  "); write(REVON, 161, 'v', REVOFF, 161); println("Giano News");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'b', REVOFF, 161); print("Retrocampus    "); write(REVON, 161, 'w', REVOFF, 161); println("Red Hot Cyber");
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'c', REVOFF, 161); print("RetroAcademy   "); write(REVON, 161, 'x', REVOFF, 161); println("MCC Blog");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'c', REVOFF, 161); print("DigiTANTO - AdP"); write(REVON, 161, 'x', REVOFF, 161); println("MCC Blog");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'd', REVOFF, 161); print("C.H.P.D.B.     "); write(REVON, 161, 'y', REVOFF, 161); println("Ready 64");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'e', REVOFF, 161); println("Attivissimo");
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, 'f', REVOFF, 161); println("Commesso Perplesso");
@@ -168,7 +169,7 @@ public class Menu64 extends PetsciiThread {
                     case '0' -> launch(new DottoreMaEVeroChe());
                     case 'a' -> launch(new MedicalFacts());
                     case 'b' -> launch(new RetroCampus());
-                    case 'c' -> launch(new RetroAcademy());
+                    case 'c' -> launch(new OneRssDigitantoPetscii());
                     case 'd' -> launch(new ChpdbPetscii());
                     case 'e' -> launch(new AttivissimoMePetscii());
                     case 'f' -> launch(new CommessoPerplessoPetscii());

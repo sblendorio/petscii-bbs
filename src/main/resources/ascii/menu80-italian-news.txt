@@ -12,8 +12,8 @@ Retrocampus BBS - Italian News
 9 - Ready 64
 0 - Commesso Perplesso
 A - Fanpage
+B - DigiTANTO.it (Andrea de Prisco)
 . - Go back
-
 
 
 

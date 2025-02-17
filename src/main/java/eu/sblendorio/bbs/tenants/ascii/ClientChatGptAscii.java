@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import eu.sblendorio.bbs.core.AsciiKeys;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsInputOutput;
+import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.tenants.mixed.PatreonData;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -36,6 +37,7 @@ public class ClientChatGptAscii extends AsciiThread {
     public String keyName;
     public String aiName;
     private static final String EXIT_ADVICE = "Type \".\" to EXIT";
+    private PatreonData patreonData;
 
     private static final Logger logger = LogManager.getLogger(ClientChatGptAscii.class);
     private static final String WAIT_MESSAGE = "...";
@@ -74,7 +76,7 @@ public class ClientChatGptAscii extends AsciiThread {
             this.setBbsInputOutput(interfaceType);
         }
 
-        PatreonData patreonData = PatreonData.authenticateAscii(this);
+        patreonData = PatreonData.authenticateAscii(this);
         if (patreonData == null) return;
 
         // String model = toInt(patreonData.patreonLevel) > 0 ? "gpt-4" : "gpt-3.5-turbo";
@@ -192,8 +194,18 @@ public class ClientChatGptAscii extends AsciiThread {
     public String parseAssistantResponse(String jsonResponse) {
         Gson gson = new Gson();
         Map<String, Object> response = gson.fromJson(jsonResponse, Map.class);
-        String content = ((Map)((List<Map>) response.get("choices")).get(0).get("message")).get("content").toString();
-        return content;
+        try {
+            return ((Map) ((List<Map>) response.get("choices")).get(0).get("message")).get("content").toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("model: '{}', IP: '{}', email: '{}', exception: '{}', jsonResponse: '{}'",
+                    model,
+                    ipAddress.getHostAddress(),
+                    patreonData.user,
+                    e,
+                    jsonResponse);
+            return "NO_RESPONSE";
+        }
     }
 
     private void printPagedText(String answerContent) throws IOException {
@@ -226,8 +238,7 @@ public class ClientChatGptAscii extends AsciiThread {
                 .replaceAll("`", "")
                 .replaceAll("\n", "\r\n")
                 ;
-
-        return htmlClean(result);
+        return HtmlUtils.utilHtmlUpperDiacriticsToAscii(result);
     }
 
     private String asciiToUtf8(String input) {

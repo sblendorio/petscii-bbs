@@ -37,6 +37,7 @@ public class ClientChatGptPetscii extends PetsciiThread {
     public int assistantColor;
     private static final String WAIT_MESSAGE = "Please wait...";
     private static final String EXIT_ADVICE = "Type \".\" to EXIT";
+    private PatreonData patreonData;
 
     private static final int USER_COLOR = WHITE;
     private static final int WAIT_COLOR = GREY2;
@@ -68,7 +69,7 @@ public class ClientChatGptPetscii extends PetsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        PatreonData patreonData = PatreonData.authenticatePetscii(this);
+        patreonData = PatreonData.authenticatePetscii(this);
         if (patreonData == null) return;
 
         //String model = toInt(patreonData.patreonLevel) > 0 ? "gpt-4" : "gpt-3.5-turbo";
@@ -189,8 +190,18 @@ public class ClientChatGptPetscii extends PetsciiThread {
     public String parseAssistantResponse(String jsonResponse) {
         Gson gson = new Gson();
         Map<String, Object> response = gson.fromJson(jsonResponse, Map.class);
-        String content = ((Map)((List<Map>) response.get("choices")).get(0).get("message")).get("content").toString();
-        return content;
+        try {
+            return ((Map) ((List<Map>) response.get("choices")).get(0).get("message")).get("content").toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("model: '{}', IP: '{}', email: '{}', exception: '{}', jsonResponse: '{}'",
+                    model,
+                    ipAddress.getHostAddress(),
+                    patreonData.user,
+                    e,
+                    jsonResponse);
+            return "NO_RESPONSE";
+        }
     }
 
     private void printPagedText(String answerContent) throws IOException {

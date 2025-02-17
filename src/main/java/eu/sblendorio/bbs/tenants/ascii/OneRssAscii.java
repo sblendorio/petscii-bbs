@@ -182,6 +182,10 @@ public class OneRssAscii extends AsciiThread {
         flush();
     }
 
+    public String postProcess(String s) {
+        return s;
+    }
+
     public List<NewsFeed> getFeeds(String urlString) throws Exception {
         URL url = new URL(urlString);
         SyndFeedInput input = new SyndFeedInput();
@@ -191,6 +195,7 @@ public class OneRssAscii extends AsciiThread {
         // } catch (ParsingFeedException e) {
             String xmlString = httpGet(urlString, CHROME_AGENT);
             xmlString = xmlString.replaceAll("(?is)<!--.*?-->", "");
+            xmlString = postProcess(xmlString);
             feed = input.build(new StringReader(xmlString));
         // }
         List<NewsFeed> result = new ArrayList<>();

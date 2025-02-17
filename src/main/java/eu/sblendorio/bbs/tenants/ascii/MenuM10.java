@@ -87,12 +87,12 @@ public class MenuM10 extends MenuApple1 {
         cls();
         println("Retrocampus BBS - Italian News");
         println("---------------------------------------");
-        println("1 - Televideo       6 - Amedeo Valoroso");
-        println("2 - Lercio          7 - Butac.it");
-        println("3 - Disinformatico  8 - A. Albano");
-        println("4 - Mupin.it        9 - Ready 64");
-        println("5 - F.Quot.      0 - Commesso Perplesso");
-        println("                 A - Fanpage");
+        println("1 - Televideo       7 - Butac.it");
+        println("2 - Lercio          8 - A. Albano");
+        println("3 - Disinformatico  9 - Ready 64");
+        println("4 - Mupin.it     0 - Commesso Perplesso");
+        println("5 - F.Quot  .       A - Fanpage");
+        println("6 - Amedeo Valoroso B - DigiTANTO");
     }
 
     public void showGames() {
