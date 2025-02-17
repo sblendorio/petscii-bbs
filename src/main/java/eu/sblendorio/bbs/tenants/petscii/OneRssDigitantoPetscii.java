@@ -30,10 +30,12 @@ public class OneRssDigitantoPetscii extends OneRssPetscii {
     public String getArticleBody(SyndEntry e) {
         if (e == null || e.getContents() == null)
             return "";
-        return e.getContents().stream()
-                .map(SyndContent::getValue)
-                .map(StringUtils::defaultString)
-                .collect(Collectors.joining("<br>"));
+
+        return e.getDescription().getValue() + " " +
+                e.getContents().stream()
+                        .map(SyndContent::getValue)
+                        .map(StringUtils::defaultString)
+                        .collect(Collectors.joining("<br>"));
     }
 
 }
