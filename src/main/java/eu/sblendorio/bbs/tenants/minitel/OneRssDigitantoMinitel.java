@@ -54,14 +54,18 @@ public class OneRssDigitantoMinitel extends OneRssAscii {
 
     @Override
     public String getArticleBody(SyndEntry e) {
-        if (e == null || e.getContents() == null)
-            return "";
+        String description = (e == null || e.getDescription() == null || e.getDescription().getValue() == null)
+            ? ""
+            : e.getDescription().getValue();
 
-        return e.getDescription().getValue() + " " +
-                e.getContents().stream()
-                        .map(SyndContent::getValue)
-                        .map(StringUtils::defaultString)
-                        .collect(Collectors.joining("<br>"));
+        String contents = (e == null || e.getContents() == null)
+            ? ""
+            : e.getContents().stream()
+                .map(SyndContent::getValue)
+                .map(StringUtils::defaultString)
+                .collect(Collectors.joining("<br>"));
+
+        return description + " " + contents;
     }
 
 }
