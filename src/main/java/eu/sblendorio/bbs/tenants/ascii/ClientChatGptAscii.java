@@ -280,7 +280,7 @@ public class ClientChatGptAscii extends AsciiThread {
     }
 
     private void waitOff() {
-        for (int i = 0; i < WAIT_MESSAGE.length(); ++i) write(AsciiKeys.BACKSPACE);
+        for (int i = 0; i < WAIT_MESSAGE.length(); ++i) io.writeBackspace();
         flush();
     }
 
