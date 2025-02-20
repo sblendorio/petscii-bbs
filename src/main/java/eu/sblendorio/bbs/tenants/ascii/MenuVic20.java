@@ -131,7 +131,8 @@ public class MenuVic20 extends MenuApple1 {
         println("9 - Ready 64");
         println("0 - CommessoPerplesso");
         println("A - Fanpage");
-        println("A - DigiTANTO.it");
+        println("B - DigiTANTO.it");
+        println("C - Bufale.NET");
         println(". - Go back");
     }
 

@@ -1,27 +1,17 @@
-/*
- * Credits for this InternetBrowser:
- * Richard Bettridge (ssshake) of TheOldNet
- * http://bit.ly/38ZlPaS
- */
 package eu.sblendorio.bbs.tenants.petscii;
 
-import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.tenants.CommonConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
-import org.jsoup.Connection;
-import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,12 +23,13 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
-@Hidden
 public class InternetBrowserNew extends PetsciiThread {
+
+    public static final String URL_TEMPLATE = "http://www.frogfind.com/read.php?a=";
 
     protected int __currentPage = 1;
     protected int __pageSize = 10;
-    protected int __screenRows = 18;
+    protected int __screenRows = 16;
 
     static class Entry {
         public final String name;
@@ -68,47 +59,47 @@ public class InternetBrowserNew extends PetsciiThread {
         }
     }
 
+
     protected Map<Integer, Entry> links = emptyMap();
+
+    public static void main(String[] args) throws Exception {}
+
+    public String userAgent = CommonConstants.get("BROWSER_USERAGENT", "");
 
     @Override
     public void doLoop() throws Exception {
-        try {
-            do {
-                write(CLR, LOWERCASE, CASE_LOCK);
-                // write(BROWSERSPLASH);
-                writeHeader();
-                writeFooter();
+        do {
+            write(CLR, LOWERCASE, CASE_LOCK);
+            // write(BROWSERSPLASH);
+            writeHeader();
+            writeFooter();
 
-                loadWebPage(makeUrl("w3.org"));
-                clearBrowserWindow();
+            loadWebPage(makeUrl("w3.org"));
+            clearBrowserWindow();
 
-                String url = focusAddressBar();
+            String url = focusAddressBar();
 
-                if ("_quit_program".equalsIgnoreCase(url)) {
-                    break;
-                }
+            if (url == "_quit_program"){
+                return;
+            }
 
-                loadWebPage(url);
+            loadWebPage(url);
 
-            } while (true);
-        } catch (UnsupportedOperationException ex) {
-            log("Exit browser");
-        }
+        } while (true);
     }
 
-    public static void main(String[] args) throws Exception {
-        // String url = "http://www.frogfind.com/read.php?a=" + URLEncoder.encode("https://w3.org");
-        String url = "http://www.frogfind.com/read.php?a=" + URLEncoder.encode("https://www.cicap.org");
-        System.out.println("URL = "+ url);
-        Connection conn = Jsoup.connect(url);
-        conn.userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36");
-        Document doc = conn.get();
-        System.out.println(doc.body());
+    String makeLinkUrl(String url) throws Exception {
+        String finalUrl = Objects.toString(url, "")
+                .trim()
+                .replaceAll("^/read\\.php\\?a=", "");
+        return URL_TEMPLATE + URLEncoder.encode(finalUrl, "UTF-8");
     }
 
-    String makeUrl(String url) {
-        if (!defaultString(url).startsWith("http")) url = "https://" + defaultString(url);
-        return "http://www.frogfind.com/read.php?a=" + URLEncoder.encode(url);
+    String makeUrl(String url) throws Exception {
+        String finalUrl = Objects.toString(url, "").trim().toLowerCase().startsWith("http")
+                ? Objects.toString(url, "").trim()
+                : "https://" + Objects.toString(url, "").trim();
+        return URL_TEMPLATE + URLEncoder.encode(finalUrl, "UTF-8");
     }
 
     String focusAddressBar() throws Exception{
@@ -118,11 +109,12 @@ public class InternetBrowserNew extends PetsciiThread {
         resetInput();
         String search = readLine();
 
-        if (isBlank(search) || search.trim().equals(".")) {
+        if (defaultString(search).trim().equals(".") || isBlank(search)) {
             return "_quit_program";
         }
 
-        return makeUrl(search);
+        String url = makeUrl(search);
+        return url;
     }
 
     void clearAddressBar(){
@@ -132,11 +124,6 @@ public class InternetBrowserNew extends PetsciiThread {
 
     void enterAddress(String previousAddress) throws Exception {
         String url = focusAddressBar();
-
-        if ("_quit_program".equalsIgnoreCase(url)) {
-            throw new UnsupportedOperationException();
-        }
-
         loadWebPage(url);
         clearBrowserWindow();
         writeAddressBar(previousAddress);
@@ -145,12 +132,7 @@ public class InternetBrowserNew extends PetsciiThread {
     void loadWebPage(String url) throws Exception{
         loading();
         clearBrowserWindow();
-        Document webpage;
-        try {
-            webpage = getWebpage(url);
-        } catch (HttpStatusException | UnknownHostException ex) {
-            webpage = Jsoup.parseBodyFragment("HTTP connection error");
-        }
+        Document webpage = getWebpage(url);
         displayPage(webpage, url);
     }
 
@@ -161,9 +143,11 @@ public class InternetBrowserNew extends PetsciiThread {
 
         final String content = formattedWebpage(webpage);
 
-        writeAddressBar(url);
+        String address = removeProxyFromUrl(url);
 
-        List<String> rows = new ArrayList<>();
+        writeAddressBar(address);
+
+        List<String> rows = wordWrap("");
         rows.addAll(wordWrap(content));
 
         while (pager.currentRow < rows.size() + 1) {
@@ -177,13 +161,12 @@ public class InternetBrowserNew extends PetsciiThread {
 
             if (startOfPage){
                 printPageNumber(pager.page);
-                gotoXY(0, pager.currentRow % __screenRows + 3);
             }
 
             if (endOfPage || endOfDocument) {
                 parkCursor();
 
-                String nextStep = promptForUserInput(pager, webpage, url, startOfDocument, endOfDocument);
+                String nextStep = promptForUserInput(pager, webpage, address, startOfDocument, endOfDocument);
                 switch (nextStep){
                     case "skip":
                         continue;
@@ -202,13 +185,18 @@ public class InternetBrowserNew extends PetsciiThread {
         }
     }
 
+    String removeProxyFromUrl(String url){
+        try {
+            return url.split("url=")[1];
+        } catch (ArrayIndexOutOfBoundsException e){
+            return url;
+        }
+    }
     void logPaging(Pager pager, List<String> rows){
-        /*
         log("Current Row: " + Integer.toString(pager.currentRow));
         log("Rows: " + Integer.toString(rows.size()));
         log("Page: " + Integer.toString(pager.page));
         log("Prior Page Start Row: " + Integer.toString((pager.page - 1 )* __screenRows));
-         */
     }
 
     String promptForUserInput(Pager pager, Document webpage, String currentAddress, boolean startOfDocument, boolean endOfDocument) throws Exception {
@@ -219,7 +207,6 @@ public class InternetBrowserNew extends PetsciiThread {
                 enterAddress(currentAddress);
                 break;
             case '.':
-                throw new UnsupportedOperationException();
             case 'b':
             case 'B':
                 instruction = "exit";
@@ -257,14 +244,14 @@ public class InternetBrowserNew extends PetsciiThread {
         return instruction;
     }
 
-    void loadPreviousPage(Pager pager, String head){
+    void loadPreviousPage(Pager pager, String head) throws Exception {
         --pager.page;
         pager.currentRow = ( pager.page -1 ) * __screenRows;
         pager.forward = false;
         prepareDisplayForNewPage(head);
     }
 
-    void loadNextPage(Pager pager, String head){
+    void loadNextPage(Pager pager, String head) throws Exception {
         ++pager.page;
         pager.forward = true;
         prepareDisplayForNewPage(head);
@@ -290,15 +277,14 @@ public class InternetBrowserNew extends PetsciiThread {
     }
 
     String formattedWebpage(Document webpage){
-        final String result = webpage == null ? "" :webpage
+        String result = webpage
                 .toString()
-                .replaceAll("<img [^>]*?>", "<br>[IMAGE] ")
-                .replaceAll("<a [^>]*?>(.*)?</a>", " <br>[LINK] $1")
+                .replaceAll("<img.[^>]*>", "<br>[IMAGE] ")
+                .replaceAll("<a.[^>]*>", " <br>[LINK] ")
                 .replaceAll("&quot;", "\"")
                 .replaceAll("&apos;", "'")
                 .replaceAll("&#xA0;", " ")
-                .replaceAll("(?is)<style(\\s|>).*?</style>", EMPTY)
-                .replaceAll("(?is)<script(\\s|>).*?</script>", EMPTY)
+                .replaceAll("(?is)<script .*</script>", EMPTY)
                 .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(</?(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
                 .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r)*)+", EMPTY);
         return result;
@@ -317,40 +303,53 @@ public class InternetBrowserNew extends PetsciiThread {
         boolean matchesImage = matcherImage.matches();
 
         if (matchesLink){
+            log("MATCHES!!!!!!!!!!!");
             write(LIGHT_BLUE);
         }
 
         if (matchesImage){
+            log("MATCHES!!!!!!!!!!!");
             write(YELLOW);
         }
+        gotoXY(0, pager.currentRow % __screenRows + 3);
+        print(row);
 
-//        gotoXY(0, pager.currentRow % __screenRows + 3);
-        println(row);
-
-        if (matchesLink || matchesImage) {
+        if (matchesLink || matchesImage){
             write(GREY3);
         }
     }
 
-    void printPageNumber(int page) {
+    void printPageNumber(int page){
         write(BLACK);
         gotoXY(1,22);
         write(WHITE);
-        print("PAGE " + page + StringUtils.repeat(' ', 3-String.valueOf(page).length()));
+        print("PAGE " + page);
         write(GREY3);
     }
 
-    void prepareDisplayForNewPage(String head){
+    void prepareDisplayForNewPage(String head) throws Exception {
         loading();
         clearBrowserWindow();
         writeAddressBar(head);
     }
 
-    void writeAddressBar(String url) {
+    void writeAddressBar(String url) throws Exception {
+
+        String tempUrl = URLDecoder.decode(
+                Objects.toString(url, "")
+                .trim()
+                .replaceAll("^http://www\\.frogfind\\.com/read\\.php\\?a=", "")
+                , "UTF-8")
+                .replaceAll("(?i)^http://", "")
+                .replaceAll("(?i)^https://", "")
+                .replaceAll("(?i)^http:", "")
+                .replaceAll("(?i)^https:", "")
+                ;
+        System.out.println("==> " + tempUrl);
         clearAddressBar();
         write(GREEN);
         gotoXY(10,1);
-        print(StringUtils.left(url, 28));
+        print(StringUtils.left(tempUrl, 28));
         gotoXY(0,3);
         write(GREY3);
     }
@@ -372,31 +371,27 @@ public class InternetBrowserNew extends PetsciiThread {
             String input = lowerCase(trim(inputRaw));
 
             //QUIT
-            if ("b".equalsIgnoreCase(input)
-                    || ".".equals(input)
-                    || "exit".equalsIgnoreCase(input)
-                    || "quit".equalsIgnoreCase(input)
-                    || "q".equalsIgnoreCase(input)) {
+            if ("B".equals(input) || "b".equals(input) || ".".equals(input) || "exit".equals(input) || "quit".equals(input) || "q".equals(input)) {
                 break;
             }
 
             //NEXT PAGE
-            else if ("n".equalsIgnoreCase(input)) {
+            else if ("n".equals(input) || "N".equals(input)) {
                 ++__currentPage;
                 links = null;
             }
 
             //PREVIOUS PAGE
-            else if ("p".equalsIgnoreCase(input) && __currentPage > 1) {
+            else if (("p".equals(input) || "P".equals(input))  && __currentPage > 1) {
                 --__currentPage;
                 links = null;
             }
 
             //SUCCESS PATH
             //DO THE THING WHERE YOU LOAD A NEW PAGE
-            else if (links != null && input != null && links.containsKey(toInt(input))) {
+            else if (links.containsKey(toInt(input))) {
                 final Entry link = links.get(toInt(input));
-                loadWebPage(link.url);
+                loadWebPage(makeLinkUrl(link.url));
             }
         }
     }
@@ -429,7 +424,7 @@ public class InternetBrowserNew extends PetsciiThread {
             print(i + ".");
             write(GREY3);
 
-            final int iLen = 37 - String.valueOf(i).length(); //I'm guessing something to do with the row width
+            final int iLen = 37-String.valueOf(i).length(); //I'm guessing something to do with the row width
 
             String title = post.name;
             String line = WordUtils.wrap(filterPrintable(htmlClean(title)), iLen, "\r", true);
@@ -456,32 +451,56 @@ public class InternetBrowserNew extends PetsciiThread {
 
     public static List<Entry> getAllLinks(Document webpage) throws Exception {
         List<Entry> urls = new ArrayList<>(); //why
+        String title = webpage.title();
         Elements links = webpage.select("a[href]");
         Element link;
 
         for(int j=0; j < links.size(); j++){
             link=links.get(j);
-            final String label = defaultIfBlank(link.text(), link.attr("href"));
 
-            urls.add(new Entry(link.absUrl("href"), label));
+            String label = "Empty";
+            if (!StringUtils.isBlank(link.text())){
+                label = link.text();
+            } else {
+                try {
+                    label = link.attr("href").split("url=")[1];
+                } catch (ArrayIndexOutOfBoundsException e){
+                    label = link.attr("href");
+                }
+            }
+
+            urls.add(new Entry(link.attr("href"), label));
 
         }
         return urls;
     }
 
     public Document getWebpage(String url) throws Exception {
-        log("URL="+url);
-        Connection conn;
+        Document doc = null;
         try {
-            conn = Jsoup.connect(url);
-            conn.userAgent("\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36\"");
-        } catch (Exception e1) {
-            log("Couldn't connect with the website.");
-            return null;
+            doc = Jsoup
+                    .connect(url)
+                    .userAgent(userAgent)
+                    .get();
+        } catch (Exception ex){
+            System.out.println("Couldn't connect with the website:");
+            System.out.println(url);
+            System.out.println("--------------------------------------------------------------------------");
         }
-        return conn
-                //.header("HTTP-User-Agent", "")
-                .get();
+        String html = doc.toString()
+                .replaceAll("(?s)<p>\\s*View page images: <a href=.?image\\.php\\?i=http.*?</p>", "")
+                .replaceAll("(?s)<body>.*?</form>", "<body>")
+                .replaceAll("(?s)<head>.*?</head>", "")
+                .replaceAll("(?s)<title>.*?</title>", "")
+                .replaceAll("(?s)<style>.*?</style>", "")
+                .replaceAll("<p><font color=.?red.?>Article is missing Content-Type or Content-Length header<br></font></p>", "")
+                // <a href="/read.php?a=https://fsblendorio.blogspot.com" rel="nofollow"></a></p>
+                .replaceAll("(?s)<a [^>]*nofollow[^>]>\\s*</a>", "")
+                ;
+
+        doc = Jsoup.parse(html);
+
+        return doc;
     }
 
     protected List<String> wordWrap(String s) {
@@ -499,7 +518,7 @@ public class InternetBrowserNew extends PetsciiThread {
     private void loading() {
         gotoXY(10,1);
         write(PURPLE);
-        print("LOADING...                  ");
+        print("LOADING...                 ");
         write(BLACK);
         flush();
     }
@@ -519,11 +538,10 @@ public class InternetBrowserNew extends PetsciiThread {
         write(BLACK);
         gotoXY(0, 3);
         for (int i=0; i<18; ++i) {
-            //gotoXY(0, i + 3);
+            gotoXY(0, i + 3);
             for (int j=0; j<39; ++j) {
                 write(SPACE_CHAR);
             }
-            println();
         }
         flush();
         write(GREY3);
