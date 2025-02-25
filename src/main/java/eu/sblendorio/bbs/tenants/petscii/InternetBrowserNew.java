@@ -1,3 +1,8 @@
+/*
+ * Credits for this InternetBrowser:
+ * Richard Bettridge (ssshake) of TheOldNet
+ * http://bit.ly/38ZlPaS
+ */
 package eu.sblendorio.bbs.tenants.petscii;
 
 import eu.sblendorio.bbs.core.PetsciiThread;
