@@ -5,6 +5,9 @@
  */
 package eu.sblendorio.bbs.tenants.petscii;
 
+import com.linkedin.urls.Url;
+import com.linkedin.urls.detection.UrlDetector;
+import com.linkedin.urls.detection.UrlDetectorOptions;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.tenants.CommonConstants;
 import org.apache.commons.lang3.StringUtils;
@@ -101,10 +104,20 @@ public class InternetBrowserNew extends PetsciiThread {
     }
 
     String makeUrl(String url) throws Exception {
+        if (!isUrl(url)) {
+            return "http://www.frogfind.com/?q=" + URLEncoder.encode(url, "UTF-8");
+        }
+
         String finalUrl = Objects.toString(url, "").trim().toLowerCase().startsWith("http")
                 ? Objects.toString(url, "").trim()
                 : "https://" + Objects.toString(url, "").trim();
         return URL_TEMPLATE + URLEncoder.encode(finalUrl, "UTF-8");
+    }
+
+    boolean isUrl(String s) {
+        UrlDetector parser = new UrlDetector(s, UrlDetectorOptions.Default);
+        List<Url> found = parser.detect();
+        return found != null && found.size() > 0;
     }
 
     String focusAddressBar() throws Exception{
@@ -535,7 +548,7 @@ public class InternetBrowserNew extends PetsciiThread {
     private void loading() {
         gotoXY(9,1);
         write(PURPLE);
-        print("LOADING...                 ");
+        print("LOADING...                  ");
         write(BLACK);
         flush();
     }
