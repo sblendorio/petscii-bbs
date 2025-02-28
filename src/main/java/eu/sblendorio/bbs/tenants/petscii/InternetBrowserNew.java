@@ -9,6 +9,7 @@ import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.tenants.CommonConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,6 +17,7 @@ import org.jsoup.select.Elements;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,7 +36,7 @@ public class InternetBrowserNew extends PetsciiThread {
 
     protected int __currentPage = 1;
     protected int __pageSize = 10;
-    protected int __screenRows = 16;
+    protected int __screenRows = 18;
 
     static class Entry {
         public final String name;
@@ -42,13 +44,13 @@ public class InternetBrowserNew extends PetsciiThread {
         public final String fileType;
 
         public Entry(String url, String name) throws Exception {
-            this.url = defaultString(url);
+            this.url = Objects.toString(url, "");
             if (name.length() > 60){
                 this.name = " ..." + StringUtils.right(name, 31).trim();
             } else {
                 this.name = StringUtils.left(name, 35).trim();
             }
-            this.fileType = defaultString(this.name).replaceAll("(?is)^.*\\.(.*?)$", "$1").toLowerCase();
+            this.fileType = Objects.toString(this.name, "").replaceAll("(?is)^.*\\.(.*?)$", "$1").toLowerCase();
         }
     }
 
@@ -75,7 +77,6 @@ public class InternetBrowserNew extends PetsciiThread {
     public void doLoop() throws Exception {
         do {
             write(CLR, LOWERCASE, CASE_LOCK);
-            // write(BROWSERSPLASH);
             writeHeader();
             writeFooter();
 
@@ -83,9 +84,8 @@ public class InternetBrowserNew extends PetsciiThread {
             clearBrowserWindow();
 
             String url = focusAddressBar();
-
-            if (url == "_quit_program"){
-                return;
+            if (Objects.toString(url, "").equals("_quit_program")) {
+                throw new UnsupportedOperationException();
             }
 
             loadWebPage(url);
@@ -109,12 +109,12 @@ public class InternetBrowserNew extends PetsciiThread {
 
     String focusAddressBar() throws Exception{
         clearAddressBar();
-        gotoXY(10,1);
+        gotoXY(9,1);
         flush();
         resetInput();
         String search = readLine();
 
-        if (defaultString(search).trim().equals(".") || isBlank(search)) {
+        if (Objects.toString(search, "").trim().equals(".")) {
             return "_quit_program";
         }
 
@@ -123,12 +123,15 @@ public class InternetBrowserNew extends PetsciiThread {
     }
 
     void clearAddressBar(){
-        gotoXY(10,1);
+        gotoXY(9,1);
         print("                            ");
     }
 
     void enterAddress(String previousAddress) throws Exception {
         String url = focusAddressBar();
+        if (Objects.toString(url, "").equals("_quit_program")) {
+            throw new UnsupportedOperationException();
+        }
         loadWebPage(url);
         clearBrowserWindow();
         writeAddressBar(previousAddress);
@@ -137,7 +140,13 @@ public class InternetBrowserNew extends PetsciiThread {
     void loadWebPage(String url) throws Exception{
         loading();
         clearBrowserWindow();
-        Document webpage = getWebpage(url);
+        Document webpage;
+        try {
+            webpage = getWebpage(url);
+        } catch (HttpStatusException | UnknownHostException ex) {
+            ex.printStackTrace();
+            webpage = Jsoup.parseBodyFragment("HTTP connection error");
+        }
         displayPage(webpage, url);
     }
 
@@ -152,7 +161,7 @@ public class InternetBrowserNew extends PetsciiThread {
 
         writeAddressBar(address);
 
-        List<String> rows = wordWrap("");
+        List<String> rows = new LinkedList<>();
         rows.addAll(wordWrap(content));
 
         while (pager.currentRow < rows.size() + 1) {
@@ -206,12 +215,16 @@ public class InternetBrowserNew extends PetsciiThread {
 
     String promptForUserInput(Pager pager, Document webpage, String currentAddress, boolean startOfDocument, boolean endOfDocument) throws Exception {
         String instruction = "";
-        switch(getInputKey()){
+        int key = getInputKey();
+        if (key >= 193 && key <= 218) {
+            key -= 96;
+        }
+        switch(key){
             case 'u' :
             case 'U' :
                 enterAddress(currentAddress);
                 break;
-            case '.':
+            case '.': throw new UnsupportedOperationException();
             case 'b':
             case 'B':
                 instruction = "exit";
@@ -277,7 +290,7 @@ public class InternetBrowserNew extends PetsciiThread {
 
     void parkCursor(){
         write(BLACK);
-        gotoXY(9,1);
+        gotoXY(8,1);
         write(GREY3);
     }
 
@@ -353,7 +366,7 @@ public class InternetBrowserNew extends PetsciiThread {
         System.out.println("==> " + tempUrl);
         clearAddressBar();
         write(GREEN);
-        gotoXY(10,1);
+        gotoXY(9,1);
         print(StringUtils.left(tempUrl, 28));
         gotoXY(0,3);
         write(GREY3);
@@ -456,14 +469,13 @@ public class InternetBrowserNew extends PetsciiThread {
 
     public static List<Entry> getAllLinks(Document webpage) throws Exception {
         List<Entry> urls = new ArrayList<>(); //why
-        String title = webpage.title();
         Elements links = webpage.select("a[href]");
         Element link;
 
         for(int j=0; j < links.size(); j++){
             link=links.get(j);
 
-            String label = "Empty";
+            String label;
             if (!StringUtils.isBlank(link.text())){
                 label = link.text();
             } else {
@@ -488,9 +500,8 @@ public class InternetBrowserNew extends PetsciiThread {
                     .userAgent(userAgent)
                     .get();
         } catch (Exception ex){
-            System.out.println("Couldn't connect with the website:");
-            System.out.println(url);
-            System.out.println("--------------------------------------------------------------------------");
+            ex.printStackTrace();
+            doc = Jsoup.parseBodyFragment("HTTP connection error");
         }
         String html = doc.toString()
                 .replaceAll("(?s)<p>\\s*View page images: <a href=.?image\\.php\\?i=http.*?</p>", "")
@@ -521,7 +532,7 @@ public class InternetBrowserNew extends PetsciiThread {
     }
 
     private void loading() {
-        gotoXY(10,1);
+        gotoXY(9,1);
         write(PURPLE);
         print("LOADING...                 ");
         write(BLACK);
@@ -552,13 +563,6 @@ public class InternetBrowserNew extends PetsciiThread {
         write(GREY3);
     }
 
-    private void waitOff() {
-        for (int i=0; i<10; ++i) {
-            write(DEL);
-        }
-        flush();
-    }
-
     private void help() throws Exception {
         // writeHeader();
         println();
@@ -568,8 +572,6 @@ public class InternetBrowserNew extends PetsciiThread {
     }
 
     private void writeHeader() throws Exception {
-        // write(TheOldNet.LOGO);
-        // write(LOGO);
         gotoXY(0,0);
         write(BROWSERTOP);
         write(GREY3);
@@ -582,113 +584,33 @@ public class InternetBrowserNew extends PetsciiThread {
         write(GREY3);
     }
 
-    private final static byte[] LOGO = {
-            -102, 32, 18, 32, 30, 32, -104, -110, 32, 32, 18, 32, -102, -110, 32, -104,
-            32, 32, 18, 32, -110, 32, 18, 32, -110, 32, 32, 32, 18, 32, -110, 32,
-            18, 32, -110, 32, 32, 32, 18, 32, -110, 32, 32, 32, 32, 32, -102, 32,
-            32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 18, 32, 30, 32,
-            32, -102, 32, -104, -110, 32, 18, 32, -110, 32, 18, 32, -110, 32, 18, 32,
-            -110, 32, 18, 32, -110, 32, 18, 32, -110, 32, 18, 32, -110, 32, 18, 32,
-            -110, 32, 18, 32, -110, 32, 18, 32, -110, 32, 32, 32, -102, 32, 32, 32,
-            32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 18, 32, 30, 32,
-            -102, 32, 32, -104, -110, 32, 32, 18, 32, -110, 32, 18, 32, -110, 32, 32,
-            32, 18, 32, -110, 32, 18, 32, -110, 32, 32, 32, 18, 32, -110, 32, 18,
-            32, -110, 32, 32, 32, 32, -102, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-            32, 32, 32, 32, 32, 32, -104, 32, -102, 18, 32, 30, 32, -104, -110, 32,
-            32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-            32, 32, 32, 32, 32, 32, 32, -102, 32, 32, 32, 32, 32, 32, 32, 32,
-            32, 32, 32, 32, 32, -104, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-            32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-            32, 32, -102, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, -104,
-            32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-            32, 32, 32, 32, 32, 32, 32, 32, 32, -102, 32, -104, 32, 32, -102, 32,
-            32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-            32, 32, -104, 32, 32, 32, 32, -102, 32, 32, 32, 32, 32, 32, 32, 32,
-            32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-            32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, -104, 32, -102,
-            32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-            32, 32, 32, 32, 32, 32, 32,
-            13
-    };
-
     private final static byte[] BROWSERTOP = {
-            -101, 18, 32, 32, 32, 32, 32, 32, 32, 32, 32, -110, -73, -73, -73, -73,
+            -101, 18, 32, 32, 32, 32, 32, 32, 32, 32, -110, -73, -73, -73, -73,
             -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73,
-            -73, -73, -73, -73, -73, -73, -73, -73, -73, 18, 32, 32, -104, 32, 91, -43,
-            93, -46, -52, 32, 32, 32, 31, -110, 32, 32, 32, 32, 32, 32, 32, 32,
+            -73, -73, -73, -73, -73, -73, -73, -73, -73, 18, 32, 32, 13, 18, -104, 32, 91, -43,
+            93, -46, -52, 32, 32, 31, -110, 32, 32, 32, 32, 32, 32, 32, 32,
             32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-            32, 5, 32, 32, 32, 32, -104, 18, 32, 32, -105, 32, 32, 32, 32, 32,
+            32, 5, 32, 32, 32, 32, -104, 18, 32, 32, 13, 18, -105, 32, 32, 32, 32,
             32, 32, 32, 32, -110, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81,
             -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81,
             -81, -81, 18, 32, 32, -102, -110, 32, 32, 32, 32, 32, 32, 32, 32, 32,
             32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-
-            32, 32, 32, 32, 32, 32, 32,
-
+            32, 32, 32, 32, 32, 32,
             13
     };
 
     private final static byte[] BROWSERBOTTOM = {
-            -101, 18, 32, -110, -73, -73, -73, -73, -73, -73, -73, -73, -73, 18, 32, -110,
+            -101, 18, 32, -110, -73, -73, -73, -73, -73, -73, -73, -73, 18, 32, -110,
             -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, 18, 32, -110,
-            -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, 18, 32,
-            -104, 32, 5, -110, 32, 32, 32, 32, 32, 32, -105, 32, 32, 32, -104, 18,
+            -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, 18, 32, 13, 18,
+            -104, 32, 5, -110, 32, 32, 32, 32, 32, -105, 32, 32, 32, -104, 18,
             32, -110, 91, 5, 80, -104, 93, -101, 82, 69, 86, 5, 32, -104, 91, 5,
             78, -104, 93, -101, 69, 88, 84, -104, 18, 32, -110, 91, 5, 76, -104, 93,
             -101, 73, 78, 75, 83, 32, -104, 91, 5, 66, -104, 93, -101, 65, 67, 75,
-            -104, 18, 32, -105, 32, -110, -81, -81, -81, -81, -81, -81, -81, -81, -81, 18,
+            -104, 18, 32, 13, 18, -105, 32, -110, -81, -81, -81, -81, -81, -81, -81, -81, 18,
             32, -110, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, 18,
-            32, -110, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81,
-            18, 32, -102, -110, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-            32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-
-            32, 32, 32, 32
+            32, -110, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81,
+            -81, 18, 32, -102, -110
     };
 
-    private final static byte[] BROWSERSPLASH = {
-            -102, -115, -115, -115, -115, -115, -115, -115, 18, -110, 32, 18, -110, 32, 18, -110,
-            32, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18, -110, 32,
-            18, -110, 32, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18, 32, 32, 32,
-            32, 5, -110, -76, -102, 18, 32, 32, 32, 5, -110, -76, -98, 18, 32, 32,
-            32, 5, -110, -76, -98, 18, 32, 5, -110, -76, -98, 18, -110, 32, 18, 32,
-            32, 5, -110, -76, -102, -115, 32, 32, 32, 32, 32, 32, 32, -94, 18, 32,
-            30, 32, -102, -110, -94, 18, -110, 32, 18, -110, 32, 18, 32, 5, -110, -76,
-            -102, 18, 32, 5, -110, -76, -102, 18, 32, -110, -98, 18, -110, 32, 18, -110,
-            32, 18, -110, 32, 18, 32, 5, -110, -76, -98, 18, 32, 5, -110, -76, -98,
-            18, 32, 5, -110, -76, -98, 18, -110, 32, 18, 32, 5, -110, -76, -98, 18,
-            32, 5, -110, -76, -102, -115, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18,
-            -110, 32, 18, -110, 32, 18, -110, 32, 18, -95, 32, 30, 32, 32, -102, 32,
-            -110, -95, 18, -110, 32, 18, 32, 5, -110, -76, -102, 18, 32, 32, 32, -110,
-            -72, -98, 18, -110, 32, 18, -110, 32, 18, 32, 5, -110, -76, -98, 18, 32,
-            5, -110, -76, -98, 18, 32, 5, -110, -76, -98, 18, -110, 32, 18, 32, 5,
-            -110, -76, -98, 18, 32, 5, -110, -76, -102, -115, 18, -110, 32, 18, -110, 32,
-            18, -110, 32, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18, 32, 30, 32,
-            32, 32, 32, -102, 32, -110, 18, -110, 32, 18, 32, 5, -110, -76, -102, 18,
-            32, 5, -110, -76, -102, 18, 32, 32, 32, 5, -110, -76, -98, 18, 32, 32,
-            32, 5, -110, -76, -98, 18, 32, 32, 5, -110, -76, -98, 18, 32, 32, 5,
-            -110, -76, -102, -115, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18, -110, 32,
-            18, -110, 32, 18, -110, 32, 18, 32, 32, 30, 32, -102, 32, 32, 32, -110,
-            -115, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18, -110, 32,
-            18, -110, 32, 18, -95, 32, 32, 30, 32, 32, -102, -110, -95, 28, 18, -110,
-            32, 18, -110, 32, 18, 32, 5, -110, -76, 28, 18, -110, 32, 18, 32, 5,
-            -110, -76, 28, 18, 32, 32, 32, 5, -110, -76, 28, 18, 32, 32, 32, 32,
-            5, -110, -76, -102, -115, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18, -110,
-            32, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18, -94, 32, 30, 32, -102,
-            -94, -110, 28, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18, 32, 32, 5,
-            -110, -76, 28, 18, 32, 5, -110, -76, 28, 18, 32, -102, -110, 28, 18, -110,
-            32, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18, 32, 5, -110, -76, -115,
-            28, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18, -110, 32,
-            18, -110, 32, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18,
-            -110, 32, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18, 32, 5, -110, -76,
-            28, 18, 32, 32, 5, -110, -76, 28, 18, 32, -110, -72, 18, -110, 32, 18,
-            -110, 32, 18, -110, 32, 18, 32, 5, -110, -76, -115, 28, 18, -110, 32, 18,
-            -110, 32, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18, -110,
-            32, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18, -110, 32, 18, -110, 32,
-            18, -110, 32, 18, -110, 32, 18, 32, 5, -110, -76, 28, 18, -110, 32, 18,
-            32, 5, -110, -76, 28, 18, 32, 32, 32, 5, -110, -76, 28, 18, -110, 32,
-            18, 32, 5, -110, -76, 30, 46, 67, 79, 77, -102, -115, -115, -115, -115, -115,
-            -115, -115, -115, -115,
-
-            13
-    };
 }
