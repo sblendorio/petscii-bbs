@@ -13,7 +13,6 @@ import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.tenants.CommonConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
-import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -21,7 +20,6 @@ import org.jsoup.select.Elements;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.net.UnknownHostException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -72,7 +70,7 @@ public class InternetBrowserNew extends PetsciiThread {
     Stack<String> history = new Stack<>();
     Map<Integer, Entry> links = emptyMap();
 
-    public static List<Entry> getAllLinks(Document webpage) throws Exception {
+    public static List<Entry> getAllLinks(Document webpage) {
         List<Entry> urls = new ArrayList<>();
         Elements links = webpage.select("a[href]");
 
@@ -81,7 +79,6 @@ public class InternetBrowserNew extends PetsciiThread {
             if (isNotBlank(link.text())) {
                 label = link.text();
             } else {
-                System.out.println("> " + link.attr("href"));
                 try {
                     label = decodeUrl(link.attr("href"));
                 } catch (ArrayIndexOutOfBoundsException e) {
@@ -107,7 +104,7 @@ public class InternetBrowserNew extends PetsciiThread {
         writeFooter();
         do {
             Document webpage = loadWebPage(address);
-            clearBrowserWindow();
+            //clearBrowserWindow();
             writeAddressBar(address);
 
             String action = displayPage(webpage, address);
@@ -121,14 +118,14 @@ public class InternetBrowserNew extends PetsciiThread {
         } while (true);
     }
 
-    static String makeLinkUrl(String url) throws Exception {
+    static String makeLinkUrl(String url) {
         String finalUrl = Objects.toString(url, "")
                 .trim()
                 .replaceAll("^/read\\.php\\?a=", "");
         return URL_TEMPLATE + URLEncoder.encode(finalUrl, UTF_8);
     }
 
-    static String makeUrl(String url) throws Exception {
+    static String makeUrl(String url) {
         if (!isUrl(url)) {
             return "http://www.frogfind.com/?q=" + URLEncoder.encode(url, UTF_8);
         }
@@ -156,8 +153,7 @@ public class InternetBrowserNew extends PetsciiThread {
             return "_quit_program";
         }
 
-        String url = makeUrl(search);
-        return url;
+        return makeUrl(search);
     }
 
     void clearAddressBar() {
@@ -178,27 +174,19 @@ public class InternetBrowserNew extends PetsciiThread {
     }
 
     String pop() {
-        if (history.size() <= 1) {
-            return null;
-        }
+        if (history.size() <= 1) return null;
+
         history.pop();
         return history.peek();
     }
 
-    Document loadWebPage(String url) throws Exception {
-        if (history.isEmpty() || !url.equals(history.peek())) {
+    Document loadWebPage(String url) {
+        if (history.isEmpty() || !history.peek().equals(url)) {
             push(url);
         }
         loading();
         clearBrowserWindow();
-        Document webpage;
-        try {
-            webpage = getWebpage(url);
-        } catch (HttpStatusException | UnknownHostException ex) {
-            ex.printStackTrace();
-            webpage = Jsoup.parseBodyFragment("HTTP connection error");
-        }
-        return webpage;
+        return getWebpage(url);
     }
 
     protected String displayPage(Document webpage, String address) throws Exception {
@@ -313,14 +301,14 @@ public class InternetBrowserNew extends PetsciiThread {
         return instruction;
     }
 
-    void loadPreviousPage(Pager pager, String head) throws Exception {
+    void loadPreviousPage(Pager pager, String head) {
         --pager.page;
         pager.currentRow = (pager.page - 1) * screenRows;
         pager.forward = false;
         prepareDisplayForNewPage(head);
     }
 
-    void loadNextPage(Pager pager, String head) throws Exception {
+    void loadNextPage(Pager pager, String head) {
         ++pager.page;
         pager.forward = true;
         prepareDisplayForNewPage(head);
@@ -350,7 +338,7 @@ public class InternetBrowserNew extends PetsciiThread {
     }
 
     String formattedWebpage(Document webpage) {
-        String result = webpage
+        return webpage
             .toString()
             .replaceAll("<img.[^>]*>", "<br>[IMAGE] ")
             .replaceAll("<a.[^>]*>", " <br>[LINK] ")
@@ -360,7 +348,6 @@ public class InternetBrowserNew extends PetsciiThread {
             .replaceAll("(?is)<script .*</script>", EMPTY)
             .replaceAll("(?is)^[\\s\\n\\r]+|^\\s*(</?(br|div|figure|iframe|img|p|h[0-9])[^>]*>\\s*)+", EMPTY)
             .replaceAll("(?is)^(<[^>]+>(\\s|\n|\r)*)+", EMPTY);
-        return result;
     }
 
     void printRowWithColor(Pager pager, List<String> rows) {
@@ -398,7 +385,7 @@ public class InternetBrowserNew extends PetsciiThread {
         write(GREY3);
     }
 
-    void prepareDisplayForNewPage(String head) throws Exception {
+    void prepareDisplayForNewPage(String head) {
         loading();
         clearBrowserWindow();
         writeAddressBar(head);
@@ -415,7 +402,7 @@ public class InternetBrowserNew extends PetsciiThread {
                 .replaceAll("(?i)^https:", "");
     }
 
-    void writeAddressBar(String url) throws Exception {
+    void writeAddressBar(String url) {
 
         String tempUrl = decodeUrl(url);
         clearAddressBar();
@@ -431,6 +418,8 @@ public class InternetBrowserNew extends PetsciiThread {
         while (true) {
             writeAddressBar(currentAddress);
             listLinks(webpage);
+            if (links == null) return null;
+
             write(WHITE);
             print("Enter Link # or Command> ");
             write(GREY3);
@@ -476,8 +465,9 @@ public class InternetBrowserNew extends PetsciiThread {
         List<Entry> entries = getAllLinks(webpage);
 
         if (isEmpty(entries)) {
+            links = null;
             write(RED);
-            println("Zero result page - press any key");
+            println("No links on page");
             flush();
             resetInput();
             readKey();
@@ -485,7 +475,6 @@ public class InternetBrowserNew extends PetsciiThread {
         }
 
         links = getLinksForPage(entries, currentPage, pageSize);
-
         for (Map.Entry<Integer, Entry> entry : links.entrySet()) {
             int i = entry.getKey();
             Entry post = entry.getValue();
@@ -504,12 +493,9 @@ public class InternetBrowserNew extends PetsciiThread {
         newline();
     }
 
-    private Map<Integer, Entry> getLinksForPage(List<Entry> entries, int page, int perPage) throws Exception {
-        if (page < 1 || perPage < 1) {
-            return null;
-        }
-
+    static private Map<Integer, Entry> getLinksForPage(List<Entry> entries, int page, int perPage) {
         Map<Integer, Entry> result = new LinkedHashMap<>();
+        if (page < 1 || perPage < 1) return result;
 
         for (int i = (page - 1) * perPage; i < page * perPage; ++i) {
             if (i < entries.size()) {
@@ -519,7 +505,7 @@ public class InternetBrowserNew extends PetsciiThread {
         return result;
     }
 
-    public Document getWebpage(String url) throws Exception {
+    public Document getWebpage(String url) {
         Document doc;
         try {
             doc = Jsoup
@@ -588,14 +574,14 @@ public class InternetBrowserNew extends PetsciiThread {
         write(GREY3);
     }
 
-    private void writeHeader() throws Exception {
+    private void writeHeader() {
         gotoXY(0, 0);
         write(BROWSERTOP);
         write(GREY3);
         gotoXY(0, 5);
     }
 
-    private void writeFooter() throws Exception {
+    private void writeFooter() {
         gotoXY(0, 21);
         write(BROWSERBOTTOM);
         write(GREY3);
@@ -618,7 +604,7 @@ public class InternetBrowserNew extends PetsciiThread {
         }
     }
 
-    static class Pager {
+    public static class Pager {
         public boolean forward;
         public int page;
         public int currentRow;
@@ -629,5 +615,4 @@ public class InternetBrowserNew extends PetsciiThread {
             this.currentRow = currentRow;
         }
     }
-
 }
