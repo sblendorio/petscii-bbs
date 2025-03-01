@@ -8,6 +8,7 @@ package eu.sblendorio.bbs.tenants.petscii;
 import com.linkedin.urls.Url;
 import com.linkedin.urls.detection.UrlDetector;
 import com.linkedin.urls.detection.UrlDetectorOptions;
+import eu.sblendorio.bbs.core.PetsciiKeys;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.tenants.CommonConstants;
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +27,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
-import static eu.sblendorio.bbs.core.PetsciiKeys.*;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyMap;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
@@ -41,12 +41,14 @@ public class InternetBrowserNew extends PetsciiThread {
     protected int __pageSize = 10;
     protected int __screenRows = 18;
 
+    Stack<String> history = new Stack<>();
+
     static class Entry {
         public final String name;
         public final String url;
         public final String fileType;
 
-        public Entry(String url, String name) throws Exception {
+        public Entry(String url, String name) {
             this.url = Objects.toString(url, "");
             if (name.length() > 60){
                 this.name = " ..." + StringUtils.right(name, 31).trim();
@@ -62,7 +64,7 @@ public class InternetBrowserNew extends PetsciiThread {
         public int page;
         public int currentRow;
 
-        public Pager(boolean forward, int page, int currentRow) throws Exception {
+        public Pager(boolean forward, int page, int currentRow) {
             this.forward = forward;
             this.page = page;
             this.currentRow = currentRow;
@@ -70,30 +72,34 @@ public class InternetBrowserNew extends PetsciiThread {
     }
 
 
-    protected Map<Integer, Entry> links = emptyMap();
+    Map<Integer, Entry> links = emptyMap();
 
     public static void main(String[] args) throws Exception {}
 
     public String userAgent = CommonConstants.get("BROWSER_USERAGENT", "");
 
+    public void initScreen() {
+        write(PetsciiKeys.CLR, PetsciiKeys.LOWERCASE, PetsciiKeys.CASE_LOCK);
+    }
+
     @Override
     public void doLoop() throws Exception {
-        do {
-            write(CLR, LOWERCASE, CASE_LOCK);
+        while (true) {
+            initScreen();
             writeHeader();
             writeFooter();
 
             loadWebPage(makeUrl("w3.org"));
+            System.out.println("sdfsdXXoweruhioerhgioeuhriogehrigoehru");
             clearBrowserWindow();
 
             String url = focusAddressBar();
-            if (Objects.toString(url, "").equals("_quit_program")) {
+            if ("_quit_program".equals(url)) {
                 throw new UnsupportedOperationException();
             }
 
             loadWebPage(url);
-
-        } while (true);
+        }
     }
 
     String makeLinkUrl(String url) throws Exception {
@@ -150,7 +156,21 @@ public class InternetBrowserNew extends PetsciiThread {
         writeAddressBar(previousAddress);
     }
 
+    void push(String url) {
+        history.push(url);
+    }
+
+    String pop() {
+        if (history.size() <= 1) {
+            return null;
+        }
+
+        history.pop();
+        return history.peek();
+    }
+
     void loadWebPage(String url) throws Exception{
+        push(url);
         loading();
         clearBrowserWindow();
         Document webpage;
@@ -163,19 +183,16 @@ public class InternetBrowserNew extends PetsciiThread {
         displayPage(webpage, url);
     }
 
-    protected void displayPage(Document webpage, String url) throws Exception {
+    protected void displayPage(Document webpage, String address) throws Exception {
         __currentPage = 1; //reset this globally, not sure if required
 
         Pager pager = new Pager(true, 1, 0);
 
         final String content = formattedWebpage(webpage);
 
-        String address = removeProxyFromUrl(url);
-
         writeAddressBar(address);
 
-        List<String> rows = new LinkedList<>();
-        rows.addAll(wordWrap(content));
+        List<String> rows = wordWrap(content);
 
         while (pager.currentRow < rows.size() + 1) {
             logPaging(pager, rows);
@@ -212,14 +229,6 @@ public class InternetBrowserNew extends PetsciiThread {
         }
     }
 
-    String removeProxyFromUrl(String url){
-        try {
-            return url.split("url=")[1];
-        } catch (ArrayIndexOutOfBoundsException e){
-            return url;
-        }
-    }
-
     void logPaging(Pager pager, List<String> rows){
         log("Current Row: " + pager.currentRow);
         log("Rows: " + rows.size());
@@ -241,7 +250,18 @@ public class InternetBrowserNew extends PetsciiThread {
             case '.': throw new UnsupportedOperationException();
             case 'b':
             case 'B':
-                instruction = "exit";
+                String backPage = pop();
+                if (backPage == null)
+                    instruction = "skip";
+                else {
+                    loading();
+                    clearBrowserWindow();
+                    webpage = getWebpage(backPage);
+                    displayPage(webpage, backPage);
+                    writeAddressBar(backPage);
+                    instruction = "exit";
+                }
+
                 break;
 
             case 'l':
@@ -377,7 +397,6 @@ public class InternetBrowserNew extends PetsciiThread {
                 .replaceAll("(?i)^http:", "")
                 .replaceAll("(?i)^https:", "")
                 ;
-        System.out.println("==> " + tempUrl);
         clearAddressBar();
         write(GREEN);
         gotoXY(9,1);
@@ -524,7 +543,6 @@ public class InternetBrowserNew extends PetsciiThread {
                 .replaceAll("(?s)<title>.*?</title>", "")
                 .replaceAll("(?s)<style>.*?</style>", "")
                 .replaceAll("<p><font color=.?red.?>Article is missing Content-Type or Content-Length header<br></font></p>", "")
-                // <a href="/read.php?a=https://fsblendorio.blogspot.com" rel="nofollow"></a></p>
                 .replaceAll("(?s)<a [^>]*nofollow[^>]>\\s*</a>", "")
                 ;
 
@@ -570,7 +588,7 @@ public class InternetBrowserNew extends PetsciiThread {
         for (int i=0; i<18; ++i) {
             gotoXY(0, i + 3);
             for (int j=0; j<39; ++j) {
-                write(SPACE_CHAR);
+                write(' ');
             }
         }
         flush();
