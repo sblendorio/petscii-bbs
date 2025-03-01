@@ -95,11 +95,19 @@ public class InternetBrowserNew extends PetsciiThread {
         write(PetsciiKeys.CLR, PetsciiKeys.LOWERCASE, PetsciiKeys.CASE_LOCK);
     }
 
+    public void logo() throws Exception {
+        write(readBinaryFile("petscii/frogfind.seq"));
+        flush(); resetInput();
+        readKey();
+    }
+
     @Override
     public void doLoop() throws Exception {
+        initScreen();
+        logo();
+
         String address = makeUrl("w3.org");
 
-        initScreen();
         writeHeader();
         writeFooter();
         do {
@@ -196,23 +204,26 @@ public class InternetBrowserNew extends PetsciiThread {
         writeAddressBar(address);
         List<String> rows = wordWrap(content);
 
+        boolean startOfPage = true;
         while (pager.currentRow < rows.size() + 1) {
             logPaging(pager, rows);
 
             boolean startOfDocument = pager.page <= 1;
             boolean endOfDocument = pager.currentRow == rows.size();
 
-            boolean startOfPage = pager.currentRow % screenRows == 1;
+            //boolean startOfPage = pager.currentRow % screenRows == 1;
             boolean endOfPage = pager.currentRow > 0 && pager.currentRow % screenRows == 0 && pager.forward;
 
             if (startOfPage) {
                 printPageNumber(pager.page);
+                gotoXY(0, 3);
             }
 
             if (endOfPage || endOfDocument) {
                 parkCursor();
 
                 String prompt = promptForUserInput(pager, webpage, address, startOfDocument, endOfDocument);
+                startOfPage = true;
                 if (prompt.startsWith("navigate:")) {
                     return prompt;
                 }
@@ -228,6 +239,7 @@ public class InternetBrowserNew extends PetsciiThread {
 
             if (!endOfDocument) {
                 printRowWithColor(pager, rows);
+                startOfPage = false;
                 pager.forward = true;
                 ++pager.currentRow;
             }
@@ -369,8 +381,8 @@ public class InternetBrowserNew extends PetsciiThread {
         if (matchesImage) {
             write(YELLOW);
         }
-        gotoXY(0, pager.currentRow % screenRows + 3);
-        print(row);
+        //gotoXY(0, pager.currentRow % screenRows + 3);
+        println(row);
 
         if (matchesLink || matchesImage) {
             write(GREY3);
@@ -552,23 +564,16 @@ public class InternetBrowserNew extends PetsciiThread {
 
     private void clearBrowserWindow() {
         clearForLinks();
-        // write(GREY3);
-        // gotoXY(0, 3);
-        // for (int i=0; i<720; ++i) {
-        //         write(PERIOD);
-        // }
-        // flush();
-        // write(GREY3);
     }
 
     private void clearForLinks() {
         write(GREY3);
         gotoXY(0, 3);
         for (int i = 0; i < 18; ++i) {
-            gotoXY(0, i + 3);
             for (int j = 0; j < 39; ++j) {
                 write(' ');
             }
+            println();
         }
         flush();
         write(GREY3);
