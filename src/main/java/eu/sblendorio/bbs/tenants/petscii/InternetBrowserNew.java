@@ -112,9 +112,6 @@ public class InternetBrowserNew extends PetsciiThread {
         writeFooter();
         do {
             Document webpage = loadWebPage(address);
-            //clearBrowserWindow();
-            writeAddressBar(address);
-
             String action = displayPage(webpage, address);
 
             if (action != null && action.startsWith("navigate:")) {
