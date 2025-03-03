@@ -136,7 +136,7 @@ public class InternetBrowserMinitel extends MinitelThread {
 
     void clearAddressBar() {
         gotoXY(9, 1);
-        print("                            ");
+        print("                             ");
     }
 
     String enterAddress(String previousAddress) throws Exception {
@@ -522,7 +522,7 @@ public class InternetBrowserMinitel extends MinitelThread {
     private void loading() {
         gotoXY(9, 1);
         attributes(MinitelControls.CHAR_RED); //write(PURPLE);
-        print("LOADING...                  ");
+        print("LOADING...                   ");
         attributes(MinitelControls.CHAR_WHITE); //write(GREY3);
         flush();
     }
