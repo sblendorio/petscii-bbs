@@ -3,13 +3,14 @@
  * Richard Bettridge (ssshake) of TheOldNet
  * http://bit.ly/38ZlPaS
  */
-package eu.sblendorio.bbs.tenants.petscii;
+package eu.sblendorio.bbs.tenants.minitel;
 
 import com.linkedin.urls.Url;
 import com.linkedin.urls.detection.UrlDetector;
 import com.linkedin.urls.detection.UrlDetectorOptions;
-import eu.sblendorio.bbs.core.PetsciiKeys;
-import eu.sblendorio.bbs.core.PetsciiThread;
+import eu.sblendorio.bbs.core.MinitelConstants;
+import eu.sblendorio.bbs.core.MinitelControls;
+import eu.sblendorio.bbs.core.MinitelThread;
 import eu.sblendorio.bbs.tenants.CommonConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
@@ -24,7 +25,6 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyMap;
@@ -32,36 +32,9 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
-public class InternetBrowserNew extends PetsciiThread {
+public class InternetBrowserMinitel extends MinitelThread {
 
     public static final String URL_TEMPLATE = "http://www.frogfind.com/read.php?a=";
-    private final static byte[] BROWSERTOP = {
-            -101, 18, 32, 32, 32, 32, 32, 32, 32, 32, -110, -73, -73, -73, -73,
-            -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73,
-            -73, -73, -73, -73, -73, -73, -73, -73, -73, 18, 32, 32, 13, 18, -104, 32, 91, -43,
-            93, -46, -52, 32, 32, 31, -110, 32, 32, 32, 32, 32, 32, 32, 32,
-            32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-            32, 5, 32, 32, 32, 32, -104, 18, 32, 32, 13, 18, -105, 32, 32, 32, 32,
-            32, 32, 32, 32, -110, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81,
-            -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81,
-            -81, -81, 18, 32, 32, -102, -110, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-            32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-            32, 32, 32, 32, 32, 32,
-            13
-    };
-    private final static byte[] BROWSERBOTTOM = {
-            -101, 18, 32, -110, -73, -73, -73, -73, -73, -73, -73, -73, 18, 32, -110,
-            -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, 18, 32, -110,
-            -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, -73, 18, 32, 13, 18,
-            -104, 32, 5, -110, 32, 32, 32, 32, 32, -105, 32, 32, 32, -104, 18,
-            32, -110, 91, 5, 80, -104, 93, -101, 82, 69, 86, 5, 32, -104, 91, 5,
-            78, -104, 93, -101, 69, 88, 84, -104, 18, 32, -110, 91, 5, 76, -104, 93,
-            -101, 73, 78, 75, 83, 32, -104, 91, 5, 66, -104, 93, -101, 65, 67, 75,
-            -104, 18, 32, 13, 18, -105, 32, -110, -81, -81, -81, -81, -81, -81, -81, -81, 18,
-            32, -110, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, 18,
-            32, -110, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81, -81,
-            -81, 18, 32, -102, -110
-    };
 
     public String userAgent = CommonConstants.get("BROWSER_USERAGENT", "");
     protected int currentPage = 1;
@@ -91,25 +64,25 @@ public class InternetBrowserNew extends PetsciiThread {
         return urls;
     }
 
-    public void initScreen() {
-        write(PetsciiKeys.CLR, PetsciiKeys.LOWERCASE, PetsciiKeys.CASE_LOCK);
-    }
-
     public void logo() throws Exception {
-        write(readBinaryFile("petscii/frogfind.seq"));
+        write(MinitelControls.SCROLL_OFF);
+        write(MinitelControls.CURSOR_OFF);
+        cls();
+        write(readBinaryFile("minitel/frogfind.vdt"));
         flush(); resetInput();
         readKey();
+        cls();
+        write(MinitelControls.CURSOR_ON);
+        write(MinitelControls.SCROLL_ON);
     }
 
     @Override
     public void doLoop() throws Exception {
-        initScreen();
         logo();
 
         String address = makeUrl("w3.org");
 
         writeHeader();
-        writeFooter();
         do {
             Document webpage = loadWebPage(address);
             String action = displayPage(webpage, address);
@@ -341,9 +314,7 @@ public class InternetBrowserNew extends PetsciiThread {
     }
 
     void parkCursor() {
-        write(GREY3);
         gotoXY(8, 1);
-        write(GREY3);
     }
 
     String formattedWebpage(Document webpage) {
@@ -372,26 +343,23 @@ public class InternetBrowserNew extends PetsciiThread {
         boolean matchesImage = matcherImage.matches();
 
         if (matchesLink) {
-            write(LIGHT_BLUE);
+            attributes(MinitelControls.CHAR_GREEN); //write(LIGHT_BLUE);
         }
 
         if (matchesImage) {
-            write(YELLOW);
+            attributes(MinitelControls.CHAR_MAGENTA); //write(YELLOW);
         }
         //gotoXY(0, pager.currentRow % screenRows + 3);
         println(row);
 
         if (matchesLink || matchesImage) {
-            write(GREY3);
+            attributes(MinitelControls.CHAR_WHITE); //write(GREY3);
         }
     }
 
     void printPageNumber(int page) {
-        write(GREY3);
         gotoXY(1, 22);
-        write(WHITE);
         print("PAGE " + String.format("%-3s", page));
-        write(GREY3);
     }
 
     void prepareDisplayForNewPage(String head) {
@@ -415,11 +383,11 @@ public class InternetBrowserNew extends PetsciiThread {
 
         String tempUrl = decodeUrl(url);
         clearAddressBar();
-        write(GREEN);
         gotoXY(9, 1);
+        //write(GREEN);
         print(StringUtils.left(tempUrl, 28));
         gotoXY(0, 3);
-        write(GREY3);
+        //write(GREY3);
     }
 
     String getAndDisplayLinksOnPage(Document webpage, String currentAddress) throws Exception {
@@ -429,9 +397,9 @@ public class InternetBrowserNew extends PetsciiThread {
             listLinks(webpage);
             if (links == null) return null;
 
-            write(WHITE);
+            attributes(MinitelControls.CHAR_WHITE); //write(WHITE);
             print("Enter Link # or Command> ");
-            write(GREY3);
+            attributes(MinitelControls.CHAR_WHITE); //write(GREY3);
 
             resetInput();
             flush();
@@ -467,7 +435,7 @@ public class InternetBrowserNew extends PetsciiThread {
     private void listLinks(Document webpage) throws Exception {
         clearForLinks();
         gotoXY(0, 4);
-        write(ORANGE);
+        attributes(MinitelControls.CHAR_WHITE); //write(ORANGE);
         println("Links On Page:");
         println();
 
@@ -475,7 +443,7 @@ public class InternetBrowserNew extends PetsciiThread {
 
         if (isEmpty(entries)) {
             links = null;
-            write(RED);
+            attributes(MinitelControls.CHAR_RED); //write(RED);
             println("No links on page");
             flush();
             resetInput();
@@ -488,9 +456,9 @@ public class InternetBrowserNew extends PetsciiThread {
             int i = entry.getKey();
             Entry post = entry.getValue();
 
-            write(WHITE);
+            attributes(MinitelControls.CHAR_WHITE); //write(WHITE);
             print(i + ".");
-            write(GREY3);
+            attributes(MinitelControls.CHAR_GREEN); //write(GREY3);
 
             final int iLen = 37 - String.valueOf(i).length();
 
@@ -553,9 +521,9 @@ public class InternetBrowserNew extends PetsciiThread {
 
     private void loading() {
         gotoXY(9, 1);
-        write(PURPLE);
+        attributes(MinitelControls.CHAR_RED); //write(PURPLE);
         print("LOADING...                  ");
-        write(GREY3);
+        attributes(MinitelControls.CHAR_WHITE); //write(GREY3);
         flush();
     }
 
@@ -564,7 +532,7 @@ public class InternetBrowserNew extends PetsciiThread {
     }
 
     private void clearForLinks() {
-        write(GREY3);
+        //write(GREY3);
         gotoXY(0, 3);
         for (int i = 0; i < 18; ++i) {
             for (int j = 0; j < 39; ++j) {
@@ -573,19 +541,17 @@ public class InternetBrowserNew extends PetsciiThread {
             println();
         }
         flush();
-        write(GREY3);
+        attributes(MinitelControls.CHAR_WHITE); //write(GREY3);
     }
 
-    private void writeHeader() {
+    private void writeHeader() throws Exception {
+        write(MinitelControls.SCROLL_OFF);
+        cls();
+        write(readBinaryFile("minitel/browser.vdt"));
+        flush(); resetInput();
         gotoXY(0, 0);
-        write(BROWSERTOP);
-        write(GREY3);
-    }
-
-    private void writeFooter() {
-        gotoXY(0, 21);
-        write(BROWSERBOTTOM);
-        write(GREY3);
+        write(MinitelControls.SCROLL_ON);
+        write(MinitelControls.CURSOR_ON);
     }
 
     public static class Entry {

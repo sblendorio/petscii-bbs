@@ -338,7 +338,8 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 else if ("i".equals(choice)) { wifiModem(); subThread = null; }
                 else if ("j".equals(choice)) { menuBasicPrograms(); subThread = null; }
                 else if ("k".equals(choice)) subThread = new EnigmaAscii(io);
-                //else if ("l".equals(choice)) subThread = new ClientChatGptAscii("DeepSeek", DSOR_API, "DSOR_KEY", dsorModel.get(), io, readBinaryFile("minitel/deepseek.vdt"));
+                else if ("l".equals(choice)) subThread = new InternetBrowserMinitel();
+                //else if ("m".equals(choice)) subThread = new ClientChatGptAscii("DeepSeek", DSOR_API, "DSOR_KEY", dsorModel.get(), io, readBinaryFile("minitel/deepseek.vdt"));
                 else if (isVcf() && "v".equals(choice)) subThread = new VcfSw2025Minitel();
                 // else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii(io);
                 else if ("*".equals(choice)) subThread = new TestClientVideotex();
