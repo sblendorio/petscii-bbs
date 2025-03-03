@@ -1,22 +1,11 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
 import eu.sblendorio.bbs.core.Hidden;
-import static eu.sblendorio.bbs.core.PetsciiColors.BLUE;
-import static eu.sblendorio.bbs.core.PetsciiColors.CYAN;
-import static eu.sblendorio.bbs.core.PetsciiColors.GREEN;
-import static eu.sblendorio.bbs.core.PetsciiColors.GREY1;
-import static eu.sblendorio.bbs.core.PetsciiColors.GREY2;
-import static eu.sblendorio.bbs.core.PetsciiColors.GREY3;
-import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_BLUE;
-import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_GREEN;
-import static eu.sblendorio.bbs.core.PetsciiColors.LIGHT_RED;
-import static eu.sblendorio.bbs.core.PetsciiColors.PURPLE;
-import static eu.sblendorio.bbs.core.PetsciiColors.RED;
-import static eu.sblendorio.bbs.core.PetsciiColors.WHITE;
-import static eu.sblendorio.bbs.core.PetsciiColors.YELLOW;
-import static eu.sblendorio.bbs.core.PetsciiKeys.DEL;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
 @Hidden

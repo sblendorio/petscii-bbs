@@ -68,7 +68,6 @@ public class MenuVic20 extends MenuApple1 {
     public void showMainMenu() {
         cls();
         println("RetrocampusBBS-VIC20");
-        println();
         println("NEWS & MISC");
         println("----------------------");
         println("1 - International News");
@@ -92,6 +91,7 @@ public class MenuVic20 extends MenuApple1 {
         println("H - Wikipedia");
         println("I - BASIC");
         println("J - Enigma");
+        println("K - Browser");
         println(". - Logout");
     }
 

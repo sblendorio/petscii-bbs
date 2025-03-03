@@ -131,6 +131,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("h".equals(choice)) subThread = new WikipediaAscii();
                 else if ("i".equals(choice)) { menuBasicPrograms(); subThread = null; }
                 else if ("j".equals(choice)) subThread = new EnigmaAscii();
+                else if ("k".equals(choice)) subThread = new InternetBrowserAscii(io);
                 else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii();
                 else if ("v".equals(choice) && HolidayCommons.isVcf()) { showVcfSw2025(); subThread = null;}
                 else {

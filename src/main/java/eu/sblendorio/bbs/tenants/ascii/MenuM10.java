@@ -59,11 +59,12 @@ public class MenuM10 extends MenuApple1 {
         println("                        F - WiFi Modem");
         println("                        G - Apple1 Demo");
         println("                        H - Wikipedia");
+        println("                        I - BASIC");
         if (HolidayCommons.isVcf())
-            println("V - VCF SW 2025         I - BASIC");
+            println("V - VCF SW 2025         J - Enigma");
         else
-            println("                        I - BASIC");
-        println(". - Logout              J - Enigma");
+            println("V - VCF SW 2025         J - Enigma");
+        println(". - Logout              K - Browser");
     }
 
     public void showInternationalNews() {
@@ -77,10 +78,7 @@ public class MenuM10 extends MenuApple1 {
         println("5 - Fox News       B - Hackaday Blog");
         println("6 - Wired          C - A.Valoroso (ENG)");
         println("7 - VCF News       D - NPR.org");
-        if (HolidayCommons.isVcf())
-            println("V - VCF SW 2025    . - Go back");
-        else
-            println("                   . - Go back");
+        println("                   . - Go back");
     }
 
     public void showItalianNews() {

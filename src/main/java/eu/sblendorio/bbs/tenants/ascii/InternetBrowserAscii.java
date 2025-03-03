@@ -9,6 +9,7 @@ import com.linkedin.urls.Url;
 import com.linkedin.urls.detection.UrlDetector;
 import com.linkedin.urls.detection.UrlDetectorOptions;
 import eu.sblendorio.bbs.core.AsciiThread;
+import eu.sblendorio.bbs.core.BbsInputOutput;
 import eu.sblendorio.bbs.tenants.CommonConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
@@ -34,14 +35,21 @@ public class InternetBrowserAscii extends AsciiThread {
 
     public static final String URL_TEMPLATE = "http://www.frogfind.com/read.php?a=";
 
+    private BbsInputOutput interfaceType = null;
     public String userAgent = CommonConstants.get("BROWSER_USERAGENT", "");
     protected int currentPage = 1;
     protected int pageSize = 10;
-    protected int screenRows = 18;
+    protected int screenRows = getScreenRows() - 3;
     Stack<String> history = new Stack<>();
     Map<Integer, Entry> links = emptyMap();
 
-    public static List<Entry> getAllLinks(Document webpage) {
+    public InternetBrowserAscii(BbsInputOutput interfaceType) {
+        super();
+        this.interfaceType = interfaceType;
+
+    }
+
+    public List<Entry> getAllLinks(Document webpage) {
         List<Entry> urls = new ArrayList<>();
         Elements links = webpage.select("a[href]");
 
@@ -68,6 +76,9 @@ public class InternetBrowserAscii extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
+        if (interfaceType != null) {
+            this.setBbsInputOutput(interfaceType);
+        }
         logo();
 
         String address = makeUrl("w3.org");
@@ -128,6 +139,8 @@ public class InternetBrowserAscii extends AsciiThread {
     }
 
     String enterAddress(String previousAddress) throws Exception {
+        cls();
+        print("URL: ");
         String url = focusAddressBar();
         if (Objects.toString(url, "").equals("_quit_program")) {
             throw new UnsupportedOperationException();
@@ -212,8 +225,11 @@ public class InternetBrowserAscii extends AsciiThread {
     }
 
     String promptForUserInput(Pager pager, Document webpage, String currentAddress, boolean startOfDocument, boolean endOfDocument) throws Exception {
+        println();
+        print("PAGE: " + (pager.page) +"  [P]rev [N]ext [B]ack [L]inks ");
         String instruction = "";
         int key = getInputKey();
+
         if (key >= 193 && key <= 218) {
             key -= 96;
         }
@@ -344,7 +360,6 @@ public class InternetBrowserAscii extends AsciiThread {
     }
 
     void printPageNumber(int page) {
-        print("PAGE " + String.format("%-3s", page));
     }
 
     void prepareDisplayForNewPage(String head) {
@@ -365,11 +380,10 @@ public class InternetBrowserAscii extends AsciiThread {
     }
 
     void writeAddressBar(String url) {
-
         String tempUrl = decodeUrl(url);
         clearAddressBar();
         //write(GREEN);
-        print(StringUtils.left(tempUrl, 28));
+        println(StringUtils.left(tempUrl, 28));
     }
 
     String getAndDisplayLinksOnPage(Document webpage, String currentAddress) throws Exception {
@@ -436,12 +450,12 @@ public class InternetBrowserAscii extends AsciiThread {
 
             print(i + ".");
 
-            final int iLen = 37 - String.valueOf(i).length();
+            final int iLen = (getScreenColumns()-3) - String.valueOf(i).length();
 
             String title = post.name;
             String line = WordUtils.wrap(filterPrintable(htmlClean(title)), iLen, "\r", true);
 
-            println(line.replaceAll("\r", "\r " + repeat(" ", 37 - iLen)));
+            println(line.replaceAll("\r", "\r " + repeat(" ", (getScreenColumns()-3) - iLen)));
         }
         newline();
     }
@@ -488,7 +502,7 @@ public class InternetBrowserAscii extends AsciiThread {
         List<String> result = new ArrayList<>();
         for (String item : cleaned) {
             String[] wrappedLine = WordUtils
-                    .wrap(item, 39, "\n", true)
+                    .wrap(item, (getScreenColumns()-1), "\n", true)
                     .split("\n");
             result.addAll(asList(wrappedLine));
         }
@@ -503,12 +517,13 @@ public class InternetBrowserAscii extends AsciiThread {
     }
 
     private void clearForLinks() {
+        cls();
     }
 
     private void writeHeader() throws Exception {
     }
 
-    public static class Entry {
+    public class Entry {
         public final String name;
         public final String url;
         public final String fileType;
@@ -517,9 +532,9 @@ public class InternetBrowserAscii extends AsciiThread {
             this.url = Objects.toString(url, "");
             if (name.length() > 60) {
                 // this.name = " ..." + StringUtils.right(name, 31).trim();
-                this.name = StringUtils.left(name, 31).trim() + " ...";
+                this.name = StringUtils.left(name, (getScreenColumns()-9)).trim() + " ...";
             } else {
-                this.name = StringUtils.left(name, 35).trim();
+                this.name = StringUtils.left(name, (getScreenColumns()-5)).trim();
             }
             this.fileType = Objects.toString(this.name, "").replaceAll("(?is)^.*\\.(.*?)$", "$1").toLowerCase();
         }
