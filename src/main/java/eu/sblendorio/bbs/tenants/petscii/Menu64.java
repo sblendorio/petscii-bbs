@@ -93,6 +93,7 @@ public class Menu64 extends PetsciiThread {
                     case '5' -> launch(new Chat64());
                     case '6' -> launch(new UserLogon());
                     case '7' -> launch(new InternetBrowserNew());
+                    case '*' -> launch(new InternetBrowser());
                     case '8' -> launch(new ElizaPetscii());
                     case '9' -> launch(new ClientChatGptPetscii("ChatGPT", CHATGPT_API, "OPENAI_KEY", chatGptModel.get(), LIGHT_BLUE, readBinaryFile("petscii/gpt-biglogo.seq")));
                     case 'm' -> launch(new ClientChatGptPetscii("Mistral", MISTRAL_API, "MISTRALAI_KEY", mistralModel.get(), YELLOW, readBinaryFile("petscii/mistral.seq")));
