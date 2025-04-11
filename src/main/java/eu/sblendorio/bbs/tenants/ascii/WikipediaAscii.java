@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.lowerCase;
@@ -156,8 +157,10 @@ public class WikipediaAscii extends AsciiThread {
         println("Wikipedia: "+StringUtils.substring(HtmlUtils.utilHtmlDiacriticsToAscii(item.title),0,getScreenColumns()-13));
         String wikiText = WikipediaCommons.getTextContent(item);
         wikiText = HtmlUtils.utilHtmlDiacriticsToAscii(wikiText);
+
         final String head = HtmlUtils.utilHtmlDiacriticsToAscii(item.title) + "\n" + HR_TOP;
         List<String> rows = WikipediaCommons.wordWrap(head, this);
+
         List<String> article = WikipediaCommons.wordWrap(wikiText, this);
         rows.addAll(article);
         waitOff();

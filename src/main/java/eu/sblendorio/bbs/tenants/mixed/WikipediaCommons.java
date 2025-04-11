@@ -86,7 +86,11 @@ public class WikipediaCommons {
         JSONObject text = (JSONObject) parse.get("text");
         String result = (String) text.get("*");
 
+        System.out.println("RESULT: " + result);
+
         Document doc = Jsoup.parse(result);
+
+
         doc.select(".infobox").remove();
         doc.select(".mw-editsection").remove();
         doc.select(".hatnote").remove();
@@ -99,6 +103,7 @@ public class WikipediaCommons {
         doc.select("script").remove();
         doc.select("figure").remove();
         doc.select("*[style*=display:none]").remove();
+        doc.select("span[data-ooui]").remove();
         removeComments(doc);
 
         return doc.html();

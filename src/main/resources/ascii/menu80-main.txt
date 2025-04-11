@@ -1,21 +1,21 @@
 Retrocampus BBS for UNIX Telnet
 
-NEWS & MISC --------------------------
+NEWS & MISC
+--------------------------------------
 1 - International News
 2 - Italian News
 3 - Games
 4 - Patreon - list members
 5 - Patreon - Publishers
 
-SPECIALS -----------------------------
-A - Chat          G - Apple-1 Demo
-B - Private Msg   H - Wikipedia
-C - Eliza         I - BASIC Programs
-D - Chat GPT      J - Enigma Machine
-E - Mistral AI    K - Frogfind Browser
+SPECIALS
+--------------------------------------
+A - Chat          I - BASIC Programs
+B - Private Msg   J - Enigma Machine
+C - Eliza         K - Frogfind Browser
+D - Chat GPT
+E - Mistral AI
 F - WiFi Modem
 G - Apple-1 Demo
 H - Wikipedia
-I - BASIC Programs
-J - Enigma Machine
 . - Logout
