@@ -70,7 +70,7 @@ public class InternetBrowserMinitel extends MinitelThread {
         cls();
         write(readBinaryFile("minitel/frogfind.vdt"));
         flush(); resetInput();
-        readKey();
+        keyPressed(120000L);
         cls();
         write(MinitelControls.CURSOR_ON);
         write(MinitelControls.SCROLL_ON);
