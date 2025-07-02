@@ -1,6 +1,11 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
 import eu.sblendorio.bbs.core.Hidden;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.defaultString;
 
 @Hidden
 public class FactaNews extends WordpressProxy {
@@ -12,6 +17,22 @@ public class FactaNews extends WordpressProxy {
         this.pageSize = 5;
         this.screenLines = 18;
         this.showAuthor = false;
+    }
+
+    @Override
+    public String extractContent(JSONObject postJ) {
+        JSONObject acf = (JSONObject) postJ.get("acf");
+        JSONArray composer = (JSONArray) acf.get("composer");
+        String text = "";
+        for (int i=0; i<composer.size(); ++i) {
+            JSONObject item = (JSONObject) composer.get(i);
+            String acf_fc_layout = (String) item.get("acf_fc_layout");
+            if ("testo".equals(acf_fc_layout)) {
+                text += (String) item.get("testo");
+                text += "<br>";
+            }
+        }
+        return text.replaceAll("(?is)(\\[/?vc_[^]]*\\])*", EMPTY);
     }
 
     private static final byte[] LOGO_BYTES = new byte[] {

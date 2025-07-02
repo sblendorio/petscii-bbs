@@ -198,7 +198,7 @@ public class WordpressProxyAscii extends AsciiThread {
             Post post = new Post();
             JSONObject postJ = (JSONObject) posts.get(i);
             post.id = (Long) postJ.get("id");
-            post.content = defaultString((String) ((JSONObject) postJ.get("content")).get("rendered")).replaceAll("(?is)(\\[/?vc_[^]]*\\])*", EMPTY);
+            post.content = extractContent(postJ);
             post.title = defaultString((String) ((JSONObject) postJ.get("title")).get("rendered")).replaceAll(" +", " ");
             post.date = defaultString((String) postJ.get("date")).replace("T", SPACE).replaceAll(":\\d\\d\\s*$", EMPTY);
             post.excerpt = (String) ((JSONObject) postJ.get("excerpt")).get("rendered");
@@ -206,6 +206,12 @@ public class WordpressProxyAscii extends AsciiThread {
             result.put(i+1+(perPage*(page-1)), post);
         }
         return result;
+    }
+
+    public String extractContent(JSONObject postJ) {
+        return defaultString((String) ((JSONObject) postJ.get("content"))
+                .get("rendered"))
+                .replaceAll("(?is)(\\[/?vc_[^]]*\\])*", EMPTY);
     }
 
     protected void listPosts() throws Exception {

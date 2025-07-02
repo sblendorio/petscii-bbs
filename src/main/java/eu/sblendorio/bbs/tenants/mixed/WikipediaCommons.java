@@ -86,10 +86,7 @@ public class WikipediaCommons {
         JSONObject text = (JSONObject) parse.get("text");
         String result = (String) text.get("*");
 
-        System.out.println("RESULT: " + result);
-
         Document doc = Jsoup.parse(result);
-
 
         doc.select(".infobox").remove();
         doc.select(".mw-editsection").remove();
@@ -184,7 +181,6 @@ https://it.wikipedia.org/w/api.php?format=json&action=parse&prop=text&page=Macci
  */
 
     public static void main(String[] args) throws IOException, ParseException {
-        System.out.println("INIZIO");
         WikipediaItem item = new WikipediaItem();
         item.pageid = 6006689L;
         item.lang = "it";
@@ -200,7 +196,7 @@ https://it.wikipedia.org/w/api.php?format=json&action=parse&prop=text&page=Macci
         doc.select("figure").remove();
         doc.select("*[style*=display:none]").remove();
         removeComments(doc);
-        System.out.println(doc.body().html());
+        // System.out.println(doc.body().html());
     }
 
     private static void removeComments(Node node) {
