@@ -12,10 +12,6 @@ public class TcpProxy extends AsciiThread {
     private String targetHost;
     private int targetPort;
 
-    public TcpProxy() {
-        super();
-    }
-
     public TcpProxy(String host, int port) {
         super();
         targetHost = host;
@@ -24,7 +20,7 @@ public class TcpProxy extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        Socket targetSocket = new Socket("bbs.retrocampus.com", 8086);
+        Socket targetSocket = new Socket(targetHost, targetPort);
 
         Thread thread1 = new Thread(() -> forwardData(socket, targetSocket));
         Thread thread2 = new Thread(() -> forwardData(targetSocket, socket));
