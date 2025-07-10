@@ -6,6 +6,7 @@ import eu.sblendorio.bbs.core.PrestelThread;
 import eu.sblendorio.bbs.core.Utils;
 import eu.sblendorio.bbs.tenants.ascii.*;
 import eu.sblendorio.bbs.tenants.mixed.PatreonData;
+import eu.sblendorio.bbs.tenants.mixed.TcpProxy;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -87,6 +88,7 @@ public class MenuPrestelWithEcho extends PrestelThread {
                 else if ("e".equals(choice)) { textDemo(); subThread = null; }
                 else if ("f".equals(choice)) { wifiModem(); subThread = null; }
                 else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii(io);
+                else if ("z".equals(choice)) { cls(); subThread = new TcpProxy("31.14.134.200", 6499, "      logged out at"); }
                 else {
                     validKey = false;
                     subThread = null;

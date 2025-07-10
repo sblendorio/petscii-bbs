@@ -6,6 +6,7 @@ import eu.sblendorio.bbs.tenants.ascii.*;
 import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import eu.sblendorio.bbs.tenants.mixed.PatreonData;
 import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
+import eu.sblendorio.bbs.tenants.mixed.TcpProxy;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
 
@@ -342,6 +343,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                 //else if ("m".equals(choice)) subThread = new ClientChatGptAscii("DeepSeek", DSOR_API, "DSOR_KEY", dsorModel.get(), io, readBinaryFile("minitel/deepseek.vdt"));
                 else if (isVcf() && "v".equals(choice)) subThread = new VcfSw2025Minitel();
                 // else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii(io);
+                else if ("z".equals(choice)) { cls(); subThread = new TcpProxy("31.14.134.200", 6501, "      logged out at"); }
                 else if ("*".equals(choice)) subThread = new TestClientVideotex();
                 else {
                     validKey = false;

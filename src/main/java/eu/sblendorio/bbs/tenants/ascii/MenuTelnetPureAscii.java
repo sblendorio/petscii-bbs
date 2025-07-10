@@ -207,7 +207,7 @@ public class MenuTelnetPureAscii extends AsciiThread {
                 else if ("k".equals(choice)) subThread = new InternetBrowserAscii(io);
                 else if ("v".equals(choice) && HolidayCommons.isVcf()) { showVcfSw2025(); subThread = null;}
                 else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii();
-                else if ("z".equals(choice)) { cls(); subThread = new TcpProxy("31.14.134.200", 6501); }
+                else if ("z".equals(choice)) { cls(); subThread = new TcpProxy("31.14.134.200", 6501, "      logged out at"); }
                 else {
                     validKey = false;
                     subThread = null;
