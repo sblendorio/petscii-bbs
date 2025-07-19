@@ -6,6 +6,7 @@ import eu.sblendorio.bbs.core.Utils;
 import eu.sblendorio.bbs.tenants.mixed.HolidayCommons;
 import eu.sblendorio.bbs.tenants.mixed.PatreonData;
 import eu.sblendorio.bbs.tenants.mixed.SwBasicBridge;
+import eu.sblendorio.bbs.tenants.mixed.TcpProxy;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
 
@@ -134,6 +135,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("k".equals(choice)) subThread = new InternetBrowserAscii(io);
                 else if (isSanremo() && "9".equals(choice)) subThread = new SanremoAscii();
                 else if ("v".equals(choice) && HolidayCommons.isVcf()) { showVcfSw2025(); subThread = null;}
+                else if ("z".equals(choice)) { cls(); subThread = new TcpProxy("31.14.134.200", 6501, "      logged out at"); }
                 else {
                     validKey = false;
                     subThread = null;

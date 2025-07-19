@@ -34,7 +34,7 @@ public class AvventuraNelCastelloBridge {
         return new File(
                 new File(SAVE_FILE_PATH).getAbsolutePath()
                         + File.separator
-                        + (filePrefix() == null || filePrefix().isBlank() ? "" : filePrefix().trim() + "-")
+                        + (filePrefix() == null || filePrefix().isBlank() ? "" : filePrefix().trim() )
                         + lang + "-" + filename.toLowerCase()
                         + ".anc"
         ).exists();
@@ -50,7 +50,7 @@ public class AvventuraNelCastelloBridge {
             File saveFile = new File(
                     currentdir
                             + File.separator
-                            + (filePrefix() == null || filePrefix().isBlank() ? "" : filePrefix().trim() + "-")
+                            + (filePrefix() == null || filePrefix().isBlank() ? "" : filePrefix().trim() )
                             + lang + "-" + filename + ".anc");
             try (RandomAccessFile raf = new RandomAccessFile(saveFile, "rw")) {
                 raf.write(state.getBytes(StandardCharsets.UTF_8));
@@ -71,7 +71,7 @@ public class AvventuraNelCastelloBridge {
             File loadFile = new File(
                     currentdir
                             + File.separator
-                            + (filePrefix() == null || filePrefix().isBlank() ? "" : filePrefix().trim() + "-")
+                            + (filePrefix() == null || filePrefix().isBlank() ? "" : filePrefix().trim() )
                             + lang + "-" + filename + ".anc");
             try (RandomAccessFile raf = new RandomAccessFile(loadFile, "r")) {
                 byte[] data = new byte[(int) raf.length()];

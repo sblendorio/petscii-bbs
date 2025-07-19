@@ -18,4 +18,4 @@ E - Mistral AI
 F - WiFi Modem
 G - Apple-1 Demo
 H - Wikipedia
-. - Logout
+. - Logout        Z - Abaa Jour
