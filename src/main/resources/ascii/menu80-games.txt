@@ -1,12 +1,8 @@
-Retrocampus BBS pure text version
-
-Puzzle Games
-------------
+   Puzzle Games
 1 - Tic-Tac-Toe
 2 - Connect 4
 
-Text Adventures
----------------
+   Text Adventures
 3 - Zork I
 4 - Zork II
 5 - Zork III
@@ -19,5 +15,8 @@ A - Avventura nel Castello (ITA)
 B - Colossal Cave Adventure (1977)
 C - Avventura (Colossal Cave) ITA
 D - Wishbringer
+E - Wild West
+F - Tin Star
+G - Desperados
+H - ........
 . - Logout
-
