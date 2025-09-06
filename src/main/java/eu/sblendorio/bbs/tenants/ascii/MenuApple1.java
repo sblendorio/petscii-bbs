@@ -265,7 +265,8 @@ public class MenuApple1 extends AsciiThread {
                     case "a" -> createAvventuraNelCastello();
                     case "b" -> new ZorkMachineAscii("advent350", "zmpp/advent.z3");
                     case "c" -> new ZorkMachineAscii("advent77ita", "zmpp/avventura-colossal-ita.z5", null, null, Map.of(
-                            "help", () -> { println("Help non disponibile"); println(); print(">"); }
+                            "help", () -> { println("Help non disponibile"); println(); print(">"); },
+                            "aiuto", () -> { println("Help non disponibile"); println(); print(">"); }
                     ));
                     case "d" -> new ZorkMachineAscii("wishbringer", "zmpp/wishbringer-r69.z3");
                     default -> {

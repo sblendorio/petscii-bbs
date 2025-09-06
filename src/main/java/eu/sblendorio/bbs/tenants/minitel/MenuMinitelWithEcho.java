@@ -201,7 +201,8 @@ public class MenuMinitelWithEcho extends MinitelThread {
                     case "a" -> new AvventuraNelCastelloMinitel(SPLASH_CASTELLO_ITA, COPYRIGHT_CASTELLO_ITA, "it-it");
                     case "b" -> new ZorkMachineMinitel("advent350", "zmpp/advent.z3", readBinaryFile("minitel/colossal-cave-adventure.vdt"));
                     case "c" -> new ZorkMachineMinitel("advent77ita", "zmpp/avventura-colossal-ita.z5", readBinaryFile("minitel/colossal-cave-adventure-ita.vdt"), () -> attributes(CHAR_WHITE), () -> attributes(CHAR_GREEN), Map.of(
-                            "help", () -> { println("Help non disponibile"); println(); print(">"); }
+                            "help", () -> { println("Help non disponibile"); println(); print(">"); },
+                            "aiuto", () -> { println("Help non disponibile"); println(); print(">"); }
                     ));
                     case "d" -> new ZorkMachineMinitel("wishbringer", "zmpp/wishbringer-r69.z3");
                     default -> {
