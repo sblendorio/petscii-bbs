@@ -167,6 +167,7 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
             .getText()
             .replace("\r\n", "\n")
             .replace("\r", "\n")
+            .replaceAll("\\[\\*\\* Programming error: tried to print \\(char\\) [0-9]+, which is not a valid ZSCII character code for output \\*\\*\\]", "")
         );
         List<String> lines = wordWrap(text);
         boolean firstNonEmpty = true;
