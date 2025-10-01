@@ -86,7 +86,9 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
         }
         bbsThread.println();
         bbsThread.println("PRESS ANY KEY.");
-        bbsThread.keyPressed(120_000);
+        bbsThread.flush();
+        bbsThread.resetInput();
+        bbsThread.keyPressed(86_400_000);
     }
 
     //usato solo per pulire la console
