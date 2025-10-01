@@ -74,6 +74,7 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
                 String rawInputLine = bbsThread.readLine();
                 String inputLine = (".".equals(rawInputLine) ? "quit" : inferDiacritics(rawInputLine)).trim();
                 if ("..".equalsIgnoreCase(inputLine)) {
+
                     break;
                 }
                 if (overrides != null && overrides.containsKey(inputLine.toLowerCase())) {
@@ -83,6 +84,9 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
                 }
             }
         }
+        bbsThread.println();
+        bbsThread.println("PRESS ANY KEY.");
+        bbsThread.keyPressed(120_000);
     }
 
     //usato solo per pulire la console
