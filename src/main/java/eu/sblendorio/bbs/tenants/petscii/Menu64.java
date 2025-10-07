@@ -523,6 +523,7 @@ public class Menu64 extends PetsciiThread {
         List<String> patrons = PatreonData.getPatrons()
                 .stream()
                 .map(x -> StringUtils.substring(x, 0, 20))
+                .sorted()
                 .toList();
         int count = 0;
         for (String name: patrons) {
