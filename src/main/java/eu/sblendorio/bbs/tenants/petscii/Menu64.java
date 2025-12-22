@@ -162,7 +162,7 @@ public class Menu64 extends PetsciiThread {
                     case '2' -> launch(new OneRssOpenOnline());
                     case '3' -> launch(new ValigiaBlu());
                     case '4' -> launch(new Linkiesta());
-                    case '5' -> launch(new IlFattoQuotidiano());
+                    case '5' -> launch(new OneRssIlFattoQuotidianoPetscii());
                     case '6' -> launch(new OneTexasInstrumentsItaliaPetscii());
                     case '7' -> launch(new Lercio());
                     case '8' -> launch(new BitoldPetscii());
