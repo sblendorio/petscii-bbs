@@ -147,7 +147,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                     case "2" -> new LercioMinitel();
                     case "3" -> new AttivissimoMeMinitel();
                     case "4" -> new MupinAscii(io);
-                    case "5" -> new IlFattoQuotidianoMinitel();
+                    case "5" -> new OneRssIlFattoQuotidianoMinitel();
                     case "6" -> new AmedeoValorosoAscii(io);
                     case "7" -> new ButacMinitel();
                     case "8" -> new AlessandroAlbanoAscii(io);
