@@ -416,7 +416,10 @@ public class MenuMinitelWithEcho extends MinitelThread {
 
     public int readSingleKey() throws IOException {
         write(CURSOR_OFF);
-        int ch = readKey();
+
+        int ch;
+        while ((ch=keyPressed(20000)) == -1);
+
         write(CURSOR_ON);
         return ch;
     }

@@ -99,6 +99,7 @@ public abstract class BbsInputOutput extends Reader {
     
     public int readKey() throws IOException {
         long DELTA = 1200;
+        long DELTA_MINITEL = 1000L * 60L * 1L;
 
         int result = in.read();
         if (result == returnAlias()) result = 10;
@@ -125,7 +126,7 @@ public abstract class BbsInputOutput extends Reader {
            //System.out.println("Double key for Minitel " + result);
         }
         // for Minitel with PSTN
-        if (deltaMilliseconds < DELTA && prevCharacter == 27) {
+        if (deltaMilliseconds < DELTA_MINITEL && prevCharacter == 27) {
             if (result == 58) {
                 in.read();
                 in.read();
