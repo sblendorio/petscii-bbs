@@ -2,7 +2,7 @@ package org.zmpp.textui;
 
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Utils;
-import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.davidmoten.text.utils.WordWrap;
@@ -22,8 +22,7 @@ import java.io.*;
 import java.util.*;
 
 import static eu.sblendorio.bbs.core.HtmlUtils.inferDiacritics;
-import static org.apache.commons.lang3.StringUtils.defaultString;
-import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.*;
 
 public class BbsScreenModel implements ScreenModelListener, StatusLineListener, SaveGameDataStore {
 
@@ -72,9 +71,9 @@ public class BbsScreenModel implements ScreenModelListener, StatusLineListener, 
                 bbsThread.flush();
                 bbsThread.resetInput();
                 String rawInputLine = bbsThread.readLine();
+                rawInputLine = substring(trim(rawInputLine),0,120);
                 String inputLine = (".".equals(rawInputLine) ? "quit" : inferDiacritics(rawInputLine)).trim();
                 if ("..".equalsIgnoreCase(inputLine)) {
-
                     break;
                 }
                 if (overrides != null && overrides.containsKey(inputLine.toLowerCase())) {
