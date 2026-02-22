@@ -221,7 +221,7 @@ public class BBServer {
         tenantMap.values().stream().map(Class::getSimpleName).sorted().forEach(c -> System.out.println(" * " + c));
     }
 
-    private final static String THREAD_ROW_FORMAT = "%20s %-40s %-35s %-15s %-7s %4s %-5s";
+    private final static String THREAD_ROW_FORMAT = "%20s %-40s %-35s %-15s %-7s %4s %-5s %-5s";
     private static String getConfigAsString() {
         return "HTTP/1.1 200 OK\n"
             + "Server: Dummy HTTP connection\n"
@@ -250,11 +250,11 @@ public class BBServer {
             + "Thread list:\n"
             + "\n"
             + String.format(THREAD_ROW_FORMAT,
-            "Id", "Class[Name]", "Client", "State", "Type", "Pri", "Alive")
+            "Id", "Class[Name]", "Client", "State", "Type", "Pri", "Alive", "Virt.")
             + "\n" +
               String.format(THREAD_ROW_FORMAT,
                   "--------------------", "----------------------------------------",
-                  "-----------------------------------", "---------------", "-------", "----", "-----")
+                  "-----------------------------------", "---------------", "-------", "----", "-----", "-----")
             + "\n"
             + Thread.getAllStackTraces().keySet().stream().sorted(comparingLong(Thread::getId)).map(t -> {
                     final Class clientClass = (t instanceof BbsThread thread) ? thread.getClientClass() : null;
@@ -268,7 +268,8 @@ public class BBServer {
                         t.getState(),
                         (t.isDaemon() ? "Daemon" : "Normal"),
                         t.getPriority(),
-                        t.isAlive()
+                        t.isAlive(),
+                        t.isVirtual()
                         )
                     + "\n";
                 }).collect(Collectors.joining());
