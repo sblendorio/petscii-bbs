@@ -345,7 +345,7 @@ public class MenuApple1 extends AsciiThread {
             cls();
             println("Patrons - Publisher subscribers");
             println();
-            println("1 - Syncroweb (Fulvio Ieva)");
+            println("1 - Ctrl Alt Museum");
             println(". - Back");
             println();
             resetInput();
@@ -355,7 +355,7 @@ public class MenuApple1 extends AsciiThread {
             choice = StringUtils.lowerCase(choice);
             if (".".equals(choice)) break;
             BbsThread subThread = null;
-            if ("1".equals(choice)) subThread = new SyncroWebAscii();
+            if ("1".equals(choice)) subThread = new CtrlAltAscii();
             execute(subThread);
         } while (true);
     }

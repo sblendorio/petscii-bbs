@@ -576,7 +576,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
         do {
             cls();
             bannerPatronsPublishers();
-            println("1 - Syncroweb (Fulvio Ieva)");
+            println("1 - Ctrl Alt Museum");
             println(". - Back");
             println();
             resetInput();
@@ -587,7 +587,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
             choice = StringUtils.lowerCase(choice);
             if (".".equals(choice)) break;
             BbsThread subThread = null;
-            if ("1".equals(choice)) subThread = new SyncroWebAscii();
+            if ("1".equals(choice)) subThread = new CtrlAltMinitel();
             execute(subThread);
         } while (true);
     }

@@ -282,7 +282,7 @@ public class Menu64 extends PetsciiThread {
             write(RIGHT, RIGHT, RIGHT, ' ', ' ', ' ', ' ', GREY3);
             println(repeat((char) 163, 20));
             newline();
-            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161); println("Syncroweb - Fulvio Ieva");
+            write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '1', REVOFF, 161); println("Ctrl Alt Museum");
             newline();
             write(RIGHT, RIGHT, RIGHT, ' ', GREY3, REVON, 161, '.', REVOFF, 161);
             print("Exit ");
@@ -302,7 +302,7 @@ public class Menu64 extends PetsciiThread {
                 if (key == '.') {
                     return;
                 }
-                else if (key == '1') launch(new SyncroWebPetscii());
+                else if (key == '1') launch(new CtrlAltPetscii());
                 else {
                     validKey = false;
                 }
@@ -558,7 +558,8 @@ public class Menu64 extends PetsciiThread {
         List<String> files = Arrays.asList(
             "petscii/patreon-sponsor-01.seq",
             "petscii/patreon-sponsor-02.seq",
-            "petscii/patreon-sponsor-03.seq"
+            "petscii/patreon-sponsor-03.seq",
+            "petscii/patreon-sponsor-04.seq"
         );
         for (String file: files) {
             write(CLR, LOWERCASE, CASE_LOCK, HOME);
