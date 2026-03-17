@@ -15,7 +15,7 @@ public class FactaNewsAscii extends WordpressProxyAscii {
     public FactaNewsAscii() {
         super();
         this.logo = LOGO_BYTES;
-        this.domain = "https://facta.news";
+        this.domain = "https://www.facta.news";
         this.showAuthor = false;
         this.pageSize = 5;
     }

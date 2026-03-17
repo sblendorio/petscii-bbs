@@ -26,9 +26,9 @@ public class CtrlAltMinitel extends WordpressProxyAscii {
         this.domain = "https://ctrlalt.museum";
         this.showAuthor = true;
         this.pageSize = 7;
-        this.mainLogoSize = 3;
+        this.mainLogoSize = 2;
     }
 
-    private static final byte[] LOGO_BYTES =  bytes(readBinaryFile("minitel/ctrlalt.vdt"),30,10,10, 0x1b, 0x3a, 0x69, 0x43, 17);
+    private static final byte[] LOGO_BYTES =  bytes(readBinaryFile("minitel/ctrlalt.vdt"),30,10, 0x1b, 0x3a, 0x69, 0x43, 17);
 
 }
