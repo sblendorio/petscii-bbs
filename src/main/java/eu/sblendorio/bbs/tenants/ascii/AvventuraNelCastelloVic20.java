@@ -7,7 +7,6 @@ import eu.sblendorio.bbs.games.AvventuraNelCastelloBridge;
 
 public class AvventuraNelCastelloVic20 extends AsciiThread {
 
-    AvventuraNelCastelloBridge bridge;
     String locale;
 
     public AvventuraNelCastelloVic20(String locale) {
@@ -24,9 +23,10 @@ public class AvventuraNelCastelloVic20 extends AsciiThread {
 
     @Override
     public void doLoop() throws Exception {
-        bridge = new Bridge(this);
-        bridge.init(locale);
-        bridge.start();
+        try (AvventuraNelCastelloBridge bridge = new Bridge(this)) {
+            bridge.init(locale);
+            bridge.start();
+        }
     }
 
 }

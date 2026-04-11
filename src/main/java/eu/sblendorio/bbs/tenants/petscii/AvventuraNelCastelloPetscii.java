@@ -12,8 +12,6 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.HOME;
 
 public class AvventuraNelCastelloPetscii extends PetsciiThread {
 
-    AvventuraNelCastelloBridge bridge;
-
     byte[] splashScreen;
     String locale;
 
@@ -78,9 +76,10 @@ public class AvventuraNelCastelloPetscii extends PetsciiThread {
         newline();
         write(GREY3);
 
-        bridge = new Bridge(this);
-        bridge.init(locale);
-        bridge.start();
+        try (AvventuraNelCastelloBridge bridge = new Bridge(this)) {
+            bridge.init(locale);
+            bridge.start();
+        }
     }
 
 }

@@ -69,7 +69,8 @@ public class BBServer {
 
         for (EndPoint endPoint: endPoints) {
             logger.info("Starting {}:{}", endPoint.bbs.getSimpleName(), endPoint.port);
-            Thread.ofVirtual().start(() -> {
+            Thread.ofVirtual().unstarted(() -> {
+            // new Thread(() -> {
                 Thread.currentThread().setName("BBS Dispatcher-" + Thread.currentThread().getId());
                 try (ServerSocket listener = new ServerSocket(endPoint.port)) {
                     listener.setSoTimeout(0);
@@ -97,22 +98,25 @@ public class BBServer {
                         io.socket = socket;
 
                         thread.keepAliveTimeout = thread.keepAliveTimeout <= 0 ? timeout : thread.keepAliveTimeout;
-                        Thread.ofVirtual().start(thread);
+                        // Thread.ofVirtual().unstarted(thread).start();
+                        thread.start();
                     }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-            });
+            }).start();
         }
 
         if (servicePort != 0)
-            Thread.ofVirtual().start(() -> {
+            // Thread.ofVirtual().unstarted(() -> {
+            new Thread(() -> {
                 Thread.currentThread().setName("Diagnostic Dispatcher-" + Thread.currentThread().getId());
                 try (ServerSocket listener = new ServerSocket(servicePort)) {
                     listener.setSoTimeout(0);
                     while (true) {
                         Socket socket = listener.accept();
-                        Thread.ofVirtual().start(() -> {
+                        // Thread.ofVirtual().unstarted(() -> {
+                        new Thread(() -> {
                             Thread.currentThread().setName("Diagnostic-" + Thread.currentThread().getId());
                             try {
                                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -122,12 +126,12 @@ public class BBServer {
                             } catch (IOException e) {
                                 logger.error(e);
                             }
-                        });
+                        }).start();
                     }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-            });
+            }).start();
 
         Thread.currentThread().join();
     }
