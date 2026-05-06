@@ -119,7 +119,6 @@ public class MenuVic20 extends MenuApple1 {
     public void showItalianNews() {
         cls();
         println("Italian News");
-        println("---------------------");
         println("1 - Televideo");
         println("2 - Lercio");
         println("3 - Disinformatico");
@@ -133,6 +132,7 @@ public class MenuVic20 extends MenuApple1 {
         println("A - Fanpage");
         println("B - DigiTANTO.it");
         println("C - Bufale.NET");
+        println("D - TI Museum");
         println(". - Go back");
     }
 

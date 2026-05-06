@@ -228,6 +228,7 @@ public class MenuApple1 extends AsciiThread {
                 else if ("a".equals(choice)) subThread = new LiteFanpageAscii40();
                 else if ("b".equals(choice)) subThread = new OneRssDigitantoAscii();
                 else if ("c".equals(choice)) subThread = new BufalenetAscii();
+                else if ("d".equals(choice)) subThread = new OneTexasInstrumentsItaliaAscii();
                 else {
                     validKey = false;
                     subThread = null;

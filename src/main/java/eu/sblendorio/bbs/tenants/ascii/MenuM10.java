@@ -91,7 +91,7 @@ public class MenuM10 extends MenuApple1 {
         println("4- Mupin.it        A- Fanpage");
         println("5- F.Quot          B- DigiTANTO");
         println("6- Amedeo Valoroso C- Bufale.NET");
-        println("7- Butac.it        . - EXIT");
+        println("7- Butac.it        D- TI Museum");
     }
 
     public void showGames() {
