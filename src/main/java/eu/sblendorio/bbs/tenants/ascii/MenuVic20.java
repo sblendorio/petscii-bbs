@@ -132,7 +132,7 @@ public class MenuVic20 extends MenuApple1 {
         println("A - Fanpage");
         println("B - DigiTANTO.it");
         println("C - Bufale.NET");
-        println("D - TI Museum");
+        println("D - TI Watch Museum");
         println(". - Go back");
     }
 
