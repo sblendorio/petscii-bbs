@@ -156,6 +156,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                     case "a" -> new LiteFanpageMinitel();
                     case "b" -> new OneRssDigitantoMinitel();
                     case "c" -> new BufalenetMinitel();
+                    case "d" -> new OneTexasInstrumentsItaliaAscii(io);
                     default -> {
                         validKey = false;
                         yield null;

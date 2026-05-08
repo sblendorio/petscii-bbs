@@ -1,10 +1,23 @@
 package eu.sblendorio.bbs.tenants.ascii;
 
+import eu.sblendorio.bbs.core.BbsInputOutput;
+
 import javax.swing.text.View;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 
 public class OneTexasInstrumentsItaliaAscii extends OneRssAscii {
+
+    private BbsInputOutput inputOutput = null;
+
+    public OneTexasInstrumentsItaliaAscii() {
+        super();
+    }
+
+    public OneTexasInstrumentsItaliaAscii(BbsInputOutput x) {
+        this();
+        this.inputOutput = x;
+    }
     protected void readSections() throws Exception {
         sections = new LinkedHashMap<>();
         sections.put("1", new OneRssAscii.NewsSection("www.facele.eu - web history", "https://www.facele.eu/web-history?format=feed&type=rss"));
@@ -14,4 +27,9 @@ public class OneTexasInstrumentsItaliaAscii extends OneRssAscii {
         twoColumns = false;
     }
 
+    @Override
+    public void initBbs() throws Exception {
+        super.initBbs();
+        if (inputOutput != null) setBbsInputOutput(inputOutput);
+    }
 }
