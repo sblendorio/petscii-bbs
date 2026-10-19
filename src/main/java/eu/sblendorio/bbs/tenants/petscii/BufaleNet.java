@@ -8,7 +8,7 @@ public class BufaleNet extends WordpressProxy {
     public BufaleNet() {
         super();
         this.logo = LOGO_BYTES;
-        this.domain = "https://www.bufale.net";
+        this.domain = "https://www.fact-checking.it";
         this.pageSize = 6;
         this.screenLines = 18;
         this.showAuthor = true;

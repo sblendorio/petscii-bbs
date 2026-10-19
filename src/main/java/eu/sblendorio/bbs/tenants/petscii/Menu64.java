@@ -444,6 +444,7 @@ public class Menu64 extends PetsciiThread {
                             "aiuto", () -> { println("Help non disponibile"); println(); print(">"); }
                     )));
                     case 'e' -> launch(new ZorkMachine("wishbringer", "zmpp/wishbringer-r69.z3"));
+                    // case 'f' -> launch(new Battleship());
                     case '.' -> { return; }
                     default -> validKey = false;
                 }
