@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import static eu.sblendorio.bbs.core.BbsThread.readBinaryFile;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class AvventuraNelCastelloBridge {
+public class AvventuraNelCastelloBridge implements AutoCloseable {
 
     private static final String SAVE_FILE_PATH = System.getProperty("user.home") + File.separator + "saved-text-adventures";
 
@@ -27,6 +27,19 @@ public class AvventuraNelCastelloBridge {
         System.setProperty("polyglot.engine.WarnInterpreterOnly", "false");
         engine = (ScriptEngine) new ScriptEngineManager().getEngineByName("Graal.js");
         this.bbs = bbs;
+    }
+
+    @Override
+    public void close() throws Exception {
+        if (this.engine instanceof AutoCloseable eng) {
+            // Svuota i binding per rompere il riferimento circolare
+            if (this.bindings != null) {
+                this.bindings.clear();
+            }
+            // Chiude forzatamente il motore GraalVM sottostante
+            eng.close();
+            this.engine = null;
+        }
     }
 
     public boolean fileExists(String filename, String lang) {

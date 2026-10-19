@@ -33,7 +33,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 
 public class PatreonData {
     private static Logger loggerAuthorizations = LogManager.getLogger("authorizations");
-    protected static final String DB_FILE = System.getProperty("user.home") + "/patreon.db";
+    protected static final String DB_FILE = System.getProperty("user.home") + "/patreon_dir/patreon.db";
     protected static final Properties properties;
     static {
         properties = new Properties();

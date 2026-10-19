@@ -9,7 +9,6 @@ import static java.nio.charset.StandardCharsets.ISO_8859_1;
 
 public class AvventuraNelCastelloAnsi extends AsciiThread {
 
-    AvventuraNelCastelloBridge bridge;
     byte[] splashScreen;
     byte[] copyright;
     String locale;
@@ -93,9 +92,10 @@ public class AvventuraNelCastelloAnsi extends AsciiThread {
         resetInput();
         cls();
         printText(copyright);
-        bridge = new Bridge(this);
-        bridge.init(locale);
-        bridge.start();
+        try (AvventuraNelCastelloBridge bridge = new Bridge(this)) {
+            bridge.init(locale);
+            bridge.start();
+        }
     }
 
 }

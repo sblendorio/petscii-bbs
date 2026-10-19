@@ -16,7 +16,7 @@ import java.util.Optional;
 
 import static eu.sblendorio.bbs.core.Utils.*;
 
-public class SwBasicBridge {
+public class SwBasicBridge implements AutoCloseable {
 
     private static Logger logger = LogManager.getLogger(SwBasicBridge.class);
 
@@ -30,6 +30,19 @@ public class SwBasicBridge {
         engine = (ScriptEngine) new ScriptEngineManager().getEngineByName("Graal.js");
         this.bbs = bbs;
         this.locateFunction = locateFunction;
+    }
+
+    @Override
+    public void close() throws Exception {
+        if (this.engine instanceof AutoCloseable eng) {
+            // Svuota i binding per rompere il riferimento circolare
+            if (this.bindings != null) {
+                this.bindings.clear();
+            }
+            // Chiude forzatamente il motore GraalVM sottostante
+            eng.close();
+            this.engine = null;
+        }
     }
 
     private String readFile(String name) throws Exception {
@@ -185,9 +198,10 @@ public class SwBasicBridge {
             Optional.ofNullable(code).ifPresent(Runnable::run);
         }
         bbsThread.cls();
-        SwBasicBridge bridge = new SwBasicBridge(bbsThread, locate);
-        bridge.init(source);
-        bridge.start();
+        try (SwBasicBridge bridge = new SwBasicBridge(bbsThread, locate)) {
+            bridge.init(source);
+            bridge.start();
+        }
     }
 
 

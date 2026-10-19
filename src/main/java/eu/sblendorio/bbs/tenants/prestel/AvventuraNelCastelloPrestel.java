@@ -6,8 +6,6 @@ import eu.sblendorio.bbs.core.PrestelThread;
 import eu.sblendorio.bbs.games.AvventuraNelCastelloBridge;
 
 public class AvventuraNelCastelloPrestel extends PrestelThread {
-
-    AvventuraNelCastelloBridge bridge;
     String locale;
 
     public AvventuraNelCastelloPrestel(String locale) {
@@ -23,9 +21,10 @@ public class AvventuraNelCastelloPrestel extends PrestelThread {
 
     @Override
     public void doLoop() throws Exception {
-        bridge = new Bridge(this);
-        bridge.init(locale);
-        bridge.start();
+        try (AvventuraNelCastelloBridge bridge = new Bridge(this)) {
+            bridge.init(locale);
+            bridge.start();
+        }
     }
 
 }

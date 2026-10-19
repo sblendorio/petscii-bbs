@@ -9,7 +9,6 @@ import eu.sblendorio.bbs.tenants.mixed.PatreonData;
 import eu.sblendorio.bbs.tenants.mixed.TcpProxy;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -18,7 +17,6 @@ import static eu.sblendorio.bbs.core.Utils.*;
 import static eu.sblendorio.bbs.tenants.CommonConstants.*;
 import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.isSanremo;
 import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toList;
 
 public class MenuPrestelWithEcho extends PrestelThread {
 
@@ -357,7 +355,7 @@ public class MenuPrestelWithEcho extends PrestelThread {
             cls();
             println("Patrons - Publisher subscribers");
             println();
-            println("1 - Syncroweb (Fulvio Ieva)");
+            println("1 - Ctrl Alt Museum");
             println(". - Back");
             println();
             resetInput();
@@ -368,7 +366,7 @@ public class MenuPrestelWithEcho extends PrestelThread {
             choice = StringUtils.lowerCase(choice);
             if (".".equals(choice)) break;
             BbsThread subThread = null;
-            if ("1".equals(choice)) subThread = new SyncroWebAscii();
+            if ("1".equals(choice)) subThread = new CtrlAltAscii();
             if (subThread == null) continue;
 
             if (subThread instanceof AsciiThread t) {

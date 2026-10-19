@@ -69,7 +69,8 @@ public class BBServer {
 
         for (EndPoint endPoint: endPoints) {
             logger.info("Starting {}:{}", endPoint.bbs.getSimpleName(), endPoint.port);
-            new Thread(() -> {
+            Thread.ofVirtual().unstarted(() -> {
+            // new Thread(() -> {
                 Thread.currentThread().setName("BBS Dispatcher-" + Thread.currentThread().getId());
                 try (ServerSocket listener = new ServerSocket(endPoint.port)) {
                     listener.setSoTimeout(0);
@@ -97,6 +98,7 @@ public class BBServer {
                         io.socket = socket;
 
                         thread.keepAliveTimeout = thread.keepAliveTimeout <= 0 ? timeout : thread.keepAliveTimeout;
+                        // Thread.ofVirtual().unstarted(thread).start();
                         thread.start();
                     }
                 } catch (Exception e) {
@@ -106,12 +108,14 @@ public class BBServer {
         }
 
         if (servicePort != 0)
+            // Thread.ofVirtual().unstarted(() -> {
             new Thread(() -> {
                 Thread.currentThread().setName("Diagnostic Dispatcher-" + Thread.currentThread().getId());
                 try (ServerSocket listener = new ServerSocket(servicePort)) {
                     listener.setSoTimeout(0);
                     while (true) {
                         Socket socket = listener.accept();
+                        // Thread.ofVirtual().unstarted(() -> {
                         new Thread(() -> {
                             Thread.currentThread().setName("Diagnostic-" + Thread.currentThread().getId());
                             try {
@@ -128,6 +132,8 @@ public class BBServer {
                     throw new RuntimeException(e);
                 }
             }).start();
+
+        Thread.currentThread().join();
     }
 
     private static void readParameters(String[] args) {
@@ -221,7 +227,7 @@ public class BBServer {
         tenantMap.values().stream().map(Class::getSimpleName).sorted().forEach(c -> System.out.println(" * " + c));
     }
 
-    private final static String THREAD_ROW_FORMAT = "%20s %-40s %-35s %-15s %-7s %4s %-5s";
+    private final static String THREAD_ROW_FORMAT = "%20s %-40s %-35s %-15s %-7s %4s %-5s %-5s";
     private static String getConfigAsString() {
         return "HTTP/1.1 200 OK\n"
             + "Server: Dummy HTTP connection\n"
@@ -250,11 +256,11 @@ public class BBServer {
             + "Thread list:\n"
             + "\n"
             + String.format(THREAD_ROW_FORMAT,
-            "Id", "Class[Name]", "Client", "State", "Type", "Pri", "Alive")
+            "Id", "Class[Name]", "Client", "State", "Type", "Pri", "Alive", "Virt.")
             + "\n" +
               String.format(THREAD_ROW_FORMAT,
                   "--------------------", "----------------------------------------",
-                  "-----------------------------------", "---------------", "-------", "----", "-----")
+                  "-----------------------------------", "---------------", "-------", "----", "-----", "-----")
             + "\n"
             + Thread.getAllStackTraces().keySet().stream().sorted(comparingLong(Thread::getId)).map(t -> {
                     final Class clientClass = (t instanceof BbsThread thread) ? thread.getClientClass() : null;
@@ -268,7 +274,8 @@ public class BBServer {
                         t.getState(),
                         (t.isDaemon() ? "Daemon" : "Normal"),
                         t.getPriority(),
-                        t.isAlive()
+                        t.isAlive(),
+                        t.isVirtual()
                         )
                     + "\n";
                 }).collect(Collectors.joining());

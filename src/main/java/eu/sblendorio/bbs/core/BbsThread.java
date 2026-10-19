@@ -136,6 +136,7 @@ public abstract class BbsThread extends Thread {
         root.keepAlive = keepAlive;
         root.keepAliveThread.interrupt();
         root.keepAliveThread = root.new KeepAliveThread(this);
+        // Thread.ofVirtual().unstarted(root.keepAliveThread).start();
         root.keepAliveThread.start();
     }
 
@@ -248,6 +249,7 @@ public abstract class BbsThread extends Thread {
             io.out.setQuoteMode(qMode);
             setClientName("client"+getClientId());
             clients.put(getClientId(), this);
+            // Thread.ofVirtual().unstarted(keepAliveThread).start();
             keepAliveThread.start();
             doLoop();
         } catch (BbsIOException e) {
@@ -355,6 +357,7 @@ public abstract class BbsThread extends Thread {
                 root.keepAliveThread.interrupt();
                 root.keepAliveThread = root.new KeepAliveThread(this);
                 bbs.keepAliveThread = root.keepAliveThread;
+                // Thread.ofVirtual().unstarted(root.keepAliveThread).start();
                 root.keepAliveThread.start();
             } catch (Exception e) {
                 logger.info("Error during KeepAliveThread restart", e);
@@ -390,6 +393,7 @@ public abstract class BbsThread extends Thread {
             try {
                 root.keepAliveThread.interrupt();
                 root.keepAliveThread = root.new KeepAliveThread(this);
+                // Thread.ofVirtual().unstarted(root.keepAliveThread).start();
                 root.keepAliveThread.start();
             } catch (Exception e) {
                 logger.info("Error during KeepAliveThread restart", e);
