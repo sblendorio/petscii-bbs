@@ -30,8 +30,9 @@ public class RunBasicPetscii extends PetsciiThread {
     public void doLoop() throws Exception {
         logger.info("Running BASIC Program: '{}'", source);
         this.cls();
-        SwBasicBridge bridge = new SwBasicBridge(this, locateFunction);
-        bridge.init(source);
-        bridge.start();
+        try (SwBasicBridge bridge = new SwBasicBridge(this, locateFunction)) {
+            bridge.init(source);
+            bridge.start();
+        }
     }
 }

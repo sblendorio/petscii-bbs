@@ -1,14 +1,11 @@
 package eu.sblendorio.bbs.tenants.mixed;
 
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.JsEngine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.util.TriConsumer;
 
-import javax.script.Bindings;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.SimpleBindings;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -21,28 +18,18 @@ public class SwBasicBridge implements AutoCloseable {
     private static Logger logger = LogManager.getLogger(SwBasicBridge.class);
 
     protected BbsThread bbs;
-    protected ScriptEngine engine;
-    protected Bindings bindings;
+    protected JsEngine engine;
     protected TriConsumer<BbsThread, Integer, Integer> locateFunction = null;
 
     public SwBasicBridge(BbsThread bbs, TriConsumer<BbsThread, Integer, Integer> locateFunction) {
-        System.setProperty("polyglot.engine.WarnInterpreterOnly", "false");
-        engine = (ScriptEngine) new ScriptEngineManager().getEngineByName("Graal.js");
+        engine = new JsEngine();
         this.bbs = bbs;
         this.locateFunction = locateFunction;
     }
 
     @Override
-    public void close() throws Exception {
-        if (this.engine instanceof AutoCloseable eng) {
-            // Svuota i binding per rompere il riferimento circolare
-            if (this.bindings != null) {
-                this.bindings.clear();
-            }
-            // Chiude forzatamente il motore GraalVM sottostante
-            eng.close();
-            this.engine = null;
-        }
+    public void close() {
+        engine.close();
     }
 
     private String readFile(String name) throws Exception {
@@ -125,32 +112,29 @@ public class SwBasicBridge implements AutoCloseable {
     }
 
     public void initWithProgramText(String code) throws Exception {
-        bindings = new SimpleBindings();
-        bindings.put("polyglot.js.allowAllAccess", true);
+        engine.put("bridge", this);
+        engine.put("code", code);
 
-        bindings.put("bridge", this);
-        bindings.put("code", code);
-
-        engine.eval(readFile("swbasic2/swbasic2.js"), bindings);
-        engine.eval("let parser = new Parser(code);", bindings);
-        engine.eval("parser.printFunction = bridge.print", bindings);
-        engine.eval("parser.parse()", bindings);
-        engine.eval("interpreter = new Interpreter();", bindings);
-        engine.eval("interpreter.printFunction = bridge.print", bindings);
-        engine.eval("interpreter.inkeyFunction = bridge.inkey", bindings);
-        engine.eval("interpreter.beepFunction = bridge.beep", bindings);
-        engine.eval("interpreter.locateFunction = bridge.locate", bindings);
-        engine.eval("interpreter.stringInputFunction = bridge.stringInput", bindings);
-        engine.eval("interpreter.numberInputFunction = bridge.numberInput", bindings);
-        engine.eval("interpreter.clsFunction = bridge.cls", bindings);
-        engine.eval("interpreter.endFunction = bridge.end", bindings);
-        engine.eval("interpreter.breakFunction = function() { throw 'BREAK' }", bindings);
-        engine.eval("interpreter.sleepFunction = bridge.sleep", bindings);
-        engine.eval("interpreter.setParser(parser)", bindings);
+        engine.eval(readFile("swbasic2/swbasic2.js"));
+        engine.eval("let parser = new Parser(code);");
+        engine.eval("parser.printFunction = bridge.print");
+        engine.eval("parser.parse()");
+        engine.eval("interpreter = new Interpreter();");
+        engine.eval("interpreter.printFunction = bridge.print");
+        engine.eval("interpreter.inkeyFunction = bridge.inkey");
+        engine.eval("interpreter.beepFunction = bridge.beep");
+        engine.eval("interpreter.locateFunction = bridge.locate");
+        engine.eval("interpreter.stringInputFunction = bridge.stringInput");
+        engine.eval("interpreter.numberInputFunction = bridge.numberInput");
+        engine.eval("interpreter.clsFunction = bridge.cls");
+        engine.eval("interpreter.endFunction = bridge.end");
+        engine.eval("interpreter.breakFunction = function() { throw 'BREAK' }");
+        engine.eval("interpreter.sleepFunction = bridge.sleep");
+        engine.eval("interpreter.setParser(parser)");
     }
 
     public void start() throws Exception {
-        engine.eval("interpreter.interpret();", bindings);
+        engine.eval("interpreter.interpret();");
     }
 
     public static void run(String source, BbsThread bbsThread, TriConsumer<BbsThread, Integer, Integer> locate) throws Exception {

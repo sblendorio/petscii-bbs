@@ -330,9 +330,10 @@ public class BasicIde {
 
                 logger.info("user={}, program={}", user, programText.replaceAll("\n", "\\\\n"));
 
-                SwBasicBridge bridge = new SwBasicBridge(bbs, locate);
-                bridge.initWithProgramText(programText);
-                bridge.start();
+                try (SwBasicBridge bridge = new SwBasicBridge(bbs, locate)) {
+                    bridge.initWithProgramText(programText);
+                    bridge.start();
+                }
 
                 prompt(bbs);
             } else if ("HELP".equals(firstWord)) {

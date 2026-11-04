@@ -51,8 +51,9 @@ public class RunBasic extends AsciiThread {
         newline();
         logger.info("Running BASIC Program: '{}', on '{}'", source, bbsThread.getClass().getSimpleName());
         bbsThread.cls();
-        SwBasicBridge bridge = new SwBasicBridge(bbsThread, locateFunction);
-        bridge.init(source);
-        bridge.start();
+        try (SwBasicBridge bridge = new SwBasicBridge(bbsThread, locateFunction)) {
+            bridge.init(source);
+            bridge.start();
+        }
     }
 }

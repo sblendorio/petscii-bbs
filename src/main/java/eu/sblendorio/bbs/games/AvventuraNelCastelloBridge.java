@@ -1,12 +1,9 @@
 package eu.sblendorio.bbs.games;
 
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.core.JsEngine;
 import eu.sblendorio.bbs.core.Utils;
 
-import javax.script.Bindings;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.SimpleBindings;
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
@@ -20,26 +17,16 @@ public class AvventuraNelCastelloBridge implements AutoCloseable {
     private static final String SAVE_FILE_PATH = System.getProperty("user.home") + File.separator + "saved-text-adventures";
 
     protected BbsThread bbs;
-    protected ScriptEngine engine;
-    protected Bindings bindings;
+    protected JsEngine engine;
 
     public AvventuraNelCastelloBridge(BbsThread bbs) {
-        System.setProperty("polyglot.engine.WarnInterpreterOnly", "false");
-        engine = (ScriptEngine) new ScriptEngineManager().getEngineByName("Graal.js");
+        engine = new JsEngine();
         this.bbs = bbs;
     }
 
     @Override
-    public void close() throws Exception {
-        if (this.engine instanceof AutoCloseable eng) {
-            // Svuota i binding per rompere il riferimento circolare
-            if (this.bindings != null) {
-                this.bindings.clear();
-            }
-            // Chiude forzatamente il motore GraalVM sottostante
-            eng.close();
-            this.engine = null;
-        }
+    public void close() {
+        engine.close();
     }
 
     public boolean fileExists(String filename, String lang) {
@@ -206,22 +193,19 @@ public class AvventuraNelCastelloBridge implements AutoCloseable {
     }
 
     public void init(String lang) throws Exception {
-        bindings = new SimpleBindings();
-        bindings.put("polyglot.js.allowAllAccess", true);
-
-        bindings.put("bridge", this);
-        engine.eval(new String(readBinaryFile("avventura-nel-castello/" + lang + ".i18n.js"), UTF_8), bindings);
-        engine.eval(new String(readBinaryFile("avventura-nel-castello/IFEngine/Sound.js"), UTF_8), bindings);
-        engine.eval(new String(readBinaryFile("avventura-nel-castello/IFEngine/CRT.js"), UTF_8), bindings);
-        engine.eval(new String(readBinaryFile("avventura-nel-castello/IFEngine/Thesaurus.js"), UTF_8), bindings);
-        engine.eval(new String(readBinaryFile("avventura-nel-castello/IFEngine/Parser.js"), UTF_8), bindings);
-        engine.eval(new String(readBinaryFile("avventura-nel-castello/IFEngine/IFEngine.js"), UTF_8), bindings);
-        engine.eval(new String(readBinaryFile("avventura-nel-castello/game/AvventuraNelCastelloJSEngine.js"), UTF_8), bindings);
-        engine.eval(new String(readBinaryFile("avventura-nel-castello/game/AvventuraNelCastelloJS.js" ), UTF_8), bindings);
+        engine.put("bridge", this);
+        engine.eval(new String(readBinaryFile("avventura-nel-castello/" + lang + ".i18n.js"), UTF_8));
+        engine.eval(new String(readBinaryFile("avventura-nel-castello/IFEngine/Sound.js"), UTF_8));
+        engine.eval(new String(readBinaryFile("avventura-nel-castello/IFEngine/CRT.js"), UTF_8));
+        engine.eval(new String(readBinaryFile("avventura-nel-castello/IFEngine/Thesaurus.js"), UTF_8));
+        engine.eval(new String(readBinaryFile("avventura-nel-castello/IFEngine/Parser.js"), UTF_8));
+        engine.eval(new String(readBinaryFile("avventura-nel-castello/IFEngine/IFEngine.js"), UTF_8));
+        engine.eval(new String(readBinaryFile("avventura-nel-castello/game/AvventuraNelCastelloJSEngine.js"), UTF_8));
+        engine.eval(new String(readBinaryFile("avventura-nel-castello/game/AvventuraNelCastelloJS.js" ), UTF_8));
     }
 
     public void start() throws Exception {
-        engine.eval("new Avventura().start();", bindings);
+        engine.eval("new Avventura().start();");
     }
 
 }

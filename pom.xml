@@ -5,6 +5,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- polyglot, js and js-scriptengine must have the same version -->
+        <graalvm.version>25.4.4.1.1</graalvm.version>
     </properties>
     <modelVersion>4.0.0</modelVersion>
     <groupId>eu.sblendorio.app</groupId>
@@ -154,31 +156,25 @@
             <artifactId>word-wrap</artifactId>
             <version>0.1.12</version>
         </dependency>
-<!--
+
+        <!-- 23.0.x breaks on JDK 22+ (uses removed sun.misc.Unsafe.ensureClassInitialized) -->
         <dependency>
             <groupId>org.graalvm.polyglot</groupId>
-            <artifactId>js-community</artifactId>
-            <version>25.0.2</version>
+            <artifactId>polyglot</artifactId>
+            <version>${graalvm.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.graalvm.polyglot</groupId>
+            <artifactId>js</artifactId>
+            <version>${graalvm.version}</version>
             <type>pom</type>
         </dependency>
 
         <dependency>
             <groupId>org.graalvm.js</groupId>
             <artifactId>js-scriptengine</artifactId>
-            <version>25.0.2</version>
-        </dependency>
--->
-
-        <dependency>
-            <groupId>org.graalvm.js</groupId>
-            <artifactId>js</artifactId>
-            <version>23.0.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.graalvm.js</groupId>
-            <artifactId>js-scriptengine</artifactId>
-            <version>23.0.4</version>
+            <version>${graalvm.version}</version>
         </dependency>
 
 
