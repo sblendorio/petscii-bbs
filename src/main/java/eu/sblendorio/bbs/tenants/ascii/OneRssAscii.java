@@ -7,6 +7,7 @@ import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import eu.sblendorio.bbs.core.AsciiThread;
 import eu.sblendorio.bbs.core.BbsThread;
+import eu.sblendorio.bbs.tenants.mixed.ArticleTexts;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.WordUtils;
@@ -49,6 +50,9 @@ public class OneRssAscii extends AsciiThread {
     protected int currentPage = 1;
 
     protected boolean alwaysRefreshFeed = false;
+
+    // CSS selector of the article paragraphs: when set, the full text is taken from the item's page
+    protected String fullTextSelector = null;
 
     protected static class NewsSection {
         final String title;
@@ -213,6 +217,15 @@ public class OneRssAscii extends AsciiThread {
         return result;
     }
 
+    // When fullTextSelector is set, the text of an item is taken from its article page (paragraphs matching the CSS
+    // selector) when the item is opened; pages without text (e.g. videos) keep the RSS body
+    protected NewsFeed withFullText(NewsFeed feed) {
+        if (fullTextSelector == null || isBlank(feed.uri))
+            return feed;
+        String text = ArticleTexts.fetchTexts(List.of(feed.uri), fullTextSelector, ArticleTexts.NO_LIMIT).get(feed.uri);
+        return text == null ? feed : new NewsFeed(feed.publishedDate, feed.title, text, feed.uri, feed.author);
+    }
+
 
     public String getAuthor(SyndEntry e) {
         return e.getAuthor().replace("\u00a0", " ");
@@ -350,6 +363,7 @@ public class OneRssAscii extends AsciiThread {
     }
 
     private boolean displayPost(NewsFeed feed, NewsSection section) throws Exception {
+        feed = withFullText(feed);
         logo(section);
         List<String> rows = feedToText(feed);
 

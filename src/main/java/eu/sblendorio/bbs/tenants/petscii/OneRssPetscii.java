@@ -8,6 +8,7 @@ import com.rometools.rome.io.XmlReader;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.Utils;
+import eu.sblendorio.bbs.tenants.mixed.ArticleTexts;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.WordUtils;
@@ -49,6 +50,9 @@ public class OneRssPetscii extends PetsciiThread {
     protected int currentPage = 1;
 
     protected boolean alwaysRefreshFeed = false;
+
+    // CSS selector of the article paragraphs: when set, the full text is taken from the item's page
+    protected String fullTextSelector = null;
     protected int offsetX = 28;
     protected int offsetY = 2;
 
@@ -212,6 +216,15 @@ public class OneRssPetscii extends PetsciiThread {
         return result;
     }
 
+    // When fullTextSelector is set, the text of an item is taken from its article page (paragraphs matching the CSS
+    // selector) when the item is opened; pages without text (e.g. videos) keep the RSS body
+    protected NewsFeed withFullText(NewsFeed feed) {
+        if (fullTextSelector == null || isBlank(feed.uri))
+            return feed;
+        String text = ArticleTexts.fetchTexts(List.of(feed.uri), fullTextSelector, ArticleTexts.NO_LIMIT).get(feed.uri);
+        return text == null ? feed : new NewsFeed(feed.publishedDate, feed.title, text, feed.uri, feed.author);
+    }
+
 
     public String getAuthor(SyndEntry e) {
         return e.getAuthor().replace("\u00a0", " ");
@@ -372,6 +385,11 @@ public class OneRssPetscii extends PetsciiThread {
 
     private boolean displayPost(NewsFeed feed, NewsSection section) throws Exception {
         logo(section);
+        if (fullTextSelector != null) {
+            waitOn();
+            feed = withFullText(feed);
+            waitOff();
+        }
         List<String> rows = feedToText(feed);
 
         int page = 1;
