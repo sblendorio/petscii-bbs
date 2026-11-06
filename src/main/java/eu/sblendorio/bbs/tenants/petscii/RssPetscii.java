@@ -19,6 +19,7 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.SPACE_CHAR;
 import static eu.sblendorio.bbs.core.PetsciiKeys.UP;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -36,6 +37,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.substring;
 import static org.apache.commons.lang3.StringUtils.trim;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.text.WordUtils;
 
 @Hidden
@@ -139,10 +141,25 @@ public abstract class RssPetscii extends PetsciiThread {
         flush();
     }
 
+    private static final String FEED_USER_AGENT =
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
+
+    // If the regular parse fails because the publisher serves the whole document entity-escaped
+    // (RaiNews sends "&lt;rss ...&gt;"), the body is unescaped once and parsed again
+    private static SyndFeed readFeed(String urlString) throws IOException, FeedException {
+        try {
+            return new SyndFeedInput().build(new XmlReader(new URL(urlString)));
+        } catch (FeedException e) {
+            final String body = httpGet(urlString, FEED_USER_AGENT);
+            if (body == null || !body.trim().startsWith("&lt;")) {
+                throw e;
+            }
+            return new SyndFeedInput().build(new StringReader(StringEscapeUtils.unescapeXml(body.trim())));
+        }
+    }
+
     public static List<NewsFeed> getFeeds(String urlString) throws IOException, FeedException {
-        URL url = new URL(urlString);
-        SyndFeedInput input = new SyndFeedInput();
-        SyndFeed feed = input.build(new XmlReader(url));
+        SyndFeed feed = readFeed(urlString);
         List<NewsFeed> result = new LinkedList<>();
         List<SyndEntry> entries = feed.getEntries();
         for (SyndEntry e : entries)
@@ -150,9 +167,15 @@ public abstract class RssPetscii extends PetsciiThread {
                 e.getPublishedDate(),
                 e.getTitle(),
                 ofNullable(e.getDescription()).map(SyndContent::getValue).orElse(""),
-                e.getUri()
+                StringUtils.defaultIfBlank(e.getLink(), e.getUri())
             ));
         return result;
+    }
+
+    // Full text of the news, keyed by NewsFeed.uri, used instead of the RSS description. It is HTML
+    // cleaned only once at display time, so <br> breaks are kept. Feeds missing here keep their description
+    protected Map<String, String> articleTexts(NewsSection section, List<NewsFeed> feeds) {
+        return Map.of();
     }
 
     @Override
@@ -196,10 +219,12 @@ public abstract class RssPetscii extends PetsciiThread {
             cls();
             waitOn();
             List<NewsFeed> feeds = getFeeds(section.url);
+            Map<String, String> articleTexts = articleTexts(section, feeds);
             String text = EMPTY;
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             for (NewsFeed feed : feeds) {
-                String description = htmlClean(feed.description).trim();
+                String articleText = articleTexts.get(feed.uri);
+                String description = articleText != null ? articleText : htmlClean(feed.description).trim();
                 description = StringUtils.isBlank(description) ? "&c64nbsp;" : description;
 
                 String post = EMPTY;

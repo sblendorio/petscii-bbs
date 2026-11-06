@@ -1,8 +1,10 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
 import eu.sblendorio.bbs.core.Hidden;
+import eu.sblendorio.bbs.tenants.mixed.RaiNewsArticles;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
@@ -29,9 +31,18 @@ public class TelevideoRaiPetscii extends RssPetscii {
         return sections;
     }
 
+    // RaiNews RSS descriptions are short: the text, up to about one Televideo page, is taken from the article page.
+    // Pages without text (e.g. whole TG episodes, only video) keep the RSS description
+    @Override
+    protected Map<String, String> articleTexts(NewsSection section, List<NewsFeed> feeds) {
+        return section.url.startsWith(prefix())
+                ? RaiNewsArticles.fetchTexts(feeds.stream().map(feed -> feed.uri).toList(), ARTICLE_MAX_CHARS)
+                : Map.of();
+    }
+
     @Override
     public String prefix() {
-        return "http://www.servizitelevideo.rai.it/televideo/pub/";
+        return "https://www.rainews.it/rss/";
     }
 
     @Override
@@ -39,24 +50,20 @@ public class TelevideoRaiPetscii extends RssPetscii {
         return LOGO_TELEVIDEO;
     }
 
+    private static final int ARTICLE_MAX_CHARS = 800;
+
+    // Televideo RSS feeds (servizitelevideo.rai.it/televideo/pub/rssNNN.xml) were dismissed in Nov 2026:
+    // sections now come from the RaiNews feeds, https://www.rainews.it/rss/<thematic area>
     private Map<String, NewsSection> loadSections() {
         Map<String, NewsSection> result = new LinkedHashMap<>();
-        result.put("101", new NewsSection(WHITE, "Ultim'Ora", prefix() + "rss101.xml", Logos.LOGO_ULTIMORA));
-        result.put("102", new NewsSection(CYAN, "24h No Stop", prefix() + "rss102.xml", Logos.LOGO_NOSTOP24H));
-        result.put("110", new NewsSection(RED, "Primo Piano", prefix() + "rss110.xml", Logos.LOGO_PRIMOPIANO));
-        result.put("120", new NewsSection(GREEN, "Politica", prefix() + "rss120.xml", Logos.LOGO_POLITICA));
-        result.put("130", new NewsSection(BLUE, "Economia", prefix() + "rss130.xml", Logos.LOGO_ECONOMIA));
-        result.put("140", new NewsSection(GREY2, "Dall'Italia", prefix() + "rss140.xml", Logos.LOGO_DALLITALIA));
-        result.put("150", new NewsSection(LIGHT_BLUE, "Dal Mondo", prefix() + "rss150.xml", Logos.LOGO_DALMONDO));
-        result.put("160", new NewsSection(LIGHT_RED, "Culture", prefix() + "rss160.xml", Logos.LOGO_CULTURE));
-        result.put("170", new NewsSection(PURPLE, "Cittadini", prefix() + "rss170.xml", Logos.LOGO_CITTADINI));
-        result.put("180", new NewsSection(GREY3, "Speciale", prefix() + "rss180.xml", Logos.LOGO_SPECIALE));
-        result.put("190", new NewsSection(LIGHT_RED, "Atlante Crisi", prefix() + "rss190.xml", Logos.LOGO_ATLANTECRISI));
-        result.put("229", new NewsSection(LIGHT_GREEN, "Brevi Calcio", prefix() + "rss229.xml", Logos.LOGO_BREVICALCIO));
-        result.put("230", new NewsSection(YELLOW, "CalcioSquadre", prefix() + "rss230.xml", Logos.LOGO_CALCIOSQUADRE));
-        result.put("260", new NewsSection(GREEN, "Altri Sport", prefix() + "rss260.xml", Logos.LOGO_ALTRISPORT));
-        result.put("299", new NewsSection(GREY1, "Brevissime", prefix() + "rss299.xml", Logos.LOGO_SPORTBREVISSIME));
-        result.put("810", new NewsSection(GREY2, "Motori", prefix() + "rss810.xml", Logos.LOGO_MOTORI));
+        result.put("101", new NewsSection(WHITE, "Ultim'Ora", prefix() + "ultimora", Logos.LOGO_ULTIMORA));
+        result.put("110", new NewsSection(RED, "Primo Piano", prefix() + "tutti", Logos.LOGO_PRIMOPIANO));
+        result.put("120", new NewsSection(GREEN, "Politica", prefix() + "politica", Logos.LOGO_POLITICA));
+        result.put("130", new NewsSection(BLUE, "Economia", prefix() + "economiaefinanza", Logos.LOGO_ECONOMIA));
+        result.put("140", new NewsSection(GREY2, "Dall'Italia", prefix() + "cronaca", Logos.LOGO_DALLITALIA));
+        result.put("150", new NewsSection(LIGHT_BLUE, "Dal Mondo", prefix() + "esteri", Logos.LOGO_DALMONDO));
+        result.put("160", new NewsSection(LIGHT_RED, "Culture", prefix() + "artiespettacolo", Logos.LOGO_CULTURE));
+        result.put("260", new NewsSection(GREEN, "Sport", prefix() + "sport", Logos.LOGO_ALTRISPORT));
         return result;
     }
 
