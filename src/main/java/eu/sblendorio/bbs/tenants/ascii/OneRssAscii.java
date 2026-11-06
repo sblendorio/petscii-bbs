@@ -42,6 +42,9 @@ public class OneRssAscii extends AsciiThread {
 
     protected int gap = 4;
 
+    // Printed between LOGO_SECTION and the section title
+    protected String titleSeparator = " - ";
+
     protected List<NewsFeed> posts = emptyList();
     protected int currentPage = 1;
 
@@ -313,7 +316,7 @@ public class OneRssAscii extends AsciiThread {
         cls();
         write(LOGO_SECTION);
         if (isNotBlank(section.title)) {
-            if (LOGO_SECTION != null && LOGO_SECTION.length != 0) print(" - ");
+            if (LOGO_SECTION != null && LOGO_SECTION.length != 0) print(titleSeparator);
             print(section.title);
         }
         println();
@@ -412,7 +415,7 @@ public class OneRssAscii extends AsciiThread {
         cls();
         write(LOGO_SECTION);
         if (isNotBlank(section.title)) {
-            if (LOGO_SECTION != null && LOGO_SECTION.length != 0) print(" - ");
+            if (LOGO_SECTION != null && LOGO_SECTION.length != 0) print(titleSeparator);
             print(section.title);
         }
         println();
