@@ -206,7 +206,7 @@ public class OneRssPetscii extends PetsciiThread {
             result.add(new NewsFeed(e.getPublishedDate(),
                 e.getTitle().replace("\u00a0", " "),
                 getArticleBody(e),
-                e.getUri(),
+                StringUtils.defaultIfBlank(e.getLink(), e.getUri()),
                 getAuthor(e)
             ));
         return result;

@@ -131,7 +131,7 @@ public class MenuPrestelWithEcho extends PrestelThread {
                         bytes(11, 11, 13, 10, 32, 32, 32, 32, 32, 32, 13, 10, 11)
                 );
                 else if ("3".equals(choice)) subThread = new OneRssPoliticoAscii(io);
-                else if ("4".equals(choice)) subThread = new OneRssAJPlusAscii(io);
+                else if ("4".equals(choice)) subThread = new OneRssAlJazeeraAscii(io);
                 else if ("5".equals(choice)) subThread = new OneRssFoxNewsAscii(io);
                 else if ("6".equals(choice)) subThread = new IndieRetroNewsAscii(io);
                 else if ("7".equals(choice)) subThread = new VcfedAscii(io);

@@ -251,7 +251,7 @@ public class Menu64 extends PetsciiThread {
                     case '1' -> launch(new LiteCnnPetscii()); //launch(new CnnPetscii());
                     case '2' -> launch(new BbcPetscii());
                     case '3' -> launch(new OneRssPoliticoPetscii());
-                    case '4' -> launch(new OneRssAJPlusPetscii());
+                    case '4' -> launch(new OneRssAlJazeeraPetscii());
                     case '5' -> launch(new OneRssFoxnewsPetscii());
                     case '6' -> launch(new WiredCom());
                     case '7' -> launch(new Vcfed());

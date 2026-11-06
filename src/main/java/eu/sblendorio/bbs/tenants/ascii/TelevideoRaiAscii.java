@@ -5,7 +5,7 @@ import eu.sblendorio.bbs.core.BbsInputOutput;
 import eu.sblendorio.bbs.core.Hidden;
 import eu.sblendorio.bbs.core.PrestelInputOutput;
 import eu.sblendorio.bbs.core.Utils;
-import eu.sblendorio.bbs.tenants.mixed.RaiNewsArticles;
+import eu.sblendorio.bbs.tenants.mixed.ArticleTexts;
 import static eu.sblendorio.bbs.core.Utils.bytes;
 import java.nio.charset.StandardCharsets;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
@@ -65,6 +65,7 @@ public class TelevideoRaiAscii extends RssAscii {
     }
 
     private static final int ARTICLE_MAX_CHARS = 4000;
+    private static final String RAINEWS_PARAGRAPHS = ".article__content .article__content__unit--text p";
 
     // Televideo RSS feeds (servizitelevideo.rai.it/televideo/pub/rssNNN.xml) were dismissed in Nov 2026:
     // sections now come from the RaiNews feeds, https://www.rainews.it/rss/<thematic area>
@@ -91,7 +92,7 @@ public class TelevideoRaiAscii extends RssAscii {
     @Override
     protected Map<String, String> articleTexts(NewsSection section, List<NewsFeed> feeds) {
         return section.url.startsWith(prefix())
-                ? RaiNewsArticles.fetchTexts(feeds.stream().map(feed -> feed.uri).toList(), ARTICLE_MAX_CHARS)
+                ? ArticleTexts.fetchTexts(feeds.stream().map(feed -> feed.uri).toList(), RAINEWS_PARAGRAPHS, ARTICLE_MAX_CHARS)
                 : Map.of();
     }
 

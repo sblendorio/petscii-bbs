@@ -98,7 +98,7 @@ public class MenuMinitelWithEcho extends MinitelThread {
                             bytes(31, 64+22, 64+2, 0x1b, 0x54, 0x1b, 0x47, 0x1b, 0x5c, 32, 32, 32, 32, 32, 32, 31, 64+22, 64+2 ,0x1b, 0x54, 0x1b, 0x47)
                     );
                     case "3" -> new OneRssPoliticoMinitel();
-                    case "4" -> new OneRssAJPlusAscii(io);
+                    case "4" -> new OneRssAlJazeeraAscii(io);
                     case "5" -> new OneRssFoxNewsAscii(io);
                     case "6" -> new WiredComMinitel();
                     case "7" -> new VcfedAscii(io);

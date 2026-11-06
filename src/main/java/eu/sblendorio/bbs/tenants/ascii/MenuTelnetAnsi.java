@@ -142,7 +142,7 @@ public class MenuTelnetAnsi extends MenuTelnetPureAscii {
                             null
                     );
                     case "3" -> new OneRssPoliticoAscii();
-                    case "4" -> new OneRssAJPlusAscii();
+                    case "4" -> new OneRssAlJazeeraAscii();
                     case "5" -> new OneRssFoxNewsAscii();
                     case "6" -> new WiredComAscii();
                     case "7" -> new VcfedAscii();

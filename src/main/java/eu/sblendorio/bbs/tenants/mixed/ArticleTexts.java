@@ -21,25 +21,29 @@ import org.jsoup.nodes.Element;
 
 import static java.util.stream.Collectors.joining;
 
-// Text of RaiNews articles, downloaded from the <link> of the RSS items
-public class RaiNewsArticles {
+// Text of news articles, downloaded from the <link> of RSS items and taken from the paragraphs matched by a CSS selector
+public class ArticleTexts {
 
     private static final String AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
     private static final Duration TIMEOUT = Duration.ofSeconds(5);
     private static final long CACHE_TTL_MILLIS = Duration.ofMinutes(15).toMillis();
     private static final String PARAGRAPH_BREAK = "<br><br>";
+    private static final Pattern INVISIBLE_CHARS = Pattern.compile("[\u200b-\u200f\u2060\ufeff]");
     private static final Pattern SENTENCE_END = Pattern.compile("[.!?…][\"»”’)]*(?=\\s|$)");
 
     private record CachedParagraphs(List<String> paragraphs, long expiresAt) {}
 
     private static final Map<String, CachedParagraphs> CACHE = new ConcurrentHashMap<>();
 
-    private RaiNewsArticles() {
+    public static final int NO_LIMIT = Integer.MAX_VALUE;
+
+    private ArticleTexts() {
     }
 
     // Downloads the article pages in parallel and returns their text, keyed by link, as paragraphs separated by <br><br>
-    // and cut at a sentence end within about maxChars. Links that fail, time out or have no text are missing from the result
-    public static Map<String, String> fetchTexts(Collection<String> links, int maxChars) {
+    // and cut at a sentence end within about maxChars (NO_LIMIT keeps it whole). Links that fail, time out or have no
+    // text are missing from the result
+    public static Map<String, String> fetchTexts(Collection<String> links, String paragraphSelector, int maxChars) {
         final long now = System.currentTimeMillis();
         CACHE.values().removeIf(cached -> cached.expiresAt() < now);
 
@@ -67,7 +71,7 @@ public class RaiNewsArticles {
                         .build();
                 // null = download failed, not cached; an empty list (page without text, e.g. a video) is cached too
                 pending.put(link, client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                        .thenApply(response -> response.statusCode() == 200 ? extractParagraphs(response.body()) : null)
+                        .thenApply(response -> response.statusCode() == 200 ? extractParagraphs(response.body(), paragraphSelector) : null)
                         .exceptionally(e -> null));
             }
             pending.forEach((link, future) -> {
@@ -87,9 +91,10 @@ public class RaiNewsArticles {
         return result;
     }
 
-    static List<String> extractParagraphs(String html) {
-        return Jsoup.parse(html).select(".article__content .article__content__unit--text p").stream()
+    static List<String> extractParagraphs(String html, String paragraphSelector) {
+        return Jsoup.parse(html).select(paragraphSelector).stream()
                 .map(Element::text)
+                .map(text -> INVISIBLE_CHARS.matcher(text).replaceAll(""))
                 .map(StringUtils::trim)
                 .filter(StringUtils::isNotBlank)
                 .toList();

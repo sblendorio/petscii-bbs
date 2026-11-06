@@ -1,7 +1,7 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
 import eu.sblendorio.bbs.core.Hidden;
-import eu.sblendorio.bbs.tenants.mixed.RaiNewsArticles;
+import eu.sblendorio.bbs.tenants.mixed.ArticleTexts;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,7 +36,7 @@ public class TelevideoRaiPetscii extends RssPetscii {
     @Override
     protected Map<String, String> articleTexts(NewsSection section, List<NewsFeed> feeds) {
         return section.url.startsWith(prefix())
-                ? RaiNewsArticles.fetchTexts(feeds.stream().map(feed -> feed.uri).toList(), ARTICLE_MAX_CHARS)
+                ? ArticleTexts.fetchTexts(feeds.stream().map(feed -> feed.uri).toList(), RAINEWS_PARAGRAPHS, ARTICLE_MAX_CHARS)
                 : Map.of();
     }
 
@@ -51,6 +51,7 @@ public class TelevideoRaiPetscii extends RssPetscii {
     }
 
     private static final int ARTICLE_MAX_CHARS = 4000;
+    private static final String RAINEWS_PARAGRAPHS = ".article__content .article__content__unit--text p";
 
     // Televideo RSS feeds (servizitelevideo.rai.it/televideo/pub/rssNNN.xml) were dismissed in Nov 2026:
     // sections now come from the RaiNews feeds, https://www.rainews.it/rss/<thematic area>
