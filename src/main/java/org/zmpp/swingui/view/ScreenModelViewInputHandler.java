@@ -92,9 +92,8 @@ public class ScreenModelViewInputHandler implements KeyListener, ChangeListener 
     }
 
     private boolean isCommandDown(KeyEvent e) {
-        int modifiers = e.getModifiers();
-        boolean appleCmd = ((modifiers & 0x4) == 4);
-        return (appleCmd || e.isControlDown());
+        // Meta is the Command key on macOS
+        return e.isMetaDown() || e.isControlDown();
     }
 
     private boolean atOrBeforeEditStart() {
