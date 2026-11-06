@@ -1,7 +1,7 @@
 package eu.sblendorio.bbs.games;
 
 import eu.sblendorio.bbs.core.BbsThread;
-import eu.sblendorio.bbs.core.JsEngine;
+import eu.sblendorio.bbs.tenants.mixed.JsEngine;
 import eu.sblendorio.bbs.core.Utils;
 
 import java.io.File;

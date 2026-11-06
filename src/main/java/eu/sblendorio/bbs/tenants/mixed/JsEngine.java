@@ -1,4 +1,4 @@
-package eu.sblendorio.bbs.core;
+package eu.sblendorio.bbs.tenants.mixed;
 
 import com.oracle.truffle.js.scriptengine.GraalJSScriptEngine;
 import org.graalvm.polyglot.Context;
