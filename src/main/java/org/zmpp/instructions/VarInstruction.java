@@ -402,7 +402,7 @@ public class VarInstruction extends AbstractInstruction {
     if (getNumOperands() == 4) {
       routine = getUnsignedValue(3);
     }
-    LOG.info(String.format("@sound_effect n: %d, fx: %d, vol: %d, rep: %d, " +
+    LOG.fine(String.format("@sound_effect n: %d, fx: %d, vol: %d, rep: %d, " +
                            "routine: $%04x\n", soundnum, effect, volume,
                            repeats, routine));
     // In version 3 repeats is always 1

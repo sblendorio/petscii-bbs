@@ -2,7 +2,6 @@ package eu.sblendorio.bbs.tenants.ascii;
 
 import eu.sblendorio.bbs.core.BbsInputOutput;
 import eu.sblendorio.bbs.core.Hidden;
-import org.zmpp.vm.Input;
 
 import java.nio.charset.StandardCharsets;
 
