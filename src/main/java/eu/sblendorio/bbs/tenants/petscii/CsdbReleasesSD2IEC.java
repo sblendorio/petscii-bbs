@@ -32,6 +32,7 @@ import static java.lang.Integer.compare;
 import static java.lang.Integer.signum;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -434,9 +435,12 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
     }
 
     private static List<NewsFeed> getFeeds(String urlString) throws IOException, FeedException {
-        URL url = toUrl(urlString);
+        final URLConnection conn = toUrl(urlString).openConnection();
         SyndFeedInput input = new SyndFeedInput();
-        SyndFeed feed = input.build(new XmlReader(url));
+        SyndFeed feed;
+        try (XmlReader reader = new XmlReader(conn.getInputStream(), conn.getContentType(), true)) {
+            feed = input.build(reader);
+        }
         List<CsdbReleasesSD2IEC.NewsFeed> result = new LinkedList<>();
         List<SyndEntry> entries = feed.getEntries();
         for (SyndEntry e : entries)

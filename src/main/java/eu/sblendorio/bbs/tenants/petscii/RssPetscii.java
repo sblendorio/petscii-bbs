@@ -38,6 +38,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.text.WordUtils;
+import java.net.URLConnection;
 import static eu.sblendorio.bbs.core.Utils.toUrl;
 
 @Hidden
@@ -148,7 +149,10 @@ public abstract class RssPetscii extends PetsciiThread {
     // (RaiNews sends "&lt;rss ...&gt;"), the body is unescaped once and parsed again
     private static SyndFeed readFeed(String urlString) throws IOException, FeedException {
         try {
-            return new SyndFeedInput().build(new XmlReader(toUrl(urlString)));
+            final URLConnection conn = toUrl(urlString).openConnection();
+            try (XmlReader reader = new XmlReader(conn.getInputStream(), conn.getContentType(), true)) {
+                return new SyndFeedInput().build(reader);
+            }
         } catch (FeedException e) {
             final String body = httpGet(urlString, FEED_USER_AGENT);
             if (body == null || !body.trim().startsWith("&lt;")) {
