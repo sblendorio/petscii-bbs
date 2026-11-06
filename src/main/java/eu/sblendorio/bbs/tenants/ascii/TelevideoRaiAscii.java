@@ -64,7 +64,7 @@ public class TelevideoRaiAscii extends RssAscii {
         return "https://www.rainews.it/rss/";
     }
 
-    private static final int ARTICLE_MAX_CHARS = 800;
+    private static final int ARTICLE_MAX_CHARS = 4000;
 
     // Televideo RSS feeds (servizitelevideo.rai.it/televideo/pub/rssNNN.xml) were dismissed in Nov 2026:
     // sections now come from the RaiNews feeds, https://www.rainews.it/rss/<thematic area>
