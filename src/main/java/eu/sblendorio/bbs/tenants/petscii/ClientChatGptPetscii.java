@@ -1,6 +1,8 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import eu.sblendorio.bbs.core.HtmlUtils;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.tenants.CommonConstants;
@@ -188,10 +190,10 @@ public class ClientChatGptPetscii extends PetsciiThread {
     }
 
     public String parseAssistantResponse(String jsonResponse) {
-        Gson gson = new Gson();
-        Map<String, Object> response = gson.fromJson(jsonResponse, Map.class);
+        JsonObject response = JsonParser.parseString(jsonResponse).getAsJsonObject();
         try {
-            return ((Map) ((List<Map>) response.get("choices")).get(0).get("message")).get("content").toString();
+            return response.getAsJsonArray("choices").get(0).getAsJsonObject()
+                    .getAsJsonObject("message").get("content").getAsString();
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("model: '{}', IP: '{}', email: '{}', exception: '{}', jsonResponse: '{}'",

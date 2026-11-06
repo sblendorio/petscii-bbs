@@ -68,6 +68,7 @@ public class Parameter {
 	public String getName() {
 		return name;
 	}
+	@SuppressWarnings("unchecked")
 	public List<String> getStringListValue() {
 		if (value == null) {
 			value = new ArrayList<String>();

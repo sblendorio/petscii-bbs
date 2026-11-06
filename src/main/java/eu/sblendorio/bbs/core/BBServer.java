@@ -307,11 +307,11 @@ public class BBServer {
         }
         for (ClassPath.ClassInfo classInfo : classes) {
             try {
-                Class c = classInfo.load();
+                Class<?> c = classInfo.load();
                 if (!Modifier.isAbstract(c.getModifiers())
                         && BbsThread.class.isAssignableFrom(c)
                         && !c.isAnnotationPresent(Hidden.class))
-                    result.add(c);
+                    result.add(c.asSubclass(BbsThread.class));
             } catch (LinkageError e) {
                 // SKIP
             }
@@ -331,11 +331,11 @@ public class BBServer {
         }
         for (ClassPath.ClassInfo classInfo : classes) {
             try {
-                Class c = classInfo.load();
+                Class<?> c = classInfo.load();
                 if (!Modifier.isAbstract(c.getModifiers())
                         && BbsThread.class.isAssignableFrom(c)
                         && !c.isAnnotationPresent(Hidden.class))
-                    map.put(c.getSimpleName().toLowerCase(), c);
+                    map.put(c.getSimpleName().toLowerCase(), c.asSubclass(BbsThread.class));
             } catch (LinkageError e) {
                 // SKIP
             }

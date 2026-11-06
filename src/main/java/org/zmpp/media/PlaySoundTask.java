@@ -70,6 +70,7 @@ public class PlaySoundTask implements Runnable, SoundStopListener {
    * @param routine the interrupt routine
    * @deprecated interrupts should be implemented differently
    */
+  @Deprecated
   public PlaySoundTask(int resourceNum, SoundEffect sound, int volume,
       int repeats, Interruptable interruptable, int routine) {
     this.resourceNum = resourceNum;
