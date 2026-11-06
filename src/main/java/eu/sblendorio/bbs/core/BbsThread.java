@@ -16,6 +16,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.commons.lang3.StringUtils.*;
+import static eu.sblendorio.bbs.core.Utils.resolveUrl;
+import static eu.sblendorio.bbs.core.Utils.toUrl;
 
 public abstract class BbsThread extends Thread {
 
@@ -576,7 +578,7 @@ public abstract class BbsThread extends Thread {
     }
 
     public static String httpGet(String url, String userAgent) throws IOException {
-        final URL object=new URL(url);
+        final URL object = toUrl(url);
         HttpURLConnection conn = (HttpURLConnection) object.openConnection();
         conn.setRequestProperty("User-Agent", defaultString(userAgent));
         conn.setDoOutput(true);
@@ -593,7 +595,7 @@ public abstract class BbsThread extends Thread {
         }
         if (responseCode >= 301 && responseCode <= 399) {
             final String newLocation = conn.getHeaderField("Location");
-            return httpGet(newLocation, userAgent);
+            return httpGet(resolveUrl(object, newLocation).toString(), userAgent);
         } else if (responseCode >= 200 && responseCode <= 299) {
             sb = new StringBuilder();
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), UTF_8));
@@ -636,7 +638,7 @@ public abstract class BbsThread extends Thread {
             final String filename = isEmpty(contentPart) ? url.toString().replaceAll("(?is)^.*/([^\\?&#]+).*$","$1") : contentPart;
             if (responseCode >= 301 && responseCode <= 399) {
                 final String newLocation = conn.getHeaderField("Location");
-                return download(new URL(newLocation), userAgent);
+                return download(resolveUrl(url, newLocation), userAgent);
             } else if (responseCode >= 200 && responseCode <= 299) {
                 conn.connect();
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();

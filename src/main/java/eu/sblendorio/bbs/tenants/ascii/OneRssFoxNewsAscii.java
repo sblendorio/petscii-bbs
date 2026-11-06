@@ -25,7 +25,7 @@ public class OneRssFoxNewsAscii extends OneRssAscii {
         this.sections.put("1", new NewsSection("General news", "https://moxie.foxnews.com/google-publisher/latest.xml"));
         this.sections.put("2", new NewsSection("World", "https://moxie.foxnews.com/google-publisher/world.xml"));
         this.sections.put("3", new NewsSection("Politics", "https://moxie.foxnews.com/google-publisher/politics.xml"));
-        this.sections.put("4", new NewsSection("Science", " https://moxie.foxnews.com/google-publisher/science.xml"));
+        this.sections.put("4", new NewsSection("Science", "https://moxie.foxnews.com/google-publisher/science.xml"));
         this.sections.put("5", new NewsSection("Health", "https://moxie.foxnews.com/google-publisher/health.xml"));
         this.sections.put("6", new NewsSection("Sports", "https://moxie.foxnews.com/google-publisher/sports.xml"));
         this.sections.put("7", new NewsSection("Travel", "https://moxie.foxnews.com/google-publisher/travel.xml"));

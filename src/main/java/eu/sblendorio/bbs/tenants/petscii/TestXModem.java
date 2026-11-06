@@ -3,8 +3,8 @@ package eu.sblendorio.bbs.tenants.petscii;
 import eu.sblendorio.bbs.core.*;
 
 import eu.sblendorio.bbs.core.PetsciiThread;
-import java.net.URL;
 import java.nio.file.*;
+import static eu.sblendorio.bbs.core.Utils.toUrl;
 
 public class TestXModem extends PetsciiThread {
 
@@ -13,7 +13,7 @@ public class TestXModem extends PetsciiThread {
         println("Press any key");
         readKey();
         log("Start download. calculating size.");
-        byte[] bytes = downloadFile(new URL("https://server.com/file.prg"));
+        byte[] bytes = downloadFile(toUrl("https://server.com/file.prg"));
         log("Size = " + bytes.length);
 
         // Path path = Paths.get("/tmp/x1");

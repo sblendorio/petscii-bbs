@@ -6,6 +6,8 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -149,5 +151,50 @@ public class Utils {
 
     private Utils() {
         throw new IllegalStateException("Utility class");
+    }
+
+    // Characters accepted by the deprecated new URL(String) but rejected by java.net.URI
+    private static final String URL_CHARS_TO_ENCODE = " \"<>\\^`{|}";
+
+    // Replacement for the deprecated new URL(String): java.net.URI is stricter, so the string is trimmed and the
+    // characters that new URL accepted but URI rejects (spaces, quotes, braces, ...) are percent-encoded.
+    // Like new URL, it throws MalformedURLException for strings that are not absolute URLs
+    public static URL toUrl(String spec) throws MalformedURLException {
+        try {
+            return toUri(spec).toURL();
+        } catch (IllegalArgumentException e) {
+            throw malformed(spec, e);
+        }
+    }
+
+    // URL of an HTTP redirect: the Location header may be relative to the URL that answered
+    public static URL resolveUrl(URL base, String location) throws MalformedURLException {
+        // URI.resolve follows RFC 2396 and drops the last path segment for query-only references (RFC 3986 keeps it)
+        if (location != null && location.trim().startsWith("?"))
+            return toUrl(base.toString().replaceAll("[?#].*$", "") + location.trim());
+        try {
+            return toUri(base.toString()).resolve(toUri(location)).toURL();
+        } catch (IllegalArgumentException e) {
+            throw malformed(location, e);
+        }
+    }
+
+    private static URI toUri(String spec) throws MalformedURLException {
+        if (spec == null)
+            throw new MalformedURLException("null URL");
+        final StringBuilder result = new StringBuilder();
+        for (char c : spec.trim().toCharArray())
+            result.append(c < 0x20 || c == 0x7f || URL_CHARS_TO_ENCODE.indexOf(c) >= 0 ? String.format("%%%02X", (int) c) : String.valueOf(c));
+        try {
+            return new URI(result.toString());
+        } catch (URISyntaxException e) {
+            throw malformed(spec, e);
+        }
+    }
+
+    private static MalformedURLException malformed(String spec, Exception cause) {
+        final MalformedURLException e = new MalformedURLException(cause.getMessage() + ": " + spec);
+        e.initCause(cause);
+        return e;
     }
 }

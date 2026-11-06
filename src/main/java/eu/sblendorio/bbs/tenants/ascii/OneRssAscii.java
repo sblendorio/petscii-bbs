@@ -13,7 +13,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.WordUtils;
 
 import java.io.StringReader;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -194,7 +193,6 @@ public class OneRssAscii extends AsciiThread {
     }
 
     public List<NewsFeed> getFeeds(String urlString) throws Exception {
-        URL url = new URL(urlString);
         SyndFeedInput input = new SyndFeedInput();
         SyndFeed feed;
         // try {

@@ -2,9 +2,9 @@ package eu.sblendorio.bbs.tenants.ascii;
 
 import eu.sblendorio.bbs.core.PetsciiThread;
 import eu.sblendorio.bbs.core.XModem;
-import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import static eu.sblendorio.bbs.core.Utils.toUrl;
 
 public class TestXModemAscii extends PetsciiThread {
 
@@ -15,7 +15,7 @@ public class TestXModemAscii extends PetsciiThread {
         resetInput();
         readKey();
         log("Start download. calculating size.");
-        byte[] bytes = downloadFile(new URL("https://raw.githubusercontent.com/sblendorio/hanoi-m10/master/hanoi.ba"));
+        byte[] bytes = downloadFile(toUrl("https://raw.githubusercontent.com/sblendorio/hanoi-m10/master/hanoi.ba"));
         log("Size = " + bytes.length);
 
         //Path path = Paths.get("/tmp/x1");

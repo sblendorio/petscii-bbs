@@ -42,6 +42,7 @@ import static java.util.Optional.ofNullable;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.*;
+import static eu.sblendorio.bbs.core.Utils.toUrl;
 
 @Hidden
 public class ChatA1 extends AsciiThread {
@@ -375,7 +376,7 @@ public class ChatA1 extends AsciiThread {
     private String shortenUrl(String firstUrl) throws IOException, ParseException {
         final String urlShorter = "https://sblendorio.eu/shorten.php?url=" +
                 URLEncoder.encode(firstUrl, UTF_8.toString());
-        URL shortService = new URL(urlShorter);
+        URL shortService = toUrl(urlShorter);
         URLConnection conn = shortService.openConnection();
         InputStream inputStream = conn.getInputStream();
         String result = new BufferedReader(
@@ -387,7 +388,7 @@ public class ChatA1 extends AsciiThread {
 
     private String shortenUrlCuttly(String firstUrl) throws IOException, ParseException {
         String token = defaultString(getProperty("cutt_key", getenv("cutt_key")), "DUMMY");
-        URL shortService = new URL("https://cutt.ly/api/api.php?key=" + token + "&short=" +
+        URL shortService = toUrl("https://cutt.ly/api/api.php?key=" + token + "&short=" +
                 URLEncoder.encode(firstUrl, UTF_8.toString()));
         URLConnection conn = shortService.openConnection();
         InputStream inputStream = conn.getInputStream();

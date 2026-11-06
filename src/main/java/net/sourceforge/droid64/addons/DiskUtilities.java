@@ -6,7 +6,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,6 +23,7 @@ import net.sourceforge.droid64.d64.DiskImage;
 import net.sourceforge.droid64.db.DiskFile;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
+import static eu.sblendorio.bbs.core.Utils.toUrl;
 
 public class DiskUtilities {
 
@@ -39,7 +39,7 @@ public class DiskUtilities {
     }
 
     public static byte[] getPrgContentFromUrl(String urlString) throws IOException, CbmException {
-        DownloadData file = download(new URL(urlString));
+        DownloadData file = download(toUrl(urlString));
         return getPrgContentFromFile(file);
     }
 

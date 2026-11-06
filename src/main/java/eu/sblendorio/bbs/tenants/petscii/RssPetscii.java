@@ -20,7 +20,6 @@ import static eu.sblendorio.bbs.core.PetsciiKeys.UP;
 import eu.sblendorio.bbs.core.PetsciiThread;
 import java.io.IOException;
 import java.io.StringReader;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -39,6 +38,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.text.WordUtils;
+import static eu.sblendorio.bbs.core.Utils.toUrl;
 
 @Hidden
 public abstract class RssPetscii extends PetsciiThread {
@@ -148,7 +148,7 @@ public abstract class RssPetscii extends PetsciiThread {
     // (RaiNews sends "&lt;rss ...&gt;"), the body is unescaped once and parsed again
     private static SyndFeed readFeed(String urlString) throws IOException, FeedException {
         try {
-            return new SyndFeedInput().build(new XmlReader(new URL(urlString)));
+            return new SyndFeedInput().build(new XmlReader(toUrl(urlString)));
         } catch (FeedException e) {
             final String body = httpGet(urlString, FEED_USER_AGENT);
             if (body == null || !body.trim().startsWith("&lt;")) {

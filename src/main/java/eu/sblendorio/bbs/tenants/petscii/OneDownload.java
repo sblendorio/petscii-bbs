@@ -18,6 +18,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
+import static eu.sblendorio.bbs.core.Utils.toUrl;
 
 public class OneDownload extends PetsciiThread {
 
@@ -117,7 +118,7 @@ public class OneDownload extends PetsciiThread {
         cls();
         drawLogo();
         waitOn();
-        DownloadData file = download(new URL(entry.url));
+        DownloadData file = download(toUrl(entry.url));
         waitOff();
 
         println("Download file:");

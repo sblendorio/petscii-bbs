@@ -60,6 +60,7 @@ import static org.apache.commons.lang3.StringUtils.repeat;
 import static org.apache.commons.lang3.StringUtils.trim;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import org.apache.commons.text.WordUtils;
+import static eu.sblendorio.bbs.core.Utils.toUrl;
 
 @Hidden
 public class CsdbReleasesSD2IEC extends PetsciiThread {
@@ -244,7 +245,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
         }
         final String releasedBy = p.releasedBy;
         final String releaseUri = p.releaseUri;
-        final String url = isEmpty(p.links) ? findDownloadLink(new URL(p.releaseUri)) : p.links.get(0);
+        final String url = isEmpty(p.links) ? findDownloadLink(toUrl(p.releaseUri)) : p.links.get(0);
         final String title = p.title;
         final String type = p.type;
         final String id   = p.id;
@@ -252,7 +253,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
 
 
         //Get Content File and get fileName
-        DownloadData file = PetsciiThread.download(new URL(url));
+        DownloadData file = PetsciiThread.download(toUrl(url));
         String fileName = file.getFilename();
         byte[] content = null;
 
@@ -433,7 +434,7 @@ public class CsdbReleasesSD2IEC extends PetsciiThread {
     }
 
     private static List<NewsFeed> getFeeds(String urlString) throws IOException, FeedException {
-        URL url = new URL(urlString);
+        URL url = toUrl(urlString);
         SyndFeedInput input = new SyndFeedInput();
         SyndFeed feed = input.build(new XmlReader(url));
         List<CsdbReleasesSD2IEC.NewsFeed> result = new LinkedList<>();

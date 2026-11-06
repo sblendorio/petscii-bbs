@@ -20,11 +20,12 @@ import java.util.List;
 import java.util.Map;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static eu.sblendorio.bbs.core.Utils.toUrl;
 
 public class ImdbCommons {
 
     public static String httpGet(String url) throws IOException {
-        final URL object=new URL(url);
+        final URL object = toUrl(url);
         HttpURLConnection conn = (HttpURLConnection) object.openConnection();
         conn.setRequestProperty("User-Agent", "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36\"");
         conn.setRequestProperty("Accept", "application/json, text/plain, */*");
