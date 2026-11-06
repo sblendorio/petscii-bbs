@@ -27,7 +27,6 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
-import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
@@ -36,6 +35,7 @@ import static org.apache.commons.lang3.StringUtils.repeat;
 import static org.apache.commons.lang3.StringUtils.trim;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import org.apache.commons.text.WordUtils;
+import org.apache.commons.lang3.Strings;
 
 public class PrivateMessagesAscii extends AsciiThread {
 
@@ -149,13 +149,13 @@ public class PrivateMessagesAscii extends AsciiThread {
                 username = readLine();
                 username = lowerCase(username);
                 if (isBlank(username) || ".".equals(username)) return;
-                if (equalsIgnoreCase(username, "p")) {
+                if (Strings.CI.equals(username, "p")) {
                     showPrivacyPolicy();
                     newline();
                     newline();
                     println("Enter 'P' as USERID for privacy policy");
                     newline();
-                } else if (equalsIgnoreCase(username, "new")) {
+                } else if (Strings.CI.equals(username, "new")) {
                     if (createNewUser()) {
                         println("User created successfully.");
                     } else {
@@ -163,7 +163,7 @@ public class PrivateMessagesAscii extends AsciiThread {
                     }
                     newline();
                 }
-            } while (equalsIgnoreCase(username, "new") || equalsIgnoreCase(username, "p"));
+            } while (Strings.CI.equals(username, "new") || Strings.CI.equals(username, "p"));
             print("PASSWORD: ");
             flush(); resetInput(); password = readPassword(); password = lowerCase(password);
             user = getUser(username, password);

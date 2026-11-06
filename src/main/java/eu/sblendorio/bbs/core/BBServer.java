@@ -50,7 +50,7 @@ public class BBServer {
     public static Set<String> diagIpSet = initDiagIpSet();
 
     public static Set<String> initDiagIpSet() {
-        String ipSetString = defaultString(getenv("DIAG_IP_SET"), getProperty("DIAG_IP_SET", EMPTY)).replace(" ", "");
+        String ipSetString = Objects.toString(getenv("DIAG_IP_SET"), getProperty("DIAG_IP_SET", EMPTY)).replace(" ", "");
         if (isBlank(ipSetString)) return emptySet();
         return new HashSet<>(asList(ipSetString.split(",")));
     }
@@ -61,7 +61,7 @@ public class BBServer {
 
         initDiagIpSet();
 
-        Thread.currentThread().setName("BBSMain-" + Thread.currentThread().getId());
+        Thread.currentThread().setName("BBSMain-" + Thread.currentThread().threadId());
         logger.info("The BBS {} is running: timeout = {} millis" + (servicePort != 0 ? ", serviceport = {}" : ""),
                     endPoints.toString(),
                     timeout,
@@ -71,7 +71,7 @@ public class BBServer {
             logger.info("Starting {}:{}", endPoint.bbs.getSimpleName(), endPoint.port);
             Thread.ofVirtual().unstarted(() -> {
             // new Thread(() -> {
-                Thread.currentThread().setName("BBS Dispatcher-" + Thread.currentThread().getId());
+                Thread.currentThread().setName("BBS Dispatcher-" + Thread.currentThread().threadId());
                 try (ServerSocket listener = new ServerSocket(endPoint.port)) {
                     listener.setSoTimeout(0);
                     while (true) {
@@ -110,14 +110,14 @@ public class BBServer {
         if (servicePort != 0)
             // Thread.ofVirtual().unstarted(() -> {
             new Thread(() -> {
-                Thread.currentThread().setName("Diagnostic Dispatcher-" + Thread.currentThread().getId());
+                Thread.currentThread().setName("Diagnostic Dispatcher-" + Thread.currentThread().threadId());
                 try (ServerSocket listener = new ServerSocket(servicePort)) {
                     listener.setSoTimeout(0);
                     while (true) {
                         Socket socket = listener.accept();
                         // Thread.ofVirtual().unstarted(() -> {
                         new Thread(() -> {
-                            Thread.currentThread().setName("Diagnostic-" + Thread.currentThread().getId());
+                            Thread.currentThread().setName("Diagnostic-" + Thread.currentThread().threadId());
                             try {
                                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                                 out.println(getConfigAsString());
@@ -262,13 +262,13 @@ public class BBServer {
                   "--------------------", "----------------------------------------",
                   "-----------------------------------", "---------------", "-------", "----", "-----", "-----")
             + "\n"
-            + Thread.getAllStackTraces().keySet().stream().sorted(comparingLong(Thread::getId)).map(t -> {
+            + Thread.getAllStackTraces().keySet().stream().sorted(comparingLong(Thread::threadId)).map(t -> {
                     final Class clientClass = (t instanceof BbsThread thread) ? thread.getClientClass() : null;
                     final String clientStr = clientClass == null ? null : clientClass.getSimpleName();
                     final Integer serverPort = (t instanceof BbsThread thread) ? thread.serverPort : null;
                     final Long clientId = (t instanceof BbsThread thread) ? thread.clientId : null;
                     return String.format(THREAD_ROW_FORMAT,
-                        t.getId(),
+                        t.threadId(),
                         substring(t.getClass().getSimpleName()+"[" + t.getName()+"] ", 0, 40),
                         substring(clientStr != null ? clientStr + ":" + serverPort + " (#"+clientId+")" : "", 0, 35),
                         t.getState(),

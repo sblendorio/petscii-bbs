@@ -9,10 +9,10 @@ import org.json.simple.JSONObject;
 import java.net.URLEncoder;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Objects;
 
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
-import static org.apache.commons.lang3.StringUtils.defaultString;
 
 public class GeolocationCommons {
     private static Logger logger = LogManager.getLogger(GeolocationCommons.class);
@@ -57,7 +57,7 @@ public class GeolocationCommons {
         if ("127.0.0.1".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip))
             return StringUtils.EMPTY;
 
-        String apiKey = defaultString(getenv("GEOKEY"), getProperty("GEOKEY", "DUMMY"));
+        String apiKey = Objects.toString(getenv("GEOKEY"), getProperty("GEOKEY", "DUMMY"));
         if ("DUMMY".equalsIgnoreCase(apiKey))
             return StringUtils.EMPTY;
 

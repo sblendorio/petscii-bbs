@@ -1,9 +1,8 @@
 package net.sourceforge.droid64.db;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.Strings;
 
 /**<pre style='font-family:sans-serif;'>
  * Created on 03.05.2018
@@ -51,7 +50,7 @@ public class Parameter {
 		}
 
 		Parameter that = (Parameter) obj;
-		if (!StringUtils.equals(name, that.name)) {
+		if (!Strings.CS.equals(name, that.name)) {
 			return false;
 		}
 		if (this.value == null || that.value == null) {

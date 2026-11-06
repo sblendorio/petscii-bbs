@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HexFormat;
 import java.util.List;
 import java.util.Set;
+import org.apache.commons.lang3.Strings;
 
 import static eu.sblendorio.bbs.core.HtmlUtils.utilHtmlClean;
 import static eu.sblendorio.bbs.core.HtmlUtils.utilHtmlDiacriticsToAscii;
@@ -430,8 +431,8 @@ public abstract class BbsInputOutput extends Reader {
             this.close();
             if (!ip.equals("127.0.0.1") && !ip.equals("0:0:0:0:0:0:0:1")
                     && !missingInput.contains("À+À/À,À0Ì©Ì¨À") // Facebook click on link (alt: "À+À/Ì©Ì¨À")
-                    && !containsIgnoreCase(missingInput,"PRINT") // copy&paste BASIC code
-                    && !containsIgnoreCase(missingInput,"GOTO") // copy&paste BASIC code
+                    && !Strings.CI.contains(missingInput,"PRINT") // copy&paste BASIC code
+                    && !Strings.CI.contains(missingInput,"GOTO") // copy&paste BASIC code
             )
                 logger.info("CATCH DDOS " + ip);
             throw new BbsIOException("SEVERE. BbsIOException::resetInput " + stringIp + ", potential DoS detected.");

@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
+import java.util.Objects;
 
 import static eu.sblendorio.bbs.core.BlockGraphicsMinitel.stringToQr;
 import static eu.sblendorio.bbs.core.Utils.*;
@@ -387,7 +388,7 @@ public class ChatA1 extends AsciiThread {
     }
 
     private String shortenUrlCuttly(String firstUrl) throws IOException, ParseException {
-        String token = defaultString(getProperty("cutt_key", getenv("cutt_key")), "DUMMY");
+        String token = Objects.toString(getProperty("cutt_key", getenv("cutt_key")), "DUMMY");
         URL shortService = toUrl("https://cutt.ly/api/api.php?key=" + token + "&short=" +
                 URLEncoder.encode(firstUrl, UTF_8.toString()));
         URLConnection conn = shortService.openConnection();

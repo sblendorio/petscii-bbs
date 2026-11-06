@@ -30,7 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import static java.util.Optional.ofNullable;
-import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
+import static org.apache.commons.lang3.ObjectUtils.getIfNull;
 import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.substring;
@@ -250,7 +250,7 @@ public abstract class RssPetscii extends PetsciiThread {
 
     protected boolean displayText(String text, int pageRows, byte[] logo) throws IOException {
         cls();
-        write(defaultIfNull(logo, getLogo()));
+        write(getIfNull(logo, getLogo()));
         write(GREY3);
 
         String[] rows = wordWrap(text);

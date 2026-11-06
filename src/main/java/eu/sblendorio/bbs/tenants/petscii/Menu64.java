@@ -10,6 +10,7 @@ import org.apache.logging.log4j.util.TriConsumer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.*;
+import org.apache.commons.lang3.Strings;
 
 import static eu.sblendorio.bbs.core.BlockGraphicsPetscii.getRenderedMidres;
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
@@ -19,7 +20,6 @@ import static eu.sblendorio.bbs.tenants.mixed.GeolocationCommons.isItaly;
 import static eu.sblendorio.bbs.tenants.mixed.GeolocationCommons.isLocalhost;
 import static eu.sblendorio.bbs.tenants.mixed.HolidayCommons.*;
 import static org.apache.commons.lang3.StringUtils.repeat;
-import static org.apache.commons.lang3.StringUtils.startsWith;
 
 public class Menu64 extends PetsciiThread {
 
@@ -605,7 +605,7 @@ public class Menu64 extends PetsciiThread {
         }
         Collections.shuffle(files);
         String filename = files.get(0).toString();
-        if (startsWith(filename,"/")) filename = filename.substring(1);
+        if (Strings.CS.startsWith(filename,"/")) filename = filename.substring(1);
         for (int i=0; i<25; ++i) newline();
 
         write(UPPERCASE);

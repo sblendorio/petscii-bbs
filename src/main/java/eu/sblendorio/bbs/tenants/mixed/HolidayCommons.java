@@ -14,7 +14,6 @@ import static java.lang.Integer.valueOf;
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
 import static java.util.Calendar.*;
-import static org.apache.commons.lang3.StringUtils.defaultString;
 
 public class HolidayCommons {
 
@@ -29,7 +28,7 @@ public class HolidayCommons {
 
     public static int xmasNewYear() {
         return xmasNewYear(
-                defaultString(getenv("XMAS_START"), getProperty("XMAS_START", XMAS_START_DEFAULT))
+                Objects.toString(getenv("XMAS_START"), getProperty("XMAS_START", XMAS_START_DEFAULT))
                         .substring(0, 2),
                 Calendar.getInstance());
     }
@@ -48,8 +47,8 @@ public class HolidayCommons {
     }
 
     public static boolean isXmasTime() {
-        String xmasStartDef = defaultString(getenv("XMAS_START"), getProperty("XMAS_START", XMAS_START_DEFAULT));
-        String xmasEndDef = defaultString(getenv("XMAS_END"), getProperty("XMAS_END", XMAS_END_DEFAULT));
+        String xmasStartDef = Objects.toString(getenv("XMAS_START"), getProperty("XMAS_START", XMAS_START_DEFAULT));
+        String xmasEndDef = Objects.toString(getenv("XMAS_END"), getProperty("XMAS_END", XMAS_END_DEFAULT));
 
         return isXmasTime(
                 xmasStartDef,
@@ -59,8 +58,8 @@ public class HolidayCommons {
     }
 
     public static boolean isHalloweenTime() {
-        String startDef = defaultString(getenv("HALLOWEEN_START"), getProperty("HALLOWEEN_START", HALLOWEEN_START_DEFAULT));
-        String endDef = defaultString(getenv("HALLOWEEN_END"), getProperty("HALLOWEEN_END", HALLOWEEN_END_DEFAULT));
+        String startDef = Objects.toString(getenv("HALLOWEEN_START"), getProperty("HALLOWEEN_START", HALLOWEEN_START_DEFAULT));
+        String endDef = Objects.toString(getenv("HALLOWEEN_END"), getProperty("HALLOWEEN_END", HALLOWEEN_END_DEFAULT));
 
         return isIncluded(startDef, endDef, Calendar.getInstance());
     }

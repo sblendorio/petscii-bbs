@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
+import java.util.Objects;
 
 import static eu.sblendorio.bbs.core.PetsciiColors.*;
 import static eu.sblendorio.bbs.core.Utils.bytes;
@@ -464,7 +465,7 @@ public class Chat64 extends PetsciiThread {
     }
 
     private String shortenUrlCuttly(String firstUrl) throws IOException, ParseException {
-        String token = defaultString(getProperty("cutt_key", getenv("cutt_key")), "DUMMY");
+        String token = Objects.toString(getProperty("cutt_key", getenv("cutt_key")), "DUMMY");
         URL shortService = toUrl("https://cutt.ly/api/api.php?key=" + token + "&short=" +
             URLEncoder.encode(firstUrl, UTF_8.toString()));
         URLConnection conn = shortService.openConnection();

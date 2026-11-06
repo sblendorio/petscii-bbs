@@ -18,7 +18,6 @@ import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
-import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
@@ -49,6 +48,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
 import eu.sblendorio.bbs.core.PetsciiThread;
+import org.apache.commons.lang3.Strings;
 
 @Hidden
 public class UserLogon extends PetsciiThread {
@@ -151,7 +151,7 @@ public class UserLogon extends PetsciiThread {
                 username = readLine();
                 username = lowerCase(username);
                 if (isBlank(username) || ".".equals(username)) return;
-                if (equalsIgnoreCase(username, "p")) {
+                if (Strings.CI.equals(username, "p")) {
                     showPrivacyPolicy();
                     cls();
                     write(CASE_LOCK, LOWERCASE);
@@ -160,7 +160,7 @@ public class UserLogon extends PetsciiThread {
                     newline();
                     println("Enter 'P' as USERID for privacy policy");
                     newline();
-                } else if (equalsIgnoreCase(username, "new")) {
+                } else if (Strings.CI.equals(username, "new")) {
                     if (createNewUser()) {
                         write(GREEN); println("User created successfully.");
                     } else {
@@ -169,7 +169,7 @@ public class UserLogon extends PetsciiThread {
                     write(GREY3);
                     newline();
                 }
-            } while (equalsIgnoreCase(username, "new") || equalsIgnoreCase(username, "p"));
+            } while (Strings.CI.equals(username, "new") || Strings.CI.equals(username, "p"));
             print("PASSWORD: ");
             flush(); resetInput(); password = readPassword(); password = lowerCase(password);
             user = getUser(username, password);

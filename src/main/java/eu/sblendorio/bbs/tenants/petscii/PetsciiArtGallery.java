@@ -36,16 +36,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
+import static org.apache.commons.lang3.ObjectUtils.getIfNull;
 import static org.apache.commons.lang3.ObjectUtils.notEqual;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.lowerCase;
-import static org.apache.commons.lang3.StringUtils.startsWith;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.apache.commons.lang3.Strings;
 
 @Hidden
 public class PetsciiArtGallery extends PetsciiThread {
@@ -114,7 +114,7 @@ public class PetsciiArtGallery extends PetsciiThread {
         while (i < size) {
             write(CLR, RETURN, CLR, UPPERCASE, REVOFF);
             String filename = drawings.get(i).toString();
-            if (startsWith(filename,"/")) filename = filename.substring(1);
+            if (Strings.CS.startsWith(filename,"/")) filename = filename.substring(1);
             log("PETSCII ("+i+") FILENAME=" + filename);
             if (lowerCase(filename).endsWith(".json")) {
                 final String content = new String(readBinaryFile(filename), UTF_8);
@@ -219,7 +219,7 @@ public class PetsciiArtGallery extends PetsciiThread {
                 write(34, 34, 20);
             } else {
                 compCode = codeHash.get(outCode);
-                write(defaultIfNull(compCode, outCode));
+                write(getIfNull(compCode, outCode));
             }
 
             lineCounter++;
