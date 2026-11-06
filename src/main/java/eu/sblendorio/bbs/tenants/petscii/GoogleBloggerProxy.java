@@ -1,12 +1,13 @@
 package eu.sblendorio.bbs.tenants.petscii;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.blogger.Blogger;
 import com.google.api.services.blogger.BloggerScopes;
 import com.google.api.services.blogger.model.Post;
 import com.google.api.services.blogger.model.PostList;
+import com.google.auth.http.HttpCredentialsAdapter;
+import com.google.auth.oauth2.GoogleCredentials;
 import eu.sblendorio.bbs.core.BbsIOException;
 import eu.sblendorio.bbs.core.BbsThread;
 import eu.sblendorio.bbs.core.Hidden;
@@ -63,7 +64,7 @@ public class GoogleBloggerProxy extends PetsciiThread {
 
     protected static final String CRED_FILE_PATH = System.getProperty("user.home") + File.separator + "credentials.json";
 
-    protected GoogleCredential credential;
+    protected GoogleCredentials credential;
     protected Blogger blogger;
     protected String blogId;
 
@@ -108,11 +109,11 @@ public class GoogleBloggerProxy extends PetsciiThread {
             write(GREY3, LOWERCASE);
             waitOn();
 
-            this.credential = GoogleCredential
-                    .fromStream(new FileInputStream(CRED_FILE_PATH))
-                    .createScoped(Arrays.asList(BloggerScopes.BLOGGER));
+            try (FileInputStream in = new FileInputStream(CRED_FILE_PATH)) {
+                this.credential = GoogleCredentials.fromStream(in).createScoped(Arrays.asList(BloggerScopes.BLOGGER));
+            }
 
-            this.blogger = new Blogger.Builder(new NetHttpTransport(), new JacksonFactory(), credential)
+            this.blogger = new Blogger.Builder(new NetHttpTransport(), GsonFactory.getDefaultInstance(), new HttpCredentialsAdapter(credential))
                     .setApplicationName("PETSCII BBS Builder - Blogger Proxy - " + this.getClass().getSimpleName())
                     .build();
 
